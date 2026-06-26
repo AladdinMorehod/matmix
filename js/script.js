@@ -1,109 +1,76 @@
-const catalogCategories = {
-    "Смеси": {},
-    "Ведро": {
-        "Грунтовки, растворители и краски": []
+﻿const catalog = {
+    "Черновые материалы": {
+        "Смеси": ["цемент", "штукатурка", "шпаклёвка", "наливной пол"],
+        "Гидроизоляция": [],
+        "Грунтовки": []
     },
-    "Клей": {},
-    "Краска": {
-        "Грунтовки, растворители и краски": []
-    },
-    "Блок": {
-        "Перегородочные материалы": []
-    },
-    "Лист": {
-        "Перегородочные материалы": []
-    },
-    "Металл": {
-        "Перегородочные материалы": []
-    },
-    "Гидроизоляция": {
-        "Утеплитель и подложка": []
-    },
-    "Звукоизоляция": {
-        "Утеплитель и подложка": []
-    },
-    "Теплоизоляция": {
-        "Утеплитель и подложка": []
-    },
-    "Инструменты": {
-        "Пены и клеи": []
-    },
-    "Гермет": {
-        "Пены и клеи": []
-    },
-    "Расходники": {
-        "Пены и клеи": [],
-        "Электрика и освещение": []
-    },
-    "Композ": {
-        "Металл": []
-    },
-    "Дерево": {},
-    "Маляр": {
-        "Малярные товары": []
-    },
-    "Крепёж": {
-        "Саморезы, дюбеля и анкера": []
-    },
-    "Электрика": {
-        "Электрика и освещение": [],
-        "Legrand Легранд": []
+    "Стеновые материалы": {
+        "Блоки и кирпич": ["газобетон", "кирпич"],
+        "ГКЛ системы": ["гипсокартон", "профили"],
+        "ПГП": []
     },
     "Сантехника": {
-        "Бугати (РЕЗЬБОВОЙ": [],
-        "Колектора и комплектующие,группы и шкафы": [],
-        "Rehau - Труба": [],
-        "Расходник сантехнический": [],
-        "Фильтры гурбой и тонкой очистки ,регуляторы давления,манометры, счетчики": [],
-        "Радиаторы": []
+        "Водоснабжение": ["трубы", "фитинги"],
+        "Канализация": [],
+        "Смесители": []
     },
-    "ПВХ": {
-        "Подоконники ПВХ": []
+    "Электрика": {
+        "Кабель": [],
+        "Автоматика": ["автоматы", "УЗО"],
+        "Розетки": []
     },
-    "Услуги": {
-        "Подоконники ПВХ": []
-    },
-    "ПП": {
-        "Труба 20пп": [],
-        "Труба 25пп": [],
-        "Труба 32пп": [],
-        "Труба 40пп": []
-    },
-    "FV": {
-        "Труба FV Plast": []
-    },
-    "Политек": {
-        "Канализация Политек": []
-    },
-    "Stout": {
-        "Фитинги Stout - Бронза": [],
-        "Stout - Труба": []
-    },
-    "Фитинги Stout - Бронза": {},
-    "Valtec": {
-        "Stout - Труба": []
-    },
-    "Rehau": {
-        "Rehau - Труба": [],
-        "Rehau - Канализация": []
-    },
-    "Люк": {
-        "Люк под плитку Практика": []
-    },
-    "Вент": {
-        "Вентиляция": []
-    },
-    "Сопутствующие товары": {
-        "Сантехника": [],
-        "Электрика": [],
-        "Плитка": [],
-        "ПВХ": [],
-        "Чистовые материалы": [],
-        "Расходники": [],
-        "Металл": []
+    "Отделка": {
+        "Обои": [],
+        "Плитка": ["керамогранит", "керамическая"],
+        "Полы": ["ламинат", "линолеум"]
     }
 };
 
+const categoryRules = [
+    { path: ["Черновые материалы", "Смеси", "цемент"], words: ["цемент"] },
+    { path: ["Черновые материалы", "Смеси", "штукатурка"], words: ["штукатур"] },
+    { path: ["Черновые материалы", "Смеси", "шпаклёвка"], words: ["шпакл", "шпатл"] },
+    { path: ["Черновые материалы", "Смеси", "наливной пол"], words: ["налив"] },
+    { path: ["Черновые материалы", "Грунтовки"], words: ["грунт", "тифенгрунд", "ct-17"] },
+    { path: ["Черновые материалы", "Гидроизоляция"], words: ["гидроизоля", "гидро"] },
+    { path: ["Стеновые материалы", "Блоки и кирпич", "газобетон"], words: ["газобетон", "блок d", "блок"] },
+    { path: ["Стеновые материалы", "Блоки и кирпич", "кирпич"], words: ["кирпич"] },
+    { path: ["Стеновые материалы", "ГКЛ системы", "гипсокартон"], words: ["гипсокартон", "гкл"] },
+    { path: ["Стеновые материалы", "ГКЛ системы", "профили"], words: ["профиль", "профили"] },
+    { path: ["Стеновые материалы", "ПГП"], words: ["пгп", "пазогреб"] },
+    { path: ["Сантехника", "Водоснабжение", "трубы"], words: ["труба", "rehau", "stout", "valtec", "пп", "fv"] },
+    { path: ["Сантехника", "Водоснабжение", "фитинги"], words: ["фитинг", "муфта", "угольник", "тройник", "коллектор"] },
+    { path: ["Сантехника", "Канализация"], words: ["канализац"] },
+    { path: ["Сантехника", "Смесители"], words: ["смесител"] },
+    { path: ["Электрика", "Кабель"], words: ["кабель", "провод"] },
+    { path: ["Электрика", "Автоматика", "автоматы"], words: ["автомат"] },
+    { path: ["Электрика", "Автоматика", "УЗО"], words: ["узо"] },
+    { path: ["Электрика", "Розетки"], words: ["розет", "выключател", "legrand"] },
+    { path: ["Отделка", "Плитка", "керамогранит"], words: ["керамогранит"] },
+    { path: ["Отделка", "Плитка", "керамическая"], words: ["плитка", "мозаик"] },
+    { path: ["Отделка", "Полы", "ламинат"], words: ["ламинат"] },
+    { path: ["Отделка", "Полы", "линолеум"], words: ["линолеум"] },
+    { path: ["Отделка", "Обои"], words: ["обои"] }
+];
+
+const synonyms = {
+    "штукт": ["штукатурка", "штукатур"],
+    "штукатур": ["штукатурка", "штукт"],
+    "гипс": ["гипсовая", "гипсовый", "гипсокартон", "гкл"],
+    "цем": ["цемент", "цементная", "цементный"],
+    "плитка": ["керамогранит", "керамическая", "кафель"],
+    "клей": ["клеевой", "плиточный"],
+    "грунт": ["грунтовка", "грунтовки", "тифенгрунд"],
+    "блок": ["газобетон", "газоблок"],
+    "проф": ["профиль", "профили"],
+    "труб": ["труба", "трубы"],
+    "фит": ["фитинг", "фитинги"],
+    "розет": ["розетка", "розетки"],
+    "автомат": ["автоматика", "автоматы"],
+    "узо": ["автоматика"],
+    "лам": ["ламинат"],
+    "лин": ["линолеум"]
+};
 const products = [
     {
         "name": "Штукатурка гипсовая Knauf Ротбанд 5 кг",
@@ -37553,37 +37520,145 @@ function cleanDisplayText(value) {
     return String(value || "").replace(/\?/g, "").replace(/\s+/g, " ").trim();
 }
 
-function getCategoryParts(category) {
-    const parts = [category.main, category.section, category.type].filter(Boolean);
-    return parts.filter((part, index) => {
-        const normalized = part.trim().toLowerCase();
-        return parts.findIndex(item => item.trim().toLowerCase() === normalized) === index;
+function normalizeSearchText(value) {
+    return cleanDisplayText(value)
+        .toLowerCase()
+        .replace(/ё/g, "е")
+        .replace(/[^a-zа-я0-9\s-]/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
+function getSearchTokens(value) {
+    const normalized = normalizeSearchText(value);
+    return normalized ? normalized.split(" ").filter(Boolean) : [];
+}
+
+function expandSearchToken(token) {
+    const normalizedToken = normalizeSearchText(token);
+    const expanded = new Set([normalizedToken]);
+
+    Object.entries(synonyms).forEach(([key, values]) => {
+        const normalizedKey = normalizeSearchText(key);
+        const normalizedValues = values.map(normalizeSearchText);
+        const isMatch = normalizedToken.includes(normalizedKey)
+            || normalizedKey.includes(normalizedToken)
+            || normalizedValues.some(value => normalizedToken.includes(value) || value.includes(normalizedToken));
+
+        if (!isMatch) return;
+        expanded.add(normalizedKey);
+        normalizedValues.forEach(value => expanded.add(value));
     });
+
+    return Array.from(expanded).filter(Boolean);
 }
 
-function getCategoryPath(category) {
-    return getCategoryParts(category).join(" / ");
+function getProductSearchText(product) {
+    return normalizeSearchText([
+        product.name,
+        product.unit,
+        formatWeight(product.weight),
+        getCategorySearchText(product)
+    ].filter(Boolean).join(" "));
 }
 
-function getCategorySearchText(category) {
-    return getCategoryParts(category).join(" ").toLowerCase();
+function getProductSearchScore(product, query) {
+    const queryText = normalizeSearchText(query);
+    if (!queryText) return { score: 1, matchedTokens: 0 };
+
+    const productText = getProductSearchText(product);
+    const queryTokens = getSearchTokens(queryText);
+    if (!queryTokens.length) return { score: 1, matchedTokens: 0 };
+
+    let score = productText.includes(queryText) ? 100 : 0;
+    let matchedTokens = 0;
+
+    queryTokens.forEach(token => {
+        const variants = expandSearchToken(token);
+        const bestVariantScore = variants.reduce((best, variant) => {
+            if (productText.includes(variant)) {
+                const exactWordScore = productText.split(" ").includes(variant) ? 12 : 8;
+                return Math.max(best, exactWordScore + Math.min(variant.length, 12));
+            }
+            return best;
+        }, 0);
+
+        if (bestVariantScore > 0) {
+            matchedTokens += 1;
+            score += bestVariantScore;
+        }
+    });
+
+    if (!matchedTokens) return { score: 0, matchedTokens: 0 };
+    if (matchedTokens > 1) score += matchedTokens * 20;
+    if (matchedTokens === queryTokens.length) score += 30;
+
+    return { score, matchedTokens };
+}
+
+function smartSearch(query, productList) {
+    const normalizedQuery = normalizeSearchText(query);
+    if (!normalizedQuery) {
+        return productList.map((item, order) => ({ ...item, searchScore: 1, order }));
+    }
+
+    const rankedProducts = productList
+        .map((item, order) => {
+            const match = getProductSearchScore(item.product, normalizedQuery);
+            return {
+                ...item,
+                searchScore: match.score,
+                matchedTokens: match.matchedTokens,
+                order
+            };
+        })
+        .filter(item => item.searchScore > 0);
+
+    const strongMatches = rankedProducts.filter(item => item.matchedTokens >= 2);
+    const weakMatches = rankedProducts.filter(item => item.matchedTokens < 2);
+    const visibleMatches = strongMatches.length ? strongMatches : weakMatches;
+
+    return visibleMatches.sort((first, second) => second.searchScore - first.searchScore || first.order - second.order);
+}
+
+function getProductCatalogCategory(product) {
+    const source = [
+        cleanDisplayText(product.name),
+        product.category?.main,
+        product.category?.section,
+        product.category?.type
+    ].filter(Boolean).join(" ").toLowerCase();
+
+    const rule = categoryRules.find(item => item.words.some(word => source.includes(word.toLowerCase())));
+    return rule ? rule.path : ["Черновые материалы", "Смеси"];
+}
+
+function getCategoryParts(category, product) {
+    if (product) return getProductCatalogCategory(product);
+    if (Array.isArray(category)) return category.filter(Boolean);
+    return [category?.main, category?.section, category?.type].filter(Boolean);
+}
+
+function getCategoryPath(category, product) {
+    return getCategoryParts(category, product).join(" / ");
+}
+
+function getCategorySearchText(product) {
+    return getProductCatalogCategory(product).join(" ").toLowerCase();
 }
 
 function getCategoryFilterOptions() {
     const options = [{ label: "Все товары", path: "", level: 0 }];
-    const usedPaths = new Set([""]);
 
-    Object.entries(catalogCategories).forEach(([main, sections]) => {
-        if (!usedPaths.has(main)) {
-            options.push({ label: main, path: main, level: 0 });
-            usedPaths.add(main);
-        }
+    Object.entries(catalog).forEach(([main, sections]) => {
+        options.push({ label: main, path: main, level: 0 });
 
-        Object.keys(sections).forEach(section => {
-            const path = `${main} / ${section}`;
-            if (main.trim().toLowerCase() === section.trim().toLowerCase() || usedPaths.has(path)) return;
-            options.push({ label: section, path, level: 1 });
-            usedPaths.add(path);
+        Object.entries(sections).forEach(([section, types]) => {
+            options.push({ label: section, path: `${main} / ${section}`, level: 1 });
+
+            types.forEach(type => {
+                options.push({ label: type, path: `${main} / ${section} / ${type}`, level: 2 });
+            });
         });
     });
 
@@ -37592,7 +37667,7 @@ function getCategoryFilterOptions() {
 
 function productMatchesCategory(product) {
     if (!activeCategoryPath) return true;
-    return getCategoryPath(product.category).startsWith(activeCategoryPath);
+    return getCategoryPath(product.category, product).startsWith(activeCategoryPath);
 }
 
 function getCartTotal() {
@@ -37640,12 +37715,11 @@ function renderProducts() {
     if (!grid) return;
     grid.innerHTML = "";
 
-    const visibleProducts = products
+    const categoryProducts = products
         .map((product, id) => ({ product, id }))
-        .filter(({ product }) => {
-            const haystack = `${cleanDisplayText(product.name)} ${getCategorySearchText(product.category)} ${product.unit} ${formatWeight(product.weight)}`.toLowerCase();
-            return haystack.includes(searchQuery) && productMatchesCategory(product);
-        });
+        .filter(({ product }) => productMatchesCategory(product));
+
+    const visibleProducts = smartSearch(searchQuery, categoryProducts);
 
     if (!visibleProducts.length) {
         grid.innerHTML = `<p class="empty-products">Ничего не найдено</p>`;
@@ -37668,7 +37742,7 @@ function createProductCard(product, id) {
             <div class="thumb" aria-hidden="true">${product.image}</div>
             <div class="card-info">
                 <h3>${cleanDisplayText(product.name)}</h3>
-                <span class="card-category">${getCategoryPath(product.category)}</span>
+                <span class="card-category">${getCategoryPath(product.category, product)}</span>
                 <span class="card-weight">${formatWeight(product.weight)}</span>
                 <p>${formatPrice(product.price)} / ${product.unit}</p>
             </div>
@@ -37694,17 +37768,16 @@ function renderPopularProducts() {
 
 function renderCategoryControls() {
     if (!categoryControls) return;
-    categoryControls.innerHTML = `
-        <select id="categorySelect" aria-label="Категория товаров"></select>
-    `;
+    categoryControls.innerHTML = "";
 
-    const categorySelect = document.getElementById("categorySelect");
     getCategoryFilterOptions().forEach(option => {
-        const selectOption = document.createElement("option");
-        selectOption.value = option.path;
-        selectOption.textContent = `${"  ".repeat(option.level)}${option.label}`;
-        selectOption.selected = option.path === activeCategoryPath;
-        categorySelect.appendChild(selectOption);
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = `category-control level-${option.level}`;
+        button.dataset.path = option.path;
+        button.textContent = option.label;
+        button.classList.toggle("active", option.path === activeCategoryPath);
+        categoryControls.appendChild(button);
     });
 }
 
@@ -37825,7 +37898,7 @@ mainNav?.addEventListener("click", event => {
 });
 
 searchInput?.addEventListener("input", () => {
-    searchQuery = searchInput.value.trim().toLowerCase();
+    searchQuery = searchInput.value;
     if (!grid && searchQuery) {
         window.location.href = `catalog.html?search=${encodeURIComponent(searchQuery)}`;
         return;
@@ -37833,9 +37906,11 @@ searchInput?.addEventListener("input", () => {
     renderProducts();
 });
 
-categoryControls?.addEventListener("change", event => {
-    if (event.target.id !== "categorySelect") return;
-    activeCategoryPath = event.target.value;
+categoryControls?.addEventListener("click", event => {
+    const button = event.target.closest(".category-control");
+    if (!button) return;
+    activeCategoryPath = button.dataset.path;
+    renderCategoryControls();
     renderProducts();
 });
 
@@ -37854,10 +37929,11 @@ const initialSearchQuery = searchParams.get("search");
 
 if (initialSearchQuery && searchInput) {
     searchInput.value = initialSearchQuery;
-    searchQuery = initialSearchQuery.trim().toLowerCase();
+    searchQuery = initialSearchQuery;
 }
 
 renderCategoryControls();
 renderProducts();
 renderPopularProducts();
 updateCartSummary();
+

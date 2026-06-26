@@ -350,12 +350,14 @@ body {
 }
 
 .catalog-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
     margin: 0 0 20px;
 }
 
-.catalog-controls select {
-    width: min(100%, 360px);
-    height: 38px;
+.category-control {
+    min-height: 36px;
     border: 1px solid var(--border);
     border-radius: 6px;
     background: var(--surface);
@@ -363,7 +365,27 @@ body {
     padding: 0 12px;
     cursor: pointer;
     font: inherit;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
+}
+
+.category-control.level-0 {
+    font-weight: 700;
+}
+
+.category-control.level-1 {
+    background: var(--surface-soft);
+}
+
+.category-control.level-2 {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+}
+
+.category-control.active,
+.category-control:hover {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: white;
 }
 
 .grid {
