@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог | MatMix</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body id="top">
+
+    <header class="header">
+        <a class="logo" href="index.html" aria-label="На главную">
+            <img src="img/logo-current.png" alt="МатМикс">
+        </a>
+
+        <form class="header-search" role="search">
+            <input id="searchInput" type="search" placeholder="Поиск товаров" aria-label="Поиск товаров">
+        </form>
+
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mainNav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav" id="mainNav">
+            <a href="index.html">Главная</a>
+            <a href="catalog.html">Каталог</a>
+            <a href="#">Доставка</a>
+            <a href="#">Контакты</a>
+        </nav>
+        <div class="cart">
+            <button id="cartBtn">Корзина (<span id="cartCount">0</span>)</button>
+        </div>
+    </header>
+
+    <section class="products" id="catalog">
+        <h2>Каталог товаров</h2>
+        <div class="catalog-controls" id="categoryControls"></div>
+
+        <div class="grid" id="productGrid"></div>
+    </section>
+
+    <div id="cartModal" class="cart-modal hidden">
+        <h3>Корзина</h3>
+        <div id="cartItems"></div>
+        <div id="cartTotal" style="margin-top:12px;font-weight:700">Итого: 0 ₽</div>
+        <div style="margin-top:12px;"><button id="closeCart">Закрыть</button></div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <strong>МатМикс</strong>
+            <span>+7 909 944-33-83</span>
+            <span>Opt-Mat@mail.ru</span>
+            <span>Андрей Дмитриевич, руководитель проекта</span>
+            <span>Все права защищены</span>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

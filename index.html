@@ -6,12 +6,16 @@
     <title>MatMix</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body id="top">
 
     <header class="header">
-        <div class="logo">
+        <a class="logo" href="index.html" aria-label="На главную">
             <img src="img/logo-current.png" alt="МатМикс">
-        </div>
+        </a>
+
+        <form class="header-search" role="search">
+            <input id="searchInput" type="search" placeholder="Поиск товаров" aria-label="Поиск товаров">
+        </form>
 
         <button class="menu-toggle" id="menuToggle" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mainNav">
             <span></span>
@@ -20,8 +24,8 @@
         </button>
 
         <nav class="nav" id="mainNav">
-            <a href="#">Главная</a>
-            <a href="#">Каталог</a>
+            <a href="index.html">Главная</a>
+            <a href="catalog.html">Каталог</a>
             <a href="#">Доставка</a>
             <a href="#">Контакты</a>
         </nav>
@@ -31,15 +35,84 @@
     </header>
 
     <section class="hero">
-        <h1>Строительные материалы</h1>
-        <p>Скорость Качество Надёжность</p>
-        <button>Перейти в каталог</button>
+        <div class="hero-content">
+            <div class="hero-copy">
+                <h1>Материалы для ремонта и строительства</h1>
+                <p>Подберем смеси, блоки, грунтовки, расходники и сопутствующие товары под задачу объекта.</p>
+                <div class="hero-actions">
+                    <button type="button" onclick="location.href='catalog.html'">Перейти в каталог</button>
+                    <a href="tel:+79099443383">Связаться</a>
+                </div>
+            </div>
+            <div class="hero-panel" aria-hidden="true">
+                <h2>Наши преимущества:</h2>
+                <div class="material-card material-main">
+                    <strong>Срочная доставка до 3 часов</strong>
+                </div>
+                <div class="material-card">
+                    <strong>Живое общение с одним менеджером</strong>
+                </div>
+                <div class="material-card">
+                    <strong>100% Качество товаров от производителя</strong>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section class="products">
-        <h2>Популярные товары</h2>
+    <section class="trust-strip">
+        <div class="trust-item">
+            <strong>Актуальный прайс</strong>
+            <span>товары, цены и вес из рабочей базы</span>
+        </div>
+        <div class="trust-item">
+            <strong>Подбор под объект</strong>
+            <span>поможем собрать материалы под задачу</span>
+        </div>
+        <div class="trust-item">
+            <strong>Связь с руководителем</strong>
+            <span>Андрей Дмитриевич на связи по заказу</span>
+        </div>
+        <div class="trust-item">
+            <strong>Комплексная поставка</strong>
+            <span>черновые, отделочные и расходные позиции</span>
+        </div>
+    </section>
 
-        <div class="grid" id="productGrid"></div>
+    <section class="products popular-products">
+        <h2>Популярные товары</h2>
+        <div class="popular-grid" id="popularGrid"></div>
+    </section>
+
+    <section class="order-flow">
+        <h2>Как заказать</h2>
+        <div class="steps">
+            <div class="step">
+                <span>1</span>
+                <strong>Выберите товары</strong>
+                <p>Откройте каталог, добавьте нужные позиции и количество.</p>
+            </div>
+            <div class="step">
+                <span>2</span>
+                <strong>Уточните заказ</strong>
+                <p>Мы проверим наличие, вес, цену и удобные условия поставки.</p>
+            </div>
+            <div class="step">
+                <span>3</span>
+                <strong>Получите материалы</strong>
+                <p>Соберем заказ под объект и согласуем дальнейшие действия.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-cta">
+        <div>
+            <h2>Нужна помощь с подбором?</h2>
+            <p>Позвоните или напишите, если нужно быстро собрать материалы под ремонт, отделку или стройку.</p>
+        </div>
+        <div class="contact-actions">
+            <a href="tel:+79099443383">+7 909 944-33-83</a>
+            <a href="mailto:Opt-Mat@mail.ru">Opt-Mat@mail.ru</a>
+        </div>
     </section>
 
     <div id="cartModal" class="cart-modal hidden">
@@ -48,6 +121,16 @@
         <div id="cartTotal" style="margin-top:12px;font-weight:700">Итого: 0 ₽</div>
         <div style="margin-top:12px;"><button id="closeCart">Закрыть</button></div>
     </div>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <strong>МатМикс</strong>
+            <span>+7 909 944-33-83</span>
+            <span>Opt-Mat@mail.ru</span>
+            <span>Андрей Дмитриевич</span>
+            <span>Все права защищены</span>
+        </div>
+    </footer>
 
     <script src="js/script.js"></script>
 </body>
