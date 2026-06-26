@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MatMix</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo">
+            <img src="img/logo-current.png" alt="МатМикс">
+        </div>
+
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mainNav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav" id="mainNav">
+            <a href="#">Главная</a>
+            <a href="#">Каталог</a>
+            <a href="#">Доставка</a>
+            <a href="#">Контакты</a>
+        </nav>
+        <div class="cart">
+            <button id="cartBtn">Корзина (<span id="cartCount">0</span>)</button>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>Строительные материалы</h1>
+        <p>Скорость Качество Надёжность</p>
+        <button>Перейти в каталог</button>
+    </section>
+
+    <section class="products">
+        <h2>Популярные товары</h2>
+
+        <div class="grid" id="productGrid"></div>
+    </section>
+
+    <div id="cartModal" class="cart-modal hidden">
+        <h3>Корзина</h3>
+        <div id="cartItems"></div>
+        <div id="cartTotal" style="margin-top:12px;font-weight:700">Итого: 0 ₽</div>
+        <div style="margin-top:12px;"><button id="closeCart">Закрыть</button></div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
