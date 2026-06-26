@@ -37501,6 +37501,8 @@ const products = [
 
 const grid = document.getElementById("productGrid");
 const popularGrid = document.getElementById("popularGrid");
+const popularArrowLeft = document.querySelector(".popular-arrow-left");
+const popularArrowRight = document.querySelector(".popular-arrow-right");
 const categoryControls = document.getElementById("categoryControls");
 const cartBtn = document.getElementById("cartBtn");
 const cartCountEl = document.getElementById("cartCount");
@@ -37764,6 +37766,22 @@ function handleQtyClick(event) {
 grid?.addEventListener("click", handleQtyClick);
 popularGrid?.addEventListener("click", handleQtyClick);
 cartItemsEl.addEventListener("click", handleQtyClick);
+
+function scrollPopularProducts(direction) {
+    if (!popularGrid) return;
+    popularGrid.scrollBy({
+        left: direction * 235,
+        behavior: "smooth"
+    });
+}
+
+popularArrowLeft?.addEventListener("click", () => {
+    scrollPopularProducts(-1);
+});
+
+popularArrowRight?.addEventListener("click", () => {
+    scrollPopularProducts(1);
+});
 
 cartBtn.addEventListener("click", event => {
     event.stopPropagation();

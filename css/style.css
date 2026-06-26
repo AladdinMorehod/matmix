@@ -236,11 +236,6 @@ body {
     background: rgba(255, 255, 255, 0.16);
 }
 
-.material-card span {
-    color: rgba(255, 255, 255, 0.75);
-    font-size: 0.9rem;
-}
-
 .material-card strong {
     text-align: center;
     font-size: 0.95rem;
@@ -287,7 +282,13 @@ body {
 }
 
 .popular-products {
-    padding-top: 28px;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 34px 40px;
+}
+
+.popular-scroll {
+    position: relative;
 }
 
 .popular-grid {
@@ -295,8 +296,57 @@ body {
     grid-template-columns: repeat(5, 220px);
     justify-content: center;
     gap: 15px;
-    max-width: 1210px;
-    margin: 0 auto;
+    width: 100%;
+}
+
+.popular-arrow {
+    display: none;
+}
+
+@media (max-width: 1400px) {
+    .popular-scroll {
+        padding: 0 34px;
+    }
+    .popular-grid {
+        display: flex;
+        justify-content: flex-start;
+        gap: 15px;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+    }
+    .popular-grid::-webkit-scrollbar {
+        display: none;
+    }
+    .popular-grid .card {
+        flex: 0 0 220px;
+    }
+    .popular-arrow {
+        position: absolute;
+        top: 50%;
+        z-index: 3;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 26px;
+        height: 46px;
+        padding: 0;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        background: var(--surface);
+        color: var(--primary);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        cursor: pointer;
+        font-size: 1.45rem;
+        line-height: 1;
+        transform: translateY(-50%);
+    }
+    .popular-arrow-left {
+        left: 0;
+    }
+    .popular-arrow-right {
+        right: 0;
+    }
 }
 
 .catalog-controls {
@@ -684,9 +734,10 @@ body {
         padding: 0 10px 0 0;
     }
     .logo img {
-        width: clamp(92px, 24vw, 116px);
-        max-height: 60px;
-    }
+    width: clamp(60px, 8vw, 8px);
+    max-height: 45px;
+    object-fit: contain;
+}
     .header-search {
         order: 4;
         flex: 1 0 100%;
@@ -699,8 +750,51 @@ body {
     .products {
         padding: 28px 12px;
     }
+    .popular-products {
+        padding: 28px 12px;
+    }
+    .popular-scroll {
+        padding: 0 34px;
+    }
     .popular-grid {
-        grid-template-columns: repeat(auto-fit, minmax(210px, 220px));
+        display: flex;
+        justify-content: flex-start;
+        gap: 15px;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+    }
+    .popular-grid::-webkit-scrollbar {
+        display: none;
+    }
+    .popular-grid .card {
+        flex: 0 0 220px;
+    }
+    .popular-arrow {
+        position: absolute;
+        top: 50%;
+        z-index: 3;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 26px;
+        height: 46px;
+        padding: 0;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        background: var(--surface);
+        color: var(--primary);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        cursor: pointer;
+        font-size: 1.45rem;
+        line-height: 1;
+        transform: translateY(-50%);
+    }
+    .popular-arrow-left {
+        left: 0;
+    }
+    .popular-arrow-right {
+        right: 0;
     }
     .card {
         height: 230px;
