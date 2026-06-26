@@ -37742,8 +37742,6 @@ function createProductCard(product, id) {
             <div class="thumb" aria-hidden="true">${product.image}</div>
             <div class="card-info">
                 <h3>${cleanDisplayText(product.name)}</h3>
-                <span class="card-category">${getCategoryPath(product.category, product)}</span>
-                <span class="card-weight">${formatWeight(product.weight)}</span>
                 <p>${formatPrice(product.price)} / ${product.unit}</p>
             </div>
         </div>
