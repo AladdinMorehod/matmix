@@ -37477,6 +37477,17 @@ const cartModal = document.getElementById("cartModal");
 const cartItemsEl = document.getElementById("cartItems");
 const closeCartBtn = document.getElementById("closeCart");
 const cartTotalEl = document.getElementById("cartTotal");
+const cartView = document.getElementById("cartView");
+const openCheckoutBtn = document.getElementById("openCheckout");
+const checkoutForm = document.getElementById("checkoutForm");
+const cancelCheckoutBtn = document.getElementById("cancelCheckout");
+const checkoutMessage = document.getElementById("checkoutMessage");
+const checkoutNameInput = checkoutForm?.querySelector("input[name='customerName']");
+const checkoutPhoneInput = checkoutForm?.querySelector("input[name='customerPhone']");
+const checkoutAddressInput = checkoutForm?.querySelector("input[name='deliveryAddress']");
+const nameSuggestionsEl = document.getElementById("nameSuggestions");
+const phoneSuggestionsEl = document.getElementById("phoneSuggestions");
+const addressSuggestionsEl = document.getElementById("addressSuggestions");
 const menuToggle = document.getElementById("menuToggle");
 const mainNav = document.getElementById("mainNav");
 const searchInput = document.getElementById("searchInput");
@@ -37484,6 +37495,12 @@ const searchInput = document.getElementById("searchInput");
 let cart = loadCart();
 let searchQuery = "";
 let activeCategoryPath = "";
+
+const checkoutStorage = {
+    names: "matmix_checkout_names",
+    phones: "matmix_checkout_phones",
+    addresses: "matmix_checkout_addresses"
+};
 
 const popularProductNames = [
     "Штукатурка гипсовая Knauf Ротбанд 30 кг",
@@ -37504,6 +37521,147 @@ function loadCart() {
 
 function saveCart() {
     localStorage.setItem("matmix_cart", JSON.stringify(cart));
+}
+
+function getStoredCheckoutValues(key) {
+    try {
+        const values = JSON.parse(localStorage.getItem(key) || "[]");
+        return Array.isArray(values) ? values.filter(Boolean) : [];
+    } catch {
+        return [];
+    }
+}
+
+function saveCheckoutValue(key, value, normalizeValue = cleanDisplayText) {
+    const cleanValue = cleanDisplayText(value);
+    if (!cleanValue) return;
+
+    const normalizedValue = normalizeValue(cleanValue);
+    if (!normalizedValue) return;
+
+    const existingValues = getStoredCheckoutValues(key)
+        .filter(item => normalizeValue(item) !== normalizedValue);
+
+    localStorage.setItem(key, JSON.stringify([cleanValue, ...existingValues].slice(0, 10)));
+}
+
+function renderCheckoutSuggestions(datalist, values) {
+    if (!datalist) return;
+    datalist.innerHTML = "";
+
+    values.forEach(value => {
+        const option = document.createElement("option");
+        option.value = value;
+        datalist.appendChild(option);
+    });
+}
+
+function showInputSuggestions(input) {
+    try {
+        input?.showPicker?.();
+    } catch {
+        // Some browsers block programmatic datalist opening; autocomplete still works.
+    }
+}
+
+function getRussianPhoneDigits(value) {
+    let digits = String(value || "").replace(/\D/g, "");
+
+    if (digits.startsWith("7") || digits.startsWith("8")) {
+        digits = digits.slice(1);
+    }
+
+    return digits.slice(0, 10);
+}
+
+function formatRussianPhone(value) {
+    const digits = getRussianPhoneDigits(value);
+    let formatted = "+7";
+
+    if (!digits) return formatted;
+
+    formatted += ` (${digits.slice(0, 3)}`;
+    if (digits.length >= 3) formatted += ")";
+    if (digits.length > 3) formatted += ` ${digits.slice(3, 6)}`;
+    if (digits.length > 6) formatted += `-${digits.slice(6, 8)}`;
+    if (digits.length > 8) formatted += `-${digits.slice(8, 10)}`;
+
+    return formatted;
+}
+
+function normalizePhoneHistoryValue(value) {
+    return getRussianPhoneDigits(value);
+}
+
+function normalizeAddressHistoryValue(value) {
+    return cleanDisplayText(value).toLowerCase();
+}
+
+function updateCheckoutSuggestions() {
+    renderCheckoutSuggestions(nameSuggestionsEl, getStoredCheckoutValues(checkoutStorage.names));
+    renderCheckoutSuggestions(phoneSuggestionsEl, getStoredCheckoutValues(checkoutStorage.phones));
+    renderCheckoutSuggestions(addressSuggestionsEl, getStoredCheckoutValues(checkoutStorage.addresses));
+}
+
+function clearCheckoutMessage() {
+    if (checkoutMessage) {
+        checkoutMessage.classList.remove("success");
+        checkoutMessage.textContent = "";
+    }
+}
+
+function setCheckoutSubmitDisabled(isDisabled) {
+    checkoutForm?.querySelector("button[type='submit']")?.toggleAttribute("disabled", isDisabled);
+}
+
+function setupCheckoutFormFields() {
+    updateCheckoutSuggestions();
+
+    if (checkoutNameInput) {
+        const lastName = getStoredCheckoutValues(checkoutStorage.names)[0];
+        if (lastName && !checkoutNameInput.value) {
+            checkoutNameInput.value = lastName;
+        }
+
+        checkoutNameInput.addEventListener("focus", () => {
+            updateCheckoutSuggestions();
+            showInputSuggestions(checkoutNameInput);
+        });
+
+        checkoutNameInput.addEventListener("input", updateCheckoutSuggestions);
+    }
+
+    if (checkoutPhoneInput) {
+        checkoutPhoneInput.value = formatRussianPhone(checkoutPhoneInput.value);
+
+        checkoutPhoneInput.addEventListener("focus", () => {
+            checkoutPhoneInput.value = formatRussianPhone(checkoutPhoneInput.value);
+            updateCheckoutSuggestions();
+            showInputSuggestions(checkoutPhoneInput);
+        });
+
+        checkoutPhoneInput.addEventListener("keydown", event => {
+            const isPrefixEdit = ["Backspace", "Delete"].includes(event.key)
+                && checkoutPhoneInput.selectionStart <= 2;
+
+            if (isPrefixEdit) {
+                event.preventDefault();
+            }
+        });
+
+        checkoutPhoneInput.addEventListener("input", () => {
+            checkoutPhoneInput.value = formatRussianPhone(checkoutPhoneInput.value);
+        });
+    }
+
+    if (checkoutAddressInput) {
+        checkoutAddressInput.addEventListener("focus", () => {
+            updateCheckoutSuggestions();
+            showInputSuggestions(checkoutAddressInput);
+        });
+
+        checkoutAddressInput.addEventListener("input", updateCheckoutSuggestions);
+    }
 }
 
 function formatPrice(value) {
@@ -37677,16 +37835,31 @@ function getCartTotal() {
     }, 0);
 }
 
+function getCartWeight() {
+    return cart.reduce((sum, item) => {
+        const product = products[item.id];
+        const weight = Number(product?.weight);
+        return sum + (Number.isFinite(weight) ? weight : 0) * item.qty;
+    }, 0);
+}
+
 function getCartQty() {
     return cart.reduce((sum, item) => sum + item.qty, 0);
 }
 
 function updateCartSummary() {
     cartCountEl.textContent = getCartQty();
-    cartTotalEl.textContent = `Итого: ${new Intl.NumberFormat("ru-RU").format(getCartTotal())} ₽`;
+    cartTotalEl.innerHTML = `
+        <span>Итого: ${new Intl.NumberFormat("ru-RU").format(getCartTotal())} ₽</span>
+        <span id="cartWeight">Вес: ${new Intl.NumberFormat("ru-RU").format(getCartWeight())} кг</span>
+    `;
+    if (openCheckoutBtn) {
+        openCheckoutBtn.disabled = !cart.length;
+    }
 }
 
-function setProductQty(id, nextQty) {
+function setProductQty(id, nextQty, options = {}) {
+    const { renderCartView = true } = options;
     const item = cart.find(entry => entry.id === id);
 
     if (nextQty <= 0) {
@@ -37706,9 +37879,24 @@ function setProductQty(id, nextQty) {
         renderPopularProducts();
     }
 
-    if (!cartModal.classList.contains("hidden")) {
+    if (renderCartView && !cartModal.classList.contains("hidden")) {
         renderCart();
     }
+}
+
+function showCartView() {
+    cartView?.classList.remove("hidden");
+    checkoutForm?.classList.add("hidden");
+    clearCheckoutMessage();
+}
+
+function showCheckoutForm() {
+    if (!cart.length) return;
+    cartView?.classList.add("hidden");
+    checkoutForm?.classList.remove("hidden");
+    clearCheckoutMessage();
+    setCheckoutSubmitDisabled(false);
+    checkoutForm?.querySelector("input")?.focus();
 }
 
 function renderProducts() {
@@ -37779,11 +37967,13 @@ function renderCategoryControls() {
     });
 }
 
-function getQtyControls(id, qty) {
+function getQtyControls(id, qty, inputMode = false) {
     return `
         <div class="qty-row">
             <button class="qty minus" data-id="${id}" type="button" aria-label="Уменьшить количество">−</button>
-            <span class="qty-val">${qty}</span>
+            ${inputMode
+                ? `<input class="qty-input" data-id="${id}" type="text" inputmode="numeric" pattern="[0-9]*" value="${qty}" aria-label="Количество">`
+                : `<span class="qty-val">${qty}</span>`}
             <button class="qty plus" data-id="${id}" type="button" aria-label="Увеличить количество">+</button>
         </div>
     `;
@@ -37806,9 +37996,8 @@ function renderCart() {
             <div>
                 <b>${cleanDisplayText(product.name)}</b>
                 <span>${formatPrice(product.price)} / ${product.unit}</span>
-                <span>${formatWeight(product.weight)}</span>
             </div>
-            ${getQtyControls(item.id, item.qty)}
+            ${getQtyControls(item.id, item.qty, true)}
         `;
         cartItemsEl.appendChild(row);
     });
@@ -37838,6 +38027,35 @@ grid?.addEventListener("click", handleQtyClick);
 popularGrid?.addEventListener("click", handleQtyClick);
 cartItemsEl.addEventListener("click", handleQtyClick);
 
+cartItemsEl.addEventListener("input", event => {
+    const input = event.target.closest(".qty-input");
+    if (!input) return;
+
+    const id = Number(input.dataset.id);
+    if (!Number.isInteger(id)) return;
+
+    const sanitizedValue = input.value.replace(/\D/g, "").replace(/^0+/, "");
+    if (input.value !== sanitizedValue) {
+        input.value = sanitizedValue;
+    }
+    if (!sanitizedValue) return;
+
+    setProductQty(id, Number(sanitizedValue), { renderCartView: false });
+});
+
+cartItemsEl.addEventListener("change", event => {
+    const input = event.target.closest(".qty-input");
+    if (!input) return;
+
+    const id = Number(input.dataset.id);
+    if (!Number.isInteger(id)) return;
+
+    const current = cart.find(item => item.id === id)?.qty || 1;
+    if (!input.value) {
+        input.value = current;
+    }
+});
+
 function scrollPopularProducts(direction) {
     if (!popularGrid) return;
     popularGrid.scrollBy({
@@ -37857,11 +38075,60 @@ popularArrowRight?.addEventListener("click", () => {
 cartBtn.addEventListener("click", event => {
     event.stopPropagation();
     cartModal.classList.toggle("hidden");
+    showCartView();
     renderCart();
 });
 
 closeCartBtn.addEventListener("click", () => {
     cartModal.classList.add("hidden");
+});
+
+openCheckoutBtn?.addEventListener("click", showCheckoutForm);
+
+cancelCheckoutBtn?.addEventListener("click", () => {
+    showCartView();
+    renderCart();
+});
+
+checkoutForm?.addEventListener("submit", event => {
+    event.preventDefault();
+
+    if (checkoutNameInput) {
+        saveCheckoutValue(checkoutStorage.names, checkoutNameInput.value);
+    }
+
+    if (checkoutPhoneInput) {
+        checkoutPhoneInput.value = formatRussianPhone(checkoutPhoneInput.value);
+        saveCheckoutValue(
+            checkoutStorage.phones,
+            checkoutPhoneInput.value,
+            normalizePhoneHistoryValue
+        );
+    }
+
+    if (checkoutAddressInput) {
+        saveCheckoutValue(
+            checkoutStorage.addresses,
+            checkoutAddressInput.value,
+            normalizeAddressHistoryValue
+        );
+    }
+
+    updateCheckoutSuggestions();
+
+    if (checkoutMessage) {
+        checkoutMessage.classList.add("success");
+        checkoutMessage.innerHTML = `
+            <span class="checkout-success-icon" aria-hidden="true">✓</span>
+            <span class="checkout-success-text">
+                <strong class="checkout-success-title">Заказ успешно оформлен</strong>
+                <span>Спасибо за обращение в «МатМикс».</span>
+                <span>В ближайшее время наш менеджер свяжется с вами для подтверждения заказа, уточнения времени доставки и ответит на все ваши вопросы.</span>
+            </span>
+        `;
+    }
+
+    setCheckoutSubmitDisabled(true);
 });
 
 cartModal.addEventListener("click", event => {
@@ -37870,6 +38137,7 @@ cartModal.addEventListener("click", event => {
 
 document.addEventListener("click", () => {
     cartModal.classList.add("hidden");
+    showCartView();
     closeMenu();
 });
 
@@ -37933,5 +38201,6 @@ if (initialSearchQuery && searchInput) {
 renderCategoryControls();
 renderProducts();
 renderPopularProducts();
+setupCheckoutFormFields();
 updateCartSummary();
 
