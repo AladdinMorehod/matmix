@@ -37491,10 +37491,16 @@ const addressSuggestionsEl = document.getElementById("addressSuggestions");
 const menuToggle = document.getElementById("menuToggle");
 const mainNav = document.getElementById("mainNav");
 const searchInput = document.getElementById("searchInput");
+const headerSearch = searchInput?.closest(".header-search");
+const searchDropdown = document.createElement("div");
 
 let cart = loadCart();
 let searchQuery = "";
 let activeCategoryPath = "";
+
+searchDropdown.className = "search-dropdown hidden";
+searchDropdown.setAttribute("aria-live", "polite");
+headerSearch?.appendChild(searchDropdown);
 
 const checkoutStorage = {
     names: "matmix_checkout_names",
@@ -37859,7 +37865,7 @@ function updateCartSummary() {
 }
 
 function setProductQty(id, nextQty, options = {}) {
-    const { renderCartView = true } = options;
+    const { renderCartView = true, renderSearchView = true } = options;
     const item = cart.find(entry => entry.id === id);
 
     if (nextQty <= 0) {
@@ -37877,6 +37883,9 @@ function setProductQty(id, nextQty, options = {}) {
     }
     if (popularGrid) {
         renderPopularProducts();
+    }
+    if (renderSearchView && (!searchDropdown.classList.contains("hidden") || document.activeElement === searchInput)) {
+        renderSearchDropdown();
     }
 
     if (renderCartView && !cartModal.classList.contains("hidden")) {
@@ -37941,6 +37950,52 @@ function createProductCard(product, id) {
     return card;
 }
 
+function getSearchDropdownResults(query) {
+    const productList = products.map((product, id) => ({ product, id }));
+    return smartSearch(query, productList).slice(0, 6);
+}
+
+function hideSearchDropdown() {
+    searchDropdown.classList.add("hidden");
+    searchDropdown.innerHTML = "";
+}
+
+function renderSearchDropdown() {
+    if (!searchInput || !headerSearch) return;
+
+    const query = searchInput.value.trim();
+    if (!query) {
+        hideSearchDropdown();
+        return;
+    }
+
+    const results = getSearchDropdownResults(query);
+    searchDropdown.classList.remove("hidden");
+
+    if (!results.length) {
+        searchDropdown.innerHTML = `<p class="search-empty">Ничего не найдено</p>`;
+        return;
+    }
+
+    searchDropdown.innerHTML = "";
+    results.forEach(({ product, id }) => {
+        const cartItem = cart.find(item => item.id === id);
+        const qty = cartItem ? cartItem.qty : 0;
+        const item = document.createElement("div");
+        item.className = "search-result";
+        item.innerHTML = `
+            <div class="search-result-info">
+                <strong>${cleanDisplayText(product.name)}</strong>
+                <span>${formatPrice(product.price)} / ${product.unit}</span>
+            </div>
+            <div class="search-result-actions">
+                ${qty ? getQtyControls(id, qty, true) : `<button class="add" data-id="${id}" type="button">В корзину</button>`}
+            </div>
+        `;
+        searchDropdown.appendChild(item);
+    });
+}
+
 function renderPopularProducts() {
     if (!popularGrid) return;
     popularGrid.innerHTML = "";
@@ -37972,11 +38027,21 @@ function getQtyControls(id, qty, inputMode = false) {
         <div class="qty-row">
             <button class="qty minus" data-id="${id}" type="button" aria-label="Уменьшить количество">−</button>
             ${inputMode
-                ? `<input class="qty-input" data-id="${id}" type="text" inputmode="numeric" pattern="[0-9]*" value="${qty}" aria-label="Количество">`
+                ? `<input class="qty-input" data-id="${id}" type="text" inputmode="numeric" pattern="[0-9]*" value="${qty}" style="width: ${getQtyInputWidth(qty)}px;" aria-label="Количество">`
                 : `<span class="qty-val">${qty}</span>`}
             <button class="qty plus" data-id="${id}" type="button" aria-label="Увеличить количество">+</button>
         </div>
     `;
+}
+
+function getQtyInputWidth(value) {
+    const length = String(value || "").length || 1;
+    return Math.min(110, Math.max(38, length * 10 + 26));
+}
+
+function resizeQtyInput(input) {
+    if (!input) return;
+    input.style.width = `${getQtyInputWidth(input.value)}px`;
 }
 
 function renderCart() {
@@ -38038,6 +38103,7 @@ cartItemsEl.addEventListener("input", event => {
     if (input.value !== sanitizedValue) {
         input.value = sanitizedValue;
     }
+    resizeQtyInput(input);
     if (!sanitizedValue) return;
 
     setProductQty(id, Number(sanitizedValue), { renderCartView: false });
@@ -38053,6 +38119,7 @@ cartItemsEl.addEventListener("change", event => {
     const current = cart.find(item => item.id === id)?.qty || 1;
     if (!input.value) {
         input.value = current;
+        resizeQtyInput(input);
     }
 });
 
@@ -38138,6 +38205,7 @@ cartModal.addEventListener("click", event => {
 document.addEventListener("click", () => {
     cartModal.classList.add("hidden");
     showCartView();
+    hideSearchDropdown();
     closeMenu();
 });
 
@@ -38165,11 +38233,53 @@ mainNav?.addEventListener("click", event => {
 
 searchInput?.addEventListener("input", () => {
     searchQuery = searchInput.value;
-    if (!grid && searchQuery) {
-        window.location.href = `catalog.html?search=${encodeURIComponent(searchQuery)}`;
-        return;
-    }
     renderProducts();
+    renderSearchDropdown();
+});
+
+searchInput?.addEventListener("focus", renderSearchDropdown);
+
+headerSearch?.addEventListener("click", event => {
+    event.stopPropagation();
+});
+
+searchDropdown.addEventListener("click", event => {
+    event.stopPropagation();
+    handleQtyClick(event);
+});
+
+searchDropdown.addEventListener("input", event => {
+    const input = event.target.closest(".qty-input");
+    if (!input) return;
+
+    const id = Number(input.dataset.id);
+    if (!Number.isInteger(id)) return;
+
+    const sanitizedValue = input.value.replace(/\D/g, "").replace(/^0+/, "");
+    if (input.value !== sanitizedValue) {
+        input.value = sanitizedValue;
+    }
+    resizeQtyInput(input);
+    if (!sanitizedValue) return;
+
+    setProductQty(id, Number(sanitizedValue), {
+        renderCartView: false,
+        renderSearchView: false
+    });
+});
+
+searchDropdown.addEventListener("change", event => {
+    const input = event.target.closest(".qty-input");
+    if (!input) return;
+
+    const id = Number(input.dataset.id);
+    if (!Number.isInteger(id)) return;
+
+    const current = cart.find(item => item.id === id)?.qty || 1;
+    if (!input.value) {
+        input.value = current;
+        resizeQtyInput(input);
+    }
 });
 
 categoryControls?.addEventListener("click", event => {
