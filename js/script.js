@@ -37193,7 +37193,18 @@ const popularProductNames = [
 function loadCart() {
     try {
         const saved = JSON.parse(localStorage.getItem("matmix_cart") || "[]");
-        return Array.isArray(saved) ? saved.filter(item => products[item.id]) : [];
+        if (!Array.isArray(saved)) return [];
+
+        return saved.reduce((items, item) => {
+            const id = Number(item?.id);
+            const qty = Math.floor(Number(item?.qty));
+
+            if (Number.isInteger(id) && products[id] && qty > 0) {
+                items.push({ id, qty });
+            }
+
+            return items;
+        }, []);
     } catch {
         return [];
     }
@@ -37349,11 +37360,6 @@ function formatPrice(value) {
     return `${new Intl.NumberFormat("ru-RU").format(value)} ₽`;
 }
 
-function formatWeight(value) {
-    if (value === null || value === undefined) return "Вес не указан";
-    return `${new Intl.NumberFormat("ru-RU").format(value)} кг`;
-}
-
 function cleanDisplayText(value) {
     return String(value || "").replace(/\?/g, "").replace(/\s+/g, " ").trim();
 }
@@ -37506,43 +37512,6 @@ function getProductCatalogCategory(product) {
     ].filter(Boolean);
 }
 
-function getCategoryParts(category, product) {
-    if (product) return getProductCatalogCategory(product);
-    if (Array.isArray(category)) return category.filter(Boolean);
-    return [category?.main, category?.section, category?.type].filter(Boolean);
-}
-
-function getCategoryPath(category, product) {
-    return getCategoryParts(category, product).join(" / ");
-}
-
-function getCategorySearchText(product) {
-    return getProductCatalogCategory(product).join(" ").toLowerCase();
-}
-
-function getCategoryFilterOptions() {
-    const options = [];
-    const groups = getCategoryFilterGroups();
-
-    groups.forEach(group => {
-        options.push({
-            label: group.label,
-            path: group.path,
-            level: 0
-        });
-
-        group.subcategories.forEach(subcategory => {
-            options.push({
-                label: subcategory.label,
-                path: subcategory.path,
-                level: 1
-            });
-        });
-    });
-
-    return options;
-}
-
 function getCategoryFilterGroups() {
     const groups = [];
     const categories = new Map();
@@ -37599,7 +37568,7 @@ function productMatchesCategory(product) {
             && normalizeSearchText(subcategory) === normalizedSubcategory;
     }
 
-    return getCategoryPath(product.category, product).startsWith(activeCategoryPath);
+    return false;
 }
 
 function getCartTotal() {
@@ -37634,6 +37603,8 @@ function updateCartSummary() {
 
 function setProductQty(id, nextQty, options = {}) {
     const { renderCartView = true, renderSearchView = true } = options;
+    if (!products[id]) return;
+
     const item = cart.find(entry => entry.id === id);
 
     if (nextQty <= 0) {
@@ -37849,15 +37820,15 @@ function resizeQtyInput(input) {
 function renderCart() {
     cartItemsEl.innerHTML = "";
     clearCartBtn?.toggleAttribute("disabled", !cart.length);
-    if (!cart.length) {
-        clearCartConfirm?.classList.add("hidden");
-    }
 
     if (!cart.length) {
+        clearCartConfirm?.classList.add("hidden");
         cartItemsEl.innerHTML = `<p class="empty-cart">Корзина пока пустая</p>`;
         updateCartSummary();
         return;
     }
+
+    const fragment = document.createDocumentFragment();
 
     cart.forEach(item => {
         const product = products[item.id];
@@ -37870,9 +37841,10 @@ function renderCart() {
             </div>
             ${getQtyControls(item.id, item.qty, true)}
         `;
-        cartItemsEl.appendChild(row);
+        fragment.appendChild(row);
     });
 
+    cartItemsEl.appendChild(fragment);
     updateCartSummary();
 }
 
@@ -37972,7 +37944,9 @@ confirmClearCartBtn?.addEventListener("click", () => {
     renderCart();
     renderProducts();
     renderPopularProducts();
-    renderSearchDropdown();
+    if (searchInput?.value.trim()) {
+        renderSearchDropdown();
+    }
 });
 
 openCheckoutBtn?.addEventListener("click", showCheckoutForm);
