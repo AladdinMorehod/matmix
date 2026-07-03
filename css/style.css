@@ -604,7 +604,7 @@ body {
 
 .category-group {
     display: grid;
-    grid-template-columns: 148px minmax(0, 1fr);
+    grid-template-columns: 168px minmax(0, 1fr);
     align-items: start;
     column-gap: 18px;
     row-gap: 8px;
@@ -612,8 +612,8 @@ body {
 }
 
 .category-group > .category-control {
-    width: 148px;
-    min-width: 148px;
+    width: 168px;
+    min-width: 168px;
 }
 
 .category-subcategory-list {
@@ -869,8 +869,87 @@ body {
 }
 
 .cart-modal h3 {
-    margin: 0 0 10px;
+    margin: 0;
     font-size: 1rem;
+}
+
+.cart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 0 0 10px;
+}
+
+.clear-cart-btn {
+    border: none;
+    background: transparent;
+    color: var(--primary);
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.clear-cart-btn:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+.clear-cart-btn:disabled {
+    cursor: default;
+    opacity: 0.45;
+    text-decoration: none;
+}
+
+.clear-cart-confirm {
+    display: grid;
+    gap: 10px;
+    margin: 0 0 10px;
+    padding: 10px;
+    border: 1px solid rgba(32, 87, 66, 0.18);
+    border-radius: 8px;
+    background: var(--surface-soft);
+}
+
+.clear-cart-confirm.hidden {
+    display: none;
+}
+
+.clear-cart-confirm p {
+    margin: 0;
+    color: var(--text);
+    font-size: 0.86rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.clear-cart-confirm div {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.clear-cart-confirm button {
+    min-height: 30px;
+    padding: 0 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.84rem;
+    font-weight: 700;
+}
+
+#confirmClearCart {
+    background: var(--primary);
+    color: white;
+}
+
+#cancelClearCart {
+    background: var(--accent);
+    color: var(--primary-dark);
 }
 
 #cartItems {
@@ -1436,13 +1515,13 @@ body {
         padding: 12px;
     }
     .category-group {
-        grid-template-columns: 104px minmax(0, 1fr);
+        grid-template-columns: 132px minmax(0, 1fr);
         column-gap: 8px;
         row-gap: 7px;
     }
     .category-group > .category-control {
-        width: 104px;
-        min-width: 104px;
+        width: 132px;
+        min-width: 132px;
         padding: 0 8px;
         font-size: 0.76rem;
     }

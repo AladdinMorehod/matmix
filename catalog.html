@@ -46,7 +46,17 @@
 
     <div id="cartModal" class="cart-modal hidden">
         <div id="cartView">
-            <h3>Корзина</h3>
+            <div class="cart-header">
+                <h3>Корзина</h3>
+                <button id="clearCartBtn" class="clear-cart-btn" type="button">Очистить</button>
+            </div>
+            <div id="clearCartConfirm" class="clear-cart-confirm hidden">
+                <p>Действительно очистить корзину полностью?</p>
+                <div>
+                    <button id="confirmClearCart" type="button">Да</button>
+                    <button id="cancelClearCart" type="button">Нет</button>
+                </div>
+            </div>
             <div id="cartItems"></div>
             <div id="cartTotal">Итого: 0 ₽</div>
             <div class="cart-actions">

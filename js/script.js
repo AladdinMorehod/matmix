@@ -37145,6 +37145,10 @@ const cartCountEl = document.getElementById("cartCount");
 const cartModal = document.getElementById("cartModal");
 const cartItemsEl = document.getElementById("cartItems");
 const closeCartBtn = document.getElementById("closeCart");
+const clearCartBtn = document.getElementById("clearCartBtn");
+const clearCartConfirm = document.getElementById("clearCartConfirm");
+const confirmClearCartBtn = document.getElementById("confirmClearCart");
+const cancelClearCartBtn = document.getElementById("cancelClearCart");
 const cartTotalEl = document.getElementById("cartTotal");
 const cartView = document.getElementById("cartView");
 const openCheckoutBtn = document.getElementById("openCheckout");
@@ -37412,12 +37416,7 @@ function getSoftTokenMatchScore(token, variant) {
 }
 
 function getProductSearchText(product) {
-    return normalizeSearchText([
-        product.name,
-        product.unit,
-        formatWeight(product.weight),
-        getCategorySearchText(product)
-    ].filter(Boolean).join(" "));
+    return normalizeSearchText(product.name);
 }
 
 function getProductSearchScore(product, query) {
@@ -37665,6 +37664,7 @@ function setProductQty(id, nextQty, options = {}) {
 function showCartView() {
     cartView?.classList.remove("hidden");
     checkoutForm?.classList.add("hidden");
+    clearCartConfirm?.classList.add("hidden");
     clearCheckoutMessage();
 }
 
@@ -37848,6 +37848,10 @@ function resizeQtyInput(input) {
 
 function renderCart() {
     cartItemsEl.innerHTML = "";
+    clearCartBtn?.toggleAttribute("disabled", !cart.length);
+    if (!cart.length) {
+        clearCartConfirm?.classList.add("hidden");
+    }
 
     if (!cart.length) {
         cartItemsEl.innerHTML = `<p class="empty-cart">Корзина пока пустая</p>`;
@@ -37950,6 +37954,25 @@ cartBtn.addEventListener("click", event => {
 
 closeCartBtn.addEventListener("click", () => {
     cartModal.classList.add("hidden");
+});
+
+clearCartBtn?.addEventListener("click", () => {
+    if (!cart.length) return;
+    clearCartConfirm?.classList.remove("hidden");
+});
+
+cancelClearCartBtn?.addEventListener("click", () => {
+    clearCartConfirm?.classList.add("hidden");
+});
+
+confirmClearCartBtn?.addEventListener("click", () => {
+    cart = [];
+    saveCart();
+    updateCartSummary();
+    renderCart();
+    renderProducts();
+    renderPopularProducts();
+    renderSearchDropdown();
 });
 
 openCheckoutBtn?.addEventListener("click", showCheckoutForm);
