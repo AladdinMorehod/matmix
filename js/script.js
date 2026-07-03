@@ -19,24 +19,24 @@ const synonyms = {
 const products = [
     {
         "name": "Штукатурка гипсовая Knauf Ротбанд 5 кг",
-        "price": 238,
+        "price": 242,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Штукатурка Гипс",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Штукатурка гипсовая Knauf Ротбанд 30 кг",
-        "price": 519,
+        "price": 528,
         "unit": "шт",
         "weight": 30,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Штукатурка Гипс",
             "type": ""
         },
         "image": "С"
@@ -48,67 +48,67 @@ const products = [
         "weight": 30,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Штукатурка Гипс",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Штукатурка гипсовая Knauf МП-75 маш. 30 кг",
-        "price": 454,
+        "price": 462,
         "unit": "шт",
         "weight": 30,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Штукатурка Гипс",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Штукатурка гипсовая ВОЛМА Холст Сер. 30 кг",
-        "price": 420,
+        "price": 426,
         "unit": "шт",
         "weight": 30,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Штукатурка Гипс",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Штукатурка гипсовая ВОЛМА Слой Бел. 30 кг",
-        "price": 484,
+        "price": 492,
         "unit": "шт",
         "weight": 30,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Штукатурка Гипс",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Штукатурка гипсовая ВОЛМА Гипс Актив мех. Сер. 30 кг",
-        "price": 411,
+        "price": 418,
         "unit": "шт",
         "weight": 30,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Штукатурка Гипс",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Штукатурка гипсовая ВОЛМА Гипс Актив мех. Бел. 30 кг",
-        "price": 430,
+        "price": 437,
         "unit": "шт",
         "weight": 30,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Штукатурка Гипс",
             "type": ""
         },
         "image": "С"
@@ -120,7 +120,7 @@ const products = [
         "weight": 30,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Штукатурка Гипс",
             "type": ""
         },
         "image": "С"
@@ -132,7 +132,7 @@ const products = [
         "weight": 30,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Штукатурка Гипс",
             "type": ""
         },
         "image": "С"
@@ -144,67 +144,67 @@ const products = [
         "weight": 5,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Штукатурка Гипс",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Штукатурка гипсовая UNIS Теплон белая 30 кг",
-        "price": 432,
+        "price": 440,
         "unit": "шт",
         "weight": 30,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Штукатурка Гипс",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Штукатурка гипсовая Старатели 30 кг",
-        "price": 430,
+        "price": 437,
         "unit": "шт",
         "weight": 30,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Штукатурка Гипс",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Штукатурка гипсово-цементная Старатели Оптимум серая универсальная мех. 30 кг",
-        "price": 459,
+        "price": 467,
         "unit": "шт",
         "weight": 30,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Штукатурка Гипс",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Штукатурка цементная Цементум 25 кг",
-        "price": 373,
+        "price": 379,
         "unit": "шт",
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Штукатурка Цем",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Штукатурка цементная Knauf Унтерпутц 25 кг",
-        "price": 389,
+        "price": 396,
         "unit": "шт",
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Штукатурка Цем",
             "type": ""
         },
         "image": "С"
@@ -216,7 +216,7 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Штукатурка Цем",
             "type": ""
         },
         "image": "С"
@@ -228,7 +228,7 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Штукатурка Цем",
             "type": ""
         },
         "image": "С"
@@ -240,7 +240,7 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Штукатурка Цем",
             "type": ""
         },
         "image": "С"
@@ -252,7 +252,7 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Штукатурка Цем",
             "type": ""
         },
         "image": "С"
@@ -264,7 +264,7 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Штукатурка Цем",
             "type": ""
         },
         "image": "С"
@@ -276,7 +276,7 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Штукатурка Цем",
             "type": ""
         },
         "image": "С"
@@ -288,7 +288,7 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Штукатурка Цем",
             "type": ""
         },
         "image": "С"
@@ -300,7 +300,7 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Штукатурка Цем",
             "type": ""
         },
         "image": "С"
@@ -312,7 +312,7 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Штукатурка Цем",
             "type": ""
         },
         "image": "С"
@@ -324,7 +324,7 @@ const products = [
         "weight": 30,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Штукатурка Цем",
             "type": ""
         },
         "image": "С"
@@ -336,7 +336,7 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Ведро",
+            "section": "Короед",
             "type": ""
         },
         "image": "В"
@@ -348,7 +348,7 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Короед",
             "type": ""
         },
         "image": "С"
@@ -360,19 +360,19 @@ const products = [
         "weight": 40,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Штукатурка Цем",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Штукатурная смесь цементная Русеан М-150 40кг",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 40,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Штукатурка Цем",
             "type": ""
         },
         "image": "С"
@@ -384,79 +384,79 @@ const products = [
         "weight": 40,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Кладочная",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Кладочно - монтажная смесь цементная Русеан М-200 40кг",
-        "price": 357,
+        "price": 363,
         "unit": "шт",
         "weight": 40,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Кладочная",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Кладочно - монтажная смесь цементная Вертекс М-200 40кг",
-        "price": 249,
+        "price": 253,
         "unit": "шт",
         "weight": 40,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Кладочная",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Шпаклевка готовая Danogips SuperFinish (Шитрок) 5 кг",
-        "price": 627,
+        "price": 638,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Смеси",
-            "section": "Ведро",
+            "section": "Шпаклевка Готов",
             "type": ""
         },
         "image": "В"
     },
     {
         "name": "Шпаклевка готовая Danogips SuperFinish (Шитрок) 28 кг",
-        "price": 2538,
+        "price": 2585,
         "unit": "шт",
         "weight": 28,
         "category": {
             "main": "Смеси",
-            "section": "Ведро",
+            "section": "Шпаклевка Готов",
             "type": ""
         },
         "image": "В"
     },
     {
         "name": "Шпаклевка готовая финишная Knauf Ротбанд паста Профи 5 кг",
-        "price": 767,
+        "price": 781,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Шпаклевка Готов",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Шпаклевка готовая финишная Knauf Ротбанд паста Профи 18 кг",
-        "price": 1599,
+        "price": 1628,
         "unit": "шт",
         "weight": 18,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Шпаклевка Готов",
             "type": ""
         },
         "image": "С"
@@ -468,7 +468,7 @@ const products = [
         "weight": 20,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Шпаклевка Готов",
             "type": ""
         },
         "image": "С"
@@ -480,7 +480,7 @@ const products = [
         "weight": 18,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Шпаклевка Готов",
             "type": ""
         },
         "image": "С"
@@ -492,19 +492,19 @@ const products = [
         "weight": 5,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Шпаклевка Полимер",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Шпаклевка Vetonit LR+ 20 кг",
-        "price": 918,
+        "price": 935,
         "unit": "шт",
         "weight": 20,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Шпаклевка Полимер",
             "type": ""
         },
         "image": "С"
@@ -516,19 +516,19 @@ const products = [
         "weight": 20,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Шпаклевка Полимер",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Шпаклевка Vetonit VH для влажных помещений белая 20 кг",
-        "price": 773,
+        "price": 786,
         "unit": "шт",
         "weight": 20,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Шпаклевка Цем",
             "type": ""
         },
         "image": "С"
@@ -540,91 +540,91 @@ const products = [
         "weight": 20,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Шпаклевка Полимер",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Шпаклевка гипсовая Knauf Ротбанд Финиш 25 кг",
-        "price": 681,
+        "price": 693,
         "unit": "шт",
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Ведро",
+            "section": "Шпаклевка Гипс",
             "type": ""
         },
         "image": "В"
     },
     {
         "name": "Шпаклевка гипсовая Knauf Унифлот 5 кг",
-        "price": 1728,
+        "price": 1760,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Смеси",
-            "section": "Ведро",
+            "section": "Шпаклевка Гипс",
             "type": ""
         },
         "image": "В"
     },
     {
         "name": "Шпаклевка гипсовая Knauf Унифлот 25 кг",
-        "price": 5076,
+        "price": 5170,
         "unit": "шт",
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Ведро",
+            "section": "Шпаклевка Гипс",
             "type": ""
         },
         "image": "В"
     },
     {
         "name": "Шпаклевка гипсовая Knauf Фуген 25 кг",
-        "price": 692,
+        "price": 704,
         "unit": "шт",
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Шпаклевка Гипс",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Шпаклевка гипсовая Knauf Фуген 5 кг",
-        "price": 270,
+        "price": 275,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Шпаклевка Гипс",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Шпаклевка гипсовая высокопрочная Knauf Унихард 20 кг",
-        "price": 1350,
+        "price": 1375,
         "unit": "шт",
         "weight": 20,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Шпаклевка Гипс",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Шпаклевка полимерная финишная Knauf Polymer finish 20 кг",
-        "price": 789,
+        "price": 803,
         "unit": "шт",
         "weight": 20,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Шпаклевка Полимер",
             "type": ""
         },
         "image": "С"
@@ -636,7 +636,7 @@ const products = [
         "weight": 28,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Шпаклевка Полимер",
             "type": ""
         },
         "image": "С"
@@ -648,7 +648,7 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Шпаклевка Полимер",
             "type": ""
         },
         "image": "С"
@@ -660,31 +660,31 @@ const products = [
         "weight": 19,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Шпаклевка Полимер",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Шпаклевка гипсовая Старатели базовая 20 кг",
-        "price": 411,
+        "price": 418,
         "unit": "шт",
         "weight": 20,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Шпаклевка Гипс",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Шпаклевка гипсовая Старатели финишная 20 кг",
-        "price": 508,
+        "price": 517,
         "unit": "шт",
         "weight": 20,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Шпаклевка Гипс",
             "type": ""
         },
         "image": "С"
@@ -696,7 +696,7 @@ const products = [
         "weight": 20,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Шпаклевка Гипс",
             "type": ""
         },
         "image": "С"
@@ -708,7 +708,7 @@ const products = [
         "weight": 20,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Шпаклевка Гипс",
             "type": ""
         },
         "image": "С"
@@ -720,7 +720,7 @@ const products = [
         "weight": 20,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Шпаклевка Гипс",
             "type": ""
         },
         "image": "С"
@@ -732,31 +732,31 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Шпаклевка Гипс",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Шпаклевка гипсовая финишная, заполняющая Full+Finish Pufas / Пуфас 5 кг",
-        "price": 864,
+        "price": 880,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Шпаклевка Гипс",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Шпаклевка гипсовая финишная, заполняющая Full+Finish Pufas / Пуфас 20 кг",
-        "price": 2646,
+        "price": 2695,
         "unit": "шт",
         "weight": 20,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Шпаклевка Гипс",
             "type": ""
         },
         "image": "С"
@@ -768,103 +768,103 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Шпаклевка Цем",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Шпаклевка цементная базовая Старатели 20 кг",
-        "price": 411,
+        "price": 418,
         "unit": "шт",
         "weight": 20,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Шпаклевка Цем",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Шпаклевка цементная фасадно финишная Старатели 20 кг",
-        "price": 643,
+        "price": 654,
         "unit": "шт",
         "weight": 20,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Шпаклевка Цем",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Шпаклевка по дереву VGT Белая 1 кг",
-        "price": 411,
+        "price": 418,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Шпаклевка Акрил",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Керамзит фр. 5-20 (0,02 куб.м) 20л",
-        "price": 119,
+        "price": 121,
         "unit": "шт",
         "weight": 7,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Керамзит",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Керамзит фр. 10-30 (0,03 куб.м) 30л",
-        "price": 130,
+        "price": 132,
         "unit": "шт",
         "weight": 12.5,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Керамзит",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Керамзитовая засыпка фракция до 5 мм (0,04 куб.м) 40л",
-        "price": 211,
+        "price": 214,
         "unit": "шт",
         "weight": 17,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Керамзит",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Клей для плитки Knauf Флизен, 25 кг",
-        "price": 409,
+        "price": 415,
         "unit": "шт",
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Плитки",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Клей для плитки Knauf Флизен ПЛЮС, 25 кг",
-        "price": 551,
+        "price": 561,
         "unit": "шт",
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Плитки",
             "type": ""
         },
         "image": "К"
@@ -876,43 +876,43 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Плитки",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Клей для плитки и керамогранита Ceresit CM 11 PRO, 25 кг",
-        "price": 567,
+        "price": 577,
         "unit": "шт",
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Плитки",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Клей для плитки, керамогранита и камня Ceresit СМ 14 сер. 25 кг",
-        "price": 746,
+        "price": 759,
         "unit": "шт",
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Плитки",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Клей для плитки, керамогранита и камня Ceresit СМ 16 сер. 25 кг",
-        "price": 1296,
+        "price": 1320,
         "unit": "шт",
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Плитки",
             "type": ""
         },
         "image": "К"
@@ -924,7 +924,7 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Плитки",
             "type": ""
         },
         "image": "К"
@@ -936,55 +936,55 @@ const products = [
         "weight": 15,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Плитки",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Клей для плитки Litokol К80, 25 кг",
-        "price": 1059,
+        "price": 1078,
         "unit": "шт",
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Плитки",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Клей для плитки Litokol К55, 25 кг",
-        "price": 1350,
+        "price": 1375,
         "unit": "шт",
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Плитки",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Клей для плитки Litokol К47, 25 кг",
-        "price": 422,
+        "price": 429,
         "unit": "шт",
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Плитки",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Клей для плитки Unis Плюс 25 кг",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Плитки",
             "type": ""
         },
         "image": "К"
@@ -996,7 +996,7 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Плитки",
             "type": ""
         },
         "image": "К"
@@ -1008,7 +1008,7 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Плитки",
             "type": ""
         },
         "image": "К"
@@ -1020,7 +1020,7 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Плитки",
             "type": ""
         },
         "image": "К"
@@ -1032,7 +1032,7 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Плитки",
             "type": ""
         },
         "image": "К"
@@ -1044,7 +1044,7 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Плитки",
             "type": ""
         },
         "image": "К"
@@ -1056,7 +1056,7 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Плитки",
             "type": ""
         },
         "image": "К"
@@ -1068,79 +1068,79 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Плитки",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Клей для теплоизоляции Knauf Севенер 25 кг",
-        "price": 918,
+        "price": 935,
         "unit": "шт",
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Теплоиз",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Клей монтажный Knauf Перлфикс 30 кг",
-        "price": 551,
+        "price": 561,
         "unit": "шт",
         "weight": 30,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для ПГП",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Клей Волма Монтаж для ПГП 30кг",
-        "price": 497,
+        "price": 506,
         "unit": "шт",
         "weight": 30,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для ПГП",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Клей для Блока Русеан 25кг",
-        "price": 303,
+        "price": 308,
         "unit": "шт",
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Блока",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Клей для Блока Волма 25кг",
-        "price": 443,
+        "price": 451,
         "unit": "шт",
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Блока",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Клей для Блока Евро 25кг",
-        "price": 270,
+        "price": 275,
         "unit": "шт",
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Блока",
             "type": ""
         },
         "image": "К"
@@ -1152,19 +1152,19 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Блока",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Клей для Блока Цементум 25кг Зимний",
-        "price": 357,
+        "price": 363,
         "unit": "шт",
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Блока",
             "type": ""
         },
         "image": "К"
@@ -1176,55 +1176,55 @@ const products = [
         "weight": 10,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Обоев",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Клей для стеклохолста Pufas 10кг",
-        "price": 1944,
+        "price": 1980,
         "unit": "шт",
         "weight": 10,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Обоев",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Клей для стеклохолста Oscar 10кг",
-        "price": 2724,
+        "price": 2774,
         "unit": "шт",
         "weight": 10,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Обоев",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Клей для фанеры и линолеума КС 7кг",
-        "price": null,
+        "price": 0,
         "unit": "шт",
         "weight": 7,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Фанеры",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Клей для фанеры и линолеума КС 15кг",
-        "price": 1350,
+        "price": 1375,
         "unit": "шт",
         "weight": 15,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Фанеры",
             "type": ""
         },
         "image": "К"
@@ -1236,7 +1236,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Швов",
             "type": ""
         },
         "image": "К"
@@ -1248,7 +1248,7 @@ const products = [
         "weight": 10,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Паркета",
             "type": ""
         },
         "image": "К"
@@ -1260,7 +1260,7 @@ const products = [
         "weight": 21,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Паркета",
             "type": ""
         },
         "image": "К"
@@ -1272,7 +1272,7 @@ const products = [
         "weight": 14,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Паркета",
             "type": ""
         },
         "image": "К"
@@ -1284,7 +1284,7 @@ const products = [
         "weight": 10,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей Контактный",
             "type": ""
         },
         "image": "К"
@@ -1296,19 +1296,19 @@ const products = [
         "weight": 0.8,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей ПВА",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Клей ПВА Супер СТК 1 л",
-        "price": 214,
+        "price": 217,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей ПВА",
             "type": ""
         },
         "image": "К"
@@ -1320,55 +1320,55 @@ const products = [
         "weight": 2.4,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей ПВА",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Клей ПВА Супер Новгородский 2,8 л",
-        "price": 875,
+        "price": 891,
         "unit": "шт",
         "weight": 2.8,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей ПВА",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Клей ПВА 1 л",
-        "price": 214,
+        "price": 217,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей ПВА",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Клей ПВА 5 л",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей ПВА",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Клей ПВА 10 л",
-        "price": 929,
+        "price": 946,
         "unit": "шт",
         "weight": 10,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей ПВА",
             "type": ""
         },
         "image": "К"
@@ -1380,7 +1380,7 @@ const products = [
         "weight": 0.25,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Обоев",
             "type": ""
         },
         "image": "К"
@@ -1392,67 +1392,67 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Обоев",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Клей для стекло и флизелиновых обоев Kleo Ultra 50 500г",
-        "price": 1188,
+        "price": 1210,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Обоев",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Клей для всех видов флизелиновых обоев Kleo Extra, 240 г (35м2)",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 0.25,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Обоев",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Клей для виниловых обоев Quelyd Спец-винил 450 гр (40м2)",
-        "price": 627,
+        "price": 638,
         "unit": "шт",
         "weight": 0.45,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Обоев",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Клей для флизелиновых обоев Quelyd Спец-флизелин 300 гр (40м2)",
-        "price": 530,
+        "price": 539,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Смеси",
-            "section": "Клей",
+            "section": "Клей для Обоев",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Наливной пол \"Unis Горизонт\" 20 кг",
-        "price": 357,
+        "price": 363,
         "unit": "шт",
         "weight": 20,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Наливной Пол",
             "type": ""
         },
         "image": "С"
@@ -1464,19 +1464,19 @@ const products = [
         "weight": 20,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Наливной Пол",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Наливной пол \"Старатели\" Быстрый 20 кг",
-        "price": 389,
+        "price": 396,
         "unit": "шт",
         "weight": 20,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Наливной Пол",
             "type": ""
         },
         "image": "С"
@@ -1488,67 +1488,67 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Наливной Пол",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Наливной пол Волма Нивелир Экспресс 25 кг",
-        "price": 411,
+        "price": 418,
         "unit": "шт",
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Наливной Пол",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Наливной пол финишный Weber Vetonit 3000 самовыравнивающийся 20 кг",
-        "price": 1070,
+        "price": 1089,
         "unit": "шт",
         "weight": 20,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Наливной Пол",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Наливной пол универсальный Weber Vetonit fast 4000 20 кг",
-        "price": 519,
+        "price": 528,
         "unit": "шт",
         "weight": 20,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Наливной Пол",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Наливной пол финишный Vetonit 4100 высокопрочный 20 кг",
-        "price": 1048,
+        "price": 1067,
         "unit": "шт",
         "weight": 20,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Наливной Пол",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Наливной пол первичный Weber Vetonit 5000 быстротвердеющий 25 кг",
-        "price": 1059,
+        "price": 1078,
         "unit": "шт",
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Наливной Пол",
             "type": ""
         },
         "image": "С"
@@ -1560,31 +1560,31 @@ const products = [
         "weight": 20,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Наливной Пол",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Наливной пол универсальный Litokol Litoliv S50 самовыравнивающийся 20 кг",
-        "price": 422,
+        "price": 429,
         "unit": "шт",
         "weight": 20,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Наливной Пол",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Наливной пол Основит Скорлайн FK45R самовыравнивающийся 20 кг",
-        "price": 508,
+        "price": 517,
         "unit": "шт",
         "weight": 20,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Наливной Пол",
             "type": ""
         },
         "image": "С"
@@ -1596,7 +1596,7 @@ const products = [
         "weight": 20,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Наливной Пол",
             "type": ""
         },
         "image": "С"
@@ -1608,7 +1608,7 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Стяжка Пола",
             "type": ""
         },
         "image": "С"
@@ -1620,7 +1620,7 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Стяжка Пола",
             "type": ""
         },
         "image": "С"
@@ -1632,43 +1632,43 @@ const products = [
         "weight": 10,
         "category": {
             "main": "Смеси",
-            "section": "Ведро",
+            "section": "Защита Дерева",
             "type": ""
         },
         "image": "В"
     },
     {
         "name": "Огнебиозащита СТК для дерева 10 л",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 10,
         "category": {
             "main": "Смеси",
-            "section": "Ведро",
+            "section": "Защита Дерева",
             "type": ""
         },
         "image": "В"
     },
     {
         "name": "Гидроизоляция Knauf Флэхендихт 5 кг",
-        "price": 2052,
+        "price": 2090,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Смеси",
-            "section": "Ведро",
+            "section": "Гидроизоляция",
             "type": ""
         },
         "image": "В"
     },
     {
         "name": "Гидроизоляция полимерная СТК 5кг",
-        "price": 1458,
+        "price": 1485,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Смеси",
-            "section": "Ведро",
+            "section": "Гидроизоляция",
             "type": ""
         },
         "image": "В"
@@ -1680,7 +1680,7 @@ const products = [
         "weight": 5,
         "category": {
             "main": "Смеси",
-            "section": "Ведро",
+            "section": "Гидроизоляция",
             "type": ""
         },
         "image": "В"
@@ -1692,19 +1692,19 @@ const products = [
         "weight": 5,
         "category": {
             "main": "Смеси",
-            "section": "Ведро",
+            "section": "Гидроизоляция",
             "type": ""
         },
         "image": "В"
     },
     {
         "name": "Гидроизоляция Ceresit CR 65 20 кг",
-        "price": 1566,
+        "price": 1595,
         "unit": "шт",
         "weight": 20,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Гидроизоляция",
             "type": ""
         },
         "image": "С"
@@ -1716,7 +1716,7 @@ const products = [
         "weight": 32,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Гидроизоляция",
             "type": ""
         },
         "image": "С"
@@ -1728,7 +1728,7 @@ const products = [
         "weight": 32,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Гидроизоляция",
             "type": ""
         },
         "image": "С"
@@ -1740,55 +1740,55 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Гидроизоляция",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Гидроизоляция обмазочная Глимс (Glims) водостоп 18 кг",
-        "price": 1426,
+        "price": 1452,
         "unit": "шт",
         "weight": 18,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Гидроизоляция",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Пескобетон (ЦПС) М300 Русеан 40 кг",
-        "price": 362,
+        "price": 368,
         "unit": "шт",
         "weight": 40,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Пескобетон",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Пескобетон Tex Pro М-300 ГОСТ 40 кг",
-        "price": 233,
+        "price": 236,
         "unit": "шт",
         "weight": 40,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Пескобетон",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Пескобетон Евро М-300 ГОСТ 40кг",
-        "price": 254,
+        "price": 258,
         "unit": "шт",
         "weight": 40,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Пескобетон",
             "type": ""
         },
         "image": "С"
@@ -1800,7 +1800,7 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Смесь Ремонтная",
             "type": ""
         },
         "image": "С"
@@ -1812,31 +1812,31 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Смесь Ремонтная",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Цемент \"Цементум\" 40кг",
-        "price": 513,
+        "price": 522,
         "unit": "шт",
         "weight": 40,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Цемент",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Цемент \"РосЦемент\" 50кг",
-        "price": 530,
+        "price": 539,
         "unit": "шт",
         "weight": 50,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Цемент",
             "type": ""
         },
         "image": "С"
@@ -1848,7 +1848,7 @@ const products = [
         "weight": 40,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Цемент",
             "type": ""
         },
         "image": "С"
@@ -1860,7 +1860,7 @@ const products = [
         "weight": 40,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Песок - Цебень",
             "type": ""
         },
         "image": "С"
@@ -1872,31 +1872,31 @@ const products = [
         "weight": 30,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Песок - Цебень",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Алебастр 5 кг",
-        "price": 162,
+        "price": 165,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Смеси",
-            "section": "Ведро",
+            "section": "Гипс / Алебастр",
             "type": ""
         },
         "image": "В"
     },
     {
         "name": "Алебастр 20 кг",
-        "price": 303,
+        "price": 308,
         "unit": "шт",
         "weight": 20,
         "category": {
             "main": "Смеси",
-            "section": "Ведро",
+            "section": "Гипс / Алебастр",
             "type": ""
         },
         "image": "В"
@@ -1908,7 +1908,7 @@ const products = [
         "weight": 3,
         "category": {
             "main": "Смеси",
-            "section": "Ведро",
+            "section": "Мастика",
             "type": ""
         },
         "image": "В"
@@ -1920,7 +1920,7 @@ const products = [
         "weight": 20,
         "category": {
             "main": "Смеси",
-            "section": "Ведро",
+            "section": "Мастика",
             "type": ""
         },
         "image": "В"
@@ -1932,7 +1932,7 @@ const products = [
         "weight": 22,
         "category": {
             "main": "Смеси",
-            "section": "Ведро",
+            "section": "Мастика",
             "type": ""
         },
         "image": "В"
@@ -1944,19 +1944,19 @@ const products = [
         "weight": 15,
         "category": {
             "main": "Смеси",
-            "section": "Ведро",
+            "section": "Мастика",
             "type": ""
         },
         "image": "В"
     },
     {
         "name": "Жидкое стекло 5 л",
-        "price": 530,
+        "price": 539,
         "unit": "шт",
         "weight": 7,
         "category": {
             "main": "Смеси",
-            "section": "Ведро",
+            "section": "Жидкое Стекло",
             "type": ""
         },
         "image": "В"
@@ -1968,7 +1968,7 @@ const products = [
         "weight": 2,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Затирка Цем",
             "type": ""
         },
         "image": "С"
@@ -1980,7 +1980,7 @@ const products = [
         "weight": 2,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Затирка Цем",
             "type": ""
         },
         "image": "С"
@@ -1992,7 +1992,7 @@ const products = [
         "weight": 2,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Затирка Цем",
             "type": ""
         },
         "image": "С"
@@ -2004,7 +2004,7 @@ const products = [
         "weight": 2,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Затирка Цем",
             "type": ""
         },
         "image": "С"
@@ -2016,7 +2016,7 @@ const products = [
         "weight": 2,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Затирка Цем",
             "type": ""
         },
         "image": "С"
@@ -2028,7 +2028,7 @@ const products = [
         "weight": 0.32,
         "category": {
             "main": "Смеси",
-            "section": "Смеси",
+            "section": "Затирка Силик",
             "type": ""
         },
         "image": "С"
@@ -2040,7 +2040,7 @@ const products = [
         "weight": 2,
         "category": {
             "main": "Смеси",
-            "section": "Ведро",
+            "section": "Затирка Эпокс",
             "type": ""
         },
         "image": "В"
@@ -2052,7 +2052,7 @@ const products = [
         "weight": 2.5,
         "category": {
             "main": "Смеси",
-            "section": "Ведро",
+            "section": "Затирка Эпокс",
             "type": ""
         },
         "image": "В"
@@ -2064,7 +2064,7 @@ const products = [
         "weight": 2.5,
         "category": {
             "main": "Смеси",
-            "section": "Ведро",
+            "section": "Затирка Эпокс",
             "type": ""
         },
         "image": "В"
@@ -2076,7 +2076,7 @@ const products = [
         "weight": 2.5,
         "category": {
             "main": "Смеси",
-            "section": "Ведро",
+            "section": "Затирка Эпокс",
             "type": ""
         },
         "image": "В"
@@ -2088,43 +2088,43 @@ const products = [
         "weight": 2.5,
         "category": {
             "main": "Смеси",
-            "section": "Ведро",
+            "section": "Затирка Эпокс",
             "type": ""
         },
         "image": "В"
     },
     {
         "name": "Антиплесень СТК 1л",
-        "price": 346,
+        "price": 352,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "Защита Дерева",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Антиплесень СТК 5л",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "Защита Дерева",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Антиплесень Ceresit СТ 99 1 л",
-        "price": 702,
+        "price": 715,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "Защита Дерева",
             "type": ""
         },
         "image": "Г"
@@ -2136,19 +2136,19 @@ const products = [
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "Защита Дерева",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Добавка противоморозная СТК Профи 10 л",
-        "price": 416,
+        "price": 423,
         "unit": "шт",
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "Добавки",
             "type": ""
         },
         "image": "Г"
@@ -2160,127 +2160,127 @@ const products = [
         "weight": 5,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "БетонКонтакт",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Бетонконтакт Knauf Бетогрунд 15 кг",
-        "price": 2031,
+        "price": 2068,
         "unit": "шт",
         "weight": 15,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "БетонКонтакт",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Бетонконтакт Ceresit CT 19, 5 кг",
-        "price": 810,
+        "price": 825,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "БетонКонтакт",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Бетонконтакт Ceresit CT 19, 15 кг",
-        "price": 2268,
+        "price": 2310,
         "unit": "шт",
         "weight": 15,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "БетонКонтакт",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Бетонконтакт Cтаратели 20 кг",
-        "price": 2592,
+        "price": 2640,
         "unit": "шт",
         "weight": 20,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "БетонКонтакт",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Бетонконтакт Евро (5 кг)",
-        "price": 702,
+        "price": 715,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "БетонКонтакт",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Бетонконтакт Евро (10 кг)",
-        "price": 1296,
+        "price": 1320,
         "unit": "шт",
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "БетонКонтакт",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Бетонконтакт Евро (20 кг)",
-        "price": 2139,
+        "price": 2178,
         "unit": "шт",
         "weight": 20,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "БетонКонтакт",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Бетонконтакт REAL (20 кг)",
-        "price": 1566,
+        "price": 1595,
         "unit": "шт",
         "weight": 20,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "БетонКонтакт",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Грунтовка Knauf Тифенгрунд 5 л",
-        "price": 789,
+        "price": 803,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "Грунтовка",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Грунтовка Knauf Тифенгрунд 10 л",
-        "price": 1134,
+        "price": 1155,
         "unit": "шт",
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "Грунтовка",
             "type": ""
         },
         "image": "Г"
@@ -2292,103 +2292,103 @@ const products = [
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "Грунтовка",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Грунтовка Knauf Мульти Грунд универсальный 10 л",
-        "price": 1782,
+        "price": 1815,
         "unit": "шт",
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "Грунтовка",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Грунтовка Knauf Миттельгрунд для впитывающих оснований концентрат 10 л",
-        "price": 3456,
+        "price": 3520,
         "unit": "шт",
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "Грунтовка",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Грунт Litokol PRIMER A универсальный укрепляющий 10 л",
-        "price": 810,
+        "price": 825,
         "unit": "шт",
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "Грунтовка",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Грунтовка Старатели универсальная 10 л",
-        "price": 702,
+        "price": 715,
         "unit": "шт",
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "Грунтовка",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Грунтовка UNIS глубокого проникновения укрепляющий 10 л",
-        "price": 918,
+        "price": 935,
         "unit": "шт",
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "Грунтовка",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Грунтовка Oscar глубокого проникновения 10 л",
-        "price": 1091,
+        "price": 1111,
         "unit": "шт",
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "Грунтовка",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Грунтовка Ceresit CT-17 PRO, 5л",
-        "price": 746,
+        "price": 759,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "Грунтовка",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Грунтовка Ceresit CT-17 PRO, 10л",
-        "price": 1134,
+        "price": 1155,
         "unit": "шт",
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "Грунтовка",
             "type": ""
         },
         "image": "Г"
@@ -2400,31 +2400,31 @@ const products = [
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "Грунтовка",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Грунтовка Акрил 5 л",
-        "price": 324,
+        "price": 330,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "Грунтовка",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Грунтовка Акрил 10 л",
-        "price": 519,
+        "price": 528,
         "unit": "шт",
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "Грунтовка",
             "type": ""
         },
         "image": "Г"
@@ -2436,74 +2436,74 @@ const products = [
         "weight": 5,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "Добавки",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Пластификатор для цементных растворов и бетона, 10 л",
-        "price": 411,
+        "price": 418,
         "unit": "шт",
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "Добавки",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Ацетон 1 л",
-        "price": 206,
+        "price": 209,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "Растворители",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Уайт - спирит 1 л",
-        "price": 238,
+        "price": 242,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "Растворители",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Обезжириватель 1л",
-        "price": 384,
+        "price": 390,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "Растворители",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Расстворитель 646, 1 л",
-        "price": 249,
+        "price": 253,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Краска Грунт",
-            "section": "Грунт",
+            "section": "Растворители",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Грунт ГФ-021 по металлу и дереву серый 0,8 кг",
-        "price": 416,
+        "price": 423,
         "unit": "шт",
         "weight": 1,
         "category": {
@@ -2515,7 +2515,7 @@ const products = [
     },
     {
         "name": "Грунт по металлу серый 1 л",
-        "price": 918,
+        "price": 935,
         "unit": "шт",
         "weight": 1,
         "category": {
@@ -2556,7 +2556,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска по Дер",
             "type": ""
         },
         "image": "К"
@@ -2568,7 +2568,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска по Мет",
             "type": ""
         },
         "image": "К"
@@ -2580,7 +2580,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска по Мет",
             "type": ""
         },
         "image": "К"
@@ -2592,31 +2592,31 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска по Мет",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Краска - Грунт 3 в 1 по металлу белая 1 л",
-        "price": 810,
+        "price": 825,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска по Мет",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Краска - Грунт Slaven 3 в 1 по металлу светло-серый 1 л",
-        "price": 918,
+        "price": 935,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска по Мет",
             "type": ""
         },
         "image": "К"
@@ -2628,43 +2628,43 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска по Мет",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Краска радиаторная без запаха 1 л",
-        "price": 1188,
+        "price": 1210,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска по Мет",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Краска радиаторная Аэрозоль баллон белая мат. 330 мл",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.35,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска по Мет",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Краска радиаторная Аэрозоль баллон черная мат. 330 мл",
-        "price": 427,
+        "price": 434,
         "unit": "шт",
         "weight": 0.35,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска по Мет",
             "type": ""
         },
         "image": "К"
@@ -2676,7 +2676,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска Эмаль",
             "type": ""
         },
         "image": "К"
@@ -2688,7 +2688,7 @@ const products = [
         "weight": 2,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска Эмаль",
             "type": ""
         },
         "image": "К"
@@ -2700,7 +2700,7 @@ const products = [
         "weight": 2,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска Эмаль",
             "type": ""
         },
         "image": "К"
@@ -2712,7 +2712,7 @@ const products = [
         "weight": 20,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска Эмаль",
             "type": ""
         },
         "image": "К"
@@ -2724,7 +2724,7 @@ const products = [
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска Эмаль",
             "type": ""
         },
         "image": "К"
@@ -2736,7 +2736,7 @@ const products = [
         "weight": 9,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска Эмаль",
             "type": ""
         },
         "image": "К"
@@ -2748,7 +2748,7 @@ const products = [
         "weight": 2.5,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска Эмаль",
             "type": ""
         },
         "image": "К"
@@ -2760,7 +2760,7 @@ const products = [
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска Эмаль",
             "type": ""
         },
         "image": "К"
@@ -2772,7 +2772,7 @@ const products = [
         "weight": 9,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
@@ -2784,7 +2784,7 @@ const products = [
         "weight": 9,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
@@ -2796,7 +2796,7 @@ const products = [
         "weight": 9,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
@@ -2808,7 +2808,7 @@ const products = [
         "weight": 2.7,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
@@ -2820,7 +2820,7 @@ const products = [
         "weight": 9,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
@@ -2832,7 +2832,7 @@ const products = [
         "weight": 9,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
@@ -2844,7 +2844,7 @@ const products = [
         "weight": 2.5,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
@@ -2856,7 +2856,7 @@ const products = [
         "weight": 5,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
@@ -2868,7 +2868,7 @@ const products = [
         "weight": 9,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
@@ -2880,7 +2880,7 @@ const products = [
         "weight": 4.5,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
@@ -2892,7 +2892,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
@@ -2904,91 +2904,91 @@ const products = [
         "weight": 9,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска Акрил",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Краска ВД для стен и потолка СТК Белоснежная латексная, моющаяся и износостойкая 10 л, шелковисто-матовая",
-        "price": 2808,
+        "price": 2860,
         "unit": "шт",
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Краска фасадная акриловая FASSADENFARBE супербелая 14 кг",
-        "price": 2808,
+        "price": 2860,
         "unit": "шт",
         "weight": 14,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска Акрил",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Краска фасадная акриловая Colorika Aqua белая мат. 14 кг",
-        "price": 4860,
+        "price": 4950,
         "unit": "шт",
         "weight": 14,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска Акрил",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Краска акриловая для стен и потолка Colorika (влажная уборка), супербелая 3 л",
-        "price": 1404,
+        "price": 1430,
         "unit": "шт",
         "weight": 3,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска Акрил",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Краска акриловая для стен и потолка Colorika (влажная уборка), супербелая 10 л",
-        "price": 4104,
+        "price": 4180,
         "unit": "шт",
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска Акрил",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Краска ВД для стен и потолка Colorika моющаяся, супербелая 3 л",
-        "price": 1836,
+        "price": 1870,
         "unit": "шт",
         "weight": 3,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Краска ВД для стен и потолка Colorika моющаяся, супербелая 10 л",
-        "price": 4860,
+        "price": 4950,
         "unit": "шт",
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
@@ -3000,7 +3000,7 @@ const products = [
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска Акрил",
             "type": ""
         },
         "image": "К"
@@ -3012,7 +3012,7 @@ const products = [
         "weight": 2.7,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска Акрил",
             "type": ""
         },
         "image": "К"
@@ -3024,7 +3024,7 @@ const products = [
         "weight": 14,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска Акрил",
             "type": ""
         },
         "image": "К"
@@ -3036,7 +3036,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
@@ -3048,7 +3048,7 @@ const products = [
         "weight": 2.5,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
@@ -3060,19 +3060,19 @@ const products = [
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Краска ВД для стен и потолка моющаяся Dufa Premium KeraLine Keramik Paint 7 база А матовая белая 2,5 л",
-        "price": 2020,
+        "price": 2057,
         "unit": "шт",
         "weight": 2.5,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
@@ -3084,31 +3084,31 @@ const products = [
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Краска ВД для стен и потолка латексная Marshall Export 2 (влажная уборка) белая основа BW 4,5 л, глубокоматовая",
-        "price": 2970,
+        "price": 3025,
         "unit": "шт",
         "weight": 4.5,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Краска ВД для стен и потолка латексная Marshall Export 2 (влажная уборка) белая основа BW 9 л, глубокоматовая",
-        "price": 4212,
+        "price": 4290,
         "unit": "шт",
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
@@ -3120,7 +3120,7 @@ const products = [
         "weight": 4.5,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
@@ -3132,7 +3132,7 @@ const products = [
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
@@ -3144,19 +3144,19 @@ const products = [
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Краска ВД для стен и потолка латексная Marshall Export 7 моющаяся белая основа BW 9 л, матовая",
-        "price": 5238,
+        "price": 5335,
         "unit": "шт",
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
@@ -3168,7 +3168,7 @@ const products = [
         "weight": 5,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
@@ -3180,7 +3180,7 @@ const products = [
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
@@ -3192,7 +3192,7 @@ const products = [
         "weight": 0.75,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
@@ -3204,7 +3204,7 @@ const products = [
         "weight": 2.5,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
@@ -3216,7 +3216,7 @@ const products = [
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
@@ -3228,7 +3228,7 @@ const products = [
         "weight": 0.75,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
@@ -3240,19 +3240,19 @@ const products = [
         "weight": 2.5,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Краска для стен и потолков Europaint EXTRA KIVI Шелковисто-матовая высокоэффективная (А) 9 л (112м2)",
-        "price": 13122,
+        "price": 13365,
         "unit": "шт",
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
@@ -3264,7 +3264,7 @@ const products = [
         "weight": 0.75,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
@@ -3276,7 +3276,7 @@ const products = [
         "weight": 2.5,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
@@ -3288,14 +3288,14 @@ const products = [
         "weight": 10,
         "category": {
             "main": "Краска Грунт",
-            "section": "Краска",
+            "section": "Краска ВД",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Блок D500 50х250х600 мм",
-        "price": 76,
+        "price": 77,
         "unit": "шт",
         "weight": 5,
         "category": {
@@ -3307,7 +3307,7 @@ const products = [
     },
     {
         "name": "Блок D500 75х250х600 мм",
-        "price": 87,
+        "price": 88,
         "unit": "шт",
         "weight": 8,
         "category": {
@@ -3319,7 +3319,7 @@ const products = [
     },
     {
         "name": "Блок D500 100х250х600 мм",
-        "price": 106,
+        "price": 107,
         "unit": "шт",
         "weight": 11,
         "category": {
@@ -3331,7 +3331,7 @@ const products = [
     },
     {
         "name": "Блок D500 120х250х600 мм",
-        "price": 157,
+        "price": 159,
         "unit": "шт",
         "weight": 12.5,
         "category": {
@@ -3343,7 +3343,7 @@ const products = [
     },
     {
         "name": "Блок D500 150х250х600 мм",
-        "price": 162,
+        "price": 165,
         "unit": "шт",
         "weight": 15.5,
         "category": {
@@ -3355,7 +3355,7 @@ const products = [
     },
     {
         "name": "Блок D500 200х250х600 мм",
-        "price": 216,
+        "price": 220,
         "unit": "шт",
         "weight": 22,
         "category": {
@@ -3367,7 +3367,7 @@ const products = [
     },
     {
         "name": "Блок D500 200х300х600 мм",
-        "price": 265,
+        "price": 269,
         "unit": "шт",
         "weight": 23,
         "category": {
@@ -3379,7 +3379,7 @@ const products = [
     },
     {
         "name": "Блок D500 300х250х600 мм",
-        "price": 319,
+        "price": 324,
         "unit": "шт",
         "weight": 32,
         "category": {
@@ -3432,7 +3432,7 @@ const products = [
         "weight": 3.5,
         "category": {
             "main": "Блоки Стены",
-            "section": "Блок",
+            "section": "Кирпич",
             "type": ""
         },
         "image": "Б"
@@ -3444,31 +3444,31 @@ const products = [
         "weight": 3.7,
         "category": {
             "main": "Блоки Стены",
-            "section": "Блок",
+            "section": "Кирпич",
             "type": ""
         },
         "image": "Б"
     },
     {
         "name": "ПГП влагостойкая полнотелая Knauf 667х500х 80 мм",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 30,
         "category": {
             "main": "Блоки Стены",
-            "section": "Блок",
+            "section": "ПГП",
             "type": ""
         },
         "image": "Б"
     },
     {
         "name": "ПГП влагостойкая полнотелая 667х500х 80 мм",
-        "price": 376,
+        "price": 382,
         "unit": "шт",
         "weight": 30,
         "category": {
             "main": "Блоки Стены",
-            "section": "Блок",
+            "section": "ПГП",
             "type": ""
         },
         "image": "Б"
@@ -3480,7 +3480,7 @@ const products = [
         "weight": 30,
         "category": {
             "main": "Блоки Стены",
-            "section": "Блок",
+            "section": "ПГП",
             "type": ""
         },
         "image": "Б"
@@ -3492,19 +3492,19 @@ const products = [
         "weight": 24,
         "category": {
             "main": "Блоки Стены",
-            "section": "Блок",
+            "section": "ПГП",
             "type": ""
         },
         "image": "Б"
     },
     {
         "name": "ПГП полнотелая 667х500х 80 мм",
-        "price": 346,
+        "price": 352,
         "unit": "шт",
         "weight": 30,
         "category": {
             "main": "Блоки Стены",
-            "section": "Блок",
+            "section": "ПГП",
             "type": ""
         },
         "image": "Б"
@@ -3516,19 +3516,19 @@ const products = [
         "weight": 40,
         "category": {
             "main": "Блоки Стены",
-            "section": "Блок",
+            "section": "ПГП",
             "type": ""
         },
         "image": "Б"
     },
     {
         "name": "ПГП полнотелая 667х500х 100 мм",
-        "price": 443,
+        "price": 451,
         "unit": "шт",
         "weight": 40,
         "category": {
             "main": "Блоки Стены",
-            "section": "Блок",
+            "section": "ПГП",
             "type": ""
         },
         "image": "Б"
@@ -3540,19 +3540,19 @@ const products = [
         "weight": 40,
         "category": {
             "main": "Блоки Стены",
-            "section": "Блок",
+            "section": "ПГП",
             "type": ""
         },
         "image": "Б"
     },
     {
         "name": "ПГП влагостойкая полнотелая 667х500х100 мм",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 40,
         "category": {
             "main": "Блоки Стены",
-            "section": "Блок",
+            "section": "ПГП",
             "type": ""
         },
         "image": "Б"
@@ -3564,7 +3564,7 @@ const products = [
         "weight": 4,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "Панель",
             "type": ""
         },
         "image": "Л"
@@ -3576,7 +3576,7 @@ const products = [
         "weight": 6,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "Панель",
             "type": ""
         },
         "image": "Л"
@@ -3588,7 +3588,7 @@ const products = [
         "weight": 8,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "Панель",
             "type": ""
         },
         "image": "Л"
@@ -3600,7 +3600,7 @@ const products = [
         "weight": 4,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "Панель",
             "type": ""
         },
         "image": "Л"
@@ -3612,7 +3612,7 @@ const products = [
         "weight": 8,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "Панель",
             "type": ""
         },
         "image": "Л"
@@ -3624,7 +3624,7 @@ const products = [
         "weight": 18.5,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "ГВЛ",
             "type": ""
         },
         "image": "Л"
@@ -3636,7 +3636,7 @@ const products = [
         "weight": 6.5,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "Панель",
             "type": ""
         },
         "image": "Л"
@@ -3648,7 +3648,7 @@ const products = [
         "weight": 16.5,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "Панель",
             "type": ""
         },
         "image": "Л"
@@ -3660,7 +3660,7 @@ const products = [
         "weight": 16.5,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "Панель",
             "type": ""
         },
         "image": "Л"
@@ -3672,7 +3672,7 @@ const products = [
         "weight": 43,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "Панель",
             "type": ""
         },
         "image": "Л"
@@ -3684,31 +3684,31 @@ const products = [
         "weight": 8.7,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "Панель",
             "type": ""
         },
         "image": "Л"
     },
     {
         "name": "ГВЛ Knauf 2500х1200х10 мм",
-        "price": 827,
+        "price": 841,
         "unit": "шт",
         "weight": 37.5,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "ГВЛ",
             "type": ""
         },
         "image": "Л"
     },
     {
         "name": "ГВЛ Knauf 2500х1200х12,5 мм",
-        "price": 951,
+        "price": 968,
         "unit": "шт",
         "weight": 44,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "ГВЛ",
             "type": ""
         },
         "image": "Л"
@@ -3720,55 +3720,55 @@ const products = [
         "weight": 19,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "ГКЛ",
             "type": ""
         },
         "image": "Л"
     },
     {
         "name": "ГКЛ Knauf 2000х1200х9,5 мм",
-        "price": 351,
+        "price": 357,
         "unit": "шт",
         "weight": 15.5,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "ГКЛ",
             "type": ""
         },
         "image": "Л"
     },
     {
         "name": "ГКЛ Knauf 2500х1200х9,5 мм",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 19.5,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "ГКЛ",
             "type": ""
         },
         "image": "Л"
     },
     {
         "name": "ГКЛ Knauf 2000х1200х12,5 мм",
-        "price": 357,
+        "price": 363,
         "unit": "шт",
         "weight": 20.5,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "ГКЛ",
             "type": ""
         },
         "image": "Л"
     },
     {
         "name": "ГКЛ Knauf 2500х1200х12,5 мм",
-        "price": 422,
+        "price": 429,
         "unit": "шт",
         "weight": 25,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "ГКЛ",
             "type": ""
         },
         "image": "Л"
@@ -3780,43 +3780,43 @@ const products = [
         "weight": 30,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "ГКЛ",
             "type": ""
         },
         "image": "Л"
     },
     {
         "name": "ГКЛВ Knauf 2500х1200х9,5 мм",
-        "price": 506,
+        "price": 514,
         "unit": "шт",
         "weight": 18,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "ГКЛВ",
             "type": ""
         },
         "image": "Л"
     },
     {
         "name": "ГКЛВ Knauf 2000х1200х12,5 мм",
-        "price": 470,
+        "price": 478,
         "unit": "шт",
         "weight": 22,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "ГКЛВ",
             "type": ""
         },
         "image": "Л"
     },
     {
         "name": "ГКЛВ Knauf 2500х1200х12,5 мм",
-        "price": 562,
+        "price": 572,
         "unit": "шт",
         "weight": 27,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "ГКЛВ",
             "type": ""
         },
         "image": "Л"
@@ -3828,7 +3828,7 @@ const products = [
         "weight": 32.5,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "ГКЛВ",
             "type": ""
         },
         "image": "Л"
@@ -3840,7 +3840,7 @@ const products = [
         "weight": 33.3,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "ГКЛО",
             "type": ""
         },
         "image": "Л"
@@ -3852,43 +3852,43 @@ const products = [
         "weight": 24.5,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "ГКЛЗ",
             "type": ""
         },
         "image": "Л"
     },
     {
         "name": "Гипсокартон Knauf Сапфир 2000х1200х12,5 мм",
-        "price": 751,
+        "price": 764,
         "unit": "шт",
         "weight": 29,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "ГКЛЗ",
             "type": ""
         },
         "image": "Л"
     },
     {
         "name": "Гипсокартон Knauf Сапфир 2500х1200х12,5 мм",
-        "price": 875,
+        "price": 891,
         "unit": "шт",
         "weight": 37.5,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "ГКЛЗ",
             "type": ""
         },
         "image": "Л"
     },
     {
         "name": "Гипсокартон Knauf арочный (ремонтный) 2500х1200х6,5 мм",
-        "price": 686,
+        "price": 698,
         "unit": "шт",
         "weight": 18.9,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "ГКЛ",
             "type": ""
         },
         "image": "Л"
@@ -3900,67 +3900,67 @@ const products = [
         "weight": 0.62,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Профиль ПН Knauf 27х28 мм 3 м",
-        "price": 211,
+        "price": 214,
         "unit": "шт",
         "weight": 1.2,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Профиль ПС Knauf 60х27 мм 3 м",
-        "price": 292,
+        "price": 297,
         "unit": "шт",
         "weight": 1.7,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Профиль ПС Knauf 60х27 мм 4 м",
-        "price": null,
+        "price": 0,
         "unit": "шт",
         "weight": 2,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Профиль ПН Knauf 50х40 мм 3м",
-        "price": 373,
+        "price": 379,
         "unit": "шт",
         "weight": 1.7,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Профиль ПС Knauf 50х50 мм 3м",
-        "price": 398,
+        "price": 404,
         "unit": "шт",
         "weight": 1.8,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
@@ -3972,31 +3972,31 @@ const products = [
         "weight": 2.2,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Профиль ПН Knauf 75х40 мм 3м",
-        "price": 430,
+        "price": 437,
         "unit": "шт",
         "weight": 2.5,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Профиль ПС Knauf 75х50 мм 3м",
-        "price": 449,
+        "price": 456,
         "unit": "шт",
         "weight": 2.2,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
@@ -4008,31 +4008,31 @@ const products = [
         "weight": 2.6,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Профиль ПН Knauf 100х40 мм 3м",
-        "price": 503,
+        "price": 511,
         "unit": "шт",
         "weight": 2.9,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Профиль ПС Knauf 100х50 мм 3м",
-        "price": 524,
+        "price": 533,
         "unit": "шт",
         "weight": 2.5,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
@@ -4044,7 +4044,7 @@ const products = [
         "weight": 3,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
@@ -4056,7 +4056,7 @@ const products = [
         "weight": 6.5,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
@@ -4068,7 +4068,7 @@ const products = [
         "weight": 1.5,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
@@ -4080,19 +4080,19 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Подвес прямой Knauf, удлиненный 460мм",
-        "price": 42,
+        "price": 41,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
@@ -4104,7 +4104,7 @@ const products = [
         "weight": 0.15,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
@@ -4116,7 +4116,7 @@ const products = [
         "weight": 0.3,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
@@ -4128,31 +4128,31 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Подвес с зажимом Knauf 60*27 со спицей 1 м",
-        "price": 78,
+        "price": 79,
         "unit": "шт",
         "weight": 0.8,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Соединитель - удлинитель Knauf 60х27",
-        "price": 19,
+        "price": 18,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
@@ -4164,7 +4164,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
@@ -4176,7 +4176,7 @@ const products = [
         "weight": 0.15,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
@@ -4188,7 +4188,7 @@ const products = [
         "weight": 0.08,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "ПГП",
             "type": ""
         },
         "image": "М"
@@ -4200,7 +4200,7 @@ const products = [
         "weight": 17.5,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "ГКЛ",
             "type": ""
         },
         "image": "Л"
@@ -4212,7 +4212,7 @@ const products = [
         "weight": 20,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "ГКЛ",
             "type": ""
         },
         "image": "Л"
@@ -4224,7 +4224,7 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "ГКЛ",
             "type": ""
         },
         "image": "Л"
@@ -4236,7 +4236,7 @@ const products = [
         "weight": 16,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "ГКЛВ",
             "type": ""
         },
         "image": "Л"
@@ -4248,7 +4248,7 @@ const products = [
         "weight": 20.6,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "ГКЛВ",
             "type": ""
         },
         "image": "Л"
@@ -4260,7 +4260,7 @@ const products = [
         "weight": 22,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "ГКЛВ",
             "type": ""
         },
         "image": "Л"
@@ -4272,7 +4272,7 @@ const products = [
         "weight": 27,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "ГКЛВ",
             "type": ""
         },
         "image": "Л"
@@ -4284,7 +4284,7 @@ const products = [
         "weight": 31.2,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "ГКЛВ",
             "type": ""
         },
         "image": "Л"
@@ -4296,7 +4296,7 @@ const products = [
         "weight": 35,
         "category": {
             "main": "Блоки Стены",
-            "section": "Лист",
+            "section": "ГКЛЗ",
             "type": ""
         },
         "image": "Л"
@@ -4308,7 +4308,7 @@ const products = [
         "weight": 1.2,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
@@ -4320,7 +4320,7 @@ const products = [
         "weight": 1.7,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
@@ -4332,7 +4332,7 @@ const products = [
         "weight": 2.1,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
@@ -4344,7 +4344,7 @@ const products = [
         "weight": 1.8,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
@@ -4356,7 +4356,7 @@ const products = [
         "weight": 2.5,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
@@ -4368,7 +4368,7 @@ const products = [
         "weight": 2.2,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
@@ -4380,7 +4380,7 @@ const products = [
         "weight": 2.9,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
@@ -4392,7 +4392,7 @@ const products = [
         "weight": 2.5,
         "category": {
             "main": "Блоки Стены",
-            "section": "Металл",
+            "section": "Профиль",
             "type": ""
         },
         "image": "М"
@@ -4404,7 +4404,7 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Изоляция",
-            "section": "Гидро",
+            "section": "Геотекстиль",
             "type": ""
         },
         "image": "Г"
@@ -4416,7 +4416,7 @@ const products = [
         "weight": 9,
         "category": {
             "main": "Изоляция",
-            "section": "Гидро",
+            "section": "Гидроизол",
             "type": ""
         },
         "image": "Г"
@@ -4428,7 +4428,7 @@ const products = [
         "weight": 9,
         "category": {
             "main": "Изоляция",
-            "section": "Гидро",
+            "section": "Гидроизол",
             "type": ""
         },
         "image": "Г"
@@ -4440,7 +4440,7 @@ const products = [
         "weight": 38.5,
         "category": {
             "main": "Изоляция",
-            "section": "Гидро",
+            "section": "Гидроизол",
             "type": ""
         },
         "image": "Г"
@@ -4452,7 +4452,7 @@ const products = [
         "weight": 49.5,
         "category": {
             "main": "Изоляция",
-            "section": "Гидро",
+            "section": "Гидроизол",
             "type": ""
         },
         "image": "Г"
@@ -4464,7 +4464,7 @@ const products = [
         "weight": 42,
         "category": {
             "main": "Изоляция",
-            "section": "Гидро",
+            "section": "Гидроизол",
             "type": ""
         },
         "image": "Г"
@@ -4476,7 +4476,7 @@ const products = [
         "weight": 7,
         "category": {
             "main": "Изоляция",
-            "section": "Гидро",
+            "section": "Гидроизол",
             "type": ""
         },
         "image": "Г"
@@ -4488,31 +4488,31 @@ const products = [
         "weight": 15,
         "category": {
             "main": "Изоляция",
-            "section": "Гидро",
+            "section": "Гидроизол",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Звукоизоляция Шуманет Комби 5 мм 1х10 м",
-        "price": 5238,
+        "price": 5335,
         "unit": "шт",
         "weight": 25,
         "category": {
             "main": "Изоляция",
-            "section": "Звук",
+            "section": "Звукоизол",
             "type": ""
         },
         "image": "З"
     },
     {
         "name": "Звуко - Гидроизоляция Шуманет 100 Гидро 5 мм 1х10 м",
-        "price": 6804,
+        "price": 6930,
         "unit": "шт",
         "weight": 34,
         "category": {
             "main": "Изоляция",
-            "section": "Звук",
+            "section": "Звукоизол",
             "type": ""
         },
         "image": "З"
@@ -4524,7 +4524,7 @@ const products = [
         "weight": 27,
         "category": {
             "main": "Изоляция",
-            "section": "Звук",
+            "section": "Звукоизол",
             "type": ""
         },
         "image": "З"
@@ -4536,7 +4536,7 @@ const products = [
         "weight": 27,
         "category": {
             "main": "Изоляция",
-            "section": "Звук",
+            "section": "Звукоизол",
             "type": ""
         },
         "image": "З"
@@ -4548,7 +4548,7 @@ const products = [
         "weight": 30.6,
         "category": {
             "main": "Изоляция",
-            "section": "Звук",
+            "section": "Звукоизол",
             "type": ""
         },
         "image": "З"
@@ -4560,7 +4560,7 @@ const products = [
         "weight": 18.5,
         "category": {
             "main": "Изоляция",
-            "section": "Звук",
+            "section": "Звукоизол",
             "type": ""
         },
         "image": "З"
@@ -4572,7 +4572,7 @@ const products = [
         "weight": 9,
         "category": {
             "main": "Изоляция",
-            "section": "Звук",
+            "section": "Звукоизол",
             "type": ""
         },
         "image": "З"
@@ -4584,7 +4584,7 @@ const products = [
         "weight": 19.5,
         "category": {
             "main": "Изоляция",
-            "section": "Звук",
+            "section": "Звукоизол",
             "type": ""
         },
         "image": "З"
@@ -4596,7 +4596,7 @@ const products = [
         "weight": 18.4,
         "category": {
             "main": "Изоляция",
-            "section": "Звук",
+            "section": "Звукоизол",
             "type": ""
         },
         "image": "З"
@@ -4608,7 +4608,7 @@ const products = [
         "weight": 6.6,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -4620,7 +4620,7 @@ const products = [
         "weight": 9,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -4632,7 +4632,7 @@ const products = [
         "weight": 9.5,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -4644,7 +4644,7 @@ const products = [
         "weight": 9,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -4656,7 +4656,7 @@ const products = [
         "weight": 10.8,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -4668,7 +4668,7 @@ const products = [
         "weight": 10.8,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -4680,7 +4680,7 @@ const products = [
         "weight": 16.3,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -4692,7 +4692,7 @@ const products = [
         "weight": 10,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -4704,43 +4704,43 @@ const products = [
         "weight": 10,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
     },
     {
         "name": "Утеплитель Rockwool Лайт Баттс Скандик 50х600х800 мм 5,76 кв.м",
-        "price": 1188,
+        "price": 1210,
         "unit": "шт",
         "weight": 11,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
     },
     {
         "name": "Утеплитель Rockwool Лайт Баттс Скандик 100х600х800 мм 2,88 кв.м",
-        "price": 1242,
+        "price": 1265,
         "unit": "шт",
         "weight": 11,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
     },
     {
         "name": "Утеплитель Rockwool Акустик Баттс 50х600х1000 мм 6 кв.м",
-        "price": 2258,
+        "price": 2299,
         "unit": "шт",
         "weight": 11,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -4752,7 +4752,7 @@ const products = [
         "weight": 10,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -4764,7 +4764,7 @@ const products = [
         "weight": 11,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -4776,7 +4776,7 @@ const products = [
         "weight": 13.8,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -4788,7 +4788,7 @@ const products = [
         "weight": 13.8,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -4800,7 +4800,7 @@ const products = [
         "weight": 15.6,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -4812,7 +4812,7 @@ const products = [
         "weight": 20.9,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -4824,7 +4824,7 @@ const products = [
         "weight": 13.8,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -4836,7 +4836,7 @@ const products = [
         "weight": 19.8,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -4848,19 +4848,19 @@ const products = [
         "weight": 19.8,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
     },
     {
         "name": "Утеплитель Rockwool Акустик Баттс ПРО Ультратонкий 27х600х1000 мм 7,2 м2",
-        "price": 2484,
+        "price": 2530,
         "unit": "шт",
         "weight": 12,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -4872,7 +4872,7 @@ const products = [
         "weight": 12.3,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -4884,7 +4884,7 @@ const products = [
         "weight": 10.1,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -4896,7 +4896,7 @@ const products = [
         "weight": 8,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -4908,7 +4908,7 @@ const products = [
         "weight": 15.2,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -4920,7 +4920,7 @@ const products = [
         "weight": 13,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -4932,7 +4932,7 @@ const products = [
         "weight": 12,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -4944,7 +4944,7 @@ const products = [
         "weight": 8,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -4956,7 +4956,7 @@ const products = [
         "weight": 8,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -4968,7 +4968,7 @@ const products = [
         "weight": 7.6,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -4980,7 +4980,7 @@ const products = [
         "weight": 8,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -4992,7 +4992,7 @@ const products = [
         "weight": 2.5,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -5004,43 +5004,43 @@ const products = [
         "weight": 1.5,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
     },
     {
         "name": "Утеплитель Пенофол фольгированный 3мм 1,2 х 22 м (26.4 м2)",
-        "price": 1296,
+        "price": 1320,
         "unit": "шт",
         "weight": 1.5,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
     },
     {
         "name": "Утеплитель Пенофол фольгированный 5мм 1,2 х 22 м (26.4 м2)",
-        "price": 1404,
+        "price": 1430,
         "unit": "шт",
         "weight": 2,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
     },
     {
         "name": "Утеплитель Пенофол фольгированный 10мм 1,2 х 12 м (14.4 м2)",
-        "price": 1566,
+        "price": 1595,
         "unit": "шт",
         "weight": 2.5,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -5052,103 +5052,103 @@ const products = [
         "weight": 4,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
     },
     {
         "name": "Пеноплэкс Комфорт 20x600x1200 мм 1л. (0.72 м2)",
-        "price": 168,
+        "price": 170,
         "unit": "шт",
         "weight": 0.25,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
     },
     {
         "name": "Пеноплэкс Комфорт 20x600x1200 мм 20л. (13.8 м2)",
-        "price": 3230,
+        "price": 3289,
         "unit": "шт",
         "weight": 6,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
     },
     {
         "name": "Пеноплэкс Комфорт 30x600x1200 мм 1л. (0.72 м2)",
-        "price": 249,
+        "price": 253,
         "unit": "шт",
         "weight": 0.25,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
     },
     {
         "name": "Пеноплэкс Комфорт 30x600x1200 мм 13л. (9 м2)",
-        "price": 3078,
+        "price": 3135,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
     },
     {
         "name": "Пеноплэкс Комфорт 50х585х1185 мм 1л. (0.69м2)",
-        "price": 373,
+        "price": 379,
         "unit": "шт",
         "weight": 0.25,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
     },
     {
         "name": "Пеноплэкс Комфорт 50х585х1185 мм 7л. (4.85 м2)",
-        "price": 2571,
+        "price": 2618,
         "unit": "шт",
         "weight": 4,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
     },
     {
         "name": "Пеноплэкс Комфорт 100х585х1185 мм 1л. (0.69 м2)",
-        "price": 773,
+        "price": 786,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
     },
     {
         "name": "Пеноплэкс Комфорт 100х585х1185 мм 4л. (2.76 м2)",
-        "price": 2916,
+        "price": 2970,
         "unit": "шт",
         "weight": 2,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -5160,7 +5160,7 @@ const products = [
         "weight": 0.3,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Теплоизол",
             "type": ""
         },
         "image": "Т"
@@ -5172,7 +5172,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Подложка",
             "type": ""
         },
         "image": "Т"
@@ -5184,7 +5184,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Подложка",
             "type": ""
         },
         "image": "Т"
@@ -5196,7 +5196,7 @@ const products = [
         "weight": 2.5,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Подложка",
             "type": ""
         },
         "image": "Т"
@@ -5208,7 +5208,7 @@ const products = [
         "weight": 3,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Подложка",
             "type": ""
         },
         "image": "Т"
@@ -5220,7 +5220,7 @@ const products = [
         "weight": 5.5,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Подложка",
             "type": ""
         },
         "image": "Т"
@@ -5232,7 +5232,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Подложка",
             "type": ""
         },
         "image": "Т"
@@ -5244,7 +5244,7 @@ const products = [
         "weight": 2.5,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Подложка",
             "type": ""
         },
         "image": "Т"
@@ -5256,7 +5256,7 @@ const products = [
         "weight": 2.5,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Подложка",
             "type": ""
         },
         "image": "Т"
@@ -5268,31 +5268,31 @@ const products = [
         "weight": 5,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Подложка",
             "type": ""
         },
         "image": "Т"
     },
     {
         "name": "Пароизоляция TEHNOVEK А 30 70 кв.м",
-        "price": 1728,
+        "price": 1760,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Пароизол",
             "type": ""
         },
         "image": "Т"
     },
     {
         "name": "Пароизоляция TEHNOVEK B 30 70 кв.м",
-        "price": 1296,
+        "price": 1320,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Пароизол",
             "type": ""
         },
         "image": "Т"
@@ -5304,7 +5304,7 @@ const products = [
         "weight": 6,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Пароизол",
             "type": ""
         },
         "image": "Т"
@@ -5316,7 +5316,7 @@ const products = [
         "weight": 8,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Пароизол",
             "type": ""
         },
         "image": "Т"
@@ -5328,7 +5328,7 @@ const products = [
         "weight": 0.3,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Пробка",
             "type": ""
         },
         "image": "Т"
@@ -5340,7 +5340,7 @@ const products = [
         "weight": 0.4,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Пробка",
             "type": ""
         },
         "image": "Т"
@@ -5352,67 +5352,67 @@ const products = [
         "weight": 5,
         "category": {
             "main": "Изоляция",
-            "section": "Тепло",
+            "section": "Пергамин",
             "type": ""
         },
         "image": "Т"
     },
     {
         "name": "Пистолет для герметика 1. Эконом",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Герметики",
-            "section": "Инстр",
+            "section": "Герметик",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Пистолет для герметика 2. Премиум",
-        "price": 1080,
+        "price": 1100,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Герметики",
-            "section": "Инстр",
+            "section": "Герметик",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Пистолет для монтажной пены 1. Эконом",
-        "price": 411,
+        "price": 418,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Герметики",
-            "section": "Инстр",
+            "section": "Пена",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Пистолет для монтажной пены 2.",
-        "price": 648,
+        "price": 660,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Герметики",
-            "section": "Инстр",
+            "section": "Пена",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Пистолет для монтажной пены 3. Премиум",
-        "price": 1944,
+        "price": 1980,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Герметики",
-            "section": "Инстр",
+            "section": "Пена",
             "type": ""
         },
         "image": "И"
@@ -5424,103 +5424,103 @@ const products = [
         "weight": 0.8,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Пена",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Пена монтажная профессиональная Tytan Uni 65",
-        "price": 702,
+        "price": 715,
         "unit": "шт",
         "weight": 0.8,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Пена",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Пена монтажная профессиональная 750, летняя",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 0.8,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Пена",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Пена монтажная профессиональная 750, зимняя",
-        "price": 627,
+        "price": 638,
         "unit": "шт",
         "weight": 0.8,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Пена",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Пена монтажная 750, с трубочкой всесезонная -10\\+35",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 0.8,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Пена",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Пена монтажная профессиональная, Огнеупорная",
-        "price": 810,
+        "price": 825,
         "unit": "шт",
         "weight": 0.8,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Пена",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Клей - Пена Kudo для блоков под пистолет PROF 28+",
-        "price": 681,
+        "price": 693,
         "unit": "шт",
         "weight": 0.8,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Пена",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Клей - Пена универсальная проф. Tytan Professional 60 секунд 750 мл",
-        "price": 843,
+        "price": 858,
         "unit": "шт",
         "weight": 0.8,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Пена",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Клей - Пена универсальная REFIT 14 профессиональная всесезонная",
-        "price": 702,
+        "price": 715,
         "unit": "шт",
         "weight": 0.8,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Пена",
             "type": ""
         },
         "image": "Г"
@@ -5575,12 +5575,12 @@ const products = [
     },
     {
         "name": "Очиститель монтажной пены",
-        "price": 184,
+        "price": 187,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Очиститель",
             "type": ""
         },
         "image": "Г"
@@ -5592,7 +5592,7 @@ const products = [
         "weight": 5,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Очиститель",
             "type": ""
         },
         "image": "Г"
@@ -5604,55 +5604,55 @@ const products = [
         "weight": 0.6,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Очиститель",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Очиститель силиконового герметика Kudo аэрозоль 150 мл",
-        "price": 702,
+        "price": 715,
         "unit": "шт",
         "weight": 0.15,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Очиститель",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Очиститель эпоксидной затирки Litokol Litonet Gel Evo 0,75л",
-        "price": 1782,
+        "price": 1815,
         "unit": "шт",
         "weight": 0.8,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Очиститель",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Смазка для канализационных труб",
-        "price": 270,
+        "price": 275,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Смазка",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Смазка для канализационных труб Ostendorf 500 г",
-        "price": 643,
+        "price": 654,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Смазка",
             "type": ""
         },
         "image": "Г"
@@ -5664,7 +5664,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Смазка",
             "type": ""
         },
         "image": "Г"
@@ -5676,67 +5676,67 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Герметики",
-            "section": "Расход",
+            "section": "Смазка",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Герметик акриловый санитарный Irfix белый 280 мл",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Герметик",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Герметик силиконовый санитарный AVG белый 280 мл",
-        "price": 756,
+        "price": 770,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Герметик",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Герметик силиконовый санитарный Kim Tech белый 280 мл",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Герметик",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Герметик силиконовый санитарный Kim Tech прозрачный 280 мл",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Герметик",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Герметик акриловый морозостойкий Kim Tech белый 420 мл",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Герметик",
             "type": ""
         },
         "image": "Г"
@@ -5748,7 +5748,7 @@ const products = [
         "weight": 0.3,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Герметик",
             "type": ""
         },
         "image": "Г"
@@ -5760,19 +5760,19 @@ const products = [
         "weight": 0.35,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Герметик",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Герметик звукоизоляционный Вибросил 290мл",
-        "price": 735,
+        "price": 748,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Герметик",
             "type": ""
         },
         "image": "Г"
@@ -5784,7 +5784,7 @@ const products = [
         "weight": 0.31,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Герметик",
             "type": ""
         },
         "image": "Г"
@@ -5796,7 +5796,7 @@ const products = [
         "weight": 0.3,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Герметик",
             "type": ""
         },
         "image": "Г"
@@ -5808,31 +5808,31 @@ const products = [
         "weight": 0.31,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Герметик",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Клей монтажный каучуковый Titebond Heavy Duty Сверхсильный светло-коричневый 296 мл",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Клей Монтажный",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Клей монтажный каучуковый Tytan Classic Fix прозрачный 310 мл",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 0.35,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Клей Монтажный",
             "type": ""
         },
         "image": "Г"
@@ -5844,7 +5844,7 @@ const products = [
         "weight": 0.3,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Клей Монтажный",
             "type": ""
         },
         "image": "Г"
@@ -5856,31 +5856,31 @@ const products = [
         "weight": 0.3,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Клей Монтажный",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Клей Суперклей универсальный Akfix 705 двухкомпонентный, цианакрилатный с активатором, прозрачный 200 мл + 50 г",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.25,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Клей Монтажный",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Клей Суперклей универсальный Akfix 705 двухкомпонентный, цианакрилатный с активатором, прозрачный 400 мл + 100 г",
-        "price": 573,
+        "price": 583,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Клей Монтажный",
             "type": ""
         },
         "image": "Г"
@@ -5892,55 +5892,55 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Клей Монтажный",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Жидкие гвозди Момент, прозрачный 270мл",
-        "price": 508,
+        "price": 517,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Клей Монтажный",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Жидкие гвозди Момент, белый 290мл",
-        "price": 411,
+        "price": 418,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Клей Монтажный",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Жидкие гвозди Момент акрил. Монтаж Экспресс MB-50, белый 290мл",
-        "price": 400,
+        "price": 407,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Клей Монтажный",
             "type": ""
         },
         "image": "Г"
     },
     {
         "name": "Жидкие гвозди Момент акрил. Монтаж Суперсильный Плюс MB-100, белый 310мл",
-        "price": 411,
+        "price": 418,
         "unit": "шт",
         "weight": 0.32,
         "category": {
             "main": "Герметики",
-            "section": "Гермет",
+            "section": "Клей Монтажный",
             "type": ""
         },
         "image": "Г"
@@ -6007,7 +6007,7 @@ const products = [
     },
     {
         "name": "Арматура 14мм А500С А3 ПИЛИТЬ",
-        "price": 93,
+        "price": 94,
         "unit": "м",
         "weight": 1.6,
         "category": {
@@ -6019,7 +6019,7 @@ const products = [
     },
     {
         "name": "Арматура 16мм А500С А3 ПИЛИТЬ",
-        "price": 125,
+        "price": 126,
         "unit": "м",
         "weight": 1.85,
         "category": {
@@ -6079,7 +6079,7 @@ const products = [
     },
     {
         "name": "Маяк оцинкованный Knauf 6 мм 3 м",
-        "price": 179,
+        "price": 181,
         "unit": "шт",
         "weight": 0.2,
         "category": {
@@ -6091,7 +6091,7 @@ const products = [
     },
     {
         "name": "Маяк оцинкованный 6 мм 3 м усиленный",
-        "price": 103,
+        "price": 104,
         "unit": "шт",
         "weight": 0.25,
         "category": {
@@ -6115,7 +6115,7 @@ const products = [
     },
     {
         "name": "Маяк пластиковый 10 мм 3 м",
-        "price": 65,
+        "price": 66,
         "unit": "шт",
         "weight": 0.3,
         "category": {
@@ -6127,7 +6127,7 @@ const products = [
     },
     {
         "name": "Маяк оцинкованный 10 мм 3 м",
-        "price": 76,
+        "price": 77,
         "unit": "шт",
         "weight": 0.35,
         "category": {
@@ -6139,7 +6139,7 @@ const products = [
     },
     {
         "name": "Маяк оцинкованный Knauf 10 мм 3 м",
-        "price": 200,
+        "price": 203,
         "unit": "шт",
         "weight": 4,
         "category": {
@@ -6151,7 +6151,7 @@ const products = [
     },
     {
         "name": "Маяк оцинкованный 10 мм 3 м усиленный",
-        "price": 119,
+        "price": 121,
         "unit": "шт",
         "weight": 0.4,
         "category": {
@@ -6163,7 +6163,7 @@ const products = [
     },
     {
         "name": "Маяк реперный пластиковый для наливного пола, 50 шт.",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 0.25,
         "category": {
@@ -6175,7 +6175,7 @@ const products = [
     },
     {
         "name": "Крепления для маячков 6 мм и 10 мм универс. (100 шт.) Металл",
-        "price": 400,
+        "price": 407,
         "unit": "шт",
         "weight": 0.3,
         "category": {
@@ -6187,7 +6187,7 @@ const products = [
     },
     {
         "name": "Крепления для маячков 6 мм и 10 мм универс. (100 шт.) Пластик",
-        "price": 400,
+        "price": 407,
         "unit": "шт",
         "weight": 0.15,
         "category": {
@@ -6331,7 +6331,7 @@ const products = [
     },
     {
         "name": "Проволока вязальная 1.2 мм",
-        "price": 152,
+        "price": 154,
         "unit": "кг",
         "weight": 1,
         "category": {
@@ -6391,7 +6391,7 @@ const products = [
     },
     {
         "name": "Сетка кладочная сварная в рулонах 25х25х1,3 мм 0,25х50 м, оцинкованная",
-        "price": 3078,
+        "price": 3135,
         "unit": "шт",
         "weight": 15,
         "category": {
@@ -6403,7 +6403,7 @@ const products = [
     },
     {
         "name": "Сетка кладочная базальтовая 25х25х1,3 мм 0,25х50 м",
-        "price": 1620,
+        "price": 1650,
         "unit": "шт",
         "weight": 5,
         "category": {
@@ -6415,7 +6415,7 @@ const products = [
     },
     {
         "name": "Сетка карта 2,5 мм 0,5 х 2,0м, 50х50мм",
-        "price": 135,
+        "price": 137,
         "unit": "шт",
         "weight": 1.7,
         "category": {
@@ -6427,7 +6427,7 @@ const products = [
     },
     {
         "name": "Сетка карта 3 мм 0,5 х 2,0м, 50х50мм",
-        "price": 162,
+        "price": 165,
         "unit": "шт",
         "weight": 0.9,
         "category": {
@@ -6439,7 +6439,7 @@ const products = [
     },
     {
         "name": "Сетка карта 3,5 мм 0,5 х 2,0м, 50х50мм",
-        "price": 211,
+        "price": 214,
         "unit": "шт",
         "weight": 1,
         "category": {
@@ -6463,7 +6463,7 @@ const products = [
     },
     {
         "name": "Сетка карта 2,5 мм 1,5 х 2,0м, 100х100мм",
-        "price": 233,
+        "price": 236,
         "unit": "шт",
         "weight": 4.5,
         "category": {
@@ -6787,7 +6787,7 @@ const products = [
     },
     {
         "name": "Уголок оцинкованный перфорированный Knauf 31х31 мм 3 м 0,60 мм",
-        "price": 335,
+        "price": 341,
         "unit": "шт",
         "weight": 0.31,
         "category": {
@@ -6811,7 +6811,7 @@ const products = [
     },
     {
         "name": "Уголок металл 32х32х3мм ПИЛИТЬ",
-        "price": 162,
+        "price": 165,
         "unit": "м",
         "weight": 3,
         "category": {
@@ -6823,7 +6823,7 @@ const products = [
     },
     {
         "name": "Уголок металл 40х40х3мм ПИЛИТЬ",
-        "price": 200,
+        "price": 203,
         "unit": "м",
         "weight": 4,
         "category": {
@@ -6835,7 +6835,7 @@ const products = [
     },
     {
         "name": "Уголок металл 45х45х4мм ПИЛИТЬ",
-        "price": 236,
+        "price": 239,
         "unit": "м",
         "weight": 4.5,
         "category": {
@@ -6919,7 +6919,7 @@ const products = [
     },
     {
         "name": "Уголок крепежный 50*50*35 мм",
-        "price": 20,
+        "price": 19,
         "unit": "шт",
         "weight": 0.02,
         "category": {
@@ -6931,7 +6931,7 @@ const products = [
     },
     {
         "name": "Уголок крепежный 50*50*50 мм",
-        "price": 20,
+        "price": 19,
         "unit": "шт",
         "weight": 0.02,
         "category": {
@@ -6979,7 +6979,7 @@ const products = [
     },
     {
         "name": "Уголок крепежный 50*50*50 мм, усиленный",
-        "price": 54,
+        "price": 55,
         "unit": "шт",
         "weight": 0.02,
         "category": {
@@ -7003,7 +7003,7 @@ const products = [
     },
     {
         "name": "Уголок крепежный 105х105х90 мм, усиленный",
-        "price": 87,
+        "price": 88,
         "unit": "шт",
         "weight": 0.06,
         "category": {
@@ -7051,12 +7051,12 @@ const products = [
     },
     {
         "name": "Поддон (палет) деревянный",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 30,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Поддон",
             "type": ""
         },
         "image": "Д"
@@ -7068,7 +7068,7 @@ const products = [
         "weight": 18.4,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Вагонка",
             "type": ""
         },
         "image": "Д"
@@ -7080,7 +7080,7 @@ const products = [
         "weight": 9.5,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Планкен",
             "type": ""
         },
         "image": "Д"
@@ -7092,7 +7092,7 @@ const products = [
         "weight": 6,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Доска",
             "type": ""
         },
         "image": "Д"
@@ -7104,7 +7104,7 @@ const products = [
         "weight": 7,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Доска",
             "type": ""
         },
         "image": "Д"
@@ -7116,43 +7116,43 @@ const products = [
         "weight": 6,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Доска",
             "type": ""
         },
         "image": "Д"
     },
     {
         "name": "Доска обрезная 100х25 (6м) ПИЛИТЬ",
-        "price": 481,
+        "price": 489,
         "unit": "шт",
         "weight": 13,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Доска",
             "type": ""
         },
         "image": "Д"
     },
     {
         "name": "Доска обрезная 100х50 (6м) ПИЛИТЬ",
-        "price": 918,
+        "price": 935,
         "unit": "шт",
         "weight": 24,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Доска",
             "type": ""
         },
         "image": "Д"
     },
     {
         "name": "Доска обрезная 150х25 (6м) ПИЛИТЬ",
-        "price": 605,
+        "price": 616,
         "unit": "шт",
         "weight": 15,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Доска",
             "type": ""
         },
         "image": "Д"
@@ -7164,19 +7164,19 @@ const products = [
         "weight": 27,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Доска",
             "type": ""
         },
         "image": "Д"
     },
     {
         "name": "Доска обрезная 150х50 (6м) ПИЛИТЬ",
-        "price": 1296,
+        "price": 1320,
         "unit": "шт",
         "weight": 29,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Доска",
             "type": ""
         },
         "image": "Д"
@@ -7188,7 +7188,7 @@ const products = [
         "weight": 41,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Доска",
             "type": ""
         },
         "image": "Д"
@@ -7200,7 +7200,7 @@ const products = [
         "weight": 45,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Доска",
             "type": ""
         },
         "image": "Д"
@@ -7212,7 +7212,7 @@ const products = [
         "weight": 25,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Брус",
             "type": ""
         },
         "image": "Д"
@@ -7224,43 +7224,43 @@ const products = [
         "weight": 3.3,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Брус",
             "type": ""
         },
         "image": "Д"
     },
     {
         "name": "Брус строганный 45х45 (3м)",
-        "price": 319,
+        "price": 324,
         "unit": "шт",
         "weight": 3,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Брус",
             "type": ""
         },
         "image": "Д"
     },
     {
         "name": "Брус строганный 40х20 (3м)",
-        "price": 130,
+        "price": 132,
         "unit": "шт",
         "weight": 1.1,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Брус",
             "type": ""
         },
         "image": "Д"
     },
     {
         "name": "Брус строганный 40х40 (3м)",
-        "price": 249,
+        "price": 253,
         "unit": "шт",
         "weight": 2.8,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Брус",
             "type": ""
         },
         "image": "Д"
@@ -7272,7 +7272,7 @@ const products = [
         "weight": 3.3,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Брус",
             "type": ""
         },
         "image": "Д"
@@ -7284,7 +7284,7 @@ const products = [
         "weight": 3.8,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Брус",
             "type": ""
         },
         "image": "Д"
@@ -7296,43 +7296,43 @@ const products = [
         "weight": 7,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Брус",
             "type": ""
         },
         "image": "Д"
     },
     {
         "name": "Брус обрезной 50х50 (3м)",
-        "price": 238,
+        "price": 242,
         "unit": "шт",
         "weight": 6,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Брус",
             "type": ""
         },
         "image": "Д"
     },
     {
         "name": "Брус обрезной 50х40 (3м)",
-        "price": 184,
+        "price": 187,
         "unit": "шт",
         "weight": 5.5,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Брус",
             "type": ""
         },
         "image": "Д"
     },
     {
         "name": "Брус обрезной 50х25 (3м)",
-        "price": 130,
+        "price": 132,
         "unit": "шт",
         "weight": 3,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Брус",
             "type": ""
         },
         "image": "Д"
@@ -7344,7 +7344,7 @@ const products = [
         "weight": 2.5,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Брус",
             "type": ""
         },
         "image": "Д"
@@ -7356,7 +7356,7 @@ const products = [
         "weight": 45,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Брус",
             "type": ""
         },
         "image": "Д"
@@ -7368,7 +7368,7 @@ const products = [
         "weight": 60,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Брус",
             "type": ""
         },
         "image": "Д"
@@ -7380,7 +7380,7 @@ const products = [
         "weight": 81,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Брус",
             "type": ""
         },
         "image": "Д"
@@ -7392,7 +7392,7 @@ const products = [
         "weight": 0.8,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Рейка",
             "type": ""
         },
         "image": "Д"
@@ -7404,7 +7404,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Рейка",
             "type": ""
         },
         "image": "Д"
@@ -7416,7 +7416,7 @@ const products = [
         "weight": 1.5,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Рейка",
             "type": ""
         },
         "image": "Д"
@@ -7428,19 +7428,19 @@ const products = [
         "weight": 1.5,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Рейка",
             "type": ""
         },
         "image": "Д"
     },
     {
         "name": "Оргалит ДВП 3х1220х2140",
-        "price": 238,
+        "price": 242,
         "unit": "шт",
         "weight": 8,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Оргулит",
             "type": ""
         },
         "image": "Д"
@@ -7452,7 +7452,7 @@ const products = [
         "weight": 20,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "ОСБ",
             "type": ""
         },
         "image": "Д"
@@ -7464,7 +7464,7 @@ const products = [
         "weight": 22.6,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "ОСБ",
             "type": ""
         },
         "image": "Д"
@@ -7476,7 +7476,7 @@ const products = [
         "weight": 27.8,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "ОСБ",
             "type": ""
         },
         "image": "Д"
@@ -7488,7 +7488,7 @@ const products = [
         "weight": 33.4,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "ОСБ",
             "type": ""
         },
         "image": "Д"
@@ -7500,7 +7500,7 @@ const products = [
         "weight": 44,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "ОСБ",
             "type": ""
         },
         "image": "Д"
@@ -7512,7 +7512,7 @@ const products = [
         "weight": 6.5,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Фанера 4/4",
             "type": ""
         },
         "image": "Д"
@@ -7524,19 +7524,19 @@ const products = [
         "weight": 11,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Фанера 4/4",
             "type": ""
         },
         "image": "Д"
     },
     {
         "name": "Фанера 1.5х1.5м, сорт 4\\4, 8мм",
-        "price": 773,
+        "price": 786,
         "unit": "шт",
         "weight": 12.5,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Фанера 4/4",
             "type": ""
         },
         "image": "Д"
@@ -7548,7 +7548,7 @@ const products = [
         "weight": 15,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Фанера 4/4",
             "type": ""
         },
         "image": "Д"
@@ -7560,19 +7560,19 @@ const products = [
         "weight": 17,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Фанера 4/4",
             "type": ""
         },
         "image": "Д"
     },
     {
         "name": "Фанера 1.5х1.5м, сорт 4\\4, 12мм",
-        "price": 1134,
+        "price": 1155,
         "unit": "шт",
         "weight": 21,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Фанера 4/4",
             "type": ""
         },
         "image": "Д"
@@ -7584,7 +7584,7 @@ const products = [
         "weight": 26.5,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Фанера 4/4",
             "type": ""
         },
         "image": "Д"
@@ -7596,19 +7596,19 @@ const products = [
         "weight": 29.2,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Фанера 4/4",
             "type": ""
         },
         "image": "Д"
     },
     {
         "name": "Фанера 1.5х1.5м, сорт 4\\4, 20мм",
-        "price": 1674,
+        "price": 1705,
         "unit": "шт",
         "weight": 34,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Фанера 4/4",
             "type": ""
         },
         "image": "Д"
@@ -7620,7 +7620,7 @@ const products = [
         "weight": 6.5,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Фанера 3/4",
             "type": ""
         },
         "image": "Д"
@@ -7632,7 +7632,7 @@ const products = [
         "weight": 11,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Фанера 3/4",
             "type": ""
         },
         "image": "Д"
@@ -7644,7 +7644,7 @@ const products = [
         "weight": 12.5,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Фанера 3/4",
             "type": ""
         },
         "image": "Д"
@@ -7656,7 +7656,7 @@ const products = [
         "weight": 15,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Фанера 3/4",
             "type": ""
         },
         "image": "Д"
@@ -7668,7 +7668,7 @@ const products = [
         "weight": 17,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Фанера 3/4",
             "type": ""
         },
         "image": "Д"
@@ -7680,7 +7680,7 @@ const products = [
         "weight": 21,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Фанера 3/4",
             "type": ""
         },
         "image": "Д"
@@ -7692,7 +7692,7 @@ const products = [
         "weight": 26.5,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Фанера 3/4",
             "type": ""
         },
         "image": "Д"
@@ -7704,7 +7704,7 @@ const products = [
         "weight": 29.2,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Фанера 3/4",
             "type": ""
         },
         "image": "Д"
@@ -7716,7 +7716,7 @@ const products = [
         "weight": 34,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Фанера 3/4",
             "type": ""
         },
         "image": "Д"
@@ -7728,7 +7728,7 @@ const products = [
         "weight": 37.5,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Фанера Ламинир",
             "type": ""
         },
         "image": "Д"
@@ -7740,19 +7740,19 @@ const products = [
         "weight": 43.6,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Фанера Ламинир",
             "type": ""
         },
         "image": "Д"
     },
     {
         "name": "Набор для Козлика 1шт (Брус 50х50х2000 мм - 4шт; Доска 100х25х2000 мм 6шт; Саморез 50мм 0,5кг)",
-        "price": 1836,
+        "price": 1870,
         "unit": "шт",
         "weight": 30.5,
         "category": {
             "main": "Дерево",
-            "section": "Дерево",
+            "section": "Набор для Козлика",
             "type": ""
         },
         "image": "Д"
@@ -7764,7 +7764,7 @@ const products = [
         "weight": 2.5,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Обои",
             "type": ""
         },
         "image": "М"
@@ -7776,247 +7776,247 @@ const products = [
         "weight": 2.5,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Обои",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Обои KLEO флизелиновые без фактурные под покраску 1,06х25 м (110 г/м2)",
-        "price": 3348,
+        "price": 3410,
         "unit": "шт",
         "weight": 2.5,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Обои",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Стеклохолст Pufas (50м2) (25 г/м2)",
-        "price": 1836,
+        "price": 1870,
         "unit": "шт",
         "weight": 2.5,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Стеклохолст",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Стеклохолст Pufas (50м2) (40 г/м2)",
-        "price": 1944,
+        "price": 1980,
         "unit": "шт",
         "weight": 2.5,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Стеклохолст",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Стеклохолст Oscar Паутинка (1х50 м) 25 г/м2",
-        "price": 2808,
+        "price": 2860,
         "unit": "шт",
         "weight": 2.5,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Стеклохолст",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Стеклохолст Oscar Wellton W40 (50м2) 40 г/м2",
-        "price": 3024,
+        "price": 3080,
         "unit": "шт",
         "weight": 2.5,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Стеклохолст",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Сетка стеклотканевая малярная 2х2 (1х20м)",
-        "price": 702,
+        "price": 715,
         "unit": "шт",
         "weight": 2,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Сетка Стеклоткань",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Сетка стеклотканевая малярная 2х2 (1х50м)",
-        "price": 1944,
+        "price": 1980,
         "unit": "шт",
         "weight": 4,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Сетка Стеклоткань",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Сетка стеклотканевая штукатурная ячейка 5х5 мм рулон 1х18 м",
-        "price": 702,
+        "price": 715,
         "unit": "шт",
         "weight": 2,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Сетка Стеклоткань",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Сетка стеклотканевая штукатурная ячейка 5х5 мм рулон 1х25 м",
-        "price": 918,
+        "price": 935,
         "unit": "шт",
         "weight": 2.5,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Сетка Стеклоткань",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Сетка стеклотканевая штукатурная ячейка 5х5 мм рулон 1х50 м",
-        "price": 1782,
+        "price": 1815,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Сетка Стеклоткань",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Сетка стеклотканевая штукатурная ячейка 10х10 мм рулон 1х50 м",
-        "price": 3024,
+        "price": 3080,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Сетка Стеклоткань",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Сетка фасад. стеклотк. ячейка 5х5 мм рулон 1х30 м 145 г/м.кв., желтая",
-        "price": 1620,
+        "price": 1650,
         "unit": "шт",
         "weight": 3,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Сетка Стеклоткань",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Сетка фасад. стеклотк. ячейка 5х5 мм рулон 1х50 м 160 г/м.кв., синяя",
-        "price": 2376,
+        "price": 2420,
         "unit": "шт",
         "weight": 4,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Сетка Стеклоткань",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Сетка фасад. стеклотк. ячейка 5х5 мм рулон 1х50 м 160 г/м.кв., прозр.",
-        "price": 2808,
+        "price": 2860,
         "unit": "шт",
         "weight": 4,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Сетка Стеклоткань",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Скотч двухсторонний 45мм",
-        "price": 249,
+        "price": 253,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Скотч",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Скотч малярный 50 мм х 50 м",
-        "price": 141,
+        "price": 143,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Скотч",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Скотч малярный Kraft 50 мм х 50 м",
-        "price": 249,
+        "price": 253,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Скотч",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Скотч малярный Unibob 50 мм х 50 м белый",
-        "price": 357,
+        "price": 363,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Скотч",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Скотч малярный 50 мм х 100 м",
-        "price": 238,
+        "price": 242,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Скотч",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Скотч малярный для деликатной окраски розовый 25 мм 25 м",
-        "price": 270,
+        "price": 275,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Скотч",
             "type": ""
         },
         "image": "М"
@@ -8028,31 +8028,31 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Скотч",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Скотч малярный Unibob для наружных работ синий 50 мм 25 м",
-        "price": 411,
+        "price": 418,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Скотч",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Скотч малярный Tesa для деликатных поверхностей розовый 30 мм 50 м",
-        "price": 1026,
+        "price": 1045,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Скотч",
             "type": ""
         },
         "image": "М"
@@ -8064,43 +8064,43 @@ const products = [
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Скотч",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Скотч малярный синий Unibob для деликатных поверхностей 50 мм 25 м",
-        "price": 319,
+        "price": 324,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Скотч",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Скотч малярный синий Howard для деликатных поверхностей 50 мм 25 м",
-        "price": 411,
+        "price": 418,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Скотч",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Скотч полиэтиленовый 50 мм",
-        "price": 130,
+        "price": 132,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Скотч",
             "type": ""
         },
         "image": "М"
@@ -8112,7 +8112,7 @@ const products = [
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Скотч",
             "type": ""
         },
         "image": "М"
@@ -8124,67 +8124,67 @@ const products = [
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Скотч",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Скотч армированный 50 мм х 50 м",
-        "price": 270,
+        "price": 275,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Скотч",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Скотч монтажный алюминиевый 50 мм 50 м",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Скотч",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Лента серпянка 50 мм x 90 м",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Серпянка",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Лента серпянка 100 мм x 45 м",
-        "price": 216,
+        "price": 220,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Серпянка",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Лента серпянка 150 мм x 20 м",
-        "price": 270,
+        "price": 275,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Серпянка",
             "type": ""
         },
         "image": "М"
@@ -8196,19 +8196,19 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Лента",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Лента бумажная Knauf для швов ГКЛ 50 мм 150 м",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Лента",
             "type": ""
         },
         "image": "М"
@@ -8220,7 +8220,7 @@ const products = [
         "weight": 0.35,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Лента",
             "type": ""
         },
         "image": "М"
@@ -8232,7 +8232,7 @@ const products = [
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Лента",
             "type": ""
         },
         "image": "М"
@@ -8244,19 +8244,19 @@ const products = [
         "weight": 0.01,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Лента",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Лента кромочная демпферная 100 мм 20 м для полов",
-        "price": 270,
+        "price": 275,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Лента",
             "type": ""
         },
         "image": "М"
@@ -8268,7 +8268,7 @@ const products = [
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Лента",
             "type": ""
         },
         "image": "М"
@@ -8280,19 +8280,19 @@ const products = [
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Лента",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Лента гидроизоляционная Knauf Флэхендихтбанд 12 см 10 м",
-        "price": 1458,
+        "price": 1485,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Лента",
             "type": ""
         },
         "image": "М"
@@ -8304,7 +8304,7 @@ const products = [
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Лента",
             "type": ""
         },
         "image": "М"
@@ -8316,7 +8316,7 @@ const products = [
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Лента",
             "type": ""
         },
         "image": "М"
@@ -8328,7 +8328,7 @@ const products = [
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Лента",
             "type": ""
         },
         "image": "М"
@@ -8340,67 +8340,67 @@ const products = [
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Лента",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Лента уплотнительная Дихтунгсбанд 30х3 мм 30 м",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Лента",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Лента уплотнительная Дихтунгсбанд 50х3 мм 30 м",
-        "price": 314,
+        "price": 319,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Лента",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Лента уплотнительная Дихтунгсбанд 95х3 мм 30 м",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Лента",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Лента уплотнительная Knauf Дихтунгсбанд 30х3 мм 30 м",
-        "price": 260,
+        "price": 264,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Лента",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Лента уплотнительная Knauf Дихтунгсбанд 50х3 мм 30 м",
-        "price": 357,
+        "price": 363,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Лента",
             "type": ""
         },
         "image": "М"
@@ -8412,7 +8412,7 @@ const products = [
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Лента",
             "type": ""
         },
         "image": "М"
@@ -8424,7 +8424,7 @@ const products = [
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Лента",
             "type": ""
         },
         "image": "М"
@@ -8436,43 +8436,43 @@ const products = [
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Лента",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Пленка армированная сеткой 5 х 5 мм 2м х 12,5м (25м2)",
-        "price": 1836,
+        "price": 1870,
         "unit": "шт",
         "weight": 3,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Пленка",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Пленка защитная с клейким краем 10 мкм 1,4х33 м (46,2 кв.м)",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.8,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Пленка",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Пленка защитная с клейким краем 10 мкм 2,7х20 м (54 кв.м)",
-        "price": 411,
+        "price": 418,
         "unit": "шт",
         "weight": 0.8,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Пленка",
             "type": ""
         },
         "image": "М"
@@ -8484,19 +8484,19 @@ const products = [
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Пленка",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Пленка черная 200 мкр полиэтиленовая, рук. 1,5 м",
-        "price": 87,
+        "price": 88,
         "unit": "м",
         "weight": 0.16,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Пленка",
             "type": ""
         },
         "image": "М"
@@ -8508,31 +8508,31 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Пленка",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Пленка 100 мкр полиэтиленовая, рук. 1.5 м",
-        "price": 54,
+        "price": 55,
         "unit": "м",
         "weight": 0.08,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Пленка",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Пленка 150 мкр полиэтиленовая, рук. 1.5 м",
-        "price": 65,
+        "price": 66,
         "unit": "м",
         "weight": 0.09,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Пленка",
             "type": ""
         },
         "image": "М"
@@ -8544,31 +8544,31 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Пленка",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Пленка 200 мкр полиэтиленовая, рук. 1.5 м",
-        "price": 81,
+        "price": 82,
         "unit": "м",
         "weight": 0.16,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Пленка",
             "type": ""
         },
         "image": "М"
     },
     {
         "name": "Пленка Стрэйч 500 мм 300 м",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 2,
         "category": {
             "main": "Малярка",
-            "section": "Маляр",
+            "section": "Пленка",
             "type": ""
         },
         "image": "М"
@@ -8580,7 +8580,7 @@ const products = [
         "weight": 3,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Электроинструмент",
             "type": ""
         },
         "image": "И"
@@ -8592,7 +8592,7 @@ const products = [
         "weight": 4,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Электроинструмент",
             "type": ""
         },
         "image": "И"
@@ -8604,7 +8604,7 @@ const products = [
         "weight": 1.5,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -8616,7 +8616,7 @@ const products = [
         "weight": 1.5,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -8628,7 +8628,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -8640,91 +8640,91 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Гвоздодер 500мм",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 3,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Лом гвоздодер усиленный 600 мм (монтировка)",
-        "price": 1188,
+        "price": 1210,
         "unit": "шт",
         "weight": 3,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Лом строительный 25х1300",
-        "price": 1566,
+        "price": 1595,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Лопата совковая с черенком",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 3,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Лопата штыковая с черенком",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 3,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Черенок для совка 600 мм",
-        "price": 249,
+        "price": 253,
         "unit": "шт",
         "weight": 1.5,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Черенок - ручка для лопаты метлы",
-        "price": 324,
+        "price": 330,
         "unit": "шт",
         "weight": 1.5,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -8736,7 +8736,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -8748,19 +8748,19 @@ const products = [
         "weight": 0.25,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Молоток 300 гр",
-        "price": 416,
+        "price": 423,
         "unit": "шт",
         "weight": 0.35,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -8772,115 +8772,115 @@ const products = [
         "weight": 0.45,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Молоток 500 гр",
-        "price": 432,
+        "price": 440,
         "unit": "шт",
         "weight": 0.55,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Молоток 600 гр",
-        "price": 535,
+        "price": 544,
         "unit": "шт",
         "weight": 0.65,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Молоток 800 гр",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 0.65,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Молоток 1000 гр",
-        "price": 702,
+        "price": 715,
         "unit": "шт",
         "weight": 1.1,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Молоток Киянка резиновая 300 г",
-        "price": 270,
+        "price": 275,
         "unit": "шт",
         "weight": 0.35,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Молоток Киянка резиновая 600 г",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 0.65,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Набор для укладки ламината",
-        "price": 643,
+        "price": 654,
         "unit": "шт",
         "weight": 0.8,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Клинья для укладки ламината 20 шт",
-        "price": 411,
+        "price": 418,
         "unit": "шт",
         "weight": 0.15,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Ножницы по металлу 1. Эконом",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -8892,7 +8892,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -8904,7 +8904,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -8916,7 +8916,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -8928,7 +8928,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -8940,7 +8940,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -8952,19 +8952,19 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Ножовка по блоку 500мм Эконом",
-        "price": 972,
+        "price": 990,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -8976,19 +8976,19 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Ножовка по блоку 700мм Эконом",
-        "price": 1188,
+        "price": 1210,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -9000,43 +9000,43 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Ножовка по дереву Эконом",
-        "price": 427,
+        "price": 434,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Ножовка по дереву Премиум",
-        "price": 643,
+        "price": 654,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Ножовка по металлу Эконом",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -9048,31 +9048,31 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Отвертка плюс",
-        "price": 303,
+        "price": 308,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Отвертка минус",
-        "price": 303,
+        "price": 308,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -9084,19 +9084,19 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Просекатель для профиля, работа одной рукой",
-        "price": 2106,
+        "price": 2145,
         "unit": "шт",
         "weight": 0.7,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -9108,7 +9108,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -9120,55 +9120,55 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Рубанок обдирочный по ГКЛ",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Рубанок штукатурный 450х90 Дерево",
-        "price": 1404,
+        "price": 1430,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Рубанок штукатурный 450х90 Металл",
-        "price": 2376,
+        "price": 2420,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Рулетка магнитная 5м 1. Эконом",
-        "price": 249,
+        "price": 253,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -9180,19 +9180,19 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Рулетка магнитная 10м 1. Эконом",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -9204,91 +9204,91 @@ const products = [
         "weight": 2.5,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Электроинструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Скребок для очистки межплиточных швов",
-        "price": 308,
+        "price": 313,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Скребок для снятия краски, обоев 100мм",
-        "price": 324,
+        "price": 330,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Скребок для снятия краски, обоев 100мм, удлиненная ручка",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.85,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Скребок для снятия краски, обоев 200мм Эконом",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Скребок для снятия краски, обоев 200мм",
-        "price": 810,
+        "price": 825,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Скребок для снятия краски, обоев 300мм",
-        "price": 1458,
+        "price": 1485,
         "unit": "шт",
         "weight": 0.15,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Стол малярный 500х950х800",
-        "price": 4104,
+        "price": 4180,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -9300,55 +9300,55 @@ const products = [
         "weight": 5,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Стремянка алюминий 5 ступ.",
-        "price": 3219,
+        "price": 3278,
         "unit": "шт",
         "weight": 7,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Стремянка алюминий 6 ступ.",
-        "price": 3834,
+        "price": 3905,
         "unit": "шт",
         "weight": 8,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Стремянка алюминий 8 ступ.",
-        "price": 4158,
+        "price": 4235,
         "unit": "шт",
         "weight": 10,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Степлер строительный 1. Эконом",
-        "price": 627,
+        "price": 638,
         "unit": "шт",
         "weight": 0.8,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -9360,7 +9360,7 @@ const products = [
         "weight": 0.8,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -9372,19 +9372,19 @@ const products = [
         "weight": 0.8,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Стусло коробчатое 11*120",
-        "price": 470,
+        "price": 478,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -9396,7 +9396,7 @@ const products = [
         "weight": 0.3,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -9408,7 +9408,7 @@ const products = [
         "weight": 0.35,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -9420,7 +9420,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -9432,7 +9432,7 @@ const products = [
         "weight": 0.15,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -9444,7 +9444,7 @@ const products = [
         "weight": 0.01,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -9456,19 +9456,19 @@ const products = [
         "weight": 0.25,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Тачка строительная (1 колесо)",
-        "price": 4104,
+        "price": 4180,
         "unit": "шт",
         "weight": 6,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -9480,43 +9480,43 @@ const products = [
         "weight": 8,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Топор 200 г",
-        "price": 535,
+        "price": 544,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Топор 300 г",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Присоска Вакуумная (стеклодомкрат), пластик",
-        "price": 810,
+        "price": 825,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -9528,7 +9528,7 @@ const products = [
         "weight": 2,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -9540,43 +9540,43 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Угольник строительный 400 х 600 мм, Черн",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Угольник строительный с рукояткой 300 мм, Желтый",
-        "price": 249,
+        "price": 253,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Угольник строительный с рукояткой 400 мм, Желтый",
-        "price": 270,
+        "price": 275,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
@@ -9588,31 +9588,31 @@ const products = [
         "weight": 0.15,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Щетка по металлу с пластиковой ручкой 245 мм",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.15,
         "category": {
             "main": "Инструмент",
-            "section": "Инстр",
+            "section": "Инструмент",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Тепловая пушка электрическая 2000 Вт (20 м2)",
-        "price": 3564,
+        "price": 3630,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Инструмент",
-            "section": "Электр",
+            "section": "Электроинструмент",
             "type": ""
         },
         "image": "Э"
@@ -9624,187 +9624,187 @@ const products = [
         "weight": 0.01,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бур по бетону 6x110 мм SDS+",
-        "price": 87,
+        "price": 88,
         "unit": "шт",
         "weight": 0.02,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бур по бетону 6x160 мм SDS+",
-        "price": 119,
+        "price": 121,
         "unit": "шт",
         "weight": 0.03,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бур по бетону 6x210 мм SDS+",
-        "price": 184,
+        "price": 187,
         "unit": "шт",
         "weight": 0.04,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бур по бетону 6x310 мм SDS+",
-        "price": 211,
+        "price": 214,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бур по бетону 8x110 мм SDS+",
-        "price": 141,
+        "price": 143,
         "unit": "шт",
         "weight": 0.06,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бур по бетону 8x160 мм SDS+",
-        "price": 162,
+        "price": 165,
         "unit": "шт",
         "weight": 0.07,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бур по бетону 8x210 мм SDS+",
-        "price": 211,
+        "price": 214,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бур по бетону 8x250 мм SDS+",
-        "price": 227,
+        "price": 231,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бур по бетону 10x110 мм SDS+",
-        "price": 162,
+        "price": 165,
         "unit": "шт",
         "weight": 0.09,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бур по бетону 10x160 мм SDS+",
-        "price": 189,
+        "price": 192,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бур по бетону 10x210 мм SDS+",
-        "price": 211,
+        "price": 214,
         "unit": "шт",
         "weight": 0.11,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бур по бетону 10x250 мм SDS+",
-        "price": 319,
+        "price": 324,
         "unit": "шт",
         "weight": 0.11,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бур по бетону 10x310 мм SDS+",
-        "price": 335,
+        "price": 341,
         "unit": "шт",
         "weight": 0.12,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бур по бетону 10x600 мм SDS+",
-        "price": 702,
+        "price": 715,
         "unit": "шт",
         "weight": 0.13,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бур по бетону 10x800 мм SDS+",
-        "price": 918,
+        "price": 935,
         "unit": "шт",
         "weight": 0.35,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -9816,43 +9816,43 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бур по бетону 12x110 мм SDS+",
-        "price": 227,
+        "price": 231,
         "unit": "шт",
         "weight": 0.15,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бур по бетону 12x160 мм SDS+",
-        "price": 249,
+        "price": 253,
         "unit": "шт",
         "weight": 0.15,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бур по бетону 12x210 мм SDS+",
-        "price": 270,
+        "price": 275,
         "unit": "шт",
         "weight": 0.16,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -9864,55 +9864,55 @@ const products = [
         "weight": 0.17,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бур по бетону 12x310 мм SDS+",
-        "price": 303,
+        "price": 308,
         "unit": "шт",
         "weight": 0.17,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бур по бетону 14x210 мм SDS+",
-        "price": 422,
+        "price": 429,
         "unit": "шт",
         "weight": 0.17,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бур по бетону 16х310 мм SDS+",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.18,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бур по бетону 16х460 мм SDS+",
-        "price": 918,
+        "price": 935,
         "unit": "шт",
         "weight": 0.45,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -9924,7 +9924,7 @@ const products = [
         "weight": 0.19,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -9936,7 +9936,7 @@ const products = [
         "weight": 0.7,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -9948,7 +9948,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -9960,67 +9960,67 @@ const products = [
         "weight": 1.2,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бита PH2 магнитная 25 мм",
-        "price": 65,
+        "price": 66,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бита PH2 магнитная 50 мм",
-        "price": 87,
+        "price": 88,
         "unit": "шт",
         "weight": 0.015,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бита PH2 магнитная 70 мм",
-        "price": 98,
+        "price": 99,
         "unit": "шт",
         "weight": 0.02,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бита PH2 магнитная 100 мм",
-        "price": 141,
+        "price": 143,
         "unit": "шт",
         "weight": 0.025,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бита PH2 магнитная 150 мм",
-        "price": 184,
+        "price": 187,
         "unit": "шт",
         "weight": 0.03,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -10032,19 +10032,19 @@ const products = [
         "weight": 0.01,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бита PH2 магнитная 50 мм Премиум",
-        "price": 135,
+        "price": 137,
         "unit": "шт",
         "weight": 0.015,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -10056,7 +10056,7 @@ const products = [
         "weight": 0.02,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -10068,7 +10068,7 @@ const products = [
         "weight": 0.025,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -10080,7 +10080,7 @@ const products = [
         "weight": 0.03,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -10092,7 +10092,7 @@ const products = [
         "weight": 0.025,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -10104,259 +10104,259 @@ const products = [
         "weight": 0.03,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бита с ограничителем, PH2 магнитная 50 мм",
-        "price": 141,
+        "price": 143,
         "unit": "шт",
         "weight": 0.03,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бита с ограничителем, PH2 магнитная 50 мм, Премиум",
-        "price": 270,
+        "price": 275,
         "unit": "шт",
         "weight": 0.03,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бита головка 6мм для кровельных саморезов",
-        "price": 135,
+        "price": 137,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бита головка 8мм для кровельных саморезов",
-        "price": 157,
+        "price": 159,
         "unit": "шт",
         "weight": 0.012,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бита головка 10мм для кровельных саморезов",
-        "price": 173,
+        "price": 176,
         "unit": "шт",
         "weight": 0.013,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бита головка 12мм для кровельных саморезов",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.015,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Бита головка 13мм для кровельных саморезов",
-        "price": 206,
+        "price": 209,
         "unit": "шт",
         "weight": 0.017,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Насадка - адаптер для шуруповерта угловой 60мм",
-        "price": 519,
+        "price": 528,
         "unit": "шт",
         "weight": 0.25,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Зубило плоское SDS+ 20х250 мм",
-        "price": 270,
+        "price": 275,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Зубило плоское SDS+ 40х250 мм",
-        "price": 346,
+        "price": 352,
         "unit": "шт",
         "weight": 0.02,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Зубило канальное SDS+ 22х250 мм",
-        "price": 303,
+        "price": 308,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Зубило пикообразное SDS-plus 250 мм Эконом",
-        "price": 270,
+        "price": 275,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Зубило пикообразное SDS-plus 250 мм Премиум",
-        "price": 427,
+        "price": 434,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Валик обойный для стыков (бочка) 45 мм",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Валик для нанесения шпаклевки 230 мм",
-        "price": 1620,
+        "price": 1650,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Валик 100 мм для грунтовки и покраски, Matrix",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Валик полиакрил 250 мм ворс 12мм, для грунтовки и покраски в сборе",
-        "price": 238,
+        "price": 242,
         "unit": "шт",
         "weight": 0.35,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Валик полиакрил 250 мм ворс 12мм, для грунтовки и покраски, Matrix в сборе",
-        "price": 346,
+        "price": 352,
         "unit": "шт",
         "weight": 0.35,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Валик полиакрил 250 мм ворс 18мм, для грунтовки и покраски, Matrix в сборе",
-        "price": 346,
+        "price": 352,
         "unit": "шт",
         "weight": 0.35,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Валик микрофибра 100 мм ворс 10мм, для покраски в сборе",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.35,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Валик микрофибра 250 мм ворс 10мм, для покраски в сборе",
-        "price": 670,
+        "price": 682,
         "unit": "шт",
         "weight": 0.35,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -10368,7 +10368,7 @@ const products = [
         "weight": 0.4,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -10380,67 +10380,67 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Валик ШУБКА 100 мм для покраски, Matrix",
-        "price": 141,
+        "price": 143,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Валик ШУБКА полиакрил 250 мм ворс 12мм для покраски, Matrix",
-        "price": 249,
+        "price": 253,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Валик ШУБКА полиакрил 250 мм ворс 18мм для покраски, Matrix",
-        "price": 249,
+        "price": 253,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Валик ШУБКА микрофибра 100 мм ворс 10мм, для покраски",
-        "price": 249,
+        "price": 253,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Валик ШУБКА микрофибра 250 мм ворс 10мм, для покраски",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -10452,67 +10452,67 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Валик ШУБКА 100 мм для покраски, Анза",
-        "price": 540,
+        "price": 550,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Валик ШУБКА 250 мм для покраски, Анза",
-        "price": 1620,
+        "price": 1650,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Ручка 50х6 мм для покраски, Matrix",
-        "price": 76,
+        "price": 77,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Ручка 100х6 мм для покраски, Matrix",
-        "price": 108,
+        "price": 110,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Ручка 250х6 мм для покраски, Matrix",
-        "price": 162,
+        "price": 165,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -10524,7 +10524,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -10536,91 +10536,91 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Ручка 250 мм для покраски, Анза",
-        "price": 918,
+        "price": 935,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Валик игольчатый для наливных полов (300 мм, игла 14 мм)",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Валик игольчатый для наливных полов (400 мм, игла 14 мм)",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 0.8,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Валик игольчатый для наливных полов (600 мм)",
-        "price": 810,
+        "price": 825,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Валик игольчатый для наливных полов с ручкой 1.5м (300 мм, игла 14 мм)",
-        "price": 702,
+        "price": 715,
         "unit": "шт",
         "weight": 1.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Валик игольчатый для наливных полов с ручкой 1.5м (400 мм, игла 14 мм)",
-        "price": 810,
+        "price": 825,
         "unit": "шт",
         "weight": 1.8,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Валик игольчатый для наливных полов с ручкой 1.5м (600 мм)",
-        "price": 1026,
+        "price": 1045,
         "unit": "шт",
         "weight": 2,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -10632,31 +10632,31 @@ const products = [
         "weight": 1.2,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Ванночка малярная 285*155 мм",
-        "price": 108,
+        "price": 110,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Ванночка малярная 330*350 мм",
-        "price": 119,
+        "price": 121,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -10668,7 +10668,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -10680,67 +10680,67 @@ const products = [
         "weight": 1.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Ведро строительное 12 л",
-        "price": 184,
+        "price": 187,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Ведро строительное 20 л",
-        "price": 200,
+        "price": 203,
         "unit": "шт",
         "weight": 1.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Ведро Таз строительный 45 л",
-        "price": 411,
+        "price": 418,
         "unit": "шт",
         "weight": 3.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Ведро Таз строительный 65 л",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 4.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Ведро Таз строительный 95 л",
-        "price": 627,
+        "price": 638,
         "unit": "шт",
         "weight": 6,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -10752,7 +10752,7 @@ const products = [
         "weight": 8,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -10764,175 +10764,175 @@ const products = [
         "weight": 2.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Газовая горелка, пьеза",
-        "price": 702,
+        "price": 715,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Газовый баллон 0,5 л",
-        "price": 162,
+        "price": 165,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Губка для влажной уборки 1шт",
-        "price": 76,
+        "price": 77,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Тряпка микрофибра 1шт",
-        "price": 141,
+        "price": 143,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Губка шлифовальная крупная №60",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Губка шлифовальная крупная №80",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Губка шлифовальная крупная №100",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Губка шлифовальная средняя №120",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Губка шлифовальная средняя №150",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Губка шлифовальная средняя №180",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Губка шлифовальная мелкая №220",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Губка шлифовальная мелкая №240",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Губка шлифовальная мелкая №320",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Губка для затирки швов плитки 1шт",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -10944,31 +10944,31 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Губка целлюлозная для удаления остатков затирки жёсткая",
-        "price": 810,
+        "price": 825,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Губка целлюлозная для удаления остатков затирки жёсткая LITOKOL",
-        "price": 918,
+        "price": 935,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -10980,31 +10980,31 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Пилки для лобзика по дереву набор (5 шт)",
-        "price": 184,
+        "price": 187,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Пилки для лобзика по металлу набор (5 шт)",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -11016,139 +11016,139 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Подошва тапочки для наливного пола",
-        "price": 918,
+        "price": 935,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Правило трапеционное 1 м",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Правило трапеционное 1,5 м",
-        "price": 567,
+        "price": 577,
         "unit": "шт",
         "weight": 1.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Правило трапеционное 2 м",
-        "price": 756,
+        "price": 770,
         "unit": "шт",
         "weight": 2,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Правило трапеционное 2,5 м",
-        "price": 945,
+        "price": 962,
         "unit": "шт",
         "weight": 2.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Правило трапеционное 3 м",
-        "price": 1026,
+        "price": 1045,
         "unit": "шт",
         "weight": 3,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Правило трапеционное 1 м ЗУБР, усиленное",
-        "price": 540,
+        "price": 550,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Правило трапеционное 1,5 м ЗУБР, усиленное",
-        "price": 756,
+        "price": 770,
         "unit": "шт",
         "weight": 1.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Правило трапеционное 2 м ЗУБР, усиленное",
-        "price": 1026,
+        "price": 1045,
         "unit": "шт",
         "weight": 2,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Правило трапеционное 2,5 м ЗУБР, усиленное",
-        "price": 1458,
+        "price": 1485,
         "unit": "шт",
         "weight": 2.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Правило трапеционное 3 м ЗУБР, усиленное",
-        "price": 1674,
+        "price": 1705,
         "unit": "шт",
         "weight": 3,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -11160,7 +11160,7 @@ const products = [
         "weight": 2,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -11172,91 +11172,91 @@ const products = [
         "weight": 2,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Правило алюминиевое с уровнем 2м, 2 ручки",
-        "price": 1728,
+        "price": 1760,
         "unit": "шт",
         "weight": 3,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Правило алюминиевое с уровнем 2.5м, 2 ручки",
-        "price": 2268,
+        "price": 2310,
         "unit": "шт",
         "weight": 3.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Правило алюминиевое с уровнем 3м, 2 ручки",
-        "price": 2484,
+        "price": 2530,
         "unit": "шт",
         "weight": 4.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Крестики для плитки 1,5 мм (уп 200 шт)",
-        "price": 162,
+        "price": 165,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Инстр",
+            "section": "Расходник",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Клинья для плитки Малые (уп 50 шт)",
-        "price": 130,
+        "price": 132,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Инстр",
+            "section": "Расходник",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Клинья для плитки Средние (уп 50 шт)",
-        "price": 130,
+        "price": 132,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Инстр",
+            "section": "Расходник",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Клинья для плитки Большие (уп 50 шт)",
-        "price": 130,
+        "price": 132,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Инстр",
+            "section": "Расходник",
             "type": ""
         },
         "image": "И"
@@ -11268,7 +11268,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Инстр",
+            "section": "Расходник",
             "type": ""
         },
         "image": "И"
@@ -11280,163 +11280,163 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Инстр",
+            "section": "Расходник",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "СВП 3D 1мм, Зажим (уп 100 и 500шт)",
-        "price": 4,
+        "price": 3,
         "unit": "шт",
         "weight": 0.0025,
         "category": {
             "main": "Расходник",
-            "section": "Инстр",
+            "section": "Расходник",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "СВП 3D 1,5мм, Зажим (уп 100 и 500шт)",
-        "price": 4,
+        "price": 3,
         "unit": "шт",
         "weight": 0.0025,
         "category": {
             "main": "Расходник",
-            "section": "Инстр",
+            "section": "Расходник",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "СВП 3D 2мм, Зажим (уп 100 и 500шт)",
-        "price": 4,
+        "price": 3,
         "unit": "шт",
         "weight": 0.0025,
         "category": {
             "main": "Расходник",
-            "section": "Инстр",
+            "section": "Расходник",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "СВП 3D Клин (уп 50 и 200шт)",
-        "price": 8,
+        "price": 7,
         "unit": "шт",
         "weight": 0.0025,
         "category": {
             "main": "Расходник",
-            "section": "Инстр",
+            "section": "Расходник",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "СВП TLS 1мм, Зажим (уп 100 шт)",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.0025,
         "category": {
             "main": "Расходник",
-            "section": "Инстр",
+            "section": "Расходник",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "СВП TLS 1,5мм, Зажим (уп 100 шт)",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.0025,
         "category": {
             "main": "Расходник",
-            "section": "Инстр",
+            "section": "Расходник",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "СВП TLS 2мм, Зажим (уп 100 шт)",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.0025,
         "category": {
             "main": "Расходник",
-            "section": "Инстр",
+            "section": "Расходник",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "СВП TLS Клин (уп 100шт)",
-        "price": 702,
+        "price": 715,
         "unit": "шт",
         "weight": 0.0025,
         "category": {
             "main": "Расходник",
-            "section": "Инстр",
+            "section": "Расходник",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Щипцы для монтажа СВП",
-        "price": 1404,
+        "price": 1430,
         "unit": "шт",
         "weight": 0.8,
         "category": {
             "main": "Расходник",
-            "section": "Инстр",
+            "section": "Расходник",
             "type": ""
         },
         "image": "И"
     },
     {
         "name": "Кисть макловица",
-        "price": 270,
+        "price": 275,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Кисть радиаторная 25мм",
-        "price": 135,
+        "price": 137,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Кисть радиаторная 50мм",
-        "price": 141,
+        "price": 143,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Кисть для красок круглая 35 мм",
-        "price": 141,
+        "price": 143,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -11448,163 +11448,163 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Кисть плоская 38 мм натуральная щетина",
-        "price": 76,
+        "price": 77,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Кисть плоская 50 мм натуральная щетина",
-        "price": 87,
+        "price": 88,
         "unit": "шт",
         "weight": 0.4,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Кисть плоская 75 мм натуральная щетина",
-        "price": 130,
+        "price": 132,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Кисть плоская 100 мм натуральная щетина",
-        "price": 162,
+        "price": 165,
         "unit": "шт",
         "weight": 0.6,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Кисть плоская 25 мм искусственная щетина ЗУБР",
-        "price": 76,
+        "price": 77,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Кисть плоская 38 мм искусственная щетина ЗУБР",
-        "price": 103,
+        "price": 104,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Кисть плоская 50 мм искусственная щетина ЗУБР",
-        "price": 141,
+        "price": 143,
         "unit": "шт",
         "weight": 0.4,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Кисть плоская 75 мм искусственная щетина ЗУБР",
-        "price": 173,
+        "price": 176,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Кисть плоская 100 мм искусственная щетина ЗУБР",
-        "price": 270,
+        "price": 275,
         "unit": "шт",
         "weight": 0.6,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Кисть плоская 25 мм, Анза",
-        "price": 346,
+        "price": 352,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Кисть плоская 50 мм, Анза",
-        "price": 519,
+        "price": 528,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Кисть плоская 70 мм, Анза",
-        "price": 810,
+        "price": 825,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Кисть плоская 100 мм, Анза",
-        "price": 918,
+        "price": 935,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -11616,7 +11616,7 @@ const products = [
         "weight": 0.3,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -11628,7 +11628,7 @@ const products = [
         "weight": 0.25,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -11640,7 +11640,7 @@ const products = [
         "weight": 0.3,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -11652,79 +11652,79 @@ const products = [
         "weight": 0.3,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Кельма - Гладилка для штукатурных работ пластик. ручка 270х130 мм",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.35,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Кельма - Гладилка для штукатурных работ дер. ручка 270х130 мм",
-        "price": 508,
+        "price": 517,
         "unit": "шт",
         "weight": 0.35,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Ковш штукатурный",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Коронка по бетону d-68мм, с центрирующим сверлом",
-        "price": 918,
+        "price": 935,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Коронка по бетону d-70мм, с центрирующим сверлом",
-        "price": 951,
+        "price": 968,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Коронка \"Зубр\" по бетону d-68 мм, с центрирующим сверлом",
-        "price": 1242,
+        "price": 1265,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -11736,7 +11736,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -11748,7 +11748,7 @@ const products = [
         "weight": 0.06,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -11760,7 +11760,7 @@ const products = [
         "weight": 0.07,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -11772,7 +11772,7 @@ const products = [
         "weight": 0.08,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -11784,7 +11784,7 @@ const products = [
         "weight": 0.09,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -11796,7 +11796,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -11808,7 +11808,7 @@ const products = [
         "weight": 0.11,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -11820,7 +11820,7 @@ const products = [
         "weight": 0.12,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -11832,7 +11832,7 @@ const products = [
         "weight": 0.13,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -11844,7 +11844,7 @@ const products = [
         "weight": 0.14,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -11856,7 +11856,7 @@ const products = [
         "weight": 0.15,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -11868,43 +11868,43 @@ const products = [
         "weight": 0.15,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Коронка по дереву d-68мм, с центрирующим сверлом",
-        "price": 416,
+        "price": 423,
         "unit": "шт",
         "weight": 0.16,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Коронка по дереву d-70мм, с центрирующим сверлом",
-        "price": 427,
+        "price": 434,
         "unit": "шт",
         "weight": 0.17,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Коронка по дереву d-100мм, с центрирующим сверлом",
-        "price": 465,
+        "price": 473,
         "unit": "шт",
         "weight": 0.18,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -11916,7 +11916,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -11928,7 +11928,7 @@ const products = [
         "weight": 0.01,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -11940,7 +11940,7 @@ const products = [
         "weight": 3.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -11952,187 +11952,187 @@ const products = [
         "weight": 3.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Коронка алмазная по керамограниту d-10мм, с центрирующим сверлом",
-        "price": 319,
+        "price": 324,
         "unit": "шт",
         "weight": 0.06,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Коронка алмазная по керамограниту d-16мм, с центрирующим сверлом",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.07,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Коронка алмазная по керамограниту d-20мм, с центрирующим сверлом",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Коронка алмазная по керамограниту d-25мм, с центрирующим сверлом",
-        "price": 864,
+        "price": 880,
         "unit": "шт",
         "weight": 0.09,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Коронка алмазная по керамограниту d-30мм, с центрирующим сверлом",
-        "price": 1188,
+        "price": 1210,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Коронка алмазная по керамограниту d-32мм, с центрирующим сверлом",
-        "price": 1296,
+        "price": 1320,
         "unit": "шт",
         "weight": 0.11,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Коронка алмазная по керамограниту d-35мм, с центрирующим сверлом",
-        "price": 1458,
+        "price": 1485,
         "unit": "шт",
         "weight": 0.12,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Коронка алмазная по керамограниту d-40мм, с центрирующим сверлом",
-        "price": 1620,
+        "price": 1650,
         "unit": "шт",
         "weight": 0.13,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Коронка алмазная по керамограниту d-50мм, с центрирующим сверлом",
-        "price": 1836,
+        "price": 1870,
         "unit": "шт",
         "weight": 0.14,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Коронка алмазная по керамограниту d-60мм, с центрирующим сверлом",
-        "price": 1944,
+        "price": 1980,
         "unit": "шт",
         "weight": 0.15,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Коронка алмазная по керамограниту d-63мм, с центрирующим сверлом",
-        "price": 2106,
+        "price": 2145,
         "unit": "шт",
         "weight": 0.15,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Коронка алмазная по керамограниту d-68мм, с центрирующим сверлом",
-        "price": 2376,
+        "price": 2420,
         "unit": "шт",
         "weight": 0.16,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Коронка алмазная по керамограниту d-70мм, с центрирующим сверлом",
-        "price": 2538,
+        "price": 2585,
         "unit": "шт",
         "weight": 0.17,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Коронка алмазная по керамограниту d-100мм, с центрирующим сверлом",
-        "price": 2700,
+        "price": 2750,
         "unit": "шт",
         "weight": 0.18,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Коронка алмазная для УШМ по керамограниту d-10мм",
-        "price": 843,
+        "price": 858,
         "unit": "шт",
         "weight": 0.06,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12144,7 +12144,7 @@ const products = [
         "weight": 0.07,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12156,7 +12156,7 @@ const products = [
         "weight": 0.08,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12168,7 +12168,7 @@ const products = [
         "weight": 0.09,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12180,19 +12180,19 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Коронка алмазная для УШМ по керамограниту d-32мм",
-        "price": 1188,
+        "price": 1210,
         "unit": "шт",
         "weight": 0.11,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12204,7 +12204,7 @@ const products = [
         "weight": 0.12,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12216,7 +12216,7 @@ const products = [
         "weight": 0.13,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12228,7 +12228,7 @@ const products = [
         "weight": 0.14,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12240,7 +12240,7 @@ const products = [
         "weight": 0.15,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12252,7 +12252,7 @@ const products = [
         "weight": 0.16,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12264,31 +12264,31 @@ const products = [
         "weight": 0.17,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Коронка алмазная для УШМ по керамограниту d-70мм",
-        "price": 2916,
+        "price": 2970,
         "unit": "шт",
         "weight": 0.18,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Коронка алмазная для УШМ по керамограниту d-100мм",
-        "price": 5238,
+        "price": 5335,
         "unit": "шт",
         "weight": 0.18,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12300,31 +12300,31 @@ const products = [
         "weight": 0.01,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Опрыскиватель - пульверизатор, пластик 2 л",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 0.6,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Опрыскиватель - пульверизатор, пластик 5 л",
-        "price": 1944,
+        "price": 1980,
         "unit": "шт",
         "weight": 0.6,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12336,7 +12336,7 @@ const products = [
         "weight": 0.03,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12348,7 +12348,7 @@ const products = [
         "weight": 0.06,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12360,7 +12360,7 @@ const products = [
         "weight": 0.07,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12372,31 +12372,31 @@ const products = [
         "weight": 0.08,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Перо по дереву 12",
-        "price": 76,
+        "price": 77,
         "unit": "шт",
         "weight": 0.09,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Перо по дереву 16",
-        "price": 141,
+        "price": 143,
         "unit": "шт",
         "weight": 0.12,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12408,55 +12408,55 @@ const products = [
         "weight": 0.03,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Перо по керамограниту 6",
-        "price": 303,
+        "price": 308,
         "unit": "шт",
         "weight": 0.06,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Перо по керамограниту 8",
-        "price": 324,
+        "price": 330,
         "unit": "шт",
         "weight": 0.07,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Перо по керамограниту 10",
-        "price": 389,
+        "price": 396,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Перо по керамограниту 12",
-        "price": 519,
+        "price": 528,
         "unit": "шт",
         "weight": 0.09,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12468,19 +12468,19 @@ const products = [
         "weight": 0.09,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Карандаш строительный",
-        "price": 17,
+        "price": 16,
         "unit": "шт",
         "weight": 0.001,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12492,31 +12492,31 @@ const products = [
         "weight": 0.01,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Маркер перманентный двусторонний грифель 0,7-1мм черный",
-        "price": 130,
+        "price": 132,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Маркер лаковый для промышленной графики грифель 2мм белый",
-        "price": 141,
+        "price": 143,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12528,79 +12528,79 @@ const products = [
         "weight": 0.01,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Лезвие малярного ножа 25 мм (10шт)",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Нож малярный 25 мм",
-        "price": 216,
+        "price": 220,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Лезвие малярного ножа 18 мм (10шт)",
-        "price": 162,
+        "price": 165,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Нож малярный 18 мм",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Лезвия Olfa для малярного ножа 18мм (10шт)",
-        "price": 519,
+        "price": 528,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Нож малярный Olfa 18 мм",
-        "price": 1026,
+        "price": 1045,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12612,7 +12612,7 @@ const products = [
         "weight": 0.01,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12624,7 +12624,7 @@ const products = [
         "weight": 0.01,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12636,7 +12636,7 @@ const products = [
         "weight": 0.8,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12648,7 +12648,7 @@ const products = [
         "weight": 0.01,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12660,31 +12660,31 @@ const products = [
         "weight": 1.6,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Перфолента оцинкованная 10мм х 20м",
-        "price": 249,
+        "price": 253,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Перфолента оцинкованная 20мм х 20м",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12696,7 +12696,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12708,31 +12708,31 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Диск отрезной по металлу 125 DeWALT",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Диск отрезной по металлу 180",
-        "price": 81,
+        "price": 82,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12744,7 +12744,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12756,7 +12756,7 @@ const products = [
         "weight": 0.18,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12768,43 +12768,43 @@ const products = [
         "weight": 0.18,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Диск пильный по дереву для УШМ 125 Эконом",
-        "price": 702,
+        "price": 715,
         "unit": "шт",
         "weight": 0.25,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Диск пильный по дереву для УШМ 125 Премиум",
-        "price": 918,
+        "price": 935,
         "unit": "шт",
         "weight": 0.25,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Диск пильный по дереву для циркулярной пилы d125 Эконом",
-        "price": 810,
+        "price": 825,
         "unit": "шт",
         "weight": 0.25,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12816,7 +12816,7 @@ const products = [
         "weight": 0.25,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12828,7 +12828,7 @@ const products = [
         "weight": 0.25,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12840,55 +12840,55 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Щетка чашка для УШМ 100 мм, мягкая пушистая",
-        "price": 270,
+        "price": 275,
         "unit": "шт",
         "weight": 0.25,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Щетка чашка для УШМ 125 мм, жесткая",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 0.25,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Диск алмазный по камню Triodiamant 125 1.1 мм",
-        "price": 1026,
+        "price": 1045,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Диск алмазный по керамограниту Triodiamant 125 1.1 мм",
-        "price": 1026,
+        "price": 1045,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12900,19 +12900,19 @@ const products = [
         "weight": 0.8,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Диск алмазный по керамограниту Distar Esthete 7D 125x22,2x1,1 мм , сух. Рез",
-        "price": 4644,
+        "price": 4730,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12924,19 +12924,19 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Диск алмазный по керамограниту Distar Hard Ceramics 5D 125 1,4 мм",
-        "price": 3024,
+        "price": 3080,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12948,7 +12948,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12960,7 +12960,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12972,7 +12972,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12984,7 +12984,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -12996,7 +12996,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -13008,31 +13008,31 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Диск алмазный по бетону (штроборез) 125 Эконом",
-        "price": 756,
+        "price": 770,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Диск алмазный по бетону (штроборез) 125 Премиум",
-        "price": 1944,
+        "price": 1980,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -13044,127 +13044,127 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Диск алмазный по бетону (штроборез) 230 Эконом",
-        "price": 810,
+        "price": 825,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Диск алмазный по бетону (штроборез) 230 Премиум",
-        "price": 2700,
+        "price": 2750,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Диск чашка шлифовальный по бетону 125, №2",
-        "price": 702,
+        "price": 715,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Диск алмазный гибкий (черепашка) 100 мм P-",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Насадка липучка для диска алмазный гибкий (черепашка) 100 мм",
-        "price": 303,
+        "price": 308,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Диск наждачный липучка для шлифмашинки диаметром 125мм P-",
-        "price": 87,
+        "price": 88,
         "unit": "шт",
         "weight": 0.005,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Диск наждачный липучка для шлифмашинки 6 отверстий диаметром 125мм P-",
-        "price": 92,
+        "price": 93,
         "unit": "шт",
         "weight": 0.005,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Насадка на шлифмашинку липучка на диск 125 мм",
-        "price": 270,
+        "price": 275,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Диск наждачный липучка для шлифмашинки диаметром 180мм P-",
-        "price": 92,
+        "price": 93,
         "unit": "шт",
         "weight": 0.005,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Насадка на шлифмашинку липучка на диск 180 мм",
-        "price": 303,
+        "price": 308,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -13176,7 +13176,7 @@ const products = [
         "weight": 0.005,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -13188,7 +13188,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -13200,7 +13200,7 @@ const products = [
         "weight": 0.005,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -13212,43 +13212,43 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Держатель для наджачной сетки",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Терка полиуретановая для шлифовки штукатурки 280x140 мм",
-        "price": 162,
+        "price": 165,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Терка полиуретановая для шлифовки штукатурки 600x110 мм",
-        "price": 519,
+        "price": 528,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -13260,31 +13260,31 @@ const products = [
         "weight": 1.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Нить капроновая",
-        "price": 87,
+        "price": 88,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Нить отбивочная с колером 1. Эконом",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -13296,19 +13296,19 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Колер для нити отбивочной",
-        "price": 141,
+        "price": 143,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -13320,7 +13320,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -13332,7 +13332,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -13344,7 +13344,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -13356,7 +13356,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -13368,7 +13368,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -13380,7 +13380,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -13392,7 +13392,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -13404,7 +13404,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -13416,7 +13416,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -13428,175 +13428,175 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Наждачная бумага Р-60 (25-Н) (ширина 80см) 1м",
-        "price": 594,
+        "price": 605,
         "unit": "м",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Наждачная бумага Р-80 (20-Н) (ширина 80см) 1м",
-        "price": 594,
+        "price": 605,
         "unit": "м",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Наждачная бумага Р-100 (12-Н) (ширина 80см) 1м",
-        "price": 594,
+        "price": 605,
         "unit": "м",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Наждачная бумага Р-120 (10-Н) (ширина 80см) 1м",
-        "price": 594,
+        "price": 605,
         "unit": "м",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Наждачная бумага Р-150 (8-Н) (ширина 80см) 1м",
-        "price": 594,
+        "price": 605,
         "unit": "м",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Наждачная бумага Р-180 (6-Н) (ширина 80см) 1м",
-        "price": 594,
+        "price": 605,
         "unit": "м",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Наждачная бумага Р-240 (5-Н) (ширина 80см) 1м",
-        "price": 594,
+        "price": 605,
         "unit": "м",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Наждачная бумага Р-280 (4-Н) (ширина 80см) 1м",
-        "price": 594,
+        "price": 605,
         "unit": "м",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Наждачная бумага Р-400 (3-Н) (ширина 80см) 1м",
-        "price": 594,
+        "price": 605,
         "unit": "м",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Наждачная бумага Р-1500 (0-Н) (ширина 80см) 1м",
-        "price": 594,
+        "price": 605,
         "unit": "м",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Наждачка шлифовальная в рулоне на тканевой основе 2500x115 мм P-",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Отвес строительный 300 г",
-        "price": 303,
+        "price": 308,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Респиратор - маска KN95 3-сл.",
-        "price": 141,
+        "price": 143,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Респиратор - полумаска фильтрующая без клапана",
-        "price": 54,
+        "price": 55,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -13608,7 +13608,7 @@ const products = [
         "weight": 0.35,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -13620,7 +13620,7 @@ const products = [
         "weight": 0.01,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -13632,7 +13632,7 @@ const products = [
         "weight": 0.015,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -13644,31 +13644,31 @@ const products = [
         "weight": 0.03,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Сверло по дереву 6мм",
-        "price": 92,
+        "price": 93,
         "unit": "шт",
         "weight": 0.03,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Сверло по дереву 8мм",
-        "price": 103,
+        "price": 104,
         "unit": "шт",
         "weight": 0.03,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -13680,19 +13680,19 @@ const products = [
         "weight": 0.03,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Сверло по дереву 12мм",
-        "price": 303,
+        "price": 308,
         "unit": "шт",
         "weight": 0.03,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -13704,79 +13704,79 @@ const products = [
         "weight": 0.03,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Сверло по металлу 3 мм, Кобальтовое",
-        "price": 65,
+        "price": 66,
         "unit": "шт",
         "weight": 0.03,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Сверло по металлу 4 мм, Кобальтовое",
-        "price": 76,
+        "price": 77,
         "unit": "шт",
         "weight": 0.03,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Сверло по металлу 5 мм, Кобальтовое",
-        "price": 103,
+        "price": 104,
         "unit": "шт",
         "weight": 0.03,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Сверло по металлу 6 мм, Кобальтовое",
-        "price": 162,
+        "price": 165,
         "unit": "шт",
         "weight": 0.03,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Сверло по металлу 8 мм, Кобальтовое",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.03,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Сверло по металлу 10 мм, Кобальтовое",
-        "price": 249,
+        "price": 253,
         "unit": "шт",
         "weight": 0.03,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -13788,7 +13788,7 @@ const products = [
         "weight": 0.03,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -13800,79 +13800,79 @@ const products = [
         "weight": 0.03,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Сверло ступенчатое пирамида 4 - 22",
-        "price": 810,
+        "price": 825,
         "unit": "шт",
         "weight": 0.03,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Сверло ступенчатое пирамида 4 - 39",
-        "price": 1026,
+        "price": 1045,
         "unit": "шт",
         "weight": 0.03,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Скобы для степлера строительного 10 мм, (1000 шт)",
-        "price": 162,
+        "price": 165,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Скобы для степлера строительного 12 мм, (1000 шт)",
-        "price": 162,
+        "price": 165,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Очки защитные",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Наколенники",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -13884,7 +13884,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -13896,43 +13896,43 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Перчатки с 2-м обливом Утепленные",
-        "price": 141,
+        "price": 143,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Перчатки защитные с латексным покрытием",
-        "price": 103,
+        "price": 104,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Комбинезон одноразовый Каспер",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -13944,67 +13944,67 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Удлинитель телескоп. стальной 2 м",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 1.7,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Удлинитель телескоп. стальной 3 м",
-        "price": 918,
+        "price": 935,
         "unit": "шт",
         "weight": 1.7,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Удлинитель телескоп. алюминиевый 2 м",
-        "price": 918,
+        "price": 935,
         "unit": "шт",
         "weight": 1.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Мастерок лепесток плиточника",
-        "price": 270,
+        "price": 275,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Мастерок трапециевидный каменщика",
-        "price": 270,
+        "price": 275,
         "unit": "шт",
         "weight": 0.8,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -14016,7 +14016,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -14028,7 +14028,7 @@ const products = [
         "weight": 1.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -14040,7 +14040,7 @@ const products = [
         "weight": 1.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -14052,7 +14052,7 @@ const products = [
         "weight": 2.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -14064,7 +14064,7 @@ const products = [
         "weight": 2.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -14076,7 +14076,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -14088,7 +14088,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -14100,7 +14100,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -14112,247 +14112,247 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель 60 мм",
-        "price": 65,
+        "price": 66,
         "unit": "шт",
         "weight": 0.15,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель 100 мм",
-        "price": 65,
+        "price": 66,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель 150 мм",
-        "price": 130,
+        "price": 132,
         "unit": "шт",
         "weight": 0.25,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель 200 мм",
-        "price": 162,
+        "price": 165,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель 250 мм",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.35,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель 350 мм",
-        "price": 238,
+        "price": 242,
         "unit": "шт",
         "weight": 0.45,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель 450 мм",
-        "price": 324,
+        "price": 330,
         "unit": "шт",
         "weight": 0.45,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель 600 мм",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель 450 мм СибрТех",
-        "price": 702,
+        "price": 715,
         "unit": "шт",
         "weight": 0.45,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель 40 мм Matrix",
-        "price": 130,
+        "price": 132,
         "unit": "шт",
         "weight": 0.12,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель 60 мм Matrix",
-        "price": 157,
+        "price": 159,
         "unit": "шт",
         "weight": 0.15,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель 80 мм Matrix",
-        "price": 227,
+        "price": 231,
         "unit": "шт",
         "weight": 0.15,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель 100 мм Matrix",
-        "price": 270,
+        "price": 275,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель 150 мм Matrix",
-        "price": 292,
+        "price": 297,
         "unit": "шт",
         "weight": 0.25,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель 200 мм Matrix",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель 250 мм Matrix",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 0.35,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель 300 мм Matrix",
-        "price": 648,
+        "price": 660,
         "unit": "шт",
         "weight": 0.4,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель 350 мм Matrix",
-        "price": 843,
+        "price": 858,
         "unit": "шт",
         "weight": 0.45,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель 475 мм Matrix",
-        "price": 1070,
+        "price": 1089,
         "unit": "шт",
         "weight": 0.58,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель 600 мм Matrix",
-        "price": 1350,
+        "price": 1375,
         "unit": "шт",
         "weight": 0.7,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -14364,55 +14364,55 @@ const products = [
         "weight": 0.8,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Набор шпателей сталь 50/80/100/120 мм, 4 шт.",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.8,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель - Скребок изогнутый 75 мм",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель - Скребок Matrix 253 мм, нержавеющая сталь",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель - Гладилка Нерж. Зуб 8мм",
-        "price": 249,
+        "price": 253,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -14424,31 +14424,31 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель - Гладилка Нерж. Зуб 12мм Эконом",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель - Гладилка Нерж. Зуб 12мм Премиум",
-        "price": 1566,
+        "price": 1595,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -14460,163 +14460,163 @@ const products = [
         "weight": 0.8,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель - Правило, 800 мм",
-        "price": 2700,
+        "price": 2750,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель - фасадный 450мм с широким полотном",
-        "price": 918,
+        "price": 935,
         "unit": "шт",
         "weight": 0.55,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель Гребенка 150мм, Зуб 10мм",
-        "price": 103,
+        "price": 104,
         "unit": "шт",
         "weight": 0.25,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель Гребенка 250мм, Зуб 10мм",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.35,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель Гребенка 350мм, Зуб 10мм",
-        "price": 324,
+        "price": 330,
         "unit": "шт",
         "weight": 0.45,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель зубчатый для клея, трапеция 180 мм, Зуб 4х4 мм нерж.",
-        "price": 162,
+        "price": 165,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель зубчатый для клея, трапеция 230 мм, Зуб 2х2 мм, пластик",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель зубчатый для клея, трапеция 250 мм, Зуб треугольный 5х4 мм нерж.",
-        "price": 308,
+        "price": 313,
         "unit": "шт",
         "weight": 0.06,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель для обоев универсальный 280 мм пластиковый",
-        "price": 216,
+        "price": 220,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель резиновый 126 мм пластиковая ручка",
-        "price": 184,
+        "price": 187,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель для затирки резиновый, набор (3 шт.) белый",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель для выравнивания затирки резиновый, набор геометрия (4 шт.)",
-        "price": 411,
+        "price": 418,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Шпатель резиновый для нанесения эпоксидной затирки с ручкой 115х250, Эконом",
-        "price": 702,
+        "price": 715,
         "unit": "шт",
         "weight": 0.7,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -14628,43 +14628,43 @@ const products = [
         "weight": 0.9,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Щетка метла с ручкой",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 1.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Веник + Совок",
-        "price": 400,
+        "price": 407,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Совок металл",
-        "price": 206,
+        "price": 209,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -14676,79 +14676,79 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Веник",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.8,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Венчик на Миксер под резьбу 120мм",
-        "price": 810,
+        "price": 825,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Венчик на Миксер под резьбу 140мм",
-        "price": 918,
+        "price": 935,
         "unit": "шт",
         "weight": 1.2,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Венчик на Миксер под дрель",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Венчик на Миксер под перфоратор, SDS+ 100 мм",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Венчик на Миксер под перфоратор, SDS+ 120 мм",
-        "price": 702,
+        "price": 715,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -14760,79 +14760,79 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Мешок под мусор Белый, прочный 56х105см",
-        "price": 20,
+        "price": 19,
         "unit": "шт",
         "weight": 0.07,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Мешки под мусор в рулоне 280л. черные",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Мешки для пылесоса Dexter 5шт",
-        "price": 918,
+        "price": 935,
         "unit": "шт",
         "weight": 0.25,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Мешки одноразовые для пылесоса Dexter 20л 4 шт",
-        "price": 1188,
+        "price": 1210,
         "unit": "шт",
         "weight": 0.25,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Мешок для пылесоса Tools Master WD 3 (5 шт)",
-        "price": 1242,
+        "price": 1265,
         "unit": "шт",
         "weight": 0.25,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Мешок для пылесоса универсальный Bayrtools Master Professional UM 20, 36 л (5 шт.)",
-        "price": 918,
+        "price": 935,
         "unit": "шт",
         "weight": 0.25,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -14844,7 +14844,7 @@ const products = [
         "weight": 0.25,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -14856,7 +14856,7 @@ const products = [
         "weight": 0.3,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -14868,7 +14868,7 @@ const products = [
         "weight": 0.4,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -14880,19 +14880,19 @@ const products = [
         "weight": 13,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Матрас Подушка Одеяло - Комплект",
-        "price": 1458,
+        "price": 1485,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -14904,43 +14904,43 @@ const products = [
         "weight": 8,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Фиброволокно HOWARD полипропиленовое 12 мм, 0.6кг",
-        "price": 303,
+        "price": 308,
         "unit": "шт",
         "weight": 0.6,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Фиксатор арматуры горизонтальный (стульчик)",
-        "price": 5,
+        "price": 4,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Электроды 3мм, 1кг",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -14952,7 +14952,7 @@ const products = [
         "weight": 2.5,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -14961,34 +14961,34 @@ const products = [
         "name": "Кислота для пайки",
         "price": null,
         "unit": "шт",
-        "weight": null,
+        "weight": 0,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Неодимовый магнит круглый для люков и креплений 20х3 мм",
-        "price": 303,
+        "price": 308,
         "unit": "шт",
         "weight": 0.005,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Неодимовый магнит прямоугольный для люков и креплений 35х15х3 мм",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.008,
         "category": {
             "main": "Расходник",
-            "section": "Расход",
+            "section": "Расходник",
             "type": ""
         },
         "image": "Р"
@@ -15000,7 +15000,7 @@ const products = [
         "weight": 0.03,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -15012,7 +15012,7 @@ const products = [
         "weight": 0.04,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -15024,7 +15024,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -15036,7 +15036,7 @@ const products = [
         "weight": 0.06,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -15048,7 +15048,7 @@ const products = [
         "weight": 0.07,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -15060,7 +15060,7 @@ const products = [
         "weight": 0.08,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -15072,7 +15072,7 @@ const products = [
         "weight": 0.03,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -15084,7 +15084,7 @@ const products = [
         "weight": 0.03,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -15096,19 +15096,19 @@ const products = [
         "weight": 0.03,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Анкер для бетона забивной (цанга) латунь 12х50 (1 шт.)",
-        "price": 54,
+        "price": 55,
         "unit": "шт",
         "weight": 0.03,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -15120,19 +15120,19 @@ const products = [
         "weight": 0.3,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Анкер - Клин 6*37\\40, 1шт",
-        "price": 9,
+        "price": 8,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -15144,43 +15144,43 @@ const products = [
         "weight": 0.4,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель Гриб 10х70 мм пластиковый гвоздь",
-        "price": 7,
+        "price": 6,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель Гриб 10х90 мм пластиковый гвоздь",
-        "price": 8,
+        "price": 7,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель Гриб 10х90 мм металлический гвоздь",
-        "price": 17,
+        "price": 16,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -15192,7 +15192,7 @@ const products = [
         "weight": 0.12,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -15204,31 +15204,31 @@ const products = [
         "weight": 0.15,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель - гвоздь 6х40 (200 шт), Гриб",
-        "price": 519,
+        "price": 528,
         "unit": "шт",
         "weight": 0.4,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель - гвоздь 6х60 (200 шт), Гриб",
-        "price": 519,
+        "price": 528,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -15240,91 +15240,91 @@ const products = [
         "weight": 0.6,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель - гвоздь 8x40 мм (200 шт), Гриб",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель - гвоздь 8x60 мм (100 шт), Гриб",
-        "price": 627,
+        "price": 638,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель - гвоздь 8x80 мм (100 шт), Гриб",
-        "price": 648,
+        "price": 660,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель - гвоздь 8x100 мм (100 шт), Гриб",
-        "price": 648,
+        "price": 660,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель - гвоздь 8x120 мм (1 шт), Гриб",
-        "price": 15,
+        "price": 14,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель - гвоздь 6х40 (200 шт), Потай",
-        "price": 519,
+        "price": 528,
         "unit": "шт",
         "weight": 0.4,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель - гвоздь 6х60 (200 шт), Потай",
-        "price": 519,
+        "price": 528,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -15336,7 +15336,7 @@ const products = [
         "weight": 0.6,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -15348,55 +15348,55 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель - гвоздь 8x60 мм (100 шт), Потай",
-        "price": 627,
+        "price": 638,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель - гвоздь 8x80 мм (100 шт), Потай",
-        "price": 648,
+        "price": 660,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель - гвоздь 8x100 мм (100 шт), Потай",
-        "price": 648,
+        "price": 660,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель - гвоздь 8x120 мм (1 шт), Потай",
-        "price": 15,
+        "price": 14,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -15408,19 +15408,19 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель пластиковый 6x50 мм (1 шт)",
-        "price": 2,
+        "price": 1,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -15432,7 +15432,7 @@ const products = [
         "weight": 0.001,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -15444,175 +15444,175 @@ const products = [
         "weight": 0.001,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель-хомут для круглого кабеля 5-10мм Белый (100 шт)",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель-хомут для круглого кабеля 11-19мм Белый (100 шт)",
-        "price": 211,
+        "price": 214,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель-хомут для круглого кабеля 19-25мм Белый (100 шт)",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель-хомут для плоского кабеля 5-10 мм белый (100 шт)",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель-хомут для плоского кабеля 6-12 мм белый (100 шт)",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель-хомут для плоского кабеля 9-16 мм белый (100 шт)",
-        "price": 211,
+        "price": 214,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель-хомут для плоского кабеля 19-25 мм белый (100 шт)",
-        "price": 227,
+        "price": 231,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель нейлоновый бабочка для листовых материалов 8х50 мм (1шт)",
-        "price": 15,
+        "price": 14,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель распорный 6x30 мм нейлон (1 шт)",
-        "price": 2,
+        "price": 1,
         "unit": "шт",
         "weight": 0.001,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель распорный 6x32 мм полипропилен (100 шт)",
-        "price": 130,
+        "price": 132,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель распорный 6x60 мм полипропилен (500 шт)",
-        "price": 427,
+        "price": 434,
         "unit": "шт",
         "weight": 0.25,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель распорный 6x60 мм полипропилен (1000 шт)",
-        "price": 918,
+        "price": 935,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель морковка оранжевый 6x40 мм (1 шт)",
-        "price": 2,
+        "price": 1,
         "unit": "шт",
         "weight": 0.001,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Дюбель морковка оранжевый 6x40 мм (500 шт)",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -15624,271 +15624,271 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез желтый 25 мм по металлу",
-        "price": 519,
+        "price": 528,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез желтый 25 мм по дереву",
-        "price": 519,
+        "price": 528,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез желтый универсальный 51 мм",
-        "price": 594,
+        "price": 605,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез 25 мм по металлу",
-        "price": 378,
+        "price": 385,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез 35 мм по металлу",
-        "price": 378,
+        "price": 385,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез 50 мм по металлу",
-        "price": 378,
+        "price": 385,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез 70 мм по металлу",
-        "price": 411,
+        "price": 418,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез 25 мм по дереву",
-        "price": 378,
+        "price": 385,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез 35 мм по дереву",
-        "price": 378,
+        "price": 385,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез 50 мм по дереву",
-        "price": 378,
+        "price": 385,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез 70 мм по дереву",
-        "price": 411,
+        "price": 418,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез 75 мм по дереву",
-        "price": 411,
+        "price": 418,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез 100 мм по дереву",
-        "price": 411,
+        "price": 418,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез 150 мм по дереву",
-        "price": 411,
+        "price": 418,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез Прессшайба 13мм острый",
-        "price": 594,
+        "price": 605,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез Прессшайба 13мм с буром",
-        "price": 594,
+        "price": 605,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез Прессшайба 16мм острый",
-        "price": 594,
+        "price": 605,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез Прессшайба 16мм с буром",
-        "price": 594,
+        "price": 605,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез Прессшайба 19мм острый",
-        "price": 594,
+        "price": 605,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез Прессшайба 19мм с буром",
-        "price": 594,
+        "price": 605,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез Прессшайба 50мм острый",
-        "price": 702,
+        "price": 715,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез Прессшайба 50мм с буром",
-        "price": 702,
+        "price": 715,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -15900,7 +15900,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -15912,7 +15912,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -15924,7 +15924,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -15936,7 +15936,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -15948,7 +15948,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -15960,7 +15960,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -15972,31 +15972,31 @@ const products = [
         "weight": 0.016,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморезы черные клопы 9,5x2,5 острый",
-        "price": 594,
+        "price": 605,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморезы черные клопы 9,5x3,5 с буром",
-        "price": 594,
+        "price": 605,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -16008,7 +16008,7 @@ const products = [
         "weight": 0.02,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -16020,43 +16020,43 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез по ГВЛ 25 мм",
-        "price": 702,
+        "price": 715,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез по ГВЛ 35 мм",
-        "price": 702,
+        "price": 715,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез по ГВЛ 45 мм",
-        "price": 702,
+        "price": 715,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -16068,67 +16068,67 @@ const products = [
         "weight": 0.8,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез Knauf по гипсокартону 25 мм (1000 шт.)",
-        "price": 1458,
+        "price": 1485,
         "unit": "шт",
         "weight": 2,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез Knauf по гипсокартону 35 мм (1000 шт.)",
-        "price": 1458,
+        "price": 1485,
         "unit": "шт",
         "weight": 2.5,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез Knauf по гипсокартону 45 мм (1000 шт.)",
-        "price": 1620,
+        "price": 1650,
         "unit": "шт",
         "weight": 3,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез в ленте Knauf по гипсокартону 25 мм (1000 шт.)",
-        "price": 1890,
+        "price": 1925,
         "unit": "шт",
         "weight": 2,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез в ленте Knauf по гипсокартону 35 мм (1000 шт.)",
-        "price": 1890,
+        "price": 1925,
         "unit": "шт",
         "weight": 2.5,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -16140,7 +16140,7 @@ const products = [
         "weight": 3,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -16152,7 +16152,7 @@ const products = [
         "weight": 0.7,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -16164,7 +16164,7 @@ const products = [
         "weight": 1.2,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -16176,7 +16176,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -16188,163 +16188,163 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Саморез для подрозетника 10 / 20 мм",
-        "price": 519,
+        "price": 528,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Гвозди для монтажного пистолета 3.0 х 16 мм усиленные 1000 шт.",
-        "price": 1923,
+        "price": 1958,
         "unit": "шт",
         "weight": 1.5,
         "category": {
             "main": "Крепёж",
-            "section": "Расход",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Гвозди для монтажного пистолета 3.0 х 19 мм усиленные 1000 шт.",
-        "price": 2139,
+        "price": 2178,
         "unit": "шт",
         "weight": 2,
         "category": {
             "main": "Крепёж",
-            "section": "Расход",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Гвозди для монтажного пистолета 3.0 х 22 мм усиленные 1000 шт.",
-        "price": 2268,
+        "price": 2310,
         "unit": "шт",
         "weight": 2.5,
         "category": {
             "main": "Крепёж",
-            "section": "Расход",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Гвозди для монтажного пистолета 3.0 х 25 мм усиленные 1000 шт.",
-        "price": 2376,
+        "price": 2420,
         "unit": "шт",
         "weight": 3,
         "category": {
             "main": "Крепёж",
-            "section": "Расход",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Газовый баллон для монтажных пистолетов 165 мм 80мл",
-        "price": 810,
+        "price": 825,
         "unit": "шт",
         "weight": 0.9,
         "category": {
             "main": "Крепёж",
-            "section": "Расход",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Саморез кровельный по профлисту гарпун 5,5х38",
-        "price": 702,
+        "price": 715,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Расход",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Гвозди 70 мм",
-        "price": 195,
+        "price": 198,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Гвозди 75 мм",
-        "price": 195,
+        "price": 198,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Гвозди 80 мм",
-        "price": 195,
+        "price": 198,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Гвозди 100 мм",
-        "price": 195,
+        "price": 198,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Гвозди 120 мм",
-        "price": 195,
+        "price": 198,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Гвозди 150 мм",
-        "price": 216,
+        "price": 220,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -16356,7 +16356,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -16368,7 +16368,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -16380,7 +16380,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -16392,31 +16392,31 @@ const products = [
         "weight": 0.01,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Шпилька резьбовая М8 х 2000 мм",
-        "price": 270,
+        "price": 275,
         "unit": "шт",
         "weight": 0.4,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Шпилька резьбовая М8 х 1000 мм",
-        "price": 141,
+        "price": 143,
         "unit": "шт",
         "weight": 0.4,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -16428,31 +16428,31 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Шайба М8",
-        "price": 519,
+        "price": 528,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Гайка М8",
-        "price": 519,
+        "price": 528,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -16464,7 +16464,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -16476,31 +16476,31 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Шпилька резьбовая М10 х 2000 мм",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.4,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Шпилька резьбовая М10 х 1000 мм",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.4,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -16512,31 +16512,31 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Шайба М10",
-        "price": 519,
+        "price": 528,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Гайка М10",
-        "price": 519,
+        "price": 528,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -16548,7 +16548,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -16560,19 +16560,19 @@ const products = [
         "weight": 0.4,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Шпилька резьбовая М12 х 1000 мм",
-        "price": 227,
+        "price": 231,
         "unit": "шт",
         "weight": 0.4,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -16584,31 +16584,31 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Шайба М12",
-        "price": 519,
+        "price": 528,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Гайка М12",
-        "price": 519,
+        "price": 528,
         "unit": "кг",
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -16620,7 +16620,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -16632,7 +16632,7 @@ const products = [
         "weight": 0.4,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -16644,7 +16644,7 @@ const products = [
         "weight": 0.4,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -16656,7 +16656,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -16668,7 +16668,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -16680,7 +16680,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
@@ -16692,43 +16692,43 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Крепёж",
-            "section": "Крепёж",
+            "section": "Крепеж",
             "type": ""
         },
         "image": "К"
     },
     {
         "name": "Изолента",
-        "price": 103,
+        "price": 104,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Электрика",
-            "section": "Расход",
+            "section": "Электро Расход",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Изолента Желто - Зеленая",
-        "price": 119,
+        "price": 121,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Электрика",
-            "section": "Расход",
+            "section": "Электро Расход",
             "type": ""
         },
         "image": "Р"
     },
     {
         "name": "Подрозетник по ГКЛ",
-        "price": 21,
+        "price": 20,
         "unit": "шт",
         "weight": 0.02,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Электро Расход",
             "type": ""
         },
         "image": "Э"
@@ -16740,79 +16740,79 @@ const products = [
         "weight": 0.03,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Электро Расход",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Подрозетник по бетону",
-        "price": 16,
+        "price": 15,
         "unit": "шт",
         "weight": 0.02,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Электро Расход",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Подрозетник по бетону глубокий",
-        "price": 20,
+        "price": 19,
         "unit": "шт",
         "weight": 0.03,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Электро Расход",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Вилка каучуковая с заземлением",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Электро Расход",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Колодка с заземл. (тройник) 2-е розетки",
-        "price": 270,
+        "price": 275,
         "unit": "шт",
         "weight": 0.15,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Электро Расход",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Колодка с заземл. (тройник) 3-и розетки",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Электро Расход",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Колодка с заземл. (тройник) 4-е розетки",
-        "price": 454,
+        "price": 462,
         "unit": "шт",
         "weight": 0.45,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Электро Расход",
             "type": ""
         },
         "image": "Э"
@@ -16824,7 +16824,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Электро Расход",
             "type": ""
         },
         "image": "Э"
@@ -16836,7 +16836,7 @@ const products = [
         "weight": 0.06,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -16848,7 +16848,7 @@ const products = [
         "weight": 0.08,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -16860,7 +16860,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -16872,7 +16872,7 @@ const products = [
         "weight": 0.14,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -16884,7 +16884,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -16896,7 +16896,7 @@ const products = [
         "weight": 0.26,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -16908,7 +16908,7 @@ const products = [
         "weight": 0.12,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -16920,7 +16920,7 @@ const products = [
         "weight": 0.24,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -16932,7 +16932,7 @@ const products = [
         "weight": 0.35,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -16944,7 +16944,7 @@ const products = [
         "weight": 0.42,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -16956,7 +16956,7 @@ const products = [
         "weight": 0.75,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -16968,7 +16968,7 @@ const products = [
         "weight": 0.06,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -16980,7 +16980,7 @@ const products = [
         "weight": 0.08,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -16992,43 +16992,43 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Кабель плоский ОмКабель ВВГнг LS 3x2,5 ГОСТ",
-        "price": 87,
+        "price": 88,
         "unit": "м",
         "weight": 0.14,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Кабель плоский ОмКабель ВВГнг LS 3x4 ГОСТ",
-        "price": 184,
+        "price": 187,
         "unit": "м",
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Кабель плоский ОмКабель ВВГнг LS 3x6 ГОСТ",
-        "price": 249,
+        "price": 253,
         "unit": "м",
         "weight": 0.26,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -17040,19 +17040,19 @@ const products = [
         "weight": 0.45,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Кабель плоский ОмКабель ВВГнг LS 4x5 ГОСТ",
-        "price": 270,
+        "price": 275,
         "unit": "м",
         "weight": 0.66,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -17064,7 +17064,7 @@ const products = [
         "weight": 0.12,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -17076,31 +17076,31 @@ const products = [
         "weight": 0.24,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Кабель плоский ОмКабель ВВГнг LS 5x4 ГОСТ",
-        "price": 297,
+        "price": 302,
         "unit": "м",
         "weight": 0.35,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Кабель плоский ОмКабель ВВГнг LS 5x6 ГОСТ",
-        "price": 366,
+        "price": 371,
         "unit": "м",
         "weight": 0.42,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -17112,7 +17112,7 @@ const products = [
         "weight": 0.75,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -17124,7 +17124,7 @@ const products = [
         "weight": 1.8,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -17136,7 +17136,7 @@ const products = [
         "weight": 2.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -17148,7 +17148,7 @@ const products = [
         "weight": 0.06,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -17160,55 +17160,55 @@ const products = [
         "weight": 0.08,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Кабель плоский ЕвроКабель ВВГнг LS 3x1,5 ГОСТ",
-        "price": 94,
+        "price": 95,
         "unit": "м",
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Кабель плоский ЕвроКабель ВВГнг LS 3x2,5 ГОСТ",
-        "price": 119,
+        "price": 121,
         "unit": "м",
         "weight": 0.14,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Кабель плоский ЕвроКабель ВВГнг LS 3x4 ГОСТ",
-        "price": 206,
+        "price": 209,
         "unit": "м",
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Кабель плоский ЕвроКабель ВВГнг LS 3x6 ГОСТ",
-        "price": 314,
+        "price": 319,
         "unit": "м",
         "weight": 0.26,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -17220,7 +17220,7 @@ const products = [
         "weight": 0.45,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -17232,7 +17232,7 @@ const products = [
         "weight": 0.66,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -17244,7 +17244,7 @@ const products = [
         "weight": 0.12,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -17256,7 +17256,7 @@ const products = [
         "weight": 0.24,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -17268,7 +17268,7 @@ const products = [
         "weight": 0.35,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -17280,7 +17280,7 @@ const products = [
         "weight": 0.42,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -17292,7 +17292,7 @@ const products = [
         "weight": 0.75,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -17304,7 +17304,7 @@ const products = [
         "weight": 1.8,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -17316,7 +17316,7 @@ const products = [
         "weight": 2.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -17328,7 +17328,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель НУМ",
             "type": ""
         },
         "image": "Э"
@@ -17340,7 +17340,7 @@ const products = [
         "weight": 0.14,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель НУМ",
             "type": ""
         },
         "image": "Э"
@@ -17352,7 +17352,7 @@ const products = [
         "weight": 0.45,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель НУМ",
             "type": ""
         },
         "image": "Э"
@@ -17364,7 +17364,7 @@ const products = [
         "weight": 0.66,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель НУМ",
             "type": ""
         },
         "image": "Э"
@@ -17376,7 +17376,7 @@ const products = [
         "weight": 0.48,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель НУМ",
             "type": ""
         },
         "image": "Э"
@@ -17388,7 +17388,7 @@ const products = [
         "weight": 0.55,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель НУМ",
             "type": ""
         },
         "image": "Э"
@@ -17400,7 +17400,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -17412,7 +17412,7 @@ const products = [
         "weight": 0.14,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -17424,7 +17424,7 @@ const products = [
         "weight": 0.45,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -17436,7 +17436,7 @@ const products = [
         "weight": 0.66,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -17448,7 +17448,7 @@ const products = [
         "weight": 0.48,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -17460,7 +17460,7 @@ const products = [
         "weight": 0.55,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Плоский",
             "type": ""
         },
         "image": "Э"
@@ -17472,7 +17472,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Круглый",
             "type": ""
         },
         "image": "Э"
@@ -17484,7 +17484,7 @@ const products = [
         "weight": 0.14,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Круглый",
             "type": ""
         },
         "image": "Э"
@@ -17496,7 +17496,7 @@ const products = [
         "weight": 0.45,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Круглый",
             "type": ""
         },
         "image": "Э"
@@ -17508,7 +17508,7 @@ const products = [
         "weight": 0.48,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Круглый",
             "type": ""
         },
         "image": "Э"
@@ -17520,7 +17520,7 @@ const products = [
         "weight": 0.66,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Круглый",
             "type": ""
         },
         "image": "Э"
@@ -17532,7 +17532,7 @@ const products = [
         "weight": 0.55,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Круглый",
             "type": ""
         },
         "image": "Э"
@@ -17544,7 +17544,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Круглый",
             "type": ""
         },
         "image": "Э"
@@ -17556,7 +17556,7 @@ const products = [
         "weight": 0.14,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Круглый",
             "type": ""
         },
         "image": "Э"
@@ -17568,7 +17568,7 @@ const products = [
         "weight": 0.45,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Круглый",
             "type": ""
         },
         "image": "Э"
@@ -17580,7 +17580,7 @@ const products = [
         "weight": 0.66,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Круглый",
             "type": ""
         },
         "image": "Э"
@@ -17592,7 +17592,7 @@ const products = [
         "weight": 0.48,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Круглый",
             "type": ""
         },
         "image": "Э"
@@ -17604,19 +17604,19 @@ const products = [
         "weight": 0.55,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Круглый",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Кабель ПВС 2х0,75 ГОСТ",
-        "price": 29,
+        "price": 28,
         "unit": "м",
         "weight": 0.05,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель ПВС",
             "type": ""
         },
         "image": "Э"
@@ -17628,7 +17628,7 @@ const products = [
         "weight": 0.07,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель ПВС",
             "type": ""
         },
         "image": "Э"
@@ -17640,19 +17640,19 @@ const products = [
         "weight": 0.08,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель ПВС",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Кабель ПВС 2х2,5 ГОСТ",
-        "price": 76,
+        "price": 77,
         "unit": "м",
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель ПВС",
             "type": ""
         },
         "image": "Э"
@@ -17664,31 +17664,31 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель ПВС",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Кабель ПВС 3х1.5 ГОСТ",
-        "price": 81,
+        "price": 82,
         "unit": "м",
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель ПВС",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Кабель ПВС 3х2.5 ГОСТ",
-        "price": 103,
+        "price": 104,
         "unit": "м",
         "weight": 0.13,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель ПВС",
             "type": ""
         },
         "image": "Э"
@@ -17700,7 +17700,7 @@ const products = [
         "weight": 0.12,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель ПВС",
             "type": ""
         },
         "image": "Э"
@@ -17712,19 +17712,19 @@ const products = [
         "weight": 0.13,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель ПВС",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Кабель ПВС 3х6 ГОСТ",
-        "price": 281,
+        "price": 286,
         "unit": "м",
         "weight": 0.15,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель ПВС",
             "type": ""
         },
         "image": "Э"
@@ -17736,7 +17736,7 @@ const products = [
         "weight": 0.11,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель ПВС",
             "type": ""
         },
         "image": "Э"
@@ -17748,7 +17748,7 @@ const products = [
         "weight": 0.18,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель ПВС",
             "type": ""
         },
         "image": "Э"
@@ -17760,7 +17760,7 @@ const products = [
         "weight": 0.38,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель ПВС",
             "type": ""
         },
         "image": "Э"
@@ -17772,19 +17772,19 @@ const products = [
         "weight": 0.43,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель ПВС",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Кабель ШВВП 2х0,75",
-        "price": 29,
+        "price": 28,
         "unit": "м",
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель ШВВП",
             "type": ""
         },
         "image": "Э"
@@ -17796,7 +17796,7 @@ const products = [
         "weight": 0.3,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель ШВВП",
             "type": ""
         },
         "image": "Э"
@@ -17808,7 +17808,7 @@ const products = [
         "weight": 0.4,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель ШВВП",
             "type": ""
         },
         "image": "Э"
@@ -17820,7 +17820,7 @@ const products = [
         "weight": 0.15,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель ПУГВ",
             "type": ""
         },
         "image": "Э"
@@ -17832,7 +17832,7 @@ const products = [
         "weight": 0.27,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель ПУГВ",
             "type": ""
         },
         "image": "Э"
@@ -17844,19 +17844,19 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель ПУГВ",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Кабель ПВ-3 (ПУГВ) 6,0 цвет ?",
-        "price": 92,
+        "price": 93,
         "unit": "м",
         "weight": 0.07,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель ПУГВ",
             "type": ""
         },
         "image": "Э"
@@ -17868,7 +17868,7 @@ const products = [
         "weight": 0.12,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель ПУГВ",
             "type": ""
         },
         "image": "Э"
@@ -17880,7 +17880,7 @@ const products = [
         "weight": 0.19,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель ПУГВ",
             "type": ""
         },
         "image": "Э"
@@ -17892,7 +17892,7 @@ const products = [
         "weight": 0.31,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель ПУГВ",
             "type": ""
         },
         "image": "Э"
@@ -17904,7 +17904,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель ТВ",
             "type": ""
         },
         "image": "Э"
@@ -17916,43 +17916,43 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Канал",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Кабель - канал 16х16, 2м белый",
-        "price": 76,
+        "price": 77,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Канал",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Кабель - канал 20х10, 2м белый",
-        "price": 54,
+        "price": 55,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Канал",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Кабель - канал 25х16, 2м белый",
-        "price": 65,
+        "price": 66,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Канал",
             "type": ""
         },
         "image": "Э"
@@ -17964,19 +17964,19 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Канал",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Кабель - Канал 40х20, 2м белый",
-        "price": 146,
+        "price": 148,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Канал",
             "type": ""
         },
         "image": "Э"
@@ -17988,31 +17988,31 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Канал",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Удлинитель тройник (5м)",
-        "price": 735,
+        "price": 748,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Удлинитель",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Удлинитель тройник (10м)",
-        "price": 972,
+        "price": 990,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Удлинитель",
             "type": ""
         },
         "image": "Э"
@@ -18024,7 +18024,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Удлинитель",
             "type": ""
         },
         "image": "Э"
@@ -18036,7 +18036,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Удлинитель",
             "type": ""
         },
         "image": "Э"
@@ -18048,19 +18048,19 @@ const products = [
         "weight": 0.3,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Интерн",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Интернет кабель FTP 5cat - 4е пары",
-        "price": 42,
+        "price": 41,
         "unit": "м",
         "weight": 0.4,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Интерн",
             "type": ""
         },
         "image": "Э"
@@ -18072,7 +18072,7 @@ const products = [
         "weight": 0.4,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Кабель Интерн",
             "type": ""
         },
         "image": "Э"
@@ -18084,7 +18084,7 @@ const products = [
         "weight": 6,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -18096,7 +18096,7 @@ const products = [
         "weight": 7.8,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -18108,7 +18108,7 @@ const products = [
         "weight": 6,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -18120,67 +18120,67 @@ const products = [
         "weight": 7.8,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Гофра электрическая ПВХ 16 мм с зондом (уп. 100м) Серая",
-        "price": 1296,
+        "price": 1320,
         "unit": "шт",
         "weight": 4,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Гофра электрическая ПВХ 20 мм с зондом (уп. 1м) Серая",
-        "price": 19,
+        "price": 18,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Гофра электрическая ПВХ 20 мм с зондом (уп. 100м) Серая",
-        "price": 1404,
+        "price": 1430,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Гофра электрическая ПВХ 25 мм с зондом (50м) Серая",
-        "price": 1026,
+        "price": 1045,
         "unit": "шт",
         "weight": 6,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Гофра электрическая ПВХ 32 мм с зондом (25м) Серая",
-        "price": 918,
+        "price": 935,
         "unit": "шт",
         "weight": 8,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -18192,7 +18192,7 @@ const products = [
         "weight": 4,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -18204,7 +18204,7 @@ const products = [
         "weight": 5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -18216,7 +18216,7 @@ const products = [
         "weight": 6,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -18228,55 +18228,55 @@ const products = [
         "weight": 8,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Гофра электрическая ПНД 16 мм с зондом (уп. 100м), черная",
-        "price": 1512,
+        "price": 1540,
         "unit": "шт",
         "weight": 4,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Гофра электрическая ПНД 20 мм с зондом (уп. 100м), черная",
-        "price": 1620,
+        "price": 1650,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Гофра электрическая ПНД 25 мм с зондом (50м), черная",
-        "price": 1080,
+        "price": 1100,
         "unit": "шт",
         "weight": 6,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Гофра электрическая ПНД 32 мм с зондом (25м), черная",
-        "price": 972,
+        "price": 990,
         "unit": "шт",
         "weight": 8,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -18288,7 +18288,7 @@ const products = [
         "weight": 4,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -18300,7 +18300,7 @@ const products = [
         "weight": 5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -18312,7 +18312,7 @@ const products = [
         "weight": 6,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -18324,7 +18324,7 @@ const products = [
         "weight": 8,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -18336,7 +18336,7 @@ const products = [
         "weight": 0.8,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Электро Расход",
             "type": ""
         },
         "image": "Э"
@@ -18348,7 +18348,7 @@ const products = [
         "weight": 0.001,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Электро Расход",
             "type": ""
         },
         "image": "Э"
@@ -18360,7 +18360,7 @@ const products = [
         "weight": 0.002,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Электро Расход",
             "type": ""
         },
         "image": "Э"
@@ -18372,7 +18372,7 @@ const products = [
         "weight": 0.003,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Электро Расход",
             "type": ""
         },
         "image": "Э"
@@ -18384,7 +18384,7 @@ const products = [
         "weight": 0.004,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Электро Расход",
             "type": ""
         },
         "image": "Э"
@@ -18396,43 +18396,43 @@ const products = [
         "weight": 0.005,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Электро Расход",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Наконечник НШВИ 1,5 мм (100 шт)",
-        "price": 211,
+        "price": 214,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Электро Расход",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Наконечник НШВИ 2,5 мм (100 шт)",
-        "price": 249,
+        "price": 253,
         "unit": "шт",
         "weight": 0.15,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Электро Расход",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Наконечник НШВИ 6 мм (1 шт)",
-        "price": 4,
+        "price": 3,
         "unit": "шт",
         "weight": 0.005,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Электро Расход",
             "type": ""
         },
         "image": "Э"
@@ -18444,19 +18444,19 @@ const products = [
         "weight": 0.01,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Электро Расход",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Термоусадочная трубка, Набор (20шт)",
-        "price": 270,
+        "price": 275,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Электро Расход",
             "type": ""
         },
         "image": "Э"
@@ -18468,7 +18468,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Электро Расход",
             "type": ""
         },
         "image": "Э"
@@ -18480,7 +18480,7 @@ const products = [
         "weight": 0.02,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Электро Расход",
             "type": ""
         },
         "image": "Э"
@@ -18492,7 +18492,7 @@ const products = [
         "weight": 0.03,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Электро Расход",
             "type": ""
         },
         "image": "Э"
@@ -18504,7 +18504,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Электро Расход",
             "type": ""
         },
         "image": "Э"
@@ -18516,19 +18516,19 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Электро Расход",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Распределительная коробка уравнивания потенциалов IP55 100х100х50 мм 7 вводов (КУП)",
-        "price": 422,
+        "price": 429,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Электро Защита",
             "type": ""
         },
         "image": "Э"
@@ -18540,7 +18540,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Труба под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -18552,7 +18552,7 @@ const products = [
         "weight": 1.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Труба под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -18564,7 +18564,7 @@ const products = [
         "weight": 1.4,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Труба под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -18576,7 +18576,7 @@ const products = [
         "weight": 1.6,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Труба под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -18588,7 +18588,7 @@ const products = [
         "weight": 1.8,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Труба под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -18600,7 +18600,7 @@ const products = [
         "weight": 0.3,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Труба под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -18612,19 +18612,19 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Труба под Кабель",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Труба гладкая для кабеля ПВХ D20 мм 2 м цвет черный",
-        "price": 125,
+        "price": 126,
         "unit": "шт",
         "weight": 1.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Труба под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -18636,7 +18636,7 @@ const products = [
         "weight": 1.4,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Труба под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -18648,7 +18648,7 @@ const products = [
         "weight": 1.6,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Труба под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -18660,7 +18660,7 @@ const products = [
         "weight": 1.8,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Труба под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -18672,7 +18672,7 @@ const products = [
         "weight": 0.3,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Труба под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -18684,19 +18684,19 @@ const products = [
         "weight": 4.6,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Лоток под Кабель",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Профиль перф. П-образный 1,5х3000 мм, для монтажа металлических лотков",
-        "price": 1080,
+        "price": 1100,
         "unit": "шт",
         "weight": 3.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Лоток под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -18708,31 +18708,31 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Распайки",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Распаячная коробка 85х85х40",
-        "price": 65,
+        "price": 66,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Распайки",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Распаячная коробка 100х100х50",
-        "price": 81,
+        "price": 82,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Распайки",
             "type": ""
         },
         "image": "Э"
@@ -18744,7 +18744,7 @@ const products = [
         "weight": 0.4,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Распайки",
             "type": ""
         },
         "image": "Э"
@@ -18756,7 +18756,7 @@ const products = [
         "weight": 0.4,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Распайки",
             "type": ""
         },
         "image": "Э"
@@ -18768,7 +18768,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Распайки",
             "type": ""
         },
         "image": "Э"
@@ -18780,19 +18780,19 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Распайки",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Клемма 2-я Защелка",
-        "price": 21,
+        "price": 20,
         "unit": "шт",
         "weight": 0.002,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Клемма",
             "type": ""
         },
         "image": "Э"
@@ -18804,7 +18804,7 @@ const products = [
         "weight": 0.003,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Клемма",
             "type": ""
         },
         "image": "Э"
@@ -18816,7 +18816,7 @@ const products = [
         "weight": 0.005,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Клемма",
             "type": ""
         },
         "image": "Э"
@@ -18828,7 +18828,7 @@ const products = [
         "weight": 0.002,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Клемма",
             "type": ""
         },
         "image": "Э"
@@ -18840,7 +18840,7 @@ const products = [
         "weight": 0.003,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Клемма",
             "type": ""
         },
         "image": "Э"
@@ -18852,7 +18852,7 @@ const products = [
         "weight": 0.004,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Клемма",
             "type": ""
         },
         "image": "Э"
@@ -18864,7 +18864,7 @@ const products = [
         "weight": 0.005,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Клемма",
             "type": ""
         },
         "image": "Э"
@@ -18876,7 +18876,7 @@ const products = [
         "weight": 0.003,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Клемма",
             "type": ""
         },
         "image": "Э"
@@ -18888,19 +18888,19 @@ const products = [
         "weight": 0.004,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Клемма",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Клемма WAGO 2273-205 самозажимная для жёсткого кабеля Без пасты",
-        "price": 31,
+        "price": 30,
         "unit": "шт",
         "weight": 0.005,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Клемма",
             "type": ""
         },
         "image": "Э"
@@ -18912,7 +18912,7 @@ const products = [
         "weight": 0.001,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Клемма",
             "type": ""
         },
         "image": "Э"
@@ -18924,7 +18924,7 @@ const products = [
         "weight": 0.002,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Клемма",
             "type": ""
         },
         "image": "Э"
@@ -18936,7 +18936,7 @@ const products = [
         "weight": 0.003,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Клемма",
             "type": ""
         },
         "image": "Э"
@@ -18948,7 +18948,7 @@ const products = [
         "weight": 0.004,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Клемма",
             "type": ""
         },
         "image": "Э"
@@ -18960,31 +18960,31 @@ const products = [
         "weight": 0.005,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Клемма",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Клемма соединительная 2-проводная плоская с пастой",
-        "price": 31,
+        "price": 30,
         "unit": "шт",
         "weight": 0.001,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Клемма",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Клемма соединительная 3-проводная плоская с пастой",
-        "price": 31,
+        "price": 30,
         "unit": "шт",
         "weight": 0.002,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Клемма",
             "type": ""
         },
         "image": "Э"
@@ -18996,7 +18996,7 @@ const products = [
         "weight": 0.003,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Клемма",
             "type": ""
         },
         "image": "Э"
@@ -19008,7 +19008,7 @@ const products = [
         "weight": 0.004,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Клемма",
             "type": ""
         },
         "image": "Э"
@@ -19020,7 +19020,7 @@ const products = [
         "weight": 0.005,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Клемма",
             "type": ""
         },
         "image": "Э"
@@ -19032,19 +19032,19 @@ const products = [
         "weight": 0.001,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Клемма",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Клеммник колодка винтовой 2,5 мм, 12 пар",
-        "price": 130,
+        "price": 132,
         "unit": "шт",
         "weight": 0.003,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Клемма",
             "type": ""
         },
         "image": "Э"
@@ -19056,7 +19056,7 @@ const products = [
         "weight": 0.005,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Клемма",
             "type": ""
         },
         "image": "Э"
@@ -19068,7 +19068,7 @@ const products = [
         "weight": 0.007,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Клемма",
             "type": ""
         },
         "image": "Э"
@@ -19080,7 +19080,7 @@ const products = [
         "weight": 0.009,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Клемма",
             "type": ""
         },
         "image": "Э"
@@ -19092,43 +19092,43 @@ const products = [
         "weight": 0.011,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Клемма",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Клипсы для гофры 16 мм (100 шт)",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Клипсы для гофры 20 мм (100 шт)",
-        "price": 411,
+        "price": 418,
         "unit": "шт",
         "weight": 0.15,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Клипсы для гофры 25 мм (100 шт)",
-        "price": 411,
+        "price": 418,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -19140,7 +19140,7 @@ const products = [
         "weight": 0.01,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -19152,7 +19152,7 @@ const products = [
         "weight": 0.01,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -19164,7 +19164,7 @@ const products = [
         "weight": 0.01,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -19176,7 +19176,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -19188,7 +19188,7 @@ const products = [
         "weight": 0.15,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -19200,7 +19200,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -19212,7 +19212,7 @@ const products = [
         "weight": 0.01,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -19224,7 +19224,7 @@ const products = [
         "weight": 0.01,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -19236,7 +19236,7 @@ const products = [
         "weight": 0.01,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Гофра под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -19248,7 +19248,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Труба под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -19260,7 +19260,7 @@ const products = [
         "weight": 0.15,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Труба под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -19272,7 +19272,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Труба под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -19284,7 +19284,7 @@ const products = [
         "weight": 0.25,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Труба под Кабель",
             "type": ""
         },
         "image": "Э"
@@ -19296,91 +19296,91 @@ const products = [
         "weight": 0.25,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Труба под Кабель",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Лампа электрическая Е27 200 Вт",
-        "price": 76,
+        "price": 77,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Лампа",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Лампа электрическая Е27 300 Вт",
-        "price": 114,
+        "price": 115,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Лампа",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Лампа светодиодная E27 30 Вт",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Лампа",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Лампа светодиодная E27 50 Вт",
-        "price": 535,
+        "price": 544,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Лампа",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Лампа Светодиодная электрическая Е27 60 Вт 6500К",
-        "price": 810,
+        "price": 825,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Лампа",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Лампа Светодиодная груша электрическая Е27 25 Вт 6500К",
-        "price": 162,
+        "price": 165,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Лампа",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Лампа Светодиодная груша электрическая Е27 40 Вт 6500К",
-        "price": 411,
+        "price": 418,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Лампа",
             "type": ""
         },
         "image": "Э"
@@ -19392,7 +19392,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Лампа",
             "type": ""
         },
         "image": "Э"
@@ -19404,55 +19404,55 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Лампа",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Патрон электрический Е27",
-        "price": 98,
+        "price": 99,
         "unit": "шт",
         "weight": 0.06,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Лампа",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Прожектор светодиодный 50 Вт",
-        "price": 918,
+        "price": 935,
         "unit": "шт",
         "weight": 0.8,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Лампа",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Прожектор светодиодный 100 Вт",
-        "price": 1296,
+        "price": 1320,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Лампа",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Прожектор светодиодный 100 Вт, на треноге",
-        "price": 3024,
+        "price": 3080,
         "unit": "шт",
         "weight": 1.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Лампа",
             "type": ""
         },
         "image": "Э"
@@ -19464,7 +19464,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Разветвитель",
             "type": ""
         },
         "image": "Э"
@@ -19476,79 +19476,79 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Разветвитель",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Розетка накладная 1-я белая, Эконом",
-        "price": 184,
+        "price": 187,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Розетка",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Розетка накладная 2-я белая, Эконом",
-        "price": 292,
+        "price": 297,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Розетка",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Розетка накладная 3-я белая, Эконом",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.4,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Розетка",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Розетка накладная 4-я белая, Эконом",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Розетка",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Розетка накладная 3-я белая, влагостойкая",
-        "price": 519,
+        "price": 528,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Розетка",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Розетка щитовая модульная на дин рейку 220 В 16 А тип AC 2Р+N",
-        "price": 303,
+        "price": 308,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Розетка",
             "type": ""
         },
         "image": "Э"
@@ -19560,7 +19560,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Розетка",
             "type": ""
         },
         "image": "Э"
@@ -19572,7 +19572,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Розетка",
             "type": ""
         },
         "image": "Э"
@@ -19584,31 +19584,31 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Выключатель",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Выключатель накладной 1-кл белый, Эконом",
-        "price": 184,
+        "price": 187,
         "unit": "шт",
         "weight": 0.4,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Выключатель",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Выключатель накладной 2-кл белый, Эконом",
-        "price": 249,
+        "price": 253,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Выключатель",
             "type": ""
         },
         "image": "Э"
@@ -19620,7 +19620,7 @@ const products = [
         "weight": 0.4,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Выключатель",
             "type": ""
         },
         "image": "Э"
@@ -19632,91 +19632,91 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Стяжки",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Стяжка кабельная 100х3,5 мм нейлон белая (100 шт.)",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Стяжки",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Стяжка кабельная 150х3,5 мм нейлон белая (100 шт.)",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Стяжки",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Стяжка кабельная 200х3,5 мм нейлон белая (100 шт.)",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Стяжки",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Стяжка кабельная 250х3,5 мм нейлон белая (100 шт.)",
-        "price": 211,
+        "price": 214,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Стяжки",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Стяжка кабельная 300х3,6 мм с 3м замком нейлон черная (100 шт.)",
-        "price": 249,
+        "price": 253,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Стяжки",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Стяжка кабельная 350х3,6 мм с 3м замком нейлон белая (100 шт.)",
-        "price": 216,
+        "price": 220,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Стяжки",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Стяжка кабельная 500х8 мм с 3м замком нейлон черная (100 шт.)",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Стяжки",
             "type": ""
         },
         "image": "Э"
@@ -19728,7 +19728,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -19740,7 +19740,7 @@ const products = [
         "weight": 1.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -19752,7 +19752,7 @@ const products = [
         "weight": 1.8,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -19764,7 +19764,7 @@ const products = [
         "weight": 2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -19776,7 +19776,7 @@ const products = [
         "weight": 3,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -19788,7 +19788,7 @@ const products = [
         "weight": 4,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -19800,7 +19800,7 @@ const products = [
         "weight": 5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -19812,7 +19812,7 @@ const products = [
         "weight": 6,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -19824,7 +19824,7 @@ const products = [
         "weight": 7,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -19836,7 +19836,7 @@ const products = [
         "weight": 8,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -19848,7 +19848,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -19860,7 +19860,7 @@ const products = [
         "weight": 1.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -19872,7 +19872,7 @@ const products = [
         "weight": 1.8,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -19884,7 +19884,7 @@ const products = [
         "weight": 2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -19896,7 +19896,7 @@ const products = [
         "weight": 3,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -19908,7 +19908,7 @@ const products = [
         "weight": 4,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -19920,7 +19920,7 @@ const products = [
         "weight": 5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -19932,7 +19932,7 @@ const products = [
         "weight": 6,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -19944,7 +19944,7 @@ const products = [
         "weight": 7,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -19956,7 +19956,7 @@ const products = [
         "weight": 8,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -19968,7 +19968,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -19980,7 +19980,7 @@ const products = [
         "weight": 1.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -19992,19 +19992,19 @@ const products = [
         "weight": 1.8,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Щит электричесский тонир. (скрытого монтажа) 12 модулей Текфор",
-        "price": 1728,
+        "price": 1760,
         "unit": "шт",
         "weight": 2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20016,43 +20016,43 @@ const products = [
         "weight": 3.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Щит электричесский тонир. (скрытого монтажа) 18 модулей Текфор",
-        "price": 2484,
+        "price": 2530,
         "unit": "шт",
         "weight": 4,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Щит электричесский тонир. (скрытого монтажа) 24 модуля Текфор",
-        "price": 3780,
+        "price": 3850,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Щит электричесский тонир. (скрытого монтажа) 36 модулей Текфор",
-        "price": 4860,
+        "price": 4950,
         "unit": "шт",
         "weight": 7,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20064,7 +20064,7 @@ const products = [
         "weight": 8,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20076,7 +20076,7 @@ const products = [
         "weight": 9,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20088,7 +20088,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20100,7 +20100,7 @@ const products = [
         "weight": 1.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20112,7 +20112,7 @@ const products = [
         "weight": 1.8,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20124,7 +20124,7 @@ const products = [
         "weight": 2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20136,7 +20136,7 @@ const products = [
         "weight": 3,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20148,7 +20148,7 @@ const products = [
         "weight": 4,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20160,7 +20160,7 @@ const products = [
         "weight": 2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20172,7 +20172,7 @@ const products = [
         "weight": 3,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20184,7 +20184,7 @@ const products = [
         "weight": 4,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20196,7 +20196,7 @@ const products = [
         "weight": 7,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20208,7 +20208,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20220,7 +20220,7 @@ const products = [
         "weight": 1.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20232,7 +20232,7 @@ const products = [
         "weight": 1.8,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20244,7 +20244,7 @@ const products = [
         "weight": 2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20256,19 +20256,19 @@ const products = [
         "weight": 3.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Щит электричесский тонир. (накладной) 18 модулей Текфор",
-        "price": 2700,
+        "price": 2750,
         "unit": "шт",
         "weight": 4,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20280,7 +20280,7 @@ const products = [
         "weight": 5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20292,7 +20292,7 @@ const products = [
         "weight": 7,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20304,7 +20304,7 @@ const products = [
         "weight": 8,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20316,7 +20316,7 @@ const products = [
         "weight": 9,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20328,7 +20328,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20340,7 +20340,7 @@ const products = [
         "weight": 1.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20352,7 +20352,7 @@ const products = [
         "weight": 1.8,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20364,7 +20364,7 @@ const products = [
         "weight": 2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20376,7 +20376,7 @@ const products = [
         "weight": 3,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20388,7 +20388,7 @@ const products = [
         "weight": 4,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20400,7 +20400,7 @@ const products = [
         "weight": 2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20412,7 +20412,7 @@ const products = [
         "weight": 3,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20424,7 +20424,7 @@ const products = [
         "weight": 4,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20436,7 +20436,7 @@ const products = [
         "weight": 7,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20448,7 +20448,7 @@ const products = [
         "weight": 2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20460,7 +20460,7 @@ const products = [
         "weight": 2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20472,7 +20472,7 @@ const products = [
         "weight": 2.8,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20484,7 +20484,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20496,7 +20496,7 @@ const products = [
         "weight": 0.25,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20508,7 +20508,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20520,91 +20520,91 @@ const products = [
         "weight": 0.25,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Автомат ABB 1-пол. SH201 6А",
-        "price": 535,
+        "price": 544,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Автомат ABB 1-пол. SH201 10А",
-        "price": 400,
+        "price": 407,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Автомат ABB 1-пол. SH201 16А",
-        "price": 411,
+        "price": 418,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Автомат ABB 1-пол. SH201 20А",
-        "price": 508,
+        "price": 517,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Автомат ABB 1-пол. SH201 25А",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Автомат ABB 1-пол. SH201 32А",
-        "price": 524,
+        "price": 533,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Автомат ABB 1-пол. SH201 40А",
-        "price": 551,
+        "price": 561,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20616,19 +20616,19 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Автомат ABB 1-пол. SH201 63А",
-        "price": 1026,
+        "price": 1045,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20640,7 +20640,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20652,7 +20652,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20664,7 +20664,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20676,7 +20676,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20688,55 +20688,55 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Автомат ABB 2-пол. SH202 32А",
-        "price": 1782,
+        "price": 1815,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Автомат ABB 2-пол. SH202 40А",
-        "price": 2052,
+        "price": 2090,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Автомат ABB 2-пол. SH202 50А",
-        "price": 2484,
+        "price": 2530,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Автомат ABB 2-пол. SH202 63А",
-        "price": 2484,
+        "price": 2530,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20748,7 +20748,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20760,19 +20760,19 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Автомат ABB 3-пол. SH203 16А",
-        "price": 1782,
+        "price": 1815,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20784,31 +20784,31 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Автомат ABB 3-пол. SH203 25А",
-        "price": 1890,
+        "price": 1925,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Автомат ABB 3-пол. SH203 32А",
-        "price": 1998,
+        "price": 2035,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20820,7 +20820,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20832,19 +20832,19 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Автомат ABB 3-пол. SH203 63А",
-        "price": 3348,
+        "price": 3410,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20856,7 +20856,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20868,7 +20868,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20880,7 +20880,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20892,7 +20892,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20904,7 +20904,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20916,7 +20916,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20928,7 +20928,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20940,7 +20940,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20952,7 +20952,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -20964,91 +20964,91 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Диф. автомат ABB DSH201 C 10А AC 30mA",
-        "price": 5076,
+        "price": 5170,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Диф. автомат ABB DSH201 C 16А AC 10mA",
-        "price": 4266,
+        "price": 4345,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Диф. автомат ABB DSH201 C 16А AC 30mA",
-        "price": 4428,
+        "price": 4510,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Диф. автомат ABB DSH201 C 20А AC 30mA",
-        "price": 4644,
+        "price": 4730,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Диф. автомат ABB DSH201 C 25А AC 30mA",
-        "price": 5076,
+        "price": 5170,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Диф. автомат ABB DSH201 C 32А AC 30mA",
-        "price": 5616,
+        "price": 5720,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Диф. автомат ABB DSH201 C 40А AC 30mA",
-        "price": 6804,
+        "price": 6930,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -21060,7 +21060,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -21072,7 +21072,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -21084,7 +21084,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -21096,19 +21096,19 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "УЗО ABB F202 AC-40A/0,3мА",
-        "price": 4428,
+        "price": 4510,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -21120,19 +21120,19 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "УЗО ABB F202 AC-63A/0,3мА",
-        "price": 8208,
+        "price": 8360,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -21144,7 +21144,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -21156,7 +21156,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -21168,7 +21168,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -21180,7 +21180,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -21192,7 +21192,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -21204,7 +21204,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -21216,7 +21216,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -21228,7 +21228,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -21240,7 +21240,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -21252,7 +21252,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -21264,7 +21264,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -21276,7 +21276,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -21288,7 +21288,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -21300,115 +21300,115 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Дин - рейка для монтажа автоматов 1000 мм",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Шина нулевая (N)",
-        "price": 162,
+        "price": 165,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Шина заземления (PE)",
-        "price": 270,
+        "price": 275,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Шина гребенка соединительная тип PIN однорядная",
-        "price": 497,
+        "price": 506,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Шина гребенка соеденительная 1 пол. на 30 постов 1м",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Шина гребенка соеденительная 2 пол. на 30 постов 1м",
-        "price": 940,
+        "price": 957,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Шина гребенка соеденительная 3 пол. на 30 постов 1м",
-        "price": 1026,
+        "price": 1045,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Шина на DIN-рейку в корпусе кросс-модуль 2x7",
-        "price": 497,
+        "price": 506,
         "unit": "шт",
         "weight": 0.25,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Шина на DIN-рейку в корпусе кросс-модуль 4x7",
-        "price": 810,
+        "price": 825,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Щитовая Электрика",
             "type": ""
         },
         "image": "Э"
@@ -21420,7 +21420,7 @@ const products = [
         "weight": 2.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Теплый Пол",
             "type": ""
         },
         "image": "Э"
@@ -21432,19 +21432,19 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Теплый Пол",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Терморегулятор теплого пола механический",
-        "price": 1026,
+        "price": 1045,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Теплый Пол",
             "type": ""
         },
         "image": "Э"
@@ -21456,7 +21456,7 @@ const products = [
         "weight": 1.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Светильник",
             "type": ""
         },
         "image": "Э"
@@ -21468,127 +21468,127 @@ const products = [
         "weight": 1.5,
         "category": {
             "main": "Электрика",
-            "section": "Электр",
+            "section": "Светильник",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Унитаз Черновой без Бачка",
-        "price": 2538,
+        "price": 2585,
         "unit": "шт",
         "weight": 7,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Унитаз",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Унитаз Черновой с Бачком",
-        "price": 5346,
+        "price": 5445,
         "unit": "шт",
         "weight": 8,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Унитаз",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Сливная арматура для бачка унитаза универсальная",
-        "price": 1944,
+        "price": 1980,
         "unit": "шт",
         "weight": 8,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Унитаз",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Гофра для унитаза",
-        "price": 400,
+        "price": 407,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Унитаз",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Труба гофрированная для труб 16 мм цвет синий (50м)",
-        "price": 1070,
+        "price": 1089,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Гофра для Труб",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Труба гофрированная для труб 16 мм цвет красный (50м)",
-        "price": 1070,
+        "price": 1089,
         "unit": "шт",
         "weight": 5,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Гофра для Труб",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Труба гофрированная для труб 20 мм цвет синий (50м)",
-        "price": 1188,
+        "price": 1210,
         "unit": "шт",
         "weight": 6,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Гофра для Труб",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Труба гофрированная для труб 20 мм цвет красный (50м)",
-        "price": 1188,
+        "price": 1210,
         "unit": "шт",
         "weight": 6,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Гофра для Труб",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Труба гофрированная для труб 25 мм цвет синий (50м)",
-        "price": 1296,
+        "price": 1320,
         "unit": "шт",
         "weight": 6,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Гофра для Труб",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Труба гофрированная для труб 25 мм цвет красный (50м)",
-        "price": 1296,
+        "price": 1320,
         "unit": "шт",
         "weight": 6,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Гофра для Труб",
             "type": ""
         },
         "image": "С"
@@ -21600,43 +21600,43 @@ const products = [
         "weight": 5,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Поддон",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Раковина Умывальник Черновой",
-        "price": 1836,
+        "price": 1870,
         "unit": "шт",
         "weight": 3,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Раковина",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Гофра для сифона",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Раковина",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Сифон с гофрой в комплекте",
-        "price": 508,
+        "price": 517,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Раковина",
             "type": ""
         },
         "image": "С"
@@ -21648,163 +21648,163 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Ванна",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Смеситель Черновой",
-        "price": 1728,
+        "price": 1760,
         "unit": "шт",
         "weight": 2,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Раковина",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Подводка 0,6м",
-        "price": 184,
+        "price": 187,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Подводка",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Подводка 1м",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.3,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Подводка",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Подводка 1,5м",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Подводка",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Подводка 2м",
-        "price": 411,
+        "price": 418,
         "unit": "шт",
         "weight": 0.8,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Подводка",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Подводка 3м",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 0.8,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Подводка",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Унипак 75г",
-        "price": 416,
+        "price": 423,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Сантех Расход",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Унипак 250г",
-        "price": 702,
+        "price": 715,
         "unit": "шт",
         "weight": 0.28,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Сантех Расход",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Лен сантехнический",
-        "price": 141,
+        "price": 143,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Сантех Расход",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Комплект сантехнический Лен + Unipak 75 г",
-        "price": 702,
+        "price": 715,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Сантех Расход",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Лента ФУМ 12 мм 15 м",
-        "price": 162,
+        "price": 165,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Сантех Расход",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Тангит унилок 20м",
-        "price": 648,
+        "price": 660,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Сантех Расход",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Тангит унилок 80м",
-        "price": 1458,
+        "price": 1485,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Сантех Расход",
             "type": ""
         },
         "image": "С"
@@ -21816,7 +21816,7 @@ const products = [
         "weight": 0.15,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Сантех Расход",
             "type": ""
         },
         "image": "С"
@@ -21828,19 +21828,19 @@ const products = [
         "weight": 8,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Инсталляция",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Крепление одинарное для монтажа инсталяции Tece 9030002",
-        "price": 810,
+        "price": 825,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Инсталляция",
             "type": ""
         },
         "image": "С"
@@ -21852,19 +21852,19 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Инсталляция",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Профиль для монтажа инсталяции Tece 4,5 м",
-        "price": 4104,
+        "price": 4180,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Инсталляция",
             "type": ""
         },
         "image": "С"
@@ -21876,50 +21876,50 @@ const products = [
         "weight": 0.8,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Трап",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Душевой трап с боковым отводом 100х100, нерж",
-        "price": 702,
+        "price": 715,
         "unit": "шт",
         "weight": 0.8,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Трап",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Трап Лоток душевой TIM с гидрозатвором 600 мм d50 мм решетка из нержавеющей стали",
-        "price": 4212,
+        "price": 4290,
         "unit": "шт",
         "weight": 2.5,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Трап",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Шаблон для монтажа водорозеток",
-        "price": 454,
+        "price": 462,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Сантехника",
-            "section": "Сантех",
+            "section": "Сантех Расход",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Подоконник ПВХ белый матовый *150мм",
-        "price": 324,
+        "price": 330,
         "unit": "шт",
         "weight": 3,
         "category": {
@@ -21931,7 +21931,7 @@ const products = [
     },
     {
         "name": "Подоконник ПВХ белый матовый *200мм",
-        "price": 411,
+        "price": 418,
         "unit": "шт",
         "weight": 3.5,
         "category": {
@@ -21943,7 +21943,7 @@ const products = [
     },
     {
         "name": "Подоконник ПВХ белый матовый *250мм",
-        "price": 497,
+        "price": 506,
         "unit": "шт",
         "weight": 4,
         "category": {
@@ -22051,7 +22051,7 @@ const products = [
     },
     {
         "name": "Заглушка для подоконника ПВХ матовая белая",
-        "price": 108,
+        "price": 110,
         "unit": "шт",
         "weight": 0.02,
         "category": {
@@ -22063,7 +22063,7 @@ const products = [
     },
     {
         "name": "Соединитель подоконника ПВХ, белый матовый",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.01,
         "category": {
@@ -22099,7 +22099,7 @@ const products = [
     },
     {
         "name": "Уголок пластиковый перфорированный ПВХ 25х25х2700мм",
-        "price": 87,
+        "price": 88,
         "unit": "шт",
         "weight": 0.5,
         "category": {
@@ -22111,7 +22111,7 @@ const products = [
     },
     {
         "name": "Уголок арочный перфорированный ПВХ 25х25х3000мм",
-        "price": 76,
+        "price": 77,
         "unit": "шт",
         "weight": 0.5,
         "category": {
@@ -22135,7 +22135,7 @@ const products = [
     },
     {
         "name": "Уголок ПВХ 15х15х1.8х2700 мм, белый",
-        "price": 54,
+        "price": 55,
         "unit": "шт",
         "weight": 0.15,
         "category": {
@@ -22159,7 +22159,7 @@ const products = [
     },
     {
         "name": "Уголок ПВХ 25х25х1.8х2700 мм, белый",
-        "price": 65,
+        "price": 66,
         "unit": "шт",
         "weight": 0.25,
         "category": {
@@ -22171,7 +22171,7 @@ const products = [
     },
     {
         "name": "Уголок ПВХ 30х30х1.8х2700 мм, белый",
-        "price": 92,
+        "price": 93,
         "unit": "шт",
         "weight": 0.3,
         "category": {
@@ -22183,7 +22183,7 @@ const products = [
     },
     {
         "name": "Уголок ПВХ 40х40х1.8х2700 мм, белый",
-        "price": 135,
+        "price": 137,
         "unit": "шт",
         "weight": 0.4,
         "category": {
@@ -22219,7 +22219,7 @@ const products = [
     },
     {
         "name": "Уголок перфорированный ПВХ 25х25х2500мм, с арм. сеткой",
-        "price": 141,
+        "price": 143,
         "unit": "шт",
         "weight": 0.4,
         "category": {
@@ -22231,7 +22231,7 @@ const products = [
     },
     {
         "name": "Профиль примыкания оконный самоклеящийся с сеткой 6 мм 2.4 м, пласт.",
-        "price": 211,
+        "price": 214,
         "unit": "шт",
         "weight": 0.5,
         "category": {
@@ -22339,7 +22339,7 @@ const products = [
     },
     {
         "name": "Профиль ПВХ стартовый для панелей 5х3000 мм, цвет белый",
-        "price": 146,
+        "price": 148,
         "unit": "шт",
         "weight": 0.13,
         "category": {
@@ -22375,7 +22375,7 @@ const products = [
     },
     {
         "name": "Профиль ПВХ П-образный стартовый 30х3000х10 мм, цвет белый",
-        "price": 146,
+        "price": 148,
         "unit": "шт",
         "weight": 0.19,
         "category": {
@@ -22399,7 +22399,7 @@ const products = [
     },
     {
         "name": "Сэндвич панель ПВХ белый матовый 3 x 1,5 х 9 мм",
-        "price": 3645,
+        "price": 3712,
         "unit": "шт",
         "weight": 5,
         "category": {
@@ -22596,7 +22596,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
@@ -22608,7 +22608,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
@@ -22620,7 +22620,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
@@ -22632,7 +22632,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
@@ -22644,7 +22644,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
@@ -22656,7 +22656,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
@@ -22668,7 +22668,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
@@ -22680,7 +22680,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
@@ -22692,7 +22692,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
@@ -22704,7 +22704,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
@@ -22716,7 +22716,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
@@ -22728,7 +22728,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
@@ -22740,43 +22740,43 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Кран с американкой Бугатти 3/4",
-        "price": 1372,
+        "price": 1397,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Кран с американкой Бугатти 1\"",
-        "price": 1782,
+        "price": 1815,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Кран с американкой Бугатти 1\" 1/4",
-        "price": 3348,
+        "price": 3410,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
@@ -22788,7 +22788,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
@@ -22800,7 +22800,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
@@ -22812,7 +22812,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
@@ -22824,43 +22824,43 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Кран шаровой латунный Бугатти 3/4 ВР(г) х 3/4 НР(ш) бабочка с полусгоном прямой",
-        "price": 1242,
+        "price": 1265,
         "unit": "шт",
         "weight": 0.15,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Кран Бугатти 883 угловой 1/2\"-3/4\" с отражателем для стиральной машины",
-        "price": 810,
+        "price": 825,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Кран шаровый угловой 1/2\"-3/4\" с отражателем для стиральной машины",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
@@ -22872,7 +22872,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
@@ -22884,7 +22884,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
@@ -22896,7 +22896,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
@@ -22908,7 +22908,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
@@ -22920,7 +22920,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
@@ -22932,7 +22932,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
@@ -22944,7 +22944,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
@@ -22956,7 +22956,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
@@ -22968,79 +22968,79 @@ const products = [
         "weight": 0.02,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Кран Маевского 3\\4\"",
-        "price": 103,
+        "price": 104,
         "unit": "шт",
         "weight": 0.035,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Кран для радиатора Oventrop 1/2\" осевой для терморегулятора",
-        "price": 3111,
+        "price": 3168,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Кран для радиатора Oventrop 1/2\" угловой нижний",
-        "price": 2376,
+        "price": 2420,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Кран шаровой с полусгоном 1/2\"",
-        "price": 886,
+        "price": 902,
         "unit": "шт",
         "weight": 0.15,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Кран шаровой с полусгоном 3/4\"",
-        "price": 1188,
+        "price": 1210,
         "unit": "шт",
         "weight": 0.15,
         "category": {
             "main": "Краны",
-            "section": "Сантех",
+            "section": "Кран",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Труба 20пп",
-        "price": 78,
+        "price": 79,
         "unit": "м",
         "weight": 0.3,
         "category": {
             "main": "Труба 20пп",
-            "section": "ПП",
+            "section": "Труба 20пп",
             "type": ""
         },
         "image": "П"
@@ -23052,7 +23052,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 20пп",
-            "section": "ПП",
+            "section": "Труба 20пп",
             "type": ""
         },
         "image": "П"
@@ -23064,7 +23064,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 20пп",
-            "section": "ПП",
+            "section": "Труба 20пп",
             "type": ""
         },
         "image": "П"
@@ -23076,7 +23076,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 20пп",
-            "section": "ПП",
+            "section": "Труба 20пп",
             "type": ""
         },
         "image": "П"
@@ -23088,7 +23088,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 20пп",
-            "section": "ПП",
+            "section": "Труба 20пп",
             "type": ""
         },
         "image": "П"
@@ -23100,7 +23100,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 20пп",
-            "section": "ПП",
+            "section": "Труба 20пп",
             "type": ""
         },
         "image": "П"
@@ -23112,7 +23112,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 20пп",
-            "section": "ПП",
+            "section": "Труба 20пп",
             "type": ""
         },
         "image": "П"
@@ -23124,7 +23124,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 20пп",
-            "section": "ПП",
+            "section": "Труба 20пп",
             "type": ""
         },
         "image": "П"
@@ -23136,7 +23136,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 20пп",
-            "section": "ПП",
+            "section": "Труба 20пп",
             "type": ""
         },
         "image": "П"
@@ -23148,7 +23148,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 20пп",
-            "section": "ПП",
+            "section": "Труба 20пп",
             "type": ""
         },
         "image": "П"
@@ -23160,7 +23160,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 20пп",
-            "section": "ПП",
+            "section": "Труба 20пп",
             "type": ""
         },
         "image": "П"
@@ -23172,19 +23172,19 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 20пп",
-            "section": "ПП",
+            "section": "Труба 20пп",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Водорозетка 20х1/2в пп",
-        "price": 108,
+        "price": 110,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Труба 20пп",
-            "section": "ПП",
+            "section": "Труба 20пп",
             "type": ""
         },
         "image": "П"
@@ -23196,19 +23196,19 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 20пп",
-            "section": "ПП",
+            "section": "Труба 20пп",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Накидная гайка 20х1/2в пп",
-        "price": 119,
+        "price": 121,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Труба 20пп",
-            "section": "ПП",
+            "section": "Труба 20пп",
             "type": ""
         },
         "image": "П"
@@ -23220,7 +23220,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 20пп",
-            "section": "ПП",
+            "section": "Труба 20пп",
             "type": ""
         },
         "image": "П"
@@ -23232,7 +23232,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 20пп",
-            "section": "ПП",
+            "section": "Труба 20пп",
             "type": ""
         },
         "image": "П"
@@ -23244,7 +23244,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 20пп",
-            "section": "ПП",
+            "section": "Труба 20пп",
             "type": ""
         },
         "image": "П"
@@ -23256,7 +23256,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 20пп",
-            "section": "ПП",
+            "section": "Труба 20пп",
             "type": ""
         },
         "image": "П"
@@ -23268,19 +23268,19 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 20пп",
-            "section": "ПП",
+            "section": "Труба 20пп",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Водорозетка 20х1/2н пп",
-        "price": 107,
+        "price": 108,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Труба 20пп",
-            "section": "ПП",
+            "section": "Труба 20пп",
             "type": ""
         },
         "image": "П"
@@ -23292,7 +23292,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 20пп",
-            "section": "ПП",
+            "section": "Труба 20пп",
             "type": ""
         },
         "image": "П"
@@ -23304,7 +23304,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 20пп",
-            "section": "ПП",
+            "section": "Труба 20пп",
             "type": ""
         },
         "image": "П"
@@ -23316,7 +23316,7 @@ const products = [
         "weight": 0.02,
         "category": {
             "main": "Труба 20пп",
-            "section": "ПП",
+            "section": "Труба 20пп",
             "type": ""
         },
         "image": "П"
@@ -23328,19 +23328,19 @@ const products = [
         "weight": 0.02,
         "category": {
             "main": "Труба 20пп",
-            "section": "ПП",
+            "section": "Труба 20пп",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Труба 25пп",
-        "price": 119,
+        "price": 121,
         "unit": "м",
         "weight": 0.35,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
@@ -23352,7 +23352,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
@@ -23364,19 +23364,19 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Тройник 25пп",
-        "price": 20,
+        "price": 19,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
@@ -23388,7 +23388,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
@@ -23400,7 +23400,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
@@ -23412,7 +23412,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
@@ -23424,7 +23424,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
@@ -23436,7 +23436,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
@@ -23448,7 +23448,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
@@ -23460,7 +23460,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
@@ -23472,7 +23472,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
@@ -23484,31 +23484,31 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Муфта разъемная 25х3/4в пп",
-        "price": 249,
+        "price": 253,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Муфта разъемная 25х3/4н пп",
-        "price": 249,
+        "price": 253,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
@@ -23520,7 +23520,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
@@ -23532,7 +23532,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
@@ -23544,7 +23544,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
@@ -23556,7 +23556,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
@@ -23568,7 +23568,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
@@ -23580,19 +23580,19 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Водорозетка 25х1/2н пп",
-        "price": 125,
+        "price": 126,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
@@ -23604,7 +23604,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
@@ -23616,7 +23616,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
@@ -23628,7 +23628,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
@@ -23640,7 +23640,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
@@ -23652,7 +23652,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
@@ -23664,7 +23664,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
@@ -23676,7 +23676,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
@@ -23688,7 +23688,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
@@ -23700,7 +23700,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
@@ -23712,19 +23712,19 @@ const products = [
         "weight": 0.02,
         "category": {
             "main": "Труба 25пп",
-            "section": "ПП",
+            "section": "Труба 25пп",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Труба 32пп",
-        "price": 170,
+        "price": 172,
         "unit": "м",
         "weight": 0.4,
         "category": {
             "main": "Труба 32пп",
-            "section": "ПП",
+            "section": "Труба 32пп",
             "type": ""
         },
         "image": "П"
@@ -23736,7 +23736,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 32пп",
-            "section": "ПП",
+            "section": "Труба 32пп",
             "type": ""
         },
         "image": "П"
@@ -23748,7 +23748,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 32пп",
-            "section": "ПП",
+            "section": "Труба 32пп",
             "type": ""
         },
         "image": "П"
@@ -23760,7 +23760,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 32пп",
-            "section": "ПП",
+            "section": "Труба 32пп",
             "type": ""
         },
         "image": "П"
@@ -23772,7 +23772,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 32пп",
-            "section": "ПП",
+            "section": "Труба 32пп",
             "type": ""
         },
         "image": "П"
@@ -23784,7 +23784,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 32пп",
-            "section": "ПП",
+            "section": "Труба 32пп",
             "type": ""
         },
         "image": "П"
@@ -23796,7 +23796,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 32пп",
-            "section": "ПП",
+            "section": "Труба 32пп",
             "type": ""
         },
         "image": "П"
@@ -23808,7 +23808,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 32пп",
-            "section": "ПП",
+            "section": "Труба 32пп",
             "type": ""
         },
         "image": "П"
@@ -23820,7 +23820,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 32пп",
-            "section": "ПП",
+            "section": "Труба 32пп",
             "type": ""
         },
         "image": "П"
@@ -23832,7 +23832,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 32пп",
-            "section": "ПП",
+            "section": "Труба 32пп",
             "type": ""
         },
         "image": "П"
@@ -23844,7 +23844,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 32пп",
-            "section": "ПП",
+            "section": "Труба 32пп",
             "type": ""
         },
         "image": "П"
@@ -23856,7 +23856,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 32пп",
-            "section": "ПП",
+            "section": "Труба 32пп",
             "type": ""
         },
         "image": "П"
@@ -23868,19 +23868,19 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 32пп",
-            "section": "ПП",
+            "section": "Труба 32пп",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Муфта разъемная 32х1в пп",
-        "price": 357,
+        "price": 363,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Труба 32пп",
-            "section": "ПП",
+            "section": "Труба 32пп",
             "type": ""
         },
         "image": "П"
@@ -23892,7 +23892,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 32пп",
-            "section": "ПП",
+            "section": "Труба 32пп",
             "type": ""
         },
         "image": "П"
@@ -23904,7 +23904,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 32пп",
-            "section": "ПП",
+            "section": "Труба 32пп",
             "type": ""
         },
         "image": "П"
@@ -23916,7 +23916,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 32пп",
-            "section": "ПП",
+            "section": "Труба 32пп",
             "type": ""
         },
         "image": "П"
@@ -23928,7 +23928,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 32пп",
-            "section": "ПП",
+            "section": "Труба 32пп",
             "type": ""
         },
         "image": "П"
@@ -23940,7 +23940,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 32пп",
-            "section": "ПП",
+            "section": "Труба 32пп",
             "type": ""
         },
         "image": "П"
@@ -23952,7 +23952,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 32пп",
-            "section": "ПП",
+            "section": "Труба 32пп",
             "type": ""
         },
         "image": "П"
@@ -23964,7 +23964,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 32пп",
-            "section": "ПП",
+            "section": "Труба 32пп",
             "type": ""
         },
         "image": "П"
@@ -23976,7 +23976,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 32пп",
-            "section": "ПП",
+            "section": "Труба 32пп",
             "type": ""
         },
         "image": "П"
@@ -23988,7 +23988,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 32пп",
-            "section": "ПП",
+            "section": "Труба 32пп",
             "type": ""
         },
         "image": "П"
@@ -24000,7 +24000,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 32пп",
-            "section": "ПП",
+            "section": "Труба 32пп",
             "type": ""
         },
         "image": "П"
@@ -24012,7 +24012,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 32пп",
-            "section": "ПП",
+            "section": "Труба 32пп",
             "type": ""
         },
         "image": "П"
@@ -24024,7 +24024,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 32пп",
-            "section": "ПП",
+            "section": "Труба 32пп",
             "type": ""
         },
         "image": "П"
@@ -24036,7 +24036,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Труба 32пп",
-            "section": "ПП",
+            "section": "Труба 32пп",
             "type": ""
         },
         "image": "П"
@@ -24048,19 +24048,19 @@ const products = [
         "weight": 0.02,
         "category": {
             "main": "Труба 32пп",
-            "section": "ПП",
+            "section": "Труба 32пп",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Труба 40пп",
-        "price": 268,
+        "price": 272,
         "unit": "м",
         "weight": 0.4,
         "category": {
             "main": "Труба 40пп",
-            "section": "ПП",
+            "section": "Труба 40пп",
             "type": ""
         },
         "image": "П"
@@ -24072,7 +24072,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 40пп",
-            "section": "ПП",
+            "section": "Труба 40пп",
             "type": ""
         },
         "image": "П"
@@ -24084,7 +24084,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 40пп",
-            "section": "ПП",
+            "section": "Труба 40пп",
             "type": ""
         },
         "image": "П"
@@ -24096,7 +24096,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 40пп",
-            "section": "ПП",
+            "section": "Труба 40пп",
             "type": ""
         },
         "image": "П"
@@ -24108,19 +24108,19 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 40пп",
-            "section": "ПП",
+            "section": "Труба 40пп",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Тройник 40х25пп",
-        "price": 54,
+        "price": 55,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Труба 40пп",
-            "section": "ПП",
+            "section": "Труба 40пп",
             "type": ""
         },
         "image": "П"
@@ -24132,7 +24132,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 40пп",
-            "section": "ПП",
+            "section": "Труба 40пп",
             "type": ""
         },
         "image": "П"
@@ -24144,7 +24144,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 40пп",
-            "section": "ПП",
+            "section": "Труба 40пп",
             "type": ""
         },
         "image": "П"
@@ -24156,7 +24156,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 40пп",
-            "section": "ПП",
+            "section": "Труба 40пп",
             "type": ""
         },
         "image": "П"
@@ -24168,7 +24168,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 40пп",
-            "section": "ПП",
+            "section": "Труба 40пп",
             "type": ""
         },
         "image": "П"
@@ -24180,7 +24180,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 40пп",
-            "section": "ПП",
+            "section": "Труба 40пп",
             "type": ""
         },
         "image": "П"
@@ -24192,7 +24192,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 40пп",
-            "section": "ПП",
+            "section": "Труба 40пп",
             "type": ""
         },
         "image": "П"
@@ -24204,7 +24204,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 40пп",
-            "section": "ПП",
+            "section": "Труба 40пп",
             "type": ""
         },
         "image": "П"
@@ -24216,7 +24216,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 40пп",
-            "section": "ПП",
+            "section": "Труба 40пп",
             "type": ""
         },
         "image": "П"
@@ -24228,7 +24228,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 40пп",
-            "section": "ПП",
+            "section": "Труба 40пп",
             "type": ""
         },
         "image": "П"
@@ -24240,7 +24240,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 40пп",
-            "section": "ПП",
+            "section": "Труба 40пп",
             "type": ""
         },
         "image": "П"
@@ -24252,7 +24252,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 40пп",
-            "section": "ПП",
+            "section": "Труба 40пп",
             "type": ""
         },
         "image": "П"
@@ -24264,7 +24264,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 40пп",
-            "section": "ПП",
+            "section": "Труба 40пп",
             "type": ""
         },
         "image": "П"
@@ -24276,7 +24276,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 40пп",
-            "section": "ПП",
+            "section": "Труба 40пп",
             "type": ""
         },
         "image": "П"
@@ -24288,7 +24288,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 40пп",
-            "section": "ПП",
+            "section": "Труба 40пп",
             "type": ""
         },
         "image": "П"
@@ -24300,7 +24300,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 40пп",
-            "section": "ПП",
+            "section": "Труба 40пп",
             "type": ""
         },
         "image": "П"
@@ -24312,7 +24312,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 40пп",
-            "section": "ПП",
+            "section": "Труба 40пп",
             "type": ""
         },
         "image": "П"
@@ -24324,7 +24324,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 40пп",
-            "section": "ПП",
+            "section": "Труба 40пп",
             "type": ""
         },
         "image": "П"
@@ -24336,7 +24336,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 40пп",
-            "section": "ПП",
+            "section": "Труба 40пп",
             "type": ""
         },
         "image": "П"
@@ -24348,7 +24348,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 40пп",
-            "section": "ПП",
+            "section": "Труба 40пп",
             "type": ""
         },
         "image": "П"
@@ -24360,7 +24360,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба 40пп",
-            "section": "ПП",
+            "section": "Труба 40пп",
             "type": ""
         },
         "image": "П"
@@ -24372,7 +24372,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Труба 40пп",
-            "section": "ПП",
+            "section": "Труба 40пп",
             "type": ""
         },
         "image": "П"
@@ -24384,7 +24384,7 @@ const products = [
         "weight": 0.4,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24396,7 +24396,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24408,7 +24408,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24420,7 +24420,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24432,7 +24432,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24444,7 +24444,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24456,7 +24456,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24468,7 +24468,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24480,7 +24480,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24492,7 +24492,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24504,7 +24504,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24516,7 +24516,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24528,7 +24528,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24540,7 +24540,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24552,7 +24552,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24564,7 +24564,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24576,7 +24576,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24588,7 +24588,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24600,7 +24600,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24612,7 +24612,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24624,7 +24624,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24636,7 +24636,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24648,7 +24648,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24660,7 +24660,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24672,7 +24672,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24684,7 +24684,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24696,7 +24696,7 @@ const products = [
         "weight": 0.4,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24708,7 +24708,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24720,7 +24720,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24732,7 +24732,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24744,7 +24744,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24756,7 +24756,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24768,7 +24768,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24780,7 +24780,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24792,7 +24792,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24804,7 +24804,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24816,7 +24816,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24828,7 +24828,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24840,7 +24840,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24852,7 +24852,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24864,7 +24864,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24876,7 +24876,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24888,7 +24888,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24900,7 +24900,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24912,7 +24912,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24924,7 +24924,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24936,7 +24936,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24948,7 +24948,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24960,7 +24960,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24972,7 +24972,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24984,7 +24984,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -24996,7 +24996,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -25008,7 +25008,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -25020,7 +25020,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Труба FV Plast",
-            "section": "FV",
+            "section": "Труба FV-plast",
             "type": ""
         },
         "image": "F"
@@ -25031,8 +25031,8 @@ const products = [
         "unit": "шт",
         "weight": 1.8,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25043,8 +25043,8 @@ const products = [
         "unit": "шт",
         "weight": 1.5,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25055,8 +25055,8 @@ const products = [
         "unit": "шт",
         "weight": 1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25067,8 +25067,8 @@ const products = [
         "unit": "шт",
         "weight": 1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25079,8 +25079,8 @@ const products = [
         "unit": "шт",
         "weight": 0.5,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25091,8 +25091,8 @@ const products = [
         "unit": "шт",
         "weight": 0.5,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25103,8 +25103,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25115,8 +25115,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25127,8 +25127,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25139,8 +25139,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25151,8 +25151,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25163,8 +25163,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25175,8 +25175,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25187,8 +25187,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25199,8 +25199,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25211,8 +25211,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25223,8 +25223,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25235,8 +25235,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25247,8 +25247,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25259,56 +25259,56 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Ревизия 110 Политек",
-        "price": 303,
+        "price": 308,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Муфта 110 Политек",
-        "price": 87,
+        "price": 88,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Муфта компенсионная 110 Политек",
-        "price": 206,
+        "price": 209,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Патрубок компенсационный 110 мм Политэк",
-        "price": 184,
+        "price": 187,
         "unit": "шт",
         "weight": 0.25,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25319,8 +25319,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25331,32 +25331,32 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Переход 110х50 Политек",
-        "price": 76,
+        "price": 77,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Переход чугун/пласт тапер с манжетой 110 Политэк",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25367,8 +25367,8 @@ const products = [
         "unit": "шт",
         "weight": 1.8,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25379,8 +25379,8 @@ const products = [
         "unit": "шт",
         "weight": 1.5,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25391,8 +25391,8 @@ const products = [
         "unit": "шт",
         "weight": 1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25403,8 +25403,8 @@ const products = [
         "unit": "шт",
         "weight": 1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25415,8 +25415,8 @@ const products = [
         "unit": "шт",
         "weight": 0.5,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25427,8 +25427,8 @@ const products = [
         "unit": "шт",
         "weight": 0.5,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25439,8 +25439,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25451,8 +25451,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25463,8 +25463,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25475,8 +25475,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25487,8 +25487,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25499,8 +25499,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25511,8 +25511,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25523,20 +25523,20 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Муфта 50 Политек",
-        "price": 65,
+        "price": 66,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25547,20 +25547,20 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Заглушка 50 Политек",
-        "price": 20,
+        "price": 19,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25571,8 +25571,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25583,20 +25583,20 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Переход 50х32 Политек",
-        "price": 65,
+        "price": 66,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25607,8 +25607,8 @@ const products = [
         "unit": "шт",
         "weight": 1.5,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25619,8 +25619,8 @@ const products = [
         "unit": "шт",
         "weight": 1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25631,8 +25631,8 @@ const products = [
         "unit": "шт",
         "weight": 1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25643,8 +25643,8 @@ const products = [
         "unit": "шт",
         "weight": 0.5,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25655,8 +25655,8 @@ const products = [
         "unit": "шт",
         "weight": 0.5,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25667,8 +25667,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25679,8 +25679,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25691,8 +25691,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25703,8 +25703,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25715,8 +25715,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25727,20 +25727,20 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Заглушка 40 Политек",
-        "price": 17,
+        "price": 16,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25751,8 +25751,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25763,8 +25763,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25775,8 +25775,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25787,8 +25787,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25799,8 +25799,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25811,8 +25811,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25823,8 +25823,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25835,8 +25835,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25847,8 +25847,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25859,8 +25859,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25871,8 +25871,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25883,8 +25883,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25895,20 +25895,20 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Заглушка 32 Политек",
-        "price": 17,
+        "price": 16,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25919,32 +25919,32 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Манжет 123х110 чугун/пласт Политек",
-        "price": 92,
+        "price": 93,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Манжет 73х50 чугун/пласт Политек",
-        "price": 76,
+        "price": 77,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25955,20 +25955,20 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Манжет 50х32 Политек",
-        "price": 65,
+        "price": 66,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25979,8 +25979,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -25991,8 +25991,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -26003,8 +26003,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -26015,8 +26015,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -26027,8 +26027,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -26039,8 +26039,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -26051,20 +26051,20 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Крестовина 110х110х50х50 / 45 одноплоскостная Политек",
-        "price": 281,
+        "price": 286,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -26075,8 +26075,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -26087,8 +26087,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -26099,8 +26099,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -26111,8 +26111,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -26123,32 +26123,32 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Крестовина 110х110х110х50 / 87 левая 2х-плоскостная Политек",
-        "price": 351,
+        "price": 357,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Крестовина 110х110х110х50 / 87 правая 2х-плоскостная Политек",
-        "price": 351,
+        "price": 357,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Политек",
             "type": ""
         },
         "image": "П"
@@ -26159,8 +26159,8 @@ const products = [
         "unit": "шт",
         "weight": 1.8,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26171,8 +26171,8 @@ const products = [
         "unit": "шт",
         "weight": 1.5,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26183,8 +26183,8 @@ const products = [
         "unit": "шт",
         "weight": 1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26195,8 +26195,8 @@ const products = [
         "unit": "шт",
         "weight": 1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26207,8 +26207,8 @@ const products = [
         "unit": "шт",
         "weight": 0.5,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26219,8 +26219,8 @@ const products = [
         "unit": "шт",
         "weight": 0.5,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26231,8 +26231,8 @@ const products = [
         "unit": "шт",
         "weight": 0.2,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26243,8 +26243,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26255,8 +26255,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26267,8 +26267,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26279,8 +26279,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26291,8 +26291,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26303,8 +26303,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26315,8 +26315,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26327,8 +26327,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26339,8 +26339,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26351,8 +26351,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26363,8 +26363,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26375,8 +26375,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26387,8 +26387,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26399,8 +26399,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26411,8 +26411,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26423,8 +26423,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26435,20 +26435,20 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Заглушка 110 Ostendorf",
-        "price": 146,
+        "price": 148,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26459,32 +26459,32 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Переход 110х50 Ostendorf",
-        "price": 179,
+        "price": 181,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Переход 110х90 Ostendorf",
-        "price": 299,
+        "price": 303,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26495,8 +26495,8 @@ const products = [
         "unit": "шт",
         "weight": 1.8,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26507,8 +26507,8 @@ const products = [
         "unit": "шт",
         "weight": 1.5,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26519,8 +26519,8 @@ const products = [
         "unit": "шт",
         "weight": 1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26531,8 +26531,8 @@ const products = [
         "unit": "шт",
         "weight": 1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26543,8 +26543,8 @@ const products = [
         "unit": "шт",
         "weight": 0.5,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26555,8 +26555,8 @@ const products = [
         "unit": "шт",
         "weight": 0.5,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26567,8 +26567,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26579,8 +26579,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26591,8 +26591,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26603,8 +26603,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26615,8 +26615,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26627,8 +26627,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26639,8 +26639,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26651,8 +26651,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26663,8 +26663,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26675,20 +26675,20 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Переход 90х50 Ostendorf",
-        "price": 281,
+        "price": 286,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26699,8 +26699,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26711,8 +26711,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26723,8 +26723,8 @@ const products = [
         "unit": "шт",
         "weight": 1.8,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26735,8 +26735,8 @@ const products = [
         "unit": "шт",
         "weight": 1.5,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26747,8 +26747,8 @@ const products = [
         "unit": "шт",
         "weight": 1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26759,8 +26759,8 @@ const products = [
         "unit": "шт",
         "weight": 1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26771,8 +26771,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26783,8 +26783,8 @@ const products = [
         "unit": "шт",
         "weight": 0.08,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26795,8 +26795,8 @@ const products = [
         "unit": "шт",
         "weight": 0.04,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26807,8 +26807,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26819,8 +26819,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26831,8 +26831,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26843,8 +26843,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26855,8 +26855,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26867,8 +26867,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26879,8 +26879,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26891,8 +26891,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26903,8 +26903,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26915,8 +26915,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26927,32 +26927,32 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Переход 50х40 Ostendorf",
-        "price": 119,
+        "price": 121,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Переход 50х32 Ostendorf",
-        "price": 103,
+        "price": 104,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26963,8 +26963,8 @@ const products = [
         "unit": "шт",
         "weight": 1.5,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26975,8 +26975,8 @@ const products = [
         "unit": "шт",
         "weight": 1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26987,8 +26987,8 @@ const products = [
         "unit": "шт",
         "weight": 1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -26999,8 +26999,8 @@ const products = [
         "unit": "шт",
         "weight": 0.15,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27011,8 +27011,8 @@ const products = [
         "unit": "шт",
         "weight": 0.08,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27023,8 +27023,8 @@ const products = [
         "unit": "шт",
         "weight": 0.03,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27035,8 +27035,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27047,8 +27047,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27059,8 +27059,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27071,8 +27071,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27083,8 +27083,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27095,8 +27095,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27107,8 +27107,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27119,8 +27119,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27131,20 +27131,20 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Переход 40х32 Ostendorf",
-        "price": 98,
+        "price": 99,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27155,8 +27155,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27167,8 +27167,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27179,8 +27179,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27191,8 +27191,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27203,8 +27203,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27215,8 +27215,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27227,8 +27227,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27239,8 +27239,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27251,8 +27251,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27263,8 +27263,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27275,8 +27275,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27287,8 +27287,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27299,20 +27299,20 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Манжет 123х110 чугун/пласт Ostendorf",
-        "price": 108,
+        "price": 110,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27323,8 +27323,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27335,8 +27335,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27347,8 +27347,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27359,8 +27359,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27371,8 +27371,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27383,8 +27383,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27395,8 +27395,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27407,8 +27407,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27419,8 +27419,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27431,20 +27431,20 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Крестовина 110х110х110х50 / 87 одноплоскостная Ostendorf",
-        "price": 470,
+        "price": 478,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27455,8 +27455,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27467,8 +27467,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27479,8 +27479,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27491,20 +27491,20 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Крестовина 110х110х110х50 / 87 правая 2х-плоскостная Ostendorf",
-        "price": 627,
+        "price": 638,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Труба Ostendorf",
             "type": ""
         },
         "image": "П"
@@ -27515,8 +27515,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Теплоизоляция Труб",
             "type": ""
         },
         "image": "П"
@@ -27527,8 +27527,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Теплоизоляция Труб",
             "type": ""
         },
         "image": "П"
@@ -27539,8 +27539,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Теплоизоляция Труб",
             "type": ""
         },
         "image": "П"
@@ -27551,8 +27551,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Теплоизоляция Труб",
             "type": ""
         },
         "image": "П"
@@ -27563,8 +27563,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Теплоизоляция Труб",
             "type": ""
         },
         "image": "П"
@@ -27575,8 +27575,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Теплоизоляция Труб",
             "type": ""
         },
         "image": "П"
@@ -27587,8 +27587,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Теплоизоляция Труб",
             "type": ""
         },
         "image": "П"
@@ -27599,8 +27599,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Хомут для Труб",
             "type": ""
         },
         "image": "П"
@@ -27611,8 +27611,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Хомут для Труб",
             "type": ""
         },
         "image": "П"
@@ -27623,8 +27623,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Хомут для Труб",
             "type": ""
         },
         "image": "П"
@@ -27635,20 +27635,20 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Хомут для Труб",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Хомут для труб 1 1/2 (47-52мм)",
-        "price": 87,
+        "price": 88,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Хомут для Труб",
             "type": ""
         },
         "image": "П"
@@ -27659,32 +27659,32 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Хомут для Труб",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Хомут для труб 3 (87-92мм)",
-        "price": 119,
+        "price": 121,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Хомут для Труб",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Хомут для труб 110 (107-112мм)",
-        "price": 141,
+        "price": 143,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Хомут для Труб",
             "type": ""
         },
         "image": "П"
@@ -27695,44 +27695,44 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Хомут для Труб",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Хомут для труб 3/4 с дюбелем (25-32мм)",
-        "price": 54,
+        "price": 55,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Хомут для Труб",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Хомут для труб 1 с дюбелем (32-36мм)",
-        "price": 65,
+        "price": 66,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Хомут для Труб",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Хомут для труб 1 1/4 с дюбелем (38-43мм)",
-        "price": 65,
+        "price": 66,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Хомут для Труб",
             "type": ""
         },
         "image": "П"
@@ -27743,8 +27743,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Хомут для Труб",
             "type": ""
         },
         "image": "П"
@@ -27755,20 +27755,20 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Хомут для Труб",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Хомут для труб 110 с дюбелем (107-112мм)",
-        "price": 141,
+        "price": 143,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Хомут для Труб",
             "type": ""
         },
         "image": "П"
@@ -27779,20 +27779,20 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Хомут для Труб",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Хомут заземления для труб ТХЗ 1 1/4\" (39-46мм)",
-        "price": 54,
+        "price": 55,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Политек",
-            "section": "Политек",
+            "main": "Труба FV Plast",
+            "section": "Хомут для Труб",
             "type": ""
         },
         "image": "П"
@@ -27804,7 +27804,7 @@ const products = [
         "weight": 1.8,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -27816,7 +27816,7 @@ const products = [
         "weight": 2.7,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -27828,7 +27828,7 @@ const products = [
         "weight": 3.6,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -27840,7 +27840,7 @@ const products = [
         "weight": 4.5,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -27852,7 +27852,7 @@ const products = [
         "weight": 5.4,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -27864,7 +27864,7 @@ const products = [
         "weight": 1.8,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -27876,7 +27876,7 @@ const products = [
         "weight": 2.7,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -27888,7 +27888,7 @@ const products = [
         "weight": 3.6,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -27900,7 +27900,7 @@ const products = [
         "weight": 4.5,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -27912,7 +27912,7 @@ const products = [
         "weight": 5.4,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -27924,7 +27924,7 @@ const products = [
         "weight": 1.2,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -27936,7 +27936,7 @@ const products = [
         "weight": 1.8,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -27948,7 +27948,7 @@ const products = [
         "weight": 2.4,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -27960,7 +27960,7 @@ const products = [
         "weight": 3,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -27972,7 +27972,7 @@ const products = [
         "weight": 3.6,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -27984,7 +27984,7 @@ const products = [
         "weight": 4.2,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -27996,7 +27996,7 @@ const products = [
         "weight": 4.8,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -28008,7 +28008,7 @@ const products = [
         "weight": 5.4,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -28020,7 +28020,7 @@ const products = [
         "weight": 6,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -28032,7 +28032,7 @@ const products = [
         "weight": 6.6,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -28044,7 +28044,7 @@ const products = [
         "weight": 7.2,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -28056,7 +28056,7 @@ const products = [
         "weight": 1.2,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -28068,7 +28068,7 @@ const products = [
         "weight": 1.8,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -28080,7 +28080,7 @@ const products = [
         "weight": 2.4,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -28092,7 +28092,7 @@ const products = [
         "weight": 3,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -28104,7 +28104,7 @@ const products = [
         "weight": 3.6,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -28116,7 +28116,7 @@ const products = [
         "weight": 4.2,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -28128,7 +28128,7 @@ const products = [
         "weight": 4.8,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -28140,7 +28140,7 @@ const products = [
         "weight": 5.4,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -28152,7 +28152,7 @@ const products = [
         "weight": 6,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -28164,7 +28164,7 @@ const products = [
         "weight": 6.6,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -28176,7 +28176,7 @@ const products = [
         "weight": 7.2,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -28188,7 +28188,7 @@ const products = [
         "weight": 1.8,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -28200,7 +28200,7 @@ const products = [
         "weight": 2.7,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -28212,7 +28212,7 @@ const products = [
         "weight": 3.6,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор Stout",
             "type": ""
         },
         "image": "С"
@@ -28224,7 +28224,7 @@ const products = [
         "weight": 1.5,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор FAR",
             "type": ""
         },
         "image": "С"
@@ -28236,7 +28236,7 @@ const products = [
         "weight": 1.5,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор FAR",
             "type": ""
         },
         "image": "С"
@@ -28248,7 +28248,7 @@ const products = [
         "weight": 1.5,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор FAR",
             "type": ""
         },
         "image": "С"
@@ -28260,7 +28260,7 @@ const products = [
         "weight": 1.5,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор FAR",
             "type": ""
         },
         "image": "С"
@@ -28272,7 +28272,7 @@ const products = [
         "weight": 1.5,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор FAR",
             "type": ""
         },
         "image": "С"
@@ -28284,7 +28284,7 @@ const products = [
         "weight": 1.5,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор FAR",
             "type": ""
         },
         "image": "С"
@@ -28296,7 +28296,7 @@ const products = [
         "weight": 1.5,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор FAR",
             "type": ""
         },
         "image": "С"
@@ -28308,7 +28308,7 @@ const products = [
         "weight": 1.5,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор FAR",
             "type": ""
         },
         "image": "С"
@@ -28320,19 +28320,19 @@ const products = [
         "weight": 1.5,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор FAR",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Крепление колектора FAR пара (комплект на 2 колектора)",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Коллектор FAR",
             "type": ""
         },
         "image": "С"
@@ -28344,7 +28344,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Радиатор",
             "type": ""
         },
         "image": "С"
@@ -28356,7 +28356,7 @@ const products = [
         "weight": 0.005,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Заглушка",
             "type": ""
         },
         "image": "С"
@@ -28368,175 +28368,175 @@ const products = [
         "weight": 0.005,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Заглушка",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Заглушка 3/4 н",
-        "price": 135,
+        "price": 137,
         "unit": "шт",
         "weight": 0.005,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Заглушка",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Заглушка 3/4 в",
-        "price": 135,
+        "price": 137,
         "unit": "шт",
         "weight": 0.005,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Заглушка",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Заглушка 1\" н",
-        "price": 249,
+        "price": 253,
         "unit": "шт",
         "weight": 0.005,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Заглушка",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Заглушка 1\" в",
-        "price": 249,
+        "price": 253,
         "unit": "шт",
         "weight": 0.005,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Заглушка",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Заглушка для радиатора 1\\2\"н",
-        "price": 141,
+        "price": 143,
         "unit": "шт",
         "weight": 0.005,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Заглушка",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Футорка 1/2в х 3/4н",
-        "price": 184,
+        "price": 187,
         "unit": "шт",
         "weight": 0.005,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Футорка",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Ниппель 1/2н х 3/4н",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.005,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Ниппель",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Переход 1/2н х 3/4в",
-        "price": 184,
+        "price": 187,
         "unit": "шт",
         "weight": 0.005,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Переход",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Переход 1/2в х 3/4н",
-        "price": 162,
+        "price": 165,
         "unit": "шт",
         "weight": 0.005,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Переход",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Переход 1/2в х 3/4в",
-        "price": 211,
+        "price": 214,
         "unit": "шт",
         "weight": 0.005,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Переход",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Переход 1/2н х 3/4н",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.005,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Переход",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Шкаф встраиваемый ШРВ-0 (670мм-125мм-406мм) (1-3 конт.)",
-        "price": 4104,
+        "price": 4180,
         "unit": "шт",
         "weight": 1,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Шкаф ШРВ",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Шкаф встраиваемый ШРВ-1 (670мм-125мм-494мм) (4-5 конт.)",
-        "price": 4428,
+        "price": 4510,
         "unit": "шт",
         "weight": 1.8,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Шкаф ШРВ",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Шкаф встраиваемый ШРВ-2 (670мм-125мм-594мм) (6-7 конт.)",
-        "price": 3618,
+        "price": 3685,
         "unit": "шт",
         "weight": 2.5,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Шкаф ШРВ",
             "type": ""
         },
         "image": "С"
@@ -28548,7 +28548,7 @@ const products = [
         "weight": 3,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Шкаф ШРВ",
             "type": ""
         },
         "image": "С"
@@ -28560,7 +28560,7 @@ const products = [
         "weight": 3.8,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Шкаф ШРВ",
             "type": ""
         },
         "image": "С"
@@ -28572,7 +28572,7 @@ const products = [
         "weight": 4,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Шкаф ШРВ",
             "type": ""
         },
         "image": "С"
@@ -28584,7 +28584,7 @@ const products = [
         "weight": 5,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Шкаф ШРВ",
             "type": ""
         },
         "image": "С"
@@ -28596,7 +28596,7 @@ const products = [
         "weight": 6,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Шкаф ШРВ",
             "type": ""
         },
         "image": "С"
@@ -28608,7 +28608,7 @@ const products = [
         "weight": 1,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Шкаф ШРН",
             "type": ""
         },
         "image": "С"
@@ -28620,7 +28620,7 @@ const products = [
         "weight": 1.8,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Шкаф ШРН",
             "type": ""
         },
         "image": "С"
@@ -28632,7 +28632,7 @@ const products = [
         "weight": 2.5,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Шкаф ШРН",
             "type": ""
         },
         "image": "С"
@@ -28644,7 +28644,7 @@ const products = [
         "weight": 3,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Шкаф ШРН",
             "type": ""
         },
         "image": "С"
@@ -28656,7 +28656,7 @@ const products = [
         "weight": 3.8,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Шкаф ШРН",
             "type": ""
         },
         "image": "С"
@@ -28668,7 +28668,7 @@ const products = [
         "weight": 4,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Шкаф ШРН",
             "type": ""
         },
         "image": "С"
@@ -28680,7 +28680,7 @@ const products = [
         "weight": 5,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Шкаф ШРН",
             "type": ""
         },
         "image": "С"
@@ -28692,7 +28692,7 @@ const products = [
         "weight": 6,
         "category": {
             "main": "Колектора / Шкафы",
-            "section": "Сантех",
+            "section": "Шкаф ШРН",
             "type": ""
         },
         "image": "С"
@@ -28704,7 +28704,7 @@ const products = [
         "weight": 0.01,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Ниппель Stout",
             "type": ""
         },
         "image": "S"
@@ -28716,7 +28716,7 @@ const products = [
         "weight": 0.01,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Ниппель Stout",
             "type": ""
         },
         "image": "S"
@@ -28728,7 +28728,7 @@ const products = [
         "weight": 0.01,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Ниппель Stout",
             "type": ""
         },
         "image": "S"
@@ -28740,7 +28740,7 @@ const products = [
         "weight": 0.01,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Ниппель Stout",
             "type": ""
         },
         "image": "S"
@@ -28752,7 +28752,7 @@ const products = [
         "weight": 0.01,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Ниппель Stout",
             "type": ""
         },
         "image": "S"
@@ -28764,7 +28764,7 @@ const products = [
         "weight": 0.01,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Ниппель Stout",
             "type": ""
         },
         "image": "S"
@@ -28776,7 +28776,7 @@ const products = [
         "weight": 0.01,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -28788,7 +28788,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -28800,7 +28800,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -28812,7 +28812,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -28824,7 +28824,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -28836,7 +28836,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -28848,7 +28848,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -28860,7 +28860,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -28872,7 +28872,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -28884,7 +28884,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -28896,7 +28896,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -28908,7 +28908,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -28920,7 +28920,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -28932,7 +28932,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -28944,7 +28944,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -28956,7 +28956,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -28968,7 +28968,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -28980,7 +28980,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -28992,7 +28992,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -29004,7 +29004,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -29016,7 +29016,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -29028,7 +29028,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -29040,7 +29040,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -29052,7 +29052,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -29064,7 +29064,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -29076,7 +29076,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -29088,7 +29088,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -29100,7 +29100,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -29112,7 +29112,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -29124,7 +29124,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Бочонок Stout",
             "type": ""
         },
         "image": "S"
@@ -29136,7 +29136,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Крестовина Stout",
             "type": ""
         },
         "image": "S"
@@ -29148,7 +29148,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Крестовина Stout",
             "type": ""
         },
         "image": "S"
@@ -29160,7 +29160,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Крестовина Stout",
             "type": ""
         },
         "image": "S"
@@ -29172,7 +29172,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -29184,7 +29184,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -29196,7 +29196,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -29208,7 +29208,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -29220,7 +29220,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -29232,7 +29232,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -29244,7 +29244,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -29256,7 +29256,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -29268,7 +29268,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -29280,7 +29280,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -29292,7 +29292,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -29304,7 +29304,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -29316,7 +29316,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -29328,7 +29328,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -29340,7 +29340,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -29352,7 +29352,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -29364,7 +29364,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -29376,7 +29376,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -29388,7 +29388,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Американка Stout",
             "type": ""
         },
         "image": "S"
@@ -29400,7 +29400,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Американка Stout",
             "type": ""
         },
         "image": "S"
@@ -29412,7 +29412,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Американка Stout",
             "type": ""
         },
         "image": "S"
@@ -29424,7 +29424,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Американка Stout",
             "type": ""
         },
         "image": "S"
@@ -29436,7 +29436,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Американка Stout",
             "type": ""
         },
         "image": "S"
@@ -29448,7 +29448,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Американка Stout",
             "type": ""
         },
         "image": "S"
@@ -29460,7 +29460,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Американка Stout",
             "type": ""
         },
         "image": "S"
@@ -29472,7 +29472,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Американка Stout",
             "type": ""
         },
         "image": "S"
@@ -29484,7 +29484,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Американка Stout",
             "type": ""
         },
         "image": "S"
@@ -29496,7 +29496,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Американка Stout",
             "type": ""
         },
         "image": "S"
@@ -29508,7 +29508,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Американка Stout",
             "type": ""
         },
         "image": "S"
@@ -29520,7 +29520,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Американка Stout",
             "type": ""
         },
         "image": "S"
@@ -29532,7 +29532,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Американка Stout",
             "type": ""
         },
         "image": "S"
@@ -29544,7 +29544,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Американка Stout",
             "type": ""
         },
         "image": "S"
@@ -29556,7 +29556,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Американка Stout",
             "type": ""
         },
         "image": "S"
@@ -29568,19 +29568,19 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Американка Stout",
             "type": ""
         },
         "image": "S"
     },
     {
         "name": "Муфта американка угловая 1/2г/ш бронза Stout",
-        "price": 303,
+        "price": 308,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Американка Stout",
             "type": ""
         },
         "image": "S"
@@ -29592,7 +29592,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Американка Stout",
             "type": ""
         },
         "image": "S"
@@ -29604,7 +29604,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Переход Stout",
             "type": ""
         },
         "image": "S"
@@ -29616,7 +29616,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Переход Stout",
             "type": ""
         },
         "image": "S"
@@ -29628,7 +29628,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Переход Stout",
             "type": ""
         },
         "image": "S"
@@ -29640,7 +29640,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Переход Stout",
             "type": ""
         },
         "image": "S"
@@ -29652,7 +29652,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Переход Stout",
             "type": ""
         },
         "image": "S"
@@ -29664,7 +29664,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Переход Stout",
             "type": ""
         },
         "image": "S"
@@ -29676,7 +29676,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Переход Stout",
             "type": ""
         },
         "image": "S"
@@ -29688,7 +29688,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Переход Stout",
             "type": ""
         },
         "image": "S"
@@ -29700,7 +29700,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Переход Stout",
             "type": ""
         },
         "image": "S"
@@ -29712,7 +29712,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Переход Stout",
             "type": ""
         },
         "image": "S"
@@ -29724,7 +29724,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Переход Stout",
             "type": ""
         },
         "image": "S"
@@ -29736,7 +29736,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Переход Stout",
             "type": ""
         },
         "image": "S"
@@ -29748,7 +29748,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Переход Stout",
             "type": ""
         },
         "image": "S"
@@ -29760,7 +29760,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Ниппель пер. Stout",
             "type": ""
         },
         "image": "S"
@@ -29772,7 +29772,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Ниппель пер. Stout",
             "type": ""
         },
         "image": "S"
@@ -29784,7 +29784,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Ниппель пер. Stout",
             "type": ""
         },
         "image": "S"
@@ -29796,7 +29796,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Ниппель пер. Stout",
             "type": ""
         },
         "image": "S"
@@ -29808,7 +29808,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Ниппель пер. Stout",
             "type": ""
         },
         "image": "S"
@@ -29820,7 +29820,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Ниппель пер. Stout",
             "type": ""
         },
         "image": "S"
@@ -29832,7 +29832,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Ниппель пер. Stout",
             "type": ""
         },
         "image": "S"
@@ -29844,7 +29844,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Ниппель пер. Stout",
             "type": ""
         },
         "image": "S"
@@ -29856,7 +29856,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Ниппель пер. Stout",
             "type": ""
         },
         "image": "S"
@@ -29868,7 +29868,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Ниппель пер. Stout",
             "type": ""
         },
         "image": "S"
@@ -29880,7 +29880,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Ниппель пер. Stout",
             "type": ""
         },
         "image": "S"
@@ -29892,7 +29892,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Ниппель пер. Stout",
             "type": ""
         },
         "image": "S"
@@ -29901,10 +29901,10 @@ const products = [
         "name": "Ниппель переходной  1/2 х 3/4 бронза Stout",
         "price": null,
         "unit": "шт",
-        "weight": null,
+        "weight": 0,
         "category": {
             "main": "Stout Фитинги",
-            "section": "",
+            "section": "Ниппель пер. Stout",
             "type": ""
         },
         "image": "S"
@@ -29916,7 +29916,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Переход Stout",
             "type": ""
         },
         "image": "S"
@@ -29928,7 +29928,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Переход Stout",
             "type": ""
         },
         "image": "S"
@@ -29940,7 +29940,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Переход Stout",
             "type": ""
         },
         "image": "S"
@@ -29952,7 +29952,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Переход Stout",
             "type": ""
         },
         "image": "S"
@@ -29964,7 +29964,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Переход Stout",
             "type": ""
         },
         "image": "S"
@@ -29976,7 +29976,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Переход Stout",
             "type": ""
         },
         "image": "S"
@@ -29988,7 +29988,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Тройник Stout",
             "type": ""
         },
         "image": "S"
@@ -30000,7 +30000,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Тройник Stout",
             "type": ""
         },
         "image": "S"
@@ -30012,7 +30012,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Тройник Stout",
             "type": ""
         },
         "image": "S"
@@ -30024,7 +30024,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Тройник Stout",
             "type": ""
         },
         "image": "S"
@@ -30036,7 +30036,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Тройник Stout",
             "type": ""
         },
         "image": "S"
@@ -30048,7 +30048,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Тройник Stout",
             "type": ""
         },
         "image": "S"
@@ -30060,7 +30060,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Тройник Stout",
             "type": ""
         },
         "image": "S"
@@ -30072,7 +30072,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Тройник Stout",
             "type": ""
         },
         "image": "S"
@@ -30084,7 +30084,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Тройник Stout",
             "type": ""
         },
         "image": "S"
@@ -30096,7 +30096,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Тройник Stout",
             "type": ""
         },
         "image": "S"
@@ -30108,7 +30108,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Тройник Stout",
             "type": ""
         },
         "image": "S"
@@ -30120,7 +30120,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Угол Stout",
             "type": ""
         },
         "image": "S"
@@ -30132,7 +30132,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Угол Stout",
             "type": ""
         },
         "image": "S"
@@ -30144,7 +30144,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Угол Stout",
             "type": ""
         },
         "image": "S"
@@ -30156,7 +30156,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Угол Stout",
             "type": ""
         },
         "image": "S"
@@ -30168,7 +30168,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Угол Stout",
             "type": ""
         },
         "image": "S"
@@ -30180,7 +30180,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Угол Stout",
             "type": ""
         },
         "image": "S"
@@ -30192,7 +30192,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Угол Stout",
             "type": ""
         },
         "image": "S"
@@ -30204,7 +30204,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Угол Stout",
             "type": ""
         },
         "image": "S"
@@ -30216,7 +30216,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Угол Stout",
             "type": ""
         },
         "image": "S"
@@ -30228,7 +30228,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Угол Stout",
             "type": ""
         },
         "image": "S"
@@ -30240,7 +30240,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Угол Stout",
             "type": ""
         },
         "image": "S"
@@ -30252,7 +30252,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Угол Stout",
             "type": ""
         },
         "image": "S"
@@ -30264,7 +30264,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Угол Stout",
             "type": ""
         },
         "image": "S"
@@ -30276,7 +30276,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Угол Stout",
             "type": ""
         },
         "image": "S"
@@ -30288,7 +30288,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Угол пер. Stout",
             "type": ""
         },
         "image": "S"
@@ -30300,7 +30300,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Угол пер. Stout",
             "type": ""
         },
         "image": "S"
@@ -30312,7 +30312,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Угол пер. Stout",
             "type": ""
         },
         "image": "S"
@@ -30324,7 +30324,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Угол пер. Stout",
             "type": ""
         },
         "image": "S"
@@ -30336,7 +30336,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30348,7 +30348,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30360,7 +30360,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30372,7 +30372,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30384,7 +30384,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30396,7 +30396,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30408,7 +30408,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30420,7 +30420,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30432,7 +30432,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30444,7 +30444,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30456,7 +30456,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30468,7 +30468,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30480,7 +30480,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30492,7 +30492,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30504,7 +30504,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30516,7 +30516,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30528,7 +30528,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30540,7 +30540,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30552,7 +30552,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30564,7 +30564,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30576,7 +30576,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30588,7 +30588,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30600,7 +30600,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30612,7 +30612,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30624,7 +30624,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30636,7 +30636,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30648,7 +30648,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30660,7 +30660,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30672,7 +30672,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30684,7 +30684,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30696,7 +30696,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30708,7 +30708,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -30720,7 +30720,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Футорка Stout",
             "type": ""
         },
         "image": "S"
@@ -30732,7 +30732,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Футорка Stout",
             "type": ""
         },
         "image": "S"
@@ -30744,7 +30744,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Футорка Stout",
             "type": ""
         },
         "image": "S"
@@ -30756,7 +30756,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Футорка Stout",
             "type": ""
         },
         "image": "S"
@@ -30768,7 +30768,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Футорка Stout",
             "type": ""
         },
         "image": "S"
@@ -30780,7 +30780,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Футорка Stout",
             "type": ""
         },
         "image": "S"
@@ -30792,7 +30792,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Футорка Stout",
             "type": ""
         },
         "image": "S"
@@ -30804,7 +30804,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Футорка Stout",
             "type": ""
         },
         "image": "S"
@@ -30816,7 +30816,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Футорка Stout",
             "type": ""
         },
         "image": "S"
@@ -30828,7 +30828,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Футорка Stout",
             "type": ""
         },
         "image": "S"
@@ -30840,7 +30840,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Футорка Stout",
             "type": ""
         },
         "image": "S"
@@ -30852,7 +30852,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Футорка Stout",
             "type": ""
         },
         "image": "S"
@@ -30864,7 +30864,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Футорка Stout",
             "type": ""
         },
         "image": "S"
@@ -30876,7 +30876,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Футорка Stout",
             "type": ""
         },
         "image": "S"
@@ -30888,7 +30888,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Футорка Stout",
             "type": ""
         },
         "image": "S"
@@ -30900,7 +30900,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Футорка Stout",
             "type": ""
         },
         "image": "S"
@@ -30912,7 +30912,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Футорка Stout",
             "type": ""
         },
         "image": "S"
@@ -30924,19 +30924,19 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Футорка Stout",
             "type": ""
         },
         "image": "S"
     },
     {
         "name": "Кран шаровой угловой Stout 3/4 г/ш с американкой",
-        "price": 1566,
+        "price": 1595,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Stout Фитинги",
-            "section": "Stout",
+            "section": "Кран Stout",
             "type": ""
         },
         "image": "S"
@@ -30948,19 +30948,19 @@ const products = [
         "weight": 0.15,
         "category": {
             "main": "Stout Труба",
-            "section": "Valtec",
+            "section": "Труба Valtec",
             "type": ""
         },
         "image": "V"
     },
     {
         "name": "Труба 20мм металлопласт Valtec",
-        "price": 184,
+        "price": 187,
         "unit": "м",
         "weight": 0.2,
         "category": {
             "main": "Stout Труба",
-            "section": "Valtec",
+            "section": "Труба Valtec",
             "type": ""
         },
         "image": "V"
@@ -30972,43 +30972,43 @@ const products = [
         "weight": 0.25,
         "category": {
             "main": "Stout Труба",
-            "section": "Valtec",
+            "section": "Труба Valtec",
             "type": ""
         },
         "image": "V"
     },
     {
         "name": "Труба 16мм Stout для водоснабжения и отопления из сшитого полиэтилена",
-        "price": 152,
+        "price": 154,
         "unit": "м",
         "weight": 0.15,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Труба Stout",
             "type": ""
         },
         "image": "S"
     },
     {
         "name": "Труба 20мм Stout для водоснабжения и отопления из сшитого полиэтилена",
-        "price": 211,
+        "price": 214,
         "unit": "м",
         "weight": 0.2,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Труба Stout",
             "type": ""
         },
         "image": "S"
     },
     {
         "name": "Труба 25мм Stout для водоснабжения и отопления из сшитого полиэтилена",
-        "price": 324,
+        "price": 330,
         "unit": "м",
         "weight": 0.25,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Труба Stout",
             "type": ""
         },
         "image": "S"
@@ -31020,7 +31020,7 @@ const products = [
         "weight": 0.15,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Труба Stout",
             "type": ""
         },
         "image": "S"
@@ -31032,7 +31032,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Труба Stout",
             "type": ""
         },
         "image": "S"
@@ -31044,43 +31044,43 @@ const products = [
         "weight": 0.25,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Труба Stout",
             "type": ""
         },
         "image": "S"
     },
     {
         "name": "Гильза 16 Stout",
-        "price": 87,
+        "price": 88,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Гильза Stout",
             "type": ""
         },
         "image": "S"
     },
     {
         "name": "Гильза 20 Stout",
-        "price": 106,
+        "price": 107,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Гильза Stout",
             "type": ""
         },
         "image": "S"
     },
     {
         "name": "Гильза 25 Stout",
-        "price": 152,
+        "price": 154,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Гильза Stout",
             "type": ""
         },
         "image": "S"
@@ -31092,7 +31092,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Заглушка Stout",
             "type": ""
         },
         "image": "S"
@@ -31104,7 +31104,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Заглушка Stout",
             "type": ""
         },
         "image": "S"
@@ -31116,7 +31116,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -31128,7 +31128,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -31140,7 +31140,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -31152,19 +31152,19 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
     },
     {
         "name": "Муфта 20х1\\2н Stout",
-        "price": 303,
+        "price": 308,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -31176,7 +31176,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -31188,7 +31188,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -31200,7 +31200,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -31212,7 +31212,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -31224,7 +31224,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -31236,19 +31236,19 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
     },
     {
         "name": "Муфта с накидной гайкой 16х1\\2в Stout",
-        "price": 422,
+        "price": 429,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -31260,7 +31260,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -31272,7 +31272,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -31284,7 +31284,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -31296,7 +31296,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -31308,7 +31308,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -31320,7 +31320,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -31332,7 +31332,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -31344,7 +31344,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -31356,7 +31356,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -31368,7 +31368,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -31380,7 +31380,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Муфта Stout",
             "type": ""
         },
         "image": "S"
@@ -31392,7 +31392,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Планка Stout",
             "type": ""
         },
         "image": "S"
@@ -31404,7 +31404,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Тройник Stout",
             "type": ""
         },
         "image": "S"
@@ -31416,7 +31416,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Тройник Stout",
             "type": ""
         },
         "image": "S"
@@ -31428,7 +31428,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Тройник Stout",
             "type": ""
         },
         "image": "S"
@@ -31440,7 +31440,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Тройник Stout",
             "type": ""
         },
         "image": "S"
@@ -31452,7 +31452,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Тройник Stout",
             "type": ""
         },
         "image": "S"
@@ -31464,7 +31464,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Тройник Stout",
             "type": ""
         },
         "image": "S"
@@ -31476,19 +31476,19 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Тройник Stout",
             "type": ""
         },
         "image": "S"
     },
     {
         "name": "Тройник 25х20 Stout",
-        "price": 735,
+        "price": 748,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Тройник Stout",
             "type": ""
         },
         "image": "S"
@@ -31500,7 +31500,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Тройник Stout",
             "type": ""
         },
         "image": "S"
@@ -31512,7 +31512,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Тройник Stout",
             "type": ""
         },
         "image": "S"
@@ -31524,7 +31524,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Угол Stout",
             "type": ""
         },
         "image": "S"
@@ -31536,7 +31536,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Угол Stout",
             "type": ""
         },
         "image": "S"
@@ -31548,7 +31548,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Угол Stout",
             "type": ""
         },
         "image": "S"
@@ -31560,19 +31560,19 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Угол Stout",
             "type": ""
         },
         "image": "S"
     },
     {
         "name": "Уголок 20 Stout",
-        "price": 465,
+        "price": 473,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Угол Stout",
             "type": ""
         },
         "image": "S"
@@ -31584,7 +31584,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Угол Stout",
             "type": ""
         },
         "image": "S"
@@ -31596,7 +31596,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Угол Stout",
             "type": ""
         },
         "image": "S"
@@ -31608,7 +31608,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Угол Stout",
             "type": ""
         },
         "image": "S"
@@ -31620,7 +31620,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Угол Stout",
             "type": ""
         },
         "image": "S"
@@ -31632,7 +31632,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Угол Stout",
             "type": ""
         },
         "image": "S"
@@ -31644,7 +31644,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Угол Stout",
             "type": ""
         },
         "image": "S"
@@ -31656,19 +31656,19 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Угол Stout",
             "type": ""
         },
         "image": "S"
     },
     {
         "name": "Уголок установочный 16х1/2в Stout",
-        "price": 492,
+        "price": 500,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Водорозетка Stout",
             "type": ""
         },
         "image": "S"
@@ -31680,7 +31680,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Водорозетка Stout",
             "type": ""
         },
         "image": "S"
@@ -31692,7 +31692,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Водорозетка Stout",
             "type": ""
         },
         "image": "S"
@@ -31704,7 +31704,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Водорозетка Stout",
             "type": ""
         },
         "image": "S"
@@ -31716,7 +31716,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Фиксатор Stout",
             "type": ""
         },
         "image": "S"
@@ -31728,7 +31728,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Фиксатор Stout",
             "type": ""
         },
         "image": "S"
@@ -31740,7 +31740,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Фиксатор Stout",
             "type": ""
         },
         "image": "S"
@@ -31752,7 +31752,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Крестовина Stout",
             "type": ""
         },
         "image": "S"
@@ -31764,7 +31764,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Удлинитель Stout",
             "type": ""
         },
         "image": "S"
@@ -31776,7 +31776,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Американка Stout",
             "type": ""
         },
         "image": "S"
@@ -31788,7 +31788,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Клапан Stout",
             "type": ""
         },
         "image": "S"
@@ -31800,31 +31800,31 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Клапан Stout",
             "type": ""
         },
         "image": "S"
     },
     {
         "name": "Обратный клапан с мет.седлом 1/2\" Stout",
-        "price": 1404,
+        "price": 1430,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Клапан Stout",
             "type": ""
         },
         "image": "S"
     },
     {
         "name": "Обратный клапан с мет.седлом 3/4\" Stout",
-        "price": 1458,
+        "price": 1485,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Клапан Stout",
             "type": ""
         },
         "image": "S"
@@ -31836,7 +31836,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Манометр Stout",
             "type": ""
         },
         "image": "S"
@@ -31848,7 +31848,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Фильтр Stout",
             "type": ""
         },
         "image": "S"
@@ -31860,19 +31860,19 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Фильтр Stout",
             "type": ""
         },
         "image": "S"
     },
     {
         "name": "Фильтр грубой очистки, прямой 1/2\" Stout",
-        "price": 492,
+        "price": 500,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Фильтр Stout",
             "type": ""
         },
         "image": "S"
@@ -31884,43 +31884,43 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Фильтр Stout",
             "type": ""
         },
         "image": "S"
     },
     {
         "name": "Фильтр грубой очистки, косой 1/2\" Stout",
-        "price": 492,
+        "price": 500,
         "unit": "шт",
         "weight": 0.08,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Фильтр Stout",
             "type": ""
         },
         "image": "S"
     },
     {
         "name": "Фильтр грубой очистки, косой 3/4\" Stout",
-        "price": 702,
+        "price": 715,
         "unit": "шт",
         "weight": 0.09,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Фильтр Stout",
             "type": ""
         },
         "image": "S"
     },
     {
         "name": "Фильтр грубой очистки, косой 1\" Stout",
-        "price": 994,
+        "price": 1012,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Фильтр Stout",
             "type": ""
         },
         "image": "S"
@@ -31932,7 +31932,7 @@ const products = [
         "weight": 0.12,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Фильтр Stout",
             "type": ""
         },
         "image": "S"
@@ -31944,43 +31944,43 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Stout Труба",
-            "section": "Stout",
+            "section": "Переход Stout",
             "type": ""
         },
         "image": "S"
     },
     {
         "name": "Труба 16 stabil Rehau",
-        "price": 301,
+        "price": 305,
         "unit": "м",
         "weight": 0.15,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Труба Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Труба 20 stabil Rehau",
-        "price": 476,
+        "price": 484,
         "unit": "м",
         "weight": 0.2,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Труба Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Труба 25 stabil Rehau",
-        "price": 735,
+        "price": 748,
         "unit": "м",
         "weight": 0.25,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Труба Rehau",
             "type": ""
         },
         "image": "R"
@@ -31992,7 +31992,7 @@ const products = [
         "weight": 0.15,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Труба Rehau",
             "type": ""
         },
         "image": "R"
@@ -32004,7 +32004,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Труба Rehau",
             "type": ""
         },
         "image": "R"
@@ -32016,115 +32016,115 @@ const products = [
         "weight": 0.25,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Труба Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Труба 16 pink Rehau",
-        "price": 200,
+        "price": 203,
         "unit": "м",
         "weight": 0.15,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Труба Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Труба 20 pink Rehau",
-        "price": 303,
+        "price": 308,
         "unit": "м",
         "weight": 0.2,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Труба Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Труба 25 pink Rehau",
-        "price": 503,
+        "price": 511,
         "unit": "м",
         "weight": 0.25,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Труба Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Гильза 16 Rehau PVDF",
-        "price": 119,
+        "price": 121,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Гильза Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Гильза 20 Rehau PVDF",
-        "price": 173,
+        "price": 176,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Гильза Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Гильза 25 Rehau PVDF",
-        "price": 179,
+        "price": 181,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Гильза Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Тройник 16 Rehau PVDF",
-        "price": 638,
+        "price": 649,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Тройник Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Тройник 20 Rehau PVDF",
-        "price": 843,
+        "price": 858,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Тройник Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Тройник 25 Rehau PVDF",
-        "price": 1059,
+        "price": 1078,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Тройник Rehau",
             "type": ""
         },
         "image": "R"
@@ -32136,7 +32136,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Тройник Rehau",
             "type": ""
         },
         "image": "R"
@@ -32148,19 +32148,19 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Тройник Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Тройник 25х20 Rehau PVDF",
-        "price": 983,
+        "price": 1001,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Тройник Rehau",
             "type": ""
         },
         "image": "R"
@@ -32172,7 +32172,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Тройник Rehau",
             "type": ""
         },
         "image": "R"
@@ -32184,7 +32184,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Тройник Rehau",
             "type": ""
         },
         "image": "R"
@@ -32196,7 +32196,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Тройник Rehau",
             "type": ""
         },
         "image": "R"
@@ -32208,7 +32208,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Тройник Rehau",
             "type": ""
         },
         "image": "R"
@@ -32220,7 +32220,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Тройник Rehau",
             "type": ""
         },
         "image": "R"
@@ -32232,7 +32232,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Тройник Rehau",
             "type": ""
         },
         "image": "R"
@@ -32244,7 +32244,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Тройник Rehau",
             "type": ""
         },
         "image": "R"
@@ -32256,7 +32256,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Тройник Rehau",
             "type": ""
         },
         "image": "R"
@@ -32268,7 +32268,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Тройник Rehau",
             "type": ""
         },
         "image": "R"
@@ -32280,55 +32280,55 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Тройник Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Муфта 16 Rehau PVDF",
-        "price": 497,
+        "price": 506,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Муфта 20 Rehau PVDF",
-        "price": 659,
+        "price": 671,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Муфта 25 Rehau PVDF",
-        "price": 994,
+        "price": 1012,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Муфта 20х16 Rehau PVDF",
-        "price": 648,
+        "price": 660,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
@@ -32340,7 +32340,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
@@ -32352,7 +32352,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
@@ -32364,7 +32364,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
@@ -32376,7 +32376,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
@@ -32388,7 +32388,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
@@ -32400,7 +32400,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
@@ -32412,7 +32412,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
@@ -32424,151 +32424,151 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Муфта 16х1/2н Rehau бронза",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Муфта 16х3/4н Rehau бронза",
-        "price": 627,
+        "price": 638,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Муфта 20х1/2н Rehau бронза",
-        "price": 627,
+        "price": 638,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Муфта 20х3/4н Rehau бронза",
-        "price": 810,
+        "price": 825,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Муфта 25х1/2н Rehau бронза",
-        "price": 1026,
+        "price": 1045,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Муфта 25х3/4н Rehau бронза",
-        "price": 821,
+        "price": 836,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Муфта 25х1н Rehau бронза",
-        "price": 940,
+        "price": 957,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Муфта 16х1/2в Rehau бронза",
-        "price": 702,
+        "price": 715,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Муфта 20х1/2в Rehau бронза",
-        "price": 951,
+        "price": 968,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Муфта 20х3/4в Rehau бронза",
-        "price": 789,
+        "price": 803,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Муфта 25х1/2в Rehau бронза",
-        "price": 1026,
+        "price": 1045,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Муфта 25х3/4в Rehau бронза",
-        "price": 918,
+        "price": 935,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
@@ -32580,127 +32580,127 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Муфта с накидной гайкой 16х1/2в Rehau бронза",
-        "price": 702,
+        "price": 715,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Муфта с накидной гайкой 16х3/4в Rehau бронза",
-        "price": 702,
+        "price": 715,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Муфта с накидной гайкой 20х1/2в Rehau бронза",
-        "price": 940,
+        "price": 957,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Муфта с накидной гайкой 20х3/4в Rehau бронза",
-        "price": 951,
+        "price": 968,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Муфта с накидной гайкой 25х3/4в Rehau бронза",
-        "price": 918,
+        "price": 935,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Муфта с накидной гайкой 25х1в Rehau бронза",
-        "price": 1242,
+        "price": 1265,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Муфта переходник на евроконус 16-G 3/4\" Rehau",
-        "price": 735,
+        "price": 748,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Муфта Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Уголок 16 Rehau PVDF",
-        "price": 519,
+        "price": 528,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Угол Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Уголок 20 Rehau PVDF",
-        "price": 735,
+        "price": 748,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Угол Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Уголок 25 Rehau PVDF",
-        "price": 951,
+        "price": 968,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Угол Rehau",
             "type": ""
         },
         "image": "R"
@@ -32712,43 +32712,43 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Угол Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Уголок 20 Rehau бронза",
-        "price": 918,
+        "price": 935,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Угол Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Уголок 25 Rehau бронза",
-        "price": 1026,
+        "price": 1045,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Угол Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Уголок 16х1/2н Rehau бронза",
-        "price": 670,
+        "price": 682,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Угол Rehau",
             "type": ""
         },
         "image": "R"
@@ -32760,19 +32760,19 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Угол Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Уголок 20х3/4н Rehau бронза",
-        "price": 735,
+        "price": 748,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Угол Rehau",
             "type": ""
         },
         "image": "R"
@@ -32784,43 +32784,43 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Угол Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Уголок 16х1/2в Rehau бронза",
-        "price": 670,
+        "price": 682,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Угол Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Уголок 16х3/4в Rehau бронза",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Угол Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Уголок 20х1/2в Rehau бронза",
-        "price": 951,
+        "price": 968,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Угол Rehau",
             "type": ""
         },
         "image": "R"
@@ -32832,7 +32832,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Угол Rehau",
             "type": ""
         },
         "image": "R"
@@ -32844,31 +32844,31 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Угол Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Уголок установочный 16х1/2в Rehau бронза",
-        "price": 713,
+        "price": 726,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Водорозетка Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Уголок установочный 20х1/2в Rehau бронза",
-        "price": 778,
+        "price": 792,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Водорозетка Rehau",
             "type": ""
         },
         "image": "R"
@@ -32880,43 +32880,43 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Водорозетка Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Уголок установочный 25х3/4в Rehau бронза",
-        "price": 1188,
+        "price": 1210,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Водорозетка Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Уголок установочный 16х1/2н Rehau бронза",
-        "price": 713,
+        "price": 726,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Водорозетка Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Уголок установочный 20х1/2н Rehau бронза",
-        "price": 918,
+        "price": 935,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Водорозетка Rehau",
             "type": ""
         },
         "image": "R"
@@ -32928,19 +32928,19 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Водорозетка Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Уголок установочный 25х3/4н Rehau бронза",
-        "price": 1005,
+        "price": 1023,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Водорозетка Rehau",
             "type": ""
         },
         "image": "R"
@@ -32952,7 +32952,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Водорозетка Rehau",
             "type": ""
         },
         "image": "R"
@@ -32964,31 +32964,31 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Водорозетка Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Планка 2-й Rehau тип О 75/150 длинный",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Планка Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Планка 1-й Rehau тип Z 30 короткий",
-        "price": 292,
+        "price": 297,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Планка Rehau",
             "type": ""
         },
         "image": "R"
@@ -33000,7 +33000,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Планка Rehau",
             "type": ""
         },
         "image": "R"
@@ -33012,7 +33012,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Трубка Rehau",
             "type": ""
         },
         "image": "R"
@@ -33024,7 +33024,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Трубка Rehau",
             "type": ""
         },
         "image": "R"
@@ -33036,7 +33036,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Трубка Rehau",
             "type": ""
         },
         "image": "R"
@@ -33048,31 +33048,31 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Трубка Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Резьбозажимное соединение (Евроконус) для металлической трубки G 3/4 -15",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Евроконус Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Резьбозажимное соединение (Евроконус) flex/pink 16х2,2xG3/4",
-        "price": 605,
+        "price": 616,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Евроконус Rehau",
             "type": ""
         },
         "image": "R"
@@ -33084,31 +33084,31 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Евроконус Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Резьбозажимное соединение (Евроконус) stabil 16,2x2,6xG3/4",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Евроконус Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Резьбозажимное соединение (Евроконус) stabil 20x2,9xG3/4",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Евроконус Rehau",
             "type": ""
         },
         "image": "R"
@@ -33120,7 +33120,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Фиксатор Rehau",
             "type": ""
         },
         "image": "R"
@@ -33132,7 +33132,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Фиксатор Rehau",
             "type": ""
         },
         "image": "R"
@@ -33144,7 +33144,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Фиксатор Rehau",
             "type": ""
         },
         "image": "R"
@@ -33156,7 +33156,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Сантех Расход",
             "type": ""
         },
         "image": "R"
@@ -33168,7 +33168,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Привод Rehau",
             "type": ""
         },
         "image": "R"
@@ -33180,7 +33180,7 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Колодка Rehau",
             "type": ""
         },
         "image": "R"
@@ -33192,31 +33192,31 @@ const products = [
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Терморег. Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Трубка для радиатора Rehau 20 х 15 х 20 х 250 мм Т-образная нерж. Сталь",
-        "price": 1998,
+        "price": 2035,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Трубка Rehau",
             "type": ""
         },
         "image": "R"
     },
     {
         "name": "Резьбозажимное соединение (Евроконус) Rehau 15 мм х 3/4 ЕК для стальных трубок",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Евроконус Rehau",
             "type": ""
         },
         "image": "R"
@@ -33228,7 +33228,7 @@ const products = [
         "weight": 5,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Коллектор Rehau",
             "type": ""
         },
         "image": "R"
@@ -33240,7 +33240,7 @@ const products = [
         "weight": 5,
         "category": {
             "main": "Rehau",
-            "section": "Rehau",
+            "section": "Коллектор Rehau",
             "type": ""
         },
         "image": "R"
@@ -33252,7 +33252,7 @@ const products = [
         "weight": 0.3,
         "category": {
             "main": "Rehau",
-            "section": "Сантех",
+            "section": "Теплоизоляция Труб",
             "type": ""
         },
         "image": "С"
@@ -33264,7 +33264,7 @@ const products = [
         "weight": 0.3,
         "category": {
             "main": "Rehau",
-            "section": "Сантех",
+            "section": "Теплоизоляция Труб",
             "type": ""
         },
         "image": "С"
@@ -33276,7 +33276,7 @@ const products = [
         "weight": 0.6,
         "category": {
             "main": "Rehau",
-            "section": "Сантех",
+            "section": "Теплоизоляция Труб",
             "type": ""
         },
         "image": "С"
@@ -33288,7 +33288,7 @@ const products = [
         "weight": 0.6,
         "category": {
             "main": "Rehau",
-            "section": "Сантех",
+            "section": "Теплоизоляция Труб",
             "type": ""
         },
         "image": "С"
@@ -33300,7 +33300,7 @@ const products = [
         "weight": 0.8,
         "category": {
             "main": "Rehau",
-            "section": "Сантех",
+            "section": "Теплоизоляция Труб",
             "type": ""
         },
         "image": "С"
@@ -33312,31 +33312,31 @@ const products = [
         "weight": 0.8,
         "category": {
             "main": "Rehau",
-            "section": "Сантех",
+            "section": "Теплоизоляция Труб",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Узел нижнего подключения (мультифлекс) прямой для радиатора Rehau 1/2 НР(ш) х 3/4 ЕК НР(ш) с шаровыми кранами и накидными гайками",
-        "price": 2646,
+        "price": 2695,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Rehau",
-            "section": "Сантех",
+            "section": "Мультифлекс",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Узел нижнего подключения (мультифлекс) угловой для радиатора Rehau 1/2 НР(ш) х 3/4 ЕК НР(ш) с шаровыми кранами и накидными гайками",
-        "price": 2484,
+        "price": 2530,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Rehau",
-            "section": "Сантех",
+            "section": "Мультифлекс",
             "type": ""
         },
         "image": "С"
@@ -33348,7 +33348,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33360,7 +33360,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33372,7 +33372,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33384,7 +33384,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33396,7 +33396,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33408,7 +33408,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33420,7 +33420,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33432,7 +33432,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33444,7 +33444,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33456,7 +33456,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33468,7 +33468,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33480,7 +33480,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33492,7 +33492,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33504,7 +33504,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33516,7 +33516,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33528,7 +33528,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33540,7 +33540,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33552,7 +33552,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33564,7 +33564,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33576,7 +33576,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33588,7 +33588,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33600,7 +33600,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33612,7 +33612,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33624,7 +33624,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33636,7 +33636,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33648,7 +33648,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33660,7 +33660,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33672,7 +33672,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33684,7 +33684,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33696,7 +33696,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33708,7 +33708,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33720,7 +33720,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33732,7 +33732,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33744,7 +33744,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33756,7 +33756,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33768,7 +33768,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33780,7 +33780,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33792,7 +33792,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Rehau Канализация",
-            "section": "Rehau",
+            "section": "Канализац. Rehau",
             "type": ""
         },
         "image": "R"
@@ -33803,8 +33803,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -33815,8 +33815,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -33827,8 +33827,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -33839,8 +33839,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -33851,8 +33851,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -33863,8 +33863,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -33875,8 +33875,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -33887,8 +33887,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -33899,8 +33899,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -33911,8 +33911,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -33923,8 +33923,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -33935,8 +33935,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -33947,8 +33947,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -33959,8 +33959,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -33971,8 +33971,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -33983,8 +33983,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -33995,8 +33995,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -34007,8 +34007,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -34019,8 +34019,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -34031,8 +34031,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -34043,8 +34043,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -34055,8 +34055,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -34067,8 +34067,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -34079,8 +34079,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -34091,8 +34091,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -34103,8 +34103,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -34115,8 +34115,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -34127,8 +34127,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -34139,8 +34139,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -34151,8 +34151,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -34163,8 +34163,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -34175,8 +34175,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -34187,8 +34187,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -34199,8 +34199,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -34211,8 +34211,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -34223,8 +34223,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк алюм.",
             "type": ""
         },
         "image": "Л"
@@ -34235,8 +34235,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34247,8 +34247,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34259,8 +34259,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34271,8 +34271,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34283,8 +34283,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34295,8 +34295,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34307,8 +34307,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34319,8 +34319,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34331,8 +34331,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34343,8 +34343,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34355,8 +34355,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34367,8 +34367,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34379,8 +34379,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34391,8 +34391,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34403,8 +34403,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34415,8 +34415,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34427,8 +34427,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34439,8 +34439,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34451,8 +34451,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34463,8 +34463,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34475,8 +34475,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34487,8 +34487,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34499,8 +34499,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34511,8 +34511,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34523,8 +34523,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34535,8 +34535,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34547,8 +34547,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34559,8 +34559,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34571,8 +34571,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34583,8 +34583,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34595,8 +34595,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34607,8 +34607,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34619,8 +34619,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34631,8 +34631,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34643,8 +34643,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34655,8 +34655,8 @@ const products = [
         "unit": "шт",
         "weight": 5,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк металл",
             "type": ""
         },
         "image": "Л"
@@ -34667,32 +34667,32 @@ const products = [
         "unit": "шт",
         "weight": 3,
         "category": {
-            "main": "Люки под плитку",
-            "section": "Люк",
+            "main": "Rehau Канализация",
+            "section": "Люк Ревиз.",
             "type": ""
         },
         "image": "Л"
     },
     {
         "name": "Вентилятор электрический вытяжной d100",
-        "price": 1404,
+        "price": 1430,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Вентилятор",
             "type": ""
         },
         "image": "В"
     },
     {
         "name": "Вентилятор накладной круглый электрический вытяжной d100",
-        "price": 1836,
+        "price": 1870,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Вентилятор",
             "type": ""
         },
         "image": "В"
@@ -34704,7 +34704,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Плоск",
             "type": ""
         },
         "image": "В"
@@ -34716,7 +34716,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Плоск",
             "type": ""
         },
         "image": "В"
@@ -34728,7 +34728,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Плоск",
             "type": ""
         },
         "image": "В"
@@ -34740,7 +34740,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Плоск",
             "type": ""
         },
         "image": "В"
@@ -34752,7 +34752,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Плоск",
             "type": ""
         },
         "image": "В"
@@ -34764,7 +34764,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Плоск",
             "type": ""
         },
         "image": "В"
@@ -34776,7 +34776,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Плоск",
             "type": ""
         },
         "image": "В"
@@ -34788,7 +34788,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Плоск",
             "type": ""
         },
         "image": "В"
@@ -34800,7 +34800,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Плоск",
             "type": ""
         },
         "image": "В"
@@ -34812,7 +34812,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Плоск",
             "type": ""
         },
         "image": "В"
@@ -34824,7 +34824,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Плоск",
             "type": ""
         },
         "image": "В"
@@ -34836,7 +34836,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Плоск",
             "type": ""
         },
         "image": "В"
@@ -34848,7 +34848,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Плоск",
             "type": ""
         },
         "image": "В"
@@ -34860,7 +34860,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Плоск",
             "type": ""
         },
         "image": "В"
@@ -34872,7 +34872,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Плоск",
             "type": ""
         },
         "image": "В"
@@ -34884,7 +34884,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Плоск",
             "type": ""
         },
         "image": "В"
@@ -34896,31 +34896,31 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентСоединитель",
             "type": ""
         },
         "image": "В"
     },
     {
         "name": "Соединитель воздуховодов плоских 120*60",
-        "price": 103,
+        "price": 104,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентСоединитель",
             "type": ""
         },
         "image": "В"
     },
     {
         "name": "Соединитель воздуховодов плоских 204*60",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентСоединитель",
             "type": ""
         },
         "image": "В"
@@ -34932,31 +34932,31 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентСоединитель",
             "type": ""
         },
         "image": "В"
     },
     {
         "name": "Соединитель воздуховодов плоских с обратным клапаном 120*60",
-        "price": 130,
+        "price": 132,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентСоединитель",
             "type": ""
         },
         "image": "В"
     },
     {
         "name": "Соединитель воздуховодов плоских с обратным клапаном 204*60",
-        "price": 206,
+        "price": 209,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентСоединитель",
             "type": ""
         },
         "image": "В"
@@ -34968,7 +34968,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентКолено",
             "type": ""
         },
         "image": "В"
@@ -34980,7 +34980,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентКолено",
             "type": ""
         },
         "image": "В"
@@ -34992,7 +34992,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентКолено",
             "type": ""
         },
         "image": "В"
@@ -35004,7 +35004,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентКолено",
             "type": ""
         },
         "image": "В"
@@ -35016,7 +35016,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентКолено",
             "type": ""
         },
         "image": "В"
@@ -35028,7 +35028,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентКолено",
             "type": ""
         },
         "image": "В"
@@ -35040,7 +35040,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентКолено",
             "type": ""
         },
         "image": "В"
@@ -35052,19 +35052,19 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентКолено",
             "type": ""
         },
         "image": "В"
     },
     {
         "name": "Тройник 110*55 мм",
-        "price": 206,
+        "price": 209,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентТройник",
             "type": ""
         },
         "image": "В"
@@ -35076,19 +35076,19 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентТройник",
             "type": ""
         },
         "image": "В"
     },
     {
         "name": "Тройник 204*60 мм",
-        "price": 378,
+        "price": 385,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентТройник",
             "type": ""
         },
         "image": "В"
@@ -35100,7 +35100,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентТройник",
             "type": ""
         },
         "image": "В"
@@ -35112,7 +35112,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентПластина",
             "type": ""
         },
         "image": "В"
@@ -35124,7 +35124,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентПластина",
             "type": ""
         },
         "image": "В"
@@ -35136,7 +35136,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентПластина",
             "type": ""
         },
         "image": "В"
@@ -35148,7 +35148,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентДержатель",
             "type": ""
         },
         "image": "В"
@@ -35160,19 +35160,19 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентДержатель",
             "type": ""
         },
         "image": "В"
     },
     {
         "name": "Держатель 204*60 мм",
-        "price": 92,
+        "price": 93,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентДержатель",
             "type": ""
         },
         "image": "В"
@@ -35184,7 +35184,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентРедуктор",
             "type": ""
         },
         "image": "В"
@@ -35196,7 +35196,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентСоединитель",
             "type": ""
         },
         "image": "В"
@@ -35208,7 +35208,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентСоединитель",
             "type": ""
         },
         "image": "В"
@@ -35220,7 +35220,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентСоединитель",
             "type": ""
         },
         "image": "В"
@@ -35232,55 +35232,55 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентСоединитель",
             "type": ""
         },
         "image": "В"
     },
     {
         "name": "Соединительное колено 110*55 х 100 мм",
-        "price": 162,
+        "price": 165,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентСоединитель",
             "type": ""
         },
         "image": "В"
     },
     {
         "name": "Соединительное колено 120*60 х 100 мм",
-        "price": 184,
+        "price": 187,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентСоединитель",
             "type": ""
         },
         "image": "В"
     },
     {
         "name": "Соединительное колено 204*60 х 100 мм",
-        "price": 351,
+        "price": 357,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентСоединитель",
             "type": ""
         },
         "image": "В"
     },
     {
         "name": "Соединительное колено 204*60 х 125 мм",
-        "price": 373,
+        "price": 379,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентСоединитель",
             "type": ""
         },
         "image": "В"
@@ -35292,7 +35292,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентСоединитель",
             "type": ""
         },
         "image": "В"
@@ -35304,7 +35304,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Кругл",
             "type": ""
         },
         "image": "В"
@@ -35316,7 +35316,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Кругл",
             "type": ""
         },
         "image": "В"
@@ -35328,7 +35328,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Кругл",
             "type": ""
         },
         "image": "В"
@@ -35340,7 +35340,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Кругл",
             "type": ""
         },
         "image": "В"
@@ -35352,7 +35352,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Кругл",
             "type": ""
         },
         "image": "В"
@@ -35364,7 +35364,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Кругл",
             "type": ""
         },
         "image": "В"
@@ -35376,7 +35376,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Кругл",
             "type": ""
         },
         "image": "В"
@@ -35388,7 +35388,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Кругл",
             "type": ""
         },
         "image": "В"
@@ -35400,7 +35400,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Кругл",
             "type": ""
         },
         "image": "В"
@@ -35412,7 +35412,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Кругл",
             "type": ""
         },
         "image": "В"
@@ -35424,7 +35424,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Кругл",
             "type": ""
         },
         "image": "В"
@@ -35436,7 +35436,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Кругл",
             "type": ""
         },
         "image": "В"
@@ -35448,7 +35448,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Кругл",
             "type": ""
         },
         "image": "В"
@@ -35460,7 +35460,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Кругл",
             "type": ""
         },
         "image": "В"
@@ -35472,7 +35472,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Кругл",
             "type": ""
         },
         "image": "В"
@@ -35484,7 +35484,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Кругл",
             "type": ""
         },
         "image": "В"
@@ -35496,7 +35496,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Кругл",
             "type": ""
         },
         "image": "В"
@@ -35508,7 +35508,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "Воздуховод Кругл",
             "type": ""
         },
         "image": "В"
@@ -35520,7 +35520,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентСоединитель",
             "type": ""
         },
         "image": "В"
@@ -35532,7 +35532,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентСоединитель",
             "type": ""
         },
         "image": "В"
@@ -35544,7 +35544,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентСоединитель",
             "type": ""
         },
         "image": "В"
@@ -35556,7 +35556,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентСоединитель",
             "type": ""
         },
         "image": "В"
@@ -35568,7 +35568,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентСоединитель",
             "type": ""
         },
         "image": "В"
@@ -35580,7 +35580,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентСоединитель",
             "type": ""
         },
         "image": "В"
@@ -35592,7 +35592,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентСоединитель",
             "type": ""
         },
         "image": "В"
@@ -35604,7 +35604,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентСоединитель",
             "type": ""
         },
         "image": "В"
@@ -35616,7 +35616,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентСоединитель",
             "type": ""
         },
         "image": "В"
@@ -35628,7 +35628,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентСоединитель",
             "type": ""
         },
         "image": "В"
@@ -35640,7 +35640,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентПластина",
             "type": ""
         },
         "image": "В"
@@ -35652,7 +35652,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентПластина",
             "type": ""
         },
         "image": "В"
@@ -35664,7 +35664,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентПластина",
             "type": ""
         },
         "image": "В"
@@ -35676,7 +35676,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентПластина",
             "type": ""
         },
         "image": "В"
@@ -35688,7 +35688,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентПластина",
             "type": ""
         },
         "image": "В"
@@ -35700,7 +35700,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентПластина",
             "type": ""
         },
         "image": "В"
@@ -35712,7 +35712,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентДержатель",
             "type": ""
         },
         "image": "В"
@@ -35724,7 +35724,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентДержатель",
             "type": ""
         },
         "image": "В"
@@ -35736,7 +35736,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентДержатель",
             "type": ""
         },
         "image": "В"
@@ -35748,7 +35748,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентДержатель",
             "type": ""
         },
         "image": "В"
@@ -35760,19 +35760,19 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентКолено",
             "type": ""
         },
         "image": "В"
     },
     {
         "name": "Колено круглое 125 мм",
-        "price": 268,
+        "price": 272,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентКолено",
             "type": ""
         },
         "image": "В"
@@ -35784,7 +35784,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентКолено",
             "type": ""
         },
         "image": "В"
@@ -35796,7 +35796,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентТройник",
             "type": ""
         },
         "image": "В"
@@ -35808,7 +35808,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентТройник",
             "type": ""
         },
         "image": "В"
@@ -35820,7 +35820,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентТройник",
             "type": ""
         },
         "image": "В"
@@ -35832,19 +35832,19 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентТройник",
             "type": ""
         },
         "image": "В"
     },
     {
         "name": "Тройник плоский (по центру круглый) 120х60х100 мм",
-        "price": 422,
+        "price": 429,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентТройник",
             "type": ""
         },
         "image": "В"
@@ -35856,7 +35856,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентРедуктор",
             "type": ""
         },
         "image": "В"
@@ -35868,7 +35868,7 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентРедуктор",
             "type": ""
         },
         "image": "В"
@@ -35880,31 +35880,31 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентРедуктор",
             "type": ""
         },
         "image": "В"
     },
     {
         "name": "Редуктор 150/125/120/100/80 мм",
-        "price": 179,
+        "price": 181,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентРедуктор",
             "type": ""
         },
         "image": "В"
     },
     {
         "name": "Решетка вентиляционная 200х200 мм, белый",
-        "price": 238,
+        "price": 242,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Вентиляция",
-            "section": "Вент",
+            "section": "ВентРешетка",
             "type": ""
         },
         "image": "В"
@@ -35915,32 +35915,32 @@ const products = [
         "unit": "шт",
         "weight": 0.01,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Прокладка",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Прокладка резиновая 3/4\"",
-        "price": 7,
+        "price": 6,
         "unit": "шт",
         "weight": 0.02,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Прокладка",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Прокладка паронитовая 1/2\"",
-        "price": 7,
+        "price": 6,
         "unit": "шт",
         "weight": 0.01,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Прокладка",
             "type": ""
         },
         "image": "С"
@@ -35951,8 +35951,8 @@ const products = [
         "unit": "шт",
         "weight": 0.02,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Прокладка",
             "type": ""
         },
         "image": "С"
@@ -35963,8 +35963,8 @@ const products = [
         "unit": "шт",
         "weight": 0.01,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Прокладка",
             "type": ""
         },
         "image": "С"
@@ -35975,32 +35975,32 @@ const products = [
         "unit": "шт",
         "weight": 0.02,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Прокладка",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Втулка защитная 16-20 мм синяя",
-        "price": 65,
+        "price": 66,
         "unit": "шт",
         "weight": 0.02,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Заглушка",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Втулка защитная 16-20 мм красная",
-        "price": 65,
+        "price": 66,
         "unit": "шт",
         "weight": 0.02,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Заглушка",
             "type": ""
         },
         "image": "С"
@@ -36011,8 +36011,8 @@ const products = [
         "unit": "шт",
         "weight": 0.02,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Заглушка",
             "type": ""
         },
         "image": "С"
@@ -36023,8 +36023,8 @@ const products = [
         "unit": "шт",
         "weight": 0.02,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Заглушка",
             "type": ""
         },
         "image": "С"
@@ -36035,8 +36035,8 @@ const products = [
         "unit": "шт",
         "weight": 0.02,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Заглушка",
             "type": ""
         },
         "image": "С"
@@ -36047,8 +36047,8 @@ const products = [
         "unit": "шт",
         "weight": 0.02,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Заглушка",
             "type": ""
         },
         "image": "С"
@@ -36059,8 +36059,8 @@ const products = [
         "unit": "шт",
         "weight": 0.03,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Заглушка",
             "type": ""
         },
         "image": "С"
@@ -36071,68 +36071,68 @@ const products = [
         "unit": "шт",
         "weight": 0.03,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Заглушка",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Компенсатор гидроудара Far (FA 2895 12) 1/2 НР 10-50 бар",
-        "price": 3132,
+        "price": 3190,
         "unit": "шт",
         "weight": 0.05,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Компенсатор",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Набор наклеек маркировочных",
-        "price": 508,
+        "price": 517,
         "unit": "шт",
         "weight": 0.05,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Сантех Расход",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Клей - герметик анаэробный, для резьбовых соединений 100 г",
-        "price": 1296,
+        "price": 1320,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Герметик Анаэр.",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Редуктор давления 1/2",
-        "price": 1998,
+        "price": 2035,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Редуктор",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Редуктор давления 3/4",
-        "price": 2322,
+        "price": 2365,
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Редуктор",
             "type": ""
         },
         "image": "С"
@@ -36143,8 +36143,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Редуктор",
             "type": ""
         },
         "image": "С"
@@ -36155,8 +36155,8 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Редуктор",
             "type": ""
         },
         "image": "С"
@@ -36167,32 +36167,32 @@ const products = [
         "unit": "шт",
         "weight": 0.1,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Сгон",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Система контроля протечки воды Neptun Bugatti Base (NEPBugBase12) 1/2\"",
-        "price": 19980,
+        "price": 20350,
         "unit": "шт",
         "weight": 2.5,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Нептун",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Система контроля протечки воды Neptun Bugatti Base (NEPBugBase12) 3/4\"",
-        "price": 22140,
+        "price": 22550,
         "unit": "шт",
         "weight": 2.8,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Нептун",
             "type": ""
         },
         "image": "С"
@@ -36203,8 +36203,8 @@ const products = [
         "unit": "шт",
         "weight": 2.5,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Нептун",
             "type": ""
         },
         "image": "С"
@@ -36215,20 +36215,20 @@ const products = [
         "unit": "шт",
         "weight": 2.8,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Нептун",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Кран шаровый с электроприводом Neptun PROFI 220В 1/2\"",
-        "price": 7344,
+        "price": 7480,
         "unit": "шт",
         "weight": 1,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Нептун",
             "type": ""
         },
         "image": "С"
@@ -36239,20 +36239,20 @@ const products = [
         "unit": "шт",
         "weight": 1,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Нептун",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Датчик контроля протечки воды Neptun SW005 12-24 В",
-        "price": 1512,
+        "price": 1540,
         "unit": "шт",
         "weight": 0.05,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Нептун",
             "type": ""
         },
         "image": "С"
@@ -36263,8 +36263,8 @@ const products = [
         "unit": "шт",
         "weight": 0.3,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Теплоизоляция Труб",
             "type": ""
         },
         "image": "С"
@@ -36275,8 +36275,8 @@ const products = [
         "unit": "шт",
         "weight": 0.3,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Теплоизоляция Труб",
             "type": ""
         },
         "image": "С"
@@ -36287,8 +36287,8 @@ const products = [
         "unit": "шт",
         "weight": 0.3,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Теплоизоляция Труб",
             "type": ""
         },
         "image": "С"
@@ -36299,8 +36299,8 @@ const products = [
         "unit": "шт",
         "weight": 0.3,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Теплоизоляция Труб",
             "type": ""
         },
         "image": "С"
@@ -36311,8 +36311,8 @@ const products = [
         "unit": "шт",
         "weight": 0.002,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Сантех Расход",
             "type": ""
         },
         "image": "С"
@@ -36323,8 +36323,8 @@ const products = [
         "unit": "шт",
         "weight": 0.002,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Сантех Расход",
             "type": ""
         },
         "image": "С"
@@ -36335,8 +36335,8 @@ const products = [
         "unit": "шт",
         "weight": 0.004,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Сантех Расход",
             "type": ""
         },
         "image": "С"
@@ -36347,8 +36347,8 @@ const products = [
         "unit": "шт",
         "weight": 0.004,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Сантех Расход",
             "type": ""
         },
         "image": "С"
@@ -36359,8 +36359,8 @@ const products = [
         "unit": "шт",
         "weight": 0.006,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Сантех Расход",
             "type": ""
         },
         "image": "С"
@@ -36371,8 +36371,8 @@ const products = [
         "unit": "шт",
         "weight": 0.006,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Сантех Расход",
             "type": ""
         },
         "image": "С"
@@ -36383,8 +36383,8 @@ const products = [
         "unit": "шт",
         "weight": 0.008,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Сантех Расход",
             "type": ""
         },
         "image": "С"
@@ -36395,8 +36395,8 @@ const products = [
         "unit": "шт",
         "weight": 0.008,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Сантех Расход",
             "type": ""
         },
         "image": "С"
@@ -36407,8 +36407,8 @@ const products = [
         "unit": "шт",
         "weight": 0.05,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Удлиннитель",
             "type": ""
         },
         "image": "С"
@@ -36419,56 +36419,56 @@ const products = [
         "unit": "шт",
         "weight": 0.05,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Удлиннитель",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Шина монтажная для труб 50х3х2000 мм",
-        "price": 1296,
+        "price": 1320,
         "unit": "шт",
         "weight": 0.5,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Шина",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Комплект Адаптер для подключения слива с двумя отводами 14 мм-50 мм (Шланги, Хомуты, Адаптер)",
-        "price": 594,
+        "price": 605,
         "unit": "шт",
         "weight": 0.5,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Адаптер",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Адаптер для подключения слива с двумя отводами 14 мм-50 мм",
-        "price": 270,
+        "price": 275,
         "unit": "шт",
         "weight": 0.05,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Адаптер",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Муфта переходная FAR 1\" х 1/2\" г/г латунная",
-        "price": 702,
+        "price": 715,
         "unit": "шт",
         "weight": 0.05,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Муфта FAR",
             "type": ""
         },
         "image": "С"
@@ -36479,248 +36479,248 @@ const products = [
         "unit": "шт",
         "weight": 0.05,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Муфта FAR",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Американка угловая Valtec 1/2\" г/ш латунная",
-        "price": 357,
+        "price": 363,
         "unit": "шт",
         "weight": 0.05,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Американка",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Американка угловая Valtec 3/4 ВР(г) х 3/4 НР(ш) латунная",
-        "price": 638,
+        "price": 649,
         "unit": "шт",
         "weight": 0.05,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Американка",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Сифон для ванны Mcalpine 1 1/2 х 40 мм с выпуском и ревизией полуавтомат хром",
-        "price": 5184,
+        "price": 5280,
         "unit": "шт",
         "weight": 0.5,
         "category": {
-            "main": "Сантех Расходник",
-            "section": "Сантех",
+            "main": "Вентиляция",
+            "section": "Ванна",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Розетка Legrand Valena Classic белый 1-ая с/з 774420",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.08,
         "category": {
-            "main": "Legrand / Легранд",
-            "section": "Электр",
+            "main": "Вентиляция",
+            "section": "Valena",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Розетка Legrand Valena белый 1-ая с/з с крышкой 774422",
-        "price": 303,
+        "price": 308,
         "unit": "шт",
         "weight": 0.08,
         "category": {
-            "main": "Legrand / Легранд",
-            "section": "Электр",
+            "main": "Вентиляция",
+            "section": "Valena",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Выключатель Legrand Valena Classic белый 1-клавишный 774401",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.09,
         "category": {
-            "main": "Legrand / Легранд",
-            "section": "Электр",
+            "main": "Вентиляция",
+            "section": "Valena",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Выключатель Legrand Valena Classic белый 2-х клавишный 774405",
-        "price": 270,
+        "price": 275,
         "unit": "шт",
         "weight": 0.09,
         "category": {
-            "main": "Legrand / Легранд",
-            "section": "Электр",
+            "main": "Вентиляция",
+            "section": "Valena",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Переключатель Legrand Valena Classic белый 1-клавишный 774406",
-        "price": 249,
+        "price": 253,
         "unit": "шт",
         "weight": 0.09,
         "category": {
-            "main": "Legrand / Легранд",
-            "section": "Электр",
+            "main": "Вентиляция",
+            "section": "Valena",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Переключатель Legrand Valena Classic белый 2-х клавишный 774408",
-        "price": 314,
+        "price": 319,
         "unit": "шт",
         "weight": 0.09,
         "category": {
-            "main": "Legrand / Легранд",
-            "section": "Электр",
+            "main": "Вентиляция",
+            "section": "Valena",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Рамка 1-я Legrand Valena Classic, белая",
-        "price": 65,
+        "price": 66,
         "unit": "шт",
         "weight": 0.01,
         "category": {
-            "main": "Legrand / Легранд",
-            "section": "Электр",
+            "main": "Вентиляция",
+            "section": "Valena",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Рамка 2-я Legrand Valena Classic, белая",
-        "price": 81,
+        "price": 82,
         "unit": "шт",
         "weight": 0.015,
         "category": {
-            "main": "Legrand / Легранд",
-            "section": "Электр",
+            "main": "Вентиляция",
+            "section": "Valena",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Рамка 3-я Legrand Valena Classic, белая",
-        "price": 103,
+        "price": 104,
         "unit": "шт",
         "weight": 0.02,
         "category": {
-            "main": "Legrand / Легранд",
-            "section": "Электр",
+            "main": "Вентиляция",
+            "section": "Valena",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Рамка 4-я Legrand Valena Classic, белая",
-        "price": 152,
+        "price": 154,
         "unit": "шт",
         "weight": 0.025,
         "category": {
-            "main": "Legrand / Легранд",
-            "section": "Электр",
+            "main": "Вентиляция",
+            "section": "Valena",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Рамка 5-я Legrand Valena Classic, белая",
-        "price": 195,
+        "price": 198,
         "unit": "шт",
         "weight": 0.03,
         "category": {
-            "main": "Legrand / Легранд",
-            "section": "Электр",
+            "main": "Вентиляция",
+            "section": "Valena",
             "type": ""
         },
         "image": "Э"
     },
     {
         "name": "Фильтр тонкой очистки, промывной (ХВС) 1/2\", с манометром",
-        "price": 2916,
+        "price": 2970,
         "unit": "шт",
         "weight": 2,
         "category": {
             "main": "Сантех Арматура",
-            "section": "Сантех",
+            "section": "Фильтр",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Фильтр тонкой очистки, промывной (ГВС) 1/2\", с манометром",
-        "price": 3456,
+        "price": 3520,
         "unit": "шт",
         "weight": 2,
         "category": {
             "main": "Сантех Арматура",
-            "section": "Сантех",
+            "section": "Фильтр",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Фильтр тонкой очистки, промывной (ХВС) 1/2\", без манометра",
-        "price": 4104,
+        "price": 4180,
         "unit": "шт",
         "weight": 2,
         "category": {
             "main": "Сантех Арматура",
-            "section": "Сантех",
+            "section": "Фильтр",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Фильтр тонкой очистки, промывной (ГВС) 1/2\", без манометра",
-        "price": 3672,
+        "price": 3740,
         "unit": "шт",
         "weight": 2,
         "category": {
             "main": "Сантех Арматура",
-            "section": "Сантех",
+            "section": "Фильтр",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Фильтр тонкой очистки, промывной (ХВС) 3/4\", с манометром",
-        "price": 3996,
+        "price": 4070,
         "unit": "шт",
         "weight": 2,
         "category": {
             "main": "Сантех Арматура",
-            "section": "Сантех",
+            "section": "Фильтр",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Фильтр тонкой очистки, промывной (ГВС) 3/4\", с манометром",
-        "price": 4266,
+        "price": 4345,
         "unit": "шт",
         "weight": 2,
         "category": {
             "main": "Сантех Арматура",
-            "section": "Сантех",
+            "section": "Фильтр",
             "type": ""
         },
         "image": "С"
@@ -36732,7 +36732,7 @@ const products = [
         "weight": 2,
         "category": {
             "main": "Сантех Арматура",
-            "section": "Сантех",
+            "section": "Фильтр",
             "type": ""
         },
         "image": "С"
@@ -36744,79 +36744,79 @@ const products = [
         "weight": 2,
         "category": {
             "main": "Сантех Арматура",
-            "section": "Сантех",
+            "section": "Фильтр",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Фильтр грубой очистки универсальный Valtec 1/2 г х 1/2 г",
-        "price": 756,
+        "price": 770,
         "unit": "шт",
         "weight": 0.025,
         "category": {
             "main": "Сантех Арматура",
-            "section": "Сантех",
+            "section": "Фильтр",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Фильтр грубой очистки универсальный Valtec 3/4 г х 3/4 г",
-        "price": 1890,
+        "price": 1925,
         "unit": "шт",
         "weight": 0.025,
         "category": {
             "main": "Сантех Арматура",
-            "section": "Сантех",
+            "section": "Фильтр",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Фильтр промывной Far с манометром 1/2 НР(ш) х 1/2 НР(ш) (FA 3944 12100)",
-        "price": 8424,
+        "price": 8580,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Сантех Арматура",
-            "section": "Сантех",
+            "section": "Фильтр",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Фильтр промывной Far с манометром 3/4 НР(ш) х 3/4 НР(ш) (FA 39A4 34100)",
-        "price": 10260,
+        "price": 10450,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Сантех Арматура",
-            "section": "Сантех",
+            "section": "Фильтр",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Редуктор давления FAR 3/4 н мембранный с манометром",
-        "price": 11340,
+        "price": 11550,
         "unit": "шт",
         "weight": 0.15,
         "category": {
             "main": "Сантех Арматура",
-            "section": "Сантех",
+            "section": "Редуктор",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Фильтр колбовый 1\" (ввод)",
-        "price": 1512,
+        "price": 1540,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Сантех Арматура",
-            "section": "Сантех",
+            "section": "Фильтр",
             "type": ""
         },
         "image": "С"
@@ -36828,7 +36828,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Сантех Арматура",
-            "section": "Сантех",
+            "section": "Фильтр",
             "type": ""
         },
         "image": "С"
@@ -36840,7 +36840,7 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Сантех Арматура",
-            "section": "Сантех",
+            "section": "Фильтр",
             "type": ""
         },
         "image": "С"
@@ -36852,67 +36852,67 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Сантех Арматура",
-            "section": "Сантех",
+            "section": "Фильтр",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Картридж в фильтр магистральный ПФМ-Г 20/10 10SL механической очистки для холодной и горячей воды",
-        "price": 249,
+        "price": 253,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Сантех Арматура",
-            "section": "Сантех",
+            "section": "Фильтр",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Счетчик холодной воды ВСХ-15",
-        "price": 1458,
+        "price": 1485,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Сантех Арматура",
-            "section": "Сантех",
+            "section": "Счетчик",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Счетчик универсальный Valtec DN15 80 мм со сгонами с импульсным выходом",
-        "price": 2106,
+        "price": 2145,
         "unit": "шт",
         "weight": 0.65,
         "category": {
             "main": "Сантех Арматура",
-            "section": "Сантех",
+            "section": "Счетчик",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Кронштейн для радиатора Rifar (пара)",
-        "price": 929,
+        "price": 946,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Радиаторы",
-            "section": "Сантех",
+            "section": "Радиатор",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Кронштейн для радиатора Эконом (пара)",
-        "price": 162,
+        "price": 165,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Радиаторы",
-            "section": "Сантех",
+            "section": "Радиатор",
             "type": ""
         },
         "image": "С"
@@ -36924,7 +36924,7 @@ const products = [
         "weight": 8,
         "category": {
             "main": "Радиаторы",
-            "section": "Сантех",
+            "section": "Радиатор",
             "type": ""
         },
         "image": "С"
@@ -36936,43 +36936,43 @@ const products = [
         "weight": 8,
         "category": {
             "main": "Радиаторы",
-            "section": "Сантех",
+            "section": "Радиатор",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Комплект монтажный переходной Rifar 1 НР х 1/2 ВР для радиатора белый",
-        "price": 486,
+        "price": 495,
         "unit": "шт",
         "weight": 0.25,
         "category": {
             "main": "Радиаторы",
-            "section": "Сантех",
+            "section": "Радиатор",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Комплект звукоизоляционный для канализационных труб 110 мм 3 м",
-        "price": 2484,
+        "price": 2530,
         "unit": "шт",
         "weight": 1.2,
         "category": {
             "main": "Радиаторы",
-            "section": "Сантех",
+            "section": "Радиатор",
             "type": ""
         },
         "image": "С"
     },
     {
         "name": "Заглушка для радиатора Rifar 3\\4\"н",
-        "price": 92,
+        "price": 93,
         "unit": "шт",
         "weight": 0.01,
         "category": {
             "main": "Радиаторы",
-            "section": "Сантех",
+            "section": "Радиатор",
             "type": ""
         },
         "image": "С"
@@ -36984,19 +36984,19 @@ const products = [
         "weight": 0.5,
         "category": {
             "main": "Потолочные системы",
-            "section": "Потолок",
+            "section": "Армстронг",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Плита потолочная Armstrong Ангара 600х600х6мм (24 шт)",
-        "price": 173,
+        "price": 176,
         "unit": "шт",
         "weight": 0.2,
         "category": {
             "main": "Потолочные системы",
-            "section": "Потолок",
+            "section": "Армстронг",
             "type": ""
         },
         "image": "П"
@@ -37008,43 +37008,43 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Потолочные системы",
-            "section": "Потолок",
+            "section": "Армстронг",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Плита потолочная Armstrong Байкал 600х600х12мм (1шт)",
-        "price": 246,
+        "price": 249,
         "unit": "шт",
         "weight": 1.15,
         "category": {
             "main": "Потолочные системы",
-            "section": "Потолок",
+            "section": "Армстронг",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Профиль угловой универсальный Armstrong PL 19х24х3000 мм оцинкованный белый",
-        "price": 150,
+        "price": 151,
         "unit": "шт",
         "weight": 0.5,
         "category": {
             "main": "Потолочные системы",
-            "section": "Потолок",
+            "section": "Армстронг",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Профиль несущий Armstrong 3700 мм",
-        "price": 179,
+        "price": 181,
         "unit": "шт",
         "weight": 0.6,
         "category": {
             "main": "Потолочные системы",
-            "section": "Потолок",
+            "section": "Армстронг",
             "type": ""
         },
         "image": "П"
@@ -37056,31 +37056,31 @@ const products = [
         "weight": 0.2,
         "category": {
             "main": "Потолочные системы",
-            "section": "Потолок",
+            "section": "Армстронг",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Профиль поперечный Armstrong 600 мм",
-        "price": 42,
+        "price": 41,
         "unit": "шт",
         "weight": 0.1,
         "category": {
             "main": "Потолочные системы",
-            "section": "Потолок",
+            "section": "Армстронг",
             "type": ""
         },
         "image": "П"
     },
     {
         "name": "Подвес Armstrong АП 0,5м",
-        "price": 17,
+        "price": 16,
         "unit": "шт",
         "weight": 0.05,
         "category": {
             "main": "Потолочные системы",
-            "section": "Потолок",
+            "section": "Армстронг",
             "type": ""
         },
         "image": "П"
@@ -37092,7 +37092,7 @@ const products = [
         "weight": 0.1,
         "category": {
             "main": "Потолочные системы",
-            "section": "Потолок",
+            "section": "Армстронг",
             "type": ""
         },
         "image": "П"
@@ -37104,7 +37104,7 @@ const products = [
         "weight": 16.5,
         "category": {
             "main": "Отделка",
-            "section": "Плитка",
+            "section": "Керамика",
             "type": ""
         },
         "image": "П"
@@ -37116,7 +37116,7 @@ const products = [
         "weight": 19.5,
         "category": {
             "main": "Отделка",
-            "section": "Плитка",
+            "section": "Керамогранит",
             "type": ""
         },
         "image": "П"
@@ -37128,7 +37128,7 @@ const products = [
         "weight": 4.9,
         "category": {
             "main": "Отделка",
-            "section": "ПВХ",
+            "section": "Кварцввинил",
             "type": ""
         },
         "image": "П"
@@ -37387,6 +37387,30 @@ function expandSearchToken(token) {
     return Array.from(expanded).filter(Boolean);
 }
 
+function getSharedPrefixLength(first, second) {
+    const maxLength = Math.min(first.length, second.length);
+    let length = 0;
+
+    while (length < maxLength && first[length] === second[length]) {
+        length += 1;
+    }
+
+    return length;
+}
+
+function getSoftTokenMatchScore(token, variant) {
+    if (token.length < 4 || variant.length < 4) return 0;
+
+    const prefixLength = getSharedPrefixLength(token, variant);
+    const requiredPrefixLength = Math.min(5, Math.max(3, Math.ceil(Math.min(token.length, variant.length) * 0.72)));
+
+    if (prefixLength >= requiredPrefixLength) {
+        return 5 + prefixLength;
+    }
+
+    return 0;
+}
+
 function getProductSearchText(product) {
     return normalizeSearchText([
         product.name,
@@ -37406,14 +37430,24 @@ function getProductSearchScore(product, query) {
 
     let score = productText.includes(queryText) ? 100 : 0;
     let matchedTokens = 0;
+    const productTokens = productText.split(" ").filter(Boolean);
 
     queryTokens.forEach(token => {
         const variants = expandSearchToken(token);
         const bestVariantScore = variants.reduce((best, variant) => {
             if (productText.includes(variant)) {
-                const exactWordScore = productText.split(" ").includes(variant) ? 12 : 8;
+                const exactWordScore = productTokens.includes(variant) ? 12 : 8;
                 return Math.max(best, exactWordScore + Math.min(variant.length, 12));
             }
+
+            const softMatchScore = productTokens.reduce((tokenBest, productToken) => {
+                return Math.max(tokenBest, getSoftTokenMatchScore(token, productToken), getSoftTokenMatchScore(variant, productToken));
+            }, 0);
+
+            if (softMatchScore) {
+                return Math.max(best, softMatchScore);
+            }
+
             return best;
         }, 0);
 
@@ -37455,6 +37489,16 @@ function smartSearch(query, productList) {
     return visibleMatches.sort((first, second) => second.searchScore - first.searchScore || first.order - second.order);
 }
 
+function getSearchDropdownLimit(query) {
+    const queryTokens = getSearchTokens(query);
+    const queryLength = normalizeSearchText(query).replace(/\s/g, "").length;
+
+    if (queryLength <= 4) return 30;
+    if (queryTokens.length === 1 && queryLength <= 8) return 24;
+    if (queryTokens.length <= 2 && queryLength <= 14) return 18;
+    return 10;
+}
+
 function getProductCatalogCategory(product) {
     return [
         product.category?.main,
@@ -37479,44 +37523,81 @@ function getCategorySearchText(product) {
 
 function getCategoryFilterOptions() {
     const options = [];
-    const seenMain = new Set();
-    const seenSubcategories = new Set();
+    const groups = getCategoryFilterGroups();
 
-    products.forEach(product => {
-        const parts = getProductCatalogCategory(product).filter((part, index, source) => {
-            if (!index) return true;
-            return normalizeSearchText(part) !== normalizeSearchText(source[index - 1]);
+    groups.forEach(group => {
+        options.push({
+            label: group.label,
+            path: group.path,
+            level: 0
         });
 
-        parts.forEach((part, index) => {
-            if (!index) {
-                const path = part;
-                if (seenMain.has(path)) return;
-
-                seenMain.add(path);
-                options.push({ label: part, path, level: index });
-                return;
-            }
-
-            const normalizedPart = normalizeSearchText(part);
-            const path = `subcategory:${index}:${normalizedPart}`;
-            if (seenSubcategories.has(path)) return;
-
-            seenSubcategories.add(path);
-            options.push({ label: part, path, level: index });
+        group.subcategories.forEach(subcategory => {
+            options.push({
+                label: subcategory.label,
+                path: subcategory.path,
+                level: 1
+            });
         });
     });
 
     return options;
 }
 
+function getCategoryFilterGroups() {
+    const groups = [];
+    const categories = new Map();
+
+    products.forEach(product => {
+        const [main, subcategory] = getProductCatalogCategory(product);
+        if (!main) return;
+
+        const normalizedMain = normalizeSearchText(main);
+        if (!categories.has(normalizedMain)) {
+            categories.set(normalizedMain, {
+                label: main,
+                path: `category:${normalizedMain}`,
+                subcategories: new Map()
+            });
+        }
+
+        if (!subcategory || normalizeSearchText(subcategory) === normalizedMain) return;
+
+        const category = categories.get(normalizedMain);
+        const normalizedSubcategory = normalizeSearchText(subcategory);
+        if (!category.subcategories.has(normalizedSubcategory)) {
+            category.subcategories.set(normalizedSubcategory, {
+                label: subcategory,
+                path: `subcategory:${normalizedMain}:${normalizedSubcategory}`
+            });
+        }
+    });
+
+    categories.forEach(category => {
+        groups.push({
+            label: category.label,
+            path: category.path,
+            subcategories: Array.from(category.subcategories.values())
+        });
+    });
+
+    return groups;
+}
+
 function productMatchesCategory(product) {
     if (!activeCategoryPath) return true;
-    if (activeCategoryPath.startsWith("subcategory:")) {
-        const [, level, normalizedPart] = activeCategoryPath.split(":");
-        const categoryPart = getProductCatalogCategory(product)[Number(level)];
+    const [main, subcategory] = getProductCatalogCategory(product);
 
-        return normalizeSearchText(categoryPart) === normalizedPart;
+    if (activeCategoryPath.startsWith("category:")) {
+        const [, normalizedMain] = activeCategoryPath.split(":");
+        return normalizeSearchText(main) === normalizedMain;
+    }
+
+    if (activeCategoryPath.startsWith("subcategory:")) {
+        const [, normalizedMain, normalizedSubcategory] = activeCategoryPath.split(":");
+
+        return normalizeSearchText(main) === normalizedMain
+            && normalizeSearchText(subcategory) === normalizedSubcategory;
     }
 
     return getCategoryPath(product.category, product).startsWith(activeCategoryPath);
@@ -37640,7 +37721,7 @@ function createProductCard(product, id) {
 
 function getSearchDropdownResults(query) {
     const productList = products.map((product, id) => ({ product, id }));
-    return smartSearch(query, productList).slice(0, 6);
+    return smartSearch(query, productList).slice(0, getSearchDropdownLimit(query));
 }
 
 function hideSearchDropdown() {
@@ -37711,14 +37792,33 @@ function renderCategoryControls() {
     dropdown.className = "category-dropdown";
     dropdown.classList.toggle("is-open", categoryDropdownOpen);
 
-    getCategoryFilterOptions().forEach(option => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = `category-control level-${option.level}`;
-        button.dataset.path = option.path;
-        button.textContent = option.label;
-        button.classList.toggle("active", option.path === activeCategoryPath);
-        dropdown.appendChild(button);
+    getCategoryFilterGroups().forEach(group => {
+        const row = document.createElement("div");
+        row.className = "category-group";
+
+        const categoryButton = document.createElement("button");
+        categoryButton.type = "button";
+        categoryButton.className = "category-control level-0";
+        categoryButton.dataset.path = group.path;
+        categoryButton.textContent = group.label;
+        categoryButton.classList.toggle("active", group.path === activeCategoryPath);
+        row.appendChild(categoryButton);
+
+        const subcategoryList = document.createElement("div");
+        subcategoryList.className = "category-subcategory-list";
+
+        group.subcategories.forEach(subcategory => {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "category-control level-1";
+            button.dataset.path = subcategory.path;
+            button.textContent = subcategory.label;
+            button.classList.toggle("active", subcategory.path === activeCategoryPath);
+            subcategoryList.appendChild(button);
+        });
+
+        row.appendChild(subcategoryList);
+        dropdown.appendChild(row);
     });
 
     categoryControls.appendChild(dropdown);
