@@ -37,9 +37,31 @@
         </div>
     </header>
 
-    <section class="products" id="catalog">
-        <h2>Каталог товаров</h2>
-        <div class="catalog-controls" id="categoryControls"></div>
+    <section class="products catalog-page" id="catalog">
+        <nav class="catalog-breadcrumbs" aria-label="Хлебные крошки">
+            <a href="index.html">Главная</a>
+            <span>/</span>
+            <a href="catalog.html">Каталог</a>
+            <span>/</span>
+            <span id="catalogBreadcrumbCurrent">Все товары</span>
+        </nav>
+        <div class="catalog-top">
+            <div class="catalog-heading">
+                <h2>Каталог товаров</h2>
+                <div class="catalog-controls" id="categoryControls"></div>
+            </div>
+
+            <div class="catalog-help">
+                <div>
+                    <h3>Не нашли нужный материал?</h3>
+                    <p>Наш менеджер поможет подобрать аналог, рассчитает необходимое количество и предложит оптимальную цену для вашего объекта.</p>
+                </div>
+                <div class="catalog-help-action">
+                    <a href="tel:+79099443383">Связаться с менеджером</a>
+                    <button id="copyManagerPhone" class="catalog-help-phone" type="button" data-phone="+79099443383" aria-label="Скопировать телефон менеджера">+79099443383</button>
+                </div>
+            </div>
+        </div>
 
         <div class="grid" id="productGrid"></div>
     </section>

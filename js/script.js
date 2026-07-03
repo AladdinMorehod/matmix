@@ -37140,6 +37140,9 @@ const popularGrid = document.getElementById("popularGrid");
 const popularArrowLeft = document.querySelector(".popular-arrow-left");
 const popularArrowRight = document.querySelector(".popular-arrow-right");
 const categoryControls = document.getElementById("categoryControls");
+const catalogBreadcrumbCurrent = document.getElementById("catalogBreadcrumbCurrent");
+const copyManagerPhoneBtn = document.getElementById("copyManagerPhone");
+const managerPhoneAction = copyManagerPhoneBtn?.closest(".catalog-help-action");
 const cartBtn = document.getElementById("cartBtn");
 const cartCountEl = document.getElementById("cartCount");
 const cartModal = document.getElementById("cartModal");
@@ -37175,6 +37178,24 @@ let categoryDropdownOpen = false;
 searchDropdown.className = "search-dropdown hidden";
 searchDropdown.setAttribute("aria-live", "polite");
 headerSearch?.appendChild(searchDropdown);
+
+function copyTextToClipboard(value) {
+    const copyWithInput = () => {
+        const input = document.createElement("input");
+        input.value = value;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand("copy");
+        input.remove();
+    };
+
+    if (navigator.clipboard?.writeText) {
+        return navigator.clipboard.writeText(value).catch(copyWithInput);
+    }
+
+    copyWithInput();
+    return Promise.resolve();
+}
 
 const checkoutStorage = {
     names: "matmix_checkout_names",
@@ -37552,6 +37573,19 @@ function getCategoryFilterGroups() {
     return groups;
 }
 
+function getActiveCategoryLabel(groups = getCategoryFilterGroups()) {
+    if (!activeCategoryPath) return "Все товары";
+
+    for (const group of groups) {
+        if (group.path === activeCategoryPath) return group.label;
+
+        const subcategory = group.subcategories.find(item => item.path === activeCategoryPath);
+        if (subcategory) return subcategory.label;
+    }
+
+    return "Все товары";
+}
+
 function productMatchesCategory(product) {
     if (!activeCategoryPath) return true;
     const [main, subcategory] = getProductCatalogCategory(product);
@@ -37750,6 +37784,11 @@ function renderPopularProducts() {
 function renderCategoryControls() {
     if (!categoryControls) return;
     categoryControls.innerHTML = "";
+    const groups = getCategoryFilterGroups();
+
+    if (catalogBreadcrumbCurrent) {
+        catalogBreadcrumbCurrent.textContent = getActiveCategoryLabel(groups);
+    }
 
     const trigger = document.createElement("button");
     trigger.type = "button";
@@ -37763,7 +37802,7 @@ function renderCategoryControls() {
     dropdown.className = "category-dropdown";
     dropdown.classList.toggle("is-open", categoryDropdownOpen);
 
-    getCategoryFilterGroups().forEach(group => {
+    groups.forEach(group => {
         const row = document.createElement("div");
         row.className = "category-group";
 
@@ -37915,6 +37954,30 @@ popularArrowLeft?.addEventListener("click", () => {
 
 popularArrowRight?.addEventListener("click", () => {
     scrollPopularProducts(1);
+});
+
+managerPhoneAction?.addEventListener("mouseenter", () => {
+    managerPhoneAction.classList.add("is-phone-visible");
+});
+
+copyManagerPhoneBtn?.addEventListener("click", event => {
+    event.stopPropagation();
+    const phone = copyManagerPhoneBtn.dataset.phone || copyManagerPhoneBtn.textContent.trim();
+
+    copyTextToClipboard(phone).then(() => {
+        copyManagerPhoneBtn.textContent = "Скопировано";
+        window.setTimeout(() => {
+            copyManagerPhoneBtn.textContent = phone;
+            managerPhoneAction?.classList.remove("is-phone-visible");
+        }, 1200);
+    });
+});
+
+document.addEventListener("click", event => {
+    if (!managerPhoneAction?.classList.contains("is-phone-visible")) return;
+    if (managerPhoneAction.contains(event.target)) return;
+
+    managerPhoneAction.classList.remove("is-phone-visible");
 });
 
 cartBtn.addEventListener("click", event => {
