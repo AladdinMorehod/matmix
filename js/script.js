@@ -38079,6 +38079,22 @@ function closeMenu() {
     menuToggle.setAttribute("aria-label", "Открыть меню");
 }
 
+function shouldJumpToAnchor(href) {
+    return ["#contacts", "#top"].includes(href) && Boolean(document.querySelector(".catalog-page"));
+}
+
+function scrollToPageAnchor(href, options = {}) {
+    if (!href?.startsWith("#")) return false;
+
+    const target = document.getElementById(href.slice(1));
+    if (!target) return false;
+
+    const behavior = options.behavior || (shouldJumpToAnchor(href) ? "auto" : "smooth");
+    target.scrollIntoView({ behavior, block: "start" });
+    history.pushState(null, "", href);
+    return true;
+}
+
 menuToggle?.addEventListener("click", event => {
     event.stopPropagation();
     const isOpen = mainNav.classList.toggle("is-open");
@@ -38088,8 +38104,21 @@ menuToggle?.addEventListener("click", event => {
 });
 
 mainNav?.addEventListener("click", event => {
-    if (event.target.closest("a")) {
+    const link = event.target.closest("a");
+    if (!link) return;
+
+    if (scrollToPageAnchor(link.getAttribute("href"))) {
+        event.preventDefault();
         closeMenu();
+        return;
+    }
+
+    closeMenu();
+});
+
+document.querySelector(".logo")?.addEventListener("click", event => {
+    if (scrollToPageAnchor(event.currentTarget.getAttribute("href"))) {
+        event.preventDefault();
     }
 });
 
