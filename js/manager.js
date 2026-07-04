@@ -6,6 +6,7 @@ const statuses = [
     "Завершена",
     "Отменена"
 ];
+const deletedStatusFilter = "__deleted";
 
 const statusClassMap = {
     "Новая": "status-new",
@@ -41,6 +42,11 @@ let orders = [];
 let clients = [];
 let currentUser = null;
 let activeSection = "orders";
+let regularOrderStats = {
+    total: 0,
+    new: 0,
+    work: 0
+};
 const expandedHistoryIds = new Set();
 const orderEvents = new Map();
 const expandedClientOrderIds = new Set();
@@ -286,19 +292,32 @@ function isOwnOrder(order) {
 }
 
 function canReleaseOrder(order) {
-    if (!currentUser || !order.managerId || isClosedOrder(order)) return false;
+    if (!currentUser || !order.managerId || order.deletedAt) return false;
     return currentUser.role === "admin" || isOwnOrder(order);
 }
 
 function canTakeOrder(order) {
     return currentUser
         && !order.managerId
+        && !order.deletedAt
         && !isClosedOrder(order)
         && ["admin", "manager"].includes(currentUser.role);
 }
 
 function canChangeOrderStatus(order) {
-    return Boolean(order.managerId) && isOwnOrder(order) && !isClosedOrder(order);
+    return Boolean(order.managerId) && isOwnOrder(order) && !order.deletedAt;
+}
+
+function canDeleteOrder(order) {
+    if (!currentUser || order.deletedAt) return false;
+    if (currentUser.role === "admin") return true;
+    return isOwnOrder(order);
+}
+
+function canRestoreOrder(order) {
+    if (!currentUser || !order.deletedAt) return false;
+    if (currentUser.role === "admin") return true;
+    return isOwnOrder(order);
 }
 
 function canAddNote(order) {
@@ -335,6 +354,12 @@ function renderAssignment(order) {
 }
 
 function renderOrderControls(order) {
+    if (order.deletedAt) {
+        return canRestoreOrder(order)
+            ? `<div class="order-controls"><button class="restore-order" data-id="${order.id}" type="button">Восстановить</button></div>`
+            : "";
+    }
+
     const takeButton = canTakeOrder(order)
         ? `<button class="assignment-action" data-action="take" data-id="${order.id}" type="button">Взять в работу</button>`
         : "";
@@ -351,13 +376,16 @@ function renderOrderControls(order) {
     const releaseButton = canReleaseOrder(order)
         ? `<button class="assignment-action secondary" data-action="release" data-id="${order.id}" type="button">Освободить</button>`
         : "";
+    const deleteButton = canDeleteOrder(order)
+        ? `<button class="delete-order" data-id="${order.id}" type="button">Удалить</button>`
+        : "";
     const lockText = order.managerId && !isOwnOrder(order) && currentUser?.role !== "admin"
         ? `<span class="order-lock">В работе у: ${escapeHtml(order.managerName || "Менеджер")}</span>`
         : "";
 
-    if (!takeButton && !statusControl && !releaseButton && !lockText) return "";
+    if (!takeButton && !statusControl && !releaseButton && !deleteButton && !lockText) return "";
 
-    return `<div class="order-controls">${takeButton}${statusControl}${releaseButton}${lockText}</div>`;
+    return `<div class="order-controls">${takeButton}${statusControl}${releaseButton}${deleteButton}${lockText}</div>`;
 }
 
 function renderEventList(events) {
@@ -445,16 +473,20 @@ function renderOrderClientBlock(order) {
 }
 
 function updateStats() {
-    if (ordersTotalCount) ordersTotalCount.textContent = orders.length;
-    if (ordersNewCount) ordersNewCount.textContent = orders.filter(order => order.status === "Новая").length;
-    if (ordersWorkCount) ordersWorkCount.textContent = orders.filter(order => order.status === "В работе").length;
+    if (ordersTotalCount) ordersTotalCount.textContent = regularOrderStats.total;
+    if (ordersNewCount) ordersNewCount.textContent = regularOrderStats.new;
+    if (ordersWorkCount) ordersWorkCount.textContent = regularOrderStats.work;
 }
 
 function renderStatusTabs() {
     if (!statusTabs) return;
 
     const activeStatus = statusFilter.value;
-    const filters = [{ label: "Все", value: "" }, ...statuses.map(status => ({ label: status, value: status }))];
+    const filters = [
+        { label: "Все", value: "" },
+        ...statuses.map(status => ({ label: status, value: status })),
+        { label: "Удалены", value: deletedStatusFilter }
+    ];
 
     statusTabs.innerHTML = filters.map(filter => `
         <button class="${filter.value === activeStatus ? "active" : ""}" data-status="${escapeHtml(filter.value)}" type="button">
@@ -468,30 +500,38 @@ function renderOrders() {
     renderStatusTabs();
 
     const selectedStatus = statusFilter.value;
-    const visibleOrders = selectedStatus
+    const visibleOrders = selectedStatus && selectedStatus !== deletedStatusFilter
         ? orders.filter(order => order.status === selectedStatus)
         : orders;
 
     if (!visibleOrders.length) {
+        const emptyTitle = selectedStatus === deletedStatusFilter ? "Удаленных заявок нет" : "Заявок пока нет";
+        const emptyText = selectedStatus === deletedStatusFilter
+            ? "Скрытые заявки появятся здесь после удаления из CRM."
+            : "Новые заявки появятся здесь после оформления заказа на сайте.";
+
         ordersList.innerHTML = `
             <section class="empty-state">
-                <h2>Заявок пока нет</h2>
-                <p>Новые заявки появятся здесь после оформления заказа на сайте.</p>
+                <h2>${emptyTitle}</h2>
+                <p>${emptyText}</p>
             </section>
         `;
         return;
     }
 
     ordersList.innerHTML = visibleOrders.map(order => `
-        <article class="order-card" data-id="${order.id}">
+        <article class="order-card ${order.deletedAt ? "order-card-deleted" : ""}" data-id="${order.id}">
             <header class="order-card-header">
                 <div class="order-title">
-                    <strong>Заказ #${order.id}</strong>
+                    <strong>Заказ №${order.id}</strong>
                     <span>${escapeHtml(formatDate(order.createdAt))}</span>
                 </div>
                 <div class="order-header-side">
-                    <span class="status-badge ${statusClassMap[order.status] || "status-new"}">${escapeHtml(order.status)}</span>
-                    ${renderAssignment(order)}
+                    ${order.deletedAt
+                        ? `<span class="status-badge status-deleted">Удалена</span>`
+                        : `<span class="status-badge ${statusClassMap[order.status] || "status-new"}">${escapeHtml(order.status)}</span>`}
+                    ${order.deletedAt ? `<span class="deleted-date">Удалена: ${escapeHtml(formatDate(order.deletedAt))}</span>` : ""}
+                    ${order.deletedAt ? "" : renderAssignment(order)}
                 </div>
             </header>
 
@@ -518,12 +558,12 @@ function renderOrders() {
                     ${renderOrderSummary(order)}
                 </section>
             </div>
-            ${renderHistory(order)}
+            ${order.deletedAt ? "" : renderHistory(order)}
 
-            <footer class="order-card-footer">
-                ${renderContactActions(order)}
+            ${order.deletedAt && !canRestoreOrder(order) ? "" : `<footer class="order-card-footer">
+                ${order.deletedAt ? "" : renderContactActions(order)}
                 ${renderOrderControls(order)}
-            </footer>
+            </footer>`}
         </article>
     `).join("");
 }
@@ -535,7 +575,8 @@ async function loadOrders(options = {}) {
     }
 
     try {
-        const response = await fetch("/api/orders", { credentials: "include" });
+        const isDeletedFilter = statusFilter.value === deletedStatusFilter;
+        const response = await fetch(isDeletedFilter ? "/api/orders?deleted=true" : "/api/orders", { credentials: "include" });
         const result = await response.json().catch(() => ({}));
 
         if (!response.ok || !result.success) {
@@ -543,6 +584,13 @@ async function loadOrders(options = {}) {
         }
 
         orders = result.orders || [];
+        if (!isDeletedFilter) {
+            regularOrderStats = {
+                total: orders.length,
+                new: orders.filter(order => order.status === "Новая").length,
+                work: orders.filter(order => order.status === "В работе").length
+            };
+        }
         if (!preserveMessage) {
             setMessage("");
         }
@@ -611,7 +659,7 @@ function renderClientOrders(clientId) {
         <div class="client-orders-list">
             ${ordersForClient.map(order => `
                 <article class="client-order-row">
-                    <strong>Заказ #${order.id}</strong>
+                    <strong>Заказ №${order.id}</strong>
                     <span>${escapeHtml(formatDate(order.createdAt))}</span>
                     <span class="status-badge ${statusClassMap[order.status] || "status-new"}">${escapeHtml(order.status)}</span>
                     <span>${formatMoney(order.totalPrice)}</span>
@@ -828,20 +876,88 @@ async function runOrderAction(id, action) {
     }
 }
 
+async function deleteOrder(orderId) {
+    if (!orderId) {
+        setMessage("Не удалось определить номер заявки для удаления.");
+        return;
+    }
+
+    const order = orders.find(item => String(item.id) === String(orderId));
+    const orderNumber = order?.id || orderId;
+
+    if (!window.confirm(`Удалить заявку №${orderNumber}? Она будет скрыта из CRM, но останется в базе.`)) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/orders/${orderId}`, {
+            method: "DELETE",
+            credentials: "include"
+        });
+        const result = await response.json().catch(() => ({}));
+
+        if (!response.ok || !result.success) {
+            throw new Error(result.message || "Заявка не удалена.");
+        }
+
+        expandedHistoryIds.delete(String(orderId));
+        orderEvents.delete(String(orderId));
+        await loadOrders({ preserveMessage: true });
+        setMessage("Заявка перемещена в удаленные.");
+    } catch (error) {
+        setMessage(error.message || "Не удалось удалить заявку.");
+    }
+}
+
+async function restoreOrder(orderId) {
+    if (!orderId) {
+        setMessage("Не удалось определить номер заявки для восстановления.");
+        return;
+    }
+
+    const order = orders.find(item => String(item.id) === String(orderId));
+    const orderNumber = order?.id || orderId;
+
+    if (!window.confirm(`Восстановить заявку №${orderNumber}?`)) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/orders/${orderId}/restore`, {
+            method: "POST",
+            credentials: "include"
+        });
+        const result = await response.json().catch(() => ({}));
+
+        if (!response.ok || !result.success) {
+            throw new Error(result.message || "Заявка не восстановлена.");
+        }
+
+        await loadOrders({ preserveMessage: true });
+        setMessage("Заявка восстановлена.");
+    } catch (error) {
+        setMessage(error.message || "Не удалось восстановить заявку.");
+    }
+}
+
 statuses.forEach(status => {
     const option = document.createElement("option");
     option.value = status;
     option.textContent = status;
     statusFilter.appendChild(option);
 });
+const deletedOption = document.createElement("option");
+deletedOption.value = deletedStatusFilter;
+deletedOption.textContent = "Удалены";
+statusFilter.appendChild(deletedOption);
 
-statusFilter.addEventListener("change", renderOrders);
+statusFilter.addEventListener("change", loadOrders);
 statusTabs?.addEventListener("click", event => {
     const button = event.target.closest("button[data-status]");
     if (!button) return;
 
     statusFilter.value = button.dataset.status;
-    renderOrders();
+    loadOrders();
 });
 crmNavButtons.forEach(button => {
     button.addEventListener("click", () => {
@@ -915,6 +1031,18 @@ ordersList.addEventListener("click", event => {
                 loadClientOrders(clientId);
             }
         });
+        return;
+    }
+
+    const deleteButton = event.target.closest(".delete-order");
+    if (deleteButton) {
+        deleteOrder(deleteButton.dataset.id);
+        return;
+    }
+
+    const restoreButton = event.target.closest(".restore-order");
+    if (restoreButton) {
+        restoreOrder(restoreButton.dataset.id);
         return;
     }
 

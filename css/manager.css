@@ -47,8 +47,9 @@ body {
     position: sticky;
     top: 0;
     display: grid;
-    grid-template-rows: auto 1fr auto;
-    gap: 22px;
+    grid-template-rows: auto auto auto 1fr;
+    align-content: start;
+    gap: 18px;
     min-height: 100vh;
     padding: 24px 18px;
     border-right: 1px solid var(--border);
@@ -235,7 +236,9 @@ body {
     flex-wrap: wrap;
     align-items: center;
     justify-content: flex-start;
-    gap: 10px;
+    gap: 8px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
 }
 
 .manager-user-panel div {
@@ -243,10 +246,10 @@ body {
     gap: 3px;
     width: 100%;
     min-width: 0;
-    padding: 8px 10px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    background: rgba(255, 255, 255, 0.74);
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
 }
 
 .manager-user-panel span {
@@ -263,6 +266,17 @@ body {
 
 .manager-user-panel button {
     background: var(--brand-burgundy);
+    min-height: 30px;
+    padding: 0 10px;
+    font-size: 0.78rem;
+}
+
+.manager-user-panel a {
+    min-height: 30px;
+    padding: 0 8px;
+    background: transparent;
+    color: var(--primary-dark);
+    font-size: 0.78rem;
 }
 
 .manager-toolbar {
@@ -337,6 +351,12 @@ body {
     border-radius: 8px;
     background: var(--surface);
     box-shadow: 0 8px 22px rgba(17, 21, 23, 0.06);
+}
+
+.order-card-deleted {
+    opacity: 0.72;
+    background: #f7f7f4;
+    box-shadow: none;
 }
 
 .order-card-header,
@@ -451,6 +471,16 @@ body {
 .status-delivery { background: #65518f; }
 .status-done { background: #23724f; }
 .status-cancel { background: #7c7c7c; }
+.status-deleted { background: #555; }
+
+.deleted-date {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    color: var(--text-muted);
+    font-size: 0.76rem;
+    font-weight: 800;
+}
 
 .order-grid {
     display: grid;
@@ -711,7 +741,9 @@ body {
 .clients-toolbar button,
 .client-orders-toggle,
 .open-client,
-.retry-clients-load {
+.retry-clients-load,
+.delete-order,
+.restore-order {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -838,6 +870,14 @@ body {
     min-height: 30px;
     background: var(--brand-burgundy);
     font-size: 0.76rem;
+}
+
+.delete-order {
+    background: var(--brand-burgundy);
+}
+
+.restore-order {
+    background: var(--primary);
 }
 
 .order-history {

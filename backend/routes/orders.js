@@ -168,6 +168,7 @@ function normalizeOrder(row) {
         managerName: row.manager_name || null,
         takenAt: row.taken_at || null,
         closedAt: row.closed_at || null,
+        deletedAt: row.deleted_at || null,
         createdAt: row.created_at,
         updatedAt: row.updated_at
     };
@@ -209,6 +210,75 @@ function canAddOrderNote(user, order) {
     if (user.role === "admin") return true;
     if (!order.manager_id) return true;
     return Number(order.manager_id) === Number(user.id);
+}
+
+async function deleteOrder(req, res) {
+    try {
+        const order = await get("SELECT id, manager_id, deleted_at FROM orders WHERE id = ?", [req.params.id]);
+
+        if (!order) {
+            res.status(404).json({ success: false, message: "Заявка не найдена" });
+            return;
+        }
+
+        if (order.deleted_at) {
+            res.status(400).json({ success: false, message: "Заявка уже удалена" });
+            return;
+        }
+
+        if (!canManageOrder(req.session.user, order)) {
+            res.status(403).json({ success: false, message: "Недостаточно прав" });
+            return;
+        }
+
+        const now = new Date().toISOString();
+        const result = await run(
+            "UPDATE orders SET deleted_at = ?, updated_at = ? WHERE id = ? AND deleted_at IS NULL",
+            [now, now, req.params.id]
+        );
+
+        if (!result.changes) {
+            res.status(404).json({ success: false, message: "Заявка не найдена" });
+            return;
+        }
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error("Order delete error:", error);
+        res.status(500).json({ success: false, message: "Не удалось удалить заявку." });
+    }
+}
+
+async function restoreOrder(req, res) {
+    try {
+        const order = await get("SELECT id, manager_id, deleted_at FROM orders WHERE id = ?", [req.params.id]);
+
+        if (!order) {
+            res.status(404).json({ success: false, message: "Заявка не найдена" });
+            return;
+        }
+
+        if (!order.deleted_at) {
+            res.status(400).json({ success: false, message: "Заявка не удалена" });
+            return;
+        }
+
+        if (!canManageOrder(req.session.user, order)) {
+            res.status(403).json({ success: false, message: "Недостаточно прав" });
+            return;
+        }
+
+        const now = new Date().toISOString();
+        await run(
+            "UPDATE orders SET deleted_at = NULL, updated_at = ? WHERE id = ?",
+            [now, req.params.id]
+        );
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error("Order restore error:", error);
+        res.status(500).json({ success: false, message: "Не удалось восстановить заявку." });
+    }
 }
 
 router.post("/", async (req, res) => {
@@ -298,6 +368,7 @@ router.post("/", async (req, res) => {
 
 router.get("/", requireRole(["admin", "manager"]), async (req, res) => {
     try {
+        const showDeleted = req.query.deleted === "true";
         const rows = await all(`
             SELECT
                 orders.*,
@@ -308,6 +379,7 @@ router.get("/", requireRole(["admin", "manager"]), async (req, res) => {
             FROM orders
             LEFT JOIN users ON users.id = orders.manager_id
             LEFT JOIN clients ON clients.id = orders.client_id
+            WHERE orders.deleted_at IS ${showDeleted ? "NOT NULL" : "NULL"}
             ORDER BY datetime(orders.created_at) DESC, orders.id DESC
         `);
         res.json({ success: true, orders: rows.map(normalizeOrder) });
@@ -350,9 +422,9 @@ router.post("/:id/notes", requireRole(["admin", "manager"]), async (req, res) =>
             return;
         }
 
-        const order = await get("SELECT id, manager_id, status FROM orders WHERE id = ?", [req.params.id]);
+        const order = await get("SELECT id, manager_id, status, deleted_at FROM orders WHERE id = ?", [req.params.id]);
 
-        if (!order) {
+        if (!order || order.deleted_at) {
             res.status(404).json({ success: false, message: "Заявка не найдена." });
             return;
         }
@@ -377,6 +449,9 @@ router.post("/:id/notes", requireRole(["admin", "manager"]), async (req, res) =>
     }
 });
 
+router.delete("/:id", requireRole(["admin", "manager"]), deleteOrder);
+router.post("/:id/restore", requireRole(["admin", "manager"]), restoreOrder);
+
 router.get("/:id", requireRole(["admin", "manager"]), async (req, res) => {
     try {
         const row = await get(`
@@ -389,7 +464,7 @@ router.get("/:id", requireRole(["admin", "manager"]), async (req, res) => {
             FROM orders
             LEFT JOIN users ON users.id = orders.manager_id
             LEFT JOIN clients ON clients.id = orders.client_id
-            WHERE orders.id = ?
+            WHERE orders.id = ? AND orders.deleted_at IS NULL
         `, [req.params.id]);
 
         if (!row) {
@@ -406,9 +481,9 @@ router.get("/:id", requireRole(["admin", "manager"]), async (req, res) => {
 
 router.post("/:id/take", requireRole(["admin", "manager"]), async (req, res) => {
     try {
-        const order = await get("SELECT id, manager_id, status FROM orders WHERE id = ?", [req.params.id]);
+        const order = await get("SELECT id, manager_id, status, deleted_at FROM orders WHERE id = ?", [req.params.id]);
 
-        if (!order) {
+        if (!order || order.deleted_at) {
             res.status(404).json({ success: false, message: "Заявка не найдена." });
             return;
         }
@@ -427,7 +502,7 @@ router.post("/:id/take", requireRole(["admin", "manager"]), async (req, res) => 
         const result = await run(
             `UPDATE orders
              SET manager_id = ?, taken_at = ?, status = ?, updated_at = ?
-             WHERE id = ? AND manager_id IS NULL`,
+             WHERE id = ? AND manager_id IS NULL AND deleted_at IS NULL`,
             [req.session.user.id, now, "В работе", now, req.params.id]
         );
 
@@ -453,9 +528,9 @@ router.post("/:id/take", requireRole(["admin", "manager"]), async (req, res) => 
 
 router.post("/:id/release", requireRole(["admin", "manager"]), async (req, res) => {
     try {
-        const order = await get("SELECT id, manager_id, status FROM orders WHERE id = ?", [req.params.id]);
+        const order = await get("SELECT id, manager_id, status, deleted_at FROM orders WHERE id = ?", [req.params.id]);
 
-        if (!order) {
+        if (!order || order.deleted_at) {
             res.status(404).json({ success: false, message: "Заявка не найдена." });
             return;
         }
@@ -465,15 +540,10 @@ router.post("/:id/release", requireRole(["admin", "manager"]), async (req, res) 
             return;
         }
 
-        if (isClosedStatus(order.status)) {
-            res.status(400).json({ success: false, message: "Завершенную или отмененную заявку нельзя освободить." });
-            return;
-        }
-
         await run(
             `UPDATE orders
              SET manager_id = NULL, taken_at = NULL, status = ?, updated_at = ?
-             WHERE id = ?`,
+             WHERE id = ? AND deleted_at IS NULL`,
             ["Новая", new Date().toISOString(), req.params.id]
         );
 
@@ -501,9 +571,9 @@ router.patch("/:id/status", requireRole(["admin", "manager"]), async (req, res) 
             return;
         }
 
-        const order = await get("SELECT id, manager_id, status FROM orders WHERE id = ?", [req.params.id]);
+        const order = await get("SELECT id, manager_id, status, deleted_at FROM orders WHERE id = ?", [req.params.id]);
 
-        if (!order) {
+        if (!order || order.deleted_at) {
             res.status(404).json({ success: false, message: "Заявка не найдена." });
             return;
         }
@@ -519,7 +589,7 @@ router.patch("/:id/status", requireRole(["admin", "manager"]), async (req, res) 
         }
 
         const result = await run(
-            "UPDATE orders SET status = ?, closed_at = ?, updated_at = ? WHERE id = ?",
+            "UPDATE orders SET status = ?, closed_at = ?, updated_at = ? WHERE id = ? AND deleted_at IS NULL",
             [
                 status,
                 isClosedStatus(status) ? new Date().toISOString() : null,

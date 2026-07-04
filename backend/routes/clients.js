@@ -82,6 +82,7 @@ router.get("/:id/orders", requireRole(["admin", "manager"]), async (req, res) =>
             FROM orders
             LEFT JOIN users ON users.id = orders.manager_id
             WHERE orders.client_id = ?
+              AND orders.deleted_at IS NULL
             ORDER BY datetime(orders.created_at) DESC, orders.id DESC
         `, [req.params.id]);
 
