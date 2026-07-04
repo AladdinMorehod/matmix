@@ -18,8 +18,8 @@
             </div>
 
             <nav class="crm-nav">
-                <a class="active" href="manager.html">Заказы</a>
-                <span>Клиенты <small>скоро</small></span>
+                <button class="active" data-section="orders" type="button">Заказы</button>
+                <button data-section="clients" type="button">Клиенты</button>
                 <span>Каталог <small>скоро</small></span>
                 <span>Статистика <small>скоро</small></span>
                 <span>Настройки <small>скоро</small></span>
@@ -36,7 +36,7 @@
         </aside>
 
         <section class="crm-workspace">
-            <header class="crm-topbar">
+            <header id="ordersTopbar" class="crm-topbar">
                 <div>
                     <h1>Заказы</h1>
                     <p>Заявки с сайта MatMix</p>
@@ -60,6 +60,32 @@
 
             <p id="managerMessage" class="manager-message" aria-live="polite"></p>
             <section id="ordersList" class="orders-list" aria-label="Список заявок"></section>
+
+            <section id="clientsView" class="clients-view hidden" aria-label="Список клиентов">
+                <header class="crm-topbar">
+                    <div>
+                        <h1>Клиенты</h1>
+                        <p>База клиентов MatMix</p>
+                    </div>
+                    <div class="crm-topbar-actions">
+                        <div class="orders-stats" aria-label="Статистика клиентов">
+                            <span>Всего <strong id="clientsTotalCount">0</strong></span>
+                            <span>Повторные <strong id="repeatClientsCount">0</strong></span>
+                            <span>Сумма <strong id="clientsTotalSpent">0 ₽</strong></span>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="clients-toolbar">
+                    <label>
+                        <span>Поиск клиента</span>
+                        <input id="clientSearchInput" type="search" placeholder="Имя или телефон" autocomplete="off">
+                    </label>
+                    <button id="refreshClients" type="button">Обновить</button>
+                </div>
+
+                <section id="clientsList" class="clients-list" aria-label="Клиенты"></section>
+            </section>
         </section>
     </main>
 

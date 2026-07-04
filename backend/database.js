@@ -75,6 +75,26 @@ async function initDatabase() {
     await ensureColumn("orders", "closed_at", "TEXT");
     await ensureColumn("orders", "preferred_contact_method", "TEXT");
     await ensureColumn("orders", "preferred_contact_value", "TEXT");
+    await ensureColumn("orders", "client_id", "INTEGER");
+
+    await run(`
+        CREATE TABLE IF NOT EXISTS clients (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            phone TEXT NOT NULL,
+            preferred_contact_method TEXT,
+            preferred_contact_value TEXT,
+            email TEXT,
+            telegram TEXT,
+            max_contact TEXT,
+            whatsapp TEXT,
+            orders_count INTEGER DEFAULT 0,
+            total_spent REAL DEFAULT 0,
+            last_order_at TEXT,
+            created_at TEXT,
+            updated_at TEXT
+        )
+    `);
 
     await run(`
         CREATE TABLE IF NOT EXISTS order_events (

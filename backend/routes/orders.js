@@ -1,6 +1,7 @@
 const express = require("express");
 const { all, get, run } = require("../database");
 const { requireRole } = require("../middleware/auth");
+const { normalizePhone } = require("../utils/phone");
 
 const router = express.Router();
 
@@ -57,6 +58,89 @@ function getFallbackPreferredContact(body, phone) {
     };
 }
 
+function getClientContactFields(method, value, phone) {
+    return {
+        email: method === "Почта" ? value : "",
+        telegram: method === "Telegram" ? value : "",
+        maxContact: method === "MAX" ? value : "",
+        whatsapp: method === "WhatsApp" ? (value || phone) : ""
+    };
+}
+
+async function findOrCreateClient({ customerName, phone, preferredContact, totalPrice, now }) {
+    const normalizedPhone = normalizePhone(phone);
+    const contactFields = getClientContactFields(preferredContact.method, preferredContact.value, phone);
+    const existingClient = await get("SELECT * FROM clients WHERE phone = ?", [normalizedPhone]);
+
+    if (existingClient) {
+        await run(
+            `UPDATE clients
+             SET name = ?,
+                 preferred_contact_method = ?,
+                 preferred_contact_value = ?,
+                 email = COALESCE(NULLIF(?, ''), email),
+                 telegram = COALESCE(NULLIF(?, ''), telegram),
+                 max_contact = COALESCE(NULLIF(?, ''), max_contact),
+                 whatsapp = COALESCE(NULLIF(?, ''), whatsapp),
+                 orders_count = COALESCE(orders_count, 0) + 1,
+                 total_spent = COALESCE(total_spent, 0) + ?,
+                 last_order_at = ?,
+                 updated_at = ?
+             WHERE id = ?`,
+            [
+                customerName || existingClient.name,
+                preferredContact.method,
+                preferredContact.value,
+                contactFields.email,
+                contactFields.telegram,
+                contactFields.maxContact,
+                contactFields.whatsapp,
+                Number(totalPrice) || 0,
+                now,
+                now,
+                existingClient.id
+            ]
+        );
+
+        return existingClient.id;
+    }
+
+    const result = await run(
+        `INSERT INTO clients (
+            name,
+            phone,
+            preferred_contact_method,
+            preferred_contact_value,
+            email,
+            telegram,
+            max_contact,
+            whatsapp,
+            orders_count,
+            total_spent,
+            last_order_at,
+            created_at,
+            updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+            customerName,
+            normalizedPhone,
+            preferredContact.method,
+            preferredContact.value,
+            contactFields.email,
+            contactFields.telegram,
+            contactFields.maxContact,
+            contactFields.whatsapp,
+            1,
+            Number(totalPrice) || 0,
+            now,
+            now,
+            now
+        ]
+    );
+
+    return result.id;
+}
+
 function normalizeOrder(row) {
     if (!row) return null;
 
@@ -68,6 +152,10 @@ function normalizeOrder(row) {
         maxContact: row.max_contact || "",
         preferredContactMethod: row.preferred_contact_method || "",
         preferredContactValue: row.preferred_contact_value || "",
+        clientId: row.client_id || null,
+        clientOrdersCount: row.client_orders_count || null,
+        clientTotalSpent: row.client_total_spent || null,
+        clientLastOrderAt: row.client_last_order_at || null,
         address: row.address || "",
         unloading: row.unloading || "",
         paymentMethod: row.payment_method || "",
@@ -146,10 +234,18 @@ router.post("/", async (req, res) => {
 
         const now = new Date().toISOString();
         const preferredContact = getFallbackPreferredContact(req.body, phone);
+        const clientId = await findOrCreateClient({
+            customerName,
+            phone,
+            preferredContact,
+            totalPrice: req.body.totalPrice,
+            now
+        });
         const result = await run(
             `INSERT INTO orders (
                 customer_name,
                 phone,
+                client_id,
                 telegram,
                 max_contact,
                 preferred_contact_method,
@@ -164,10 +260,11 @@ router.post("/", async (req, res) => {
                 status,
                 created_at,
                 updated_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
                 customerName,
                 phone,
+                clientId,
                 normalizeText(req.body.telegram),
                 normalizeText(req.body.maxContact),
                 preferredContact.method,
@@ -202,9 +299,15 @@ router.post("/", async (req, res) => {
 router.get("/", requireRole(["admin", "manager"]), async (req, res) => {
     try {
         const rows = await all(`
-            SELECT orders.*, users.name AS manager_name
+            SELECT
+                orders.*,
+                users.name AS manager_name,
+                clients.orders_count AS client_orders_count,
+                clients.total_spent AS client_total_spent,
+                clients.last_order_at AS client_last_order_at
             FROM orders
             LEFT JOIN users ON users.id = orders.manager_id
+            LEFT JOIN clients ON clients.id = orders.client_id
             ORDER BY datetime(orders.created_at) DESC, orders.id DESC
         `);
         res.json({ success: true, orders: rows.map(normalizeOrder) });
@@ -277,9 +380,15 @@ router.post("/:id/notes", requireRole(["admin", "manager"]), async (req, res) =>
 router.get("/:id", requireRole(["admin", "manager"]), async (req, res) => {
     try {
         const row = await get(`
-            SELECT orders.*, users.name AS manager_name
+            SELECT
+                orders.*,
+                users.name AS manager_name,
+                clients.orders_count AS client_orders_count,
+                clients.total_spent AS client_total_spent,
+                clients.last_order_at AS client_last_order_at
             FROM orders
             LEFT JOIN users ON users.id = orders.manager_id
+            LEFT JOIN clients ON clients.id = orders.client_id
             WHERE orders.id = ?
         `, [req.params.id]);
 
@@ -392,7 +501,7 @@ router.patch("/:id/status", requireRole(["admin", "manager"]), async (req, res) 
             return;
         }
 
-        const order = await get("SELECT id, manager_id FROM orders WHERE id = ?", [req.params.id]);
+        const order = await get("SELECT id, manager_id, status FROM orders WHERE id = ?", [req.params.id]);
 
         if (!order) {
             res.status(404).json({ success: false, message: "Заявка не найдена." });
