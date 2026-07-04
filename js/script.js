@@ -37177,7 +37177,7 @@ const searchDropdown = document.createElement("div");
 let cart = loadCart();
 let searchQuery = "";
 let activeCategoryPath = "";
-let categoryDropdownOpen = false;
+let showAllCatalogProducts = false;
 
 searchDropdown.className = "search-dropdown hidden";
 searchDropdown.setAttribute("aria-live", "polite");
@@ -37654,7 +37654,7 @@ catalogBreadcrumbCategory?.addEventListener("click", () => {
     if (!path) return;
 
     activeCategoryPath = path;
-    categoryDropdownOpen = false;
+    showAllCatalogProducts = false;
     renderCategoryControls();
     renderProducts();
 });
@@ -37756,7 +37756,10 @@ function showCheckoutForm() {
 }
 
 function isCatalogDefaultView() {
-    return Boolean(grid?.closest(".catalog-page")) && !activeCategoryPath && !searchQuery.trim();
+    return Boolean(grid?.closest(".catalog-page"))
+        && !activeCategoryPath
+        && !searchQuery.trim()
+        && !showAllCatalogProducts;
 }
 
 function getProductsByNames(names) {
@@ -37782,8 +37785,18 @@ function renderFeaturedCatalogProducts() {
     });
 }
 
+function animateCatalogGridUpdate(targetGrid) {
+    if (!targetGrid || targetGrid.classList.contains("hidden")) return;
+
+    targetGrid.classList.add("is-updating");
+    window.setTimeout(() => {
+        targetGrid.classList.remove("is-updating");
+    }, 180);
+}
+
 function renderProducts() {
     if (!grid) return;
+    animateCatalogGridUpdate(grid);
     grid.innerHTML = "";
     renderFeaturedCatalogProducts();
 
@@ -37889,55 +37902,71 @@ function renderPopularProducts() {
     });
 }
 
+function getActiveMainCategoryPath(groups) {
+    if (!activeCategoryPath) return "";
+
+    if (activeCategoryPath.startsWith("category:")) {
+        return activeCategoryPath;
+    }
+
+    const group = groups.find(item => item.subcategories.some(subcategory => subcategory.path === activeCategoryPath));
+    return group?.path || "";
+}
+
+function createCategoryButton(label, path, className, isActive) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = className;
+    button.dataset.path = path;
+    button.textContent = label;
+    button.classList.toggle("active", isActive);
+    return button;
+}
+
 function renderCategoryControls() {
     if (!categoryControls) return;
     categoryControls.innerHTML = "";
     const groups = getCategoryFilterGroups();
+    const activeMainPath = getActiveMainCategoryPath(groups);
 
     updateCatalogBreadcrumbs(groups);
 
-    const trigger = document.createElement("button");
-    trigger.type = "button";
-    trigger.className = "category-menu-trigger";
-    trigger.textContent = "Все товары";
-    trigger.classList.toggle("active", !activeCategoryPath);
-    trigger.setAttribute("aria-expanded", String(categoryDropdownOpen));
-    categoryControls.appendChild(trigger);
-
-    const dropdown = document.createElement("div");
-    dropdown.className = "category-dropdown";
-    dropdown.classList.toggle("is-open", categoryDropdownOpen);
+    const mainList = document.createElement("div");
+    mainList.className = "category-main-list";
+    mainList.appendChild(createCategoryButton(
+        "Все товары",
+        "",
+        "category-control category-all",
+        !activeCategoryPath && showAllCatalogProducts
+    ));
 
     groups.forEach(group => {
-        const row = document.createElement("div");
-        row.className = "category-group";
-
-        const categoryButton = document.createElement("button");
-        categoryButton.type = "button";
-        categoryButton.className = "category-control level-0";
-        categoryButton.dataset.path = group.path;
-        categoryButton.textContent = group.label;
-        categoryButton.classList.toggle("active", group.path === activeCategoryPath);
-        row.appendChild(categoryButton);
-
-        const subcategoryList = document.createElement("div");
-        subcategoryList.className = "category-subcategory-list";
-
-        group.subcategories.forEach(subcategory => {
-            const button = document.createElement("button");
-            button.type = "button";
-            button.className = "category-control level-1";
-            button.dataset.path = subcategory.path;
-            button.textContent = subcategory.label;
-            button.classList.toggle("active", subcategory.path === activeCategoryPath);
-            subcategoryList.appendChild(button);
-        });
-
-        row.appendChild(subcategoryList);
-        dropdown.appendChild(row);
+        mainList.appendChild(createCategoryButton(
+            group.label,
+            group.path,
+            "category-control level-0",
+            group.path === activeMainPath
+        ));
     });
 
-    categoryControls.appendChild(dropdown);
+    categoryControls.appendChild(mainList);
+
+    const activeGroup = groups.find(group => group.path === activeMainPath);
+    if (!activeGroup?.subcategories.length) return;
+
+    const subcategoryList = document.createElement("div");
+    subcategoryList.className = "category-subcategory-list";
+
+    activeGroup.subcategories.forEach(subcategory => {
+        subcategoryList.appendChild(createCategoryButton(
+            subcategory.label,
+            subcategory.path,
+            "category-control level-1",
+            subcategory.path === activeCategoryPath
+        ));
+    });
+
+    categoryControls.appendChild(subcategoryList);
 }
 
 function getQtyControls(id, qty, inputMode = false) {
@@ -38281,27 +38310,13 @@ searchDropdown.addEventListener("change", event => {
 });
 
 categoryControls?.addEventListener("click", event => {
-    event.stopPropagation();
-
-    const trigger = event.target.closest(".category-menu-trigger");
-    if (trigger) {
-        categoryDropdownOpen = !categoryDropdownOpen;
-        renderCategoryControls();
-        return;
-    }
-
     const button = event.target.closest(".category-control");
     if (!button) return;
-    activeCategoryPath = button.dataset.path;
-    categoryDropdownOpen = false;
+
+    activeCategoryPath = button.dataset.path || "";
+    showAllCatalogProducts = !activeCategoryPath;
     renderCategoryControls();
     renderProducts();
-});
-
-document.addEventListener("click", event => {
-    if (!categoryDropdownOpen || categoryControls?.contains(event.target)) return;
-    categoryDropdownOpen = false;
-    renderCategoryControls();
 });
 
 searchInput?.form?.addEventListener("submit", event => {
