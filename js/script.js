@@ -37164,8 +37164,8 @@ const cancelCheckoutBtn = document.getElementById("cancelCheckout");
 const checkoutMessage = document.getElementById("checkoutMessage");
 const checkoutNameInput = checkoutForm?.querySelector("input[name='customerName']");
 const checkoutPhoneInput = checkoutForm?.querySelector("input[name='customerPhone']");
-const checkoutTelegramInput = checkoutForm?.querySelector("input[name='customerTelegram']");
-const checkoutMaxInput = checkoutForm?.querySelector("input[name='customerMax']");
+const preferredContactMethodInput = checkoutForm?.querySelector("select[name='preferredContactMethod']");
+const preferredContactValueInput = checkoutForm?.querySelector("input[name='preferredContactValue']");
 const checkoutAddressInput = checkoutForm?.querySelector("input[name='deliveryAddress']");
 const nameSuggestionsEl = document.getElementById("nameSuggestions");
 const phoneSuggestionsEl = document.getElementById("phoneSuggestions");
@@ -37350,6 +37350,20 @@ function setCheckoutSubmitDisabled(isDisabled) {
     checkoutForm?.querySelector("button[type='submit']")?.toggleAttribute("disabled", isDisabled);
 }
 
+function updatePreferredContactHint() {
+    if (!preferredContactValueInput || !preferredContactMethodInput) return;
+
+    const placeholders = {
+        "Телефон": "Можно оставить основной телефон",
+        "WhatsApp": "Можно оставить основной телефон",
+        "Telegram": "@username",
+        "MAX": "Телефон или логин MAX",
+        "Почта": "mail@example.com"
+    };
+
+    preferredContactValueInput.placeholder = placeholders[preferredContactMethodInput.value] || "Контакт для связи";
+}
+
 function setupCheckoutFormFields() {
     updateCheckoutSuggestions();
 
@@ -37398,6 +37412,11 @@ function setupCheckoutFormFields() {
 
         checkoutAddressInput.addEventListener("input", updateCheckoutSuggestions);
     }
+
+    if (preferredContactMethodInput) {
+        updatePreferredContactHint();
+        preferredContactMethodInput.addEventListener("change", updatePreferredContactHint);
+    }
 }
 
 function formatPrice(value) {
@@ -37421,10 +37440,6 @@ function getUnloadingLabel(value) {
 
 function cleanDisplayText(value) {
     return String(value || "").replace(/\?/g, "").replace(/\s+/g, " ").trim();
-}
-
-function normalizeTelegram(value) {
-    return cleanDisplayText(value);
 }
 
 function getCartOrderItems() {
@@ -38271,8 +38286,8 @@ checkoutForm?.addEventListener("submit", async event => {
     const payload = {
         customerName,
         phone,
-        telegram: normalizeTelegram(formData.get("customerTelegram")),
-        maxContact: cleanDisplayText(formData.get("customerMax")),
+        preferredContactMethod: cleanDisplayText(formData.get("preferredContactMethod")),
+        preferredContactValue: cleanDisplayText(formData.get("preferredContactValue")),
         address: cleanDisplayText(formData.get("deliveryAddress")),
         unloading: getUnloadingLabel(formData.get("unloading")),
         paymentMethod: getPaymentMethodLabel(formData.get("paymentMethod")),

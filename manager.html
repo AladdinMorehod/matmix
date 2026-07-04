@@ -10,12 +10,21 @@
     <link rel="stylesheet" href="css/manager.css">
 </head>
 <body>
-    <main class="manager-page">
-        <header class="manager-header">
-            <div>
-                <h1>Кабинет менеджера MatMix</h1>
-                <p>Заявки с сайта, контакты клиентов и статусы обработки.</p>
+    <main class="crm-shell">
+        <aside class="crm-sidebar" aria-label="Навигация CRM">
+            <div class="crm-brand">
+                <strong>MatMix CRM</strong>
+                <span>Кабинет менеджера</span>
             </div>
+
+            <nav class="crm-nav">
+                <a class="active" href="manager.html">Заказы</a>
+                <span>Клиенты <small>скоро</small></span>
+                <span>Каталог <small>скоро</small></span>
+                <span>Статистика <small>скоро</small></span>
+                <span>Настройки <small>скоро</small></span>
+            </nav>
+
             <div class="manager-user-panel">
                 <div>
                     <span id="managerUserName">Проверка доступа...</span>
@@ -24,20 +33,34 @@
                 <button id="logoutBtn" type="button">Выйти</button>
                 <a href="index.html">На сайт</a>
             </div>
-        </header>
+        </aside>
 
-        <section class="manager-toolbar" aria-label="Фильтры заявок">
-            <label>
-                <span>Статус</span>
-                <select id="statusFilter">
-                    <option value="">Все статусы</option>
+        <section class="crm-workspace">
+            <header class="crm-topbar">
+                <div>
+                    <h1>Заказы</h1>
+                    <p>Заявки с сайта MatMix</p>
+                </div>
+                <div class="crm-topbar-actions">
+                    <div class="orders-stats" aria-label="Статистика заявок">
+                        <span>Всего <strong id="ordersTotalCount">0</strong></span>
+                        <span>Новые <strong id="ordersNewCount">0</strong></span>
+                        <span>В работе <strong id="ordersWorkCount">0</strong></span>
+                    </div>
+                    <button id="refreshOrders" type="button">Обновить</button>
+                </div>
+            </header>
+
+            <section class="manager-toolbar" aria-label="Фильтры заявок">
+                <select id="statusFilter" class="visually-hidden" aria-label="Фильтр по статусу">
+                    <option value="">Все</option>
                 </select>
-            </label>
-            <button id="refreshOrders" type="button">Обновить</button>
-        </section>
+                <div id="statusTabs" class="status-tabs" role="tablist" aria-label="Фильтры по статусу"></div>
+            </section>
 
-        <p id="managerMessage" class="manager-message" aria-live="polite"></p>
-        <section id="ordersList" class="orders-list" aria-label="Список заявок"></section>
+            <p id="managerMessage" class="manager-message" aria-live="polite"></p>
+            <section id="ordersList" class="orders-list" aria-label="Список заявок"></section>
+        </section>
     </main>
 
     <script src="js/manager.js"></script>

@@ -73,6 +73,8 @@ async function initDatabase() {
     await ensureColumn("orders", "manager_id", "INTEGER");
     await ensureColumn("orders", "taken_at", "TEXT");
     await ensureColumn("orders", "closed_at", "TEXT");
+    await ensureColumn("orders", "preferred_contact_method", "TEXT");
+    await ensureColumn("orders", "preferred_contact_value", "TEXT");
 
     await run(`
         CREATE TABLE IF NOT EXISTS order_events (

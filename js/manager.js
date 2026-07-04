@@ -18,11 +18,15 @@ const statusClassMap = {
 
 const ordersList = document.getElementById("ordersList");
 const statusFilter = document.getElementById("statusFilter");
+const statusTabs = document.getElementById("statusTabs");
 const refreshOrdersBtn = document.getElementById("refreshOrders");
 const managerMessage = document.getElementById("managerMessage");
 const managerUserName = document.getElementById("managerUserName");
 const managerUserRole = document.getElementById("managerUserRole");
 const logoutBtn = document.getElementById("logoutBtn");
+const ordersTotalCount = document.getElementById("ordersTotalCount");
+const ordersNewCount = document.getElementById("ordersNewCount");
+const ordersWorkCount = document.getElementById("ordersWorkCount");
 
 let orders = [];
 let currentUser = null;
@@ -68,6 +72,94 @@ function cleanPhoneForLink(phone) {
 
 function getTelegramUsername(value) {
     return String(value || "").trim().replace(/^@/, "");
+}
+
+function getPreferredContact(order) {
+    const method = String(order.preferredContactMethod || "").trim();
+    const value = String(order.preferredContactValue || "").trim();
+
+    if (method) {
+        return {
+            method,
+            value: value || (["Телефон", "WhatsApp"].includes(method) ? order.phone : "")
+        };
+    }
+
+    if (order.telegram) {
+        return {
+            method: "Telegram",
+            value: order.telegram
+        };
+    }
+
+    if (order.maxContact) {
+        return {
+            method: "MAX",
+            value: order.maxContact
+        };
+    }
+
+    return {
+        method: "",
+        value: ""
+    };
+}
+
+function getPreferredContactText(order) {
+    const contact = getPreferredContact(order);
+
+    if (!contact.method) {
+        return "Не указан";
+    }
+
+    return `${contact.method}: ${contact.value || "Не указан"}`;
+}
+
+function getContactAction(order) {
+    const contact = getPreferredContact(order);
+    const method = contact.method;
+    const value = contact.value || "";
+    const phoneDigits = cleanPhoneForLink(value || order.phone);
+
+    if (!method) {
+        return phoneDigits
+            ? { label: "Позвонить", href: `tel:+${phoneDigits}` }
+            : null;
+    }
+
+    if (method === "Телефон") {
+        return phoneDigits
+            ? { label: "Связаться", href: `tel:+${phoneDigits}` }
+            : null;
+    }
+
+    if (method === "WhatsApp") {
+        return phoneDigits
+            ? { label: "Связаться", href: `https://wa.me/${phoneDigits}`, external: true }
+            : null;
+    }
+
+    if (method === "Telegram") {
+        const username = getTelegramUsername(value);
+        return username
+            ? { label: "Связаться", href: `https://t.me/${encodeURIComponent(username)}`, external: true }
+            : null;
+    }
+
+    if (method === "Почта") {
+        return value
+            ? { label: "Связаться", href: `mailto:${value}` }
+            : null;
+    }
+
+    if (method === "MAX") {
+        return {
+            label: value ? `Связь через MAX: контакт указан` : "Связь через MAX: контакт не указан",
+            disabled: true
+        };
+    }
+
+    return null;
 }
 
 function setMessage(message = "") {
@@ -142,15 +234,19 @@ function renderItems(items = []) {
 }
 
 function renderContactActions(order) {
-    const phoneDigits = cleanPhoneForLink(order.phone);
-    const telegram = getTelegramUsername(order.telegram);
+    const action = getContactAction(order);
+
+    if (!action) {
+        return `<div class="order-actions"><span class="contact-disabled">Контакт не указан</span></div>`;
+    }
+
+    if (action.disabled) {
+        return `<div class="order-actions"><span class="contact-disabled">${escapeHtml(action.label)}</span></div>`;
+    }
 
     return `
         <div class="order-actions">
-            ${phoneDigits ? `<a href="tel:+${phoneDigits}">Позвонить</a>` : ""}
-            ${phoneDigits ? `<a class="whatsapp-link" href="https://wa.me/${phoneDigits}" target="_blank" rel="noopener">WhatsApp</a>` : ""}
-            ${telegram ? `<a class="telegram-link" href="https://t.me/${escapeHtml(telegram)}" target="_blank" rel="noopener">Telegram</a>` : ""}
-            ${order.maxContact ? `<span class="max-disabled">MAX</span>` : ""}
+            <a href="${escapeHtml(action.href)}"${action.external ? ` target="_blank" rel="noopener"` : ""}>${escapeHtml(action.label)}</a>
         </div>
     `;
 }
@@ -194,7 +290,6 @@ function renderAssignment(order) {
                     <span class="assignment-label">Ответственный</span>
                     <strong><i></i> Свободна</strong>
                 </div>
-                ${canTakeOrder(order) ? `<button class="assignment-action" data-action="take" data-id="${order.id}" type="button">Взять в работу</button>` : ""}
             </section>
         `;
     }
@@ -214,6 +309,9 @@ function renderAssignment(order) {
 }
 
 function renderOrderControls(order) {
+    const takeButton = canTakeOrder(order)
+        ? `<button class="assignment-action" data-action="take" data-id="${order.id}" type="button">Взять в работу</button>`
+        : "";
     const statusControl = canChangeOrderStatus(order)
         ? `
             <label class="order-field status-control">
@@ -227,10 +325,13 @@ function renderOrderControls(order) {
     const releaseButton = canReleaseOrder(order)
         ? `<button class="assignment-action secondary" data-action="release" data-id="${order.id}" type="button">Освободить</button>`
         : "";
+    const lockText = order.managerId && !isOwnOrder(order) && currentUser?.role !== "admin"
+        ? `<span class="order-lock">В работе у: ${escapeHtml(order.managerName || "Менеджер")}</span>`
+        : "";
 
-    if (!statusControl && !releaseButton) return "";
+    if (!takeButton && !statusControl && !releaseButton && !lockText) return "";
 
-    return `<div class="order-controls">${statusControl}${releaseButton}</div>`;
+    return `<div class="order-controls">${takeButton}${statusControl}${releaseButton}${lockText}</div>`;
 }
 
 function renderEventList(events) {
@@ -283,14 +384,61 @@ function renderHistory(order) {
     `;
 }
 
+function renderInfoRow(label, value) {
+    if (!value) return "";
+
+    return `
+        <div class="info-row">
+            <span>${escapeHtml(label)}</span>
+            <strong>${escapeHtml(value)}</strong>
+        </div>
+    `;
+}
+
+function renderOrderSummary(order) {
+    return `
+        <div class="order-summary">
+            <span>Итого: <strong>${formatMoney(order.totalPrice)}</strong></span>
+            <span>Вес: <strong>${formatWeight(order.totalWeight)}</strong></span>
+        </div>
+    `;
+}
+
+function updateStats() {
+    if (ordersTotalCount) ordersTotalCount.textContent = orders.length;
+    if (ordersNewCount) ordersNewCount.textContent = orders.filter(order => order.status === "Новая").length;
+    if (ordersWorkCount) ordersWorkCount.textContent = orders.filter(order => order.status === "В работе").length;
+}
+
+function renderStatusTabs() {
+    if (!statusTabs) return;
+
+    const activeStatus = statusFilter.value;
+    const filters = [{ label: "Все", value: "" }, ...statuses.map(status => ({ label: status, value: status }))];
+
+    statusTabs.innerHTML = filters.map(filter => `
+        <button class="${filter.value === activeStatus ? "active" : ""}" data-status="${escapeHtml(filter.value)}" type="button">
+            ${escapeHtml(filter.label)}
+        </button>
+    `).join("");
+}
+
 function renderOrders() {
+    updateStats();
+    renderStatusTabs();
+
     const selectedStatus = statusFilter.value;
     const visibleOrders = selectedStatus
         ? orders.filter(order => order.status === selectedStatus)
         : orders;
 
     if (!visibleOrders.length) {
-        ordersList.innerHTML = "<p>Заявок пока нет.</p>";
+        ordersList.innerHTML = `
+            <section class="empty-state">
+                <h2>Заявок пока нет</h2>
+                <p>Новые заявки появятся здесь после оформления заказа на сайте.</p>
+            </section>
+        `;
         return;
     }
 
@@ -307,25 +455,31 @@ function renderOrders() {
                 </div>
             </header>
 
-            <div class="order-grid">
-                <div class="order-field"><span>Клиент</span><strong>${escapeHtml(order.customerName)}</strong></div>
-                <div class="order-field"><span>Телефон</span><strong>${escapeHtml(order.phone)}</strong></div>
-                <div class="order-field"><span>Telegram</span><strong>${escapeHtml(order.telegram || "Не указан")}</strong></div>
-                <div class="order-field"><span>MAX</span><strong>${escapeHtml(order.maxContact || "Не указан")}</strong></div>
-                <div class="order-field"><span>Адрес</span><strong>${escapeHtml(order.address || "Не указан")}</strong></div>
-                <div class="order-field"><span>Разгрузка</span><strong>${escapeHtml(order.unloading || "Нет")}</strong></div>
-                <div class="order-field"><span>Оплата</span><strong>${escapeHtml(order.paymentMethod || "Не указана")}</strong></div>
-                <div class="order-field"><span>Комментарий</span><p>${escapeHtml(order.comment || "Без комментария")}</p></div>
-            </div>
+            <div class="order-sections">
+                <section class="order-section">
+                    <h2>Клиент</h2>
+                    ${renderInfoRow("Имя", order.customerName)}
+                    ${renderInfoRow("Телефон", order.phone)}
+                    ${renderInfoRow("Предпочтительный канал", getPreferredContactText(order))}
+                </section>
 
-            ${renderItems(order.items)}
+                <section class="order-section">
+                    <h2>Доставка и оплата</h2>
+                    ${renderInfoRow("Адрес", order.address || "Не указан")}
+                    ${renderInfoRow("Разгрузка", order.unloading || "Нет")}
+                    ${renderInfoRow("Оплата", order.paymentMethod || "Не указана")}
+                    ${order.comment ? renderInfoRow("Комментарий", order.comment) : ""}
+                </section>
+
+                <section class="order-section order-section-wide">
+                    <h2>Заказ</h2>
+                    ${renderItems(order.items)}
+                    ${renderOrderSummary(order)}
+                </section>
+            </div>
             ${renderHistory(order)}
 
             <footer class="order-card-footer">
-                <div class="order-total">
-                    <span>Итого: ${formatMoney(order.totalPrice)}</span>
-                    <span>Вес: ${formatWeight(order.totalWeight)}</span>
-                </div>
                 ${renderContactActions(order)}
                 ${renderOrderControls(order)}
             </footer>
@@ -353,7 +507,13 @@ async function loadOrders(options = {}) {
         }
         renderOrders();
     } catch (error) {
-        ordersList.innerHTML = "";
+        ordersList.innerHTML = `
+            <section class="empty-state error-state">
+                <h2>Не удалось загрузить заявки</h2>
+                <p>${escapeHtml(error.message || "Сервер недоступен. Попробуйте обновить список.")}</p>
+                <button class="retry-load" type="button">Повторить</button>
+            </section>
+        `;
         setMessage(error.message || "Сервер недоступен. Попробуйте обновить страницу.");
     }
 }
@@ -480,6 +640,13 @@ statuses.forEach(status => {
 });
 
 statusFilter.addEventListener("change", renderOrders);
+statusTabs?.addEventListener("click", event => {
+    const button = event.target.closest("button[data-status]");
+    if (!button) return;
+
+    statusFilter.value = button.dataset.status;
+    renderOrders();
+});
 refreshOrdersBtn.addEventListener("click", loadOrders);
 logoutBtn.addEventListener("click", async () => {
     try {
@@ -496,6 +663,12 @@ ordersList.addEventListener("change", event => {
 });
 
 ordersList.addEventListener("click", event => {
+    const retryButton = event.target.closest(".retry-load");
+    if (retryButton) {
+        loadOrders();
+        return;
+    }
+
     const historyButton = event.target.closest(".history-toggle");
     if (historyButton) {
         const orderId = String(historyButton.dataset.id);

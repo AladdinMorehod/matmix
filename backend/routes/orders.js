@@ -17,6 +17,46 @@ function normalizeText(value) {
     return String(value || "").trim();
 }
 
+function normalizePreferredContactMethod(value) {
+    const method = normalizeText(value);
+    const allowedMethods = ["Телефон", "WhatsApp", "Telegram", "MAX", "Почта"];
+
+    return allowedMethods.includes(method) ? method : "";
+}
+
+function getFallbackPreferredContact(body, phone) {
+    const method = normalizePreferredContactMethod(body.preferredContactMethod);
+    const value = normalizeText(body.preferredContactValue);
+
+    if (method) {
+        return {
+            method,
+            value
+        };
+    }
+
+    const telegram = normalizeText(body.telegram);
+    if (telegram) {
+        return {
+            method: "Telegram",
+            value: telegram
+        };
+    }
+
+    const maxContact = normalizeText(body.maxContact);
+    if (maxContact) {
+        return {
+            method: "MAX",
+            value: maxContact
+        };
+    }
+
+    return {
+        method: "",
+        value: phone
+    };
+}
+
 function normalizeOrder(row) {
     if (!row) return null;
 
@@ -26,6 +66,8 @@ function normalizeOrder(row) {
         phone: row.phone,
         telegram: row.telegram || "",
         maxContact: row.max_contact || "",
+        preferredContactMethod: row.preferred_contact_method || "",
+        preferredContactValue: row.preferred_contact_value || "",
         address: row.address || "",
         unloading: row.unloading || "",
         paymentMethod: row.payment_method || "",
@@ -103,12 +145,15 @@ router.post("/", async (req, res) => {
         }
 
         const now = new Date().toISOString();
+        const preferredContact = getFallbackPreferredContact(req.body, phone);
         const result = await run(
             `INSERT INTO orders (
                 customer_name,
                 phone,
                 telegram,
                 max_contact,
+                preferred_contact_method,
+                preferred_contact_value,
                 address,
                 unloading,
                 payment_method,
@@ -119,12 +164,14 @@ router.post("/", async (req, res) => {
                 status,
                 created_at,
                 updated_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
                 customerName,
                 phone,
                 normalizeText(req.body.telegram),
                 normalizeText(req.body.maxContact),
+                preferredContact.method,
+                preferredContact.value,
                 normalizeText(req.body.address),
                 normalizeText(req.body.unloading),
                 normalizeText(req.body.paymentMethod),
