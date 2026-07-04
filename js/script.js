@@ -37164,6 +37164,8 @@ const cancelCheckoutBtn = document.getElementById("cancelCheckout");
 const checkoutMessage = document.getElementById("checkoutMessage");
 const checkoutNameInput = checkoutForm?.querySelector("input[name='customerName']");
 const checkoutPhoneInput = checkoutForm?.querySelector("input[name='customerPhone']");
+const checkoutTelegramInput = checkoutForm?.querySelector("input[name='customerTelegram']");
+const checkoutMaxInput = checkoutForm?.querySelector("input[name='customerMax']");
 const checkoutAddressInput = checkoutForm?.querySelector("input[name='deliveryAddress']");
 const nameSuggestionsEl = document.getElementById("nameSuggestions");
 const phoneSuggestionsEl = document.getElementById("phoneSuggestions");
@@ -37339,7 +37341,7 @@ function updateCheckoutSuggestions() {
 
 function clearCheckoutMessage() {
     if (checkoutMessage) {
-        checkoutMessage.classList.remove("success");
+        checkoutMessage.classList.remove("success", "error");
         checkoutMessage.textContent = "";
     }
 }
@@ -37403,8 +37405,72 @@ function formatPrice(value) {
     return `${new Intl.NumberFormat("ru-RU").format(value)} ₽`;
 }
 
+function getPaymentMethodLabel(value) {
+    const labels = {
+        cash: "Наличными при получении",
+        transfer: "Переводом",
+        invoice: "Безналичный расчет"
+    };
+
+    return labels[value] || value || "";
+}
+
+function getUnloadingLabel(value) {
+    return value === "yes" ? "Да" : "Нет";
+}
+
 function cleanDisplayText(value) {
     return String(value || "").replace(/\?/g, "").replace(/\s+/g, " ").trim();
+}
+
+function normalizeTelegram(value) {
+    return cleanDisplayText(value);
+}
+
+function getCartOrderItems() {
+    return cart
+        .map(item => {
+            const product = products[item.id];
+            if (!product) return null;
+
+            const price = Number(product.price) || 0;
+            const qty = Number(item.qty) || 0;
+            const weight = Number(product.weight) || 0;
+
+            return {
+                name: cleanDisplayText(product.name),
+                price,
+                qty,
+                unit: product.unit || "шт",
+                weight,
+                lineTotal: price * qty,
+                lineWeight: weight * qty
+            };
+        })
+        .filter(Boolean);
+}
+
+function showCheckoutError(message) {
+    if (!checkoutMessage) return;
+
+    checkoutMessage.classList.remove("success");
+    checkoutMessage.classList.add("error");
+    checkoutMessage.textContent = message;
+}
+
+function showCheckoutSuccess() {
+    if (!checkoutMessage) return;
+
+    checkoutMessage.classList.remove("error");
+    checkoutMessage.classList.add("success");
+    checkoutMessage.innerHTML = `
+        <span class="checkout-success-icon" aria-hidden="true">✓</span>
+        <span class="checkout-success-text">
+            <strong class="checkout-success-title">Спасибо!</strong>
+            <span>Ваша заявка успешно оформлена.</span>
+            <span>Менеджер свяжется с вами в ближайшее время.</span>
+        </span>
+    `;
 }
 
 function normalizeSearchText(value) {
@@ -38155,8 +38221,9 @@ cancelCheckoutBtn?.addEventListener("click", () => {
     renderCart();
 });
 
-checkoutForm?.addEventListener("submit", event => {
+checkoutForm?.addEventListener("submit", async event => {
     event.preventDefault();
+    clearCheckoutMessage();
 
     if (checkoutNameInput) {
         saveCheckoutValue(checkoutStorage.names, checkoutNameInput.value);
@@ -38181,19 +38248,76 @@ checkoutForm?.addEventListener("submit", event => {
 
     updateCheckoutSuggestions();
 
-    if (checkoutMessage) {
-        checkoutMessage.classList.add("success");
-        checkoutMessage.innerHTML = `
-            <span class="checkout-success-icon" aria-hidden="true">✓</span>
-            <span class="checkout-success-text">
-                <strong class="checkout-success-title">Заказ успешно оформлен</strong>
-                <span>Спасибо за обращение в «МатМикс».</span>
-                <span>В ближайшее время наш менеджер свяжется с вами для подтверждения заказа, уточнения времени доставки и ответит на все ваши вопросы.</span>
-            </span>
-        `;
+    const customerName = cleanDisplayText(checkoutNameInput?.value);
+    const phone = formatRussianPhone(checkoutPhoneInput?.value);
+    const orderItems = getCartOrderItems();
+
+    if (!customerName) {
+        showCheckoutError("Укажите имя клиента.");
+        return;
     }
 
+    if (!getRussianPhoneDigits(phone)) {
+        showCheckoutError("Укажите телефон клиента.");
+        return;
+    }
+
+    if (!orderItems.length) {
+        showCheckoutError("Корзина пуста. Добавьте товары перед оформлением заказа.");
+        return;
+    }
+
+    const formData = new FormData(checkoutForm);
+    const payload = {
+        customerName,
+        phone,
+        telegram: normalizeTelegram(formData.get("customerTelegram")),
+        maxContact: cleanDisplayText(formData.get("customerMax")),
+        address: cleanDisplayText(formData.get("deliveryAddress")),
+        unloading: getUnloadingLabel(formData.get("unloading")),
+        paymentMethod: getPaymentMethodLabel(formData.get("paymentMethod")),
+        comment: cleanDisplayText(formData.get("orderComment")),
+        items: orderItems,
+        totalPrice: getCartTotal(),
+        totalWeight: getCartWeight()
+    };
+
     setCheckoutSubmitDisabled(true);
+
+    try {
+        const response = await fetch("/api/orders", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
+        const result = await response.json().catch(() => ({}));
+
+        if (!response.ok || !result.success) {
+            throw new Error(result.message || "Заказ не сохранился. Попробуйте еще раз.");
+        }
+
+        showCheckoutSuccess();
+        cart = [];
+        saveCart();
+        updateCartSummary();
+        renderProducts();
+        renderPopularProducts();
+        renderCart();
+        checkoutForm.reset();
+        if (checkoutPhoneInput) {
+            checkoutPhoneInput.value = formatRussianPhone(checkoutPhoneInput.value);
+        }
+
+        window.setTimeout(() => {
+            cartModal.classList.add("hidden");
+            showCartView();
+        }, 1800);
+    } catch (error) {
+        showCheckoutError(error.message || "Сервер недоступен. Проверьте подключение и попробуйте еще раз.");
+        setCheckoutSubmitDisabled(false);
+    }
 });
 
 cartModal.addEventListener("click", event => {

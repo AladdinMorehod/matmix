@@ -1356,6 +1356,19 @@ body {
     animation: checkoutSuccessIn 240ms ease-out;
 }
 
+.checkout-message.error {
+    display: block;
+    width: 100%;
+    margin-top: 6px;
+    padding: 11px 12px;
+    border: 1px solid rgba(90, 31, 40, 0.24);
+    border-radius: 6px;
+    background: rgba(90, 31, 40, 0.08);
+    color: var(--brand-burgundy);
+    font-weight: 700;
+    line-height: 1.35;
+}
+
 .checkout-success-icon {
     color: var(--primary);
     font-weight: 700;

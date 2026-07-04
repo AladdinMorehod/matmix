@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кабинет менеджера MatMix</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/manager.css">
+</head>
+<body>
+    <main class="manager-page">
+        <header class="manager-header">
+            <div>
+                <h1>Кабинет менеджера MatMix</h1>
+                <p>Заявки с сайта, контакты клиентов и статусы обработки.</p>
+            </div>
+            <a href="index.html">На сайт</a>
+        </header>
+
+        <section class="manager-toolbar" aria-label="Фильтры заявок">
+            <label>
+                <span>Статус</span>
+                <select id="statusFilter">
+                    <option value="">Все статусы</option>
+                </select>
+            </label>
+            <button id="refreshOrders" type="button">Обновить</button>
+        </section>
+
+        <p id="managerMessage" class="manager-message" aria-live="polite"></p>
+        <section id="ordersList" class="orders-list" aria-label="Список заявок"></section>
+    </main>
+
+    <script src="js/manager.js"></script>
+</body>
+</html>
