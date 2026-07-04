@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход | MatMix</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/manager.css">
+</head>
+<body>
+    <main class="login-page">
+        <section class="login-card">
+            <div class="login-brand">
+                <strong>MatMix</strong>
+                <span>Кабинет менеджера</span>
+            </div>
+
+            <form id="loginForm" class="login-form">
+                <label>
+                    <span>Логин</span>
+                    <input type="text" name="login" autocomplete="username" required>
+                </label>
+                <label>
+                    <span>Пароль</span>
+                    <input type="password" name="password" autocomplete="current-password" required>
+                </label>
+                <p id="loginMessage" class="manager-message" aria-live="polite"></p>
+                <button type="submit">Войти</button>
+            </form>
+        </section>
+    </main>
+
+    <script src="js/login.js"></script>
+</body>
+</html>

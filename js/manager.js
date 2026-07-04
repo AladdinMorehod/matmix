@@ -20,8 +20,12 @@ const ordersList = document.getElementById("ordersList");
 const statusFilter = document.getElementById("statusFilter");
 const refreshOrdersBtn = document.getElementById("refreshOrders");
 const managerMessage = document.getElementById("managerMessage");
+const managerUserName = document.getElementById("managerUserName");
+const managerUserRole = document.getElementById("managerUserRole");
+const logoutBtn = document.getElementById("logoutBtn");
 
 let orders = [];
+let currentUser = null;
 
 function escapeHtml(value) {
     return String(value ?? "")
@@ -58,6 +62,38 @@ function getTelegramUsername(value) {
 
 function setMessage(message = "") {
     managerMessage.textContent = message;
+}
+
+function getRoleLabel(role) {
+    const labels = {
+        admin: "Админ",
+        manager: "Менеджер"
+    };
+
+    return labels[role] || role || "";
+}
+
+async function checkAccess() {
+    setMessage("Проверка доступа...");
+    ordersList.innerHTML = "";
+
+    try {
+        const response = await fetch("/api/auth/me");
+        const result = await response.json().catch(() => ({}));
+
+        if (!response.ok || !result.success) {
+            window.location.href = "/login.html";
+            return false;
+        }
+
+        currentUser = result.user;
+        managerUserName.textContent = currentUser.name;
+        managerUserRole.textContent = getRoleLabel(currentUser.role);
+        return true;
+    } catch {
+        setMessage("Не удалось проверить доступ. Сервер недоступен.");
+        return false;
+    }
 }
 
 function renderStatusOptions(selectedStatus) {
@@ -217,6 +253,13 @@ statuses.forEach(status => {
 
 statusFilter.addEventListener("change", renderOrders);
 refreshOrdersBtn.addEventListener("click", loadOrders);
+logoutBtn.addEventListener("click", async () => {
+    try {
+        await fetch("/api/auth/logout", { method: "POST" });
+    } finally {
+        window.location.href = "/login.html";
+    }
+});
 ordersList.addEventListener("change", event => {
     const select = event.target.closest(".status-select");
     if (!select) return;
@@ -224,4 +267,8 @@ ordersList.addEventListener("change", event => {
     updateOrderStatus(select.dataset.id, select.value);
 });
 
-loadOrders();
+checkAccess().then(isAllowed => {
+    if (isAllowed) {
+        loadOrders();
+    }
+});

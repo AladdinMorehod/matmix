@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const bcrypt = require("bcryptjs");
 const sqlite3 = require("sqlite3").verbose();
 
 const databaseDir = path.join(__dirname, "database");
@@ -68,6 +69,32 @@ async function initDatabase() {
             updated_at TEXT
         )
     `);
+
+    await run(`
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            login TEXT UNIQUE NOT NULL,
+            password_hash TEXT NOT NULL,
+            role TEXT NOT NULL,
+            name TEXT NOT NULL,
+            created_at TEXT,
+            updated_at TEXT
+        )
+    `);
+
+    const admin = await get("SELECT id FROM users WHERE login = ?", ["admin"]);
+    if (!admin) {
+        const now = new Date().toISOString();
+        const passwordHash = await bcrypt.hash("admin123", 10);
+
+        await run(
+            `INSERT INTO users (login, password_hash, role, name, created_at, updated_at)
+             VALUES (?, ?, ?, ?, ?, ?)`,
+            ["admin", passwordHash, "admin", "Администратор", now, now]
+        );
+
+        console.warn("Default admin created: login admin / password admin123. Change password before production.");
+    }
 }
 
 module.exports = {

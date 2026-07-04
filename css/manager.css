@@ -52,9 +52,11 @@ body {
 }
 
 .manager-header a,
+.manager-user-panel button,
 .manager-toolbar button,
 .order-actions a,
-.max-disabled {
+.max-disabled,
+.login-form button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -70,6 +72,40 @@ body {
     font-size: 0.86rem;
     font-weight: 700;
     white-space: nowrap;
+}
+
+.manager-user-panel {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.manager-user-panel div {
+    display: grid;
+    gap: 3px;
+    min-width: 150px;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.74);
+}
+
+.manager-user-panel span {
+    color: var(--primary-dark);
+    font-size: 0.86rem;
+    font-weight: 800;
+}
+
+.manager-user-panel strong {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.manager-user-panel button {
+    background: var(--brand-burgundy);
 }
 
 .manager-toolbar {
@@ -267,4 +303,75 @@ body {
         display: block;
         overflow-x: auto;
     }
+}
+
+.login-page {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+}
+
+.login-card {
+    width: min(100%, 420px);
+    padding: 28px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    box-shadow: 0 18px 44px rgba(17, 21, 23, 0.12);
+}
+
+.login-brand {
+    display: grid;
+    gap: 6px;
+    margin-bottom: 22px;
+}
+
+.login-brand strong {
+    color: var(--brand-burgundy);
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.login-brand span {
+    color: var(--text-muted);
+    font-weight: 700;
+}
+
+.login-form {
+    display: grid;
+    gap: 14px;
+}
+
+.login-form label {
+    display: grid;
+    gap: 7px;
+}
+
+.login-form label span {
+    color: var(--primary-dark);
+    font-size: 0.86rem;
+    font-weight: 800;
+}
+
+.login-form input {
+    width: 100%;
+    min-height: 42px;
+    padding: 0 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface-soft);
+    color: var(--text);
+    font: inherit;
+}
+
+.login-form input:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(32, 87, 66, 0.14);
+}
+
+.login-form button {
+    min-height: 42px;
+    background: var(--brand-burgundy);
 }

@@ -1,5 +1,6 @@
 const express = require("express");
 const { all, get, run } = require("../database");
+const { requireRole } = require("../middleware/auth");
 
 const router = express.Router();
 
@@ -102,7 +103,7 @@ router.post("/", async (req, res) => {
     }
 });
 
-router.get("/", async (req, res) => {
+router.get("/", requireRole(["admin", "manager"]), async (req, res) => {
     try {
         const rows = await all("SELECT * FROM orders ORDER BY datetime(created_at) DESC, id DESC");
         res.json({ success: true, orders: rows.map(normalizeOrder) });
@@ -112,7 +113,7 @@ router.get("/", async (req, res) => {
     }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", requireRole(["admin", "manager"]), async (req, res) => {
     try {
         const row = await get("SELECT * FROM orders WHERE id = ?", [req.params.id]);
 
@@ -128,7 +129,7 @@ router.get("/:id", async (req, res) => {
     }
 });
 
-router.patch("/:id/status", async (req, res) => {
+router.patch("/:id/status", requireRole(["admin", "manager"]), async (req, res) => {
     try {
         const status = normalizeText(req.body.status);
 
