@@ -42,8 +42,10 @@
             <a href="index.html">Главная</a>
             <span>/</span>
             <a href="catalog.html">Каталог</a>
-            <span>/</span>
-            <span id="catalogBreadcrumbCurrent">Все товары</span>
+            <span id="catalogBreadcrumbCategorySeparator">/</span>
+            <button id="catalogBreadcrumbCategory" class="current" type="button">Все товары</button>
+            <span id="catalogBreadcrumbSubcategorySeparator" class="hidden">/</span>
+            <span id="catalogBreadcrumbSubcategory" class="current hidden"></span>
         </nav>
         <div class="catalog-top">
             <div class="catalog-heading">
@@ -62,6 +64,11 @@
                 </div>
             </div>
         </div>
+
+        <section class="catalog-featured" id="featuredCatalog" aria-labelledby="featuredCatalogTitle">
+            <h2 id="featuredCatalogTitle">Самое ходовое</h2>
+            <div class="grid" id="featuredCatalogGrid"></div>
+        </section>
 
         <div class="grid" id="productGrid"></div>
     </section>

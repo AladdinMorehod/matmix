@@ -37136,11 +37136,15 @@ const products = [
 ];
 
 const grid = document.getElementById("productGrid");
+const featuredCatalog = document.getElementById("featuredCatalog");
+const featuredCatalogGrid = document.getElementById("featuredCatalogGrid");
 const popularGrid = document.getElementById("popularGrid");
 const popularArrowLeft = document.querySelector(".popular-arrow-left");
 const popularArrowRight = document.querySelector(".popular-arrow-right");
 const categoryControls = document.getElementById("categoryControls");
-const catalogBreadcrumbCurrent = document.getElementById("catalogBreadcrumbCurrent");
+const catalogBreadcrumbCategory = document.getElementById("catalogBreadcrumbCategory");
+const catalogBreadcrumbSubcategory = document.getElementById("catalogBreadcrumbSubcategory");
+const catalogBreadcrumbSubcategorySeparator = document.getElementById("catalogBreadcrumbSubcategorySeparator");
 const copyManagerPhoneBtn = document.getElementById("copyManagerPhone");
 const managerPhoneAction = copyManagerPhoneBtn?.closest(".catalog-help-action");
 const cartBtn = document.getElementById("cartBtn");
@@ -37209,6 +37213,24 @@ const popularProductNames = [
     "Грунтовка Knauf Тифенгрунд 10 л",
     "Грунтовка Ceresit CT-17 PRO, 10л",
     "Блок D500 100х250х600 мм"
+];
+
+const featuredCatalogProductNames = [
+    "Штукатурка гипсовая Knauf Ротбанд 30 кг",
+    "Штукатурка гипсовая Knauf Гольдбанд 30 кг",
+    "Штукатурка гипсовая ВОЛМА Холст Сер. 30 кг",
+    "Штукатурка гипсовая ВОЛМА Слой Бел. 30 кг",
+    "Штукатурка гипсовая UNIS Теплон белая 30 кг",
+    "ГКЛ Knauf 2500х1200х9,5 мм",
+    "ГКЛ Knauf 2500х1200х12,5 мм",
+    "ГКЛВ Knauf 2500х1200х9,5 мм",
+    "ГКЛВ Knauf 2500х1200х12,5 мм",
+    "ГВЛ Knauf 2500х1200х10 мм",
+    "Профиль ПН Knauf 27х28 мм 3 м",
+    "Профиль ПС Knauf 60х27 мм 3 м",
+    "Профиль ПН Knauf 50х40 мм 3м",
+    "Профиль ПС Knauf 50х50 мм 3м",
+    "Подвес прямой Knauf"
 ];
 
 function loadCart() {
@@ -37573,18 +37595,69 @@ function getCategoryFilterGroups() {
     return groups;
 }
 
-function getActiveCategoryLabel(groups = getCategoryFilterGroups()) {
-    if (!activeCategoryPath) return "Все товары";
-
-    for (const group of groups) {
-        if (group.path === activeCategoryPath) return group.label;
-
-        const subcategory = group.subcategories.find(item => item.path === activeCategoryPath);
-        if (subcategory) return subcategory.label;
+function getActiveCategoryTrail(groups = getCategoryFilterGroups()) {
+    if (!activeCategoryPath) {
+        return {
+            category: "Все товары",
+            categoryPath: "",
+            subcategory: ""
+        };
     }
 
-    return "Все товары";
+    for (const group of groups) {
+        if (group.path === activeCategoryPath) {
+            return {
+                category: group.label,
+                categoryPath: group.path,
+                subcategory: ""
+            };
+        }
+
+        const subcategory = group.subcategories.find(item => item.path === activeCategoryPath);
+        if (subcategory) {
+            return {
+                category: group.label,
+                categoryPath: group.path,
+                subcategory: subcategory.label
+            };
+        }
+    }
+
+    return {
+        category: "Все товары",
+        categoryPath: "",
+        subcategory: ""
+    };
 }
+
+function updateCatalogBreadcrumbs(groups) {
+    if (!catalogBreadcrumbCategory) return;
+
+    const trail = getActiveCategoryTrail(groups);
+    catalogBreadcrumbCategory.textContent = trail.category;
+    catalogBreadcrumbCategory.dataset.path = trail.categoryPath;
+    catalogBreadcrumbCategory.classList.toggle("current", !trail.subcategory);
+    catalogBreadcrumbCategory.setAttribute("aria-disabled", String(!trail.subcategory || !trail.categoryPath));
+
+    catalogBreadcrumbSubcategorySeparator?.classList.toggle("hidden", !trail.subcategory);
+
+    if (catalogBreadcrumbSubcategory) {
+        catalogBreadcrumbSubcategory.textContent = trail.subcategory;
+        catalogBreadcrumbSubcategory.classList.toggle("hidden", !trail.subcategory);
+    }
+}
+
+catalogBreadcrumbCategory?.addEventListener("click", () => {
+    if (catalogBreadcrumbCategory.getAttribute("aria-disabled") === "true") return;
+
+    const path = catalogBreadcrumbCategory.dataset.path;
+    if (!path) return;
+
+    activeCategoryPath = path;
+    categoryDropdownOpen = false;
+    renderCategoryControls();
+    renderProducts();
+});
 
 function productMatchesCategory(product) {
     if (!activeCategoryPath) return true;
@@ -37682,9 +37755,44 @@ function showCheckoutForm() {
     checkoutForm?.querySelector("input")?.focus();
 }
 
+function isCatalogDefaultView() {
+    return Boolean(grid?.closest(".catalog-page")) && !activeCategoryPath && !searchQuery.trim();
+}
+
+function getProductsByNames(names) {
+    return names
+        .map(name => {
+            const id = products.findIndex(product => product.name === name);
+            return id === -1 ? null : { product: products[id], id };
+        })
+        .filter(Boolean);
+}
+
+function renderFeaturedCatalogProducts() {
+    if (!featuredCatalog || !featuredCatalogGrid) return;
+
+    const shouldShowFeatured = isCatalogDefaultView();
+    featuredCatalog.classList.toggle("hidden", !shouldShowFeatured);
+    featuredCatalogGrid.innerHTML = "";
+
+    if (!shouldShowFeatured) return;
+
+    getProductsByNames(featuredCatalogProductNames).forEach(({ product, id }) => {
+        featuredCatalogGrid.appendChild(createProductCard(product, id));
+    });
+}
+
 function renderProducts() {
     if (!grid) return;
     grid.innerHTML = "";
+    renderFeaturedCatalogProducts();
+
+    if (isCatalogDefaultView()) {
+        grid.classList.add("hidden");
+        return;
+    }
+
+    grid.classList.remove("hidden");
 
     const categoryProducts = products
         .map((product, id) => ({ product, id }))
@@ -37786,9 +37894,7 @@ function renderCategoryControls() {
     categoryControls.innerHTML = "";
     const groups = getCategoryFilterGroups();
 
-    if (catalogBreadcrumbCurrent) {
-        catalogBreadcrumbCurrent.textContent = getActiveCategoryLabel(groups);
-    }
+    updateCatalogBreadcrumbs(groups);
 
     const trigger = document.createElement("button");
     trigger.type = "button";
@@ -37906,6 +38012,7 @@ function handleQtyClick(event) {
 }
 
 grid?.addEventListener("click", handleQtyClick);
+featuredCatalogGrid?.addEventListener("click", handleQtyClick);
 popularGrid?.addEventListener("click", handleQtyClick);
 cartItemsEl.addEventListener("click", handleQtyClick);
 
@@ -38178,13 +38285,8 @@ categoryControls?.addEventListener("click", event => {
 
     const trigger = event.target.closest(".category-menu-trigger");
     if (trigger) {
-        const shouldResetProducts = Boolean(activeCategoryPath);
         categoryDropdownOpen = !categoryDropdownOpen;
-        activeCategoryPath = "";
         renderCategoryControls();
-        if (shouldResetProducts) {
-            renderProducts();
-        }
         return;
     }
 
