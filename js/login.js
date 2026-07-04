@@ -7,7 +7,7 @@ function setLoginMessage(message = "") {
 
 async function redirectIfAuthorized() {
     try {
-        const response = await fetch("/api/auth/me");
+        const response = await fetch("/api/auth/me", { credentials: "include" });
         const result = await response.json().catch(() => ({}));
 
         if (response.ok && result.success) {
@@ -29,6 +29,7 @@ loginForm.addEventListener("submit", async event => {
     try {
         const response = await fetch("/api/auth/login", {
             method: "POST",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json"
             },

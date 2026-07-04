@@ -70,6 +70,10 @@ async function initDatabase() {
         )
     `);
 
+    await ensureColumn("orders", "manager_id", "INTEGER");
+    await ensureColumn("orders", "taken_at", "TEXT");
+    await ensureColumn("orders", "closed_at", "TEXT");
+
     await run(`
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -94,6 +98,15 @@ async function initDatabase() {
         );
 
         console.warn("Default admin created: login admin / password admin123. Change password before production.");
+    }
+}
+
+async function ensureColumn(tableName, columnName, columnDefinition) {
+    const columns = await all(`PRAGMA table_info(${tableName})`);
+    const exists = columns.some(column => column.name === columnName);
+
+    if (!exists) {
+        await run(`ALTER TABLE ${tableName} ADD COLUMN ${columnName} ${columnDefinition}`);
     }
 }
 

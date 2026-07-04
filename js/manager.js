@@ -78,7 +78,7 @@ async function checkAccess() {
     ordersList.innerHTML = "";
 
     try {
-        const response = await fetch("/api/auth/me");
+        const response = await fetch("/api/auth/me", { credentials: "include" });
         const result = await response.json().catch(() => ({}));
 
         if (!response.ok || !result.success) {
@@ -145,6 +145,77 @@ function renderContactActions(order) {
     `;
 }
 
+function isClosedOrder(order) {
+    return ["Завершена", "Отменена"].includes(order.status);
+}
+
+function isOwnOrder(order) {
+    return currentUser && Number(order.managerId) === Number(currentUser.id);
+}
+
+function canReleaseOrder(order) {
+    if (!currentUser || !order.managerId || isClosedOrder(order)) return false;
+    return currentUser.role === "admin" || isOwnOrder(order);
+}
+
+function canTakeOrder(order) {
+    return currentUser
+        && !order.managerId
+        && !isClosedOrder(order)
+        && ["admin", "manager"].includes(currentUser.role);
+}
+
+function canChangeOrderStatus(order) {
+    return Boolean(order.managerId) && isOwnOrder(order) && !isClosedOrder(order);
+}
+
+function renderAssignment(order) {
+    if (!order.managerId) {
+        return `
+            <section class="assignment assignment-free">
+                <div>
+                    <span class="assignment-label">Ответственный</span>
+                    <strong><i></i> Свободна</strong>
+                </div>
+                ${canTakeOrder(order) ? `<button class="assignment-action" data-action="take" data-id="${order.id}" type="button">Взять в работу</button>` : ""}
+            </section>
+        `;
+    }
+
+    const lockText = isOwnOrder(order) || currentUser?.role === "admin" ? "" : `<span class="assignment-lock">В работе у: ${escapeHtml(order.managerName || "Менеджер")}</span>`;
+
+    return `
+        <section class="assignment assignment-taken">
+            <div>
+                <span class="assignment-label">Ответственный</span>
+                <strong>${escapeHtml(order.managerName || "Менеджер")}</strong>
+                <small>Принята: ${escapeHtml(formatDate(order.takenAt))}</small>
+                ${lockText}
+            </div>
+        </section>
+    `;
+}
+
+function renderOrderControls(order) {
+    const statusControl = canChangeOrderStatus(order)
+        ? `
+            <label class="order-field status-control">
+                <span>Изменить статус</span>
+                <select class="status-select" data-id="${order.id}">
+                    ${renderStatusOptions(order.status)}
+                </select>
+            </label>
+        `
+        : "";
+    const releaseButton = canReleaseOrder(order)
+        ? `<button class="assignment-action secondary" data-action="release" data-id="${order.id}" type="button">Освободить</button>`
+        : "";
+
+    if (!statusControl && !releaseButton) return "";
+
+    return `<div class="order-controls">${statusControl}${releaseButton}</div>`;
+}
+
 function renderOrders() {
     const selectedStatus = statusFilter.value;
     const visibleOrders = selectedStatus
@@ -163,7 +234,10 @@ function renderOrders() {
                     <strong>Заказ #${order.id}</strong>
                     <span>${escapeHtml(formatDate(order.createdAt))}</span>
                 </div>
-                <span class="status-badge ${statusClassMap[order.status] || "status-new"}">${escapeHtml(order.status)}</span>
+                <div class="order-header-side">
+                    <span class="status-badge ${statusClassMap[order.status] || "status-new"}">${escapeHtml(order.status)}</span>
+                    ${renderAssignment(order)}
+                </div>
             </header>
 
             <div class="order-grid">
@@ -185,22 +259,20 @@ function renderOrders() {
                     <span>Вес: ${formatWeight(order.totalWeight)}</span>
                 </div>
                 ${renderContactActions(order)}
-                <label class="order-field">
-                    <span>Изменить статус</span>
-                    <select class="status-select" data-id="${order.id}">
-                        ${renderStatusOptions(order.status)}
-                    </select>
-                </label>
+                ${renderOrderControls(order)}
             </footer>
         </article>
     `).join("");
 }
 
-async function loadOrders() {
-    setMessage("Загружаем заявки...");
+async function loadOrders(options = {}) {
+    const { preserveMessage = false } = options;
+    if (!preserveMessage) {
+        setMessage("Загружаем заявки...");
+    }
 
     try {
-        const response = await fetch("/api/orders");
+        const response = await fetch("/api/orders", { credentials: "include" });
         const result = await response.json().catch(() => ({}));
 
         if (!response.ok || !result.success) {
@@ -208,7 +280,9 @@ async function loadOrders() {
         }
 
         orders = result.orders || [];
-        setMessage("");
+        if (!preserveMessage) {
+            setMessage("");
+        }
         renderOrders();
     } catch (error) {
         ordersList.innerHTML = "";
@@ -220,6 +294,7 @@ async function updateOrderStatus(id, status) {
     try {
         const response = await fetch(`/api/orders/${id}/status`, {
             method: "PATCH",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json"
             },
@@ -244,6 +319,31 @@ async function updateOrderStatus(id, status) {
     }
 }
 
+async function runOrderAction(id, action) {
+    const actionMessages = {
+        take: "Заявка взята в работу.",
+        release: "Заявка освобождена."
+    };
+
+    try {
+        const response = await fetch(`/api/orders/${id}/${action}`, {
+            method: "POST",
+            credentials: "include"
+        });
+        const result = await response.json().catch(() => ({}));
+
+        if (!response.ok || !result.success) {
+            throw new Error(result.message || "Действие не выполнено.");
+        }
+
+        await loadOrders({ preserveMessage: true });
+        setMessage(actionMessages[action] || "Заявка обновлена.");
+    } catch (error) {
+        await loadOrders({ preserveMessage: true });
+        setMessage(error.message || "Не удалось обновить заявку.");
+    }
+}
+
 statuses.forEach(status => {
     const option = document.createElement("option");
     option.value = status;
@@ -255,7 +355,7 @@ statusFilter.addEventListener("change", renderOrders);
 refreshOrdersBtn.addEventListener("click", loadOrders);
 logoutBtn.addEventListener("click", async () => {
     try {
-        await fetch("/api/auth/logout", { method: "POST" });
+        await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
     } finally {
         window.location.href = "/login.html";
     }
@@ -265,6 +365,13 @@ ordersList.addEventListener("change", event => {
     if (!select) return;
 
     updateOrderStatus(select.dataset.id, select.value);
+});
+
+ordersList.addEventListener("click", event => {
+    const button = event.target.closest(".assignment-action");
+    if (!button) return;
+
+    runOrderAction(button.dataset.id, button.dataset.action);
 });
 
 checkAccess().then(isAllowed => {
