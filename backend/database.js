@@ -75,6 +75,18 @@ async function initDatabase() {
     await ensureColumn("orders", "closed_at", "TEXT");
 
     await run(`
+        CREATE TABLE IF NOT EXISTS order_events (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            order_id INTEGER NOT NULL,
+            user_id INTEGER,
+            user_name TEXT,
+            event_type TEXT NOT NULL,
+            message TEXT NOT NULL,
+            created_at TEXT
+        )
+    `);
+
+    await run(`
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             login TEXT UNIQUE NOT NULL,

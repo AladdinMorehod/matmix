@@ -26,6 +26,16 @@ const logoutBtn = document.getElementById("logoutBtn");
 
 let orders = [];
 let currentUser = null;
+const expandedHistoryIds = new Set();
+const orderEvents = new Map();
+
+const eventTypeLabels = {
+    created: "Создание",
+    taken: "Взята",
+    released: "Освобождена",
+    status_changed: "Статус",
+    note: "Заметка"
+};
 
 function escapeHtml(value) {
     return String(value ?? "")
@@ -169,6 +179,13 @@ function canChangeOrderStatus(order) {
     return Boolean(order.managerId) && isOwnOrder(order) && !isClosedOrder(order);
 }
 
+function canAddNote(order) {
+    if (!currentUser) return false;
+    if (currentUser.role === "admin") return true;
+    if (!order.managerId) return true;
+    return isOwnOrder(order);
+}
+
 function renderAssignment(order) {
     if (!order.managerId) {
         return `
@@ -216,6 +233,56 @@ function renderOrderControls(order) {
     return `<div class="order-controls">${statusControl}${releaseButton}</div>`;
 }
 
+function renderEventList(events) {
+    if (!events) {
+        return `<p class="history-empty">История загружается...</p>`;
+    }
+
+    if (!events.length) {
+        return `<p class="history-empty">История пока пустая.</p>`;
+    }
+
+    return `
+        <div class="history-timeline">
+            ${events.map(eventItem => `
+                <article class="history-event ${eventItem.eventType === "note" ? "history-event-note" : ""}">
+                    <div class="history-event-meta">
+                        <span class="history-type">${escapeHtml(eventTypeLabels[eventItem.eventType] || eventItem.eventType)}</span>
+                        <strong>${escapeHtml(eventItem.userName || "Система")}</strong>
+                        <time>${escapeHtml(formatDate(eventItem.createdAt))}</time>
+                    </div>
+                    <p>${escapeHtml(eventItem.message)}</p>
+                </article>
+            `).join("")}
+        </div>
+    `;
+}
+
+function renderHistory(order) {
+    const orderId = String(order.id);
+    const isExpanded = expandedHistoryIds.has(orderId);
+    const events = orderEvents.get(orderId);
+
+    return `
+        <section class="order-history">
+            <button class="history-toggle" data-id="${order.id}" type="button">
+                ${isExpanded ? "Скрыть историю" : "История"}
+            </button>
+            ${isExpanded ? `
+                <div class="history-panel">
+                    ${renderEventList(events)}
+                    ${canAddNote(order) ? `
+                        <div class="note-form">
+                            <textarea class="note-input" data-id="${order.id}" maxlength="1000" rows="3" placeholder="Внутренняя заметка"></textarea>
+                            <button class="note-submit" data-id="${order.id}" type="button">Сохранить заметку</button>
+                        </div>
+                    ` : `<p class="history-empty">Заметки доступны только ответственному менеджеру или администратору.</p>`}
+                </div>
+            ` : ""}
+        </section>
+    `;
+}
+
 function renderOrders() {
     const selectedStatus = statusFilter.value;
     const visibleOrders = selectedStatus
@@ -252,6 +319,7 @@ function renderOrders() {
             </div>
 
             ${renderItems(order.items)}
+            ${renderHistory(order)}
 
             <footer class="order-card-footer">
                 <div class="order-total">
@@ -290,6 +358,64 @@ async function loadOrders(options = {}) {
     }
 }
 
+async function loadOrderEvents(id) {
+    const orderId = String(id);
+
+    try {
+        const response = await fetch(`/api/orders/${id}/events`, { credentials: "include" });
+        const result = await response.json().catch(() => ({}));
+
+        if (!response.ok || !result.success) {
+            throw new Error(result.message || "История заявки не загрузилась.");
+        }
+
+        orderEvents.set(orderId, result.events || []);
+        renderOrders();
+    } catch (error) {
+        orderEvents.set(orderId, []);
+        setMessage(error.message || "Не удалось загрузить историю заявки.");
+        renderOrders();
+    }
+}
+
+async function refreshExpandedHistory(id) {
+    const orderId = String(id);
+    if (expandedHistoryIds.has(orderId)) {
+        orderEvents.delete(orderId);
+        await loadOrderEvents(orderId);
+    }
+}
+
+async function addOrderNote(id, message) {
+    const cleanMessage = String(message || "").trim();
+
+    if (cleanMessage.length < 2) {
+        setMessage("Заметка должна быть не короче 2 символов.");
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/orders/${id}/notes`, {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ message: cleanMessage })
+        });
+        const result = await response.json().catch(() => ({}));
+
+        if (!response.ok || !result.success) {
+            throw new Error(result.message || "Заметка не сохранилась.");
+        }
+
+        setMessage("Заметка сохранена.");
+        await loadOrderEvents(id);
+    } catch (error) {
+        setMessage(error.message || "Не удалось сохранить заметку.");
+    }
+}
+
 async function updateOrderStatus(id, status) {
     try {
         const response = await fetch(`/api/orders/${id}/status`, {
@@ -313,6 +439,7 @@ async function updateOrderStatus(id, status) {
 
         setMessage("Статус обновлен.");
         renderOrders();
+        await refreshExpandedHistory(id);
     } catch (error) {
         setMessage(error.message || "Не удалось обновить статус.");
         renderOrders();
@@ -337,6 +464,7 @@ async function runOrderAction(id, action) {
         }
 
         await loadOrders({ preserveMessage: true });
+        await refreshExpandedHistory(id);
         setMessage(actionMessages[action] || "Заявка обновлена.");
     } catch (error) {
         await loadOrders({ preserveMessage: true });
@@ -368,6 +496,35 @@ ordersList.addEventListener("change", event => {
 });
 
 ordersList.addEventListener("click", event => {
+    const historyButton = event.target.closest(".history-toggle");
+    if (historyButton) {
+        const orderId = String(historyButton.dataset.id);
+
+        if (expandedHistoryIds.has(orderId)) {
+            expandedHistoryIds.delete(orderId);
+            renderOrders();
+            return;
+        }
+
+        expandedHistoryIds.add(orderId);
+        renderOrders();
+
+        if (!orderEvents.has(orderId)) {
+            loadOrderEvents(orderId);
+        }
+
+        return;
+    }
+
+    const noteButton = event.target.closest(".note-submit");
+    if (noteButton) {
+        const orderId = String(noteButton.dataset.id);
+        const noteInput = noteButton.closest(".order-history")?.querySelector(".note-input");
+
+        addOrderNote(orderId, noteInput?.value || "");
+        return;
+    }
+
     const button = event.target.closest(".assignment-action");
     if (!button) return;
 

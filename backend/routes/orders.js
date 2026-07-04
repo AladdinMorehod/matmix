@@ -55,6 +55,32 @@ function isClosedStatus(status) {
     return ["Завершена", "Отменена"].includes(status);
 }
 
+async function createOrderEvent({ orderId, userId = null, userName = "Система", eventType, message }) {
+    await run(
+        `INSERT INTO order_events (order_id, user_id, user_name, event_type, message, created_at)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+        [orderId, userId, userName, eventType, message, new Date().toISOString()]
+    );
+}
+
+function normalizeOrderEvent(row) {
+    return {
+        id: row.id,
+        orderId: row.order_id,
+        userId: row.user_id || null,
+        userName: row.user_name || null,
+        eventType: row.event_type,
+        message: row.message,
+        createdAt: row.created_at
+    };
+}
+
+function canAddOrderNote(user, order) {
+    if (user.role === "admin") return true;
+    if (!order.manager_id) return true;
+    return Number(order.manager_id) === Number(user.id);
+}
+
 router.post("/", async (req, res) => {
     try {
         const customerName = normalizeText(req.body.customerName);
@@ -112,6 +138,13 @@ router.post("/", async (req, res) => {
             ]
         );
 
+        await createOrderEvent({
+            orderId: result.id,
+            userName: "Клиент",
+            eventType: "created",
+            message: "Заявка создана клиентом"
+        });
+
         res.status(201).json({ success: true, id: result.id });
     } catch (error) {
         console.error("Order create error:", error);
@@ -131,6 +164,66 @@ router.get("/", requireRole(["admin", "manager"]), async (req, res) => {
     } catch (error) {
         console.error("Orders list error:", error);
         res.status(500).json({ success: false, message: "Не удалось загрузить заявки." });
+    }
+});
+
+router.get("/:id/events", requireRole(["admin", "manager"]), async (req, res) => {
+    try {
+        const order = await get("SELECT id FROM orders WHERE id = ?", [req.params.id]);
+
+        if (!order) {
+            res.status(404).json({ success: false, message: "Заявка не найдена." });
+            return;
+        }
+
+        const rows = await all(
+            `SELECT id, order_id, user_id, user_name, event_type, message, created_at
+             FROM order_events
+             WHERE order_id = ?
+             ORDER BY datetime(created_at) ASC, id ASC`,
+            [req.params.id]
+        );
+
+        res.json({ success: true, events: rows.map(normalizeOrderEvent) });
+    } catch (error) {
+        console.error("Order events read error:", error);
+        res.status(500).json({ success: false, message: "Не удалось загрузить историю заявки." });
+    }
+});
+
+router.post("/:id/notes", requireRole(["admin", "manager"]), async (req, res) => {
+    try {
+        const message = normalizeText(req.body.message);
+
+        if (message.length < 2 || message.length > 1000) {
+            res.status(400).json({ success: false, message: "Заметка должна быть от 2 до 1000 символов." });
+            return;
+        }
+
+        const order = await get("SELECT id, manager_id, status FROM orders WHERE id = ?", [req.params.id]);
+
+        if (!order) {
+            res.status(404).json({ success: false, message: "Заявка не найдена." });
+            return;
+        }
+
+        if (!canAddOrderNote(req.session.user, order)) {
+            res.status(403).json({ success: false, message: "Нельзя добавить заметку к чужой заявке." });
+            return;
+        }
+
+        await createOrderEvent({
+            orderId: req.params.id,
+            userId: req.session.user.id,
+            userName: req.session.user.name,
+            eventType: "note",
+            message
+        });
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error("Order note create error:", error);
+        res.status(500).json({ success: false, message: "Не удалось сохранить заметку." });
     }
 });
 
@@ -187,6 +280,14 @@ router.post("/:id/take", requireRole(["admin", "manager"]), async (req, res) => 
             return;
         }
 
+        await createOrderEvent({
+            orderId: req.params.id,
+            userId: req.session.user.id,
+            userName: req.session.user.name,
+            eventType: "taken",
+            message: "Заявка взята в работу"
+        });
+
         res.json({ success: true });
     } catch (error) {
         console.error("Order take error:", error);
@@ -219,6 +320,14 @@ router.post("/:id/release", requireRole(["admin", "manager"]), async (req, res) 
              WHERE id = ?`,
             ["Новая", new Date().toISOString(), req.params.id]
         );
+
+        await createOrderEvent({
+            orderId: req.params.id,
+            userId: req.session.user.id,
+            userName: req.session.user.name,
+            eventType: "released",
+            message: "Заявка освобождена"
+        });
 
         res.json({ success: true });
     } catch (error) {
@@ -266,6 +375,16 @@ router.patch("/:id/status", requireRole(["admin", "manager"]), async (req, res) 
         if (!result.changes) {
             res.status(404).json({ success: false, message: "Заявка не найдена." });
             return;
+        }
+
+        if (order.status !== status) {
+            await createOrderEvent({
+                orderId: req.params.id,
+                userId: req.session.user.id,
+                userName: req.session.user.name,
+                eventType: "status_changed",
+                message: `Статус изменен: ${order.status} → ${status}`
+            });
         }
 
         res.json({ success: true });
