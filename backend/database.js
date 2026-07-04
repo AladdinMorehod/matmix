@@ -77,6 +77,9 @@ async function initDatabase() {
     await ensureColumn("orders", "preferred_contact_method", "TEXT");
     await ensureColumn("orders", "preferred_contact_value", "TEXT");
     await ensureColumn("orders", "client_id", "INTEGER");
+    await ensureColumn("orders", "order_number", "TEXT");
+    await backfillOrderNumbers();
+    await run("CREATE UNIQUE INDEX IF NOT EXISTS idx_orders_order_number ON orders(order_number) WHERE order_number IS NOT NULL");
 
     await run(`
         CREATE TABLE IF NOT EXISTS clients (
@@ -145,10 +148,29 @@ async function ensureColumn(tableName, columnName, columnDefinition) {
     }
 }
 
+function getOrderNumber(id, createdAt) {
+    const date = createdAt ? new Date(createdAt) : new Date();
+    const year = Number.isNaN(date.getFullYear()) ? new Date().getFullYear() : date.getFullYear();
+
+    return `MM-${year}-${String(id).padStart(6, "0")}`;
+}
+
+async function backfillOrderNumbers() {
+    const rows = await all("SELECT id, created_at FROM orders WHERE order_number IS NULL OR order_number = '' ORDER BY id ASC");
+
+    for (const row of rows) {
+        await run(
+            "UPDATE orders SET order_number = ? WHERE id = ? AND (order_number IS NULL OR order_number = '')",
+            [getOrderNumber(row.id, row.created_at), row.id]
+        );
+    }
+}
+
 module.exports = {
     db,
     run,
     get,
     all,
-    initDatabase
+    initDatabase,
+    getOrderNumber
 };

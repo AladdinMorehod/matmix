@@ -51,6 +51,8 @@ const expandedHistoryIds = new Set();
 const orderEvents = new Map();
 const expandedClientOrderIds = new Set();
 const clientOrders = new Map();
+const activeOrderTabs = new Map();
+let expandedDeletedOrderId = null;
 
 const eventTypeLabels = {
     created: "Создание",
@@ -83,6 +85,14 @@ function formatDate(value) {
         dateStyle: "short",
         timeStyle: "short"
     }).format(new Date(value));
+}
+
+function getOrderNumber(order) {
+    return order?.orderNumber || `№${order?.id || ""}`;
+}
+
+function getOrderTitle(order) {
+    return `Заказ ${getOrderNumber(order)}`;
 }
 
 function cleanPhoneForLink(phone) {
@@ -472,6 +482,157 @@ function renderOrderClientBlock(order) {
     `;
 }
 
+function getOrderTab(order) {
+    return activeOrderTabs.get(String(order.id)) || "overview";
+}
+
+function renderOrderTabs(order) {
+    const activeTab = getOrderTab(order);
+    const tabs = [
+        { id: "overview", label: "Обзор" },
+        { id: "client", label: "Клиент" },
+        { id: "history", label: "История" },
+        { id: "documents", label: "Документы" }
+    ];
+
+    return `
+        <nav class="order-tabs" aria-label="Разделы заявки">
+            ${tabs.map(tab => `
+                <button class="${activeTab === tab.id ? "active" : ""}" data-order-id="${order.id}" data-tab="${tab.id}" type="button">
+                    ${escapeHtml(tab.label)}
+                </button>
+            `).join("")}
+        </nav>
+    `;
+}
+
+function renderOverviewTab(order) {
+    return `
+        <div class="order-sections">
+            <section class="order-section">
+                <h2>Доставка и оплата</h2>
+                ${renderInfoRow("Адрес", order.address || "Не указан")}
+                ${renderInfoRow("Разгрузка", order.unloading || "Нет")}
+                ${renderInfoRow("Оплата", order.paymentMethod || "Не указана")}
+                ${order.comment ? renderInfoRow("Комментарий", order.comment) : ""}
+            </section>
+
+            <section class="order-section order-section-wide">
+                <h2>Заказ</h2>
+                ${renderItems(order.items)}
+                ${renderOrderSummary(order)}
+            </section>
+        </div>
+
+        <footer class="order-card-footer">
+            ${renderContactActions(order)}
+            ${renderOrderControls(order)}
+        </footer>
+    `;
+}
+
+function renderClientTab(order) {
+    return `
+        <section class="order-section order-section-wide">
+            <h2>Клиент</h2>
+            ${renderInfoRow("Имя", order.customerName)}
+            ${renderInfoRow("Телефон", order.phone)}
+            ${renderInfoRow("Предпочтительный канал", getPreferredContactText(order))}
+            ${order.clientId ? `
+                <div class="client-mini">
+                    <div>
+                        <span>Клиент в базе</span>
+                        <strong>${escapeHtml(order.clientOrdersCount || 1)} заказ(ов) · ${formatMoney(order.clientTotalSpent || order.totalPrice)}</strong>
+                    </div>
+                    <button class="open-client" data-client-id="${order.clientId}" type="button">История клиента</button>
+                </div>
+            ` : ""}
+        </section>
+    `;
+}
+
+function renderOrderTabContent(order) {
+    const activeTab = getOrderTab(order);
+
+    if (activeTab === "client") {
+        return renderClientTab(order);
+    }
+
+    if (activeTab === "history") {
+        return `<section class="order-section order-section-wide"><h2>История</h2><p class="history-empty">История будет добавлена следующим этапом.</p></section>`;
+    }
+
+    if (activeTab === "documents") {
+        return `<section class="order-section order-section-wide"><h2>Документы</h2><p class="history-empty">Документы будут добавлены позже.</p></section>`;
+    }
+
+    return renderOverviewTab(order);
+}
+
+function renderDeletedOrder(order) {
+    const isExpanded = String(order.id) === String(expandedDeletedOrderId);
+
+    return `
+        <article class="order-card order-card-deleted deleted-order-row ${isExpanded ? "expanded" : ""}" data-id="${order.id}">
+            <header class="deleted-order-header" data-id="${order.id}" tabindex="0">
+                <div class="order-title">
+                    <strong>${escapeHtml(getOrderTitle(order))}</strong>
+                    <span>Создан: ${escapeHtml(formatDate(order.createdAt))}</span>
+                </div>
+                <div class="deleted-order-meta">
+                    <span class="status-badge status-deleted">Удалена</span>
+                    <span class="deleted-date">Удалена: ${escapeHtml(formatDate(order.deletedAt))}</span>
+                    ${canRestoreOrder(order) ? `<button class="restore-order" data-id="${order.id}" type="button">Восстановить</button>` : ""}
+                </div>
+            </header>
+
+            ${isExpanded ? `
+                <div class="deleted-order-details">
+                    <section class="order-section">
+                        <h2>Клиент</h2>
+                        ${renderInfoRow("Имя", order.customerName)}
+                        ${renderInfoRow("Телефон", order.phone)}
+                        ${renderInfoRow("Предпочтительный канал", getPreferredContactText(order))}
+                    </section>
+                    <section class="order-section">
+                        <h2>Доставка и оплата</h2>
+                        ${renderInfoRow("Адрес", order.address || "Не указан")}
+                        ${renderInfoRow("Разгрузка", order.unloading || "Нет")}
+                        ${renderInfoRow("Оплата", order.paymentMethod || "Не указана")}
+                    </section>
+                    <section class="order-section order-section-wide">
+                        <h2>Заказ</h2>
+                        ${renderItems(order.items)}
+                        ${renderOrderSummary(order)}
+                    </section>
+                </div>
+            ` : ""}
+        </article>
+    `;
+}
+
+function renderActiveOrder(order) {
+    return `
+        <article class="order-card" data-id="${order.id}">
+            <header class="order-card-header">
+                <div class="order-title">
+                    <strong>${escapeHtml(getOrderTitle(order))}</strong>
+                    <span>${escapeHtml(formatDate(order.createdAt))}</span>
+                </div>
+                <div class="order-header-side">
+                    <span class="status-badge ${statusClassMap[order.status] || "status-new"}">${escapeHtml(order.status)}</span>
+                    ${renderAssignment(order)}
+                </div>
+            </header>
+
+            ${renderOrderTabs(order)}
+            <div class="order-tab-panel">
+                ${renderOrderTabContent(order)}
+            </div>
+        </article>
+    `;
+}
+
 function updateStats() {
     if (ordersTotalCount) ordersTotalCount.textContent = regularOrderStats.total;
     if (ordersNewCount) ordersNewCount.textContent = regularOrderStats.new;
@@ -519,53 +680,9 @@ function renderOrders() {
         return;
     }
 
-    ordersList.innerHTML = visibleOrders.map(order => `
-        <article class="order-card ${order.deletedAt ? "order-card-deleted" : ""}" data-id="${order.id}">
-            <header class="order-card-header">
-                <div class="order-title">
-                    <strong>Заказ №${order.id}</strong>
-                    <span>${escapeHtml(formatDate(order.createdAt))}</span>
-                </div>
-                <div class="order-header-side">
-                    ${order.deletedAt
-                        ? `<span class="status-badge status-deleted">Удалена</span>`
-                        : `<span class="status-badge ${statusClassMap[order.status] || "status-new"}">${escapeHtml(order.status)}</span>`}
-                    ${order.deletedAt ? `<span class="deleted-date">Удалена: ${escapeHtml(formatDate(order.deletedAt))}</span>` : ""}
-                    ${order.deletedAt ? "" : renderAssignment(order)}
-                </div>
-            </header>
-
-            <div class="order-sections">
-                <section class="order-section">
-                    <h2>Клиент</h2>
-                    ${renderInfoRow("Имя", order.customerName)}
-                    ${renderInfoRow("Телефон", order.phone)}
-                    ${renderInfoRow("Предпочтительный канал", getPreferredContactText(order))}
-                    ${renderOrderClientBlock(order)}
-                </section>
-
-                <section class="order-section">
-                    <h2>Доставка и оплата</h2>
-                    ${renderInfoRow("Адрес", order.address || "Не указан")}
-                    ${renderInfoRow("Разгрузка", order.unloading || "Нет")}
-                    ${renderInfoRow("Оплата", order.paymentMethod || "Не указана")}
-                    ${order.comment ? renderInfoRow("Комментарий", order.comment) : ""}
-                </section>
-
-                <section class="order-section order-section-wide">
-                    <h2>Заказ</h2>
-                    ${renderItems(order.items)}
-                    ${renderOrderSummary(order)}
-                </section>
-            </div>
-            ${order.deletedAt ? "" : renderHistory(order)}
-
-            ${order.deletedAt && !canRestoreOrder(order) ? "" : `<footer class="order-card-footer">
-                ${order.deletedAt ? "" : renderContactActions(order)}
-                ${renderOrderControls(order)}
-            </footer>`}
-        </article>
-    `).join("");
+    ordersList.innerHTML = visibleOrders
+        .map(order => order.deletedAt ? renderDeletedOrder(order) : renderActiveOrder(order))
+        .join("");
 }
 
 async function loadOrders(options = {}) {
@@ -659,7 +776,7 @@ function renderClientOrders(clientId) {
         <div class="client-orders-list">
             ${ordersForClient.map(order => `
                 <article class="client-order-row">
-                    <strong>Заказ №${order.id}</strong>
+                    <strong>${escapeHtml(getOrderTitle(order))}</strong>
                     <span>${escapeHtml(formatDate(order.createdAt))}</span>
                     <span class="status-badge ${statusClassMap[order.status] || "status-new"}">${escapeHtml(order.status)}</span>
                     <span>${formatMoney(order.totalPrice)}</span>
@@ -883,9 +1000,9 @@ async function deleteOrder(orderId) {
     }
 
     const order = orders.find(item => String(item.id) === String(orderId));
-    const orderNumber = order?.id || orderId;
+    const orderNumber = order ? getOrderNumber(order) : `№${orderId}`;
 
-    if (!window.confirm(`Удалить заявку №${orderNumber}? Она будет скрыта из CRM, но останется в базе.`)) {
+    if (!window.confirm(`Удалить заявку ${orderNumber}? Она будет скрыта из CRM, но останется в базе.`)) {
         return;
     }
 
@@ -902,6 +1019,7 @@ async function deleteOrder(orderId) {
 
         expandedHistoryIds.delete(String(orderId));
         orderEvents.delete(String(orderId));
+        activeOrderTabs.delete(String(orderId));
         await loadOrders({ preserveMessage: true });
         setMessage("Заявка перемещена в удаленные.");
     } catch (error) {
@@ -916,9 +1034,9 @@ async function restoreOrder(orderId) {
     }
 
     const order = orders.find(item => String(item.id) === String(orderId));
-    const orderNumber = order?.id || orderId;
+    const orderNumber = order ? getOrderNumber(order) : `№${orderId}`;
 
-    if (!window.confirm(`Восстановить заявку №${orderNumber}?`)) {
+    if (!window.confirm(`Восстановить заявку ${orderNumber}?`)) {
         return;
     }
 
@@ -934,6 +1052,9 @@ async function restoreOrder(orderId) {
         }
 
         await loadOrders({ preserveMessage: true });
+        if (String(expandedDeletedOrderId) === String(orderId)) {
+            expandedDeletedOrderId = null;
+        }
         setMessage("Заявка восстановлена.");
     } catch (error) {
         setMessage(error.message || "Не удалось восстановить заявку.");
@@ -989,6 +1110,21 @@ ordersList.addEventListener("click", event => {
     const retryButton = event.target.closest(".retry-load");
     if (retryButton) {
         loadOrders();
+        return;
+    }
+
+    const tabButton = event.target.closest(".order-tabs button[data-tab]");
+    if (tabButton) {
+        activeOrderTabs.set(String(tabButton.dataset.orderId), tabButton.dataset.tab);
+        renderOrders();
+        return;
+    }
+
+    const deletedHeader = event.target.closest(".deleted-order-header");
+    if (deletedHeader && !event.target.closest(".restore-order")) {
+        const orderId = String(deletedHeader.dataset.id);
+        expandedDeletedOrderId = expandedDeletedOrderId === orderId ? null : orderId;
+        renderOrders();
         return;
     }
 

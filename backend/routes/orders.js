@@ -1,5 +1,5 @@
 const express = require("express");
-const { all, get, run } = require("../database");
+const { all, get, run, getOrderNumber } = require("../database");
 const { requireRole } = require("../middleware/auth");
 const { normalizePhone } = require("../utils/phone");
 
@@ -146,6 +146,7 @@ function normalizeOrder(row) {
 
     return {
         id: row.id,
+        orderNumber: row.order_number || "",
         customerName: row.customer_name,
         phone: row.phone,
         telegram: row.telegram || "",
@@ -350,6 +351,12 @@ router.post("/", async (req, res) => {
                 now,
                 now
             ]
+        );
+
+        const orderNumber = getOrderNumber(result.id, now);
+        await run(
+            "UPDATE orders SET order_number = ? WHERE id = ?",
+            [orderNumber, result.id]
         );
 
         await createOrderEvent({

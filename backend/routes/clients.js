@@ -28,6 +28,7 @@ function normalizeClient(row) {
 function normalizeClientOrder(row) {
     return {
         id: row.id,
+        orderNumber: row.order_number || "",
         status: row.status,
         totalPrice: row.total_price || 0,
         totalWeight: row.total_weight || 0,
