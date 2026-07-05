@@ -1,4 +1,22 @@
 // CRM entry point and event wiring.
+const crmMenuToggle = document.getElementById("crmMenuToggle");
+const crmMenuClose = document.getElementById("crmMenuClose");
+const crmSidebar = document.getElementById("crmSidebar");
+const crmSidebarOverlay = document.getElementById("crmSidebarOverlay");
+const crmMobileSection = document.getElementById("crmMobileSection");
+
+function setMobileMenuOpen(isOpen) {
+    document.body.classList.toggle("crm-nav-open", isOpen);
+    crmMenuToggle?.setAttribute("aria-expanded", String(isOpen));
+    if (crmSidebarOverlay) {
+        crmSidebarOverlay.hidden = !isOpen;
+    }
+}
+
+function closeMobileMenu() {
+    setMobileMenuOpen(false);
+}
+
 function renderCrmNavigation() {
     if (!crmNav) return;
 
@@ -34,6 +52,10 @@ statusTabs?.addEventListener("click", event => {
 crmNavButtons.forEach(button => {
     button.addEventListener("click", () => {
         setActiveSection(button.dataset.section);
+        if (crmMobileSection) {
+            crmMobileSection.textContent = button.textContent.trim();
+        }
+        closeMobileMenu();
 
         if (button.dataset.section === "dashboard") {
             loadDashboard();
@@ -77,6 +99,13 @@ ordersList.addEventListener("change", event => {
     if (!select) return;
 
     updateOrderStatus(select.dataset.id, select.value);
+});
+
+ordersList.addEventListener("input", event => {
+    const noteInput = event.target.closest(".note-input");
+    if (!noteInput) return;
+
+    window.CrmDrafts?.setValue(`note:${noteInput.dataset.id}`, noteInput.value);
 });
 
 ordersList.addEventListener("click", event => {
@@ -331,6 +360,22 @@ productsView?.addEventListener("click", event => {
     const restoreButton = event.target.closest(".product-restore");
     if (restoreButton) {
         restoreProduct(restoreButton.dataset.productId);
+    }
+});
+
+crmMenuToggle?.addEventListener("click", () => {
+    setMobileMenuOpen(true);
+});
+
+crmMenuClose?.addEventListener("click", closeMobileMenu);
+crmSidebarOverlay?.addEventListener("click", closeMobileMenu);
+crmSidebar?.addEventListener("click", event => {
+    event.stopPropagation();
+});
+
+document.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+        closeMobileMenu();
     }
 });
 

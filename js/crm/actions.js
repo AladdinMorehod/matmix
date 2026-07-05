@@ -55,6 +55,7 @@ async function addOrderNote(id, message) {
     try {
         await CrmApi.post(`/api/orders/${id}/notes`, getOrderMutationPayload(id, { message: cleanMessage }));
 
+        window.CrmDrafts?.clear(`note:${id}`);
         notifySuccess(CRM_MESSAGES.SUCCESS_ORDER_NOTE_SAVED);
         await loadOrders({ preserveMessage: true });
         await loadOrderEvents(id);

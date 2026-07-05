@@ -186,13 +186,14 @@ function renderEventList(events) {
 function renderHistory(order) {
     const orderId = String(order.id);
     const events = orderEvents.get(orderId);
+    const noteDraft = window.CrmDrafts?.getValue(`note:${order.id}`, "") || "";
 
     return `
         <section class="order-history">
             <div class="history-panel">
                 ${canAddNote(order) ? `
                     <div class="note-form">
-                        <textarea class="note-input" data-id="${order.id}" maxlength="1000" rows="3" placeholder="Внутренняя заметка"></textarea>
+                        <textarea class="note-input" data-id="${order.id}" maxlength="1000" rows="3" placeholder="Внутренняя заметка">${escapeHtml(noteDraft)}</textarea>
                         <button class="note-submit" data-id="${order.id}" type="button">Добавить заметку</button>
                     </div>
                 ` : `<p class="history-empty">Заметки доступны только ответственному менеджеру или администратору.</p>`}

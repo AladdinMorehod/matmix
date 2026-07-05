@@ -1,0 +1,24 @@
+{
+  "name": "MatMix CRM",
+  "short_name": "MatMix CRM",
+  "description": "CRM для обработки заявок MatMix",
+  "start_url": "/manager",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#e9ece6",
+  "theme_color": "#205742",
+  "icons": [
+    {
+      "src": "/img/logo-current.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/img/logo-current.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

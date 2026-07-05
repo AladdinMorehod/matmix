@@ -94,6 +94,11 @@
             const formElement = overlay.querySelector(".crm-modal-form");
             const closeButton = overlay.querySelector(".crm-modal-close");
             const cancelButton = overlay.querySelector(".crm-modal-secondary");
+            const draftKey = options.draftKey || "";
+
+            if (draftKey) {
+                window.CrmDrafts?.bindForm(formElement, draftKey);
+            }
 
             overlay.addEventListener("click", event => {
                 if (event.target === overlay) closeModal(null);
@@ -102,6 +107,9 @@
             cancelButton.addEventListener("click", () => closeModal(null));
             formElement.addEventListener("submit", event => {
                 event.preventDefault();
+                if (draftKey) {
+                    window.CrmDrafts?.clear(draftKey);
+                }
                 closeModal(new FormData(formElement));
             });
 

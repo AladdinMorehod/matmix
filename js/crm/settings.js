@@ -229,6 +229,8 @@ function renderSettings() {
         ${renderSettingsTabs()}
         ${activeSettingsTab === "users" ? renderUsersSettings() : renderProfileSettings()}
     `;
+
+    window.CrmDrafts?.bindForm(settingsView.querySelector("#createUserForm"), "settings:create-user");
 }
 
 async function loadSettings() {
@@ -304,6 +306,7 @@ async function createUser(form) {
     try {
         await CrmApi.post("/api/users", payload);
 
+        window.CrmDrafts?.clear("settings:create-user");
         form.reset();
         notifySuccess(CRM_MESSAGES.SUCCESS_USER_CREATED);
         await loadUsers();

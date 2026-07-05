@@ -23,6 +23,12 @@ body {
     overflow-x: hidden;
 }
 
+.crm-mobile-bar,
+.crm-menu-close,
+.crm-sidebar-overlay {
+    display: none;
+}
+
 .visually-hidden {
     position: absolute;
     width: 1px;
@@ -320,7 +326,7 @@ body {
 
 .manager-toolbar select,
 .status-select {
-    min-height: 36px;
+    min-height: 44px;
     padding: 0 10px;
     border: 1px solid var(--border);
     border-radius: 6px;
@@ -329,6 +335,31 @@ body {
     font: inherit;
     font-size: 0.9rem;
     font-weight: 600;
+}
+
+input,
+select,
+textarea,
+button {
+    max-width: 100%;
+}
+
+input,
+select,
+textarea {
+    min-height: 44px;
+}
+
+button,
+a[role="button"],
+.crm-nav button,
+.crm-nav a,
+.assignment-action,
+.delete-order,
+.restore-order,
+.download-order-excel,
+.note-submit {
+    min-height: 44px;
 }
 
 .manager-message {
@@ -1292,7 +1323,7 @@ body {
 
 .products-row {
     display: grid;
-    grid-template-columns: minmax(260px, 1.5fr) minmax(120px, 0.75fr) minmax(140px, 0.85fr) minmax(80px, 0.45fr) minmax(76px, 0.42fr) minmax(52px, 0.28fr) minmax(86px, 0.45fr) minmax(90px, 0.5fr) minmax(170px, 0.85fr);
+    grid-template-columns: minmax(260px, 1.25fr) minmax(300px, 1.45fr) minmax(86px, 0.45fr) minmax(170px, 0.85fr);
     align-items: center;
     gap: 8px;
     padding: 9px;
@@ -1347,6 +1378,51 @@ body {
 
 .product-deleted-meta {
     color: #6f1724 !important;
+}
+
+.product-info-cell {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 7px 12px;
+    min-width: 0;
+}
+
+.product-info-text {
+    display: grid;
+    flex: 0 1 130px;
+    gap: 3px;
+    min-width: 96px;
+}
+
+.product-info-text span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.product-meta-pills {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+}
+
+.product-meta-pills span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 26px;
+    padding: 0 9px;
+    border: 1px solid rgba(32, 87, 66, 0.12);
+    border-radius: 999px;
+    background: rgba(244, 246, 241, 0.9);
+    color: var(--primary-dark);
+    font-size: 0.76rem;
+    font-weight: 800;
+    white-space: nowrap;
 }
 
 .product-thumb {
@@ -1562,6 +1638,13 @@ body {
     font-weight: 700;
 }
 
+.client-phone-link {
+    color: var(--primary-dark);
+    font-size: 0.84rem;
+    font-weight: 800;
+    text-decoration: none;
+}
+
 .client-card-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1746,33 +1829,148 @@ body {
     background: var(--brand-burgundy);
 }
 
+@media (max-width: 1024px) and (min-width: 761px) {
+    .crm-shell {
+        grid-template-columns: 220px minmax(0, 1fr);
+    }
+
+    .crm-sidebar {
+        padding: 20px 14px;
+    }
+
+    .crm-workspace {
+        padding: 22px;
+    }
+}
+
 @media (max-width: 760px) {
+    body {
+        padding-top: 58px;
+    }
+
+    body.crm-nav-open {
+        overflow: hidden;
+    }
+
+    .crm-mobile-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 70;
+        display: grid;
+        grid-template-columns: 44px minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 10px;
+        min-height: 58px;
+        padding: 7px 12px;
+        padding-left: max(12px, env(safe-area-inset-left));
+        padding-right: max(12px, env(safe-area-inset-right));
+        border-bottom: 1px solid var(--border);
+        background: rgba(248, 250, 245, 0.96);
+        box-shadow: 0 8px 20px rgba(17, 21, 23, 0.08);
+        backdrop-filter: blur(10px);
+    }
+
+    .crm-mobile-bar strong {
+        min-width: 0;
+        overflow: hidden;
+        color: var(--brand-burgundy);
+        font-size: 0.98rem;
+        font-weight: 800;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .crm-mobile-bar span {
+        color: var(--text-muted);
+        font-size: 0.78rem;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .crm-menu-toggle,
+    .crm-menu-close {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        min-height: 44px;
+        border: none;
+        border-radius: 7px;
+        background: var(--brand-burgundy);
+        color: white;
+        cursor: pointer;
+        font: inherit;
+        font-size: 1.2rem;
+        font-weight: 800;
+    }
+
+    .crm-sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 80;
+        display: block;
+        background: rgba(17, 21, 23, 0.34);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 200ms ease;
+    }
+
+    .crm-sidebar-overlay:not([hidden]) {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
     .crm-shell {
         grid-template-columns: 1fr;
     }
 
     .crm-sidebar {
-        position: static;
-        min-height: 0;
-        padding: 16px;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 90;
+        width: min(86vw, 318px);
+        min-height: 100dvh;
+        max-height: 100dvh;
+        overflow-y: auto;
+        padding: 18px;
+        padding-top: max(18px, env(safe-area-inset-top));
+        padding-bottom: max(18px, env(safe-area-inset-bottom));
         border-right: none;
-        border-bottom: 1px solid var(--border);
+        border-bottom: none;
+        box-shadow: 18px 0 34px rgba(17, 21, 23, 0.18);
+        transform: translateX(-105%);
+        transition: transform 220ms ease;
+    }
+
+    body.crm-nav-open .crm-sidebar {
+        transform: translateX(0);
+    }
+
+    .crm-menu-close {
+        justify-self: end;
+        background: var(--primary);
     }
 
     .crm-nav {
-        display: flex;
-        overflow-x: auto;
-        padding-bottom: 2px;
+        display: grid;
+        overflow: visible;
+        padding-bottom: 0;
     }
 
     .crm-nav a,
     .crm-nav button,
     .crm-nav span {
-        flex: 0 0 auto;
+        width: 100%;
+        min-height: 46px;
     }
 
     .crm-workspace {
-        padding: 16px;
+        padding: 14px;
+        padding-bottom: calc(92px + env(safe-area-inset-bottom));
     }
 
     .crm-topbar-actions,
@@ -1788,13 +1986,19 @@ body {
     }
 
     .status-tabs {
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        padding-bottom: 2px;
+        flex-wrap: wrap;
+        overflow: visible;
+        gap: 8px;
+        padding-bottom: 0;
     }
 
     .status-tabs button {
-        flex: 0 0 auto;
+        flex: 1 1 auto;
+        min-width: max-content;
+        min-height: 40px;
+        padding: 0 10px;
+        font-size: 0.8rem;
+        white-space: normal;
     }
 
     .dashboard-stats,
@@ -1887,20 +2091,55 @@ body {
     }
 
     .products-row {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-wrap: wrap;
         align-items: start;
+        gap: 8px 10px;
     }
 
     .products-head {
         display: none;
     }
 
-    .product-actions,
+    .product-title-cell {
+        flex: 1 0 100%;
+    }
+
+    .product-info-cell {
+        flex: 1 1 230px;
+        gap: 6px 10px;
+    }
+
+    .product-info-text {
+        flex: 0 1 92px;
+        min-width: 82px;
+    }
+
+    .product-meta-pills {
+        flex: 1 1 auto;
+        gap: 6px 8px;
+    }
+
+    .product-status {
+        flex: 0 1 auto;
+        width: auto;
+        min-height: 28px;
+        padding: 0 10px;
+    }
+
+    .product-actions {
+        display: grid;
+        flex: 1 0 100%;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        width: 100%;
+    }
+
     .product-edit,
     .product-toggle,
     .product-delete,
     .product-restore {
         width: 100%;
+        min-height: 40px;
     }
 
     .manager-header,
@@ -1908,6 +2147,49 @@ body {
     .order-card-footer {
         align-items: flex-start;
         flex-direction: column;
+    }
+
+    .order-card {
+        width: 100%;
+        padding: 10px;
+        gap: 8px;
+        scroll-margin-top: 70px;
+    }
+
+    .order-card-header {
+        position: sticky;
+        top: 58px;
+        z-index: 20;
+        margin: -10px -10px 0;
+        padding: 10px;
+        border-bottom: 1px solid var(--border);
+        border-radius: 8px 8px 0 0;
+        background: rgba(255, 255, 255, 0.96);
+        backdrop-filter: blur(8px);
+    }
+
+    .order-card-footer {
+        position: sticky;
+        bottom: 0;
+        z-index: 25;
+        margin: 0 -10px -10px;
+        padding: 10px;
+        padding-bottom: max(10px, env(safe-area-inset-bottom));
+        border-top: 1px solid var(--border);
+        border-radius: 0 0 8px 8px;
+        background: rgba(255, 255, 255, 0.98);
+        box-shadow: 0 -10px 24px rgba(17, 21, 23, 0.08);
+    }
+
+    .order-tabs {
+        margin: 0 -2px;
+        padding-bottom: 4px;
+        scrollbar-width: none;
+    }
+
+    .order-tabs::-webkit-scrollbar,
+    .status-tabs::-webkit-scrollbar {
+        display: none;
     }
 
     .order-header-side,
@@ -1922,6 +2204,25 @@ body {
         justify-content: flex-start;
     }
 
+    .order-controls,
+    .order-actions,
+    .order-card-footer,
+    .contact-actions {
+        width: 100%;
+    }
+
+    .order-controls > *,
+    .order-actions > *,
+    .contact-actions > *,
+    .download-order-excel,
+    .delete-order,
+    .restore-order,
+    .assignment-action,
+    .status-control,
+    .status-control select {
+        width: 100%;
+    }
+
     .order-grid {
         grid-template-columns: 1fr;
     }
@@ -1929,6 +2230,30 @@ body {
     .items-table {
         display: block;
         overflow-x: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .crm-workspace {
+        padding: 10px;
+        padding-bottom: calc(96px + env(safe-area-inset-bottom));
+    }
+
+    .crm-topbar {
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+
+    .crm-topbar h1 {
+        font-size: 1.35rem;
+    }
+
+    .orders-stats span,
+    .dashboard-stat,
+    .order-section,
+    .client-card,
+    .settings-panel {
+        border-radius: 7px;
     }
 }
 

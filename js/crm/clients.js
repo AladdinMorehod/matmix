@@ -94,13 +94,17 @@ function renderClients() {
     clientsList.innerHTML = visibleClients.map(client => {
         const clientId = String(client.id);
         const isExpanded = expandedClientOrderIds.has(clientId);
+        const phoneDigits = cleanPhoneForLink(client.phone);
+        const phoneHtml = phoneDigits
+            ? `<a class="client-phone-link" href="tel:+${phoneDigits}">${escapeHtml(client.phone)}</a>`
+            : `<span>${escapeHtml(client.phone)}</span>`;
 
         return `
             <article class="client-card" data-client-id="${client.id}">
                 <header class="client-card-header">
                     <div>
                         <strong>${escapeHtml(client.name)}</strong>
-                        <span>${escapeHtml(client.phone)}</span>
+                        ${phoneHtml}
                     </div>
                     <button class="client-orders-toggle" data-client-id="${client.id}" type="button">
                         ${isExpanded ? "Скрыть историю" : "История заказов"}

@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#205742">
     <title>Кабинет менеджера MatMix</title>
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="apple-touch-icon" href="img/logo-current.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -11,8 +14,15 @@
     <link rel="stylesheet" href="css/crm-toast.css">
 </head>
 <body>
+    <header class="crm-mobile-bar">
+        <button id="crmMenuToggle" class="crm-menu-toggle" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="crmSidebar">☰</button>
+        <strong>MatMix CRM</strong>
+        <span id="crmMobileSection">Главная</span>
+    </header>
+    <div id="crmSidebarOverlay" class="crm-sidebar-overlay" hidden></div>
     <main class="crm-shell">
-        <aside class="crm-sidebar" aria-label="Навигация CRM">
+        <aside id="crmSidebar" class="crm-sidebar" aria-label="Навигация CRM">
+            <button id="crmMenuClose" class="crm-menu-close" type="button" aria-label="Закрыть меню">×</button>
             <div class="crm-brand">
                 <strong>MatMix CRM</strong>
                 <span>Кабинет менеджера</span>
@@ -166,6 +176,7 @@
     <script src="js/crm/api.js"></script>
     <script src="js/crm/ui/loader.js"></script>
     <script src="js/crm/ui/toast.js"></script>
+    <script src="js/crm/drafts.js"></script>
     <script src="js/crm/ui/modal.js"></script>
     <script src="js/crm/state.js"></script>
     <script src="js/crm/orders.js"></script>
@@ -175,5 +186,12 @@
     <script src="js/crm/settings.js"></script>
     <script src="js/crm/products.js"></script>
     <script src="js/crm/manager.js"></script>
+    <script>
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
+                navigator.serviceWorker.register("/service-worker.js").catch(() => {});
+            });
+        }
+    </script>
 </body>
 </html>

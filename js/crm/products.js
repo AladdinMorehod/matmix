@@ -150,13 +150,8 @@ function renderProductsList() {
         <div class="products-table" role="table" aria-label="Товары">
             <div class="products-row products-head" role="row">
                 <span>Товар</span>
-                <span>Категория</span>
-                <span>Подкатегория</span>
-                <span>Цена</span>
-                <span>Вес</span>
-                <span>Ед.</span>
+                <span>Описание</span>
                 <span>Статус</span>
-                <span>Источник</span>
                 <span></span>
             </div>
             ${products.map(renderProductRow).join("")}
@@ -176,6 +171,13 @@ function renderProductsListContainer() {
 
 function renderProductRow(product) {
     const isDeleted = Boolean(product.deletedAt);
+    const productMeta = `
+        <div class="product-meta-pills">
+            <span>Цена: ${product.price === null ? "—" : formatMoney(product.price)}</span>
+            <span>Вес: ${formatWeight(product.weight)}</span>
+            <span>Ед.: ${escapeHtml(product.unit || "шт")}</span>
+        </div>
+    `;
     const deletedMeta = isDeleted
         ? `<small class="product-deleted-meta">
             Удален: ${escapeHtml(formatDate(product.deletedAt))}
@@ -210,13 +212,14 @@ function renderProductRow(product) {
                     ${deletedMeta}
                 </div>
             </div>
-            <span>${escapeHtml(product.category || "—")}</span>
-            <span>${escapeHtml(product.subcategory || "—")}</span>
-            <span>${product.price === null ? "—" : formatMoney(product.price)}</span>
-            <span>${formatWeight(product.weight)}</span>
-            <span>${escapeHtml(product.unit || "шт")}</span>
+            <div class="product-info-cell">
+                <div class="product-info-text">
+                    <span>${escapeHtml(product.category || "—")}</span>
+                    <span>${escapeHtml(product.subcategory || "—")}</span>
+                </div>
+                ${productMeta}
+            </div>
             <span class="product-status ${isDeleted ? "deleted" : (product.isActive ? "active" : "hidden")}">${getProductStatusLabel(product)}</span>
-            <span>${escapeHtml(product.source || "crm")}</span>
             ${actions}
         </article>
     `;
@@ -269,7 +272,8 @@ async function openProductForm(product = null) {
     const formData = await CrmModal.form({
         title: product ? "Редактировать товар" : "Добавить товар",
         content: renderProductForm(product || { isActive: true }),
-        submitText: product ? "Сохранить" : "Создать"
+        submitText: product ? "Сохранить" : "Создать",
+        draftKey: product ? `product:${product.id}` : "product:new"
     });
 
     if (!formData) return;
