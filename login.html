@@ -24,7 +24,10 @@
                 </label>
                 <label>
                     <span>Пароль</span>
-                    <input type="password" name="password" autocomplete="current-password" required>
+                    <span class="password-field">
+                        <input type="password" name="password" autocomplete="current-password" required>
+                        <button class="password-toggle" type="button" data-password-toggle aria-label="Показать пароль">Показать</button>
+                    </span>
                 </label>
                 <p id="loginMessage" class="manager-message" aria-live="polite"></p>
                 <button type="submit">Войти</button>

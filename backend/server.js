@@ -3,9 +3,10 @@ const cors = require("cors");
 const express = require("express");
 const session = require("express-session");
 const { initDatabase } = require("./database");
-const authRouter = require("./routes/auth");
+const authRoutes = require("./routes/auth");
 const ordersRouter = require("./routes/orders");
 const clientsRouter = require("./routes/clients");
+const usersRoutes = require("./routes/users");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -23,11 +24,18 @@ app.use(session({
         sameSite: "lax"
     }
 }));
+
+app.use((req, res, next) => {
+    console.log(`[request] ${req.method} ${req.originalUrl}`);
+    next();
+});
+
 app.use(express.static(publicDir));
 
-app.use("/api/auth", authRouter);
+app.use("/api/auth", authRoutes);
 app.use("/api/orders", ordersRouter);
 app.use("/api/clients", clientsRouter);
+app.use("/api/users", usersRoutes);
 
 app.get("/manager", (req, res) => {
     res.sendFile(path.join(publicDir, "manager.html"));

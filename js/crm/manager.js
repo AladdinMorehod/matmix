@@ -46,6 +46,10 @@ crmNavButtons.forEach(button => {
         if (button.dataset.section === "clients" && !clients.length) {
             loadClients();
         }
+
+        if (button.dataset.section === "settings") {
+            loadSettings();
+        }
     });
 });
 refreshOrdersBtn.addEventListener("click", loadOrders);
@@ -171,6 +175,58 @@ dashboardView?.addEventListener("click", event => {
     if (!sectionButton) return;
 
     openDashboardSection(sectionButton.dataset.sectionTarget);
+});
+
+settingsView?.addEventListener("click", event => {
+    const passwordToggle = event.target.closest("[data-password-toggle]");
+    if (passwordToggle) {
+        togglePasswordVisibility(passwordToggle);
+        return;
+    }
+
+    const tabButton = event.target.closest("button[data-settings-tab]");
+    if (tabButton) {
+        activeSettingsTab = tabButton.dataset.settingsTab;
+        loadSettings();
+        return;
+    }
+
+    const refreshButton = event.target.closest(".settings-refresh-users");
+    if (refreshButton) {
+        loadUsers();
+        return;
+    }
+
+    const toggleButton = event.target.closest(".settings-toggle-user");
+    if (toggleButton) {
+        toggleUserStatus(toggleButton.dataset.userId, toggleButton.dataset.isActive === "1");
+    }
+});
+
+settingsView?.addEventListener("submit", event => {
+    if (event.defaultPrevented) return;
+
+    const profilePasswordForm = event.target.closest("#profilePasswordForm");
+    if (profilePasswordForm) {
+        event.preventDefault();
+        console.log("[settings] delegated change password submit");
+        changeOwnPassword(profilePasswordForm);
+        return;
+    }
+
+    const createUserForm = event.target.closest("#createUserForm");
+    if (createUserForm) {
+        event.preventDefault();
+        console.log("[settings] delegated create user submit");
+        createUser(createUserForm);
+        return;
+    }
+
+    const userPasswordForm = event.target.closest(".settings-user-password-form");
+    if (userPasswordForm) {
+        event.preventDefault();
+        changeUserPassword(userPasswordForm.dataset.userId, userPasswordForm);
+    }
 });
 
 checkAccess().then(isAllowed => {

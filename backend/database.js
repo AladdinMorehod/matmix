@@ -123,6 +123,8 @@ async function initDatabase() {
             updated_at TEXT
         )
     `);
+    await ensureColumn("users", "is_active", "INTEGER DEFAULT 1");
+    await ensureColumn("users", "updated_at", "TEXT");
 
     const admin = await get("SELECT id FROM users WHERE login = ?", ["admin"]);
     if (!admin) {

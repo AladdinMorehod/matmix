@@ -5,6 +5,17 @@ function setLoginMessage(message = "") {
     loginMessage.textContent = message;
 }
 
+function toggleLoginPassword(button) {
+    const field = button.closest(".password-field");
+    const input = field?.querySelector("input");
+    if (!input) return;
+
+    const shouldShow = input.type === "password";
+    input.type = shouldShow ? "text" : "password";
+    button.textContent = shouldShow ? "Скрыть" : "Показать";
+    button.setAttribute("aria-label", shouldShow ? "Скрыть пароль" : "Показать пароль");
+}
+
 async function redirectIfAuthorized() {
     try {
         const response = await fetch("/api/auth/me", { credentials: "include" });
@@ -17,6 +28,13 @@ async function redirectIfAuthorized() {
         // Login page remains available when the server is unreachable.
     }
 }
+
+loginForm.addEventListener("click", event => {
+    const passwordToggle = event.target.closest("[data-password-toggle]");
+    if (!passwordToggle) return;
+
+    toggleLoginPassword(passwordToggle);
+});
 
 loginForm.addEventListener("submit", async event => {
     event.preventDefault();

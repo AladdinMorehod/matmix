@@ -35,6 +35,7 @@ const dashboardWaitingOrders = document.getElementById("dashboardWaitingOrders")
 const dashboardDoneToday = document.getElementById("dashboardDoneToday");
 const dashboardClientsTotal = document.getElementById("dashboardClientsTotal");
 const dashboardRecentOrders = document.getElementById("dashboardRecentOrders");
+const settingsView = document.getElementById("settingsView");
 const ordersTotalCount = document.getElementById("ordersTotalCount");
 const ordersNewCount = document.getElementById("ordersNewCount");
 const ordersWorkCount = document.getElementById("ordersWorkCount");
@@ -62,6 +63,11 @@ const expandedClientOrderIds = new Set();
 const clientOrders = new Map();
 const activeOrderTabs = new Map();
 let expandedDeletedOrderId = null;
+let settingsUsers = [];
+let settingsUsersLoading = false;
+let settingsUsersLoaded = false;
+let settingsUsersError = "";
+let activeSettingsTab = "profile";
 
 const crmNavigation = [
     { id: "dashboard", label: "Главная", enabled: true },
@@ -69,7 +75,7 @@ const crmNavigation = [
     { id: "clients", label: "Клиенты", enabled: true },
     { id: "catalog", label: "Каталог", enabled: false },
     { id: "statistics", label: "Статистика", enabled: false },
-    { id: "settings", label: "Настройки", enabled: false }
+    { id: "settings", label: "Настройки", enabled: true }
 ];
 
 const eventTypeLabels = {

@@ -927,6 +927,212 @@ body {
     opacity: 0.62;
 }
 
+/* Settings */
+.settings-view {
+    display: grid;
+    gap: 14px;
+}
+
+.settings-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.settings-tabs button,
+.settings-form button,
+.settings-refresh-users,
+.settings-toggle-user,
+.settings-user-password-form button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    padding: 0 13px;
+    border: none;
+    border-radius: 6px;
+    background: var(--primary);
+    color: white;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.84rem;
+    font-weight: 800;
+}
+
+.settings-tabs button {
+    border: 1px solid var(--border);
+    background: var(--surface-soft);
+    color: var(--primary-dark);
+}
+
+.settings-tabs button.active {
+    border-color: var(--brand-burgundy);
+    background: var(--brand-burgundy);
+    color: white;
+}
+
+.settings-tabs button:disabled,
+.settings-toggle-user:disabled {
+    cursor: default;
+    opacity: 0.5;
+}
+
+.settings-panel {
+    display: grid;
+    gap: 14px;
+    padding: 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 8px 22px rgba(17, 21, 23, 0.05);
+}
+
+.settings-panel-header,
+.settings-user-main,
+.settings-user-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.settings-panel h2,
+.settings-form h3 {
+    margin: 0;
+    color: var(--primary-dark);
+    font-size: 0.95rem;
+    font-weight: 800;
+}
+
+.settings-profile-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.settings-form {
+    display: grid;
+    gap: 10px;
+    max-width: 560px;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface-soft);
+}
+
+.settings-create-user {
+    max-width: none;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
+    align-items: end;
+}
+
+.settings-create-user h3 {
+    grid-column: 1 / -1;
+}
+
+.settings-form label {
+    display: grid;
+    gap: 5px;
+    min-width: 0;
+}
+
+.settings-form label span {
+    color: var(--text-muted);
+    font-size: 0.76rem;
+    font-weight: 800;
+}
+
+.settings-form input,
+.settings-form select,
+.settings-user-password-form input {
+    min-height: 36px;
+    width: 100%;
+    padding: 0 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: white;
+    color: var(--text);
+    font: inherit;
+    font-size: 0.88rem;
+}
+
+.settings-form input:focus,
+.settings-form select:focus,
+.settings-user-password-form input:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(32, 87, 66, 0.14);
+}
+
+.settings-users-list {
+    display: grid;
+    gap: 10px;
+}
+
+.settings-user-card {
+    display: grid;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface-soft);
+}
+
+.settings-user-main div {
+    display: grid;
+    gap: 3px;
+}
+
+.settings-user-main strong {
+    color: var(--primary-dark);
+    font-size: 0.95rem;
+    font-weight: 800;
+}
+
+.settings-user-main span {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.settings-user-status {
+    display: inline-flex;
+    align-items: center;
+    min-height: 26px;
+    padding: 0 10px;
+    border-radius: 999px;
+    color: white;
+    font-size: 0.76rem;
+    font-weight: 800;
+}
+
+.settings-user-status.active {
+    background: #23724f;
+}
+
+.settings-user-status.disabled {
+    background: #7c7c7c;
+}
+
+.settings-user-password-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.settings-user-password-form input {
+    width: 190px;
+}
+
+.settings-muted {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    font-weight: 650;
+    line-height: 1.45;
+}
+
 .clients-view {
     display: grid;
     gap: 14px;
@@ -1273,12 +1479,30 @@ body {
 
     .dashboard-stats,
     .dashboard-grid,
-    .dashboard-recent-order {
+    .dashboard-recent-order,
+    .settings-profile-grid,
+    .settings-create-user {
         grid-template-columns: 1fr;
     }
 
     .dashboard-panel-wide {
         grid-row: auto;
+    }
+
+    .settings-panel-header,
+    .settings-user-main,
+    .settings-user-actions {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .settings-user-password-form,
+    .settings-user-password-form input,
+    .settings-form button,
+    .settings-refresh-users,
+    .settings-toggle-user,
+    .settings-user-password-form button {
+        width: 100%;
     }
 
     .order-sections {
@@ -1425,4 +1649,70 @@ body {
 .login-form button {
     min-height: 42px;
     background: var(--brand-burgundy);
+}
+
+.password-field {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+.settings-user-password-form .password-field {
+    width: 190px;
+    max-width: 100%;
+}
+
+.password-field input,
+.settings-user-password-form .password-field input {
+    width: 100%;
+    padding-right: 88px;
+}
+
+.password-toggle,
+.login-form .password-toggle,
+.settings-form .password-toggle,
+.settings-user-password-form .password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 6px;
+    width: auto;
+    min-height: 28px;
+    padding: 0 8px;
+    transform: translateY(-50%);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    background: var(--surface);
+    color: var(--primary-dark);
+    font: inherit;
+    font-size: 0.72rem;
+    font-weight: 800;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: none;
+}
+
+.password-toggle:hover,
+.password-toggle:focus {
+    border-color: var(--primary);
+    outline: none;
+    background: var(--surface-soft);
+}
+
+.settings-empty-state {
+    display: grid;
+    justify-items: start;
+    gap: 8px;
+}
+
+@media (max-width: 720px) {
+    .settings-user-password-form .password-field {
+        width: 100%;
+    }
+
+    .password-toggle,
+    .login-form .password-toggle,
+    .settings-form .password-toggle,
+    .settings-user-password-form .password-toggle {
+        width: auto;
+    }
 }

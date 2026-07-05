@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const express = require("express");
-const { get } = require("../database");
+const { get, run } = require("../database");
 const { requireAuth } = require("../middleware/auth");
 
 const router = express.Router();
@@ -29,6 +29,11 @@ router.post("/login", async (req, res) => {
         }
 
         const user = await get("SELECT * FROM users WHERE login = ?", [login]);
+        if (user && Number(user.is_active) === 0) {
+            res.status(403).json({ success: false, message: "Пользователь отключен" });
+            return;
+        }
+
         const isValidPassword = user ? await bcrypt.compare(password, user.password_hash) : false;
 
         if (!user || !isValidPassword) {
@@ -51,6 +56,37 @@ router.get("/me", (req, res) => {
     }
 
     res.json({ success: true, user: req.session.user });
+});
+
+router.patch("/password", requireAuth, async (req, res) => {
+    try {
+        const currentPassword = String(req.body.currentPassword || "");
+        const newPassword = String(req.body.newPassword || "");
+
+        if (!currentPassword || newPassword.length < 6) {
+            res.status(400).json({ success: false, message: "Укажите текущий пароль и новый пароль от 6 символов." });
+            return;
+        }
+
+        const user = await get("SELECT id, password_hash FROM users WHERE id = ?", [req.session.user.id]);
+        const isValidPassword = user ? await bcrypt.compare(currentPassword, user.password_hash) : false;
+
+        if (!user || !isValidPassword) {
+            res.status(400).json({ success: false, message: "Текущий пароль неверный." });
+            return;
+        }
+
+        const passwordHash = await bcrypt.hash(newPassword, 10);
+        await run(
+            "UPDATE users SET password_hash = ?, updated_at = ? WHERE id = ?",
+            [passwordHash, new Date().toISOString(), req.session.user.id]
+        );
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error("Password change error:", error);
+        res.status(500).json({ success: false, message: "Не удалось сменить пароль." });
+    }
 });
 
 router.post("/logout", requireAuth, (req, res) => {

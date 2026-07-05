@@ -9,12 +9,14 @@ function setActiveSection(section) {
     const isDashboard = section === "dashboard";
     const isOrders = section === "orders";
     const isClients = section === "clients";
+    const isSettings = section === "settings";
 
     dashboardView?.classList.toggle("hidden", !isDashboard);
     ordersTopbar?.classList.toggle("hidden", !isOrders);
     statusFilter?.closest(".manager-toolbar")?.classList.toggle("hidden", !isOrders);
     ordersList?.classList.toggle("hidden", !isOrders);
     clientsView?.classList.toggle("hidden", !isClients);
+    settingsView?.classList.toggle("hidden", !isSettings);
     setMessage("");
 
 }
