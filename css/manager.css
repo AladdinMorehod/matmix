@@ -1302,6 +1302,11 @@ body {
     box-shadow: 0 8px 20px rgba(17, 21, 23, 0.04);
 }
 
+.products-row.is-deleted {
+    background: #fbf8f8;
+    border-color: rgba(111, 23, 36, 0.18);
+}
+
 .products-head {
     min-height: 36px;
     background: var(--surface-soft);
@@ -1338,6 +1343,10 @@ body {
     color: var(--text-muted);
     font-size: 0.8rem;
     font-weight: 700;
+}
+
+.product-deleted-meta {
+    color: #6f1724 !important;
 }
 
 .product-thumb {
@@ -1380,6 +1389,10 @@ body {
     background: #7c7c7c;
 }
 
+.product-status.deleted {
+    background: #6f1724;
+}
+
 .product-actions {
     display: flex;
     flex-wrap: wrap;
@@ -1389,7 +1402,9 @@ body {
 .products-export,
 .products-add,
 .product-edit,
-.product-toggle {
+.product-toggle,
+.product-delete,
+.product-restore {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1409,6 +1424,14 @@ body {
 .products-add,
 .product-toggle {
     background: var(--brand-burgundy);
+}
+
+.product-delete {
+    background: #6f1724;
+}
+
+.product-restore {
+    background: var(--primary);
 }
 
 .product-form-grid {
@@ -1874,7 +1897,9 @@ body {
 
     .product-actions,
     .product-edit,
-    .product-toggle {
+    .product-toggle,
+    .product-delete,
+    .product-restore {
         width: 100%;
     }
 

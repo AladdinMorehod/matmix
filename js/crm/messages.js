@@ -12,6 +12,8 @@
         SUCCESS_PRODUCT_UPDATED: "Товар обновлен.",
         SUCCESS_PRODUCT_HIDDEN: "Товар скрыт.",
         SUCCESS_PRODUCT_SHOWN: "Товар показан.",
+        SUCCESS_PRODUCT_DELETED: "Товар удален.",
+        SUCCESS_PRODUCT_RESTORED: "Товар восстановлен.",
         SUCCESS_PRICE_DOWNLOADED: "Прайс скачан.",
         SUCCESS_ORDER_EXCEL_DOWNLOADED: "Заказ скачан.",
         SUCCESS_ORDER_TAKEN: "Заявка взята в работу.",
@@ -41,6 +43,10 @@
         CONFIRM_RESTORE_ORDER_ACTION: "Восстановить",
         CONFIRM_DELETE_USER_TITLE: "Удалить пользователя",
         CONFIRM_DELETE_USER_ACTION: "Удалить",
+        CONFIRM_DELETE_PRODUCT_TITLE: "Удалить товар?",
+        CONFIRM_DELETE_PRODUCT_ACTION: "Удалить",
+        CONFIRM_RESTORE_PRODUCT_TITLE: "Восстановить товар?",
+        CONFIRM_RESTORE_PRODUCT_ACTION: "Восстановить",
         CONFIRM_DISABLE_USER_TITLE: "Отключить пользователя",
         CONFIRM_DISABLE_USER_ACTION: "Отключить"
     };

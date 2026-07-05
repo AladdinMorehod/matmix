@@ -597,10 +597,12 @@ body {
 .catalog-help-action {
     position: relative;
     display: inline-grid;
+    gap: 8px;
     justify-items: stretch;
 }
 
-.catalog-help a {
+.catalog-help a,
+.catalog-price-download {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -618,16 +620,29 @@ body {
     transition: background 180ms ease, transform 180ms ease, box-shadow 180ms ease;
 }
 
+.catalog-price-download {
+    border: 1px solid rgba(32, 87, 66, 0.16);
+    cursor: pointer;
+    font-family: inherit;
+}
+
 .catalog-help a::before {
     content: "☎";
     margin-right: 8px;
     font-size: 0.88rem;
 }
 
-.catalog-help a:hover {
+.catalog-help a:hover,
+.catalog-price-download:hover {
     background: var(--primary-dark);
     box-shadow: 0 10px 22px rgba(32, 87, 66, 0.28);
     transform: translateY(-1px);
+}
+
+.catalog-price-download:disabled {
+    cursor: wait;
+    opacity: 0.68;
+    transform: none;
 }
 
 .catalog-help-phone {
@@ -661,6 +676,26 @@ body {
 
 .catalog-help-phone:hover {
     box-shadow: 0 12px 26px rgba(17, 21, 23, 0.18);
+}
+
+.catalog-message {
+    min-height: 20px;
+    margin: 12px 0 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.catalog-message:empty {
+    display: none;
+}
+
+.catalog-message.error {
+    color: var(--brand-burgundy);
+}
+
+.catalog-message.success {
+    color: var(--primary);
 }
 
 .catalog-featured {
@@ -1741,7 +1776,8 @@ body {
     .catalog-help-action {
         width: 100%;
     }
-    .catalog-help a {
+    .catalog-help a,
+    .catalog-price-download {
         width: 100%;
     }
     .catalog-help-phone {

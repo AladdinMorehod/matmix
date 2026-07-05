@@ -36,6 +36,7 @@ app.use(session({
 
 app.use(express.static(publicDir));
 
+app.use("/api/public/products", productsRoutes.publicRouter);
 app.use("/api/auth", authRoutes);
 app.use("/api/orders", ordersRouter);
 app.use("/api/clients", clientsRouter);

@@ -52,7 +52,7 @@
             const confirmButton = overlay.querySelector(".crm-modal-primary");
 
             overlay.addEventListener("click", event => {
-                if (!dialog.contains(event.target)) closeModal(false);
+                if (event.target === overlay) closeModal(false);
             });
             closeButton.addEventListener("click", () => closeModal(false));
             cancelButton.addEventListener("click", () => closeModal(false));
@@ -96,7 +96,7 @@
             const cancelButton = overlay.querySelector(".crm-modal-secondary");
 
             overlay.addEventListener("click", event => {
-                if (!dialog.contains(event.target)) closeModal(null);
+                if (event.target === overlay) closeModal(null);
             });
             closeButton.addEventListener("click", () => closeModal(null));
             cancelButton.addEventListener("click", () => closeModal(null));

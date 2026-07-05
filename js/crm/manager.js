@@ -276,7 +276,9 @@ productsView?.addEventListener("input", event => {
 
     productFilters.search = searchInput.value.trim();
     window.clearTimeout(productsView.searchTimer);
-    productsView.searchTimer = window.setTimeout(loadProducts, 250);
+    productsView.searchTimer = window.setTimeout(() => {
+        loadProducts({ preserveControls: true });
+    }, 200);
 });
 
 productsView?.addEventListener("change", event => {
@@ -317,6 +319,18 @@ productsView?.addEventListener("click", event => {
     const toggleButton = event.target.closest(".product-toggle");
     if (toggleButton) {
         toggleProductStatus(toggleButton.dataset.productId, toggleButton.dataset.isActive === "1");
+        return;
+    }
+
+    const deleteButton = event.target.closest(".product-delete");
+    if (deleteButton) {
+        deleteProduct(deleteButton.dataset.productId);
+        return;
+    }
+
+    const restoreButton = event.target.closest(".product-restore");
+    if (restoreButton) {
+        restoreProduct(restoreButton.dataset.productId);
     }
 });
 

@@ -3,7 +3,12 @@ function canEditProducts() {
 }
 
 function getProductStatusLabel(product) {
+    if (product.deletedAt) return "Удален";
     return product.isActive ? "Активен" : "Скрыт";
+}
+
+function isDeletedProductsFilter() {
+    return productFilters.status === "deleted";
 }
 
 function getProductImage(product) {
@@ -116,6 +121,7 @@ function renderProductsView() {
                     <option value=""${productFilters.status === "" ? " selected" : ""}>Все</option>
                     <option value="active"${productFilters.status === "active" ? " selected" : ""}>Активные</option>
                     <option value="hidden"${productFilters.status === "hidden" ? " selected" : ""}>Скрытые</option>
+                    <option value="deleted"${productFilters.status === "deleted" ? " selected" : ""}>Удаленные</option>
                 </select>
             </label>
         </section>
@@ -158,25 +164,50 @@ function renderProductsList() {
     `;
 }
 
+function renderProductsListContainer() {
+    const list = productsView?.querySelector(".products-list");
+    if (!list) {
+        renderProductsView();
+        return;
+    }
+
+    list.innerHTML = productsLoading ? renderCrmLoader("Загружаем каталог...") : renderProductsList();
+}
+
 function renderProductRow(product) {
+    const isDeleted = Boolean(product.deletedAt);
+    const deletedMeta = isDeleted
+        ? `<small class="product-deleted-meta">
+            Удален: ${escapeHtml(formatDate(product.deletedAt))}
+            ${product.deletedByName ? ` · ${escapeHtml(product.deletedByName)}` : ""}
+        </small>`
+        : "";
     const actions = canEditProducts()
-        ? `
+        ? (isDeleted
+            ? `
+            <div class="product-actions">
+                <button class="product-restore" data-product-id="${product.id}" type="button">Восстановить</button>
+            </div>
+        `
+            : `
             <div class="product-actions">
                 <button class="product-edit" data-product-id="${product.id}" type="button">Редактировать</button>
                 <button class="product-toggle" data-product-id="${product.id}" data-is-active="${product.isActive ? "0" : "1"}" type="button">
                     ${product.isActive ? "Скрыть" : "Показать"}
                 </button>
+                <button class="product-delete" data-product-id="${product.id}" type="button">Удалить</button>
             </div>
-        `
+        `)
         : `<span class="settings-muted">Просмотр</span>`;
 
     return `
-        <article class="products-row" role="row" data-product-id="${product.id}">
+        <article class="products-row${isDeleted ? " is-deleted" : ""}" role="row" data-product-id="${product.id}">
             <div class="product-title-cell">
                 <span class="product-thumb">${getProductImage(product)}</span>
                 <div>
                     <strong>${escapeHtml(product.title)}</strong>
                     <small>${escapeHtml(product.externalId)}</small>
+                    ${deletedMeta}
                 </div>
             </div>
             <span>${escapeHtml(product.category || "—")}</span>
@@ -184,25 +215,35 @@ function renderProductRow(product) {
             <span>${product.price === null ? "—" : formatMoney(product.price)}</span>
             <span>${formatWeight(product.weight)}</span>
             <span>${escapeHtml(product.unit || "шт")}</span>
-            <span class="product-status ${product.isActive ? "active" : "hidden"}">${getProductStatusLabel(product)}</span>
+            <span class="product-status ${isDeleted ? "deleted" : (product.isActive ? "active" : "hidden")}">${getProductStatusLabel(product)}</span>
             <span>${escapeHtml(product.source || "crm")}</span>
             ${actions}
         </article>
     `;
 }
 
-function getProductsQuery() {
+function getProductsQuery(options = {}) {
+    const { forExport = false } = options;
     const params = new URLSearchParams();
     if (productFilters.search) params.set("search", productFilters.search);
     if (productFilters.category) params.set("category", productFilters.category);
-    if (productFilters.status) params.set("status", productFilters.status);
+    if (!forExport && isDeletedProductsFilter()) {
+        params.set("deleted", "true");
+    } else if (productFilters.status && !isDeletedProductsFilter()) {
+        params.set("status", productFilters.status);
+    }
     const query = params.toString();
     return query ? `?${query}` : "";
 }
 
-async function loadProducts() {
+async function loadProducts(options = {}) {
+    const { preserveControls = false } = options;
     productsLoading = true;
-    renderProductsView();
+    if (preserveControls) {
+        renderProductsListContainer();
+    } else {
+        renderProductsView();
+    }
 
     try {
         const result = await CrmApi.get(`/api/products${getProductsQuery()}`);
@@ -214,7 +255,11 @@ async function loadProducts() {
         products = [];
     } finally {
         productsLoading = false;
-        renderProductsView();
+        if (preserveControls) {
+            renderProductsListContainer();
+        } else {
+            renderProductsView();
+        }
     }
 }
 
@@ -259,9 +304,49 @@ async function toggleProductStatus(productId, isActive) {
     }
 }
 
+async function deleteProduct(productId) {
+    if (!canEditProducts()) return;
+
+    const confirmed = await CrmModal.open({
+        title: CRM_MESSAGES.CONFIRM_DELETE_PRODUCT_TITLE,
+        message: "Товар будет скрыт из каталога и перемещен в удаленные. Старые заказы не изменятся.",
+        confirmText: CRM_MESSAGES.CONFIRM_DELETE_PRODUCT_ACTION
+    });
+
+    if (!confirmed) return;
+
+    try {
+        await CrmApi.delete(`/api/products/${productId}`);
+        notifySuccess(CRM_MESSAGES.SUCCESS_PRODUCT_DELETED);
+        await loadProducts();
+    } catch (error) {
+        notifyError(error, "Не удалось удалить товар.");
+    }
+}
+
+async function restoreProduct(productId) {
+    if (!canEditProducts()) return;
+
+    const confirmed = await CrmModal.open({
+        title: CRM_MESSAGES.CONFIRM_RESTORE_PRODUCT_TITLE,
+        message: "Товар снова появится в CRM-каталоге и на публичном сайте.",
+        confirmText: CRM_MESSAGES.CONFIRM_RESTORE_PRODUCT_ACTION
+    });
+
+    if (!confirmed) return;
+
+    try {
+        await CrmApi.post(`/api/products/${productId}/restore`);
+        notifySuccess(CRM_MESSAGES.SUCCESS_PRODUCT_RESTORED);
+        await loadProducts();
+    } catch (error) {
+        notifyError(error, "Не удалось восстановить товар.");
+    }
+}
+
 async function downloadProductsPrice() {
     try {
-        await CrmApi.download(`/api/products/export/excel${getProductsQuery()}`);
+        await CrmApi.download(`/api/products/export/excel${getProductsQuery({ forExport: true })}`);
         notifySuccess(CRM_MESSAGES.SUCCESS_PRICE_DOWNLOADED);
     } catch (error) {
         notifyError(error, "Не удалось скачать прайс.");

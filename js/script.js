@@ -16,7 +16,7 @@ const synonyms = {
     "лам": ["ламинат"],
     "лин": ["линолеум"]
 };
-const products = [
+let products = [
     {
         "name": "Штукатурка гипсовая Knauf Ротбанд 5 кг",
         "price": 242,
@@ -37147,6 +37147,8 @@ const catalogBreadcrumbSubcategory = document.getElementById("catalogBreadcrumbS
 const catalogBreadcrumbSubcategorySeparator = document.getElementById("catalogBreadcrumbSubcategorySeparator");
 const copyManagerPhoneBtn = document.getElementById("copyManagerPhone");
 const managerPhoneAction = copyManagerPhoneBtn?.closest(".catalog-help-action");
+const downloadPublicPriceBtn = document.getElementById("downloadPublicPrice");
+const catalogMessage = document.getElementById("catalogMessage");
 const cartBtn = document.getElementById("cartBtn");
 const cartCountEl = document.getElementById("cartCount");
 const cartModal = document.getElementById("cartModal");
@@ -37176,14 +37178,56 @@ const searchInput = document.getElementById("searchInput");
 const headerSearch = searchInput?.closest(".header-search");
 const searchDropdown = document.createElement("div");
 
-let cart = loadCart();
+let cart = [];
 let searchQuery = "";
 let activeCategoryPath = "";
 let showAllCatalogProducts = false;
+let productsById = new Map();
+let catalogLoadError = "";
+let publicSearchTimer = null;
 
 searchDropdown.className = "search-dropdown hidden";
 searchDropdown.setAttribute("aria-live", "polite");
 headerSearch?.appendChild(searchDropdown);
+
+function normalizeProductForSite(product, index) {
+    const category = product.category && typeof product.category === "object"
+        ? product.category
+        : {
+            main: product.category || "",
+            section: product.subcategory || "",
+            type: ""
+        };
+    const id = Number(product.id ?? product.productId ?? index);
+    const title = cleanDisplayText(product.title || product.name);
+
+    return {
+        id,
+        productId: id,
+        externalId: product.externalId || product.external_id || "",
+        name: title,
+        title,
+        slug: product.slug || "",
+        price: product.price === null || product.price === undefined ? null : Number(product.price) || 0,
+        unit: cleanDisplayText(product.unit) || "шт",
+        weight: Number(product.weight) || 0,
+        category: {
+            main: cleanDisplayText(category.main),
+            section: cleanDisplayText(category.section),
+            type: cleanDisplayText(category.type)
+        },
+        image: cleanDisplayText(product.image),
+        description: cleanDisplayText(product.description)
+    };
+}
+
+function rebuildProductsIndex() {
+    productsById = new Map(products.map(product => [Number(product.id), product]));
+}
+
+function getProductById(id) {
+    return productsById.get(Number(id)) || null;
+}
 
 function copyTextToClipboard(value) {
     const copyWithInput = () => {
@@ -37243,15 +37287,26 @@ function loadCart() {
         const normalizedItems = new Map();
 
         saved.forEach(item => {
-            const id = Number(item?.id);
-            const qty = Math.floor(Number(item?.qty));
+            const id = Number(item?.productId ?? item?.id);
+            const qty = Math.floor(Number(item?.quantity ?? item?.qty));
+            const product = getProductById(id);
 
-            if (Number.isInteger(id) && products[id] && qty > 0) {
+            if (Number.isInteger(id) && product && qty > 0) {
                 normalizedItems.set(id, (normalizedItems.get(id) || 0) + qty);
             }
         });
 
-        return Array.from(normalizedItems, ([id, qty]) => ({ id, qty }));
+        return Array.from(normalizedItems, ([productId, quantity]) => {
+            const product = getProductById(productId);
+            return {
+                productId,
+                title: product.name,
+                price: Number(product.price) || 0,
+                weight: Number(product.weight) || 0,
+                unit: product.unit || "шт",
+                quantity
+            };
+        });
     } catch {
         return [];
     }
@@ -37259,9 +37314,105 @@ function loadCart() {
 
 function saveCart() {
     try {
-        localStorage.setItem("matmix_cart", JSON.stringify(cart));
+        localStorage.setItem("matmix_cart", JSON.stringify(cart.map(item => {
+            const product = getProductById(item.productId);
+            return {
+                productId: item.productId,
+                title: product?.name || item.title,
+                price: Number(product?.price ?? item.price) || 0,
+                weight: Number(product?.weight ?? item.weight) || 0,
+                unit: product?.unit || item.unit || "шт",
+                quantity: Number(item.quantity) || 0
+            };
+        })));
     } catch {
         // Cart still works during the session if browser storage is unavailable.
+    }
+}
+
+function getCartItem(productId) {
+    return cart.find(item => Number(item.productId) === Number(productId));
+}
+
+function getCartItemQty(productId) {
+    return Number(getCartItem(productId)?.quantity) || 0;
+}
+
+function showCatalogMessage(message, type = "error") {
+    if (!catalogMessage) return;
+
+    catalogMessage.textContent = message || "";
+    catalogMessage.classList.toggle("error", type === "error");
+    catalogMessage.classList.toggle("success", type === "success");
+}
+
+function getDownloadFileName(response, fallback) {
+    const disposition = response.headers.get("Content-Disposition") || "";
+    const encodedMatch = disposition.match(/filename\*=UTF-8''([^;]+)/i);
+    if (encodedMatch) {
+        try {
+            return decodeURIComponent(encodedMatch[1]);
+        } catch {
+            return fallback;
+        }
+    }
+
+    const plainMatch = disposition.match(/filename="?([^";]+)"?/i);
+    return plainMatch?.[1] || fallback;
+}
+
+async function downloadPublicPrice() {
+    if (!downloadPublicPriceBtn) return;
+
+    downloadPublicPriceBtn.disabled = true;
+    showCatalogMessage("");
+
+    try {
+        const response = await fetch("/api/public/products/export/excel");
+        if (!response.ok) {
+            const result = await response.json().catch(() => ({}));
+            throw new Error(result.message || "Не удалось скачать прайс.");
+        }
+
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = getDownloadFileName(response, "MatMix-прайс.xlsx");
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+    } catch (error) {
+        console.warn("Public price download error:", error);
+        showCatalogMessage("Не удалось скачать прайс. Попробуйте позже.");
+    } finally {
+        downloadPublicPriceBtn.disabled = false;
+    }
+}
+
+async function loadPublicProducts() {
+    try {
+        const response = await fetch("/api/public/products");
+        const result = await response.json().catch(() => ({}));
+
+        if (!response.ok || !result.success || !Array.isArray(result.products)) {
+            throw new Error(result.message || "Не удалось загрузить каталог.");
+        }
+
+        products = result.products.map(normalizeProductForSite);
+        rebuildProductsIndex();
+        cart = loadCart();
+        saveCart();
+        catalogLoadError = "";
+        showCatalogMessage("");
+    } catch (error) {
+        console.warn("Public catalog load error:", error);
+        products = [];
+        rebuildProductsIndex();
+        cart = loadCart();
+        catalogLoadError = "Не удалось загрузить каталог. Проверьте подключение к серверу.";
+        showCatalogMessage(catalogLoadError);
     }
 }
 
@@ -37451,15 +37602,18 @@ function cleanDisplayText(value) {
 function getCartOrderItems() {
     return cart
         .map(item => {
-            const product = products[item.id];
+            const product = getProductById(item.productId);
             if (!product) return null;
 
             const price = Number(product.price) || 0;
-            const qty = Number(item.qty) || 0;
+            const qty = Number(item.quantity) || 0;
             const weight = Number(product.weight) || 0;
 
             return {
+                productId: product.id,
+                externalId: product.externalId || "",
                 name: cleanDisplayText(product.name),
+                title: cleanDisplayText(product.name),
                 price,
                 qty,
                 unit: product.unit || "шт",
@@ -37505,7 +37659,8 @@ function normalizeSearchText(value) {
     return cleanDisplayText(value)
         .toLowerCase()
         .replace(/ё/g, "е")
-        .replace(/[^a-zа-я0-9\s-]/g, " ")
+        .replace(/[-.,;:()[\]{}_/\\]+/g, " ")
+        .replace(/[^a-zа-я0-9\s]+/g, " ")
         .replace(/\s+/g, " ")
         .trim();
 }
@@ -37559,7 +37714,19 @@ function getSoftTokenMatchScore(token, variant) {
 }
 
 function getProductSearchText(product) {
-    return normalizeSearchText(product.name);
+    return normalizeSearchText([
+        product.name,
+        product.title,
+        product.category?.main,
+        product.category?.section,
+        product.category?.type,
+        product.description,
+        product.externalId,
+        product.slug,
+        product.unit,
+        product.price,
+        product.weight
+    ].filter(value => value !== null && value !== undefined).join(" "));
 }
 
 function getProductSearchScore(product, query) {
@@ -37569,6 +37736,13 @@ function getProductSearchScore(product, query) {
     const productText = getProductSearchText(product);
     const queryTokens = getSearchTokens(queryText);
     if (!queryTokens.length) return { score: 1, matchedTokens: 0 };
+
+    if (queryTokens.every(token => productText.includes(token))) {
+        return {
+            score: (productText.includes(queryText) ? 160 : 90) + queryTokens.length * 25,
+            matchedTokens: queryTokens.length
+        };
+    }
 
     let score = productText.includes(queryText) ? 100 : 0;
     let matchedTokens = 0;
@@ -37774,21 +37948,21 @@ function productMatchesCategory(product) {
 
 function getCartTotal() {
     return cart.reduce((sum, item) => {
-        const product = products[item.id];
-        return sum + (product.price || 0) * item.qty;
+        const product = getProductById(item.productId);
+        return sum + (Number(product?.price) || 0) * item.quantity;
     }, 0);
 }
 
 function getCartWeight() {
     return cart.reduce((sum, item) => {
-        const product = products[item.id];
+        const product = getProductById(item.productId);
         const weight = Number(product?.weight);
-        return sum + (Number.isFinite(weight) ? weight : 0) * item.qty;
+        return sum + (Number.isFinite(weight) ? weight : 0) * item.quantity;
     }, 0);
 }
 
 function getCartQty() {
-    return cart.reduce((sum, item) => sum + item.qty, 0);
+    return cart.reduce((sum, item) => sum + item.quantity, 0);
 }
 
 function updateCartSummary() {
@@ -37804,16 +37978,28 @@ function updateCartSummary() {
 
 function setProductQty(id, nextQty, options = {}) {
     const { renderCartView = true, renderSearchView = true } = options;
-    if (!products[id]) return;
+    const product = getProductById(id);
+    if (!product) return;
 
-    const item = cart.find(entry => entry.id === id);
+    const item = getCartItem(id);
 
     if (nextQty <= 0) {
-        cart = cart.filter(entry => entry.id !== id);
+        cart = cart.filter(entry => Number(entry.productId) !== Number(id));
     } else if (item) {
-        item.qty = nextQty;
+        item.quantity = nextQty;
+        item.title = product.name;
+        item.price = Number(product.price) || 0;
+        item.weight = Number(product.weight) || 0;
+        item.unit = product.unit || "шт";
     } else {
-        cart.push({ id, qty: nextQty });
+        cart.push({
+            productId: Number(id),
+            title: product.name,
+            price: Number(product.price) || 0,
+            weight: Number(product.weight) || 0,
+            unit: product.unit || "шт",
+            quantity: nextQty
+        });
     }
 
     saveCart();
@@ -37859,8 +38045,8 @@ function isCatalogDefaultView() {
 function getProductsByNames(names) {
     return names
         .map(name => {
-            const id = products.findIndex(product => product.name === name);
-            return id === -1 ? null : { product: products[id], id };
+            const product = products.find(item => cleanDisplayText(item.name) === cleanDisplayText(name));
+            return product ? { product, id: product.id } : null;
         })
         .filter(Boolean);
 }
@@ -37892,6 +38078,14 @@ function renderProducts() {
     if (!grid) return;
     animateCatalogGridUpdate(grid);
     grid.innerHTML = "";
+
+    if (catalogLoadError) {
+        featuredCatalog?.classList.add("hidden");
+        grid.classList.remove("hidden");
+        grid.innerHTML = `<p class="empty-products">${catalogLoadError}</p>`;
+        return;
+    }
+
     renderFeaturedCatalogProducts();
 
     if (isCatalogDefaultView()) {
@@ -37902,7 +38096,7 @@ function renderProducts() {
     grid.classList.remove("hidden");
 
     const categoryProducts = products
-        .map((product, id) => ({ product, id }))
+        .map(product => ({ product, id: product.id }))
         .filter(({ product }) => productMatchesCategory(product));
 
     const visibleProducts = smartSearch(searchQuery, categoryProducts);
@@ -37918,8 +38112,7 @@ function renderProducts() {
 }
 
 function createProductCard(product, id) {
-    const cartItem = cart.find(item => item.id === id);
-    const qty = cartItem ? cartItem.qty : 0;
+    const qty = getCartItemQty(id);
     const card = document.createElement("article");
     card.className = "card";
 
@@ -37940,7 +38133,7 @@ function createProductCard(product, id) {
 }
 
 function getSearchDropdownResults(query) {
-    const productList = products.map((product, id) => ({ product, id }));
+    const productList = products.map(product => ({ product, id: product.id }));
     return smartSearch(query, productList).slice(0, getSearchDropdownLimit(query));
 }
 
@@ -37968,8 +38161,7 @@ function renderSearchDropdown() {
 
     searchDropdown.innerHTML = "";
     results.forEach(({ product, id }) => {
-        const cartItem = cart.find(item => item.id === id);
-        const qty = cartItem ? cartItem.qty : 0;
+        const qty = getCartItemQty(id);
         const item = document.createElement("div");
         item.className = "search-result";
         item.innerHTML = `
@@ -37989,10 +38181,8 @@ function renderPopularProducts() {
     if (!popularGrid) return;
     popularGrid.innerHTML = "";
 
-    popularProductNames.forEach(name => {
-        const id = products.findIndex(product => product.name === name);
-        if (id === -1) return;
-        popularGrid.appendChild(createProductCard(products[id], id));
+    getProductsByNames(popularProductNames).forEach(({ product, id }) => {
+        popularGrid.appendChild(createProductCard(product, id));
     });
 }
 
@@ -38096,10 +38286,20 @@ function renderCart() {
         return;
     }
 
+    cart = cart.filter(item => getProductById(item.productId));
+    if (!cart.length) {
+        saveCart();
+        clearCartConfirm?.classList.add("hidden");
+        cartItemsEl.innerHTML = `<p class="empty-cart">Корзина пока пустая</p>`;
+        updateCartSummary();
+        return;
+    }
+
     const fragment = document.createDocumentFragment();
 
     cart.forEach(item => {
-        const product = products[item.id];
+        const product = getProductById(item.productId);
+        const qty = Number(item.quantity) || 0;
         const row = document.createElement("div");
         row.className = "cart-item";
         row.innerHTML = `
@@ -38107,11 +38307,12 @@ function renderCart() {
                 <b>${cleanDisplayText(product.name)}</b>
                 <span>${formatPrice(product.price)} / ${product.unit}</span>
             </div>
-            ${getQtyControls(item.id, item.qty, true)}
+            ${getQtyControls(item.productId, qty, true)}
         `;
         fragment.appendChild(row);
     });
 
+    saveCart();
     cartItemsEl.appendChild(fragment);
     updateCartSummary();
 }
@@ -38123,7 +38324,7 @@ function handleQtyClick(event) {
     const id = Number(button.dataset.id);
     if (!Number.isInteger(id)) return;
 
-    const current = cart.find(item => item.id === id)?.qty || 0;
+    const current = getCartItemQty(id);
 
     if (button.classList.contains("add") || button.classList.contains("plus")) {
         setProductQty(id, current + 1);
@@ -38163,7 +38364,7 @@ cartItemsEl.addEventListener("change", event => {
     const id = Number(input.dataset.id);
     if (!Number.isInteger(id)) return;
 
-    const current = cart.find(item => item.id === id)?.qty || 1;
+    const current = getCartItemQty(id) || 1;
     if (!input.value) {
         input.value = current;
         resizeQtyInput(input);
@@ -38202,6 +38403,8 @@ copyManagerPhoneBtn?.addEventListener("click", event => {
         }, 1200);
     });
 });
+
+downloadPublicPriceBtn?.addEventListener("click", downloadPublicPrice);
 
 document.addEventListener("click", event => {
     if (!managerPhoneAction?.classList.contains("is-phone-visible")) return;
@@ -38352,7 +38555,11 @@ cartModal.addEventListener("click", event => {
     event.stopPropagation();
 });
 
-document.addEventListener("click", () => {
+document.addEventListener("click", event => {
+    if (event.target.closest("#cartModal, #cartBtn, .cart, .header-search, .search-dropdown")) {
+        return;
+    }
+
     cartModal.classList.add("hidden");
     showCartView();
     hideSearchDropdown();
@@ -38412,8 +38619,11 @@ document.querySelector(".logo")?.addEventListener("click", event => {
 
 searchInput?.addEventListener("input", () => {
     searchQuery = searchInput.value;
-    renderProducts();
-    renderSearchDropdown();
+    window.clearTimeout(publicSearchTimer);
+    publicSearchTimer = window.setTimeout(() => {
+        renderProducts();
+        renderSearchDropdown();
+    }, 180);
 });
 
 searchInput?.addEventListener("focus", renderSearchDropdown);
@@ -38454,7 +38664,7 @@ searchDropdown.addEventListener("change", event => {
     const id = Number(input.dataset.id);
     if (!Number.isInteger(id)) return;
 
-    const current = cart.find(item => item.id === id)?.qty || 1;
+    const current = getCartItemQty(id) || 1;
     if (!input.value) {
         input.value = current;
         resizeQtyInput(input);
@@ -38489,8 +38699,16 @@ if (initialSearchQuery && searchInput) {
     searchQuery = initialSearchQuery;
 }
 
-renderCategoryControls();
-renderProducts();
-renderPopularProducts();
-setupCheckoutFormFields();
-updateCartSummary();
+async function initializeSite() {
+    products = products.map(normalizeProductForSite);
+    rebuildProductsIndex();
+    cart = loadCart();
+    await loadPublicProducts();
+    renderCategoryControls();
+    renderProducts();
+    renderPopularProducts();
+    setupCheckoutFormFields();
+    updateCartSummary();
+}
+
+initializeSite();

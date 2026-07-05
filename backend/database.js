@@ -167,7 +167,10 @@ async function initProductsTable() {
             source TEXT,
             last_imported_at TEXT,
             created_at TEXT,
-            updated_at TEXT
+            updated_at TEXT,
+            deleted_at TEXT,
+            deleted_by_id INTEGER,
+            deleted_by_name TEXT
         )
     `);
 
@@ -187,9 +190,13 @@ async function initProductsTable() {
     await ensureColumn("products", "last_imported_at", "TEXT");
     await ensureColumn("products", "created_at", "TEXT");
     await ensureColumn("products", "updated_at", "TEXT");
+    await ensureColumn("products", "deleted_at", "TEXT");
+    await ensureColumn("products", "deleted_by_id", "INTEGER");
+    await ensureColumn("products", "deleted_by_name", "TEXT");
     await run("CREATE UNIQUE INDEX IF NOT EXISTS idx_products_external_id ON products(external_id)");
     await run("CREATE INDEX IF NOT EXISTS idx_products_category ON products(category, subcategory)");
     await run("CREATE INDEX IF NOT EXISTS idx_products_is_active ON products(is_active)");
+    await run("CREATE INDEX IF NOT EXISTS idx_products_deleted_at ON products(deleted_at)");
 }
 
 async function ensureColumn(tableName, columnName, columnDefinition) {
@@ -206,9 +213,9 @@ function extractPublicCatalogProducts() {
     if (!fs.existsSync(scriptPath)) return [];
 
     const script = fs.readFileSync(scriptPath, "utf8");
-    const declaration = "const products =";
-    const start = script.indexOf(declaration);
-    if (start === -1) return [];
+    const declarationMatch = script.match(/\b(?:const|let)\s+products\s*=/);
+    if (!declarationMatch) return [];
+    const start = declarationMatch.index;
 
     const arrayStart = script.indexOf("[", start);
     if (arrayStart === -1) return [];
