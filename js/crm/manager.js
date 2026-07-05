@@ -1,4 +1,17 @@
 // CRM entry point and event wiring.
+function renderCrmNavigation() {
+    if (!crmNav) return;
+
+    crmNav.innerHTML = crmNavigation.map(item => item.enabled
+        ? `<button class="${item.id === activeSection ? "active" : ""}" data-section="${escapeHtml(item.id)}" type="button">${escapeHtml(item.label)}</button>`
+        : `<span>${escapeHtml(item.label)} <small>скоро</small></span>`
+    ).join("");
+
+    crmNavButtons = document.querySelectorAll(".crm-nav button[data-section]");
+}
+
+renderCrmNavigation();
+
 statuses.forEach(status => {
     const option = document.createElement("option");
     option.value = status;
@@ -21,6 +34,14 @@ statusTabs?.addEventListener("click", event => {
 crmNavButtons.forEach(button => {
     button.addEventListener("click", () => {
         setActiveSection(button.dataset.section);
+
+        if (button.dataset.section === "dashboard") {
+            loadDashboard();
+        }
+
+        if (button.dataset.section === "orders") {
+            loadOrders();
+        }
 
         if (button.dataset.section === "clients" && !clients.length) {
             loadClients();
@@ -139,9 +160,22 @@ clientsList?.addEventListener("click", event => {
     }
 });
 
+dashboardView?.addEventListener("click", event => {
+    const retryButton = event.target.closest(".dashboard-retry");
+    if (retryButton) {
+        loadDashboard();
+        return;
+    }
+
+    const sectionButton = event.target.closest(".dashboard-open-section");
+    if (!sectionButton) return;
+
+    openDashboardSection(sectionButton.dataset.sectionTarget);
+});
+
 checkAccess().then(isAllowed => {
     if (isAllowed) {
-        loadOrders();
-        setActiveSection("orders");
+        setActiveSection("dashboard");
+        loadDashboard();
     }
 });

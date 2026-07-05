@@ -26,10 +26,19 @@ const managerMessage = document.getElementById("managerMessage");
 const managerUserName = document.getElementById("managerUserName");
 const managerUserRole = document.getElementById("managerUserRole");
 const logoutBtn = document.getElementById("logoutBtn");
+const crmNav = document.getElementById("crmNav");
+const dashboardView = document.getElementById("dashboardView");
+const dashboardUserName = document.getElementById("dashboardUserName");
+const dashboardNewOrders = document.getElementById("dashboardNewOrders");
+const dashboardWorkOrders = document.getElementById("dashboardWorkOrders");
+const dashboardWaitingOrders = document.getElementById("dashboardWaitingOrders");
+const dashboardDoneToday = document.getElementById("dashboardDoneToday");
+const dashboardClientsTotal = document.getElementById("dashboardClientsTotal");
+const dashboardRecentOrders = document.getElementById("dashboardRecentOrders");
 const ordersTotalCount = document.getElementById("ordersTotalCount");
 const ordersNewCount = document.getElementById("ordersNewCount");
 const ordersWorkCount = document.getElementById("ordersWorkCount");
-const crmNavButtons = document.querySelectorAll(".crm-nav button[data-section]");
+let crmNavButtons = document.querySelectorAll(".crm-nav button[data-section]");
 const ordersTopbar = document.getElementById("ordersTopbar");
 const clientsView = document.getElementById("clientsView");
 const clientsList = document.getElementById("clientsList");
@@ -42,7 +51,7 @@ const clientsTotalSpent = document.getElementById("clientsTotalSpent");
 let orders = [];
 let clients = [];
 let currentUser = null;
-let activeSection = "orders";
+let activeSection = "dashboard";
 let regularOrderStats = {
     total: 0,
     new: 0,
@@ -53,6 +62,15 @@ const expandedClientOrderIds = new Set();
 const clientOrders = new Map();
 const activeOrderTabs = new Map();
 let expandedDeletedOrderId = null;
+
+const crmNavigation = [
+    { id: "dashboard", label: "Главная", enabled: true },
+    { id: "orders", label: "Заказы", enabled: true },
+    { id: "clients", label: "Клиенты", enabled: true },
+    { id: "catalog", label: "Каталог", enabled: false },
+    { id: "statistics", label: "Статистика", enabled: false },
+    { id: "settings", label: "Настройки", enabled: false }
+];
 
 const eventTypeLabels = {
     created: "Создание",

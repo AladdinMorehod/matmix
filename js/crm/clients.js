@@ -6,11 +6,15 @@ function setActiveSection(section) {
         button.classList.toggle("active", button.dataset.section === section);
     });
 
+    const isDashboard = section === "dashboard";
     const isOrders = section === "orders";
+    const isClients = section === "clients";
+
+    dashboardView?.classList.toggle("hidden", !isDashboard);
     ordersTopbar?.classList.toggle("hidden", !isOrders);
     statusFilter?.closest(".manager-toolbar")?.classList.toggle("hidden", !isOrders);
     ordersList?.classList.toggle("hidden", !isOrders);
-    clientsView?.classList.toggle("hidden", isOrders);
+    clientsView?.classList.toggle("hidden", !isClients);
     setMessage("");
 
 }

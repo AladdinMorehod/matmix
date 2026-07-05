@@ -17,8 +17,9 @@
                 <span>Кабинет менеджера</span>
             </div>
 
-            <nav class="crm-nav">
-                <button class="active" data-section="orders" type="button">Заказы</button>
+            <nav class="crm-nav" id="crmNav">
+                <button class="active" data-section="dashboard" type="button">Главная</button>
+                <button data-section="orders" type="button">Заказы</button>
                 <button data-section="clients" type="button">Клиенты</button>
                 <span>Каталог <small>скоро</small></span>
                 <span>Статистика <small>скоро</small></span>
@@ -36,6 +37,71 @@
         </aside>
 
         <section class="crm-workspace">
+            <section id="dashboardView" class="dashboard-view" aria-label="Главная CRM">
+                <header class="crm-topbar">
+                    <div>
+                        <h1>Главная</h1>
+                        <p>Обзор работы MatMix CRM</p>
+                    </div>
+                </header>
+
+                <section class="dashboard-welcome">
+                    <div>
+                        <span>Рабочий стол</span>
+                        <strong>Добро пожаловать, <span id="dashboardUserName">пользователь</span></strong>
+                    </div>
+                </section>
+
+                <section class="dashboard-stats" aria-label="Показатели CRM">
+                    <article class="dashboard-stat">
+                        <span>Новые заявки</span>
+                        <strong id="dashboardNewOrders">0</strong>
+                    </article>
+                    <article class="dashboard-stat">
+                        <span>В работе</span>
+                        <strong id="dashboardWorkOrders">0</strong>
+                    </article>
+                    <article class="dashboard-stat">
+                        <span>Ожидают клиента</span>
+                        <strong id="dashboardWaitingOrders">0</strong>
+                    </article>
+                    <article class="dashboard-stat">
+                        <span>Завершены сегодня</span>
+                        <strong id="dashboardDoneToday">0</strong>
+                    </article>
+                    <article class="dashboard-stat">
+                        <span>Всего клиентов</span>
+                        <strong id="dashboardClientsTotal">0</strong>
+                    </article>
+                </section>
+
+                <div class="dashboard-grid">
+                    <section class="dashboard-panel dashboard-panel-wide">
+                        <div class="dashboard-panel-header">
+                            <h2>Последние заявки</h2>
+                            <button class="dashboard-open-section" data-section-target="orders" type="button">Открыть заказы</button>
+                        </div>
+                        <div id="dashboardRecentOrders" class="dashboard-recent-orders"></div>
+                    </section>
+
+                    <section class="dashboard-panel">
+                        <h2>Последние действия</h2>
+                        <p class="dashboard-muted">Общая лента действий будет добавлена позже.</p>
+                    </section>
+
+                    <section class="dashboard-panel">
+                        <h2>Быстрые действия</h2>
+                        <div class="dashboard-actions">
+                            <button class="dashboard-open-section" data-section-target="orders" type="button">Открыть заказы</button>
+                            <button class="dashboard-open-section" data-section-target="clients" type="button">Открыть клиентов</button>
+                            <button type="button" disabled>Каталог</button>
+                            <button type="button" disabled>Статистика</button>
+                            <button type="button" disabled>Настройки</button>
+                        </div>
+                    </section>
+                </div>
+            </section>
+
             <header id="ordersTopbar" class="crm-topbar">
                 <div>
                     <h1>Заказы</h1>
@@ -93,6 +159,7 @@
     <script src="js/crm/orders.js"></script>
     <script src="js/crm/clients.js"></script>
     <script src="js/crm/actions.js"></script>
+    <script src="js/crm/dashboard.js"></script>
     <script src="js/crm/manager.js"></script>
 </body>
 </html>

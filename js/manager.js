@@ -5,6 +5,7 @@
         "js/crm/orders.js",
         "js/crm/clients.js",
         "js/crm/actions.js",
+        "js/crm/dashboard.js",
         "js/crm/manager.js"
     ];
 
