@@ -232,15 +232,43 @@ function getContactAction(order) {
     return null;
 }
 
-function setMessage(message = "") {
+function setMessage(message = "", options = {}) {
     managerMessage.textContent = message;
+
+    if (message && options.toast) {
+        const type = options.type || "info";
+        window.CrmToast?.[type]?.(message);
+    }
 }
 
 function getSafeErrorMessage(error, fallback = "Произошла непредвиденная ошибка.") {
-    return window.MatMixErrors?.getMessage(error, {
-        fallback,
-        networkFallback: "Не удалось соединиться с сервером."
-    }) || fallback;
+    return window.CrmErrorHandler?.getMessage(error, fallback)
+        || window.MatMixErrors?.getMessage(error, {
+            fallback,
+            networkFallback: "Не удалось соединиться с сервером."
+        })
+        || fallback;
+}
+
+function renderCrmLoader(message) {
+    return window.CrmLoader?.render(message) || `<p>${escapeHtml(message || "Загрузка...")}</p>`;
+}
+
+function notifySuccess(message) {
+    setMessage(message);
+    window.CrmToast?.success(message);
+}
+
+function notifyWarning(message) {
+    setMessage(message);
+    window.CrmToast?.warning(message);
+}
+
+function notifyError(error, fallback) {
+    const message = getSafeErrorMessage(error, fallback);
+    setMessage(message);
+    window.CrmToast?.error(message);
+    return message;
 }
 
 function getRoleLabel(role) {
@@ -253,24 +281,23 @@ function getRoleLabel(role) {
 }
 
 async function checkAccess() {
-    setMessage("Проверка доступа...");
+    setMessage(CRM_MESSAGES.LOADING_ACCESS);
     ordersList.innerHTML = "";
 
     try {
-        const response = await fetch("/api/auth/me", { credentials: "include" });
-        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
-
-        if (!response.ok || !result.success) {
-            window.location.href = "/login.html";
-            return false;
-        }
+        const result = await CrmApi.get("/api/auth/me");
 
         currentUser = result.user;
         managerUserName.textContent = currentUser.name;
         managerUserRole.textContent = getRoleLabel(currentUser.role);
         return true;
-    } catch {
-        setMessage("Не удалось проверить доступ. Сервер недоступен.");
+    } catch (error) {
+        if (error?.status === 401) {
+            window.location.href = "/login.html";
+            return false;
+        }
+
+        notifyError(error, "Не удалось проверить доступ. Сервер недоступен.");
         return false;
     }
 }

@@ -63,7 +63,7 @@ refreshClientsBtn?.addEventListener("click", () => loadClients());
 clientSearchInput?.addEventListener("input", renderClients);
 logoutBtn.addEventListener("click", async () => {
     try {
-        await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
+        await CrmApi.post("/api/auth/logout");
     } finally {
         window.location.href = "/login.html";
     }
@@ -235,7 +235,6 @@ settingsView?.addEventListener("submit", event => {
     const profilePasswordForm = event.target.closest("#profilePasswordForm");
     if (profilePasswordForm) {
         event.preventDefault();
-        console.log("[settings] delegated change password submit");
         changeOwnPassword(profilePasswordForm);
         return;
     }
@@ -243,7 +242,6 @@ settingsView?.addEventListener("submit", event => {
     const createUserForm = event.target.closest("#createUserForm");
     if (createUserForm) {
         event.preventDefault();
-        console.log("[settings] delegated create user submit");
         createUser(createUserForm);
         return;
     }

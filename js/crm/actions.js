@@ -3,18 +3,13 @@ async function loadOrderEvents(id) {
     const orderId = String(id);
 
     try {
-        const response = await fetch(`/api/orders/${id}/events`, { credentials: "include" });
-        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
-
-        if (!response.ok || !result.success) {
-            throw new Error(result.message || "История заявки не загрузилась.");
-        }
+        const result = await CrmApi.get(`/api/orders/${id}/events`);
 
         orderEvents.set(orderId, result.events || []);
         renderOrders();
     } catch (error) {
         orderEvents.set(orderId, []);
-        setMessage(getSafeErrorMessage(error, "Не удалось загрузить историю заявки."));
+        notifyError(error, "Не удалось загрузить историю заявки.");
         renderOrders();
     }
 }
@@ -53,171 +48,121 @@ async function addOrderNote(id, message) {
     const cleanMessage = String(message || "").trim();
 
     if (cleanMessage.length < 2) {
-        setMessage("Заметка должна быть не короче 2 символов.");
+        notifyWarning(CRM_MESSAGES.WARNING_SHORT_NOTE);
         return;
     }
 
     try {
-        const response = await fetch(`/api/orders/${id}/notes`, {
-            method: "POST",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(getOrderMutationPayload(id, { message: cleanMessage }))
-        });
-        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
+        await CrmApi.post(`/api/orders/${id}/notes`, getOrderMutationPayload(id, { message: cleanMessage }));
 
-        if (!response.ok || !result.success) {
-            throw new Error(result.message || "Заметка не сохранилась.");
-        }
-
-        setMessage("Заметка сохранена.");
+        notifySuccess(CRM_MESSAGES.SUCCESS_ORDER_NOTE_SAVED);
         await loadOrders({ preserveMessage: true });
         await loadOrderEvents(id);
     } catch (error) {
         if (error.message === "Заявка была изменена другим пользователем.") {
             await loadOrders({ preserveMessage: true });
         }
-        setMessage(getOrderConflictMessage(error) || "Не удалось сохранить заметку.");
+        notifyError(getOrderConflictMessage(error) || error, "Не удалось сохранить заметку.");
     }
 }
 
 async function updateOrderStatus(id, status) {
     try {
-        const response = await fetch(`/api/orders/${id}/status`, {
-            method: "PATCH",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(getOrderMutationPayload(id, { status }))
-        });
-        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
+        await CrmApi.patch(`/api/orders/${id}/status`, getOrderMutationPayload(id, { status }));
 
-        if (!response.ok || !result.success) {
-            throw new Error(result.message || "Статус не обновился.");
-        }
-
-        setMessage("Статус обновлен.");
+        notifySuccess(CRM_MESSAGES.SUCCESS_ORDER_STATUS_CHANGED);
         await loadOrders({ preserveMessage: true });
         await refreshExpandedHistory(id);
     } catch (error) {
         if (error.message === "Заявка была изменена другим пользователем.") {
             await loadOrders({ preserveMessage: true });
         }
-        setMessage(getOrderConflictMessage(error) || "Не удалось обновить статус.");
+        notifyError(getOrderConflictMessage(error) || error, "Не удалось обновить статус.");
         renderOrders();
     }
 }
 
 async function runOrderAction(id, action) {
     const actionMessages = {
-        take: "Заявка взята в работу.",
-        release: "Заявка освобождена."
+        take: CRM_MESSAGES.SUCCESS_ORDER_TAKEN,
+        release: CRM_MESSAGES.SUCCESS_ORDER_RELEASED
     };
 
     try {
-        const response = await fetch(`/api/orders/${id}/${action}`, {
-            method: "POST",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(getOrderMutationPayload(id))
-        });
-        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
-
-        if (!response.ok || !result.success) {
-            throw new Error(result.message || "Действие не выполнено.");
-        }
+        await CrmApi.post(`/api/orders/${id}/${action}`, getOrderMutationPayload(id));
 
         await loadOrders({ preserveMessage: true });
         await refreshExpandedHistory(id);
-        setMessage(actionMessages[action] || "Заявка обновлена.");
+        notifySuccess(actionMessages[action] || "Заявка обновлена.");
     } catch (error) {
         await loadOrders({ preserveMessage: true });
-        setMessage(getOrderConflictMessage(error) || "Не удалось обновить заявку.");
+        notifyError(getOrderConflictMessage(error) || error, "Не удалось обновить заявку.");
     }
 }
 
 async function deleteOrder(orderId) {
     if (!orderId) {
-        setMessage("Не удалось определить номер заявки для удаления.");
+        notifyWarning("Не удалось определить номер заявки для удаления.");
         return;
     }
 
     const order = orders.find(item => String(item.id) === String(orderId));
     const orderNumber = order ? getOrderNumber(order) : `№${orderId}`;
 
-    if (!window.confirm(`Удалить заявку ${orderNumber}? Она будет скрыта из CRM, но останется в базе.`)) {
+    const confirmed = await CrmModal.open({
+        title: CRM_MESSAGES.CONFIRM_DELETE_ORDER_TITLE,
+        message: `Удалить заявку ${orderNumber}? Она будет скрыта из CRM, но останется в базе.`,
+        confirmText: CRM_MESSAGES.CONFIRM_DELETE_ORDER_ACTION
+    });
+    if (!confirmed) {
         return;
     }
 
     try {
-        const response = await fetch(`/api/orders/${orderId}`, {
-            method: "DELETE",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(getOrderMutationPayload(orderId))
-        });
-        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
-
-        if (!response.ok || !result.success) {
-            throw new Error(result.message || "Заявка не удалена.");
-        }
+        await CrmApi.delete(`/api/orders/${orderId}`, getOrderMutationPayload(orderId));
 
         orderEvents.delete(String(orderId));
         activeOrderTabs.delete(String(orderId));
         await loadOrders({ preserveMessage: true });
-        setMessage("Заявка перемещена в удаленные.");
+        notifySuccess(CRM_MESSAGES.SUCCESS_ORDER_DELETED);
     } catch (error) {
         if (error.message === "Заявка была изменена другим пользователем.") {
             await loadOrders({ preserveMessage: true });
         }
-        setMessage(getOrderConflictMessage(error) || "Не удалось удалить заявку.");
+        notifyError(getOrderConflictMessage(error) || error, "Не удалось удалить заявку.");
     }
 }
 
 async function restoreOrder(orderId) {
     if (!orderId) {
-        setMessage("Не удалось определить номер заявки для восстановления.");
+        notifyWarning("Не удалось определить номер заявки для восстановления.");
         return;
     }
 
     const order = orders.find(item => String(item.id) === String(orderId));
     const orderNumber = order ? getOrderNumber(order) : `№${orderId}`;
 
-    if (!window.confirm(`Восстановить заявку ${orderNumber}?`)) {
+    const confirmed = await CrmModal.open({
+        title: CRM_MESSAGES.CONFIRM_RESTORE_ORDER_TITLE,
+        message: `Восстановить заявку ${orderNumber}?`,
+        confirmText: CRM_MESSAGES.CONFIRM_RESTORE_ORDER_ACTION
+    });
+    if (!confirmed) {
         return;
     }
 
     try {
-        const response = await fetch(`/api/orders/${orderId}/restore`, {
-            method: "POST",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(getOrderMutationPayload(orderId))
-        });
-        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
-
-        if (!response.ok || !result.success) {
-            throw new Error(result.message || "Заявка не восстановлена.");
-        }
+        await CrmApi.post(`/api/orders/${orderId}/restore`, getOrderMutationPayload(orderId));
 
         await loadOrders({ preserveMessage: true });
         if (String(expandedDeletedOrderId) === String(orderId)) {
             expandedDeletedOrderId = null;
         }
-        setMessage("Заявка восстановлена.");
+        notifySuccess(CRM_MESSAGES.SUCCESS_ORDER_RESTORED);
     } catch (error) {
         if (error.message === "Заявка была изменена другим пользователем.") {
             await loadOrders({ preserveMessage: true });
         }
-        setMessage(getOrderConflictMessage(error) || "Не удалось восстановить заявку.");
+        notifyError(getOrderConflictMessage(error) || error, "Не удалось восстановить заявку.");
     }
 }

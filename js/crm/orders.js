@@ -158,7 +158,7 @@ function renderOrderControls(order) {
 
 function renderEventList(events) {
     if (!events) {
-        return `<p class="history-empty">История загружается...</p>`;
+        return renderCrmLoader("История загружается...");
     }
 
     if (!events.length) {
@@ -455,19 +455,16 @@ function renderOrders() {
 async function loadOrders(options = {}) {
     const { preserveMessage = false } = options;
     if (!preserveMessage) {
-        setMessage(activeSection === "myOrders" ? "Загружаем ваши заявки..." : "Загружаем заявки...");
+        const loadingMessage = activeSection === "myOrders" ? CRM_MESSAGES.LOADING_MY_ORDERS : CRM_MESSAGES.LOADING_ORDERS;
+        setMessage(loadingMessage);
+        ordersList.innerHTML = renderCrmLoader(loadingMessage);
     }
 
     try {
         const isMyOrders = activeSection === "myOrders";
         const isDeletedFilter = !isMyOrders && statusFilter.value === deletedStatusFilter;
         const url = isMyOrders ? "/api/orders?mine=true" : (isDeletedFilter ? "/api/orders?deleted=true" : "/api/orders");
-        const response = await fetch(url, { credentials: "include" });
-        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
-
-        if (!response.ok || !result.success) {
-            throw new Error(result.message || "Список заявок не загрузился.");
-        }
+        const result = await CrmApi.get(url);
 
         orders = result.orders || [];
         if (!isDeletedFilter) {
@@ -482,7 +479,7 @@ async function loadOrders(options = {}) {
         }
         renderOrders();
     } catch (error) {
-        const message = getSafeErrorMessage(error, "Сервер недоступен. Попробуйте обновить список.");
+        const message = notifyError(error, "Сервер недоступен. Попробуйте обновить список.");
         ordersList.innerHTML = `
             <section class="empty-state error-state">
                 <h2>Не удалось загрузить заявки</h2>
@@ -490,6 +487,5 @@ async function loadOrders(options = {}) {
                 <button class="retry-load" type="button">Повторить</button>
             </section>
         `;
-        setMessage(message);
     }
 }

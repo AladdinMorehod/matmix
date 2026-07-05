@@ -41,28 +41,12 @@ function togglePasswordVisibility(button) {
     button.setAttribute("aria-label", shouldShow ? "Скрыть пароль" : "Показать пароль");
 }
 
-function getSafePayloadInfo(payload) {
-    return Object.fromEntries(Object.entries(payload).map(([key, value]) => [
-        key,
-        key.toLowerCase().includes("password") ? `[hidden:${String(value || "").length}]` : value
-    ]));
-}
-
-function logSettingsWarn(message, data) {
-    console.warn(`[settings] ${message}`, data || "");
-}
-
-function logSettingsError(message, error) {
-    console.error(`[settings] ${message}`, error);
-}
-
 function bindSettingsFormEvents() {
     const profilePasswordForm = document.getElementById("profilePasswordForm");
     if (profilePasswordForm && profilePasswordForm.dataset.bound !== "1") {
         profilePasswordForm.dataset.bound = "1";
         profilePasswordForm.addEventListener("submit", event => {
             event.preventDefault();
-            console.log("[settings] change password submit");
             changeOwnPassword(profilePasswordForm);
         });
     }
@@ -72,7 +56,6 @@ function bindSettingsFormEvents() {
         createUserForm.dataset.bound = "1";
         createUserForm.addEventListener("submit", event => {
             event.preventDefault();
-            console.log("[settings] create user submit");
             createUser(createUserForm);
         });
     }
@@ -192,7 +175,7 @@ function renderUserCard(user) {
 
 function renderSettingsUsersList() {
     if (settingsUsersLoading) {
-        return `<p class="settings-muted">Пользователи загружаются...</p>`;
+        return renderCrmLoader(CRM_MESSAGES.LOADING_USERS);
     }
 
     if (settingsUsersError) {
@@ -303,18 +286,13 @@ async function loadUsers() {
     renderSettings();
 
     try {
-        const response = await fetch("/api/users", { credentials: "include" });
-        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
-
-        if (!response.ok || !result.success) {
-            throw new Error(result.message || "Список пользователей не загрузился.");
-        }
+        const result = await CrmApi.get("/api/users");
 
         settingsUsers = result.users || [];
         settingsUsersLoaded = true;
     } catch (error) {
         settingsUsersError = getSafeErrorMessage(error, "Не удалось загрузить пользователей.");
-        setMessage(settingsUsersError);
+        notifyError(error, settingsUsersError);
     } finally {
         settingsUsersLoading = false;
         renderSettings();
@@ -322,56 +300,33 @@ async function loadUsers() {
 }
 
 async function changeOwnPassword(form) {
-    console.log("[settings] change password handler", { formId: form?.id || "" });
     const formData = new FormData(form);
     const currentPassword = String(formData.get("currentPassword") || "");
     const newPassword = String(formData.get("newPassword") || "");
     const confirmPassword = String(formData.get("confirmPassword") || "");
     const payload = { currentPassword, newPassword };
-    console.log("[settings] change password endpoint", "/api/auth/password");
-    console.log("[settings] change password payload", getSafePayloadInfo({
-        ...payload,
-        confirmPassword
-    }));
 
     if (newPassword.length < 6) {
-        setMessage("Новый пароль должен быть не короче 6 символов.");
-        logSettingsWarn("change password validation failed", "short password");
+        notifyWarning("Новый пароль должен быть не короче 6 символов.");
         return;
     }
 
     if (newPassword !== confirmPassword) {
-        setMessage("Новый пароль и повтор не совпадают.");
-        logSettingsWarn("change password validation failed", "password mismatch");
+        notifyWarning("Новый пароль и повтор не совпадают.");
         return;
     }
 
     try {
-        const response = await fetch("/api/auth/password", {
-            method: "PATCH",
-            credentials: "include",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-        });
-        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
-        console.log("[settings] change password response", response.status, result);
-
-        if (!response.ok || !result.success) {
-            const message = result.message || "Пароль не изменен.";
-            logSettingsWarn("change password backend rejected", message);
-            throw new Error(message);
-        }
+        await CrmApi.patch("/api/auth/password", payload);
 
         form.reset();
-        setMessage("Пароль изменен.");
+        notifySuccess(CRM_MESSAGES.SUCCESS_PASSWORD_CHANGED);
     } catch (error) {
-        logSettingsError("change password error", error);
-        setMessage(getSafeErrorMessage(error, "Ошибка соединения с сервером"));
+        notifyError(error, "Ошибка соединения с сервером");
     }
 }
 
 async function createUser(form) {
-    console.log("[settings] create user handler", { formId: form?.id || "" });
     const formData = new FormData(form);
     const payload = {
         name: String(formData.get("name") || "").trim(),
@@ -379,37 +334,20 @@ async function createUser(form) {
         password: String(formData.get("password") || ""),
         role: String(formData.get("role") || "manager")
     };
-    console.log("[settings] create user endpoint", "/api/users");
-    console.log("[settings] create user payload", getSafePayloadInfo(payload));
 
     if (!payload.name || !payload.login || payload.password.length < 6) {
-        setMessage("Заполните имя, логин и пароль от 6 символов.");
-        logSettingsWarn("create user validation failed", getSafePayloadInfo(payload));
+        notifyWarning("Заполните имя, логин и пароль от 6 символов.");
         return;
     }
 
     try {
-        const response = await fetch("/api/users", {
-            method: "POST",
-            credentials: "include",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-        });
-        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
-        console.log("[settings] create user response", response.status, result);
-
-        if (!response.ok || !result.success) {
-            const message = result.message || "Пользователь не создан.";
-            logSettingsWarn("create user backend rejected", message);
-            throw new Error(message);
-        }
+        await CrmApi.post("/api/users", payload);
 
         form.reset();
-        setMessage("Пользователь создан.");
+        notifySuccess(CRM_MESSAGES.SUCCESS_USER_CREATED);
         await loadUsers();
     } catch (error) {
-        logSettingsError("create user error", error);
-        setMessage(getSafeErrorMessage(error, "Ошибка соединения с сервером"));
+        notifyError(error, "Ошибка соединения с сервером");
     }
 }
 
@@ -422,22 +360,12 @@ async function updateUser(userId, form) {
     };
 
     if (!payload.name || !payload.login || !["admin", "manager"].includes(payload.role)) {
-        setMessage("Заполните имя, логин и корректную роль.");
+        notifyWarning("Заполните имя, логин и корректную роль.");
         return;
     }
 
     try {
-        const response = await fetch(`/api/users/${userId}`, {
-            method: "PATCH",
-            credentials: "include",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-        });
-        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
-
-        if (!response.ok || !result.success) {
-            throw new Error(result.message || "Пользователь не обновлен.");
-        }
+        const result = await CrmApi.patch(`/api/users/${userId}`, payload);
 
         if (Number(result.user?.id) === Number(currentUser?.id)) {
             currentUser = result.user;
@@ -446,57 +374,56 @@ async function updateUser(userId, form) {
         }
 
         editingUserId = null;
-        setMessage("Пользователь обновлен.");
+        notifySuccess(CRM_MESSAGES.SUCCESS_USER_UPDATED);
         await loadUsers();
     } catch (error) {
-        setMessage(getSafeErrorMessage(error, "Не удалось обновить пользователя."));
+        notifyError(error, "Не удалось обновить пользователя.");
     }
 }
 
 async function deleteUser(userId, userName) {
-    if (!window.confirm(`Удалить пользователя ${userName}? Пользователь будет отключен и скрыт из списка.`)) {
+    const confirmed = await CrmModal.open({
+        title: CRM_MESSAGES.CONFIRM_DELETE_USER_TITLE,
+        message: `Удалить пользователя ${userName}? Пользователь будет отключен и скрыт из списка.`,
+        confirmText: CRM_MESSAGES.CONFIRM_DELETE_USER_ACTION
+    });
+    if (!confirmed) {
         return;
     }
 
     try {
-        const response = await fetch(`/api/users/${userId}`, {
-            method: "DELETE",
-            credentials: "include"
-        });
-        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
-
-        if (!response.ok || !result.success) {
-            throw new Error(result.message || "Пользователь не удален.");
-        }
+        await CrmApi.delete(`/api/users/${userId}`);
 
         if (Number(editingUserId) === Number(userId)) {
             editingUserId = null;
         }
-        setMessage("Пользователь удален.");
+        notifySuccess(CRM_MESSAGES.SUCCESS_USER_DELETED);
         await loadUsers();
     } catch (error) {
-        setMessage(getSafeErrorMessage(error, "Не удалось удалить пользователя."));
+        notifyError(error, "Не удалось удалить пользователя.");
     }
 }
 
 async function toggleUserStatus(userId, isActive) {
-    try {
-        const response = await fetch(`/api/users/${userId}/status`, {
-            method: "PATCH",
-            credentials: "include",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ isActive })
+    const user = settingsUsers.find(item => String(item.id) === String(userId));
+    if (!isActive) {
+        const confirmed = await CrmModal.open({
+            title: CRM_MESSAGES.CONFIRM_DISABLE_USER_TITLE,
+            message: `Отключить пользователя ${user?.name || "без имени"}? Он не сможет войти в CRM.`,
+            confirmText: CRM_MESSAGES.CONFIRM_DISABLE_USER_ACTION
         });
-        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
-
-        if (!response.ok || !result.success) {
-            throw new Error(result.message || "Статус пользователя не изменен.");
+        if (!confirmed) {
+            return;
         }
+    }
 
-        setMessage(isActive ? "Пользователь включен." : "Пользователь отключен.");
+    try {
+        await CrmApi.patch(`/api/users/${userId}/status`, { isActive });
+
+        notifySuccess(isActive ? CRM_MESSAGES.SUCCESS_USER_ENABLED : CRM_MESSAGES.SUCCESS_USER_DISABLED);
         await loadUsers();
     } catch (error) {
-        setMessage(getSafeErrorMessage(error, "Не удалось изменить статус пользователя."));
+        notifyError(error, "Не удалось изменить статус пользователя.");
     }
 }
 
@@ -504,26 +431,16 @@ async function changeUserPassword(userId, form) {
     const password = String(new FormData(form).get("password") || "");
 
     if (password.length < 6) {
-        setMessage("Пароль должен быть не короче 6 символов.");
+        notifyWarning("Пароль должен быть не короче 6 символов.");
         return;
     }
 
     try {
-        const response = await fetch(`/api/users/${userId}/password`, {
-            method: "PATCH",
-            credentials: "include",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ password })
-        });
-        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
-
-        if (!response.ok || !result.success) {
-            throw new Error(result.message || "Пароль пользователя не изменен.");
-        }
+        await CrmApi.patch(`/api/users/${userId}/password`, { password });
 
         form.reset();
-        setMessage("Пароль пользователя изменен.");
+        notifySuccess(CRM_MESSAGES.SUCCESS_USER_PASSWORD_CHANGED);
     } catch (error) {
-        setMessage(getSafeErrorMessage(error, "Не удалось сменить пароль пользователя."));
+        notifyError(error, "Не удалось сменить пароль пользователя.");
     }
 }

@@ -68,24 +68,17 @@ async function loadDashboard(options = {}) {
     const { preserveMessage = false } = options;
 
     if (!preserveMessage) {
-        setMessage("Загружаем главную...");
+        setMessage(CRM_MESSAGES.LOADING_DASHBOARD);
+        if (dashboardRecentOrders) {
+            dashboardRecentOrders.innerHTML = renderCrmLoader(CRM_MESSAGES.LOADING_DASHBOARD);
+        }
     }
 
     try {
-        const [ordersResponse, clientsResponse] = await Promise.all([
-            fetch("/api/orders", { credentials: "include" }),
-            fetch("/api/clients", { credentials: "include" })
+        const [ordersResult, clientsResult] = await Promise.all([
+            CrmApi.get("/api/orders"),
+            CrmApi.get("/api/clients")
         ]);
-        const ordersResult = await (window.MatMixErrors?.readJson(ordersResponse) || ordersResponse.json().catch(() => ({})));
-        const clientsResult = await (window.MatMixErrors?.readJson(clientsResponse) || clientsResponse.json().catch(() => ({})));
-
-        if (!ordersResponse.ok || !ordersResult.success) {
-            throw new Error(ordersResult.message || "Показатели заявок не загрузились.");
-        }
-
-        if (!clientsResponse.ok || !clientsResult.success) {
-            throw new Error(clientsResult.message || "Показатели клиентов не загрузились.");
-        }
 
         orders = ordersResult.orders || [];
         clients = clientsResult.clients || [];
@@ -98,7 +91,7 @@ async function loadDashboard(options = {}) {
         renderDashboard();
         if (!preserveMessage) setMessage("");
     } catch (error) {
-        const message = getSafeErrorMessage(error, "Сервер недоступен. Попробуйте обновить страницу.");
+        const message = notifyError(error, "Сервер недоступен. Попробуйте обновить страницу.");
         if (dashboardRecentOrders) {
             dashboardRecentOrders.innerHTML = `
                 <section class="empty-state error-state">
@@ -108,7 +101,6 @@ async function loadDashboard(options = {}) {
                 </section>
             `;
         }
-        setMessage(message);
     }
 }
 

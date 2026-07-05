@@ -51,7 +51,7 @@ function renderClientOrders(clientId) {
     const ordersForClient = clientOrders.get(String(clientId));
 
     if (!ordersForClient) {
-        return `<p class="history-empty">История заказов загружается...</p>`;
+        return renderCrmLoader("История заказов загружается...");
     }
 
     if (!ordersForClient.length) {
@@ -119,22 +119,18 @@ function renderClients() {
 async function loadClients(options = {}) {
     const { preserveMessage = false } = options;
     if (!preserveMessage) {
-        setMessage("Загружаем клиентов...");
+        setMessage(CRM_MESSAGES.LOADING_CLIENTS);
+        clientsList.innerHTML = renderCrmLoader(CRM_MESSAGES.LOADING_CLIENTS);
     }
 
     try {
-        const response = await fetch("/api/clients", { credentials: "include" });
-        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
-
-        if (!response.ok || !result.success) {
-            throw new Error(result.message || "Список клиентов не загрузился.");
-        }
+        const result = await CrmApi.get("/api/clients");
 
         clients = result.clients || [];
         if (!preserveMessage) setMessage("");
         renderClients();
     } catch (error) {
-        const message = getSafeErrorMessage(error, "Сервер недоступен. Попробуйте обновить список.");
+        const message = notifyError(error, "Сервер недоступен. Попробуйте обновить список.");
         clientsList.innerHTML = `
             <section class="empty-state error-state">
                 <h2>Не удалось загрузить клиентов</h2>
@@ -142,7 +138,6 @@ async function loadClients(options = {}) {
                 <button class="retry-clients-load" type="button">Повторить</button>
             </section>
         `;
-        setMessage(message);
     }
 }
 
@@ -150,18 +145,13 @@ async function loadClientOrders(clientId) {
     const key = String(clientId);
 
     try {
-        const response = await fetch(`/api/clients/${clientId}/orders`, { credentials: "include" });
-        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
-
-        if (!response.ok || !result.success) {
-            throw new Error(result.message || "История заказов клиента не загрузилась.");
-        }
+        const result = await CrmApi.get(`/api/clients/${clientId}/orders`);
 
         clientOrders.set(key, result.orders || []);
         renderClients();
     } catch (error) {
         clientOrders.set(key, []);
-        setMessage(getSafeErrorMessage(error, "Не удалось загрузить историю заказов клиента."));
+        notifyError(error, "Не удалось загрузить историю заказов клиента.");
         renderClients();
     }
 }

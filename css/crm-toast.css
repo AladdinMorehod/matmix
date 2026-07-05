@@ -1,0 +1,211 @@
+.crm-toast-stack {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    z-index: 1200;
+    display: grid;
+    gap: 10px;
+    width: min(360px, calc(100vw - 28px));
+    pointer-events: none;
+}
+
+.crm-toast {
+    display: grid;
+    grid-template-columns: 8px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+    min-height: 52px;
+    padding: 11px 11px 11px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 18px 40px rgba(17, 21, 23, 0.14);
+    pointer-events: auto;
+    animation: crmToastIn 180ms ease-out both;
+}
+
+.crm-toast.is-leaving {
+    animation: crmToastOut 160ms ease-in both;
+}
+
+.crm-toast-mark {
+    width: 8px;
+    height: 32px;
+    border-radius: 999px;
+    background: var(--primary);
+}
+
+.crm-toast-success .crm-toast-mark { background: #23724f; }
+.crm-toast-warning .crm-toast-mark { background: #c06b1f; }
+.crm-toast-error .crm-toast-mark { background: var(--brand-burgundy); }
+.crm-toast-info .crm-toast-mark { background: #2f5f9f; }
+
+.crm-toast p {
+    margin: 0;
+    color: var(--text);
+    font-size: 0.86rem;
+    font-weight: 750;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.crm-toast button,
+.crm-modal-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface-soft);
+    color: var(--primary-dark);
+    cursor: pointer;
+    font: inherit;
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+.crm-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    display: grid;
+    place-items: center;
+    padding: 18px;
+    background: rgba(17, 21, 23, 0.36);
+    animation: crmFadeIn 160ms ease-out both;
+}
+
+.crm-modal-overlay.is-closing {
+    animation: crmFadeOut 150ms ease-in both;
+}
+
+.crm-modal {
+    display: grid;
+    gap: 14px;
+    width: min(440px, 100%);
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 24px 70px rgba(17, 21, 23, 0.22);
+    animation: crmModalIn 180ms ease-out both;
+}
+
+.crm-modal-close {
+    justify-self: end;
+}
+
+.crm-modal-body {
+    display: grid;
+    gap: 8px;
+}
+
+.crm-modal h2 {
+    margin: 0;
+    color: var(--primary-dark);
+    font-size: 1.05rem;
+    font-weight: 800;
+}
+
+.crm-modal p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 650;
+    line-height: 1.45;
+}
+
+.crm-modal-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.crm-modal-actions button {
+    min-height: 36px;
+    padding: 0 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.86rem;
+    font-weight: 800;
+}
+
+.crm-modal-primary {
+    background: var(--brand-burgundy);
+    color: white;
+}
+
+.crm-modal-secondary {
+    background: var(--surface-soft);
+    color: var(--primary-dark);
+}
+
+.crm-loader {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 34px;
+    color: var(--text-muted);
+    font-size: 0.86rem;
+    font-weight: 800;
+}
+
+.crm-spinner {
+    width: 18px;
+    height: 18px;
+    border: 3px solid rgba(32, 87, 66, 0.18);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: crmSpin 700ms linear infinite;
+}
+
+@keyframes crmToastIn {
+    from { opacity: 0; transform: translateX(14px) translateY(-4px); }
+    to { opacity: 1; transform: translateX(0) translateY(0); }
+}
+
+@keyframes crmToastOut {
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(14px); }
+}
+
+@keyframes crmModalIn {
+    from { opacity: 0; transform: translateY(10px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes crmFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes crmFadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes crmSpin {
+    to { transform: rotate(360deg); }
+}
+
+@media (max-width: 520px) {
+    .crm-toast-stack {
+        top: 12px;
+        right: 12px;
+        left: 12px;
+        width: auto;
+    }
+
+    .crm-modal-actions {
+        display: grid;
+    }
+
+    .crm-modal-actions button {
+        width: 100%;
+    }
+}

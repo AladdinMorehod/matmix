@@ -350,12 +350,24 @@ body {
     border-radius: 8px;
     background: var(--surface);
     box-shadow: 0 8px 22px rgba(17, 21, 23, 0.06);
+    transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.order-card:hover {
+    border-color: rgba(32, 87, 66, 0.22);
+    box-shadow: 0 12px 28px rgba(17, 21, 23, 0.08);
+    transform: translateY(-1px);
 }
 
 .order-card-deleted {
     opacity: 0.72;
     background: #f7f7f4;
     box-shadow: none;
+}
+
+.order-card-deleted:hover {
+    opacity: 0.88;
+    box-shadow: 0 8px 20px rgba(17, 21, 23, 0.05);
 }
 
 .deleted-order-row {
@@ -367,6 +379,7 @@ body {
 .deleted-order-row.expanded {
     gap: 10px;
     padding-bottom: 12px;
+    animation: crmExpandIn 170ms ease-out both;
 }
 
 .deleted-order-header {
@@ -560,6 +573,7 @@ body {
 .order-tab-panel {
     display: grid;
     gap: 8px;
+    animation: crmPanelIn 150ms ease-out both;
 }
 
 .status-badge {
@@ -811,6 +825,15 @@ body {
     border-radius: 8px;
     background: white;
     box-shadow: 0 8px 22px rgba(17, 21, 23, 0.05);
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.dashboard-panel:hover,
+.dashboard-stat:hover,
+.client-card:hover,
+.settings-user-card:hover {
+    border-color: rgba(32, 87, 66, 0.2);
+    box-shadow: 0 12px 28px rgba(17, 21, 23, 0.07);
 }
 
 .dashboard-welcome {
@@ -1276,6 +1299,7 @@ body {
     border-radius: 8px;
     background: white;
     box-shadow: 0 8px 22px rgba(17, 21, 23, 0.05);
+    transition: border-color 160ms ease, box-shadow 160ms ease;
 }
 
 .client-card-header {
@@ -1410,6 +1434,7 @@ body {
     border: 1px solid rgba(32, 87, 66, 0.12);
     border-radius: 7px;
     background: white;
+    animation: crmPanelIn 150ms ease-out both;
 }
 
 .history-event-note {
@@ -1787,5 +1812,27 @@ body {
     .settings-form .password-toggle,
     .settings-user-password-form .password-toggle {
         width: auto;
+    }
+}
+
+@keyframes crmPanelIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes crmExpandIn {
+    from {
+        opacity: 0.72;
+        transform: translateY(-2px);
+    }
+    to {
+        opacity: 0.88;
+        transform: translateY(0);
     }
 }
