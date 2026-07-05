@@ -36,6 +36,7 @@ const dashboardDoneToday = document.getElementById("dashboardDoneToday");
 const dashboardClientsTotal = document.getElementById("dashboardClientsTotal");
 const dashboardRecentOrders = document.getElementById("dashboardRecentOrders");
 const settingsView = document.getElementById("settingsView");
+const productsView = document.getElementById("productsView");
 const ordersTotalCount = document.getElementById("ordersTotalCount");
 const ordersNewCount = document.getElementById("ordersNewCount");
 const ordersWorkCount = document.getElementById("ordersWorkCount");
@@ -69,13 +70,23 @@ let settingsUsersLoaded = false;
 let settingsUsersError = "";
 let activeSettingsTab = "profile";
 let editingUserId = null;
+let products = [];
+let productCategories = [];
+let productFilters = {
+    search: "",
+    category: "",
+    status: ""
+};
+let productsLoading = false;
+let productsLoaded = false;
+let editingProductId = null;
 
 const crmNavigation = [
     { id: "dashboard", label: "Главная", enabled: true },
     { id: "orders", label: "Заказы", enabled: true },
     { id: "myOrders", label: "Мои заказы", enabled: true },
     { id: "clients", label: "Клиенты", enabled: true },
-    { id: "catalog", label: "Каталог", enabled: false },
+    { id: "catalog", label: "Каталог", enabled: true },
     { id: "statistics", label: "Статистика", enabled: false },
     { id: "settings", label: "Настройки", enabled: true }
 ];

@@ -129,6 +129,8 @@ async function initDatabase() {
     await ensureColumn("users", "updated_at", "TEXT");
     await ensureColumn("users", "deleted_at", "TEXT");
 
+    await initProductsTable();
+
     const admin = await get("SELECT id FROM users WHERE login = ?", ["admin"]);
     if (!admin) {
         const now = new Date().toISOString();
@@ -142,6 +144,52 @@ async function initDatabase() {
 
         console.warn("Default admin created: login admin / password admin123. Change password before production.");
     }
+
+    await seedProductsFromPublicCatalog();
+}
+
+async function initProductsTable() {
+    await run(`
+        CREATE TABLE IF NOT EXISTS products (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            external_id TEXT UNIQUE NOT NULL,
+            title TEXT NOT NULL,
+            slug TEXT,
+            category TEXT,
+            subcategory TEXT,
+            price REAL,
+            weight REAL,
+            unit TEXT,
+            image TEXT,
+            description TEXT,
+            is_active INTEGER DEFAULT 1,
+            sort_order INTEGER DEFAULT 0,
+            source TEXT,
+            last_imported_at TEXT,
+            created_at TEXT,
+            updated_at TEXT
+        )
+    `);
+
+    await ensureColumn("products", "external_id", "TEXT");
+    await ensureColumn("products", "title", "TEXT");
+    await ensureColumn("products", "slug", "TEXT");
+    await ensureColumn("products", "category", "TEXT");
+    await ensureColumn("products", "subcategory", "TEXT");
+    await ensureColumn("products", "price", "REAL");
+    await ensureColumn("products", "weight", "REAL");
+    await ensureColumn("products", "unit", "TEXT");
+    await ensureColumn("products", "image", "TEXT");
+    await ensureColumn("products", "description", "TEXT");
+    await ensureColumn("products", "is_active", "INTEGER DEFAULT 1");
+    await ensureColumn("products", "sort_order", "INTEGER DEFAULT 0");
+    await ensureColumn("products", "source", "TEXT");
+    await ensureColumn("products", "last_imported_at", "TEXT");
+    await ensureColumn("products", "created_at", "TEXT");
+    await ensureColumn("products", "updated_at", "TEXT");
+    await run("CREATE UNIQUE INDEX IF NOT EXISTS idx_products_external_id ON products(external_id)");
+    await run("CREATE INDEX IF NOT EXISTS idx_products_category ON products(category, subcategory)");
+    await run("CREATE INDEX IF NOT EXISTS idx_products_is_active ON products(is_active)");
 }
 
 async function ensureColumn(tableName, columnName, columnDefinition) {
@@ -150,6 +198,127 @@ async function ensureColumn(tableName, columnName, columnDefinition) {
 
     if (!exists) {
         await run(`ALTER TABLE ${tableName} ADD COLUMN ${columnName} ${columnDefinition}`);
+    }
+}
+
+function extractPublicCatalogProducts() {
+    const scriptPath = path.join(__dirname, "..", "js", "script.js");
+    if (!fs.existsSync(scriptPath)) return [];
+
+    const script = fs.readFileSync(scriptPath, "utf8");
+    const declaration = "const products =";
+    const start = script.indexOf(declaration);
+    if (start === -1) return [];
+
+    const arrayStart = script.indexOf("[", start);
+    if (arrayStart === -1) return [];
+
+    let depth = 0;
+    let inString = false;
+    let quote = "";
+    let escaped = false;
+
+    for (let index = arrayStart; index < script.length; index += 1) {
+        const char = script[index];
+
+        if (inString) {
+            if (escaped) {
+                escaped = false;
+            } else if (char === "\\") {
+                escaped = true;
+            } else if (char === quote) {
+                inString = false;
+            }
+            continue;
+        }
+
+        if (char === "\"" || char === "'" || char === "`") {
+            inString = true;
+            quote = char;
+            continue;
+        }
+
+        if (char === "[") depth += 1;
+        if (char === "]") depth -= 1;
+
+        if (depth === 0) {
+            const arrayText = script.slice(arrayStart, index + 1);
+            return Function(`"use strict"; return (${arrayText});`)();
+        }
+    }
+
+    return [];
+}
+
+function normalizeProductText(value) {
+    return String(value || "").replace(/\?/g, "").replace(/\s+/g, " ").trim();
+}
+
+function makeSlug(value, fallback) {
+    const slug = normalizeProductText(value)
+        .toLowerCase()
+        .replace(/ё/g, "е")
+        .replace(/[^a-zа-я0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "")
+        .slice(0, 120);
+
+    return slug || fallback;
+}
+
+async function seedProductsFromPublicCatalog() {
+    const existing = await get("SELECT COUNT(*) AS count FROM products");
+    if (Number(existing?.count) > 0) return;
+
+    const catalogProducts = extractPublicCatalogProducts();
+    if (!catalogProducts.length) return;
+
+    const now = new Date().toISOString();
+    let sortOrder = 0;
+
+    for (const product of catalogProducts) {
+        const title = normalizeProductText(product.name);
+        if (!title) continue;
+
+        sortOrder += 1;
+        const externalId = `site-${String(sortOrder).padStart(6, "0")}`;
+        await run(
+            `INSERT OR IGNORE INTO products (
+                external_id,
+                title,
+                slug,
+                category,
+                subcategory,
+                price,
+                weight,
+                unit,
+                image,
+                description,
+                is_active,
+                sort_order,
+                source,
+                last_imported_at,
+                created_at,
+                updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+                externalId,
+                title,
+                makeSlug(title, externalId),
+                normalizeProductText(product.category?.main),
+                normalizeProductText(product.category?.section || product.category?.type),
+                product.price === null || product.price === undefined ? null : Number(product.price) || 0,
+                Number(product.weight) || 0,
+                normalizeProductText(product.unit) || "шт",
+                normalizeProductText(product.image),
+                "",
+                1,
+                sortOrder,
+                "public-site",
+                now,
+                now,
+                now
+            ]
+        );
     }
 }
 

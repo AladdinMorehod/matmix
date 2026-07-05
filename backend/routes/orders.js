@@ -1,9 +1,12 @@
 const express = require("express");
+const path = require("path");
+const ExcelJS = require("exceljs");
 const { all, get, run, getOrderNumber } = require("../database");
 const { requireRole } = require("../middleware/auth");
 const { normalizePhone } = require("../utils/phone");
 
 const router = express.Router();
+const orderTemplatePath = path.join(__dirname, "..", "templates", "order-template.xlsx");
 
 const allowedStatuses = [
     "Новая",
@@ -175,6 +178,38 @@ function normalizeOrder(row) {
         createdAt: row.created_at,
         updatedAt: row.updated_at
     };
+}
+
+function cloneStyle(value) {
+    return value ? JSON.parse(JSON.stringify(value)) : value;
+}
+
+function copyRowStyle(sourceRow, targetRow) {
+    targetRow.height = sourceRow.height;
+    for (let column = 1; column <= 9; column += 1) {
+        const sourceCell = sourceRow.getCell(column);
+        const targetCell = targetRow.getCell(column);
+        targetCell.style = cloneStyle(sourceCell.style);
+        targetCell.numFmt = sourceCell.numFmt;
+        targetCell.alignment = cloneStyle(sourceCell.alignment);
+        targetCell.border = cloneStyle(sourceCell.border);
+        targetCell.fill = cloneStyle(sourceCell.fill);
+        targetCell.font = cloneStyle(sourceCell.font);
+    }
+}
+
+function setMergedRowValue(sheet, rowNumber, cell, value) {
+    sheet.getCell(`${cell}${rowNumber}`).value = value;
+}
+
+function safeExcelFilename(value) {
+    return String(value || "Заказ").replace(/[\\/:*?"<>|]+/g, "-");
+}
+
+function setExcelHeaders(res, filename) {
+    const encoded = encodeURIComponent(filename);
+    res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    res.setHeader("Content-Disposition", `attachment; filename*=UTF-8''${encoded}`);
 }
 
 function canManageOrder(user, order) {
@@ -546,6 +581,95 @@ router.post("/:id/notes", requireRole(["admin", "manager"]), async (req, res) =>
 
 router.delete("/:id", requireRole(["admin", "manager"]), deleteOrder);
 router.post("/:id/restore", requireRole(["admin", "manager"]), restoreOrder);
+
+router.get("/:id/export/excel", requireRole(["admin", "manager"]), async (req, res) => {
+    try {
+        const row = await get(`
+            SELECT
+                orders.*,
+                users.name AS manager_name,
+                clients.orders_count AS client_orders_count,
+                clients.total_spent AS client_total_spent,
+                clients.last_order_at AS client_last_order_at
+            FROM orders
+            LEFT JOIN users ON users.id = orders.manager_id
+            LEFT JOIN clients ON clients.id = orders.client_id
+            WHERE orders.id = ?
+        `, [req.params.id]);
+
+        if (!row || row.deleted_at) {
+            res.status(404).json({ success: false, message: "Заявка не найдена." });
+            return;
+        }
+
+        if (!canViewOrder(req.session.user, row)) {
+            res.status(403).json({ success: false, message: "Недостаточно прав" });
+            return;
+        }
+
+        const order = normalizeOrder(row);
+        const workbook = new ExcelJS.Workbook();
+        await workbook.xlsx.readFile(orderTemplatePath);
+        const sheet = workbook.worksheets[0];
+        const items = Array.isArray(order.items) ? order.items : [];
+        const itemRowsCount = Math.max(items.length, 5);
+
+        for (let index = 5; index < itemRowsCount; index += 1) {
+            const insertAt = 8 + index;
+            sheet.insertRow(insertAt, []);
+            copyRowStyle(sheet.getRow(12), sheet.getRow(insertAt));
+            sheet.mergeCells(`B${insertAt}:C${insertAt}`);
+            sheet.mergeCells(`F${insertAt}:G${insertAt}`);
+        }
+
+        const summaryRow = 8 + itemRowsCount;
+        const paymentRow = summaryRow + 2;
+        const commentRow = summaryRow + 3;
+        const amountTextRow = summaryRow + 4;
+        const createdAt = order.createdAt ? new Date(order.createdAt) : new Date();
+        const dateText = new Intl.DateTimeFormat("ru-RU").format(createdAt);
+
+        sheet.getCell("A2").value = `${dateText} Товарный чек № ${order.orderNumber || order.id}`;
+        sheet.getCell("A4").value = `Адрес доставки: ${order.address || "не указан"}`;
+        sheet.getCell("A6").value = `Заказчик: ${order.customerName || ""} ${order.phone ? `, ${order.phone}` : ""}`;
+
+        for (let index = 0; index < itemRowsCount; index += 1) {
+            const rowNumber = 8 + index;
+            const item = items[index] || {};
+            const qty = Number(item.qty) || 0;
+            const price = Number(item.price) || 0;
+            const weight = Number(item.lineWeight ?? ((Number(item.weight) || 0) * qty)) || 0;
+            const lineTotal = Number(item.lineTotal ?? (price * qty)) || 0;
+
+            setMergedRowValue(sheet, rowNumber, "A", item.name ? index + 1 : "");
+            setMergedRowValue(sheet, rowNumber, "B", item.name || "");
+            setMergedRowValue(sheet, rowNumber, "D", item.name ? qty : "");
+            setMergedRowValue(sheet, rowNumber, "E", item.unit || "");
+            setMergedRowValue(sheet, rowNumber, "F", item.name ? weight : "");
+            setMergedRowValue(sheet, rowNumber, "H", item.name ? price : "");
+            setMergedRowValue(sheet, rowNumber, "I", item.name ? lineTotal : "");
+        }
+
+        sheet.getCell(`I${summaryRow}`).value = Number(order.totalPrice) || items.reduce((sum, item) => sum + (Number(item.lineTotal) || 0), 0);
+        sheet.getCell(`I${summaryRow + 1}`).value = Number(order.totalWeight) || items.reduce((sum, item) => sum + (Number(item.lineWeight) || 0), 0);
+        sheet.getCell(`D${paymentRow}`).value = `Вес товара (кг): ${Number(order.totalWeight) || 0}`;
+        sheet.getCell(`A${paymentRow}`).value = `* Форма оплаты: ${order.paymentMethod || "не указана"}`;
+
+        if (order.comment) {
+            sheet.getCell(`A${commentRow}`).value = `Комментарий: ${order.comment}`;
+        }
+
+        sheet.getCell(`A${amountTextRow}`).value = `Сумма к оплате: ${Number(order.totalPrice) || 0} рублей. Без НДС.`;
+
+        const filename = `${safeExcelFilename(`Заказ-${order.orderNumber || order.id}`)}.xlsx`;
+        setExcelHeaders(res, filename);
+        await workbook.xlsx.write(res);
+        res.end();
+    } catch (error) {
+        console.error("Order export error:", error);
+        res.status(500).json({ success: false, message: "Не удалось сформировать заказ Excel." });
+    }
+});
 
 router.get("/:id", requireRole(["admin", "manager"]), async (req, res) => {
     try {

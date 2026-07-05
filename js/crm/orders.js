@@ -36,18 +36,20 @@ function renderItems(items = []) {
 
 function renderContactActions(order) {
     const action = getContactAction(order);
+    const exportButton = `<button class="download-order-excel" data-id="${order.id}" type="button">Скачать заказ</button>`;
 
     if (!action) {
-        return `<div class="order-actions"><span class="contact-disabled">Контакт не указан</span></div>`;
+        return `<div class="order-actions"><span class="contact-disabled">Контакт не указан</span>${exportButton}</div>`;
     }
 
     if (action.disabled) {
-        return `<div class="order-actions"><span class="contact-disabled">${escapeHtml(action.label)}</span></div>`;
+        return `<div class="order-actions"><span class="contact-disabled">${escapeHtml(action.label)}</span>${exportButton}</div>`;
     }
 
     return `
         <div class="order-actions">
             <a href="${escapeHtml(action.href)}"${action.external ? ` target="_blank" rel="noopener"` : ""}>${escapeHtml(action.label)}</a>
+            ${exportButton}
         </div>
     `;
 }

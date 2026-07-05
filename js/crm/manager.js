@@ -53,6 +53,10 @@ crmNavButtons.forEach(button => {
             loadClients();
         }
 
+        if (button.dataset.section === "catalog") {
+            loadProducts();
+        }
+
         if (button.dataset.section === "settings") {
             loadSettings();
         }
@@ -136,6 +140,12 @@ ordersList.addEventListener("click", event => {
     const restoreButton = event.target.closest(".restore-order");
     if (restoreButton) {
         restoreOrder(restoreButton.dataset.id);
+        return;
+    }
+
+    const downloadExcelButton = event.target.closest(".download-order-excel");
+    if (downloadExcelButton) {
+        downloadOrderExcel(downloadExcelButton.dataset.id);
         return;
     }
 
@@ -257,6 +267,56 @@ settingsView?.addEventListener("submit", event => {
     if (userPasswordForm) {
         event.preventDefault();
         changeUserPassword(userPasswordForm.dataset.userId, userPasswordForm);
+    }
+});
+
+productsView?.addEventListener("input", event => {
+    const searchInput = event.target.closest("#productSearchInput");
+    if (!searchInput) return;
+
+    productFilters.search = searchInput.value.trim();
+    window.clearTimeout(productsView.searchTimer);
+    productsView.searchTimer = window.setTimeout(loadProducts, 250);
+});
+
+productsView?.addEventListener("change", event => {
+    const categoryFilter = event.target.closest("#productCategoryFilter");
+    if (categoryFilter) {
+        productFilters.category = categoryFilter.value;
+        loadProducts();
+        return;
+    }
+
+    const statusFilterElement = event.target.closest("#productStatusFilter");
+    if (statusFilterElement) {
+        productFilters.status = statusFilterElement.value;
+        loadProducts();
+    }
+});
+
+productsView?.addEventListener("click", event => {
+    const exportButton = event.target.closest(".products-export");
+    if (exportButton) {
+        downloadProductsPrice();
+        return;
+    }
+
+    const addButton = event.target.closest(".products-add");
+    if (addButton) {
+        openProductForm();
+        return;
+    }
+
+    const editButton = event.target.closest(".product-edit");
+    if (editButton) {
+        const product = products.find(item => String(item.id) === String(editButton.dataset.productId));
+        if (product) openProductForm(product);
+        return;
+    }
+
+    const toggleButton = event.target.closest(".product-toggle");
+    if (toggleButton) {
+        toggleProductStatus(toggleButton.dataset.productId, toggleButton.dataset.isActive === "1");
     }
 });
 

@@ -93,6 +93,22 @@
     animation: crmModalIn 180ms ease-out both;
 }
 
+.crm-modal-wide {
+    width: min(840px, 100%);
+}
+
+.crm-modal-form,
+.crm-modal-content {
+    display: grid;
+    gap: 14px;
+}
+
+.crm-modal-content {
+    max-height: min(68vh, 640px);
+    overflow: auto;
+    padding-right: 2px;
+}
+
 .crm-modal-close {
     justify-self: end;
 }

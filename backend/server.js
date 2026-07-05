@@ -7,6 +7,7 @@ const authRoutes = require("./routes/auth");
 const ordersRouter = require("./routes/orders");
 const clientsRouter = require("./routes/clients");
 const usersRoutes = require("./routes/users");
+const productsRoutes = require("./routes/products");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -44,6 +45,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/orders", ordersRouter);
 app.use("/api/clients", clientsRouter);
 app.use("/api/users", usersRoutes);
+app.use("/api/products", productsRoutes);
 
 app.get("/manager", (req, res) => {
     res.sendFile(path.join(publicDir, "manager.html"));

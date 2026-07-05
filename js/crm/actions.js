@@ -166,3 +166,12 @@ async function restoreOrder(orderId) {
         notifyError(getOrderConflictMessage(error) || error, "Не удалось восстановить заявку.");
     }
 }
+
+async function downloadOrderExcel(orderId) {
+    try {
+        await CrmApi.download(`/api/orders/${orderId}/export/excel`);
+        notifySuccess(CRM_MESSAGES.SUCCESS_ORDER_EXCEL_DOWNLOADED);
+    } catch (error) {
+        notifyError(error, "Не удалось скачать заказ.");
+    }
+}
