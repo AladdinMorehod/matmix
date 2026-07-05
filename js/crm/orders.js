@@ -160,7 +160,7 @@ function renderOrderControls(order) {
 
 function renderEventList(events) {
     if (!events) {
-        return renderCrmLoader("История загружается...");
+        return renderCrmLoader("Загружаем историю...");
     }
 
     if (!events.length) {
@@ -320,7 +320,7 @@ function renderOrderTabContent(order) {
     }
 
     if (activeTab === "documents") {
-        return `<section class="order-section order-section-wide"><h2>Документы</h2><p class="history-empty">Документы будут добавлены позже.</p></section>`;
+        return `<section class="order-section order-section-wide"><h2>Документы</h2><p class="history-empty">Документов пока нет.</p></section>`;
     }
 
     return renderOverviewTab(order);
@@ -438,7 +438,7 @@ function renderOrders() {
         const emptyText = isMyOrders
             ? "Когда вы возьмете заявку в работу, она появится здесь."
             : (selectedStatus === deletedStatusFilter
-            ? "Скрытые заявки появятся здесь после удаления из CRM."
+            ? "Удаленные заявки появятся здесь после удаления из CRM."
             : "Новые заявки появятся здесь после оформления заказа на сайте.");
 
         ordersList.innerHTML = `

@@ -140,8 +140,8 @@ function renderProductsList() {
     if (!products.length) {
         return `
             <section class="empty-state">
-                <h2>Товары не найдены</h2>
-                <p>Измените фильтр или добавьте новый товар.</p>
+                <h2>${isDeletedProductsFilter() ? "Удаленных товаров нет" : "Товары не найдены"}</h2>
+                <p>${isDeletedProductsFilter() ? "Удаленные товары появятся здесь после удаления из каталога." : "Измените фильтр или добавьте новый товар."}</p>
             </section>
         `;
     }

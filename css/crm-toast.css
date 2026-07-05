@@ -14,12 +14,12 @@
     grid-template-columns: 8px minmax(0, 1fr) auto;
     align-items: center;
     gap: 10px;
-    min-height: 52px;
-    padding: 11px 11px 11px 12px;
+    min-height: 50px;
+    padding: 10px 10px 10px 12px;
     border: 1px solid var(--border);
     border-radius: 8px;
     background: white;
-    box-shadow: 0 18px 40px rgba(17, 21, 23, 0.14);
+    box-shadow: 0 16px 34px rgba(17, 21, 23, 0.13);
     pointer-events: auto;
     animation: crmToastIn 180ms ease-out both;
 }
@@ -43,7 +43,7 @@
 .crm-toast p {
     margin: 0;
     color: var(--text);
-    font-size: 0.86rem;
+    font-size: 0.84rem;
     font-weight: 750;
     line-height: 1.35;
     overflow-wrap: anywhere;
@@ -66,13 +66,19 @@
     font-weight: 800;
 }
 
+.crm-toast button:hover,
+.crm-modal-close:hover {
+    border-color: rgba(32, 87, 66, 0.26);
+    background: #ffffff;
+}
+
 .crm-modal-overlay {
     position: fixed;
     inset: 0;
     z-index: 1100;
     display: grid;
     place-items: center;
-    padding: 18px;
+    padding: 16px;
     background: rgba(17, 21, 23, 0.36);
     animation: crmFadeIn 160ms ease-out both;
 }
@@ -83,9 +89,10 @@
 
 .crm-modal {
     display: grid;
-    gap: 14px;
+    gap: 12px;
     width: min(440px, 100%);
-    padding: 16px;
+    max-height: calc(100dvh - 32px);
+    padding: 14px;
     border: 1px solid var(--border);
     border-radius: 8px;
     background: white;
@@ -104,7 +111,7 @@
 }
 
 .crm-modal-content {
-    max-height: min(68vh, 640px);
+    max-height: min(66vh, 620px);
     overflow: auto;
     padding-right: 2px;
 }
@@ -137,14 +144,14 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
-    gap: 8px;
+    gap: 7px;
 }
 
 .crm-modal-actions button {
-    min-height: 44px;
+    min-height: 38px;
     padding: 0 14px;
     border: none;
-    border-radius: 6px;
+    border-radius: 7px;
     cursor: pointer;
     font: inherit;
     font-size: 0.86rem;
@@ -159,6 +166,12 @@
 .crm-modal-secondary {
     background: var(--surface-soft);
     color: var(--primary-dark);
+}
+
+.crm-modal-primary:hover,
+.crm-modal-secondary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(17, 21, 23, 0.1);
 }
 
 .crm-loader {
@@ -211,22 +224,22 @@
 
 @media (max-width: 520px) {
     .crm-toast-stack {
-        top: 12px;
-        right: 12px;
-        left: 12px;
+        top: calc(70px + env(safe-area-inset-top));
+        right: 10px;
+        left: 10px;
         width: auto;
     }
 
     .crm-modal-overlay {
         align-items: end;
-        padding: 10px;
+        padding: 8px;
         padding-top: max(10px, env(safe-area-inset-top));
         padding-bottom: max(10px, env(safe-area-inset-bottom));
     }
 
     .crm-modal {
         width: 100%;
-        max-height: calc(100dvh - 20px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+        max-height: calc(100dvh - 18px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
         overflow: hidden;
     }
 

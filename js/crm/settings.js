@@ -142,19 +142,20 @@ function renderSettingsUsersList() {
 
     if (settingsUsersError) {
         return `
-            <div class="settings-empty-state">
+            <section class="empty-state error-state settings-empty-state">
+                <h2>Не удалось загрузить пользователей</h2>
                 <p class="settings-muted">${escapeHtml(settingsUsersError)}</p>
                 <button class="settings-refresh-users" type="button">Повторить</button>
-            </div>
+            </section>
         `;
     }
 
     if (!settingsUsersLoaded) {
-        return `<p class="settings-muted">Список пользователей еще не загружен.</p>`;
+        return `<section class="empty-state settings-empty-state"><h2>Пользователи не загружены</h2><p class="settings-muted">Откройте раздел или обновите список.</p></section>`;
     }
 
     if (!settingsUsers.length) {
-        return `<p class="settings-muted">Пользователей пока нет.</p>`;
+        return `<section class="empty-state settings-empty-state"><h2>Пользователей пока нет</h2><p class="settings-muted">Созданные пользователи появятся здесь.</p></section>`;
     }
 
     return settingsUsers.map(renderUserCard).join("");

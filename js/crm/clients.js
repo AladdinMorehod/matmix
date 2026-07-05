@@ -55,7 +55,7 @@ function renderClientOrders(clientId) {
     const ordersForClient = clientOrders.get(String(clientId));
 
     if (!ordersForClient) {
-        return renderCrmLoader("История заказов загружается...");
+        return renderCrmLoader("Загружаем историю заказов...");
     }
 
     if (!ordersForClient.length) {
@@ -84,8 +84,8 @@ function renderClients() {
     if (!visibleClients.length) {
         clientsList.innerHTML = `
             <section class="empty-state">
-                <h2>Клиентов пока нет</h2>
-                <p>Клиенты появятся здесь после оформления заказов на сайте.</p>
+                <h2>Клиенты не найдены</h2>
+                <p>Измените поиск или дождитесь новых заявок с сайта.</p>
             </section>
         `;
         return;

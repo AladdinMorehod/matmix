@@ -9,6 +9,10 @@
     --accent: #87b48e;
     --brand-burgundy: #5a1f28;
     --border: rgba(33, 83, 54, 0.12);
+    --danger: #7b1d2a;
+    --shadow-card: 0 8px 22px rgba(17, 21, 23, 0.055);
+    --shadow-card-hover: 0 12px 28px rgba(17, 21, 23, 0.075);
+    --focus-ring: 0 0 0 3px rgba(32, 87, 66, 0.16);
 }
 
 * {
@@ -348,6 +352,11 @@ input,
 select,
 textarea {
     min-height: 44px;
+}
+
+:focus-visible {
+    outline: 2px solid rgba(32, 87, 66, 0.42);
+    outline-offset: 2px;
 }
 
 button,
@@ -1829,6 +1838,313 @@ a[role="button"],
     background: var(--brand-burgundy);
 }
 
+/* CRM UX polish */
+.manager-header a,
+.manager-user-panel button,
+.manager-toolbar button,
+.order-actions a,
+.download-order-excel,
+.note-submit,
+.crm-topbar-actions button,
+.status-tabs button,
+.retry-load,
+.retry-clients-load,
+.dashboard-retry,
+.dashboard-open-section,
+.dashboard-actions button,
+.settings-form button,
+.settings-refresh-users,
+.settings-toggle-user,
+.settings-edit-user,
+.settings-delete-user,
+.settings-user-password-form button,
+.products-export,
+.products-add,
+.product-edit,
+.product-toggle,
+.product-delete,
+.product-restore,
+.clients-toolbar button,
+.client-orders-toggle,
+.open-client,
+.assignment-action,
+.delete-order,
+.restore-order {
+    width: max-content;
+    max-width: 100%;
+    min-height: 36px;
+    border-radius: 7px;
+    box-shadow: none;
+    transition: background-color 140ms ease, border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease, opacity 140ms ease;
+}
+
+.manager-header a:hover,
+.manager-user-panel button:hover,
+.manager-toolbar button:hover,
+.order-actions a:hover,
+.download-order-excel:hover,
+.note-submit:hover,
+.crm-topbar-actions button:hover,
+.retry-load:hover,
+.retry-clients-load:hover,
+.dashboard-retry:hover,
+.dashboard-open-section:hover,
+.dashboard-actions button:hover:not(:disabled),
+.settings-form button:hover,
+.settings-refresh-users:hover,
+.settings-toggle-user:hover:not(:disabled),
+.settings-edit-user:hover,
+.settings-delete-user:hover,
+.settings-user-password-form button:hover,
+.products-export:hover,
+.products-add:hover,
+.product-edit:hover,
+.product-toggle:hover,
+.product-delete:hover,
+.product-restore:hover,
+.clients-toolbar button:hover,
+.client-orders-toggle:hover,
+.open-client:hover,
+.assignment-action:hover,
+.delete-order:hover,
+.restore-order:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(17, 21, 23, 0.1);
+}
+
+.status-tabs button:hover,
+.order-tabs button:hover,
+.settings-tabs button:hover {
+    border-color: rgba(32, 87, 66, 0.26);
+    background: #ffffff;
+}
+
+.status-tabs button.active:hover,
+.order-tabs button.active:hover,
+.settings-tabs button.active:hover {
+    background: var(--brand-burgundy);
+    border-color: var(--brand-burgundy);
+}
+
+.settings-delete-user,
+.product-delete,
+.delete-order {
+    background: var(--danger);
+}
+
+.settings-cancel-edit,
+.settings-edit-user,
+.product-edit,
+.client-orders-toggle,
+.settings-refresh-users,
+.dashboard-open-section {
+    background: var(--primary);
+}
+
+.settings-toggle-user,
+.products-add,
+.product-toggle,
+.assignment-action {
+    background: var(--brand-burgundy);
+}
+
+.order-card,
+.dashboard-welcome,
+.dashboard-panel,
+.dashboard-stat,
+.client-card,
+.settings-panel,
+.settings-user-card,
+.products-row,
+.empty-state,
+.login-card {
+    box-shadow: var(--shadow-card);
+}
+
+.order-card:hover,
+.dashboard-panel:hover,
+.dashboard-stat:hover,
+.client-card:hover,
+.settings-user-card:hover,
+.products-row:hover {
+    box-shadow: var(--shadow-card-hover);
+}
+
+.crm-workspace {
+    padding: clamp(18px, 2vw, 24px);
+}
+
+.crm-topbar {
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.crm-topbar h1 {
+    font-size: clamp(1.45rem, 2.2vw, 2rem);
+}
+
+.manager-toolbar,
+.products-toolbar,
+.clients-toolbar {
+    margin-bottom: 14px;
+    padding: 10px;
+}
+
+.orders-list,
+.clients-list,
+.dashboard-view,
+.settings-view,
+.products-view {
+    gap: 12px;
+}
+
+.order-card,
+.client-card,
+.settings-panel,
+.settings-user-card {
+    gap: 10px;
+    padding: 12px;
+}
+
+.order-section,
+.history-panel,
+.client-orders-panel,
+.settings-form {
+    padding: 10px;
+}
+
+.order-card-footer {
+    align-items: end;
+}
+
+.order-actions,
+.order-controls,
+.product-actions,
+.settings-user-actions,
+.settings-inline-actions,
+.crm-topbar-actions {
+    gap: 7px;
+}
+
+.order-grid,
+.client-card-grid,
+.settings-profile-grid {
+    gap: 8px;
+}
+
+.info-row strong,
+.order-field strong,
+.order-field p,
+.history-event p,
+.history-empty,
+.dashboard-muted,
+.settings-muted {
+    line-height: 1.4;
+}
+
+.manager-toolbar select,
+.status-select,
+.clients-toolbar input,
+.settings-form input,
+.settings-form select,
+.settings-user-password-form input,
+.products-toolbar input,
+.products-toolbar select,
+.product-form-grid input,
+.product-form-grid select,
+.product-form-grid textarea,
+.login-form input,
+.note-input {
+    border-color: var(--border);
+    border-radius: 7px;
+    background: #ffffff;
+    transition: border-color 140ms ease, box-shadow 140ms ease, background-color 140ms ease;
+}
+
+.manager-toolbar select:focus,
+.status-select:focus,
+.clients-toolbar input:focus,
+.settings-form input:focus,
+.settings-form select:focus,
+.settings-user-password-form input:focus,
+.products-toolbar input:focus,
+.products-toolbar select:focus,
+.product-form-grid input:focus,
+.product-form-grid select:focus,
+.product-form-grid textarea:focus,
+.login-form input:focus,
+.note-input:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: var(--focus-ring);
+}
+
+.status-badge,
+.product-status,
+.settings-user-status,
+.history-type,
+.product-meta-pills span {
+    min-height: 24px;
+    font-size: 0.72rem;
+}
+
+.empty-state {
+    justify-items: start;
+    padding: 22px;
+    background: linear-gradient(180deg, #ffffff 0%, #fbfcf9 100%);
+}
+
+.empty-state h2 {
+    font-size: 1rem;
+}
+
+.crm-loader {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: var(--shadow-card);
+}
+
+.products-table {
+    gap: 8px;
+}
+
+.products-row {
+    grid-template-columns: minmax(220px, 1.15fr) minmax(260px, 1.35fr) minmax(78px, 0.35fr) minmax(196px, 0.75fr);
+    min-width: 0;
+}
+
+.products-head {
+    box-shadow: none;
+}
+
+.product-actions {
+    justify-content: flex-end;
+}
+
+.product-meta-pills span {
+    padding: 0 8px;
+}
+
+.settings-user-password-form {
+    align-items: center;
+}
+
+.settings-user-password-form .password-field {
+    width: 210px;
+}
+
+.password-toggle {
+    min-height: 28px;
+}
+
+.items-table th,
+.items-table td {
+    vertical-align: top;
+}
+
 @media (max-width: 1024px) and (min-width: 761px) {
     .crm-shell {
         grid-template-columns: 220px minmax(0, 1fr);
@@ -1840,6 +2156,23 @@ a[role="button"],
 
     .crm-workspace {
         padding: 22px;
+    }
+
+    .dashboard-stats {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .dashboard-grid,
+    .products-row {
+        grid-template-columns: 1fr;
+    }
+
+    .products-head {
+        display: none;
+    }
+
+    .product-actions {
+        justify-content: flex-start;
     }
 }
 
@@ -1969,7 +2302,7 @@ a[role="button"],
     }
 
     .crm-workspace {
-        padding: 14px;
+        padding: 12px;
         padding-bottom: calc(92px + env(safe-area-inset-bottom));
     }
 
@@ -1986,14 +2319,15 @@ a[role="button"],
     }
 
     .status-tabs {
-        flex-wrap: wrap;
-        overflow: visible;
+        flex-wrap: nowrap;
+        overflow-x: auto;
         gap: 8px;
-        padding-bottom: 0;
+        padding-bottom: 4px;
+        scrollbar-width: none;
     }
 
     .status-tabs button {
-        flex: 1 1 auto;
+        flex: 0 0 auto;
         min-width: max-content;
         min-height: 40px;
         padding: 0 10px;
@@ -2077,7 +2411,8 @@ a[role="button"],
     .clients-toolbar button,
     .client-orders-toggle,
     .open-client,
-    .retry-clients-load {
+    .retry-clients-load,
+    .crm-topbar-actions button {
         width: 100%;
     }
 
@@ -2095,6 +2430,7 @@ a[role="button"],
         flex-wrap: wrap;
         align-items: start;
         gap: 8px 10px;
+        padding: 10px;
     }
 
     .products-head {
@@ -2106,7 +2442,7 @@ a[role="button"],
     }
 
     .product-info-cell {
-        flex: 1 1 230px;
+        flex: 1 1 100%;
         gap: 6px 10px;
     }
 
@@ -2228,8 +2564,60 @@ a[role="button"],
     }
 
     .items-table {
+        display: grid;
+        border-collapse: separate;
+        border-spacing: 0;
+        overflow: visible;
+        border: none;
+        gap: 6px;
+        background: transparent;
+    }
+
+    .items-table thead {
+        display: none;
+    }
+
+    .items-table tbody,
+    .items-table tr,
+    .items-table td {
         display: block;
-        overflow-x: auto;
+        width: 100%;
+    }
+
+    .items-table tr {
+        padding: 8px;
+        border: 1px solid var(--border);
+        border-radius: 7px;
+        background: #ffffff;
+    }
+
+    .items-table td {
+        padding: 4px 0;
+        border: none;
+        overflow-wrap: anywhere;
+    }
+
+    .items-table td:nth-child(1) {
+        color: var(--primary-dark);
+        font-weight: 800;
+    }
+
+    .items-table td:nth-child(2)::before {
+        content: "Кол-во: ";
+        color: var(--text-muted);
+        font-weight: 800;
+    }
+
+    .items-table td:nth-child(3)::before {
+        content: "Вес: ";
+        color: var(--text-muted);
+        font-weight: 800;
+    }
+
+    .items-table td:nth-child(4)::before {
+        content: "Сумма: ";
+        color: var(--text-muted);
+        font-weight: 800;
     }
 }
 
@@ -2248,12 +2636,29 @@ a[role="button"],
         font-size: 1.35rem;
     }
 
+    .crm-topbar-actions,
+    .orders-stats {
+        gap: 7px;
+    }
+
+    .orders-stats span {
+        flex: 1 1 112px;
+    }
+
     .orders-stats span,
     .dashboard-stat,
     .order-section,
     .client-card,
     .settings-panel {
         border-radius: 7px;
+    }
+
+    .product-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .empty-state {
+        padding: 18px;
     }
 }
 

@@ -36,7 +36,7 @@
         LOADING_ORDERS: "Загружаем заявки...",
         LOADING_MY_ORDERS: "Загружаем ваши заявки...",
         LOADING_CLIENTS: "Загружаем клиентов...",
-        LOADING_USERS: "Пользователи загружаются...",
+        LOADING_USERS: "Загружаем пользователей...",
         CONFIRM_DELETE_ORDER_TITLE: "Удалить заявку",
         CONFIRM_DELETE_ORDER_ACTION: "Удалить",
         CONFIRM_RESTORE_ORDER_TITLE: "Восстановить заявку",
