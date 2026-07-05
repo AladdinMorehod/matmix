@@ -29,6 +29,11 @@ router.post("/login", async (req, res) => {
         }
 
         const user = await get("SELECT * FROM users WHERE login = ?", [login]);
+        if (user && user.deleted_at) {
+            res.status(403).json({ success: false, message: "Пользователь отключен" });
+            return;
+        }
+
         if (user && Number(user.is_active) === 0) {
             res.status(403).json({ success: false, message: "Пользователь отключен" });
             return;

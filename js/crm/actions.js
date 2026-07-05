@@ -29,6 +29,26 @@ async function refreshExpandedHistory(id) {
     }
 }
 
+function getOrderForMutation(id) {
+    return orders.find(item => String(item.id) === String(id));
+}
+
+function getOrderMutationPayload(id, extra = {}) {
+    const order = getOrderForMutation(id);
+    return {
+        ...extra,
+        updatedAt: order?.updatedAt || ""
+    };
+}
+
+function getOrderConflictMessage(error) {
+    if (error?.message === "Заявка была изменена другим пользователем.") {
+        return "Заявка была изменена другим пользователем. Обновите данные.";
+    }
+
+    return error?.message || "";
+}
+
 async function addOrderNote(id, message) {
     const cleanMessage = String(message || "").trim();
 
@@ -44,7 +64,7 @@ async function addOrderNote(id, message) {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ message: cleanMessage })
+            body: JSON.stringify(getOrderMutationPayload(id, { message: cleanMessage }))
         });
         const result = await response.json().catch(() => ({}));
 
@@ -53,9 +73,13 @@ async function addOrderNote(id, message) {
         }
 
         setMessage("Заметка сохранена.");
+        await loadOrders({ preserveMessage: true });
         await loadOrderEvents(id);
     } catch (error) {
-        setMessage(error.message || "Не удалось сохранить заметку.");
+        if (error.message === "Заявка была изменена другим пользователем.") {
+            await loadOrders({ preserveMessage: true });
+        }
+        setMessage(getOrderConflictMessage(error) || "Не удалось сохранить заметку.");
     }
 }
 
@@ -67,7 +91,7 @@ async function updateOrderStatus(id, status) {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ status })
+            body: JSON.stringify(getOrderMutationPayload(id, { status }))
         });
         const result = await response.json().catch(() => ({}));
 
@@ -75,16 +99,14 @@ async function updateOrderStatus(id, status) {
             throw new Error(result.message || "Статус не обновился.");
         }
 
-        const order = orders.find(item => String(item.id) === String(id));
-        if (order) {
-            order.status = status;
-        }
-
         setMessage("Статус обновлен.");
-        renderOrders();
+        await loadOrders({ preserveMessage: true });
         await refreshExpandedHistory(id);
     } catch (error) {
-        setMessage(error.message || "Не удалось обновить статус.");
+        if (error.message === "Заявка была изменена другим пользователем.") {
+            await loadOrders({ preserveMessage: true });
+        }
+        setMessage(getOrderConflictMessage(error) || "Не удалось обновить статус.");
         renderOrders();
     }
 }
@@ -98,7 +120,11 @@ async function runOrderAction(id, action) {
     try {
         const response = await fetch(`/api/orders/${id}/${action}`, {
             method: "POST",
-            credentials: "include"
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(getOrderMutationPayload(id))
         });
         const result = await response.json().catch(() => ({}));
 
@@ -111,7 +137,7 @@ async function runOrderAction(id, action) {
         setMessage(actionMessages[action] || "Заявка обновлена.");
     } catch (error) {
         await loadOrders({ preserveMessage: true });
-        setMessage(error.message || "Не удалось обновить заявку.");
+        setMessage(getOrderConflictMessage(error) || "Не удалось обновить заявку.");
     }
 }
 
@@ -131,7 +157,11 @@ async function deleteOrder(orderId) {
     try {
         const response = await fetch(`/api/orders/${orderId}`, {
             method: "DELETE",
-            credentials: "include"
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(getOrderMutationPayload(orderId))
         });
         const result = await response.json().catch(() => ({}));
 
@@ -144,7 +174,10 @@ async function deleteOrder(orderId) {
         await loadOrders({ preserveMessage: true });
         setMessage("Заявка перемещена в удаленные.");
     } catch (error) {
-        setMessage(error.message || "Не удалось удалить заявку.");
+        if (error.message === "Заявка была изменена другим пользователем.") {
+            await loadOrders({ preserveMessage: true });
+        }
+        setMessage(getOrderConflictMessage(error) || "Не удалось удалить заявку.");
     }
 }
 
@@ -164,7 +197,11 @@ async function restoreOrder(orderId) {
     try {
         const response = await fetch(`/api/orders/${orderId}/restore`, {
             method: "POST",
-            credentials: "include"
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(getOrderMutationPayload(orderId))
         });
         const result = await response.json().catch(() => ({}));
 
@@ -178,6 +215,9 @@ async function restoreOrder(orderId) {
         }
         setMessage("Заявка восстановлена.");
     } catch (error) {
-        setMessage(error.message || "Не удалось восстановить заявку.");
+        if (error.message === "Заявка была изменена другим пользователем.") {
+            await loadOrders({ preserveMessage: true });
+        }
+        setMessage(getOrderConflictMessage(error) || "Не удалось восстановить заявку.");
     }
 }

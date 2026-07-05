@@ -339,13 +339,13 @@ body {
 
 .orders-list {
     display: grid;
-    gap: 14px;
+    gap: 10px;
 }
 
 .order-card {
     display: grid;
-    gap: 12px;
-    padding: 16px;
+    gap: 9px;
+    padding: 12px;
     border: 1px solid var(--border);
     border-radius: 8px;
     background: var(--surface);
@@ -365,8 +365,8 @@ body {
 }
 
 .deleted-order-row.expanded {
-    gap: 12px;
-    padding-bottom: 14px;
+    gap: 10px;
+    padding-bottom: 12px;
 }
 
 .deleted-order-header {
@@ -374,9 +374,9 @@ body {
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
+    gap: 10px;
     width: 100%;
-    padding: 14px;
+    padding: 12px;
     cursor: pointer;
 }
 
@@ -390,14 +390,24 @@ body {
     flex-wrap: wrap;
     align-items: center;
     justify-content: flex-end;
-    gap: 8px;
+    gap: 6px;
+}
+
+.deleted-order-header .order-title {
+    grid-template-columns: repeat(2, minmax(0, auto));
+    align-items: center;
+    gap: 3px 12px;
+}
+
+.deleted-order-header .order-title strong {
+    grid-column: 1 / -1;
 }
 
 .deleted-order-details {
     display: grid;
     grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
-    gap: 10px;
-    padding: 0 14px;
+    gap: 8px;
+    padding: 0 12px;
 }
 
 .order-card-header,
@@ -406,7 +416,7 @@ body {
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
+    gap: 8px;
 }
 
 .order-card-header {
@@ -418,12 +428,12 @@ body {
     flex-wrap: wrap;
     align-items: flex-start;
     justify-content: flex-end;
-    gap: 10px;
+    gap: 8px;
 }
 
 .order-title {
     display: grid;
-    gap: 4px;
+    gap: 3px;
 }
 
 .order-title strong {
@@ -441,15 +451,15 @@ body {
 
 .order-sections {
     display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
-    gap: 10px;
+    grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+    gap: 8px;
 }
 
 .order-section {
     display: grid;
     align-content: start;
-    gap: 8px;
-    padding: 12px;
+    gap: 6px;
+    padding: 9px;
     border: 1px solid var(--border);
     border-radius: 8px;
     background: rgba(244, 246, 241, 0.55);
@@ -468,7 +478,7 @@ body {
 
 .info-row {
     display: grid;
-    gap: 3px;
+    gap: 2px;
     min-width: 0;
 }
 
@@ -489,7 +499,7 @@ body {
 .order-summary {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
     color: var(--primary-dark);
     font-size: 0.9rem;
     font-weight: 700;
@@ -498,13 +508,13 @@ body {
 .order-tabs {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 6px;
     padding-bottom: 2px;
 }
 
 .order-tabs button {
-    min-height: 32px;
-    padding: 0 12px;
+    min-height: 28px;
+    padding: 0 10px;
     border: 1px solid var(--border);
     border-radius: 6px;
     background: var(--surface-soft);
@@ -523,7 +533,7 @@ body {
 
 .order-tab-panel {
     display: grid;
-    gap: 12px;
+    gap: 8px;
 }
 
 .status-badge {
@@ -581,10 +591,10 @@ body {
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
-    min-width: min(100%, 210px);
-    padding: 8px 10px;
-    border-radius: 8px;
+    gap: 6px;
+    min-width: 0;
+    padding: 5px 8px;
+    border-radius: 7px;
 }
 
 .assignment-free {
@@ -599,12 +609,12 @@ body {
 
 .assignment div {
     display: grid;
-    gap: 4px;
+    gap: 2px;
 }
 
 .assignment-label {
     color: var(--text-muted);
-    font-size: 0.76rem;
+    font-size: 0.7rem;
     font-weight: 800;
 }
 
@@ -613,7 +623,7 @@ body {
     align-items: center;
     gap: 7px;
     color: var(--primary-dark);
-    font-size: 0.92rem;
+    font-size: 0.82rem;
     font-weight: 800;
 }
 
@@ -677,7 +687,7 @@ body {
 
 .items-table th,
 .items-table td {
-    padding: 9px 10px;
+    padding: 7px 8px;
     border-bottom: 1px solid var(--border);
     text-align: left;
     font-size: 0.84rem;
@@ -943,6 +953,8 @@ body {
 .settings-form button,
 .settings-refresh-users,
 .settings-toggle-user,
+.settings-edit-user,
+.settings-delete-user,
 .settings-user-password-form button {
     display: inline-flex;
     align-items: center;
@@ -975,6 +987,10 @@ body {
 .settings-toggle-user:disabled {
     cursor: default;
     opacity: 0.5;
+}
+
+.settings-delete-user {
+    background: var(--brand-burgundy);
 }
 
 .settings-panel {
@@ -1119,6 +1135,24 @@ body {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+}
+
+.settings-user-edit-form {
+    max-width: none;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+    align-items: end;
+}
+
+.settings-inline-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.settings-self-label {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
 }
 
 .settings-user-password-form input {
@@ -1481,7 +1515,8 @@ body {
     .dashboard-grid,
     .dashboard-recent-order,
     .settings-profile-grid,
-    .settings-create-user {
+    .settings-create-user,
+    .settings-user-edit-form {
         grid-template-columns: 1fr;
     }
 
@@ -1498,9 +1533,13 @@ body {
 
     .settings-user-password-form,
     .settings-user-password-form input,
+    .settings-user-edit-form,
+    .settings-inline-actions,
     .settings-form button,
     .settings-refresh-users,
     .settings-toggle-user,
+    .settings-edit-user,
+    .settings-delete-user,
     .settings-user-password-form button {
         width: 100%;
     }
@@ -1514,6 +1553,10 @@ body {
         align-items: flex-start;
         flex-direction: column;
         justify-content: flex-start;
+    }
+
+    .deleted-order-header .order-title {
+        grid-template-columns: 1fr;
     }
 
     .deleted-order-details {

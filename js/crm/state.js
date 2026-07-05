@@ -68,10 +68,12 @@ let settingsUsersLoading = false;
 let settingsUsersLoaded = false;
 let settingsUsersError = "";
 let activeSettingsTab = "profile";
+let editingUserId = null;
 
 const crmNavigation = [
     { id: "dashboard", label: "Главная", enabled: true },
     { id: "orders", label: "Заказы", enabled: true },
+    { id: "myOrders", label: "Мои заказы", enabled: true },
     { id: "clients", label: "Клиенты", enabled: true },
     { id: "catalog", label: "Каталог", enabled: false },
     { id: "statistics", label: "Статистика", enabled: false },

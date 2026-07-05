@@ -7,6 +7,10 @@ function getUserStatusText(user) {
     return user.isActive ? "Активен" : "Отключен";
 }
 
+function isMainAdminUser(user) {
+    return user?.login === "admin";
+}
+
 function renderPasswordField({ label = "", name, autocomplete = "new-password", placeholder = "", minlength = "", required = false }) {
     return `
         <label>
@@ -81,20 +85,26 @@ function bindSettingsFormEvents() {
             changeUserPassword(form.dataset.userId, form);
         });
     });
+
+    document.querySelectorAll(".settings-user-edit-form").forEach(form => {
+        if (form.dataset.bound === "1") return;
+        form.dataset.bound = "1";
+        form.addEventListener("submit", event => {
+            event.preventDefault();
+            updateUser(form.dataset.userId, form);
+        });
+    });
 }
 
 function renderSettingsTabs() {
     const tabs = [
         { id: "profile", label: "Профиль", enabled: true },
         { id: "users", label: "Пользователи", enabled: canManageUsers() }
-    ];
+    ].filter(tab => tab.enabled);
 
     return `
         <nav class="settings-tabs" aria-label="Разделы настроек">
-            ${tabs.map(tab => tab.enabled
-                ? `<button class="${activeSettingsTab === tab.id ? "active" : ""}" data-settings-tab="${tab.id}" type="button">${escapeHtml(tab.label)}</button>`
-                : `<button type="button" disabled>${escapeHtml(tab.label)}</button>`
-            ).join("")}
+            ${tabs.map(tab => `<button class="${activeSettingsTab === tab.id ? "active" : ""}" data-settings-tab="${tab.id}" type="button">${escapeHtml(tab.label)}</button>`).join("")}
         </nav>
     `;
 }
@@ -122,6 +132,8 @@ function renderProfileSettings() {
 
 function renderUserCard(user) {
     const isSelf = Number(user.id) === Number(currentUser?.id);
+    const isEditing = Number(user.id) === Number(editingUserId);
+    const isMainAdmin = isMainAdminUser(user);
 
     return `
         <article class="settings-user-card" data-user-id="${user.id}">
@@ -132,14 +144,47 @@ function renderUserCard(user) {
                 </div>
                 <span class="settings-user-status ${user.isActive ? "active" : "disabled"}">${getUserStatusText(user)}</span>
             </div>
-            <div class="settings-user-actions">
-                <button class="settings-toggle-user" data-user-id="${user.id}" data-is-active="${user.isActive ? "0" : "1"}" type="button"${isSelf && user.isActive ? " disabled" : ""}>
-                    ${user.isActive ? "Отключить" : "Включить"}
-                </button>
-                <form class="settings-user-password-form" data-user-id="${user.id}">
-                    ${renderPasswordField({ name: "password", placeholder: "Новый пароль", minlength: "6" })}
-                    <button type="submit">Сменить пароль</button>
+            ${isMainAdmin ? `<p class="settings-muted settings-self-label">Главный администратор · Защищенная учетная запись</p>` : ""}
+            ${isEditing ? `
+                <form class="settings-form settings-user-edit-form" data-user-id="${user.id}">
+                    <label>
+                        <span>Имя</span>
+                        <input name="name" type="text" value="${escapeHtml(user.name)}" required>
+                    </label>
+                    <label>
+                        <span>Логин</span>
+                        <input name="login" type="text" value="${escapeHtml(user.login)}" required autocomplete="off"${isMainAdmin ? " readonly" : ""}>
+                    </label>
+                    <label>
+                        <span>Роль</span>
+                        <select name="role"${isMainAdmin ? " disabled" : ""}>
+                            <option value="manager"${user.role === "manager" ? " selected" : ""}>Менеджер</option>
+                            <option value="admin"${user.role === "admin" ? " selected" : ""}>Админ</option>
+                        </select>
+                        ${isMainAdmin ? `<input name="role" type="hidden" value="admin">` : ""}
+                    </label>
+                    <div class="settings-inline-actions">
+                        <button type="submit">Сохранить</button>
+                        <button class="settings-cancel-edit" type="button">Отмена</button>
+                    </div>
                 </form>
+            ` : ""}
+            <div class="settings-user-actions">
+                ${isMainAdmin ? "" : `<button class="settings-edit-user" data-user-id="${user.id}" type="button">Редактировать</button>`}
+                ${isMainAdmin ? "" : `
+                    <button class="settings-toggle-user" data-user-id="${user.id}" data-is-active="${user.isActive ? "0" : "1"}" type="button"${isSelf && user.isActive ? " disabled" : ""}>
+                        ${user.isActive ? "Отключить" : "Включить"}
+                    </button>
+                `}
+                ${isSelf
+                    ? `<span class="settings-muted settings-self-label">Текущий пользователь</span>`
+                    : (isMainAdmin ? "" : `<button class="settings-delete-user" data-user-id="${user.id}" data-user-name="${escapeHtml(user.name)}" type="button">Удалить</button>`)}
+                ${isMainAdmin ? "" : `
+                    <form class="settings-user-password-form" data-user-id="${user.id}">
+                        ${renderPasswordField({ name: "password", placeholder: "Новый пароль", minlength: "6" })}
+                        <button type="submit">Сменить пароль</button>
+                    </form>
+                `}
             </div>
         </article>
     `;
@@ -365,6 +410,72 @@ async function createUser(form) {
     } catch (error) {
         logSettingsError("create user error", error);
         setMessage(error.message || "Ошибка соединения с сервером");
+    }
+}
+
+async function updateUser(userId, form) {
+    const formData = new FormData(form);
+    const payload = {
+        name: String(formData.get("name") || "").trim(),
+        login: String(formData.get("login") || "").trim(),
+        role: String(formData.get("role") || "")
+    };
+
+    if (!payload.name || !payload.login || !["admin", "manager"].includes(payload.role)) {
+        setMessage("Заполните имя, логин и корректную роль.");
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/users/${userId}`, {
+            method: "PATCH",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+        const result = await response.json().catch(() => ({}));
+
+        if (!response.ok || !result.success) {
+            throw new Error(result.message || "Пользователь не обновлен.");
+        }
+
+        if (Number(result.user?.id) === Number(currentUser?.id)) {
+            currentUser = result.user;
+            managerUserName.textContent = currentUser.name;
+            managerUserRole.textContent = getRoleLabel(currentUser.role);
+        }
+
+        editingUserId = null;
+        setMessage("Пользователь обновлен.");
+        await loadUsers();
+    } catch (error) {
+        setMessage(error.message || "Не удалось обновить пользователя.");
+    }
+}
+
+async function deleteUser(userId, userName) {
+    if (!window.confirm(`Удалить пользователя ${userName}? Пользователь будет отключен и скрыт из списка.`)) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/users/${userId}`, {
+            method: "DELETE",
+            credentials: "include"
+        });
+        const result = await response.json().catch(() => ({}));
+
+        if (!response.ok || !result.success) {
+            throw new Error(result.message || "Пользователь не удален.");
+        }
+
+        if (Number(editingUserId) === Number(userId)) {
+            editingUserId = null;
+        }
+        setMessage("Пользователь удален.");
+        await loadUsers();
+    } catch (error) {
+        setMessage(error.message || "Не удалось удалить пользователя.");
     }
 }
 

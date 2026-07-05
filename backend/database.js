@@ -74,6 +74,8 @@ async function initDatabase() {
     await ensureColumn("orders", "taken_at", "TEXT");
     await ensureColumn("orders", "closed_at", "TEXT");
     await ensureColumn("orders", "deleted_at", "TEXT");
+    await ensureColumn("orders", "deleted_by_id", "INTEGER");
+    await ensureColumn("orders", "deleted_by_name", "TEXT");
     await ensureColumn("orders", "preferred_contact_method", "TEXT");
     await ensureColumn("orders", "preferred_contact_value", "TEXT");
     await ensureColumn("orders", "client_id", "INTEGER");
@@ -125,6 +127,7 @@ async function initDatabase() {
     `);
     await ensureColumn("users", "is_active", "INTEGER DEFAULT 1");
     await ensureColumn("users", "updated_at", "TEXT");
+    await ensureColumn("users", "deleted_at", "TEXT");
 
     const admin = await get("SELECT id FROM users WHERE login = ?", ["admin"]);
     if (!admin) {

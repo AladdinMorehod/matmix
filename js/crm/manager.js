@@ -40,6 +40,12 @@ crmNavButtons.forEach(button => {
         }
 
         if (button.dataset.section === "orders") {
+            statusFilter.value = "";
+            loadOrders();
+        }
+
+        if (button.dataset.section === "myOrders") {
+            statusFilter.value = "";
             loadOrders();
         }
 
@@ -197,6 +203,26 @@ settingsView?.addEventListener("click", event => {
         return;
     }
 
+    const editButton = event.target.closest(".settings-edit-user");
+    if (editButton) {
+        editingUserId = Number(editButton.dataset.userId);
+        renderSettings();
+        return;
+    }
+
+    const cancelEditButton = event.target.closest(".settings-cancel-edit");
+    if (cancelEditButton) {
+        editingUserId = null;
+        renderSettings();
+        return;
+    }
+
+    const deleteButton = event.target.closest(".settings-delete-user");
+    if (deleteButton) {
+        deleteUser(deleteButton.dataset.userId, deleteButton.dataset.userName || "пользователя");
+        return;
+    }
+
     const toggleButton = event.target.closest(".settings-toggle-user");
     if (toggleButton) {
         toggleUserStatus(toggleButton.dataset.userId, toggleButton.dataset.isActive === "1");
@@ -219,6 +245,13 @@ settingsView?.addEventListener("submit", event => {
         event.preventDefault();
         console.log("[settings] delegated create user submit");
         createUser(createUserForm);
+        return;
+    }
+
+    const userEditForm = event.target.closest(".settings-user-edit-form");
+    if (userEditForm) {
+        event.preventDefault();
+        updateUser(userEditForm.dataset.userId, userEditForm);
         return;
     }
 

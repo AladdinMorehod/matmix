@@ -114,7 +114,8 @@ async function loadDashboard(options = {}) {
 function openDashboardSection(section) {
     setActiveSection(section);
 
-    if (section === "orders") {
+    if (section === "orders" || section === "myOrders") {
+        statusFilter.value = "";
         loadOrders({ preserveMessage: true });
         return;
     }

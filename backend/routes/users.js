@@ -14,6 +14,10 @@ function normalizeRole(value) {
     return ["admin", "manager"].includes(role) ? role : "";
 }
 
+function isMainAdmin(user) {
+    return user?.login === "admin";
+}
+
 function normalizeUser(row) {
     return {
         id: row.id,
@@ -25,15 +29,18 @@ function normalizeUser(row) {
         created_at: row.created_at || null,
         createdAt: row.created_at || null,
         updated_at: row.updated_at || null,
-        updatedAt: row.updated_at || null
+        updatedAt: row.updated_at || null,
+        deleted_at: row.deleted_at || null,
+        deletedAt: row.deleted_at || null
     };
 }
 
 router.get("/", requireAuth, requireRole(["admin"]), async (req, res) => {
     try {
         const rows = await all(`
-            SELECT id, login, name, role, is_active, created_at, updated_at
+            SELECT id, login, name, role, is_active, created_at, updated_at, deleted_at
             FROM users
+            WHERE deleted_at IS NULL
             ORDER BY id ASC
         `);
 
@@ -85,7 +92,7 @@ router.post("/", requireAuth, requireRole(["admin"]), async (req, res) => {
             [login, passwordHash, role, name, 1, now, now]
         );
         const createdUser = await get(
-            `SELECT id, login, name, role, is_active, created_at, updated_at
+            `SELECT id, login, name, role, is_active, created_at, updated_at, deleted_at
              FROM users
              WHERE id = ?`,
             [result.id]
@@ -95,6 +102,122 @@ router.post("/", requireAuth, requireRole(["admin"]), async (req, res) => {
     } catch (error) {
         console.error("User create error:", error);
         res.status(500).json({ success: false, message: "Не удалось создать пользователя." });
+    }
+});
+
+router.patch("/:id", requireAuth, requireRole(["admin"]), async (req, res) => {
+    try {
+        const userId = Number(req.params.id);
+        const login = normalizeText(req.body.login);
+        const name = normalizeText(req.body.name);
+        const role = normalizeRole(req.body.role);
+
+        if (!userId) {
+            res.status(400).json({ success: false, message: "Некорректный пользователь." });
+            return;
+        }
+
+        if (!name) {
+            res.status(400).json({ success: false, message: "Укажите имя пользователя." });
+            return;
+        }
+
+        if (!login) {
+            res.status(400).json({ success: false, message: "Укажите логин." });
+            return;
+        }
+
+        if (!role) {
+            res.status(400).json({ success: false, message: "Недопустимая роль пользователя." });
+            return;
+        }
+
+        const user = await get("SELECT id, login, role, deleted_at FROM users WHERE id = ?", [userId]);
+        if (!user || user.deleted_at) {
+            res.status(404).json({ success: false, message: "Пользователь не найден." });
+            return;
+        }
+
+        if (isMainAdmin(user)) {
+            res.status(400).json({ success: false, message: "Главного администратора нельзя изменить." });
+            return;
+        }
+
+        const existing = await get("SELECT id FROM users WHERE login = ? AND id <> ?", [login, userId]);
+        if (existing) {
+            res.status(400).json({ success: false, message: "Пользователь с таким логином уже существует." });
+            return;
+        }
+
+        await run(
+            "UPDATE users SET login = ?, name = ?, role = ?, updated_at = ? WHERE id = ? AND deleted_at IS NULL",
+            [login, name, role, new Date().toISOString(), userId]
+        );
+
+        const updatedUser = await get(
+            `SELECT id, login, name, role, is_active, created_at, updated_at, deleted_at
+             FROM users
+             WHERE id = ?`,
+            [userId]
+        );
+        const normalizedUser = normalizeUser(updatedUser);
+
+        if (userId === Number(req.session.user.id)) {
+            req.session.user = {
+                id: normalizedUser.id,
+                login: normalizedUser.login,
+                role: normalizedUser.role,
+                name: normalizedUser.name
+            };
+        }
+
+        res.json({ success: true, user: normalizedUser });
+    } catch (error) {
+        console.error("User update error:", error);
+        res.status(500).json({ success: false, message: "Не удалось обновить пользователя." });
+    }
+});
+
+router.delete("/:id", requireAuth, requireRole(["admin"]), async (req, res) => {
+    try {
+        const userId = Number(req.params.id);
+
+        if (!userId) {
+            res.status(400).json({ success: false, message: "Некорректный пользователь." });
+            return;
+        }
+
+        if (userId === Number(req.session.user.id)) {
+            res.status(400).json({ success: false, message: "Нельзя удалить самого себя." });
+            return;
+        }
+
+        const user = await get("SELECT id, login, deleted_at FROM users WHERE id = ?", [userId]);
+        if (!user) {
+            res.status(404).json({ success: false, message: "Пользователь не найден." });
+            return;
+        }
+
+        if (isMainAdmin(user)) {
+            res.status(400).json({ success: false, message: "Главного администратора нельзя удалить." });
+            return;
+        }
+
+        if (user.deleted_at) {
+            res.status(400).json({ success: false, message: "Пользователь уже удален." });
+            return;
+        }
+
+        const now = new Date().toISOString();
+        await run(
+            "UPDATE users SET is_active = 0, deleted_at = ?, updated_at = ? WHERE id = ? AND deleted_at IS NULL",
+            [now, now, userId]
+        );
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error("User delete error:", error);
+        res.status(500).json({ success: false, message: "Не удалось удалить пользователя." });
     }
 });
 
@@ -108,9 +231,14 @@ router.patch("/:id/status", requireAuth, requireRole(["admin"]), async (req, res
             return;
         }
 
-        const user = await get("SELECT id FROM users WHERE id = ?", [userId]);
+        const user = await get("SELECT id, login FROM users WHERE id = ? AND deleted_at IS NULL", [userId]);
         if (!user) {
             res.status(404).json({ success: false, message: "Пользователь не найден." });
+            return;
+        }
+
+        if (isMainAdmin(user) && !isActive) {
+            res.status(400).json({ success: false, message: "Главного администратора нельзя отключить." });
             return;
         }
 
@@ -136,9 +264,14 @@ router.patch("/:id/password", requireAuth, requireRole(["admin"]), async (req, r
             return;
         }
 
-        const user = await get("SELECT id FROM users WHERE id = ?", [userId]);
+        const user = await get("SELECT id, login FROM users WHERE id = ? AND deleted_at IS NULL", [userId]);
         if (!user) {
             res.status(404).json({ success: false, message: "Пользователь не найден." });
+            return;
+        }
+
+        if (isMainAdmin(user)) {
+            res.status(400).json({ success: false, message: "Пароль главного администратора можно сменить только из его профиля." });
             return;
         }
 

@@ -170,6 +170,8 @@ function normalizeOrder(row) {
         takenAt: row.taken_at || null,
         closedAt: row.closed_at || null,
         deletedAt: row.deleted_at || null,
+        deletedById: row.deleted_by_id || null,
+        deletedByName: row.deleted_by_name || "",
         createdAt: row.created_at,
         updatedAt: row.updated_at
     };
@@ -179,12 +181,33 @@ function canManageOrder(user, order) {
     return user.role === "admin" || Number(order.manager_id) === Number(user.id);
 }
 
+function canViewOrder(user, order) {
+    if (user.role === "admin") return true;
+    if (Number(order.manager_id) === Number(user.id)) return true;
+    return !order.deleted_at && order.status === "Новая" && !order.manager_id;
+}
+
 function ownsOrder(user, order) {
     return Number(order.manager_id) === Number(user.id);
 }
 
 function isClosedStatus(status) {
     return ["Завершена", "Отменена"].includes(status);
+}
+
+const orderConflictMessage = "Заявка была изменена другим пользователем.";
+
+function getExpectedUpdatedAt(req) {
+    return normalizeText(req.body?.updatedAt || req.get("x-order-updated-at"));
+}
+
+function hasOrderConflict(req, order) {
+    const expectedUpdatedAt = getExpectedUpdatedAt(req);
+    return Boolean(expectedUpdatedAt && order?.updated_at && expectedUpdatedAt !== order.updated_at);
+}
+
+function sendOrderConflict(res) {
+    res.status(409).json({ success: false, message: orderConflictMessage });
 }
 
 async function createOrderEvent({ orderId, userId = null, userName = "Система", eventType, message }) {
@@ -215,7 +238,7 @@ function canAddOrderNote(user, order) {
 
 async function deleteOrder(req, res) {
     try {
-        const order = await get("SELECT id, manager_id, deleted_at FROM orders WHERE id = ?", [req.params.id]);
+        const order = await get("SELECT id, manager_id, deleted_at, updated_at FROM orders WHERE id = ?", [req.params.id]);
 
         if (!order) {
             res.status(404).json({ success: false, message: "Заявка не найдена" });
@@ -232,10 +255,17 @@ async function deleteOrder(req, res) {
             return;
         }
 
+        if (hasOrderConflict(req, order)) {
+            sendOrderConflict(res);
+            return;
+        }
+
         const now = new Date().toISOString();
         const result = await run(
-            "UPDATE orders SET deleted_at = ?, updated_at = ? WHERE id = ? AND deleted_at IS NULL",
-            [now, now, req.params.id]
+            `UPDATE orders
+             SET deleted_at = ?, deleted_by_id = ?, deleted_by_name = ?, updated_at = ?
+             WHERE id = ? AND deleted_at IS NULL`,
+            [now, req.session.user.id, req.session.user.name, now, req.params.id]
         );
 
         if (!result.changes) {
@@ -260,7 +290,7 @@ async function deleteOrder(req, res) {
 
 async function restoreOrder(req, res) {
     try {
-        const order = await get("SELECT id, manager_id, deleted_at FROM orders WHERE id = ?", [req.params.id]);
+        const order = await get("SELECT id, manager_id, deleted_at, updated_at FROM orders WHERE id = ?", [req.params.id]);
 
         if (!order) {
             res.status(404).json({ success: false, message: "Заявка не найдена" });
@@ -277,9 +307,14 @@ async function restoreOrder(req, res) {
             return;
         }
 
+        if (hasOrderConflict(req, order)) {
+            sendOrderConflict(res);
+            return;
+        }
+
         const now = new Date().toISOString();
         await run(
-            "UPDATE orders SET deleted_at = NULL, updated_at = ? WHERE id = ?",
+            "UPDATE orders SET deleted_at = NULL, deleted_by_id = NULL, deleted_by_name = NULL, updated_at = ? WHERE id = ?",
             [now, req.params.id]
         );
 
@@ -392,6 +427,29 @@ router.post("/", async (req, res) => {
 router.get("/", requireRole(["admin", "manager"]), async (req, res) => {
     try {
         const showDeleted = req.query.deleted === "true";
+        const showMine = req.query.mine === "true";
+        const params = [];
+        let where = "orders.deleted_at IS NULL";
+
+        if (showMine) {
+            where = "orders.deleted_at IS NULL AND orders.manager_id = ?";
+            params.push(req.session.user.id);
+        } else if (req.session.user.role === "admin") {
+            where = `orders.deleted_at IS ${showDeleted ? "NOT NULL" : "NULL"}`;
+        } else if (showDeleted) {
+            where = "orders.deleted_at IS NOT NULL AND orders.manager_id = ?";
+            params.push(req.session.user.id);
+        } else {
+            where = `orders.deleted_at IS NULL
+                AND (
+                    (orders.status = ? AND orders.manager_id IS NULL)
+                    OR orders.manager_id = ?
+                )`;
+            params.push("Новая", req.session.user.id);
+        }
+        const orderBy = showDeleted
+            ? "datetime(orders.deleted_at) DESC"
+            : "datetime(orders.created_at) DESC, orders.id DESC";
         const rows = await all(`
             SELECT
                 orders.*,
@@ -402,9 +460,9 @@ router.get("/", requireRole(["admin", "manager"]), async (req, res) => {
             FROM orders
             LEFT JOIN users ON users.id = orders.manager_id
             LEFT JOIN clients ON clients.id = orders.client_id
-            WHERE orders.deleted_at IS ${showDeleted ? "NOT NULL" : "NULL"}
-            ORDER BY datetime(orders.created_at) DESC, orders.id DESC
-        `);
+            WHERE ${where}
+            ORDER BY ${orderBy}
+        `, params);
         res.json({ success: true, orders: rows.map(normalizeOrder) });
     } catch (error) {
         console.error("Orders list error:", error);
@@ -414,10 +472,15 @@ router.get("/", requireRole(["admin", "manager"]), async (req, res) => {
 
 router.get("/:id/events", requireRole(["admin", "manager"]), async (req, res) => {
     try {
-        const order = await get("SELECT id FROM orders WHERE id = ?", [req.params.id]);
+        const order = await get("SELECT id, manager_id, status, deleted_at, updated_at FROM orders WHERE id = ?", [req.params.id]);
 
         if (!order) {
             res.status(404).json({ success: false, message: "Заявка не найдена." });
+            return;
+        }
+
+        if (!canViewOrder(req.session.user, order)) {
+            res.status(403).json({ success: false, message: "Недостаточно прав" });
             return;
         }
 
@@ -457,6 +520,11 @@ router.post("/:id/notes", requireRole(["admin", "manager"]), async (req, res) =>
             return;
         }
 
+        if (hasOrderConflict(req, order)) {
+            sendOrderConflict(res);
+            return;
+        }
+
         await createOrderEvent({
             orderId: req.params.id,
             userId: req.session.user.id,
@@ -464,6 +532,10 @@ router.post("/:id/notes", requireRole(["admin", "manager"]), async (req, res) =>
             eventType: "note",
             message
         });
+        await run(
+            "UPDATE orders SET updated_at = ? WHERE id = ? AND deleted_at IS NULL",
+            [new Date().toISOString(), req.params.id]
+        );
 
         res.json({ success: true });
     } catch (error) {
@@ -495,6 +567,11 @@ router.get("/:id", requireRole(["admin", "manager"]), async (req, res) => {
             return;
         }
 
+        if (!canViewOrder(req.session.user, row)) {
+            res.status(403).json({ success: false, message: "Недостаточно прав" });
+            return;
+        }
+
         res.json({ success: true, order: normalizeOrder(row) });
     } catch (error) {
         console.error("Order read error:", error);
@@ -504,7 +581,7 @@ router.get("/:id", requireRole(["admin", "manager"]), async (req, res) => {
 
 router.post("/:id/take", requireRole(["admin", "manager"]), async (req, res) => {
     try {
-        const order = await get("SELECT id, manager_id, status, deleted_at FROM orders WHERE id = ?", [req.params.id]);
+        const order = await get("SELECT id, manager_id, status, deleted_at, updated_at FROM orders WHERE id = ?", [req.params.id]);
 
         if (!order || order.deleted_at) {
             res.status(404).json({ success: false, message: "Заявка не найдена." });
@@ -518,6 +595,11 @@ router.post("/:id/take", requireRole(["admin", "manager"]), async (req, res) => 
 
         if (order.manager_id) {
             res.status(409).json({ success: false, message: "Заявка уже находится в работе." });
+            return;
+        }
+
+        if (hasOrderConflict(req, order)) {
+            sendOrderConflict(res);
             return;
         }
 
@@ -551,7 +633,7 @@ router.post("/:id/take", requireRole(["admin", "manager"]), async (req, res) => 
 
 router.post("/:id/release", requireRole(["admin", "manager"]), async (req, res) => {
     try {
-        const order = await get("SELECT id, manager_id, status, deleted_at FROM orders WHERE id = ?", [req.params.id]);
+        const order = await get("SELECT id, manager_id, status, deleted_at, updated_at FROM orders WHERE id = ?", [req.params.id]);
 
         if (!order || order.deleted_at) {
             res.status(404).json({ success: false, message: "Заявка не найдена." });
@@ -560,6 +642,11 @@ router.post("/:id/release", requireRole(["admin", "manager"]), async (req, res) 
 
         if (!canManageOrder(req.session.user, order)) {
             res.status(403).json({ success: false, message: "Недостаточно прав" });
+            return;
+        }
+
+        if (hasOrderConflict(req, order)) {
+            sendOrderConflict(res);
             return;
         }
 
@@ -594,7 +681,7 @@ router.patch("/:id/status", requireRole(["admin", "manager"]), async (req, res) 
             return;
         }
 
-        const order = await get("SELECT id, manager_id, status, deleted_at FROM orders WHERE id = ?", [req.params.id]);
+        const order = await get("SELECT id, manager_id, status, deleted_at, updated_at FROM orders WHERE id = ?", [req.params.id]);
 
         if (!order || order.deleted_at) {
             res.status(404).json({ success: false, message: "Заявка не найдена." });
@@ -608,6 +695,11 @@ router.patch("/:id/status", requireRole(["admin", "manager"]), async (req, res) 
 
         if (!ownsOrder(req.session.user, order)) {
             res.status(403).json({ success: false, message: "Недостаточно прав" });
+            return;
+        }
+
+        if (hasOrderConflict(req, order)) {
+            sendOrderConflict(res);
             return;
         }
 

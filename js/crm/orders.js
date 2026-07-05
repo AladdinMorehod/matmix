@@ -101,7 +101,7 @@ function renderAssignment(order) {
         return `
             <section class="assignment assignment-free">
                 <div>
-                    <span class="assignment-label">Ответственный</span>
+                    <span class="assignment-label">Закреплен за</span>
                     <strong><i></i> Свободна</strong>
                 </div>
             </section>
@@ -113,9 +113,8 @@ function renderAssignment(order) {
     return `
         <section class="assignment assignment-taken">
             <div>
-                <span class="assignment-label">Ответственный</span>
+                <span class="assignment-label">Закреплен за</span>
                 <strong>${escapeHtml(order.managerName || "Менеджер")}</strong>
-                <small>Принята: ${escapeHtml(formatDate(order.takenAt))}</small>
                 ${lockText}
             </div>
         </section>
@@ -330,7 +329,10 @@ function renderDeletedOrder(order) {
             <header class="deleted-order-header" data-id="${order.id}" tabindex="0">
                 <div class="order-title">
                     <strong>${escapeHtml(getOrderTitle(order))}</strong>
+                    <span>${escapeHtml(order.customerName || "Клиент не указан")}</span>
+                    <span>${formatMoney(order.totalPrice)} · Вес: ${formatWeight(order.totalWeight)}</span>
                     <span>Создан: ${escapeHtml(formatDate(order.createdAt))}</span>
+                    <span>Удалил: ${escapeHtml(order.deletedByName || "не указано")}</span>
                 </div>
                 <div class="deleted-order-meta">
                     <span class="status-badge status-deleted">Удалена</span>
@@ -373,8 +375,8 @@ function renderActiveOrder(order) {
                     <span>${escapeHtml(formatDate(order.createdAt))}</span>
                 </div>
                 <div class="order-header-side">
-                    <span class="status-badge ${statusClassMap[order.status] || "status-new"}">${escapeHtml(order.status)}</span>
                     ${renderAssignment(order)}
+                    <span class="status-badge ${statusClassMap[order.status] || "status-new"}">${escapeHtml(order.status)}</span>
                 </div>
             </header>
 
@@ -395,11 +397,16 @@ function updateStats() {
 function renderStatusTabs() {
     if (!statusTabs) return;
 
+    const isMyOrders = activeSection === "myOrders";
+    if (isMyOrders && statusFilter.value === deletedStatusFilter) {
+        statusFilter.value = "";
+    }
+
     const activeStatus = statusFilter.value;
     const filters = [
-        { label: "Все", value: "" },
+        { label: isMyOrders ? "Все мои" : "Все", value: "" },
         ...statuses.map(status => ({ label: status, value: status })),
-        { label: "Удалены", value: deletedStatusFilter }
+        ...(isMyOrders ? [] : [{ label: "Удалены", value: deletedStatusFilter }])
     ];
 
     statusTabs.innerHTML = filters.map(filter => `
@@ -414,15 +421,20 @@ function renderOrders() {
     renderStatusTabs();
 
     const selectedStatus = statusFilter.value;
+    const isMyOrders = activeSection === "myOrders";
     const visibleOrders = selectedStatus && selectedStatus !== deletedStatusFilter
         ? orders.filter(order => order.status === selectedStatus)
         : orders;
 
     if (!visibleOrders.length) {
-        const emptyTitle = selectedStatus === deletedStatusFilter ? "Удаленных заявок нет" : "Заявок пока нет";
-        const emptyText = selectedStatus === deletedStatusFilter
+        const emptyTitle = isMyOrders
+            ? "У вас пока нет закрепленных заявок"
+            : (selectedStatus === deletedStatusFilter ? "Удаленных заявок нет" : "Заявок пока нет");
+        const emptyText = isMyOrders
+            ? "Когда вы возьмете заявку в работу, она появится здесь."
+            : (selectedStatus === deletedStatusFilter
             ? "Скрытые заявки появятся здесь после удаления из CRM."
-            : "Новые заявки появятся здесь после оформления заказа на сайте.";
+            : "Новые заявки появятся здесь после оформления заказа на сайте.");
 
         ordersList.innerHTML = `
             <section class="empty-state">
@@ -441,12 +453,14 @@ function renderOrders() {
 async function loadOrders(options = {}) {
     const { preserveMessage = false } = options;
     if (!preserveMessage) {
-        setMessage("Загружаем заявки...");
+        setMessage(activeSection === "myOrders" ? "Загружаем ваши заявки..." : "Загружаем заявки...");
     }
 
     try {
-        const isDeletedFilter = statusFilter.value === deletedStatusFilter;
-        const response = await fetch(isDeletedFilter ? "/api/orders?deleted=true" : "/api/orders", { credentials: "include" });
+        const isMyOrders = activeSection === "myOrders";
+        const isDeletedFilter = !isMyOrders && statusFilter.value === deletedStatusFilter;
+        const url = isMyOrders ? "/api/orders?mine=true" : (isDeletedFilter ? "/api/orders?deleted=true" : "/api/orders");
+        const response = await fetch(url, { credentials: "include" });
         const result = await response.json().catch(() => ({}));
 
         if (!response.ok || !result.success) {
