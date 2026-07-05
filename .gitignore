@@ -1,0 +1,25 @@
+# Node.js
+node_modules/
+
+# Local databases
+backend/database/*.db
+backend/database/*.sqlite
+backend/database/*.sqlite3
+
+# Environment
+.env
+.env.*
+
+# Logs
+*.log
+npm-debug.log*
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# VS Code
+.vscode/settings.json

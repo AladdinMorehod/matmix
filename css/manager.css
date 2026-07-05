@@ -209,7 +209,6 @@ body {
 .max-disabled,
 .contact-disabled,
 .login-form button,
-.history-toggle,
 .note-submit,
 .crm-topbar-actions button,
 .status-tabs button,
@@ -957,11 +956,6 @@ body {
     display: grid;
     gap: 10px;
     padding-top: 2px;
-}
-
-.history-toggle {
-    justify-self: flex-start;
-    background: var(--primary);
 }
 
 .history-panel {

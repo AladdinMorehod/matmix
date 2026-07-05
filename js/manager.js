@@ -47,7 +47,6 @@ let regularOrderStats = {
     new: 0,
     work: 0
 };
-const expandedHistoryIds = new Set();
 const orderEvents = new Map();
 const expandedClientOrderIds = new Set();
 const clientOrders = new Map();
@@ -59,6 +58,8 @@ const eventTypeLabels = {
     taken: "Взята",
     released: "Освобождена",
     status_changed: "Статус",
+    deleted: "Удаление",
+    restored: "Восстановлена",
     note: "Заметка"
 };
 
@@ -331,7 +332,7 @@ function canRestoreOrder(order) {
 }
 
 function canAddNote(order) {
-    if (!currentUser) return false;
+    if (!currentUser || order.deletedAt) return false;
     if (currentUser.role === "admin") return true;
     if (!order.managerId) return true;
     return isOwnOrder(order);
@@ -425,25 +426,19 @@ function renderEventList(events) {
 
 function renderHistory(order) {
     const orderId = String(order.id);
-    const isExpanded = expandedHistoryIds.has(orderId);
     const events = orderEvents.get(orderId);
 
     return `
         <section class="order-history">
-            <button class="history-toggle" data-id="${order.id}" type="button">
-                ${isExpanded ? "Скрыть историю" : "История"}
-            </button>
-            ${isExpanded ? `
-                <div class="history-panel">
-                    ${renderEventList(events)}
-                    ${canAddNote(order) ? `
-                        <div class="note-form">
-                            <textarea class="note-input" data-id="${order.id}" maxlength="1000" rows="3" placeholder="Внутренняя заметка"></textarea>
-                            <button class="note-submit" data-id="${order.id}" type="button">Сохранить заметку</button>
-                        </div>
-                    ` : `<p class="history-empty">Заметки доступны только ответственному менеджеру или администратору.</p>`}
-                </div>
-            ` : ""}
+            <div class="history-panel">
+                ${canAddNote(order) ? `
+                    <div class="note-form">
+                        <textarea class="note-input" data-id="${order.id}" maxlength="1000" rows="3" placeholder="Внутренняя заметка"></textarea>
+                        <button class="note-submit" data-id="${order.id}" type="button">Добавить заметку</button>
+                    </div>
+                ` : `<p class="history-empty">Заметки доступны только ответственному менеджеру или администратору.</p>`}
+                ${renderEventList(events)}
+            </div>
         </section>
     `;
 }
@@ -559,7 +554,7 @@ function renderOrderTabContent(order) {
     }
 
     if (activeTab === "history") {
-        return `<section class="order-section order-section-wide"><h2>История</h2><p class="history-empty">История будет добавлена следующим этапом.</p></section>`;
+        return `<section class="order-section order-section-wide"><h2>История заявки</h2>${renderHistory(order)}</section>`;
     }
 
     if (activeTab === "documents") {
@@ -901,7 +896,9 @@ async function loadOrderEvents(id) {
 
 async function refreshExpandedHistory(id) {
     const orderId = String(id);
-    if (expandedHistoryIds.has(orderId)) {
+    const activeTab = activeOrderTabs.get(orderId);
+
+    if (activeTab === "history") {
         orderEvents.delete(orderId);
         await loadOrderEvents(orderId);
     }
@@ -1017,7 +1014,6 @@ async function deleteOrder(orderId) {
             throw new Error(result.message || "Заявка не удалена.");
         }
 
-        expandedHistoryIds.delete(String(orderId));
         orderEvents.delete(String(orderId));
         activeOrderTabs.delete(String(orderId));
         await loadOrders({ preserveMessage: true });
@@ -1115,8 +1111,16 @@ ordersList.addEventListener("click", event => {
 
     const tabButton = event.target.closest(".order-tabs button[data-tab]");
     if (tabButton) {
-        activeOrderTabs.set(String(tabButton.dataset.orderId), tabButton.dataset.tab);
+        const orderId = String(tabButton.dataset.orderId);
+        const tab = tabButton.dataset.tab;
+
+        activeOrderTabs.set(orderId, tab);
         renderOrders();
+
+        if (tab === "history" && !orderEvents.has(orderId)) {
+            loadOrderEvents(orderId);
+        }
+
         return;
     }
 
@@ -1125,26 +1129,6 @@ ordersList.addEventListener("click", event => {
         const orderId = String(deletedHeader.dataset.id);
         expandedDeletedOrderId = expandedDeletedOrderId === orderId ? null : orderId;
         renderOrders();
-        return;
-    }
-
-    const historyButton = event.target.closest(".history-toggle");
-    if (historyButton) {
-        const orderId = String(historyButton.dataset.id);
-
-        if (expandedHistoryIds.has(orderId)) {
-            expandedHistoryIds.delete(orderId);
-            renderOrders();
-            return;
-        }
-
-        expandedHistoryIds.add(orderId);
-        renderOrders();
-
-        if (!orderEvents.has(orderId)) {
-            loadOrderEvents(orderId);
-        }
-
         return;
     }
 

@@ -243,6 +243,14 @@ async function deleteOrder(req, res) {
             return;
         }
 
+        await createOrderEvent({
+            orderId: req.params.id,
+            userId: req.session.user.id,
+            userName: req.session.user.name,
+            eventType: "deleted",
+            message: "Заявка перемещена в удаленные"
+        });
+
         res.json({ success: true });
     } catch (error) {
         console.error("Order delete error:", error);
@@ -274,6 +282,14 @@ async function restoreOrder(req, res) {
             "UPDATE orders SET deleted_at = NULL, updated_at = ? WHERE id = ?",
             [now, req.params.id]
         );
+
+        await createOrderEvent({
+            orderId: req.params.id,
+            userId: req.session.user.id,
+            userName: req.session.user.name,
+            eventType: "restored",
+            message: "Заявка восстановлена"
+        });
 
         res.json({ success: true });
     } catch (error) {
