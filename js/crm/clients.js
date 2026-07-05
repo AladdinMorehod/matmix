@@ -22,8 +22,10 @@ function setActiveSection(section) {
     clientsView?.classList.toggle("hidden", !isClients);
     productsView?.classList.toggle("hidden", !isCatalog);
     settingsView?.classList.toggle("hidden", !isSettings);
-    ordersTopbar?.querySelector("h1") && (ordersTopbar.querySelector("h1").textContent = orderModeTitle);
-    ordersTopbar?.querySelector("p") && (ordersTopbar.querySelector("p").textContent = orderModeSubtitle);
+    const ordersTitle = ordersTopbar?.querySelector("h1");
+    const ordersSubtitle = ordersTopbar?.querySelector("p");
+    if (ordersTitle) ordersTitle.textContent = orderModeTitle;
+    if (ordersSubtitle) ordersSubtitle.textContent = orderModeSubtitle;
     setMessage("");
 
 }

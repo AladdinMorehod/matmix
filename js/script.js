@@ -37240,23 +37240,29 @@ function loadCart() {
         const saved = JSON.parse(localStorage.getItem("matmix_cart") || "[]");
         if (!Array.isArray(saved)) return [];
 
-        return saved.reduce((items, item) => {
+        const normalizedItems = new Map();
+
+        saved.forEach(item => {
             const id = Number(item?.id);
             const qty = Math.floor(Number(item?.qty));
 
             if (Number.isInteger(id) && products[id] && qty > 0) {
-                items.push({ id, qty });
+                normalizedItems.set(id, (normalizedItems.get(id) || 0) + qty);
             }
+        });
 
-            return items;
-        }, []);
+        return Array.from(normalizedItems, ([id, qty]) => ({ id, qty }));
     } catch {
         return [];
     }
 }
 
 function saveCart() {
-    localStorage.setItem("matmix_cart", JSON.stringify(cart));
+    try {
+        localStorage.setItem("matmix_cart", JSON.stringify(cart));
+    } catch {
+        // Cart still works during the session if browser storage is unavailable.
+    }
 }
 
 function getStoredCheckoutValues(key) {
@@ -38337,7 +38343,6 @@ checkoutForm?.addEventListener("submit", async event => {
             showCartView();
         }, 1800);
     } catch (error) {
-        console.warn("[checkout] order request failed", error);
         showCheckoutError(getCheckoutErrorMessage(error));
         setCheckoutSubmitDisabled(false);
     }

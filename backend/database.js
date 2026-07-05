@@ -243,7 +243,7 @@ function extractPublicCatalogProducts() {
 
         if (depth === 0) {
             const arrayText = script.slice(arrayStart, index + 1);
-            return Function(`"use strict"; return (${arrayText});`)();
+            return JSON.parse(arrayText);
         }
     }
 

@@ -34,11 +34,6 @@ app.use(session({
     }
 }));
 
-app.use((req, res, next) => {
-    console.log(`[request] ${req.method} ${req.originalUrl}`);
-    next();
-});
-
 app.use(express.static(publicDir));
 
 app.use("/api/auth", authRoutes);

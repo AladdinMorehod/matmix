@@ -79,7 +79,6 @@ let productFilters = {
 };
 let productsLoading = false;
 let productsLoaded = false;
-let editingProductId = null;
 
 const crmNavigation = [
     { id: "dashboard", label: "Главная", enabled: true },

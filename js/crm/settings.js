@@ -41,44 +41,6 @@ function togglePasswordVisibility(button) {
     button.setAttribute("aria-label", shouldShow ? "Скрыть пароль" : "Показать пароль");
 }
 
-function bindSettingsFormEvents() {
-    const profilePasswordForm = document.getElementById("profilePasswordForm");
-    if (profilePasswordForm && profilePasswordForm.dataset.bound !== "1") {
-        profilePasswordForm.dataset.bound = "1";
-        profilePasswordForm.addEventListener("submit", event => {
-            event.preventDefault();
-            changeOwnPassword(profilePasswordForm);
-        });
-    }
-
-    const createUserForm = document.getElementById("createUserForm");
-    if (createUserForm && createUserForm.dataset.bound !== "1") {
-        createUserForm.dataset.bound = "1";
-        createUserForm.addEventListener("submit", event => {
-            event.preventDefault();
-            createUser(createUserForm);
-        });
-    }
-
-    document.querySelectorAll(".settings-user-password-form").forEach(form => {
-        if (form.dataset.bound === "1") return;
-        form.dataset.bound = "1";
-        form.addEventListener("submit", event => {
-            event.preventDefault();
-            changeUserPassword(form.dataset.userId, form);
-        });
-    });
-
-    document.querySelectorAll(".settings-user-edit-form").forEach(form => {
-        if (form.dataset.bound === "1") return;
-        form.dataset.bound = "1";
-        form.addEventListener("submit", event => {
-            event.preventDefault();
-            updateUser(form.dataset.userId, form);
-        });
-    });
-}
-
 function renderSettingsTabs() {
     const tabs = [
         { id: "profile", label: "Профиль", enabled: true },
@@ -267,7 +229,6 @@ function renderSettings() {
         ${renderSettingsTabs()}
         ${activeSettingsTab === "users" ? renderUsersSettings() : renderProfileSettings()}
     `;
-    bindSettingsFormEvents();
 }
 
 async function loadSettings() {
