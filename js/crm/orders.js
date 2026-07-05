@@ -261,12 +261,14 @@ function renderOrderTabs(order) {
 function renderOverviewTab(order) {
     return `
         <div class="order-sections">
-            <section class="order-section">
+            <section class="order-section order-delivery-section">
                 <h2>Доставка и оплата</h2>
-                ${renderInfoRow("Адрес", order.address || "Не указан")}
-                ${renderInfoRow("Разгрузка", order.unloading || "Нет")}
-                ${renderInfoRow("Оплата", order.paymentMethod || "Не указана")}
-                ${order.comment ? renderInfoRow("Комментарий", order.comment) : ""}
+                <div class="delivery-grid">
+                    ${renderInfoRow("Адрес", order.address || "Не указан")}
+                    ${renderInfoRow("Оплата", order.paymentMethod || "Не указана")}
+                    ${renderInfoRow("Разгрузка", order.unloading || "Нет")}
+                    ${renderInfoRow("Комментарий", order.comment || "—")}
+                </div>
             </section>
 
             <section class="order-section order-section-wide">
