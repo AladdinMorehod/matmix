@@ -124,7 +124,7 @@ async function loadClients(options = {}) {
 
     try {
         const response = await fetch("/api/clients", { credentials: "include" });
-        const result = await response.json().catch(() => ({}));
+        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
 
         if (!response.ok || !result.success) {
             throw new Error(result.message || "Список клиентов не загрузился.");
@@ -134,14 +134,15 @@ async function loadClients(options = {}) {
         if (!preserveMessage) setMessage("");
         renderClients();
     } catch (error) {
+        const message = getSafeErrorMessage(error, "Сервер недоступен. Попробуйте обновить список.");
         clientsList.innerHTML = `
             <section class="empty-state error-state">
                 <h2>Не удалось загрузить клиентов</h2>
-                <p>${escapeHtml(error.message || "Сервер недоступен. Попробуйте обновить список.")}</p>
+                <p>${escapeHtml(message)}</p>
                 <button class="retry-clients-load" type="button">Повторить</button>
             </section>
         `;
-        setMessage(error.message || "Не удалось загрузить клиентов.");
+        setMessage(message);
     }
 }
 
@@ -150,7 +151,7 @@ async function loadClientOrders(clientId) {
 
     try {
         const response = await fetch(`/api/clients/${clientId}/orders`, { credentials: "include" });
-        const result = await response.json().catch(() => ({}));
+        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
 
         if (!response.ok || !result.success) {
             throw new Error(result.message || "История заказов клиента не загрузилась.");
@@ -160,7 +161,7 @@ async function loadClientOrders(clientId) {
         renderClients();
     } catch (error) {
         clientOrders.set(key, []);
-        setMessage(error.message || "Не удалось загрузить историю заказов клиента.");
+        setMessage(getSafeErrorMessage(error, "Не удалось загрузить историю заказов клиента."));
         renderClients();
     }
 }

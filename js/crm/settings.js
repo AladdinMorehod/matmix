@@ -304,7 +304,7 @@ async function loadUsers() {
 
     try {
         const response = await fetch("/api/users", { credentials: "include" });
-        const result = await response.json().catch(() => ({}));
+        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
 
         if (!response.ok || !result.success) {
             throw new Error(result.message || "Список пользователей не загрузился.");
@@ -313,7 +313,7 @@ async function loadUsers() {
         settingsUsers = result.users || [];
         settingsUsersLoaded = true;
     } catch (error) {
-        settingsUsersError = error.message || "Не удалось загрузить пользователей.";
+        settingsUsersError = getSafeErrorMessage(error, "Не удалось загрузить пользователей.");
         setMessage(settingsUsersError);
     } finally {
         settingsUsersLoading = false;
@@ -353,7 +353,7 @@ async function changeOwnPassword(form) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
         });
-        const result = await response.json().catch(() => ({}));
+        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
         console.log("[settings] change password response", response.status, result);
 
         if (!response.ok || !result.success) {
@@ -366,7 +366,7 @@ async function changeOwnPassword(form) {
         setMessage("Пароль изменен.");
     } catch (error) {
         logSettingsError("change password error", error);
-        setMessage(error.message || "Ошибка соединения с сервером");
+        setMessage(getSafeErrorMessage(error, "Ошибка соединения с сервером"));
     }
 }
 
@@ -395,7 +395,7 @@ async function createUser(form) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
         });
-        const result = await response.json().catch(() => ({}));
+        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
         console.log("[settings] create user response", response.status, result);
 
         if (!response.ok || !result.success) {
@@ -409,7 +409,7 @@ async function createUser(form) {
         await loadUsers();
     } catch (error) {
         logSettingsError("create user error", error);
-        setMessage(error.message || "Ошибка соединения с сервером");
+        setMessage(getSafeErrorMessage(error, "Ошибка соединения с сервером"));
     }
 }
 
@@ -433,7 +433,7 @@ async function updateUser(userId, form) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
         });
-        const result = await response.json().catch(() => ({}));
+        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
 
         if (!response.ok || !result.success) {
             throw new Error(result.message || "Пользователь не обновлен.");
@@ -449,7 +449,7 @@ async function updateUser(userId, form) {
         setMessage("Пользователь обновлен.");
         await loadUsers();
     } catch (error) {
-        setMessage(error.message || "Не удалось обновить пользователя.");
+        setMessage(getSafeErrorMessage(error, "Не удалось обновить пользователя."));
     }
 }
 
@@ -463,7 +463,7 @@ async function deleteUser(userId, userName) {
             method: "DELETE",
             credentials: "include"
         });
-        const result = await response.json().catch(() => ({}));
+        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
 
         if (!response.ok || !result.success) {
             throw new Error(result.message || "Пользователь не удален.");
@@ -475,7 +475,7 @@ async function deleteUser(userId, userName) {
         setMessage("Пользователь удален.");
         await loadUsers();
     } catch (error) {
-        setMessage(error.message || "Не удалось удалить пользователя.");
+        setMessage(getSafeErrorMessage(error, "Не удалось удалить пользователя."));
     }
 }
 
@@ -487,7 +487,7 @@ async function toggleUserStatus(userId, isActive) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ isActive })
         });
-        const result = await response.json().catch(() => ({}));
+        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
 
         if (!response.ok || !result.success) {
             throw new Error(result.message || "Статус пользователя не изменен.");
@@ -496,7 +496,7 @@ async function toggleUserStatus(userId, isActive) {
         setMessage(isActive ? "Пользователь включен." : "Пользователь отключен.");
         await loadUsers();
     } catch (error) {
-        setMessage(error.message || "Не удалось изменить статус пользователя.");
+        setMessage(getSafeErrorMessage(error, "Не удалось изменить статус пользователя."));
     }
 }
 
@@ -515,7 +515,7 @@ async function changeUserPassword(userId, form) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ password })
         });
-        const result = await response.json().catch(() => ({}));
+        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
 
         if (!response.ok || !result.success) {
             throw new Error(result.message || "Пароль пользователя не изменен.");
@@ -524,6 +524,6 @@ async function changeUserPassword(userId, form) {
         form.reset();
         setMessage("Пароль пользователя изменен.");
     } catch (error) {
-        setMessage(error.message || "Не удалось сменить пароль пользователя.");
+        setMessage(getSafeErrorMessage(error, "Не удалось сменить пароль пользователя."));
     }
 }

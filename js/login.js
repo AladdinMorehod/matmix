@@ -5,6 +5,13 @@ function setLoginMessage(message = "") {
     loginMessage.textContent = message;
 }
 
+function getLoginErrorMessage(error) {
+    return window.MatMixErrors?.getMessage(error, {
+        fallback: "Неверный логин или пароль",
+        networkFallback: "Не удалось соединиться с сервером."
+    }) || "Неверный логин или пароль";
+}
+
 function toggleLoginPassword(button) {
     const field = button.closest(".password-field");
     const input = field?.querySelector("input");
@@ -19,7 +26,7 @@ function toggleLoginPassword(button) {
 async function redirectIfAuthorized() {
     try {
         const response = await fetch("/api/auth/me", { credentials: "include" });
-        const result = await response.json().catch(() => ({}));
+        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
 
         if (response.ok && result.success) {
             window.location.href = "/manager.html";
@@ -56,7 +63,7 @@ loginForm.addEventListener("submit", async event => {
                 password: String(formData.get("password") || "")
             })
         });
-        const result = await response.json().catch(() => ({}));
+        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
 
         if (!response.ok || !result.success) {
             throw new Error(result.message || "Неверный логин или пароль");
@@ -64,7 +71,7 @@ loginForm.addEventListener("submit", async event => {
 
         window.location.href = "/manager.html";
     } catch (error) {
-        setLoginMessage(error.message || "Неверный логин или пароль");
+        setLoginMessage(getLoginErrorMessage(error));
         submitButton.disabled = false;
     }
 });

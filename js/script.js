@@ -37473,6 +37473,13 @@ function showCheckoutError(message) {
     checkoutMessage.textContent = message;
 }
 
+function getCheckoutErrorMessage(error) {
+    return window.MatMixErrors?.getMessage(error, {
+        fallback: "Произошла непредвиденная ошибка.",
+        networkFallback: "Не удалось соединиться с сервером."
+    }) || "Произошла непредвиденная ошибка.";
+}
+
 function showCheckoutSuccess() {
     if (!checkoutMessage) return;
 
@@ -38307,7 +38314,7 @@ checkoutForm?.addEventListener("submit", async event => {
             },
             body: JSON.stringify(payload)
         });
-        const result = await response.json().catch(() => ({}));
+        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
 
         if (!response.ok || !result.success) {
             throw new Error(result.message || "Заказ не сохранился. Попробуйте еще раз.");
@@ -38330,7 +38337,8 @@ checkoutForm?.addEventListener("submit", async event => {
             showCartView();
         }, 1800);
     } catch (error) {
-        showCheckoutError(error.message || "Сервер недоступен. Проверьте подключение и попробуйте еще раз.");
+        console.warn("[checkout] order request failed", error);
+        showCheckoutError(getCheckoutErrorMessage(error));
         setCheckoutSubmitDisabled(false);
     }
 });

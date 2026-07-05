@@ -236,6 +236,13 @@ function setMessage(message = "") {
     managerMessage.textContent = message;
 }
 
+function getSafeErrorMessage(error, fallback = "Произошла непредвиденная ошибка.") {
+    return window.MatMixErrors?.getMessage(error, {
+        fallback,
+        networkFallback: "Не удалось соединиться с сервером."
+    }) || fallback;
+}
+
 function getRoleLabel(role) {
     const labels = {
         admin: "Админ",
@@ -251,7 +258,7 @@ async function checkAccess() {
 
     try {
         const response = await fetch("/api/auth/me", { credentials: "include" });
-        const result = await response.json().catch(() => ({}));
+        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
 
         if (!response.ok || !result.success) {
             window.location.href = "/login.html";

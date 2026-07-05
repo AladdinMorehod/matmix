@@ -76,8 +76,8 @@ async function loadDashboard(options = {}) {
             fetch("/api/orders", { credentials: "include" }),
             fetch("/api/clients", { credentials: "include" })
         ]);
-        const ordersResult = await ordersResponse.json().catch(() => ({}));
-        const clientsResult = await clientsResponse.json().catch(() => ({}));
+        const ordersResult = await (window.MatMixErrors?.readJson(ordersResponse) || ordersResponse.json().catch(() => ({})));
+        const clientsResult = await (window.MatMixErrors?.readJson(clientsResponse) || clientsResponse.json().catch(() => ({})));
 
         if (!ordersResponse.ok || !ordersResult.success) {
             throw new Error(ordersResult.message || "Показатели заявок не загрузились.");
@@ -98,16 +98,17 @@ async function loadDashboard(options = {}) {
         renderDashboard();
         if (!preserveMessage) setMessage("");
     } catch (error) {
+        const message = getSafeErrorMessage(error, "Сервер недоступен. Попробуйте обновить страницу.");
         if (dashboardRecentOrders) {
             dashboardRecentOrders.innerHTML = `
                 <section class="empty-state error-state">
                     <h2>Не удалось загрузить главную</h2>
-                    <p>${escapeHtml(error.message || "Сервер недоступен. Попробуйте обновить страницу.")}</p>
+                    <p>${escapeHtml(message)}</p>
                     <button class="dashboard-retry" type="button">Повторить</button>
                 </section>
             `;
         }
-        setMessage(error.message || "Не удалось загрузить главную.");
+        setMessage(message);
     }
 }
 

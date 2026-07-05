@@ -4,7 +4,7 @@ async function loadOrderEvents(id) {
 
     try {
         const response = await fetch(`/api/orders/${id}/events`, { credentials: "include" });
-        const result = await response.json().catch(() => ({}));
+        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
 
         if (!response.ok || !result.success) {
             throw new Error(result.message || "История заявки не загрузилась.");
@@ -14,7 +14,7 @@ async function loadOrderEvents(id) {
         renderOrders();
     } catch (error) {
         orderEvents.set(orderId, []);
-        setMessage(error.message || "Не удалось загрузить историю заявки.");
+        setMessage(getSafeErrorMessage(error, "Не удалось загрузить историю заявки."));
         renderOrders();
     }
 }
@@ -46,7 +46,7 @@ function getOrderConflictMessage(error) {
         return "Заявка была изменена другим пользователем. Обновите данные.";
     }
 
-    return error?.message || "";
+    return getSafeErrorMessage(error, "");
 }
 
 async function addOrderNote(id, message) {
@@ -66,7 +66,7 @@ async function addOrderNote(id, message) {
             },
             body: JSON.stringify(getOrderMutationPayload(id, { message: cleanMessage }))
         });
-        const result = await response.json().catch(() => ({}));
+        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
 
         if (!response.ok || !result.success) {
             throw new Error(result.message || "Заметка не сохранилась.");
@@ -93,7 +93,7 @@ async function updateOrderStatus(id, status) {
             },
             body: JSON.stringify(getOrderMutationPayload(id, { status }))
         });
-        const result = await response.json().catch(() => ({}));
+        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
 
         if (!response.ok || !result.success) {
             throw new Error(result.message || "Статус не обновился.");
@@ -126,7 +126,7 @@ async function runOrderAction(id, action) {
             },
             body: JSON.stringify(getOrderMutationPayload(id))
         });
-        const result = await response.json().catch(() => ({}));
+        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
 
         if (!response.ok || !result.success) {
             throw new Error(result.message || "Действие не выполнено.");
@@ -163,7 +163,7 @@ async function deleteOrder(orderId) {
             },
             body: JSON.stringify(getOrderMutationPayload(orderId))
         });
-        const result = await response.json().catch(() => ({}));
+        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
 
         if (!response.ok || !result.success) {
             throw new Error(result.message || "Заявка не удалена.");
@@ -203,7 +203,7 @@ async function restoreOrder(orderId) {
             },
             body: JSON.stringify(getOrderMutationPayload(orderId))
         });
-        const result = await response.json().catch(() => ({}));
+        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
 
         if (!response.ok || !result.success) {
             throw new Error(result.message || "Заявка не восстановлена.");

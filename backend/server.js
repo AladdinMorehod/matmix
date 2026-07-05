@@ -14,6 +14,14 @@ const publicDir = path.join(__dirname, "..");
 
 app.use(cors());
 app.use(express.json({ limit: "1mb" }));
+app.use((error, req, res, next) => {
+    if (error instanceof SyntaxError && error.status === 400 && "body" in error) {
+        res.status(400).json({ success: false, message: "Некорректный формат данных." });
+        return;
+    }
+
+    next(error);
+});
 app.use(session({
     // Development fallback only. Set SESSION_SECRET in production.
     secret: process.env.SESSION_SECRET || "matmix-dev-session-secret",

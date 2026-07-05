@@ -463,7 +463,7 @@ async function loadOrders(options = {}) {
         const isDeletedFilter = !isMyOrders && statusFilter.value === deletedStatusFilter;
         const url = isMyOrders ? "/api/orders?mine=true" : (isDeletedFilter ? "/api/orders?deleted=true" : "/api/orders");
         const response = await fetch(url, { credentials: "include" });
-        const result = await response.json().catch(() => ({}));
+        const result = await (window.MatMixErrors?.readJson(response) || response.json().catch(() => ({})));
 
         if (!response.ok || !result.success) {
             throw new Error(result.message || "Список заявок не загрузился.");
@@ -482,13 +482,14 @@ async function loadOrders(options = {}) {
         }
         renderOrders();
     } catch (error) {
+        const message = getSafeErrorMessage(error, "Сервер недоступен. Попробуйте обновить список.");
         ordersList.innerHTML = `
             <section class="empty-state error-state">
                 <h2>Не удалось загрузить заявки</h2>
-                <p>${escapeHtml(error.message || "Сервер недоступен. Попробуйте обновить список.")}</p>
+                <p>${escapeHtml(message)}</p>
                 <button class="retry-load" type="button">Повторить</button>
             </section>
         `;
-        setMessage(error.message || "Сервер недоступен. Попробуйте обновить страницу.");
+        setMessage(message);
     }
 }
