@@ -37189,6 +37189,7 @@ let showAllGroups = false;
 let productsById = new Map();
 let catalogLoadError = "";
 let publicSearchTimer = null;
+const MAX_PRODUCT_QTY = 100000;
 
 searchDropdown.className = "search-dropdown hidden";
 searchDropdown.setAttribute("aria-live", "polite");
@@ -38074,17 +38075,30 @@ function updateCartSummary() {
     }
 }
 
+function clampProductQty(value) {
+    const number = Number(value);
+    if (!Number.isFinite(number) || number <= 0) return 0;
+    return Math.min(MAX_PRODUCT_QTY, Math.floor(number));
+}
+
+function sanitizeQtyInputValue(value) {
+    const rawValue = String(value || "").trim();
+    if (rawValue.startsWith("-")) return "";
+    return rawValue.replace(/\D/g, "").replace(/^0+(?=\d)/, "");
+}
+
 function setProductQty(id, nextQty, options = {}) {
-    const { renderCartView = true, renderSearchView = true } = options;
+    const { renderCartView = true, renderSearchView = true, renderProductViews = true } = options;
     const product = getProductById(id);
     if (!product) return;
 
+    const safeQty = clampProductQty(nextQty);
     const item = getCartItem(id);
 
-    if (nextQty <= 0) {
+    if (safeQty <= 0) {
         cart = cart.filter(entry => Number(entry.productId) !== Number(id));
     } else if (item) {
-        item.quantity = nextQty;
+        item.quantity = safeQty;
         item.title = product.name;
         item.price = Number(product.price) || 0;
         item.weight = Number(product.weight) || 0;
@@ -38096,16 +38110,16 @@ function setProductQty(id, nextQty, options = {}) {
             price: Number(product.price) || 0,
             weight: Number(product.weight) || 0,
             unit: product.unit || "шт",
-            quantity: nextQty
+            quantity: safeQty
         });
     }
 
     saveCart();
     updateCartSummary();
-    if (grid) {
+    if (renderProductViews && grid) {
         renderProducts();
     }
-    if (popularGrid) {
+    if (renderProductViews && popularGrid) {
         renderPopularProducts();
     }
     if (renderSearchView && (!searchDropdown.classList.contains("hidden") || document.activeElement === searchInput)) {
@@ -38528,13 +38542,11 @@ function renderCategoryControls() {
     }
 }
 
-function getQtyControls(id, qty, inputMode = false) {
+function getQtyControls(id, qty) {
     return `
         <div class="qty-row">
             <button class="qty minus" data-id="${id}" type="button" aria-label="Уменьшить количество">−</button>
-            ${inputMode
-                ? `<input class="qty-input" data-id="${id}" type="text" inputmode="numeric" pattern="[0-9]*" value="${qty}" style="width: ${getQtyInputWidth(qty)}px;" aria-label="Количество">`
-                : `<span class="qty-val">${qty}</span>`}
+            <input class="qty-input" data-id="${id}" type="text" inputmode="numeric" pattern="[0-9]*" value="${qty}" style="width: ${getQtyInputWidth(qty)}px;" aria-label="Количество">
             <button class="qty plus" data-id="${id}" type="button" aria-label="Увеличить количество">+</button>
         </div>
     `;
@@ -38602,12 +38614,52 @@ function handleQtyClick(event) {
     const current = getCartItemQty(id);
 
     if (button.classList.contains("add") || button.classList.contains("plus")) {
-        setProductQty(id, current + 1);
+        setProductQty(id, clampProductQty(current + 1));
     }
 
     if (button.classList.contains("minus")) {
-        setProductQty(id, current - 1);
+        setProductQty(id, clampProductQty(current - 1));
     }
+}
+
+function handleQtyInput(event) {
+    const input = event.target.closest(".qty-input");
+    if (!input) return;
+
+    const id = Number(input.dataset.id);
+    if (!Number.isInteger(id)) return;
+
+    const sanitizedValue = sanitizeQtyInputValue(input.value);
+    if (input.value !== sanitizedValue) {
+        input.value = sanitizedValue;
+    }
+    resizeQtyInput(input);
+    if (!sanitizedValue) return;
+
+    const nextQty = clampProductQty(sanitizedValue);
+    if (String(nextQty) !== sanitizedValue) {
+        input.value = String(nextQty);
+        resizeQtyInput(input);
+    }
+
+    setProductQty(id, nextQty, {
+        renderCartView: false,
+        renderSearchView: false,
+        renderProductViews: false
+    });
+}
+
+function commitQtyInput(event) {
+    const input = event.target.closest(".qty-input");
+    if (!input) return;
+
+    const id = Number(input.dataset.id);
+    if (!Number.isInteger(id)) return;
+
+    const nextQty = clampProductQty(sanitizeQtyInputValue(input.value));
+    input.value = nextQty ? String(nextQty) : "";
+    resizeQtyInput(input);
+    setProductQty(id, nextQty);
 }
 
 grid?.addEventListener("click", handleQtyClick);
@@ -38615,36 +38667,20 @@ featuredCatalogGrid?.addEventListener("click", handleQtyClick);
 popularGrid?.addEventListener("click", handleQtyClick);
 cartItemsEl.addEventListener("click", handleQtyClick);
 
-cartItemsEl.addEventListener("input", event => {
-    const input = event.target.closest(".qty-input");
-    if (!input) return;
+grid?.addEventListener("input", handleQtyInput);
+featuredCatalogGrid?.addEventListener("input", handleQtyInput);
+popularGrid?.addEventListener("input", handleQtyInput);
+cartItemsEl.addEventListener("input", handleQtyInput);
 
-    const id = Number(input.dataset.id);
-    if (!Number.isInteger(id)) return;
+grid?.addEventListener("change", commitQtyInput);
+featuredCatalogGrid?.addEventListener("change", commitQtyInput);
+popularGrid?.addEventListener("change", commitQtyInput);
+cartItemsEl.addEventListener("change", commitQtyInput);
 
-    const sanitizedValue = input.value.replace(/\D/g, "").replace(/^0+/, "");
-    if (input.value !== sanitizedValue) {
-        input.value = sanitizedValue;
-    }
-    resizeQtyInput(input);
-    if (!sanitizedValue) return;
-
-    setProductQty(id, Number(sanitizedValue), { renderCartView: false });
-});
-
-cartItemsEl.addEventListener("change", event => {
-    const input = event.target.closest(".qty-input");
-    if (!input) return;
-
-    const id = Number(input.dataset.id);
-    if (!Number.isInteger(id)) return;
-
-    const current = getCartItemQty(id) || 1;
-    if (!input.value) {
-        input.value = current;
-        resizeQtyInput(input);
-    }
-});
+grid?.addEventListener("blur", commitQtyInput, true);
+featuredCatalogGrid?.addEventListener("blur", commitQtyInput, true);
+popularGrid?.addEventListener("blur", commitQtyInput, true);
+cartItemsEl.addEventListener("blur", commitQtyInput, true);
 
 function scrollPopularProducts(direction) {
     if (!popularGrid) return;
@@ -38913,38 +38949,11 @@ searchDropdown.addEventListener("click", event => {
 });
 
 searchDropdown.addEventListener("input", event => {
-    const input = event.target.closest(".qty-input");
-    if (!input) return;
-
-    const id = Number(input.dataset.id);
-    if (!Number.isInteger(id)) return;
-
-    const sanitizedValue = input.value.replace(/\D/g, "").replace(/^0+/, "");
-    if (input.value !== sanitizedValue) {
-        input.value = sanitizedValue;
-    }
-    resizeQtyInput(input);
-    if (!sanitizedValue) return;
-
-    setProductQty(id, Number(sanitizedValue), {
-        renderCartView: false,
-        renderSearchView: false
-    });
+    handleQtyInput(event);
 });
 
-searchDropdown.addEventListener("change", event => {
-    const input = event.target.closest(".qty-input");
-    if (!input) return;
-
-    const id = Number(input.dataset.id);
-    if (!Number.isInteger(id)) return;
-
-    const current = getCartItemQty(id) || 1;
-    if (!input.value) {
-        input.value = current;
-        resizeQtyInput(input);
-    }
-});
+searchDropdown.addEventListener("change", commitQtyInput);
+searchDropdown.addEventListener("blur", commitQtyInput, true);
 
 categoryControls?.addEventListener("click", event => {
     const toggle = event.target.closest(".subcategory-toggle");
