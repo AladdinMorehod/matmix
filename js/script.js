@@ -37145,6 +37145,8 @@ const categoryControls = document.getElementById("categoryControls");
 const catalogBreadcrumbCategory = document.getElementById("catalogBreadcrumbCategory");
 const catalogBreadcrumbSubcategory = document.getElementById("catalogBreadcrumbSubcategory");
 const catalogBreadcrumbSubcategorySeparator = document.getElementById("catalogBreadcrumbSubcategorySeparator");
+const catalogBreadcrumbGroup = document.getElementById("catalogBreadcrumbGroup");
+const catalogBreadcrumbGroupSeparator = document.getElementById("catalogBreadcrumbGroupSeparator");
 const copyManagerPhoneBtn = document.getElementById("copyManagerPhone");
 const managerPhoneAction = copyManagerPhoneBtn?.closest(".catalog-help-action");
 const downloadPublicPriceBtn = document.getElementById("downloadPublicPrice");
@@ -37182,6 +37184,8 @@ let cart = [];
 let searchQuery = "";
 let activeCategoryPath = "";
 let showAllCatalogProducts = false;
+let showAllSubcategories = false;
+let showAllGroups = false;
 let productsById = new Map();
 let catalogLoadError = "";
 let publicSearchTimer = null;
@@ -37196,7 +37200,7 @@ function normalizeProductForSite(product, index) {
         : {
             main: product.category || "",
             section: product.subcategory || "",
-            type: ""
+            type: product.productGroup || product.product_group || ""
         };
     const id = Number(product.id ?? product.productId ?? index);
     const title = cleanDisplayText(product.title || product.name);
@@ -37214,7 +37218,7 @@ function normalizeProductForSite(product, index) {
         category: {
             main: cleanDisplayText(category.main),
             section: cleanDisplayText(category.section),
-            type: cleanDisplayText(category.type)
+            type: cleanDisplayText(product.productGroup || product.product_group || category.type)
         },
         image: cleanDisplayText(product.image),
         description: cleanDisplayText(product.description)
@@ -37828,7 +37832,7 @@ function getCategoryFilterGroups() {
     const categories = new Map();
 
     products.forEach(product => {
-        const [main, subcategory] = getProductCatalogCategory(product);
+        const [main, subcategory, productGroup] = getProductCatalogCategory(product);
         if (!main) return;
 
         const normalizedMain = normalizeSearchText(main);
@@ -37841,13 +37845,28 @@ function getCategoryFilterGroups() {
         }
 
         if (!subcategory || normalizeSearchText(subcategory) === normalizedMain) return;
+        if (/^подкатегория\s*-/i.test(subcategory)) return;
 
         const category = categories.get(normalizedMain);
         const normalizedSubcategory = normalizeSearchText(subcategory);
+        if (!normalizedSubcategory) return;
+
         if (!category.subcategories.has(normalizedSubcategory)) {
             category.subcategories.set(normalizedSubcategory, {
                 label: subcategory,
-                path: `subcategory:${normalizedMain}:${normalizedSubcategory}`
+                path: `subcategory:${normalizedMain}:${normalizedSubcategory}`,
+                groups: new Map()
+            });
+        }
+
+        const subcategoryItem = category.subcategories.get(normalizedSubcategory);
+        const normalizedGroup = normalizeSearchText(productGroup);
+        if (!productGroup || !normalizedGroup || normalizedGroup === normalizedSubcategory) return;
+
+        if (!subcategoryItem.groups.has(normalizedGroup)) {
+            subcategoryItem.groups.set(normalizedGroup, {
+                label: productGroup,
+                path: `group:${normalizedMain}:${normalizedSubcategory}:${normalizedGroup}`
             });
         }
     });
@@ -37856,7 +37875,11 @@ function getCategoryFilterGroups() {
         groups.push({
             label: category.label,
             path: category.path,
-            subcategories: Array.from(category.subcategories.values())
+            subcategories: Array.from(category.subcategories.values()).map(subcategory => ({
+                label: subcategory.label,
+                path: subcategory.path,
+                groups: Array.from(subcategory.groups.values())
+            }))
         });
     });
 
@@ -37868,7 +37891,9 @@ function getActiveCategoryTrail(groups = getCategoryFilterGroups()) {
         return {
             category: "Все товары",
             categoryPath: "",
-            subcategory: ""
+            subcategory: "",
+            subcategoryPath: "",
+            group: ""
         };
     }
 
@@ -37877,7 +37902,9 @@ function getActiveCategoryTrail(groups = getCategoryFilterGroups()) {
             return {
                 category: group.label,
                 categoryPath: group.path,
-                subcategory: ""
+                subcategory: "",
+                subcategoryPath: "",
+                group: ""
             };
         }
 
@@ -37886,15 +37913,42 @@ function getActiveCategoryTrail(groups = getCategoryFilterGroups()) {
             return {
                 category: group.label,
                 categoryPath: group.path,
-                subcategory: subcategory.label
+                subcategory: subcategory.label,
+                subcategoryPath: subcategory.path,
+                group: ""
             };
+        }
+
+        for (const subcategoryItem of group.subcategories) {
+            if (getSubcategoryAllPath(subcategoryItem.path) === activeCategoryPath) {
+                return {
+                    category: group.label,
+                    categoryPath: group.path,
+                    subcategory: subcategoryItem.label,
+                    subcategoryPath: subcategoryItem.path,
+                    group: ""
+                };
+            }
+
+            const productGroup = subcategoryItem.groups.find(item => item.path === activeCategoryPath);
+            if (productGroup) {
+                return {
+                    category: group.label,
+                    categoryPath: group.path,
+                    subcategory: subcategoryItem.label,
+                    subcategoryPath: subcategoryItem.path,
+                    group: productGroup.label
+                };
+            }
         }
     }
 
     return {
         category: "Все товары",
         categoryPath: "",
-        subcategory: ""
+        subcategory: "",
+        subcategoryPath: "",
+        group: ""
     };
 }
 
@@ -37904,14 +37958,24 @@ function updateCatalogBreadcrumbs(groups) {
     const trail = getActiveCategoryTrail(groups);
     catalogBreadcrumbCategory.textContent = trail.category;
     catalogBreadcrumbCategory.dataset.path = trail.categoryPath;
-    catalogBreadcrumbCategory.classList.toggle("current", !trail.subcategory);
-    catalogBreadcrumbCategory.setAttribute("aria-disabled", String(!trail.subcategory || !trail.categoryPath));
+    catalogBreadcrumbCategory.classList.toggle("current", !trail.subcategory && !trail.group);
+    catalogBreadcrumbCategory.setAttribute("aria-disabled", String((!trail.subcategory && !trail.group) || !trail.categoryPath));
 
     catalogBreadcrumbSubcategorySeparator?.classList.toggle("hidden", !trail.subcategory);
 
     if (catalogBreadcrumbSubcategory) {
         catalogBreadcrumbSubcategory.textContent = trail.subcategory;
+        catalogBreadcrumbSubcategory.dataset.path = trail.subcategoryPath;
         catalogBreadcrumbSubcategory.classList.toggle("hidden", !trail.subcategory);
+        catalogBreadcrumbSubcategory.classList.toggle("current", !trail.group);
+        catalogBreadcrumbSubcategory.setAttribute("aria-disabled", String(!trail.group || !trail.subcategoryPath));
+    }
+
+    catalogBreadcrumbGroupSeparator?.classList.toggle("hidden", !trail.group);
+
+    if (catalogBreadcrumbGroup) {
+        catalogBreadcrumbGroup.textContent = trail.group;
+        catalogBreadcrumbGroup.classList.toggle("hidden", !trail.group);
     }
 }
 
@@ -37923,13 +37987,28 @@ catalogBreadcrumbCategory?.addEventListener("click", () => {
 
     activeCategoryPath = path;
     showAllCatalogProducts = false;
+    showAllSubcategories = false;
+    showAllGroups = false;
+    renderCategoryControls();
+    renderProducts();
+});
+
+catalogBreadcrumbSubcategory?.addEventListener("click", () => {
+    if (catalogBreadcrumbSubcategory.getAttribute("aria-disabled") === "true") return;
+
+    const path = catalogBreadcrumbSubcategory.dataset.path;
+    if (!path) return;
+
+    activeCategoryPath = path;
+    showAllCatalogProducts = false;
+    showAllGroups = false;
     renderCategoryControls();
     renderProducts();
 });
 
 function productMatchesCategory(product) {
     if (!activeCategoryPath) return true;
-    const [main, subcategory] = getProductCatalogCategory(product);
+    const [main, subcategory, productGroup] = getProductCatalogCategory(product);
 
     if (activeCategoryPath.startsWith("category:")) {
         const [, normalizedMain] = activeCategoryPath.split(":");
@@ -37943,7 +38022,26 @@ function productMatchesCategory(product) {
             && normalizeSearchText(subcategory) === normalizedSubcategory;
     }
 
+    if (activeCategoryPath.startsWith("subcategory-all:")) {
+        const [, normalizedMain, normalizedSubcategory] = activeCategoryPath.split(":");
+
+        return normalizeSearchText(main) === normalizedMain
+            && normalizeSearchText(subcategory) === normalizedSubcategory;
+    }
+
+    if (activeCategoryPath.startsWith("group:")) {
+        const [, normalizedMain, normalizedSubcategory, normalizedGroup] = activeCategoryPath.split(":");
+
+        return normalizeSearchText(main) === normalizedMain
+            && normalizeSearchText(subcategory) === normalizedSubcategory
+            && normalizeSearchText(productGroup) === normalizedGroup;
+    }
+
     return false;
+}
+
+function getSubcategoryAllPath(subcategoryPath) {
+    return subcategoryPath ? subcategoryPath.replace(/^subcategory:/, "subcategory-all:") : "";
 }
 
 function getCartTotal() {
@@ -38074,6 +38172,37 @@ function animateCatalogGridUpdate(targetGrid) {
     }, 180);
 }
 
+function getCatalogSelectionState(groups = getCategoryFilterGroups()) {
+    const activeMainPath = getActiveMainCategoryPath(groups);
+    const activeSubcategoryPath = getActiveSubcategoryPath(groups);
+    const activeGroup = groups.find(group => group.path === activeMainPath) || null;
+    const activeSubcategory = activeGroup?.subcategories.find(subcategory => subcategory.path === activeSubcategoryPath) || null;
+
+    return {
+        activeGroup,
+        activeSubcategory,
+        hasSearch: Boolean(searchQuery.trim()),
+        isCategoryLevel: Boolean(activeCategoryPath && activeCategoryPath.startsWith("category:")),
+        isSubcategoryLevel: Boolean(activeCategoryPath && activeCategoryPath.startsWith("subcategory:")),
+        isSubcategoryAllLevel: Boolean(activeCategoryPath && activeCategoryPath.startsWith("subcategory-all:")),
+        isProductGroupLevel: Boolean(activeCategoryPath && activeCategoryPath.startsWith("group:"))
+    };
+}
+
+function getCatalogPromptMessage(state) {
+    if (!activeCategoryPath || state.hasSearch) return "";
+
+    if (state.isCategoryLevel && state.activeGroup?.subcategories.length) {
+        return "Выберите подкатегорию, чтобы увидеть товары.";
+    }
+
+    if (state.isSubcategoryLevel && state.activeSubcategory?.groups.length) {
+        return "Выберите группу товаров или откройте все товары подкатегории.";
+    }
+
+    return "";
+}
+
 function renderProducts() {
     if (!grid) return;
     animateCatalogGridUpdate(grid);
@@ -38095,6 +38224,13 @@ function renderProducts() {
 
     grid.classList.remove("hidden");
 
+    const selectionState = getCatalogSelectionState();
+    const promptMessage = getCatalogPromptMessage(selectionState);
+    if (promptMessage) {
+        grid.innerHTML = `<p class="empty-products catalog-level-prompt">${promptMessage}</p>`;
+        return;
+    }
+
     const categoryProducts = products
         .map(product => ({ product, id: product.id }))
         .filter(({ product }) => productMatchesCategory(product));
@@ -38102,7 +38238,7 @@ function renderProducts() {
     const visibleProducts = smartSearch(searchQuery, categoryProducts);
 
     if (!visibleProducts.length) {
-        grid.innerHTML = `<p class="empty-products">Ничего не найдено</p>`;
+        grid.innerHTML = `<p class="empty-products">Товары не найдены.</p>`;
         return;
     }
 
@@ -38133,7 +38269,9 @@ function createProductCard(product, id) {
 }
 
 function getSearchDropdownResults(query) {
-    const productList = products.map(product => ({ product, id: product.id }));
+    const productList = products
+        .filter(product => productMatchesCategory(product))
+        .map(product => ({ product, id: product.id }));
     return smartSearch(query, productList).slice(0, getSearchDropdownLimit(query));
 }
 
@@ -38193,8 +38331,30 @@ function getActiveMainCategoryPath(groups) {
         return activeCategoryPath;
     }
 
-    const group = groups.find(item => item.subcategories.some(subcategory => subcategory.path === activeCategoryPath));
+    const group = groups.find(item => item.subcategories.some(subcategory => {
+        return subcategory.path === activeCategoryPath
+            || subcategory.groups.some(productGroup => productGroup.path === activeCategoryPath);
+    }));
     return group?.path || "";
+}
+
+function getActiveSubcategoryPath(groups) {
+    if (!activeCategoryPath) return "";
+
+    if (activeCategoryPath.startsWith("subcategory:")) {
+        return activeCategoryPath;
+    }
+
+    if (activeCategoryPath.startsWith("subcategory-all:")) {
+        return activeCategoryPath.replace(/^subcategory-all:/, "subcategory:");
+    }
+
+    for (const group of groups) {
+        const subcategory = group.subcategories.find(item => item.groups.some(productGroup => productGroup.path === activeCategoryPath));
+        if (subcategory) return subcategory.path;
+    }
+
+    return "";
 }
 
 function createCategoryButton(label, path, className, isActive) {
@@ -38207,11 +38367,52 @@ function createCategoryButton(label, path, className, isActive) {
     return button;
 }
 
+function createSubcategorySelect(activeGroup) {
+    const wrapper = document.createElement("label");
+    wrapper.className = "category-subcategory-select";
+
+    const select = document.createElement("select");
+    select.setAttribute("aria-label", "Выберите подкатегорию");
+    select.innerHTML = `<option value="${activeGroup.path}">Все подкатегории</option>`;
+
+    activeGroup.subcategories.forEach(subcategory => {
+        const option = document.createElement("option");
+        option.value = subcategory.path;
+        option.textContent = subcategory.label;
+        option.selected = subcategory.path === activeCategoryPath;
+        select.appendChild(option);
+    });
+
+    wrapper.appendChild(select);
+    return wrapper;
+}
+
+function createGroupSelect(activeSubcategory) {
+    const wrapper = document.createElement("label");
+    wrapper.className = "category-group-select";
+
+    const select = document.createElement("select");
+    select.setAttribute("aria-label", "Выберите группу товаров");
+    select.innerHTML = `<option value="${getSubcategoryAllPath(activeSubcategory.path)}">Все товары подкатегории</option>`;
+
+    activeSubcategory.groups.forEach(productGroup => {
+        const option = document.createElement("option");
+        option.value = productGroup.path;
+        option.textContent = productGroup.label;
+        option.selected = productGroup.path === activeCategoryPath;
+        select.appendChild(option);
+    });
+
+    wrapper.appendChild(select);
+    return wrapper;
+}
+
 function renderCategoryControls() {
     if (!categoryControls) return;
     categoryControls.innerHTML = "";
     const groups = getCategoryFilterGroups();
     const activeMainPath = getActiveMainCategoryPath(groups);
+    const activeSubcategoryPath = getActiveSubcategoryPath(groups);
 
     updateCatalogBreadcrumbs(groups);
 
@@ -38221,7 +38422,7 @@ function renderCategoryControls() {
         "Все товары",
         "",
         "category-control category-all",
-        !activeCategoryPath && showAllCatalogProducts
+        !activeCategoryPath
     ));
 
     groups.forEach(group => {
@@ -38236,21 +38437,95 @@ function renderCategoryControls() {
     categoryControls.appendChild(mainList);
 
     const activeGroup = groups.find(group => group.path === activeMainPath);
-    if (!activeGroup?.subcategories.length) return;
+    if (!activeGroup?.subcategories.length) {
+        if (!activeCategoryPath) {
+            const hint = document.createElement("p");
+            hint.className = "category-subcategory-hint";
+            hint.textContent = "Выберите категорию, чтобы увидеть подкатегории.";
+            categoryControls.appendChild(hint);
+        }
+        return;
+    }
+
+    categoryControls.appendChild(createSubcategorySelect(activeGroup));
 
     const subcategoryList = document.createElement("div");
     subcategoryList.className = "category-subcategory-list";
+    subcategoryList.classList.toggle("is-expanded", showAllSubcategories);
 
-    activeGroup.subcategories.forEach(subcategory => {
+    const visibleSubcategories = showAllSubcategories
+        ? activeGroup.subcategories
+        : activeGroup.subcategories.slice(0, 24);
+    const visibleActiveSubcategory = activeGroup.subcategories.find(subcategory => {
+        return subcategory.path === activeCategoryPath
+            || getSubcategoryAllPath(subcategory.path) === activeCategoryPath;
+    });
+    if (visibleActiveSubcategory && !visibleSubcategories.some(subcategory => subcategory.path === visibleActiveSubcategory.path)) {
+        visibleSubcategories.push(visibleActiveSubcategory);
+    }
+
+    visibleSubcategories.forEach(subcategory => {
         subcategoryList.appendChild(createCategoryButton(
             subcategory.label,
             subcategory.path,
             "category-control level-1",
-            subcategory.path === activeCategoryPath
+            subcategory.path === activeCategoryPath || getSubcategoryAllPath(subcategory.path) === activeCategoryPath
         ));
     });
 
     categoryControls.appendChild(subcategoryList);
+
+    if (activeGroup.subcategories.length > visibleSubcategories.length || showAllSubcategories) {
+        const toggle = document.createElement("button");
+        toggle.type = "button";
+        toggle.className = "subcategory-toggle";
+        toggle.textContent = showAllSubcategories ? "Свернуть" : "Показать все подкатегории";
+        toggle.setAttribute("aria-expanded", String(showAllSubcategories));
+        categoryControls.appendChild(toggle);
+    }
+
+    const activeSubcategory = activeGroup.subcategories.find(subcategory => subcategory.path === activeSubcategoryPath);
+    if (!activeSubcategory?.groups.length) return;
+
+    categoryControls.appendChild(createGroupSelect(activeSubcategory));
+
+    const groupList = document.createElement("div");
+    groupList.className = "category-group-list";
+    groupList.classList.toggle("is-expanded", showAllGroups);
+    groupList.appendChild(createCategoryButton(
+        "Все товары подкатегории",
+        getSubcategoryAllPath(activeSubcategory.path),
+        "category-control level-2 category-group-all",
+        activeCategoryPath === getSubcategoryAllPath(activeSubcategory.path)
+    ));
+
+    const visibleGroups = showAllGroups
+        ? activeSubcategory.groups
+        : activeSubcategory.groups.slice(0, 24);
+    const activeProductGroup = activeSubcategory.groups.find(productGroup => productGroup.path === activeCategoryPath);
+    if (activeProductGroup && !visibleGroups.some(productGroup => productGroup.path === activeProductGroup.path)) {
+        visibleGroups.push(activeProductGroup);
+    }
+
+    visibleGroups.forEach(productGroup => {
+        groupList.appendChild(createCategoryButton(
+            productGroup.label,
+            productGroup.path,
+            "category-control level-2",
+            productGroup.path === activeCategoryPath
+        ));
+    });
+
+    categoryControls.appendChild(groupList);
+
+    if (activeSubcategory.groups.length > visibleGroups.length || showAllGroups) {
+        const toggle = document.createElement("button");
+        toggle.type = "button";
+        toggle.className = "group-toggle";
+        toggle.textContent = showAllGroups ? "Свернуть" : "Показать все группы";
+        toggle.setAttribute("aria-expanded", String(showAllGroups));
+        categoryControls.appendChild(toggle);
+    }
 }
 
 function getQtyControls(id, qty, inputMode = false) {
@@ -38672,11 +38947,46 @@ searchDropdown.addEventListener("change", event => {
 });
 
 categoryControls?.addEventListener("click", event => {
+    const toggle = event.target.closest(".subcategory-toggle");
+    if (toggle) {
+        showAllSubcategories = !showAllSubcategories;
+        renderCategoryControls();
+        return;
+    }
+
+    const groupToggle = event.target.closest(".group-toggle");
+    if (groupToggle) {
+        showAllGroups = !showAllGroups;
+        renderCategoryControls();
+        return;
+    }
+
     const button = event.target.closest(".category-control");
     if (!button) return;
 
-    activeCategoryPath = button.dataset.path || "";
+    const nextPath = button.dataset.path || "";
+    if (!nextPath || nextPath.startsWith("category:")) {
+        showAllSubcategories = false;
+        showAllGroups = false;
+    } else if (nextPath.startsWith("subcategory:")) {
+        showAllGroups = false;
+    }
+
+    activeCategoryPath = nextPath;
     showAllCatalogProducts = !activeCategoryPath;
+    renderCategoryControls();
+    renderProducts();
+});
+
+categoryControls?.addEventListener("change", event => {
+    const select = event.target.closest(".category-subcategory-select select, .category-group-select select");
+    if (!select) return;
+
+    activeCategoryPath = select.value || "";
+    showAllCatalogProducts = false;
+    if (activeCategoryPath.startsWith("subcategory:")) {
+        showAllGroups = false;
+    }
     renderCategoryControls();
     renderProducts();
 });

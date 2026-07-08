@@ -157,6 +157,7 @@ async function initProductsTable() {
             slug TEXT,
             category TEXT,
             subcategory TEXT,
+            product_group TEXT,
             price REAL,
             weight REAL,
             unit TEXT,
@@ -179,6 +180,7 @@ async function initProductsTable() {
     await ensureColumn("products", "slug", "TEXT");
     await ensureColumn("products", "category", "TEXT");
     await ensureColumn("products", "subcategory", "TEXT");
+    await ensureColumn("products", "product_group", "TEXT");
     await ensureColumn("products", "price", "REAL");
     await ensureColumn("products", "weight", "REAL");
     await ensureColumn("products", "unit", "TEXT");
@@ -194,7 +196,7 @@ async function initProductsTable() {
     await ensureColumn("products", "deleted_by_id", "INTEGER");
     await ensureColumn("products", "deleted_by_name", "TEXT");
     await run("CREATE UNIQUE INDEX IF NOT EXISTS idx_products_external_id ON products(external_id)");
-    await run("CREATE INDEX IF NOT EXISTS idx_products_category ON products(category, subcategory)");
+    await run("CREATE INDEX IF NOT EXISTS idx_products_category ON products(category, subcategory, product_group)");
     await run("CREATE INDEX IF NOT EXISTS idx_products_is_active ON products(is_active)");
     await run("CREATE INDEX IF NOT EXISTS idx_products_deleted_at ON products(deleted_at)");
 }
@@ -295,6 +297,7 @@ async function seedProductsFromPublicCatalog() {
                 slug,
                 category,
                 subcategory,
+                product_group,
                 price,
                 weight,
                 unit,
@@ -306,13 +309,14 @@ async function seedProductsFromPublicCatalog() {
                 last_imported_at,
                 created_at,
                 updated_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
                 externalId,
                 title,
                 makeSlug(title, externalId),
                 normalizeProductText(product.category?.main),
                 normalizeProductText(product.category?.section || product.category?.type),
+                normalizeProductText(product.category?.type),
                 product.price === null || product.price === undefined ? null : Number(product.price) || 0,
                 Number(product.weight) || 0,
                 normalizeProductText(product.unit) || "шт",

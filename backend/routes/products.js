@@ -38,6 +38,7 @@ function getProductSearchText(row) {
         row.slug,
         row.category,
         row.subcategory,
+        row.product_group,
         row.description,
         row.source,
         row.price,
@@ -65,6 +66,7 @@ function normalizeProduct(row) {
         slug: row.slug || "",
         category: row.category || "",
         subcategory: row.subcategory || "",
+        productGroup: row.product_group || "",
         price: row.price === null || row.price === undefined ? null : Number(row.price),
         weight: Number(row.weight) || 0,
         unit: row.unit || "шт",
@@ -90,6 +92,7 @@ function normalizePublicProduct(row) {
         slug: row.slug || "",
         category: row.category || "",
         subcategory: row.subcategory || "",
+        productGroup: row.product_group || "",
         price: row.price === null || row.price === undefined ? null : Number(row.price),
         weight: Number(row.weight) || 0,
         unit: row.unit || "шт",
@@ -109,6 +112,9 @@ function getProductPayload(body, existing = {}) {
         slug,
         category: normalizeText(body.category),
         subcategory: normalizeText(body.subcategory),
+        productGroup: body.productGroup === undefined && body.product_group === undefined
+            ? (existing.product_group || "")
+            : normalizeText(body.productGroup || body.product_group),
         price: body.price === "" || body.price === null || body.price === undefined ? null : normalizeNumber(body.price, null),
         weight: normalizeNumber(body.weight, 0),
         unit: normalizeText(body.unit) || "шт",
@@ -168,6 +174,7 @@ async function getFilteredProducts(query = {}) {
         ${where.length ? `WHERE ${where.join(" AND ")}` : ""}
         ORDER BY category COLLATE NOCASE ASC,
                  subcategory COLLATE NOCASE ASC,
+                 product_group COLLATE NOCASE ASC,
                  sort_order ASC,
                  title COLLATE NOCASE ASC
     `;
@@ -190,6 +197,7 @@ async function getPublicProducts() {
         ORDER BY sort_order ASC,
                  category COLLATE NOCASE ASC,
                  subcategory COLLATE NOCASE ASC,
+                 product_group COLLATE NOCASE ASC,
                  title COLLATE NOCASE ASC
     `);
 }
@@ -259,16 +267,19 @@ function buildPriceWorkbook(rows) {
 
     let currentCategory = "";
     let currentSubcategory = "";
+    let currentGroup = "";
     let rowNumber = 5;
     let itemNumber = 0;
 
     rows.forEach(row => {
         const category = row.category || "Без категории";
         const subcategory = row.subcategory || "Без подкатегории";
+        const productGroup = row.product_group || "";
 
         if (category !== currentCategory) {
             currentCategory = category;
             currentSubcategory = "";
+            currentGroup = "";
             addMergedRow(sheet, rowNumber, category, {
                 font: { bold: true, size: 13, color: { argb: "FFFFFFFF" } },
                 fill: { type: "pattern", pattern: "solid", fgColor: { argb: "FF5A1F28" } }
@@ -279,9 +290,19 @@ function buildPriceWorkbook(rows) {
 
         if (subcategory !== currentSubcategory) {
             currentSubcategory = subcategory;
+            currentGroup = "";
             addMergedRow(sheet, rowNumber, subcategory, {
                 font: { bold: true, size: 11, color: { argb: "FF205742" } },
                 fill: { type: "pattern", pattern: "solid", fgColor: { argb: "FFF4F6F1" } }
+            });
+            rowNumber += 1;
+        }
+
+        if (productGroup && productGroup !== currentGroup) {
+            currentGroup = productGroup;
+            addMergedRow(sheet, rowNumber, productGroup, {
+                font: { bold: true, size: 10, color: { argb: "FF2F7A5D" } },
+                fill: { type: "pattern", pattern: "solid", fgColor: { argb: "FFEAF1EA" } }
             });
             rowNumber += 1;
         }
@@ -353,10 +374,12 @@ router.get("/", requireRole(["admin", "manager"]), async (req, res) => {
         const products = rows.map(normalizeProduct);
         const categoryRows = await all("SELECT DISTINCT category FROM products WHERE deleted_at IS NULL AND category IS NOT NULL AND category != '' ORDER BY category COLLATE NOCASE ASC");
         const subcategoryRows = await all("SELECT DISTINCT subcategory FROM products WHERE deleted_at IS NULL AND subcategory IS NOT NULL AND subcategory != '' ORDER BY subcategory COLLATE NOCASE ASC");
+        const productGroupRows = await all("SELECT DISTINCT product_group FROM products WHERE deleted_at IS NULL AND product_group IS NOT NULL AND product_group != '' ORDER BY product_group COLLATE NOCASE ASC");
         const categories = categoryRows.map(row => row.category);
         const subcategories = subcategoryRows.map(row => row.subcategory);
+        const productGroups = productGroupRows.map(row => row.product_group);
 
-        res.json({ success: true, products, categories, subcategories });
+        res.json({ success: true, products, categories, subcategories, productGroups });
     } catch (error) {
         console.error("Products load error:", error);
         res.status(500).json({ success: false, message: "Не удалось загрузить каталог." });
@@ -392,15 +415,16 @@ router.post("/", requireRole(["admin"]), async (req, res) => {
         const now = new Date().toISOString();
         const result = await run(
             `INSERT INTO products (
-                external_id, title, slug, category, subcategory, price, weight, unit,
+                external_id, title, slug, category, subcategory, product_group, price, weight, unit,
                 image, description, is_active, sort_order, source, created_at, updated_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
                 payload.externalId,
                 payload.title,
                 payload.slug,
                 payload.category,
                 payload.subcategory,
+                payload.productGroup,
                 payload.price,
                 payload.weight,
                 payload.unit,
@@ -461,6 +485,7 @@ router.patch("/:id", requireRole(["admin"]), async (req, res) => {
                  slug = ?,
                  category = ?,
                  subcategory = ?,
+                 product_group = ?,
                  price = ?,
                  weight = ?,
                  unit = ?,
@@ -476,6 +501,7 @@ router.patch("/:id", requireRole(["admin"]), async (req, res) => {
                 payload.slug,
                 payload.category,
                 payload.subcategory,
+                payload.productGroup,
                 payload.price,
                 payload.weight,
                 payload.unit,

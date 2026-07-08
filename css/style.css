@@ -797,7 +797,8 @@ body {
 }
 
 .category-main-list,
-.category-subcategory-list {
+.category-subcategory-list,
+.category-group-list {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -805,9 +806,44 @@ body {
     min-width: 0;
 }
 
-.category-subcategory-list {
+.category-subcategory-list,
+.category-group-list {
     padding-top: 12px;
     border-top: 1px solid rgba(33, 83, 54, 0.12);
+    max-height: 116px;
+    overflow: hidden;
+}
+
+.category-subcategory-list.is-expanded,
+.category-group-list.is-expanded {
+    max-height: none;
+}
+
+.category-subcategory-hint {
+    margin: 0;
+    padding-top: 6px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.category-subcategory-select,
+.category-group-select {
+    display: none;
+}
+
+.category-subcategory-select select,
+.category-group-select select {
+    width: 100%;
+    min-height: 42px;
+    border: 1px solid rgba(32, 87, 66, 0.2);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--primary-dark);
+    padding: 0 12px;
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
 }
 
 .category-control {
@@ -852,11 +888,27 @@ body {
 .category-control.level-1 {
     min-height: 30px;
     border-color: rgba(47, 122, 93, 0.18);
-    background: rgba(135, 180, 142, 0.48);
+    background: rgba(255, 255, 255, 0.86);
     color: var(--primary-dark);
     padding: 0 11px;
     font-size: 0.78rem;
     font-weight: 600;
+}
+
+.category-control.level-2 {
+    min-height: 28px;
+    border-color: rgba(32, 87, 66, 0.22);
+    background: rgba(234, 241, 234, 0.9);
+    color: var(--primary-dark);
+    padding: 0 10px;
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
+.category-control.category-group-all {
+    border-color: rgba(90, 31, 40, 0.28);
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--brand-burgundy);
 }
 
 .category-control.active,
@@ -871,6 +923,49 @@ body {
     background: var(--brand-burgundy);
     color: white;
     box-shadow: 0 6px 16px rgba(90, 31, 40, 0.22);
+}
+
+.catalog-page .category-control.level-1.active {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 6px 16px rgba(32, 87, 66, 0.2);
+}
+
+.catalog-page .category-control.level-2.active {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 6px 16px rgba(32, 87, 66, 0.2);
+}
+
+.catalog-page .category-control.category-group-all.active {
+    border-color: var(--brand-burgundy);
+    background: var(--brand-burgundy);
+    color: white;
+    box-shadow: 0 6px 16px rgba(90, 31, 40, 0.2);
+}
+
+.subcategory-toggle,
+.group-toggle {
+    justify-self: start;
+    width: fit-content;
+    min-height: 34px;
+    border: 1px solid rgba(90, 31, 40, 0.28);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--brand-burgundy);
+    padding: 0 12px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.84rem;
+    font-weight: 800;
+}
+
+.subcategory-toggle:hover,
+.group-toggle:hover {
+    border-color: var(--brand-burgundy);
+    background: rgba(90, 31, 40, 0.08);
 }
 
 .grid {
@@ -896,6 +991,13 @@ body {
     background: var(--surface);
     color: var(--text-muted);
     text-align: center;
+}
+
+.catalog-level-prompt {
+    border-color: rgba(32, 87, 66, 0.18);
+    background: rgba(244, 246, 241, 0.86);
+    color: var(--primary-dark);
+    font-weight: 700;
 }
 
 .card {
@@ -1789,18 +1891,27 @@ body {
         margin-bottom: 22px;
         padding: 12px;
     }
-    .category-main-list,
-    .category-subcategory-list {
+    .category-main-list {
         flex-wrap: nowrap;
         overflow-x: auto;
         padding-bottom: 2px;
         scrollbar-width: none;
     }
-    .category-main-list::-webkit-scrollbar,
-    .category-subcategory-list::-webkit-scrollbar {
+    .category-main-list::-webkit-scrollbar {
         display: none;
     }
-    .category-control.level-1 {
+    .category-subcategory-list,
+    .category-group-list,
+    .subcategory-toggle,
+    .group-toggle {
+        display: none;
+    }
+    .category-subcategory-select,
+    .category-group-select {
+        display: block;
+    }
+    .category-control.level-1,
+    .category-control.level-2 {
         min-height: 28px;
         padding: 0 8px;
         font-size: 0.72rem;
