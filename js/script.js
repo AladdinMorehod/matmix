@@ -38610,7 +38610,7 @@ function getQtyControls(id, qty) {
 
 function getQtyInputWidth(value) {
     const length = String(value || "").length || 1;
-    return Math.min(110, Math.max(38, length * 10 + 26));
+    return Math.min(84, Math.max(44, length * 10 + 24));
 }
 
 function resizeQtyInput(input) {

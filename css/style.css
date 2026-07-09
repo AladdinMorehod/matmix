@@ -1219,8 +1219,9 @@ body {
     gap: 10px;
     position: relative;
     width: 220px;
-    height: 300px;
-    overflow: hidden;
+    min-height: 300px;
+    height: auto;
+    overflow: visible;
 }
 
 .card-main {
@@ -1255,7 +1256,7 @@ body {
     width: 100%;
     min-width: 0;
     min-height: 0;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .card-info h3,
@@ -1277,9 +1278,14 @@ body {
 
 .card-info p {
     margin-top: 4px;
+    min-height: 2.4em;
     font-size: 0.9rem;
     font-weight: 700;
-    line-height: 1.2;
+    line-height: 1.25;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    overflow-wrap: anywhere;
 }
 
 .card button {
@@ -1303,18 +1309,23 @@ body {
 
 .qty-row {
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 8px;
+    justify-content: center;
+    gap: 4px;
     width: 100%;
+    max-width: 100%;
     margin: 0 auto;
+    box-sizing: border-box;
+    min-width: 0;
 }
 
 .qty-input {
-    width: 42px;
-    min-width: 42px;
-    height: 38px;
-    padding: 6px;
+    width: 44px;
+    min-width: 44px;
+    max-width: 86px;
+    height: 34px;
+    flex: 0 1 auto;
+    padding: 0 4px;
     border: 1px solid var(--border);
     border-radius: 6px;
     background: white;
@@ -1324,6 +1335,8 @@ body {
     font-weight: 700;
     line-height: 1;
     text-align: center;
+    box-sizing: border-box;
+    overflow: visible;
 }
 
 .qty-input:focus {
@@ -1342,10 +1355,13 @@ body {
     background: var(--primary-dark);
     border: none;
     color: white;
-    padding: 10px 14px;
+    padding: 0;
     border-radius: 4px;
     cursor: pointer;
-    min-width: 42px;
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
     display: inline-flex;
     justify-content: center;
     align-items: center;
