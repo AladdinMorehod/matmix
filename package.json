@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node backend/server.js",
     "dev": "nodemon backend/server.js",
-    "import:products:reset": "node backend/scripts/reset-and-import-products.js"
+    "import:products:reset": "node backend/scripts/reset-and-import-products.js",
+    "catalog:fixes": "node backend/scripts/apply-catalog-fixes.js",
+    "fix:plywood-groups": "npm run catalog:fixes"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
