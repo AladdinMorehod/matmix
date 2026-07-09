@@ -23,8 +23,9 @@ function normalizeText(value) {
 
 function normalizePreferredContactMethod(value) {
     const method = normalizeText(value);
-    const allowedMethods = ["Телефон", "WhatsApp", "Telegram", "MAX", "Почта"];
+    const allowedMethods = ["Телефон", "WhatsApp", "Telegram", "MAX", "E-mail", "Почта"];
 
+    if (method === "Почта") return "E-mail";
     return allowedMethods.includes(method) ? method : "";
 }
 
@@ -57,13 +58,13 @@ function getFallbackPreferredContact(body, phone) {
 
     return {
         method: "",
-        value: phone
+        value: ""
     };
 }
 
 function getClientContactFields(method, value, phone) {
     return {
-        email: method === "Почта" ? value : "",
+        email: method === "E-mail" ? value : "",
         telegram: method === "Telegram" ? value : "",
         maxContact: method === "MAX" ? value : "",
         whatsapp: method === "WhatsApp" ? (value || phone) : ""

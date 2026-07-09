@@ -37169,8 +37169,8 @@ const checkoutMessage = document.getElementById("checkoutMessage");
 const checkoutNameInput = checkoutForm?.querySelector("input[name='customerName']");
 const checkoutPhoneInput = checkoutForm?.querySelector("input[name='customerPhone']");
 const preferredContactMethodInput = checkoutForm?.querySelector("select[name='preferredContactMethod']");
-const preferredContactValueInput = checkoutForm?.querySelector("input[name='preferredContactValue']");
 const checkoutAddressInput = checkoutForm?.querySelector("input[name='deliveryAddress']");
+const checkoutCommentInput = checkoutForm?.querySelector("textarea[name='orderComment']");
 const nameSuggestionsEl = document.getElementById("nameSuggestions");
 const phoneSuggestionsEl = document.getElementById("phoneSuggestions");
 const addressSuggestionsEl = document.getElementById("addressSuggestions");
@@ -37189,6 +37189,7 @@ let showAllGroups = false;
 let productsById = new Map();
 let catalogLoadError = "";
 let publicSearchTimer = null;
+let documentMouseDownStartedInsideCheckout = false;
 const MAX_PRODUCT_QTY = 100000;
 
 searchDropdown.className = "search-dropdown hidden";
@@ -37512,18 +37513,14 @@ function setCheckoutSubmitDisabled(isDisabled) {
     checkoutForm?.querySelector("button[type='submit']")?.toggleAttribute("disabled", isDisabled);
 }
 
-function updatePreferredContactHint() {
-    if (!preferredContactValueInput || !preferredContactMethodInput) return;
+function resizeCheckoutComment() {
+    if (!checkoutCommentInput) return;
 
-    const placeholders = {
-        "Телефон": "Можно оставить основной телефон",
-        "WhatsApp": "Можно оставить основной телефон",
-        "Telegram": "@username",
-        "MAX": "Телефон или логин MAX",
-        "Почта": "mail@example.com"
-    };
-
-    preferredContactValueInput.placeholder = placeholders[preferredContactMethodInput.value] || "Контакт для связи";
+    checkoutCommentInput.style.height = "auto";
+    const maxHeight = 150;
+    const nextHeight = Math.min(checkoutCommentInput.scrollHeight, maxHeight);
+    checkoutCommentInput.style.height = `${nextHeight}px`;
+    checkoutCommentInput.classList.toggle("is-scrollable", checkoutCommentInput.scrollHeight > maxHeight);
 }
 
 function setupCheckoutFormFields() {
@@ -37575,9 +37572,9 @@ function setupCheckoutFormFields() {
         checkoutAddressInput.addEventListener("input", updateCheckoutSuggestions);
     }
 
-    if (preferredContactMethodInput) {
-        updatePreferredContactHint();
-        preferredContactMethodInput.addEventListener("change", updatePreferredContactHint);
+    if (checkoutCommentInput) {
+        resizeCheckoutComment();
+        checkoutCommentInput.addEventListener("input", resizeCheckoutComment);
     }
 }
 
@@ -38814,7 +38811,6 @@ checkoutForm?.addEventListener("submit", async event => {
         customerName,
         phone,
         preferredContactMethod: cleanDisplayText(formData.get("preferredContactMethod")),
-        preferredContactValue: cleanDisplayText(formData.get("preferredContactValue")),
         address: cleanDisplayText(formData.get("deliveryAddress")),
         unloading: getUnloadingLabel(formData.get("unloading")),
         paymentMethod: getPaymentMethodLabel(formData.get("paymentMethod")),
@@ -38851,6 +38847,7 @@ checkoutForm?.addEventListener("submit", async event => {
         if (checkoutPhoneInput) {
             checkoutPhoneInput.value = formatRussianPhone(checkoutPhoneInput.value);
         }
+        resizeCheckoutComment();
 
         window.setTimeout(() => {
             cartModal.classList.add("hidden");
@@ -38866,8 +38863,18 @@ cartModal.addEventListener("click", event => {
     event.stopPropagation();
 });
 
+document.addEventListener("mousedown", event => {
+    documentMouseDownStartedInsideCheckout = Boolean(event.target.closest("#cartModal, #cartBtn, .cart, .header-search, .search-dropdown"));
+});
+
 document.addEventListener("click", event => {
     if (event.target.closest("#cartModal, #cartBtn, .cart, .header-search, .search-dropdown")) {
+        documentMouseDownStartedInsideCheckout = false;
+        return;
+    }
+
+    if (documentMouseDownStartedInsideCheckout) {
+        documentMouseDownStartedInsideCheckout = false;
         return;
     }
 
@@ -38875,6 +38882,7 @@ document.addEventListener("click", event => {
     showCartView();
     hideSearchDropdown();
     closeMenu();
+    documentMouseDownStartedInsideCheckout = false;
 });
 
 function closeMenu() {

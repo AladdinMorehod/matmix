@@ -176,10 +176,10 @@ function getPreferredContactText(order) {
     const contact = getPreferredContact(order);
 
     if (!contact.method) {
-        return "Не указан";
+        return "Не выбран";
     }
 
-    return `${contact.method}: ${contact.value || "Не указан"}`;
+    return contact.method === "Почта" ? "E-mail" : contact.method;
 }
 
 function getClientPreferredContactText(client) {
@@ -226,7 +226,7 @@ function getContactAction(order) {
             : null;
     }
 
-    if (method === "Почта") {
+    if (method === "E-mail" || method === "Почта") {
         return value
             ? { label: "Связаться", href: `mailto:${value}` }
             : null;

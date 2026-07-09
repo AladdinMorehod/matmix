@@ -1485,9 +1485,7 @@ body {
 }
 
 .contact-method-fields {
-    display: grid;
-    grid-template-columns: minmax(130px, 0.8fr) minmax(180px, 1.2fr);
-    gap: 9px;
+    display: block;
 }
 
 .contact-method-fields label {
@@ -1533,7 +1531,14 @@ body {
 }
 
 .checkout-form textarea {
+    min-height: 36px;
+    max-height: 150px;
+    overflow-y: hidden;
     resize: vertical;
+}
+
+.checkout-form textarea.is-scrollable {
+    overflow-y: auto;
 }
 
 .checkout-form input:focus,

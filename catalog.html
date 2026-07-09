@@ -115,16 +115,13 @@
                 <label>
                     <span>Предпочтительный способ связи</span>
                     <select name="preferredContactMethod">
+                        <option value="">Не выбран</option>
                         <option value="Телефон">Телефон</option>
                         <option value="WhatsApp">WhatsApp</option>
                         <option value="Telegram">Telegram</option>
+                        <option value="E-mail">E-mail</option>
                         <option value="MAX">MAX</option>
-                        <option value="Почта">Почта</option>
                     </select>
-                </label>
-                <label>
-                    <span>Контакт</span>
-                    <input type="text" name="preferredContactValue" autocomplete="off" placeholder="Можно оставить основной телефон">
                 </label>
             </div>
             <label>
@@ -141,7 +138,7 @@
             </label>
             <label>
                 <span>Комментарий к заказу</span>
-                <textarea name="orderComment" rows="3"></textarea>
+                <textarea name="orderComment" rows="1"></textarea>
             </label>
             <label>
                 <span>Способ оплаты</span>

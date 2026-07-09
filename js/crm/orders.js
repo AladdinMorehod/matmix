@@ -294,7 +294,7 @@ function renderClientTab(order) {
             <h2>Клиент</h2>
             ${renderInfoRow("Имя", order.customerName)}
             ${renderInfoRow("Телефон", order.phone)}
-            ${renderInfoRow("Предпочтительный канал", getPreferredContactText(order))}
+            ${renderInfoRow("Предпочтительный способ связи", getPreferredContactText(order))}
             ${order.clientId ? `
                 <div class="client-mini">
                     <div>
@@ -352,7 +352,7 @@ function renderDeletedOrder(order) {
                         <h2>Клиент</h2>
                         ${renderInfoRow("Имя", order.customerName)}
                         ${renderInfoRow("Телефон", order.phone)}
-                        ${renderInfoRow("Предпочтительный канал", getPreferredContactText(order))}
+                        ${renderInfoRow("Предпочтительный способ связи", getPreferredContactText(order))}
                     </section>
                     <section class="order-section">
                         <h2>Доставка и оплата</h2>
