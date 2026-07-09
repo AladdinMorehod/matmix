@@ -33,7 +33,21 @@
             <a href="#contacts">Контакты</a>
         </nav>
         <div class="cart">
-            <button id="cartBtn">Корзина (<span id="cartCount">0</span>)</button>
+            <button id="cartBtn" class="cart-icon-btn" type="button" aria-label="Корзина" aria-expanded="false" aria-controls="cartPreview">
+                <img src="img/Logo2.png" alt="" aria-hidden="true">
+                <span id="cartCount" class="cart-count hidden" aria-hidden="true">0</span>
+            </button>
+            <div id="cartPreview" class="cart-preview hidden is-empty" role="status" aria-live="polite">
+                <p class="cart-preview-empty">Корзина пуста</p>
+                <div class="cart-preview-summary">
+                    <span>Итого: <strong id="cartPreviewTotal">0 ₽</strong></span>
+                    <span>Вес: <strong id="cartPreviewWeight">0 кг</strong></span>
+                </div>
+                <div class="cart-preview-actions">
+                    <button id="closeCartPreview" type="button">Закрыть</button>
+                    <button id="checkoutFromPreview" type="button">Заказать</button>
+                </div>
+            </div>
         </div>
     </header>
 
