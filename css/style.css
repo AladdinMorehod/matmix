@@ -520,7 +520,7 @@ body {
 }
 
 .catalog-help {
-    order: 4;
+    order: 7;
 }
 
 .catalog-message {
@@ -579,9 +579,10 @@ body {
 }
 
 .catalog-heading {
-    display: grid;
-    align-content: start;
-    gap: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 28px;
 }
 
 .catalog-heading h2 {
@@ -594,7 +595,7 @@ body {
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     gap: 18px;
-    margin: 18px 0 0;
+    margin: 42px 0 32px;
     padding: 18px 20px;
     border: 1px solid rgba(90, 31, 40, 0.16);
     border-radius: 8px;
@@ -627,8 +628,7 @@ body {
     justify-items: stretch;
 }
 
-.catalog-help a,
-.catalog-price-download {
+.catalog-help a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -647,9 +647,24 @@ body {
 }
 
 .catalog-price-download {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    min-height: 34px;
+    padding: 7px 15px;
     border: 1px solid rgba(32, 87, 66, 0.16);
+    border-radius: 6px;
+    background: var(--primary);
+    color: white;
     cursor: pointer;
     font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+    box-shadow: 0 6px 14px rgba(32, 87, 66, 0.18);
+    transition: background 180ms ease, transform 180ms ease, box-shadow 180ms ease;
 }
 
 .catalog-help a::before {
@@ -1790,6 +1805,11 @@ body {
         margin-top: 14px;
     }
 
+    .catalog-heading {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+
     .catalog-page .grid {
         grid-template-columns: repeat(auto-fit, 220px);
         justify-content: center;
@@ -1930,9 +1950,13 @@ body {
     .catalog-help-action {
         width: 100%;
     }
-    .catalog-help a,
-    .catalog-price-download {
+    .catalog-help a {
         width: 100%;
+    }
+    .catalog-price-download {
+        min-height: 34px;
+        padding: 7px 15px;
+        font-size: 13px;
     }
     .catalog-help-phone {
         left: 0;
