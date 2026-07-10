@@ -2,6 +2,10 @@ const fs = require("fs");
 const path = require("path");
 const bcrypt = require("bcryptjs");
 const sqlite3 = require("sqlite3").verbose();
+const {
+    ensureCatalogStructureSchema,
+    syncCatalogStructureFromProducts
+} = require("./services/catalogStructure");
 
 const databaseDir = path.join(__dirname, "database");
 const databasePath = path.join(databaseDir, "matmix.db");
@@ -130,6 +134,7 @@ async function initDatabase() {
     await ensureColumn("users", "deleted_at", "TEXT");
 
     await initProductsTable();
+    await ensureCatalogStructureSchema({ run, all });
 
     const admin = await get("SELECT id FROM users WHERE login = ?", ["admin"]);
     if (!admin) {
@@ -146,6 +151,7 @@ async function initDatabase() {
     }
 
     await seedProductsFromPublicCatalog();
+    await syncCatalogStructureFromProducts({ run, get, all });
 }
 
 async function initProductsTable() {

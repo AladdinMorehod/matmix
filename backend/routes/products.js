@@ -3,6 +3,7 @@ const crypto = require("crypto");
 const ExcelJS = require("exceljs");
 const { all, get, run } = require("../database");
 const { requireRole } = require("../middleware/auth");
+const { getCatalogStructureTree } = require("../services/catalogStructure");
 
 const router = express.Router();
 const publicRouter = express.Router();
@@ -436,6 +437,16 @@ router.get("/export/excel", requireRole(["admin", "manager"]), async (req, res) 
     } catch (error) {
         console.error("Products export error:", error);
         res.status(500).json({ success: false, message: "Не удалось сформировать прайс." });
+    }
+});
+
+router.get("/structure", requireRole(["admin", "manager"]), async (req, res) => {
+    try {
+        const categories = await getCatalogStructureTree({ all });
+        res.json({ success: true, categories });
+    } catch (error) {
+        console.error("Catalog structure load error:", error);
+        res.status(500).json({ success: false, message: "Не удалось загрузить структуру каталога." });
     }
 });
 
