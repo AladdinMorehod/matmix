@@ -37194,6 +37194,7 @@ let showAllSubcategories = false;
 let showAllGroups = false;
 let productsById = new Map();
 let catalogLoadError = "";
+let publicCatalogStructure = [];
 let publicSearchTimer = null;
 let documentMouseDownStartedInsideCheckout = false;
 let cartPreviewWasOpenOnPointerDown = false;
@@ -37236,6 +37237,26 @@ function normalizeProductForSite(product, index) {
 
 function rebuildProductsIndex() {
     productsById = new Map(products.map(product => [Number(product.id), product]));
+}
+
+function normalizePublicCatalogStructure(items) {
+    if (!Array.isArray(items)) return [];
+
+    return items
+        .map(item => {
+            const name = cleanDisplayText(item?.name);
+            if (!name) return null;
+
+            return {
+                name,
+                subcategories: Array.isArray(item.subcategories)
+                    ? item.subcategories
+                        .map(subcategory => ({ name: cleanDisplayText(subcategory?.name) }))
+                        .filter(subcategory => subcategory.name)
+                    : []
+            };
+        })
+        .filter(Boolean);
 }
 
 function getProductById(id) {
@@ -37414,6 +37435,18 @@ async function loadPublicProducts() {
         }
 
         products = result.products.map(normalizeProductForSite);
+        try {
+            const structureResponse = await fetch("/api/public/products/structure");
+            const structureResult = await structureResponse.json().catch(() => ({}));
+
+            publicCatalogStructure = structureResponse.ok && structureResult.success
+                ? normalizePublicCatalogStructure(structureResult.categories)
+                : [];
+        } catch (structureError) {
+            console.warn("Public catalog structure load error:", structureError);
+            publicCatalogStructure = [];
+        }
+
         rebuildProductsIndex();
         cart = loadCart();
         saveCart();
@@ -37422,6 +37455,7 @@ async function loadPublicProducts() {
     } catch (error) {
         console.warn("Public catalog load error:", error);
         products = [];
+        publicCatalogStructure = [];
         rebuildProductsIndex();
         cart = loadCart();
         catalogLoadError = "Не удалось загрузить каталог. Проверьте подключение к серверу.";
@@ -37832,8 +37866,19 @@ function getProductCatalogCategory(product) {
     ].filter(Boolean);
 }
 
+function serializeCategoryFilterGroup(category, subcategories = Array.from(category.subcategories.values())) {
+    return {
+        label: category.label,
+        path: category.path,
+        subcategories: subcategories.map(subcategory => ({
+            label: subcategory.label,
+            path: subcategory.path,
+            groups: Array.from(subcategory.groups.values())
+        }))
+    };
+}
+
 function getCategoryFilterGroups() {
-    const groups = [];
     const categories = new Map();
 
     products.forEach(product => {
@@ -37876,16 +37921,49 @@ function getCategoryFilterGroups() {
         }
     });
 
-    categories.forEach(category => {
-        groups.push({
-            label: category.label,
-            path: category.path,
-            subcategories: Array.from(category.subcategories.values()).map(subcategory => ({
-                label: subcategory.label,
-                path: subcategory.path,
-                groups: Array.from(subcategory.groups.values())
-            }))
+    if (publicCatalogStructure.length) {
+        const groups = [];
+        const usedCategories = new Set();
+
+        publicCatalogStructure.forEach(structureCategory => {
+            const normalizedMain = normalizeSearchText(structureCategory.name);
+            const category = categories.get(normalizedMain);
+            if (!category) return;
+
+            const usedSubcategories = new Set();
+            const orderedSubcategories = [];
+            usedCategories.add(normalizedMain);
+
+            structureCategory.subcategories.forEach(structureSubcategory => {
+                const normalizedSubcategory = normalizeSearchText(structureSubcategory.name);
+                const subcategory = category.subcategories.get(normalizedSubcategory);
+                if (!subcategory) return;
+
+                usedSubcategories.add(normalizedSubcategory);
+                orderedSubcategories.push(subcategory);
+            });
+
+            category.subcategories.forEach((subcategory, normalizedSubcategory) => {
+                if (!usedSubcategories.has(normalizedSubcategory)) {
+                    orderedSubcategories.push(subcategory);
+                }
+            });
+
+            groups.push(serializeCategoryFilterGroup(category, orderedSubcategories));
         });
+
+        categories.forEach((category, normalizedMain) => {
+            if (!usedCategories.has(normalizedMain)) {
+                groups.push(serializeCategoryFilterGroup(category));
+            }
+        });
+
+        return groups;
+    }
+
+    const groups = [];
+    categories.forEach(category => {
+        groups.push(serializeCategoryFilterGroup(category));
     });
 
     return groups;

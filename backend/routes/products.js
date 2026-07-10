@@ -4,7 +4,9 @@ const ExcelJS = require("exceljs");
 const { all, get, run } = require("../database");
 const { requireRole } = require("../middleware/auth");
 const {
+    normalizeCatalogStructureName,
     getCatalogStructureTree,
+    getPublicCatalogStructureTree,
     createCategory,
     createSubcategory,
     validateProductStructureSelection
@@ -242,18 +244,120 @@ async function getFilteredProducts(query = {}) {
     });
 }
 
+async function getProductsWithCatalogOrder(query = {}) {
+    const params = [];
+    const where = [];
+    const searchWords = getSearchWords(query.search);
+    const category = normalizeText(query.category);
+    const status = normalizeText(query.status);
+
+    if (category) {
+        where.push("category = ?");
+        params.push(category);
+    }
+
+    if (status === "active") {
+        where.push("is_active = 1");
+    } else if (status === "hidden") {
+        where.push("is_active = 0");
+    }
+
+    if (query.deleted === "true") {
+        where.push("deleted_at IS NOT NULL");
+    } else {
+        where.push("deleted_at IS NULL");
+    }
+
+    const [rows, structureRows] = await Promise.all([
+        all(`
+            SELECT *
+            FROM products
+            ${where.length ? `WHERE ${where.join(" AND ")}` : ""}
+            ORDER BY sort_order ASC, id ASC
+        `, params),
+        all(`
+            SELECT id, type, normalized_name, parent_id, sort_order
+            FROM catalog_structure
+            WHERE is_active = 1
+              AND type IN ('category', 'subcategory')
+            ORDER BY sort_order ASC, id ASC
+        `)
+    ]);
+    const filteredRows = searchWords.length
+        ? rows.filter(row => {
+            const searchableText = getProductSearchText(row);
+            return searchWords.every(word => searchableText.includes(word));
+        })
+        : rows;
+    const categoryOrder = new Map();
+    const categoryIds = new Map();
+    const subcategoryOrder = new Map();
+    const categoryFallbackOrder = new Map();
+    const subcategoryFallbackOrder = new Map();
+    const groupOrder = new Map();
+    const unknownStructureOffset = 1000000000;
+
+    structureRows.filter(row => row.type === "category").forEach((row, index) => {
+        const normalizedName = normalizeCatalogStructureName(row.normalized_name);
+        categoryOrder.set(normalizedName, (Number(row.sort_order) || 0) * 1000 + index);
+        categoryIds.set(normalizedName, row.id);
+    });
+
+    structureRows.filter(row => row.type === "subcategory").forEach((row, index) => {
+        subcategoryOrder.set(`${row.parent_id}:${normalizeCatalogStructureName(row.normalized_name)}`, (Number(row.sort_order) || 0) * 1000 + index);
+    });
+
+    filteredRows.forEach((row, index) => {
+        const categoryName = normalizeCatalogStructureName(row.category);
+        const subcategoryName = normalizeCatalogStructureName(row.subcategory);
+        const productGroupName = normalizeCatalogStructureName(row.product_group);
+        const categoryId = categoryIds.get(categoryName) || 0;
+
+        if (!categoryFallbackOrder.has(categoryName)) {
+            categoryFallbackOrder.set(categoryName, index);
+        }
+
+        const subcategoryFallbackKey = `${categoryName}:${subcategoryName}`;
+        if (!subcategoryFallbackOrder.has(subcategoryFallbackKey)) {
+            subcategoryFallbackOrder.set(subcategoryFallbackKey, index);
+        }
+
+        const groupKey = `${categoryName}:${subcategoryName}:${productGroupName}`;
+        if (!groupOrder.has(groupKey)) {
+            groupOrder.set(groupKey, index);
+        }
+
+        row.__catalogOrder = {
+            category: categoryOrder.has(categoryName)
+                ? categoryOrder.get(categoryName)
+                : unknownStructureOffset + (categoryFallbackOrder.get(categoryName) || 0),
+            subcategory: categoryId && subcategoryOrder.has(`${categoryId}:${subcategoryName}`)
+                ? subcategoryOrder.get(`${categoryId}:${subcategoryName}`)
+                : unknownStructureOffset + (subcategoryFallbackOrder.get(subcategoryFallbackKey) || 0),
+            group: groupOrder.get(groupKey) || 0
+        };
+    });
+
+    return filteredRows
+        .slice()
+        .sort((first, second) => {
+            const firstOrder = first.__catalogOrder;
+            const secondOrder = second.__catalogOrder;
+
+            return firstOrder.category - secondOrder.category
+                || firstOrder.subcategory - secondOrder.subcategory
+                || firstOrder.group - secondOrder.group
+                || (Number(first.sort_order) || 0) - (Number(second.sort_order) || 0)
+                || (Number(first.id) || 0) - (Number(second.id) || 0);
+        })
+        .map(row => {
+            delete row.__catalogOrder;
+            return row;
+        });
+}
+
 async function getPublicProducts() {
-    return all(`
-        SELECT *
-        FROM products
-        WHERE is_active = 1
-          AND deleted_at IS NULL
-        ORDER BY sort_order ASC,
-                 category COLLATE NOCASE ASC,
-                 subcategory COLLATE NOCASE ASC,
-                 product_group COLLATE NOCASE ASC,
-                 title COLLATE NOCASE ASC
-    `);
+    return getProductsWithCatalogOrder({ status: "active", deleted: "false" });
 }
 
 function applyBaseCellStyle(cell) {
@@ -422,6 +526,16 @@ publicRouter.get("/export/excel", async (req, res) => {
     }
 });
 
+publicRouter.get("/structure", async (req, res) => {
+    try {
+        const categories = await getPublicCatalogStructureTree({ all });
+        res.json({ success: true, categories });
+    } catch (error) {
+        console.error("Public catalog structure load error:", error);
+        res.status(500).json({ success: false, message: "РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ СЃС‚СЂСѓРєС‚СѓСЂСѓ РєР°С‚Р°Р»РѕРіР°." });
+    }
+});
+
 router.get("/", requireRole(["admin", "manager"]), async (req, res) => {
     try {
         const rows = await getFilteredProducts(req.query);
@@ -443,7 +557,7 @@ router.get("/", requireRole(["admin", "manager"]), async (req, res) => {
 router.get("/export/excel", requireRole(["admin", "manager"]), async (req, res) => {
     try {
         const status = req.query.all === "true" ? "" : (req.query.status || "active");
-        const rows = await getFilteredProducts({ ...req.query, status, deleted: "false" });
+        const rows = await getProductsWithCatalogOrder({ ...req.query, status, deleted: "false" });
         await sendPriceWorkbook(res, rows);
     } catch (error) {
         console.error("Products export error:", error);

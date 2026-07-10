@@ -489,11 +489,89 @@ async function getCatalogStructureTree(db) {
     return categories;
 }
 
+async function getPublicCatalogStructureTree(db) {
+    const [structureRows, productRows] = await Promise.all([
+        db.all(`
+            SELECT id, type, name, normalized_name, parent_id, sort_order
+            FROM catalog_structure
+            WHERE is_active = 1
+              AND type IN ('category', 'subcategory')
+            ORDER BY sort_order ASC, id ASC
+        `),
+        db.all(`
+            SELECT category, subcategory
+            FROM products
+            WHERE is_active = 1
+              AND deleted_at IS NULL
+        `)
+    ]);
+    const categories = [];
+    const categoriesById = new Map();
+    const categoriesByName = new Map();
+    const categoriesWithProducts = new Set();
+    const subcategoriesWithProducts = new Set();
+
+    structureRows.filter(row => row.type === "category").forEach(row => {
+        const category = {
+            id: row.id,
+            name: row.name,
+            normalizedName: row.normalized_name,
+            subcategories: []
+        };
+        categoriesById.set(row.id, category);
+        categoriesByName.set(row.normalized_name, category);
+    });
+
+    const subcategoriesByParentAndName = new Map();
+    structureRows.filter(row => row.type === "subcategory").forEach(row => {
+        const parent = categoriesById.get(row.parent_id);
+        if (!parent) return;
+
+        const subcategory = {
+            id: row.id,
+            name: row.name,
+            normalizedName: row.normalized_name
+        };
+        parent.subcategories.push(subcategory);
+        subcategoriesByParentAndName.set(`${row.parent_id}:${row.normalized_name}`, subcategory);
+    });
+
+    productRows.forEach(product => {
+        const normalizedCategory = normalizeCatalogStructureName(product.category);
+        const category = categoriesByName.get(normalizedCategory);
+        if (!category) return;
+
+        categoriesWithProducts.add(category.id);
+
+        const normalizedSubcategory = normalizeCatalogStructureName(product.subcategory);
+        if (!normalizedSubcategory) return;
+
+        const subcategory = subcategoriesByParentAndName.get(`${category.id}:${normalizedSubcategory}`);
+        if (subcategory) {
+            subcategoriesWithProducts.add(subcategory.id);
+        }
+    });
+
+    categoriesById.forEach(category => {
+        if (!categoriesWithProducts.has(category.id)) return;
+
+        categories.push({
+            name: category.name,
+            subcategories: category.subcategories
+                .filter(subcategory => subcategoriesWithProducts.has(subcategory.id))
+                .map(subcategory => ({ name: subcategory.name }))
+        });
+    });
+
+    return categories;
+}
+
 module.exports = {
     normalizeCatalogStructureName,
     ensureCatalogStructureSchema,
     syncCatalogStructureFromProducts,
     getCatalogStructureTree,
+    getPublicCatalogStructureTree,
     createCategory,
     createSubcategory,
     reorderStructureLevel,
