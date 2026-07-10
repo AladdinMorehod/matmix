@@ -1,5 +1,4 @@
 const express = require("express");
-const crypto = require("crypto");
 const ExcelJS = require("exceljs");
 const { all, get, run } = require("../database");
 const { requireRole } = require("../middleware/auth");
@@ -11,10 +10,17 @@ const {
     createSubcategory,
     validateProductStructureSelection
 } = require("../services/catalogStructure");
+const {
+    parseCatalogExcel,
+    buildCatalogImportPreview,
+    getNextMatExternalId,
+    sanitizeUploadFileName
+} = require("../services/catalogImport");
 
 const router = express.Router();
 const publicRouter = express.Router();
 const allowedCrmUnits = new Set(["шт", "кг", "м", "м2"]);
+let productCreateQueue = Promise.resolve();
 
 function normalizeText(value) {
     return String(value || "").replace(/\s+/g, " ").trim();
@@ -83,20 +89,6 @@ function transliterate(value) {
     return Array.from(String(value || "").toLowerCase())
         .map(char => translitMap[char] ?? char)
         .join("");
-}
-
-function generateManualExternalId() {
-    return `manual-${Date.now()}-${crypto.randomBytes(3).toString("hex")}`;
-}
-
-async function generateUniqueExternalId() {
-    for (let attempt = 0; attempt < 10; attempt += 1) {
-        const externalId = generateManualExternalId();
-        const exists = await get("SELECT id FROM products WHERE external_id = ?", [externalId]);
-        if (!exists) return externalId;
-    }
-
-    return `manual-${Date.now()}-${crypto.randomUUID().replace(/-/g, "").slice(0, 12)}`;
 }
 
 async function generateUniqueSlug(title, fallback, exceptId = null) {
@@ -198,6 +190,87 @@ function setExcelHeaders(res, filename) {
     const encoded = encodeURIComponent(filename);
     res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
     res.setHeader("Content-Disposition", `attachment; filename*=UTF-8''${encoded}`);
+}
+
+function isAllowedXlsxMime(mimeType) {
+    return [
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "application/octet-stream",
+        "application/zip"
+    ].includes(String(mimeType || "").toLowerCase());
+}
+
+function collectRequestBuffer(req, maxBytes) {
+    return new Promise((resolve, reject) => {
+        const chunks = [];
+        let total = 0;
+
+        req.on("data", chunk => {
+            total += chunk.length;
+            if (total > maxBytes) {
+                const error = new Error("Файл слишком большой.");
+                error.status = 413;
+                reject(error);
+                req.destroy();
+                return;
+            }
+
+            chunks.push(chunk);
+        });
+        req.on("end", () => resolve(Buffer.concat(chunks)));
+        req.on("error", reject);
+    });
+}
+
+async function readMultipartXlsxUpload(req, { maxBytes = 30 * 1024 * 1024 } = {}) {
+    const contentType = req.headers["content-type"] || "";
+    const boundaryMatch = contentType.match(/boundary=(?:"([^"]+)"|([^;]+))/i);
+    if (!contentType.toLowerCase().includes("multipart/form-data") || !boundaryMatch) {
+        const error = new Error("Ожидается multipart/form-data с Excel-файлом.");
+        error.status = 400;
+        throw error;
+    }
+
+    const boundary = `--${boundaryMatch[1] || boundaryMatch[2]}`;
+    const body = await collectRequestBuffer(req, maxBytes);
+    const bodyText = body.toString("latin1");
+    const parts = bodyText.split(boundary);
+
+    for (const partText of parts) {
+        if (!partText.includes('name="file"')) continue;
+
+        const headerEnd = partText.indexOf("\r\n\r\n");
+        if (headerEnd === -1) break;
+
+        const rawHeaders = partText.slice(0, headerEnd);
+        const filenameMatch = rawHeaders.match(/filename="([^"]*)"/i);
+        const contentTypeMatch = rawHeaders.match(/Content-Type:\s*([^\r\n]+)/i);
+        const originalName = sanitizeUploadFileName(filenameMatch?.[1] || "");
+        const mimeType = contentTypeMatch?.[1]?.trim() || "";
+        let fileText = partText.slice(headerEnd + 4);
+        fileText = fileText.replace(/\r\n--$/, "").replace(/\r\n$/, "");
+
+        if (!originalName || !originalName.toLowerCase().endsWith(".xlsx")) {
+            const error = new Error("Загрузите файл формата .xlsx.");
+            error.status = 400;
+            throw error;
+        }
+        if (!isAllowedXlsxMime(mimeType)) {
+            const error = new Error("Некорректный MIME-тип Excel-файла.");
+            error.status = 400;
+            throw error;
+        }
+
+        return {
+            name: originalName,
+            mimeType,
+            buffer: Buffer.from(fileText, "latin1")
+        };
+    }
+
+    const error = new Error("Файл не найден в поле file.");
+    error.status = 400;
+    throw error;
 }
 
 async function getFilteredProducts(query = {}) {
@@ -358,6 +431,60 @@ async function getProductsWithCatalogOrder(query = {}) {
 
 async function getPublicProducts() {
     return getProductsWithCatalogOrder({ status: "active", deleted: "false" });
+}
+
+function enqueueProductCreate(callback) {
+    const next = productCreateQueue.then(callback, callback);
+    productCreateQueue = next.catch(() => {});
+    return next;
+}
+
+async function createManualProductWithMatCodeLocked(payload) {
+    let lastError = null;
+
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+        await run("BEGIN IMMEDIATE TRANSACTION");
+        try {
+            const now = new Date().toISOString();
+            const externalId = await getNextMatExternalId({ all });
+            const slug = await generateUniqueSlug(payload.title, externalId);
+            const result = await run(
+                `INSERT INTO products (
+                    external_id, title, slug, category, subcategory, product_group, price, weight, unit,
+                    image, description, is_active, sort_order, source, created_at, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                [
+                    externalId,
+                    payload.title,
+                    slug,
+                    payload.category,
+                    payload.subcategory,
+                    payload.productGroup,
+                    payload.price,
+                    payload.weight,
+                    payload.unit,
+                    payload.image,
+                    payload.description,
+                    payload.isActive,
+                    payload.sortOrder,
+                    "manual",
+                    now,
+                    now
+                ]
+            );
+            await run("COMMIT");
+            return result;
+        } catch (error) {
+            lastError = error;
+            await run("ROLLBACK").catch(() => {});
+
+            if (!String(error.message || "").includes("UNIQUE constraint failed: products.external_id")) {
+                throw error;
+            }
+        }
+    }
+
+    throw lastError;
 }
 
 function applyBaseCellStyle(cell) {
@@ -575,6 +702,32 @@ router.get("/structure", requireRole(["admin", "manager"]), async (req, res) => 
     }
 });
 
+router.post("/import/preview", requireRole(["admin"]), async (req, res) => {
+    try {
+        const upload = await readMultipartXlsxUpload(req);
+        const parsed = await parseCatalogExcel(upload.buffer);
+        const preview = await buildCatalogImportPreview({ all }, parsed, {
+            name: upload.name,
+            mimeType: upload.mimeType
+        });
+
+        res.json(preview);
+    } catch (error) {
+        console.error("Products import preview error:", error);
+        res.status(error.status || 500).json({
+            success: false,
+            canImport: false,
+            message: error.status ? error.message : "Не удалось проанализировать Excel-файл.",
+            errors: [{
+                severity: "critical",
+                code: error.status ? "UPLOAD_ERROR" : "IMPORT_PREVIEW_ERROR",
+                message: error.status ? error.message : "Файл невозможно прочитать."
+            }],
+            warnings: []
+        });
+    }
+});
+
 router.post("/structure/categories", requireRole(["admin"]), async (req, res) => {
     try {
         const item = await createCategory({ run, get, all }, req.body || {});
@@ -611,33 +764,7 @@ router.post("/", requireRole(["admin"]), async (req, res) => {
             return;
         }
 
-        const now = new Date().toISOString();
-        const externalId = await generateUniqueExternalId();
-        const slug = await generateUniqueSlug(payload.title, externalId);
-        const result = await run(
-            `INSERT INTO products (
-                external_id, title, slug, category, subcategory, product_group, price, weight, unit,
-                image, description, is_active, sort_order, source, created_at, updated_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            [
-                externalId,
-                payload.title,
-                slug,
-                payload.category,
-                payload.subcategory,
-                payload.productGroup,
-                payload.price,
-                payload.weight,
-                payload.unit,
-                payload.image,
-                payload.description,
-                payload.isActive,
-                payload.sortOrder,
-                "crm",
-                now,
-                now
-            ]
-        );
+        const result = await enqueueProductCreate(() => createManualProductWithMatCodeLocked(payload));
         const product = await get("SELECT * FROM products WHERE id = ?", [result.id]);
 
         res.status(201).json({ success: true, product: normalizeProduct(product) });

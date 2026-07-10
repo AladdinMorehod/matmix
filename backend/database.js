@@ -7,8 +7,9 @@ const {
     syncCatalogStructureFromProducts
 } = require("./services/catalogStructure");
 
-const databaseDir = path.join(__dirname, "database");
-const databasePath = path.join(databaseDir, "matmix.db");
+const defaultDatabasePath = path.join(__dirname, "database", "matmix.db");
+const databasePath = process.env.MATMIX_DB_PATH || defaultDatabasePath;
+const databaseDir = path.dirname(databasePath);
 
 fs.mkdirSync(databaseDir, { recursive: true });
 
