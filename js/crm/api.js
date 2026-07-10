@@ -14,7 +14,9 @@
             headers: {}
         };
 
-        if (body !== undefined) {
+        if (body instanceof FormData) {
+            options.body = body;
+        } else if (body !== undefined) {
             options.headers["Content-Type"] = "application/json";
             options.body = JSON.stringify(body);
         }

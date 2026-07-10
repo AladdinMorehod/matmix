@@ -37,6 +37,7 @@ const dashboardClientsTotal = document.getElementById("dashboardClientsTotal");
 const dashboardRecentOrders = document.getElementById("dashboardRecentOrders");
 const settingsView = document.getElementById("settingsView");
 const productsView = document.getElementById("productsView");
+const importView = document.getElementById("importView");
 const ordersTotalCount = document.getElementById("ordersTotalCount");
 const ordersNewCount = document.getElementById("ordersNewCount");
 const ordersWorkCount = document.getElementById("ordersWorkCount");
@@ -86,6 +87,7 @@ const crmNavigation = [
     { id: "myOrders", label: "Мои заказы", enabled: true },
     { id: "clients", label: "Клиенты", enabled: true },
     { id: "catalog", label: "Каталог", enabled: true },
+    { id: "catalogImport", label: "Импорт каталога", enabled: true, adminOnly: true },
     { id: "statistics", label: "Статистика", enabled: false },
     { id: "settings", label: "Настройки", enabled: true }
 ];

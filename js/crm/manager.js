@@ -20,7 +20,7 @@ function closeMobileMenu() {
 function renderCrmNavigation() {
     if (!crmNav) return;
 
-    crmNav.innerHTML = crmNavigation.map(item => item.enabled
+    crmNav.innerHTML = crmNavigation.filter(item => !item.adminOnly || currentUser?.role === "admin").map(item => item.enabled
         ? `<button class="${item.id === activeSection ? "active" : ""}" data-section="${escapeHtml(item.id)}" type="button">${escapeHtml(item.label)}</button>`
         : `<span>${escapeHtml(item.label)} <small>скоро</small></span>`
     ).join("");
@@ -49,40 +49,45 @@ statusTabs?.addEventListener("click", event => {
     statusFilter.value = button.dataset.status;
     loadOrders();
 });
-crmNavButtons.forEach(button => {
-    button.addEventListener("click", () => {
-        setActiveSection(button.dataset.section);
-        if (crmMobileSection) {
-            crmMobileSection.textContent = button.textContent.trim();
-        }
-        closeMobileMenu();
+crmNav?.addEventListener("click", event => {
+    const button = event.target.closest("button[data-section]");
+    if (!button) return;
 
-        if (button.dataset.section === "dashboard") {
-            loadDashboard();
-        }
+    setActiveSection(button.dataset.section);
+    if (crmMobileSection) {
+        crmMobileSection.textContent = button.textContent.trim();
+    }
+    closeMobileMenu();
 
-        if (button.dataset.section === "orders") {
-            statusFilter.value = "";
-            loadOrders();
-        }
+    if (button.dataset.section === "dashboard") {
+        loadDashboard();
+    }
 
-        if (button.dataset.section === "myOrders") {
-            statusFilter.value = "";
-            loadOrders();
-        }
+    if (button.dataset.section === "orders") {
+        statusFilter.value = "";
+        loadOrders();
+    }
 
-        if (button.dataset.section === "clients" && !clients.length) {
-            loadClients();
-        }
+    if (button.dataset.section === "myOrders") {
+        statusFilter.value = "";
+        loadOrders();
+    }
 
-        if (button.dataset.section === "catalog") {
-            loadProducts();
-        }
+    if (button.dataset.section === "clients" && !clients.length) {
+        loadClients();
+    }
 
-        if (button.dataset.section === "settings") {
-            loadSettings();
-        }
-    });
+    if (button.dataset.section === "catalog") {
+        loadProducts();
+    }
+
+    if (button.dataset.section === "catalogImport") {
+        renderImportView();
+    }
+
+    if (button.dataset.section === "settings") {
+        loadSettings();
+    }
 });
 refreshOrdersBtn.addEventListener("click", loadOrders);
 refreshClientsBtn?.addEventListener("click", () => loadClients());
@@ -381,6 +386,7 @@ document.addEventListener("keydown", event => {
 
 checkAccess().then(isAllowed => {
     if (isAllowed) {
+        renderCrmNavigation();
         setActiveSection("dashboard");
         loadDashboard();
     }

@@ -314,6 +314,14 @@ function collectNewValues(productRows, existingValues, field, parentField = null
             if (!normalizedValue || existing.has(normalizedValue) || seen.has(normalizedValue)) return null;
             seen.add(normalizedValue);
 
+            if (field === "productGroup") {
+                return {
+                    name: value,
+                    category: row.category,
+                    subcategory: row.subcategory
+                };
+            }
+
             return parentField
                 ? { name: value, [parentField]: row[parentField] }
                 : { name: value };
@@ -400,7 +408,10 @@ async function buildCatalogImportPreview(db, parsed, file = {}) {
         const item = {
             externalId: product.externalId,
             title: product.title,
-            source: product.source
+            category: product.category,
+            subcategory: product.subcategory,
+            source: product.source,
+            status: product.deletedAt ? "deleted" : (product.isActive ? "active" : "hidden")
         };
 
         if (product.source === "excel") {
