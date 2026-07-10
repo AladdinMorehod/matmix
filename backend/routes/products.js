@@ -3,10 +3,16 @@ const crypto = require("crypto");
 const ExcelJS = require("exceljs");
 const { all, get, run } = require("../database");
 const { requireRole } = require("../middleware/auth");
-const { getCatalogStructureTree } = require("../services/catalogStructure");
+const {
+    getCatalogStructureTree,
+    createCategory,
+    createSubcategory,
+    validateProductStructureSelection
+} = require("../services/catalogStructure");
 
 const router = express.Router();
 const publicRouter = express.Router();
+const allowedCrmUnits = new Set(["шт", "кг", "м", "м2"]);
 
 function normalizeText(value) {
     return String(value || "").replace(/\s+/g, " ").trim();
@@ -169,10 +175,15 @@ function getProductPayload(body, existing = {}) {
     };
 }
 
-function validateProductPayload(payload) {
+function validateProductPayload(payload, existing = null) {
     if (!payload.title) return "Укажите название товара.";
     if (payload.price !== null && payload.price < 0) return "Цена не может быть отрицательной.";
     if (payload.weight < 0) return "Вес не может быть отрицательным.";
+    if (!existing || normalizeText(payload.unit) !== normalizeText(existing.unit)) {
+        if (!allowedCrmUnits.has(payload.unit)) {
+            return "Выберите корректную единицу измерения.";
+        }
+    }
     return "";
 }
 
@@ -450,10 +461,37 @@ router.get("/structure", requireRole(["admin", "manager"]), async (req, res) => 
     }
 });
 
+router.post("/structure/categories", requireRole(["admin"]), async (req, res) => {
+    try {
+        const item = await createCategory({ run, get, all }, req.body || {});
+        res.status(201).json({ success: true, item });
+    } catch (error) {
+        console.error("Catalog category create error:", error);
+        res.status(error.status || 500).json({
+            success: false,
+            message: error.status ? error.message : "Не удалось добавить категорию."
+        });
+    }
+});
+
+router.post("/structure/subcategories", requireRole(["admin"]), async (req, res) => {
+    try {
+        const item = await createSubcategory({ run, get, all }, req.body || {});
+        res.status(201).json({ success: true, item });
+    } catch (error) {
+        console.error("Catalog subcategory create error:", error);
+        res.status(error.status || 500).json({
+            success: false,
+            message: error.status ? error.message : "Не удалось добавить подкатегорию."
+        });
+    }
+});
+
 router.post("/", requireRole(["admin"]), async (req, res) => {
     try {
         const payload = getProductPayload(req.body);
-        const validationMessage = validateProductPayload(payload);
+        const validationMessage = validateProductPayload(payload)
+            || await validateProductStructureSelection({ get }, payload);
         if (validationMessage) {
             res.status(400).json({ success: false, message: validationMessage });
             return;
@@ -514,7 +552,8 @@ router.patch("/:id", requireRole(["admin"]), async (req, res) => {
         }
 
         const payload = getProductPayload(req.body, existing);
-        const validationMessage = validateProductPayload(payload);
+        const validationMessage = validateProductPayload(payload, existing)
+            || await validateProductStructureSelection({ get }, payload, existing);
         if (validationMessage) {
             res.status(400).json({ success: false, message: validationMessage });
             return;

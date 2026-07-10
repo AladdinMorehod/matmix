@@ -13,6 +13,12 @@ function cleanCatalogStructureName(value) {
     return String(value || "").replace(/\s+/g, " ").trim();
 }
 
+function createStructureError(status, message) {
+    const error = new Error(message);
+    error.status = status;
+    return error;
+}
+
 function isSkippedCatalogStructureName(value) {
     const normalized = normalizeCatalogStructureName(value);
 
@@ -128,6 +134,228 @@ async function insertStructureItem(db, { type, name, normalizedName, parentId = 
         created_at: now,
         updated_at: now
     };
+}
+
+function normalizePosition(value) {
+    return ["start", "end", "after"].includes(value) ? value : "end";
+}
+
+function toPublicStructureItem(row) {
+    const item = {
+        id: row.id,
+        type: row.type,
+        name: row.name,
+        sortOrder: Number(row.sort_order) || 0
+    };
+
+    if (row.type === "subcategory") {
+        item.parentId = row.parent_id;
+    }
+
+    return item;
+}
+
+async function runInTransaction(db, callback) {
+    await db.run("BEGIN IMMEDIATE TRANSACTION");
+    try {
+        const result = await callback();
+        await db.run("COMMIT");
+        return result;
+    } catch (error) {
+        await db.run("ROLLBACK");
+        throw error;
+    }
+}
+
+async function getStructureLevelRows(db, { type, parentId = null }) {
+    const parentCondition = type === "category" ? "parent_id IS NULL" : "parent_id = ?";
+    const params = type === "category" ? [type] : [type, parentId];
+
+    return db.all(
+        `SELECT *
+         FROM catalog_structure
+         WHERE type = ?
+           AND is_active = 1
+           AND ${parentCondition}
+         ORDER BY sort_order ASC, id ASC`,
+        params
+    );
+}
+
+async function validateStructurePosition(db, { type, parentId = null, position = "end", afterId = null }) {
+    const safePosition = normalizePosition(position);
+    if (safePosition !== "after") {
+        return { position: safePosition, afterId: null };
+    }
+
+    const item = await db.get(
+        "SELECT * FROM catalog_structure WHERE id = ? AND type = ? AND is_active = 1 LIMIT 1",
+        [Number(afterId) || 0, type]
+    );
+    const isValid = item && (
+        type === "category"
+            ? item.parent_id === null
+            : Number(item.parent_id) === Number(parentId)
+    );
+
+    if (!isValid) {
+        throw createStructureError(
+            400,
+            type === "category"
+                ? "Выбранная позиция категории недоступна."
+                : "Выбранная позиция подкатегории недоступна."
+        );
+    }
+
+    return { position: safePosition, afterId: item.id };
+}
+
+async function reorderStructureLevel(db, { type, parentId = null, itemId, position = "end", afterId = null }) {
+    const rows = await getStructureLevelRows(db, { type, parentId });
+    const item = rows.find(row => Number(row.id) === Number(itemId));
+    if (!item) return;
+
+    const orderedRows = rows.filter(row => Number(row.id) !== Number(itemId));
+    const safePosition = normalizePosition(position);
+
+    if (safePosition === "start") {
+        orderedRows.unshift(item);
+    } else if (safePosition === "after") {
+        const afterIndex = orderedRows.findIndex(row => Number(row.id) === Number(afterId));
+        if (afterIndex === -1) {
+            orderedRows.push(item);
+        } else {
+            orderedRows.splice(afterIndex + 1, 0, item);
+        }
+    } else {
+        orderedRows.push(item);
+    }
+
+    for (let index = 0; index < orderedRows.length; index += 1) {
+        await db.run(
+            "UPDATE catalog_structure SET sort_order = ?, updated_at = ? WHERE id = ?",
+            [(index + 1) * 10, new Date().toISOString(), orderedRows[index].id]
+        );
+    }
+}
+
+async function createCategory(db, { name, position = "end", afterId = null }) {
+    const cleanName = cleanCatalogStructureName(name);
+    if (isSkippedCatalogStructureName(cleanName)) {
+        throw createStructureError(400, "Укажите название категории.");
+    }
+
+    const normalizedName = normalizeCatalogStructureName(cleanName);
+    const duplicate = await findCategory(db, normalizedName);
+    if (duplicate) {
+        throw createStructureError(409, "Категория с таким названием уже существует.");
+    }
+
+    return runInTransaction(db, async () => {
+        const placement = await validateStructurePosition(db, { type: "category", position, afterId });
+        const now = new Date().toISOString();
+        const item = await insertStructureItem(db, {
+            type: "category",
+            name: cleanName,
+            normalizedName,
+            sortOrder: 0,
+            now
+        });
+        await reorderStructureLevel(db, {
+            type: "category",
+            itemId: item.id,
+            position: placement.position,
+            afterId: placement.afterId
+        });
+
+        const created = await db.get("SELECT * FROM catalog_structure WHERE id = ?", [item.id]);
+        return toPublicStructureItem(created);
+    });
+}
+
+async function createSubcategory(db, { categoryId, name, position = "end", afterId = null }) {
+    const parentId = Number(categoryId) || 0;
+    const parent = await db.get(
+        "SELECT * FROM catalog_structure WHERE id = ? AND type = 'category' AND is_active = 1 LIMIT 1",
+        [parentId]
+    );
+    if (!parent) {
+        throw createStructureError(400, "Выберите категорию.");
+    }
+
+    const cleanName = cleanCatalogStructureName(name);
+    if (isSkippedCatalogStructureName(cleanName)) {
+        throw createStructureError(400, "Укажите название подкатегории.");
+    }
+
+    const normalizedName = normalizeCatalogStructureName(cleanName);
+    const duplicate = await findSubcategory(db, parent.id, normalizedName);
+    if (duplicate) {
+        throw createStructureError(409, "Подкатегория с таким названием уже существует в выбранной категории.");
+    }
+
+    return runInTransaction(db, async () => {
+        const placement = await validateStructurePosition(db, {
+            type: "subcategory",
+            parentId: parent.id,
+            position,
+            afterId
+        });
+        const now = new Date().toISOString();
+        const item = await insertStructureItem(db, {
+            type: "subcategory",
+            name: cleanName,
+            normalizedName,
+            parentId: parent.id,
+            sortOrder: 0,
+            now
+        });
+        await reorderStructureLevel(db, {
+            type: "subcategory",
+            parentId: parent.id,
+            itemId: item.id,
+            position: placement.position,
+            afterId: placement.afterId
+        });
+
+        const created = await db.get("SELECT * FROM catalog_structure WHERE id = ?", [item.id]);
+        return toPublicStructureItem(created);
+    });
+}
+
+async function validateProductStructureSelection(db, payload, existing = null) {
+    const category = cleanCatalogStructureName(payload.category);
+    const subcategory = cleanCatalogStructureName(payload.subcategory);
+    const oldCategory = cleanCatalogStructureName(existing?.category);
+    const oldSubcategory = cleanCatalogStructureName(existing?.subcategory);
+    const categoryChanged = !existing
+        || normalizeCatalogStructureName(category) !== normalizeCatalogStructureName(oldCategory);
+    const subcategoryChanged = !existing
+        || normalizeCatalogStructureName(subcategory) !== normalizeCatalogStructureName(oldSubcategory);
+
+    if (existing && !categoryChanged && !subcategoryChanged) {
+        return "";
+    }
+
+    if (!category) {
+        return "Выберите категорию.";
+    }
+
+    const categoryRow = await findCategory(db, normalizeCatalogStructureName(category));
+    if (!categoryRow || !categoryRow.is_active) {
+        return "Выберите категорию из списка.";
+    }
+
+    if (!subcategory) {
+        return "";
+    }
+
+    const subcategoryRow = await findSubcategory(db, categoryRow.id, normalizeCatalogStructureName(subcategory));
+    if (!subcategoryRow || !subcategoryRow.is_active) {
+        return "Выберите подкатегорию из списка выбранной категории.";
+    }
+
+    return "";
 }
 
 async function syncCatalogStructureFromProducts(db) {
@@ -265,5 +493,10 @@ module.exports = {
     normalizeCatalogStructureName,
     ensureCatalogStructureSchema,
     syncCatalogStructureFromProducts,
-    getCatalogStructureTree
+    getCatalogStructureTree,
+    createCategory,
+    createSubcategory,
+    reorderStructureLevel,
+    validateStructurePosition,
+    validateProductStructureSelection
 };

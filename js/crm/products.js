@@ -2,6 +2,20 @@ function canEditProducts() {
     return currentUser?.role === "admin";
 }
 
+let productStructure = [];
+const productUnitOptions = ["шт", "кг", "м", "м2"];
+
+function normalizeProductStructureName(value) {
+    return String(value || "")
+        .trim()
+        .replace(/ё/g, "е")
+        .replace(/Ё/g, "е")
+        .toLowerCase()
+        .replace(/\s*-\s*/g, " - ")
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
 function getProductStatusLabel(product) {
     if (product.deletedAt) return "Удален";
     return product.isActive ? "Активен" : "Скрыт";
@@ -30,7 +44,77 @@ function getProductPayloadFromForm(formData) {
     };
 }
 
+function getStructureCategoryByName(value) {
+    const normalized = normalizeProductStructureName(value);
+    return productStructure.find(category => normalizeProductStructureName(category.name) === normalized) || null;
+}
+
+function getStructureSubcategoryByName(category, value) {
+    const normalized = normalizeProductStructureName(value);
+    return category?.subcategories?.find(subcategory => normalizeProductStructureName(subcategory.name) === normalized) || null;
+}
+
+function renderCategoryOptions(selectedValue = "") {
+    const selectedCategory = getStructureCategoryByName(selectedValue);
+    const temporaryOption = selectedValue && !selectedCategory
+        ? `<option value="${escapeHtml(selectedValue)}" selected>Текущее значение: ${escapeHtml(selectedValue)}</option>`
+        : "";
+
+    return `
+        <option value="">Выберите категорию</option>
+        ${temporaryOption}
+        ${productStructure.map(category => `
+            <option value="${escapeHtml(category.name)}"${selectedCategory?.id === category.id ? " selected" : ""}>${escapeHtml(category.name)}</option>
+        `).join("")}
+    `;
+}
+
+function renderSubcategoryOptions(categoryValue = "", selectedValue = "") {
+    const category = getStructureCategoryByName(categoryValue);
+    if (!category) {
+        const temporaryOption = selectedValue
+            ? `<option value="${escapeHtml(selectedValue)}" selected>Текущее значение: ${escapeHtml(selectedValue)}</option>`
+            : "";
+        return `
+            <option value="">Сначала выберите категорию</option>
+            ${temporaryOption}
+        `;
+    }
+
+    const selectedSubcategory = getStructureSubcategoryByName(category, selectedValue);
+    const temporaryOption = selectedValue && !selectedSubcategory
+        ? `<option value="${escapeHtml(selectedValue)}" selected>Текущее значение: ${escapeHtml(selectedValue)}</option>`
+        : "";
+
+    return `
+        <option value="">Выберите подкатегорию</option>
+        ${temporaryOption}
+        ${(category.subcategories || []).map(subcategory => `
+            <option value="${escapeHtml(subcategory.name)}"${selectedSubcategory?.id === subcategory.id ? " selected" : ""}>${escapeHtml(subcategory.name)}</option>
+        `).join("")}
+    `;
+}
+
+function renderUnitOptions(selectedValue = "шт") {
+    const unit = String(selectedValue || "шт").trim() || "шт";
+    const temporaryOption = productUnitOptions.includes(unit)
+        ? ""
+        : `<option value="${escapeHtml(unit)}" selected>Текущее значение: ${escapeHtml(unit)}</option>`;
+
+    return `
+        ${temporaryOption}
+        ${productUnitOptions.map(option => `
+            <option value="${escapeHtml(option)}"${option === unit ? " selected" : ""}>${escapeHtml(option)}</option>
+        `).join("")}
+    `;
+}
+
 function renderProductForm(product = {}) {
+    const selectedCategory = product.category || "";
+    const selectedSubcategory = product.subcategory || "";
+    const hasKnownCategory = Boolean(getStructureCategoryByName(selectedCategory));
+    const canAddStructure = canEditProducts();
+
     return `
         <div class="product-form-grid">
             <label>
@@ -39,11 +123,21 @@ function renderProductForm(product = {}) {
             </label>
             <label>
                 <span>Категория</span>
-                <input name="category" type="text" value="${escapeHtml(product.category || "")}">
+                <span class="product-field-with-action">
+                    <select name="category" required>
+                        ${renderCategoryOptions(selectedCategory)}
+                    </select>
+                    ${canAddStructure ? `<button class="product-structure-add" data-structure-action="category" type="button">+ Добавить</button>` : ""}
+                </span>
             </label>
             <label>
                 <span>Подкатегория</span>
-                <input name="subcategory" type="text" value="${escapeHtml(product.subcategory || "")}">
+                <span class="product-field-with-action">
+                    <select name="subcategory"${hasKnownCategory ? "" : " disabled"}>
+                        ${renderSubcategoryOptions(selectedCategory, selectedSubcategory)}
+                    </select>
+                    ${canAddStructure ? `<button class="product-structure-add" data-structure-action="subcategory" type="button"${hasKnownCategory ? "" : " disabled"}>+ Добавить</button>` : ""}
+                </span>
             </label>
             <label>
                 <span>Цена</span>
@@ -55,7 +149,9 @@ function renderProductForm(product = {}) {
             </label>
             <label>
                 <span>Единица</span>
-                <input name="unit" type="text" value="${escapeHtml(product.unit || "шт")}">
+                <select name="unit">
+                    ${renderUnitOptions(product.unit || "шт")}
+                </select>
             </label>
             <label>
                 <span>Изображение</span>
@@ -255,14 +351,184 @@ async function loadProducts(options = {}) {
     }
 }
 
+async function loadProductStructure() {
+    const result = await CrmApi.get("/api/products/structure");
+    productStructure = result.categories || [];
+    return productStructure;
+}
+
+function parseStructurePosition(value) {
+    if (value === "start") return { position: "start" };
+    if (value?.startsWith("after:")) {
+        return { position: "after", afterId: Number(value.slice(6)) || null };
+    }
+    return { position: "end" };
+}
+
+function renderCategoryPositionOptions() {
+    return `
+        <option value="start">В начале списка</option>
+        ${productStructure.map(category => `
+            <option value="after:${category.id}">После: ${escapeHtml(category.name)}</option>
+        `).join("")}
+        <option value="end" selected>В конце списка</option>
+    `;
+}
+
+function renderSubcategoryPositionOptions(category) {
+    return `
+        <option value="start">В начале списка</option>
+        ${(category?.subcategories || []).map(subcategory => `
+            <option value="after:${subcategory.id}">После: ${escapeHtml(subcategory.name)}</option>
+        `).join("")}
+        <option value="end" selected>В конце списка</option>
+    `;
+}
+
+function renderCreateCategoryForm() {
+    return `
+        <div class="product-form-grid">
+            <label class="product-form-wide">
+                <span>Название категории</span>
+                <input name="name" type="text" required>
+            </label>
+            <label class="product-form-wide">
+                <span>Расположение</span>
+                <select name="position">
+                    ${renderCategoryPositionOptions()}
+                </select>
+            </label>
+        </div>
+    `;
+}
+
+function renderCreateSubcategoryForm(category) {
+    return `
+        <div class="product-form-grid">
+            <label class="product-form-wide">
+                <span>Родительская категория</span>
+                <input type="text" value="${escapeHtml(category?.name || "")}" disabled>
+            </label>
+            <label class="product-form-wide">
+                <span>Название подкатегории</span>
+                <input name="name" type="text" required>
+            </label>
+            <label class="product-form-wide">
+                <span>Расположение</span>
+                <select name="position">
+                    ${renderSubcategoryPositionOptions(category)}
+                </select>
+            </label>
+        </div>
+    `;
+}
+
+function refreshCategorySelect(formElement, selectedValue = "") {
+    const categorySelect = formElement.querySelector("select[name='category']");
+    if (!categorySelect) return;
+    categorySelect.innerHTML = renderCategoryOptions(selectedValue);
+    categorySelect.value = selectedValue;
+}
+
+function refreshSubcategorySelect(formElement, selectedValue = "") {
+    const categorySelect = formElement.querySelector("select[name='category']");
+    const subcategorySelect = formElement.querySelector("select[name='subcategory']");
+    const addButton = formElement.querySelector("[data-structure-action='subcategory']");
+    if (!categorySelect || !subcategorySelect) return;
+
+    const category = getStructureCategoryByName(categorySelect.value);
+    const selectedSubcategory = category ? getStructureSubcategoryByName(category, selectedValue) : null;
+    const nextValue = selectedSubcategory ? selectedValue : "";
+    subcategorySelect.innerHTML = renderSubcategoryOptions(categorySelect.value, selectedSubcategory ? selectedValue : "");
+    subcategorySelect.disabled = !category;
+    subcategorySelect.value = nextValue;
+    if (addButton) {
+        addButton.disabled = !category;
+    }
+}
+
+async function openCreateCategoryForm(formElement) {
+    const formData = await CrmModal.form({
+        title: "Добавить категорию",
+        content: renderCreateCategoryForm(),
+        submitText: "Добавить"
+    });
+    if (!formData) return;
+
+    const result = await CrmApi.post("/api/products/structure/categories", {
+        name: String(formData.get("name") || "").trim(),
+        ...parseStructurePosition(formData.get("position"))
+    });
+    await loadProductStructure();
+    refreshCategorySelect(formElement, result.item.name);
+    refreshSubcategorySelect(formElement, "");
+    notifySuccess("Категория добавлена.");
+}
+
+async function openCreateSubcategoryForm(formElement) {
+    const categorySelect = formElement.querySelector("select[name='category']");
+    const category = getStructureCategoryByName(categorySelect?.value);
+    if (!category) {
+        notifyWarning("Сначала выберите категорию.");
+        return;
+    }
+
+    const formData = await CrmModal.form({
+        title: "Добавить подкатегорию",
+        content: renderCreateSubcategoryForm(category),
+        submitText: "Добавить"
+    });
+    if (!formData) return;
+
+    const result = await CrmApi.post("/api/products/structure/subcategories", {
+        categoryId: category.id,
+        name: String(formData.get("name") || "").trim(),
+        ...parseStructurePosition(formData.get("position"))
+    });
+    await loadProductStructure();
+    refreshCategorySelect(formElement, category.name);
+    refreshSubcategorySelect(formElement, result.item.name);
+    notifySuccess("Подкатегория добавлена.");
+}
+
+function setupProductFormControls(formElement) {
+    formElement.querySelector("select[name='category']")?.addEventListener("change", () => {
+        refreshSubcategorySelect(formElement, "");
+    });
+
+    formElement.querySelector("[data-structure-action='category']")?.addEventListener("click", async () => {
+        try {
+            await openCreateCategoryForm(formElement);
+        } catch (error) {
+            notifyError(error, "Не удалось добавить категорию.");
+        }
+    });
+
+    formElement.querySelector("[data-structure-action='subcategory']")?.addEventListener("click", async () => {
+        try {
+            await openCreateSubcategoryForm(formElement);
+        } catch (error) {
+            notifyError(error, "Не удалось добавить подкатегорию.");
+        }
+    });
+}
+
 async function openProductForm(product = null) {
     if (!canEditProducts()) return;
+
+    try {
+        await loadProductStructure();
+    } catch (error) {
+        notifyError(error, "Не удалось загрузить структуру каталога.");
+        return;
+    }
 
     const formData = await CrmModal.form({
         title: product ? "Редактировать товар" : "Добавить товар",
         content: renderProductForm(product || { isActive: true }),
         submitText: product ? "Сохранить" : "Создать",
-        draftKey: product ? `product:${product.id}` : "product:new"
+        draftKey: product ? `product:${product.id}` : "product:new",
+        onReady: ({ formElement }) => setupProductFormControls(formElement)
     });
 
     if (!formData) return;

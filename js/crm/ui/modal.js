@@ -1,22 +1,24 @@
 (function initCrmModal(window, document) {
-    let activeModal = null;
-    let previousFocus = null;
-    let overlayPointerStarted = false;
+    const modalStack = [];
+
+    function getActiveModal() {
+        return modalStack[modalStack.length - 1] || null;
+    }
 
     function closeModal(result = false) {
+        const activeModal = getActiveModal();
         if (!activeModal) return;
-        const { overlay, resolve } = activeModal;
-        activeModal = null;
-        overlayPointerStarted = false;
+        const { overlay, previousFocus, resolve } = activeModal;
+        modalStack.pop();
+        activeModal.overlayPointerStarted = false;
         overlay.classList.add("is-closing");
         window.setTimeout(() => overlay.remove(), 160);
         previousFocus?.focus?.();
-        previousFocus = null;
         resolve(result);
     }
 
     function onKeydown(event) {
-        if (event.key === "Escape" && activeModal) {
+        if (event.key === "Escape" && getActiveModal()) {
             closeModal(false);
         }
     }
@@ -25,12 +27,16 @@
 
     function bindOverlayClose(overlay, result) {
         overlay.addEventListener("pointerdown", event => {
-            overlayPointerStarted = event.target === overlay;
+            const modal = getActiveModal();
+            if (!modal || modal.overlay !== overlay) return;
+            modal.overlayPointerStarted = event.target === overlay;
         });
 
         overlay.addEventListener("pointerup", event => {
-            const shouldClose = overlayPointerStarted && event.target === overlay;
-            overlayPointerStarted = false;
+            const modal = getActiveModal();
+            if (!modal || modal.overlay !== overlay) return;
+            const shouldClose = modal.overlayPointerStarted && event.target === overlay;
+            modal.overlayPointerStarted = false;
 
             if (shouldClose) {
                 closeModal(result);
@@ -38,15 +44,15 @@
         });
 
         overlay.addEventListener("pointercancel", () => {
-            overlayPointerStarted = false;
+            const modal = getActiveModal();
+            if (modal?.overlay === overlay) {
+                modal.overlayPointerStarted = false;
+            }
         });
     }
 
     function open(options = {}) {
-        if (activeModal) closeModal(false);
-        overlayPointerStarted = false;
-
-        previousFocus = document.activeElement;
+        const previousFocus = document.activeElement;
 
         return new Promise(resolve => {
             const overlay = document.createElement("div");
@@ -65,7 +71,8 @@
                 </section>
             `;
 
-            activeModal = { overlay, resolve };
+            const modal = { overlay, previousFocus, resolve, overlayPointerStarted: false };
+            modalStack.push(modal);
             document.body.appendChild(overlay);
 
             const dialog = overlay.querySelector(".crm-modal");
@@ -77,16 +84,14 @@
             closeButton.addEventListener("click", () => closeModal(false));
             cancelButton.addEventListener("click", () => closeModal(false));
             confirmButton.addEventListener("click", () => closeModal(true));
+            options.onReady?.({ overlay, dialog, close: closeModal });
 
             window.setTimeout(() => confirmButton.focus(), 0);
         });
     }
 
     function form(options = {}) {
-        if (activeModal) closeModal(false);
-        overlayPointerStarted = false;
-
-        previousFocus = document.activeElement;
+        const previousFocus = document.activeElement;
 
         return new Promise(resolve => {
             const overlay = document.createElement("div");
@@ -108,7 +113,8 @@
                 </section>
             `;
 
-            activeModal = { overlay, resolve };
+            const modal = { overlay, previousFocus, resolve, overlayPointerStarted: false };
+            modalStack.push(modal);
             document.body.appendChild(overlay);
 
             const dialog = overlay.querySelector(".crm-modal");
@@ -131,6 +137,7 @@
                 }
                 closeModal(new FormData(formElement));
             });
+            options.onReady?.({ overlay, dialog, formElement, close: closeModal });
 
             window.setTimeout(() => formElement.querySelector("input, select, textarea, button")?.focus(), 0);
         });
