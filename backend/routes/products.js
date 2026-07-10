@@ -1,4 +1,5 @@
 const express = require("express");
+const crypto = require("crypto");
 const ExcelJS = require("exceljs");
 const { all, get, run } = require("../database");
 const { requireRole } = require("../middleware/auth");
@@ -48,22 +49,68 @@ function getProductSearchText(row) {
 }
 
 function makeSlug(value, fallback = "") {
-    const slug = normalizeText(value)
-        .toLowerCase()
-        .replace(/ё/g, "е")
-        .replace(/[^a-zа-я0-9]+/g, "-")
+    const slug = transliterate(normalizeText(value))
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]+/g, "-")
         .replace(/^-+|-+$/g, "")
-        .slice(0, 120);
+        .slice(0, 120)
+        .replace(/-+$/g, "");
 
     return slug || fallback;
+}
+
+const translitMap = {
+    "\u0430": "a", "\u0431": "b", "\u0432": "v", "\u0433": "g", "\u0434": "d",
+    "\u0435": "e", "\u0451": "e", "\u0436": "zh", "\u0437": "z", "\u0438": "i",
+    "\u0439": "y", "\u043a": "k", "\u043b": "l", "\u043c": "m", "\u043d": "n",
+    "\u043e": "o", "\u043f": "p", "\u0440": "r", "\u0441": "s", "\u0442": "t",
+    "\u0443": "u", "\u0444": "f", "\u0445": "h", "\u0446": "ts", "\u0447": "ch",
+    "\u0448": "sh", "\u0449": "sch", "\u044a": "", "\u044b": "y", "\u044c": "",
+    "\u044d": "e", "\u044e": "yu", "\u044f": "ya"
+};
+
+function transliterate(value) {
+    return Array.from(String(value || "").toLowerCase())
+        .map(char => translitMap[char] ?? char)
+        .join("");
+}
+
+function generateManualExternalId() {
+    return `manual-${Date.now()}-${crypto.randomBytes(3).toString("hex")}`;
+}
+
+async function generateUniqueExternalId() {
+    for (let attempt = 0; attempt < 10; attempt += 1) {
+        const externalId = generateManualExternalId();
+        const exists = await get("SELECT id FROM products WHERE external_id = ?", [externalId]);
+        if (!exists) return externalId;
+    }
+
+    return `manual-${Date.now()}-${crypto.randomUUID().replace(/-/g, "").slice(0, 12)}`;
+}
+
+async function generateUniqueSlug(title, fallback, exceptId = null) {
+    const baseSlug = makeSlug(title, fallback || "product").slice(0, 120) || fallback || "product";
+    let slug = baseSlug;
+    let suffix = 2;
+
+    while (true) {
+        const existing = exceptId
+            ? await get("SELECT id FROM products WHERE slug = ? AND id != ?", [slug, exceptId])
+            : await get("SELECT id FROM products WHERE slug = ?", [slug]);
+        if (!existing) return slug;
+
+        const suffixText = `-${suffix}`;
+        slug = `${baseSlug.slice(0, 120 - suffixText.length)}${suffixText}`;
+        suffix += 1;
+    }
 }
 
 function normalizeProduct(row) {
     return {
         id: row.id,
-        externalId: row.external_id,
         title: row.title,
-        slug: row.slug || "",
         category: row.category || "",
         subcategory: row.subcategory || "",
         productGroup: row.product_group || "",
@@ -103,13 +150,9 @@ function normalizePublicProduct(row) {
 
 function getProductPayload(body, existing = {}) {
     const title = normalizeText(body.title);
-    const externalId = normalizeText(body.externalId || body.external_id);
-    const slug = normalizeText(body.slug) || makeSlug(title, externalId);
 
     return {
-        externalId,
         title,
-        slug,
         category: normalizeText(body.category),
         subcategory: normalizeText(body.subcategory),
         productGroup: body.productGroup === undefined && body.product_group === undefined
@@ -127,7 +170,6 @@ function getProductPayload(body, existing = {}) {
 
 function validateProductPayload(payload) {
     if (!payload.title) return "Укажите название товара.";
-    if (!payload.externalId) return "Укажите External ID товара.";
     if (payload.price !== null && payload.price < 0) return "Цена не может быть отрицательной.";
     if (payload.weight < 0) return "Вес не может быть отрицательным.";
     return "";
@@ -406,22 +448,18 @@ router.post("/", requireRole(["admin"]), async (req, res) => {
             return;
         }
 
-        const exists = await get("SELECT id FROM products WHERE external_id = ?", [payload.externalId]);
-        if (exists) {
-            res.status(409).json({ success: false, message: "Товар с таким External ID уже существует." });
-            return;
-        }
-
         const now = new Date().toISOString();
+        const externalId = await generateUniqueExternalId();
+        const slug = await generateUniqueSlug(payload.title, externalId);
         const result = await run(
             `INSERT INTO products (
                 external_id, title, slug, category, subcategory, product_group, price, weight, unit,
                 image, description, is_active, sort_order, source, created_at, updated_at
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
-                payload.externalId,
+                externalId,
                 payload.title,
-                payload.slug,
+                slug,
                 payload.category,
                 payload.subcategory,
                 payload.productGroup,
@@ -471,17 +509,11 @@ router.patch("/:id", requireRole(["admin"]), async (req, res) => {
             return;
         }
 
-        const duplicate = await get("SELECT id FROM products WHERE external_id = ? AND id != ?", [payload.externalId, id]);
-        if (duplicate) {
-            res.status(409).json({ success: false, message: "Товар с таким External ID уже существует." });
-            return;
-        }
-
         const now = new Date().toISOString();
+        const slug = normalizeText(existing.slug) || await generateUniqueSlug(payload.title, existing.external_id || `product-${id}`, id);
         await run(
             `UPDATE products
-             SET external_id = ?,
-                 title = ?,
+             SET title = ?,
                  slug = ?,
                  category = ?,
                  subcategory = ?,
@@ -496,9 +528,8 @@ router.patch("/:id", requireRole(["admin"]), async (req, res) => {
                  updated_at = ?
              WHERE id = ?`,
             [
-                payload.externalId,
                 payload.title,
-                payload.slug,
+                slug,
                 payload.category,
                 payload.subcategory,
                 payload.productGroup,

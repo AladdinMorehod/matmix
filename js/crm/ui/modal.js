@@ -1,11 +1,13 @@
 (function initCrmModal(window, document) {
     let activeModal = null;
     let previousFocus = null;
+    let overlayPointerStarted = false;
 
     function closeModal(result = false) {
         if (!activeModal) return;
         const { overlay, resolve } = activeModal;
         activeModal = null;
+        overlayPointerStarted = false;
         overlay.classList.add("is-closing");
         window.setTimeout(() => overlay.remove(), 160);
         previousFocus?.focus?.();
@@ -21,8 +23,28 @@
 
     document.addEventListener("keydown", onKeydown);
 
+    function bindOverlayClose(overlay, result) {
+        overlay.addEventListener("pointerdown", event => {
+            overlayPointerStarted = event.target === overlay;
+        });
+
+        overlay.addEventListener("pointerup", event => {
+            const shouldClose = overlayPointerStarted && event.target === overlay;
+            overlayPointerStarted = false;
+
+            if (shouldClose) {
+                closeModal(result);
+            }
+        });
+
+        overlay.addEventListener("pointercancel", () => {
+            overlayPointerStarted = false;
+        });
+    }
+
     function open(options = {}) {
         if (activeModal) closeModal(false);
+        overlayPointerStarted = false;
 
         previousFocus = document.activeElement;
 
@@ -51,9 +73,7 @@
             const cancelButton = overlay.querySelector(".crm-modal-secondary");
             const confirmButton = overlay.querySelector(".crm-modal-primary");
 
-            overlay.addEventListener("click", event => {
-                if (event.target === overlay) closeModal(false);
-            });
+            bindOverlayClose(overlay, false);
             closeButton.addEventListener("click", () => closeModal(false));
             cancelButton.addEventListener("click", () => closeModal(false));
             confirmButton.addEventListener("click", () => closeModal(true));
@@ -64,6 +84,7 @@
 
     function form(options = {}) {
         if (activeModal) closeModal(false);
+        overlayPointerStarted = false;
 
         previousFocus = document.activeElement;
 
@@ -100,9 +121,7 @@
                 window.CrmDrafts?.bindForm(formElement, draftKey);
             }
 
-            overlay.addEventListener("click", event => {
-                if (event.target === overlay) closeModal(null);
-            });
+            bindOverlayClose(overlay, null);
             closeButton.addEventListener("click", () => closeModal(null));
             cancelButton.addEventListener("click", () => closeModal(null));
             formElement.addEventListener("submit", event => {

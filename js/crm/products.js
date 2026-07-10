@@ -19,8 +19,6 @@ function getProductImage(product) {
 function getProductPayloadFromForm(formData) {
     return {
         title: String(formData.get("title") || "").trim(),
-        externalId: String(formData.get("externalId") || "").trim(),
-        slug: String(formData.get("slug") || "").trim(),
         category: String(formData.get("category") || "").trim(),
         subcategory: String(formData.get("subcategory") || "").trim(),
         price: String(formData.get("price") || "").trim(),
@@ -38,14 +36,6 @@ function renderProductForm(product = {}) {
             <label>
                 <span>Название</span>
                 <input name="title" type="text" value="${escapeHtml(product.title || "")}" required>
-            </label>
-            <label>
-                <span>External ID</span>
-                <input name="externalId" type="text" value="${escapeHtml(product.externalId || "")}" required>
-            </label>
-            <label>
-                <span>Slug</span>
-                <input name="slug" type="text" value="${escapeHtml(product.slug || "")}">
             </label>
             <label>
                 <span>Категория</span>
@@ -106,7 +96,7 @@ function renderProductsView() {
         <section class="products-toolbar">
             <label>
                 <span>Поиск</span>
-                <input id="productSearchInput" type="search" value="${escapeHtml(productFilters.search)}" placeholder="Название или External ID">
+                <input id="productSearchInput" type="search" value="${escapeHtml(productFilters.search)}" placeholder="Название">
             </label>
             <label>
                 <span>Категория</span>
@@ -208,7 +198,6 @@ function renderProductRow(product) {
                 <span class="product-thumb">${getProductImage(product)}</span>
                 <div>
                     <strong>${escapeHtml(product.title)}</strong>
-                    <small>${escapeHtml(product.externalId)}</small>
                     ${deletedMeta}
                 </div>
             </div>
@@ -279,8 +268,8 @@ async function openProductForm(product = null) {
     if (!formData) return;
 
     const payload = getProductPayloadFromForm(formData);
-    if (!payload.title || !payload.externalId) {
-        notifyWarning("Укажите название и External ID товара.");
+    if (!payload.title) {
+        notifyWarning("Укажите название товара.");
         return;
     }
 
