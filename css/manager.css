@@ -3257,6 +3257,101 @@ a[role="button"],
     margin: 2px 0 0;
 }
 
+.import-price-preview {
+    display: grid;
+    gap: 12px;
+}
+
+.import-price-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 8px;
+}
+
+.import-price-summary div,
+.import-price-warnings {
+    padding: 10px;
+    border: 1px solid #e1e8de;
+    border-radius: 8px;
+    background: #fbfcfa;
+}
+
+.import-price-summary span {
+    display: block;
+    color: #59675d;
+    font-size: 0.78rem;
+}
+
+.import-price-summary strong {
+    color: #1d3024;
+    font-size: 1.2rem;
+}
+
+.import-price-warnings {
+    display: grid;
+    gap: 5px;
+    background: #fff8e8;
+    color: #77520f;
+}
+
+.import-price-warnings p {
+    margin: 0;
+    font-weight: 700;
+}
+
+.import-price-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.import-price-filters button {
+    padding: 8px 10px;
+    background: #f0f4ed;
+    color: #425047;
+}
+
+.import-price-filters button.active {
+    background: #205742;
+    color: #fff;
+}
+
+.import-price-table-wrap {
+    overflow-x: auto;
+    border: 1px solid #e1e8de;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.import-price-table {
+    width: 100%;
+    min-width: 860px;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.import-price-table th,
+.import-price-table td {
+    padding: 10px;
+    border-bottom: 1px solid #edf1ea;
+    text-align: left;
+    vertical-align: top;
+}
+
+.import-price-table th {
+    background: #f7faf5;
+    color: #405245;
+    font-weight: 800;
+}
+
+.import-price-table td span {
+    display: block;
+    margin-top: 4px;
+    color: #8d5f00;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
 .import-diff-list {
     display: grid;
     gap: 8px;

@@ -7,12 +7,15 @@ let importApplyResult = null;
 let importActiveTab = "new";
 let importSearchQuery = "";
 let importSearchTimer = null;
+let importPriceFilter = "changed";
 
 const IMPORT_MAX_FILE_SIZE = 30 * 1024 * 1024;
+const IMPORT_PRICE_RENDER_LIMIT = 500;
 
 const importTabs = [
     { id: "new", label: "Новые" },
     { id: "updated", label: "Обновления" },
+    { id: "prices", label: "Цены" },
     { id: "requiresReview", label: "Требуют решения" },
     { id: "missingFromFile", label: "Отсутствуют в файле" },
     { id: "manualOnly", label: "Только в CRM" },
@@ -27,6 +30,7 @@ const importSummaryCards = [
     { key: "requiresReview", label: "Требуют решения", primary: true },
     { key: "missingFromFile", label: "Отсутствуют в файле", primary: true },
     { key: "missingCodes", label: "Без MAT-кода", primary: true },
+    { key: "priceChanged", label: "Цены изменятся", primary: true },
     { key: "criticalErrors", label: "Критические ошибки", primary: true },
     { key: "unchanged", label: "Без изменений" },
     { key: "manualOnly", label: "Только в CRM" },
@@ -34,8 +38,13 @@ const importSummaryCards = [
     { key: "newSubcategories", label: "Новые подкатегории" },
     { key: "renamedCategories", label: "Переимен. категории" },
     { key: "renamedSubcategories", label: "Переимен. подкат." },
-    { key: "missingCategoryCodes", label: "Без CAT" },
-    { key: "missingSubcategoryCodes", label: "Без SUB" },
+    { key: "assignedCategoryCodes", label: "Будет записано CAT" },
+    { key: "assignedSubcategoryCodes", label: "Будет записано SUB" },
+    { key: "missingCategoryCodes", label: "Missing CAT" },
+    { key: "missingSubcategoryCodes", label: "Missing SUB" },
+    { key: "priceIncreased", label: "Цена выше" },
+    { key: "priceDecreased", label: "Цена ниже" },
+    { key: "priceWarnings", label: "Риски цены" },
     { key: "newGroups", label: "Новые группы" },
     { key: "warnings", label: "Предупреждения" }
 ];
@@ -64,12 +73,17 @@ function normalizeImportSearch(value) {
 
 function getImportArray(key) {
     if (!importPreview) return [];
+    if (key === "prices") {
+        return getPriceChanges().items || [];
+    }
     if (key === "structure") {
         return [
             ...(importPreview.changes?.newCategories || []),
             ...(importPreview.changes?.newSubcategories || []),
             ...(importPreview.changes?.renamedCategories || []),
             ...(importPreview.changes?.renamedSubcategories || []),
+            ...(importPreview.changes?.assignedCategoryCodes || []),
+            ...(importPreview.changes?.assignedSubcategoryCodes || []),
             ...(importPreview.changes?.missingCategoryCodes || []),
             ...(importPreview.changes?.missingSubcategoryCodes || []),
             ...(importPreview.changes?.newGroups || [])
@@ -88,6 +102,8 @@ function getImportTabCount(tabId) {
             + Number(importPreview.summary?.newSubcategories || 0)
             + Number(importPreview.summary?.renamedCategories || 0)
             + Number(importPreview.summary?.renamedSubcategories || 0)
+            + Number(importPreview.summary?.assignedCategoryCodes || 0)
+            + Number(importPreview.summary?.assignedSubcategoryCodes || 0)
             + Number(importPreview.summary?.missingCategoryCodes || 0)
             + Number(importPreview.summary?.missingSubcategoryCodes || 0)
             + Number(importPreview.summary?.newGroups || 0);
@@ -95,6 +111,14 @@ function getImportTabCount(tabId) {
     if (tabId === "issues") {
         return Number(importPreview.summary?.criticalErrors || 0)
             + Number(importPreview.summary?.warnings || 0);
+    }
+    if (tabId === "prices") {
+        const priceChanges = getPriceChanges();
+        return Number(priceChanges.changed || 0)
+            + Number(priceChanges.newPrice || 0)
+            + Number(priceChanges.zeroPrice || 0)
+            + Number(priceChanges.invalid || 0)
+            + Number(priceChanges.productNotFound || 0);
     }
     return Number(importPreview.summary?.[tabId] || 0);
 }
@@ -114,6 +138,10 @@ function getImportSearchText(item) {
         item.source,
         item.status,
         item.suggestedExternalId,
+        item.productCode,
+        item.productName,
+        item.status,
+        ...(item.warningCodes || []),
         item.message,
         item.code,
         changeText
@@ -125,6 +153,53 @@ function getFilteredImportItems(tabId) {
     const query = normalizeImportSearch(importSearchQuery);
     if (!query) return items;
     return items.filter(item => getImportSearchText(item).includes(query));
+}
+
+function createEmptyPriceChanges() {
+    return {
+        totalChecked: 0,
+        changed: 0,
+        increased: 0,
+        decreased: 0,
+        unchanged: 0,
+        newPrice: 0,
+        invalid: 0,
+        zeroPrice: 0,
+        productNotFound: 0,
+        averageChangePercent: null,
+        maxIncreasePercent: null,
+        maxDecreasePercent: null,
+        hasBlockingErrors: false,
+        hasWarnings: false,
+        warningSummary: [],
+        items: []
+    };
+}
+
+function getPriceChanges() {
+    return importPreview?.priceChanges || createEmptyPriceChanges();
+}
+
+function formatImportPrice(value) {
+    return value === null || value === undefined ? "—" : formatMoney(Number(value) || 0);
+}
+
+function formatImportPercent(value) {
+    if (value === null || value === undefined || Number.isNaN(Number(value))) return "—";
+    return `${Number(value).toFixed(2)}%`;
+}
+
+function getPriceStatusLabel(status) {
+    const labels = {
+        increased: "Повышение",
+        decreased: "Снижение",
+        unchanged: "Без изменений",
+        newPrice: "Новая цена",
+        invalid: "Ошибка",
+        zeroPrice: "Нулевая цена",
+        productNotFound: "Товар не найден"
+    };
+    return labels[status] || status || "—";
 }
 
 function validateImportFile(file) {
@@ -140,6 +215,7 @@ function setImportFile(file) {
     importPreview = null;
     importApplyResult = null;
     importSearchQuery = "";
+    importPriceFilter = "changed";
     renderImportView(error);
 }
 
@@ -151,6 +227,7 @@ function resetImportPreview({ clearFile = false } = {}) {
     importApplying = false;
     importActiveTab = "new";
     importSearchQuery = "";
+    importPriceFilter = "changed";
     renderImportView();
 }
 
@@ -198,7 +275,7 @@ async function submitImportApply() {
                     <div><dt>Скрыть</dt><dd>${Number(summary.missingFromFile || 0)}</dd></div>
                     <div><dt>Новые категории</dt><dd>${Number(summary.newCategories || 0)}</dd></div>
                     <div><dt>Переименовать CAT/SUB</dt><dd>${Number(summary.renamedCategories || 0) + Number(summary.renamedSubcategories || 0)}</dd></div>
-                    <div><dt>Назначить CAT/SUB</dt><dd>${Number(summary.missingCategoryCodes || 0) + Number(summary.missingSubcategoryCodes || 0)}</dd></div>
+                    <div><dt>Записать CAT/SUB</dt><dd>${Number(summary.assignedCategoryCodes || 0) + Number(summary.assignedSubcategoryCodes || 0)}</dd></div>
                     <div><dt>Требуют решения</dt><dd>${Number(summary.requiresReview || 0)}</dd></div>
                 </dl>
                 <label class="product-checkbox">
@@ -362,6 +439,7 @@ function renderImportTabPanel() {
     if (!importPreview) return "";
     if (importActiveTab === "new") return renderNewProductsTab();
     if (importActiveTab === "updated") return renderUpdatedTab();
+    if (importActiveTab === "prices") return renderPriceChangesTab();
     if (importActiveTab === "requiresReview") return renderRequiresReviewTab();
     if (importActiveTab === "missingFromFile") return renderMissingFromFileTab();
     if (importActiveTab === "manualOnly") return renderManualOnlyTab();
@@ -457,6 +535,116 @@ function renderUpdatedTab() {
     `).join("");
 }
 
+function filterPriceItems(items) {
+    const query = normalizeImportSearch(importSearchQuery);
+    return items.filter(item => {
+        const matchesQuery = !query || getImportSearchText(item).includes(query);
+        if (!matchesQuery) return false;
+        if (importPriceFilter === "changed") return ["increased", "decreased", "newPrice"].includes(item.status);
+        if (importPriceFilter === "increased") return item.status === "increased";
+        if (importPriceFilter === "decreased") return item.status === "decreased";
+        if (importPriceFilter === "newPrice") return item.status === "newPrice";
+        if (importPriceFilter === "warnings") return (item.warningCodes || []).length > 0;
+        if (importPriceFilter === "errors") return ["invalid", "productNotFound"].includes(item.status) || (item.warningCodes || []).includes("DUPLICATE_PRICE_CONFLICT");
+        if (importPriceFilter === "unchanged") return item.status === "unchanged";
+        return true;
+    });
+}
+
+function renderPriceChangesTab() {
+    const priceChanges = getPriceChanges();
+    const filteredItems = filterPriceItems(priceChanges.items || []);
+    const visibleItems = filteredItems.slice(0, IMPORT_PRICE_RENDER_LIMIT);
+    const filterOptions = [
+        { id: "changed", label: "Все изменения" },
+        { id: "increased", label: "Повышение" },
+        { id: "decreased", label: "Снижение" },
+        { id: "newPrice", label: "Новая цена" },
+        { id: "warnings", label: "Предупреждения" },
+        { id: "errors", label: "Ошибки" },
+        { id: "unchanged", label: "Без изменений" }
+    ];
+
+    if (!priceChanges.totalChecked && !(priceChanges.items || []).length) {
+        return renderEmptyImportState("Данных для анализа цен нет.");
+    }
+
+    return `
+        <section class="import-price-preview">
+            <div class="import-price-summary">
+                <div><span>Проверено</span><strong>${escapeHtml(priceChanges.totalChecked || 0)}</strong></div>
+                <div><span>Изменятся</span><strong>${escapeHtml(priceChanges.changed || 0)}</strong></div>
+                <div><span>Повышение</span><strong>${escapeHtml(priceChanges.increased || 0)}</strong></div>
+                <div><span>Снижение</span><strong>${escapeHtml(priceChanges.decreased || 0)}</strong></div>
+                <div><span>Без изменений</span><strong>${escapeHtml(priceChanges.unchanged || 0)}</strong></div>
+                <div><span>Новая цена</span><strong>${escapeHtml(priceChanges.newPrice || 0)}</strong></div>
+                <div><span>Нулевая</span><strong>${escapeHtml(priceChanges.zeroPrice || 0)}</strong></div>
+                <div><span>Ошибки</span><strong>${escapeHtml(priceChanges.invalid || 0)}</strong></div>
+            </div>
+            ${renderPriceWarnings(priceChanges)}
+            <div class="import-price-filters">
+                ${filterOptions.map(option => `
+                    <button class="${importPriceFilter === option.id ? "active" : ""}" data-price-filter="${escapeHtml(option.id)}" type="button">
+                        ${escapeHtml(option.label)}
+                    </button>
+                `).join("")}
+            </div>
+            ${filteredItems.length > IMPORT_PRICE_RENDER_LIMIT ? `<p class="import-tab-note">Показаны первые ${IMPORT_PRICE_RENDER_LIMIT} из ${escapeHtml(filteredItems.length)} товаров.</p>` : ""}
+            ${visibleItems.length ? renderPriceTable(visibleItems) : renderEmptyImportState("По выбранному фильтру строк нет.")}
+        </section>
+    `;
+}
+
+function renderPriceWarnings(priceChanges) {
+    const warnings = priceChanges.warningSummary || [];
+    if (!warnings.length) return "";
+    return `
+        <div class="import-price-warnings">
+            ${warnings.map(item => `
+                <p>${escapeHtml(item.label || item.code)}: ${escapeHtml(item.count || 0)}</p>
+            `).join("")}
+        </div>
+    `;
+}
+
+function renderPriceTable(items) {
+    return `
+        <div class="import-price-table-wrap">
+            <table class="import-price-table">
+                <thead>
+                    <tr>
+                        <th>Строка</th>
+                        <th>MAT</th>
+                        <th>Товар</th>
+                        <th>Старая</th>
+                        <th>Новая</th>
+                        <th>Разница</th>
+                        <th>%</th>
+                        <th>Статус</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${items.map(item => `
+                        <tr class="import-price-row import-price-${escapeHtml(item.status || "unknown")}">
+                            <td>${escapeHtml(item.rowNumber || "")}</td>
+                            <td><code>${escapeHtml(item.productCode || "")}</code></td>
+                            <td>
+                                <strong>${escapeHtml(item.productName || "")}</strong>
+                                ${(item.warningCodes || []).length ? `<span>${escapeHtml((item.warningCodes || []).join(", "))}</span>` : ""}
+                            </td>
+                            <td>${escapeHtml(formatImportPrice(item.oldPrice))}</td>
+                            <td>${escapeHtml(formatImportPrice(item.newPrice))}</td>
+                            <td>${escapeHtml(formatImportPrice(item.difference))}</td>
+                            <td>${escapeHtml(formatImportPercent(item.differencePercent))}</td>
+                            <td>${escapeHtml(getPriceStatusLabel(item.status))}</td>
+                        </tr>
+                    `).join("")}
+                </tbody>
+            </table>
+        </div>
+    `;
+}
+
 function renderMissingFromFileTab() {
     const items = getFilteredImportItems("missingFromFile");
     if (!items.length) return renderEmptyImportState("Отсутствующих в файле товаров нет.");
@@ -517,10 +705,12 @@ function renderStructureTab() {
     const subcategories = importPreview.changes?.newSubcategories || [];
     const renamedCategories = importPreview.changes?.renamedCategories || [];
     const renamedSubcategories = importPreview.changes?.renamedSubcategories || [];
+    const assignedCategoryCodes = importPreview.changes?.assignedCategoryCodes || [];
+    const assignedSubcategoryCodes = importPreview.changes?.assignedSubcategoryCodes || [];
     const missingCategoryCodes = importPreview.changes?.missingCategoryCodes || [];
     const missingSubcategoryCodes = importPreview.changes?.missingSubcategoryCodes || [];
     const groups = importPreview.changes?.newGroups || [];
-    if (!categories.length && !subcategories.length && !renamedCategories.length && !renamedSubcategories.length && !missingCategoryCodes.length && !missingSubcategoryCodes.length && !groups.length) {
+    if (!categories.length && !subcategories.length && !renamedCategories.length && !renamedSubcategories.length && !assignedCategoryCodes.length && !assignedSubcategoryCodes.length && !missingCategoryCodes.length && !missingSubcategoryCodes.length && !groups.length) {
         return renderEmptyImportState("Новых элементов структуры нет.");
     }
 
@@ -530,8 +720,10 @@ function renderStructureTab() {
             ${renderStructureList("Новые подкатегории", subcategories, item => `${item.externalCode || "SUB будет назначен"} · ${item.category || "Без категории"} / ${item.name}`)}
             ${renderStructureList("Переименованные категории", renamedCategories, item => `${item.externalCode}: ${item.currentName} -> ${item.incomingName}`)}
             ${renderStructureList("Переименованные подкатегории", renamedSubcategories, item => `${item.externalCode}: ${item.currentName} -> ${item.incomingName}`)}
-            ${renderStructureList("Категории без CAT", missingCategoryCodes, item => `${item.name} · строка ${item.rowNumber}`)}
-            ${renderStructureList("Подкатегории без SUB", missingSubcategoryCodes, item => `${item.category || "Без категории"} / ${item.name} · строка ${item.rowNumber}`)}
+            ${renderStructureList("Будет записано CAT", assignedCategoryCodes, item => `${item.name} · ${item.externalCode} · строка ${item.rowNumber}`)}
+            ${renderStructureList("Будет записано SUB", assignedSubcategoryCodes, item => `${item.category || "Без категории"} / ${item.name} · ${item.externalCode} · строка ${item.rowNumber}`)}
+            ${renderStructureList("Не удалось определить CAT", missingCategoryCodes, item => `${item.name} · строка ${item.rowNumber}`)}
+            ${renderStructureList("Не удалось определить SUB", missingSubcategoryCodes, item => `${item.category || "Без категории"} / ${item.name} · строка ${item.rowNumber}`)}
             ${renderStructureList("Новые группы", groups, item => `${item.category || "Без категории"} / ${item.subcategory || "Без подкатегории"} / ${item.name}`)}
         </div>
     `;
@@ -681,6 +873,13 @@ importView?.addEventListener("click", event => {
         importActiveTab = tabButton.dataset.importTab;
         importSearchQuery = "";
         renderImportView();
+        return;
+    }
+
+    const priceFilterButton = event.target.closest("button[data-price-filter]");
+    if (priceFilterButton) {
+        importPriceFilter = priceFilterButton.dataset.priceFilter || "changed";
+        updateImportPreviewPanel();
     }
 });
 

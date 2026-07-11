@@ -14,6 +14,7 @@ const CAT_CODE_PATTERN = /^CAT-(\d{6,})$/i;
 const SUB_CODE_PATTERN = /^SUB-(\d{6,})$/i;
 const ALLOWED_UNITS = new Set(["шт", "кг", "м", "м2"]);
 const PREVIEW_TOKEN_TTL_MS = 30 * 60 * 1000;
+const LARGE_PRICE_CHANGE_PERCENT = 20;
 const previewTokens = new Map();
 const COMPARED_FIELDS = [
     "title",
@@ -63,6 +64,16 @@ function parseDecimal(value, fallback = null) {
 
     const number = Number(normalized);
     return Number.isFinite(number) ? number : fallback;
+}
+
+function normalizePriceToCents(value) {
+    const number = parseDecimal(value, null);
+    if (number === null || number < 0) return null;
+    return Math.round(number * 100);
+}
+
+function centsToNumber(value) {
+    return value === null || value === undefined ? null : Number((value / 100).toFixed(2));
 }
 
 function normalizeUnit(value) {
@@ -441,13 +452,14 @@ async function parseCatalogExcelV2(input) {
                 errors.push(createIssue("critical", "INVALID_CAT_CODE", "CAT code has invalid format.", rowNumber, { externalCode: parsedRow.rawExternalCode }));
             }
             if (parsedRow.externalCode) {
-                if (seenCategoryCodes.has(parsedRow.externalCode)) {
+                const firstCategoryWithCode = seenCategoryCodes.get(parsedRow.externalCode);
+                if (firstCategoryWithCode && !isSameCategoryCodeRow(firstCategoryWithCode, parsedRow)) {
                     errors.push(createIssue("critical", "DUPLICATE_CAT_CODE", "Duplicate CAT code in Excel.", rowNumber, {
                         externalCode: parsedRow.externalCode,
-                        firstRowNumber: seenCategoryCodes.get(parsedRow.externalCode)
+                        firstRowNumber: firstCategoryWithCode.rowNumber
                     }));
-                } else {
-                    seenCategoryCodes.set(parsedRow.externalCode, rowNumber);
+                } else if (!firstCategoryWithCode) {
+                    seenCategoryCodes.set(parsedRow.externalCode, parsedRow);
                 }
             } else {
                 warnings.push(createIssue("warning", "MISSING_CAT_CODE", "Category row has no CAT code.", rowNumber, { name: parsedRow.name }));
@@ -467,13 +479,14 @@ async function parseCatalogExcelV2(input) {
                 errors.push(createIssue("critical", "INVALID_SUB_CODE", "SUB code has invalid format.", rowNumber, { externalCode: parsedRow.rawExternalCode }));
             }
             if (parsedRow.externalCode) {
-                if (seenSubcategoryCodes.has(parsedRow.externalCode)) {
+                const firstSubcategoryWithCode = seenSubcategoryCodes.get(parsedRow.externalCode);
+                if (firstSubcategoryWithCode && !isSameSubcategoryCodeRow(firstSubcategoryWithCode, parsedRow)) {
                     errors.push(createIssue("critical", "DUPLICATE_SUB_CODE", "Duplicate SUB code in Excel.", rowNumber, {
                         externalCode: parsedRow.externalCode,
-                        firstRowNumber: seenSubcategoryCodes.get(parsedRow.externalCode)
+                        firstRowNumber: firstSubcategoryWithCode.rowNumber
                     }));
-                } else {
-                    seenSubcategoryCodes.set(parsedRow.externalCode, rowNumber);
+                } else if (!firstSubcategoryWithCode) {
+                    seenSubcategoryCodes.set(parsedRow.externalCode, parsedRow);
                 }
             } else {
                 warnings.push(createIssue("warning", "MISSING_SUB_CODE", "Subcategory row has no SUB code.", rowNumber, { name: parsedRow.name }));
@@ -537,6 +550,8 @@ async function parseCatalogExcelV2(input) {
             productGroup: parsedRow.productGroup,
             unit: parsedRow.unit,
             price: parsedRow.price,
+            priceText: parsedRow.priceText,
+            rawPrice: parsedRow.rawPrice,
             weight: parsedRow.weight,
             sortOrder: productRows.length + 1
         });
@@ -591,6 +606,202 @@ function normalizeDbProduct(row) {
         isActive: Boolean(row.is_active),
         deletedAt: row.deleted_at || ""
     };
+}
+
+function createEmptyPriceChanges() {
+    return {
+        totalChecked: 0,
+        changed: 0,
+        increased: 0,
+        decreased: 0,
+        unchanged: 0,
+        newPrice: 0,
+        invalid: 0,
+        zeroPrice: 0,
+        productNotFound: 0,
+        averageChangePercent: null,
+        maxIncreasePercent: null,
+        maxDecreasePercent: null,
+        hasBlockingErrors: false,
+        hasWarnings: false,
+        warningSummary: [],
+        items: []
+    };
+}
+
+function getPriceWarningLabel(code) {
+    const labels = {
+        LARGE_INCREASE: "Сильное повышение цены",
+        LARGE_DECREASE: "Сильное снижение цены",
+        ZERO_PRICE: "Нулевая цена",
+        INVALID_PRICE: "Некорректная цена",
+        DUPLICATE_PRICE_CONFLICT: "Конфликт цены в дублях"
+    };
+    return labels[code] || code;
+}
+
+function addPriceWarning(summary, code, details = {}) {
+    const existing = summary.warningSummary.find(item => item.code === code);
+    if (existing) {
+        existing.count += 1;
+        return;
+    }
+    summary.warningSummary.push({
+        code,
+        label: getPriceWarningLabel(code),
+        count: 1,
+        ...details
+    });
+}
+
+function buildPriceItem({ row, product = null, status, oldPriceCents = null, newPriceCents = null, warningCodes = [], duplicateRows = [] }) {
+    const differenceCents = oldPriceCents !== null && newPriceCents !== null
+        ? newPriceCents - oldPriceCents
+        : null;
+    const differencePercent = oldPriceCents && oldPriceCents > 0 && differenceCents !== null
+        ? Number(((differenceCents / oldPriceCents) * 100).toFixed(2))
+        : null;
+
+    return {
+        rowNumber: row?.rowNumber || 0,
+        productId: product?.id || null,
+        productCode: row?.externalId || product?.externalId || "",
+        productName: product?.title || row?.title || "",
+        oldPrice: centsToNumber(oldPriceCents),
+        newPrice: centsToNumber(newPriceCents),
+        difference: centsToNumber(differenceCents),
+        differencePercent,
+        status,
+        warningCodes,
+        duplicateRows
+    };
+}
+
+function buildPriceChangesPreview(dbProducts, productRows) {
+    const summary = createEmptyPriceChanges();
+    const productsByExternalId = new Map();
+    const rowsByExternalId = new Map();
+    const percentValues = [];
+
+    dbProducts.forEach(product => {
+        const normalizedCode = normalizeMatCode(product.externalId);
+        if (validateMatCode(normalizedCode)) productsByExternalId.set(normalizedCode, product);
+    });
+
+    productRows.forEach(row => {
+        if (!row.externalId) {
+            return;
+        }
+        const key = normalizeMatCode(row.externalId);
+        if (!rowsByExternalId.has(key)) rowsByExternalId.set(key, []);
+        rowsByExternalId.get(key).push(row);
+    });
+
+    rowsByExternalId.forEach((rows, externalId) => {
+        const product = productsByExternalId.get(externalId);
+        const prices = rows.map(row => ({
+            row,
+            cents: row.priceText ? normalizePriceToCents(row.rawPrice ?? row.price) : null,
+            hasText: Boolean(row.priceText)
+        }));
+        const uniquePrices = new Set(prices.map(item => item.cents === null ? "invalid" : String(item.cents)));
+        const first = prices[0];
+        const warningCodes = [];
+        const duplicateRows = rows.length > 1
+            ? rows.map(row => ({ rowNumber: row.rowNumber, price: row.price === null ? null : Number(row.price) }))
+            : [];
+
+        if (rows.length > 1 && uniquePrices.size > 1) {
+            warningCodes.push("DUPLICATE_PRICE_CONFLICT");
+            summary.hasBlockingErrors = true;
+            summary.hasWarnings = true;
+            addPriceWarning(summary, "DUPLICATE_PRICE_CONFLICT", { rows: duplicateRows.slice(0, 5) });
+        }
+
+        if (!product) {
+            summary.productNotFound += 1;
+            summary.items.push(buildPriceItem({
+                row: first.row,
+                status: "productNotFound",
+                newPriceCents: first.cents,
+                warningCodes,
+                duplicateRows
+            }));
+            summary.totalChecked += 1;
+            return;
+        }
+
+        if (!first.hasText || first.cents === null) {
+            warningCodes.push("INVALID_PRICE");
+            summary.invalid += 1;
+            if (first.hasText) {
+                summary.hasBlockingErrors = true;
+            }
+            summary.hasWarnings = true;
+            addPriceWarning(summary, "INVALID_PRICE");
+            summary.items.push(buildPriceItem({ row: first.row, product, status: "invalid", warningCodes, duplicateRows }));
+            summary.totalChecked += 1;
+            return;
+        }
+
+        const newPriceCents = first.cents;
+        const oldPriceCents = product.price === null || product.price === undefined
+            ? null
+            : normalizePriceToCents(product.price);
+        let status = "unchanged";
+
+        if (newPriceCents === 0) {
+            status = "zeroPrice";
+            warningCodes.push("ZERO_PRICE");
+            summary.zeroPrice += 1;
+            summary.hasWarnings = true;
+            addPriceWarning(summary, "ZERO_PRICE");
+        } else if (oldPriceCents === null) {
+            status = "newPrice";
+            summary.newPrice += 1;
+        } else if (newPriceCents > oldPriceCents) {
+            status = "increased";
+            summary.increased += 1;
+            summary.changed += 1;
+        } else if (newPriceCents < oldPriceCents) {
+            status = "decreased";
+            summary.decreased += 1;
+            summary.changed += 1;
+        } else {
+            summary.unchanged += 1;
+        }
+
+        const item = buildPriceItem({ row: first.row, product, status, oldPriceCents, newPriceCents, warningCodes, duplicateRows });
+        if (item.differencePercent !== null && ["increased", "decreased"].includes(status)) {
+            percentValues.push(item.differencePercent);
+            if (item.differencePercent > LARGE_PRICE_CHANGE_PERCENT) {
+                item.warningCodes.push("LARGE_INCREASE");
+                summary.hasWarnings = true;
+                addPriceWarning(summary, "LARGE_INCREASE");
+            }
+            if (item.differencePercent < -LARGE_PRICE_CHANGE_PERCENT) {
+                item.warningCodes.push("LARGE_DECREASE");
+                summary.hasWarnings = true;
+                addPriceWarning(summary, "LARGE_DECREASE");
+            }
+        }
+
+        summary.items.push(item);
+        summary.totalChecked += 1;
+    });
+
+    if (percentValues.length) {
+        const sum = percentValues.reduce((total, value) => total + value, 0);
+        summary.averageChangePercent = Number((sum / percentValues.length).toFixed(2));
+        summary.maxIncreasePercent = percentValues.some(value => value > 0)
+            ? Number(Math.max(...percentValues.filter(value => value > 0)).toFixed(2))
+            : null;
+        summary.maxDecreasePercent = percentValues.some(value => value < 0)
+            ? Number(Math.min(...percentValues.filter(value => value < 0)).toFixed(2))
+            : null;
+    }
+
+    return summary;
 }
 
 function normalizeMatchText(value) {
@@ -722,6 +933,15 @@ function normalizeStructureRow(row) {
     };
 }
 
+function isSameCategoryCodeRow(first, second) {
+    return normalizeCatalogStructureName(first?.name) === normalizeCatalogStructureName(second?.name);
+}
+
+function isSameSubcategoryCodeRow(first, second) {
+    return normalizeCatalogStructureName(first?.category) === normalizeCatalogStructureName(second?.category)
+        && normalizeCatalogStructureName(first?.name) === normalizeCatalogStructureName(second?.name);
+}
+
 function buildStructurePreview(parsed, structureRows) {
     const categoriesByCode = new Map();
     const subcategoriesByCode = new Map();
@@ -730,9 +950,11 @@ function buildStructurePreview(parsed, structureRows) {
     const changes = {
         newCategories: [],
         renamedCategories: [],
+        assignedCategoryCodes: [],
         missingCategoryCodes: [],
         newSubcategories: [],
         renamedSubcategories: [],
+        assignedSubcategoryCodes: [],
         missingSubcategoryCodes: []
     };
 
@@ -747,7 +969,21 @@ function buildStructurePreview(parsed, structureRows) {
 
     parsed.categoryRows?.forEach(row => {
         if (!row.externalCode) {
-            changes.missingCategoryCodes.push(row);
+            const existing = categoriesByName.get(normalizeCatalogStructureName(row.name));
+            if (existing) {
+                changes.assignedCategoryCodes.push({
+                    rowNumber: row.rowNumber,
+                    name: row.name,
+                    externalCode: existing.externalCode,
+                    structureId: existing.id
+                });
+            } else {
+                changes.missingCategoryCodes.push({
+                    rowNumber: row.rowNumber,
+                    name: row.name,
+                    reason: "CATEGORY_NOT_FOUND"
+                });
+            }
             return;
         }
         const existing = categoriesByCode.get(row.externalCode);
@@ -767,7 +1003,31 @@ function buildStructurePreview(parsed, structureRows) {
 
     parsed.subcategoryRows?.forEach(row => {
         if (!row.externalCode) {
-            changes.missingSubcategoryCodes.push(row);
+            const parent = row.categoryExternalCode
+                ? categoriesByCode.get(normalizeCategoryCode(row.categoryExternalCode))
+                : categoriesByName.get(normalizeCatalogStructureName(row.category));
+            const existing = parent
+                ? subcategoriesByParentAndName.get(`${parent.id}:${normalizeCatalogStructureName(row.name)}`)
+                : null;
+
+            if (existing) {
+                changes.assignedSubcategoryCodes.push({
+                    rowNumber: row.rowNumber,
+                    category: row.category,
+                    name: row.name,
+                    externalCode: existing.externalCode,
+                    structureId: existing.id,
+                    parentId: parent.id,
+                    parentExternalCode: parent.externalCode
+                });
+            } else {
+                changes.missingSubcategoryCodes.push({
+                    rowNumber: row.rowNumber,
+                    category: row.category,
+                    name: row.name,
+                    reason: parent ? "SUBCATEGORY_NOT_FOUND" : "CATEGORY_NOT_FOUND"
+                });
+            }
             return;
         }
         const existing = subcategoriesByCode.get(row.externalCode);
@@ -796,6 +1056,7 @@ async function buildCatalogImportPreview(db, parsed, file = {}) {
     const dbProducts = products.map(normalizeDbProduct);
     const structureRows = rawStructureRows.map(normalizeStructureRow);
     const structureChanges = buildStructurePreview(parsed, structureRows);
+    const priceChanges = buildPriceChangesPreview(dbProducts, parsed.productRows);
     const productsByExternalId = new Map();
     const fileCodes = new Set();
     const changes = {
@@ -812,6 +1073,8 @@ async function buildCatalogImportPreview(db, parsed, file = {}) {
         newSubcategories: [],
         renamedCategories: [],
         renamedSubcategories: [],
+        assignedCategoryCodes: [],
+        assignedSubcategoryCodes: [],
         missingCategoryCodes: [],
         missingSubcategoryCodes: [],
         newGroups: []
@@ -923,12 +1186,31 @@ async function buildCatalogImportPreview(db, parsed, file = {}) {
         : collectNewValues(parsed.productRows, dbProducts.map(product => product.subcategory), "subcategory", "category");
     changes.renamedCategories = structureChanges.renamedCategories;
     changes.renamedSubcategories = structureChanges.renamedSubcategories;
+    changes.assignedCategoryCodes = structureChanges.assignedCategoryCodes;
+    changes.assignedSubcategoryCodes = structureChanges.assignedSubcategoryCodes;
     changes.missingCategoryCodes = structureChanges.missingCategoryCodes;
     changes.missingSubcategoryCodes = structureChanges.missingSubcategoryCodes;
     changes.newGroups = collectNewValues(parsed.productRows, dbProducts.map(product => product.productGroup), "productGroup");
 
-    const errors = parsed.errors;
-    const warnings = parsed.warnings;
+    const structureErrors = [
+        ...changes.missingCategoryCodes.map(item => ({
+            severity: "critical",
+            code: "MISSING_CAT_STRUCTURE",
+            message: `Не удалось найти категорию в структуре: ${item.name}.`,
+            rowNumber: item.rowNumber,
+            category: item.name
+        })),
+        ...changes.missingSubcategoryCodes.map(item => ({
+            severity: "critical",
+            code: "MISSING_SUB_STRUCTURE",
+            message: `Не удалось найти подкатегорию в структуре: ${item.category || "Без категории"} / ${item.name}.`,
+            rowNumber: item.rowNumber,
+            category: item.category,
+            subcategory: item.name
+        }))
+    ];
+    const errors = [...parsed.errors, ...structureErrors];
+    const warnings = parsed.warnings.filter(item => !["MISSING_CAT_CODE", "MISSING_SUB_CODE"].includes(item.code));
     const summary = {
         new: changes.new.length,
         updated: changes.updated.length,
@@ -943,16 +1225,22 @@ async function buildCatalogImportPreview(db, parsed, file = {}) {
         newSubcategories: changes.newSubcategories.length,
         renamedCategories: changes.renamedCategories.length,
         renamedSubcategories: changes.renamedSubcategories.length,
+        assignedCategoryCodes: changes.assignedCategoryCodes.length,
+        assignedSubcategoryCodes: changes.assignedSubcategoryCodes.length,
         missingCategoryCodes: changes.missingCategoryCodes.length,
         missingSubcategoryCodes: changes.missingSubcategoryCodes.length,
         newGroups: changes.newGroups.length,
+        priceChanged: priceChanges.changed,
+        priceIncreased: priceChanges.increased,
+        priceDecreased: priceChanges.decreased,
+        priceWarnings: priceChanges.warningSummary.reduce((total, item) => total + item.count, 0),
         criticalErrors: errors.length,
         warnings: warnings.length
     };
 
     return {
         success: true,
-        canImport: errors.length === 0,
+        canImport: errors.length === 0 && !priceChanges.hasBlockingErrors,
         file: {
             name: file.name || "",
             sheet: parsed.sheetName,
@@ -961,6 +1249,7 @@ async function buildCatalogImportPreview(db, parsed, file = {}) {
         },
         summary,
         changes,
+        priceChanges,
         errors,
         warnings
     };
@@ -1508,6 +1797,7 @@ module.exports = {
     upsertCatalogStructureFromParsed,
     getNextMatExternalId,
     compareProductFields,
+    buildPriceChangesPreview,
     formatMatCode,
     formatCategoryCode,
     formatSubcategoryCode,
