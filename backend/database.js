@@ -169,6 +169,7 @@ async function initCatalogImportLogsTable() {
             created_count INTEGER DEFAULT 0,
             updated_count INTEGER DEFAULT 0,
             assigned_mat_count INTEGER DEFAULT 0,
+            assigned_structure_count INTEGER DEFAULT 0,
             hidden_count INTEGER DEFAULT 0,
             requires_review_count INTEGER DEFAULT 0,
             error_count INTEGER DEFAULT 0,
@@ -176,6 +177,7 @@ async function initCatalogImportLogsTable() {
             created_at TEXT NOT NULL
         )
     `);
+    await ensureColumn("catalog_import_logs", "assigned_structure_count", "INTEGER DEFAULT 0");
 }
 
 async function initProductsTable() {

@@ -7,6 +7,8 @@ const { syncCatalogStructureFromProducts } = require("./catalogStructure");
 
 const IMPORT_SHEET_NAME = "ШАБЛОН";
 const MAT_CODE_PATTERN = /^MAT-(\d{6,})$/i;
+const CAT_CODE_PATTERN = /^CAT-(\d{6,})$/i;
+const SUB_CODE_PATTERN = /^SUB-(\d{6,})$/i;
 const ALLOWED_UNITS = new Set(["шт", "кг", "м", "м2"]);
 const PREVIEW_TOKEN_TTL_MS = 30 * 60 * 1000;
 const previewTokens = new Map();
@@ -79,8 +81,31 @@ function normalizeMatCode(value) {
     return `MAT-${match[1].padStart(6, "0")}`;
 }
 
+function normalizeTypedCode(value, pattern, prefix) {
+    const normalized = normalizeText(value).toUpperCase();
+    const match = normalized.match(pattern);
+    if (!match) return normalized;
+    return `${prefix}-${match[1].padStart(6, "0")}`;
+}
+
+function normalizeCategoryCode(value) {
+    return normalizeTypedCode(value, CAT_CODE_PATTERN, "CAT");
+}
+
+function normalizeSubcategoryCode(value) {
+    return normalizeTypedCode(value, SUB_CODE_PATTERN, "SUB");
+}
+
 function validateMatCode(value) {
     return MAT_CODE_PATTERN.test(normalizeText(value));
+}
+
+function validateCategoryCode(value) {
+    return CAT_CODE_PATTERN.test(normalizeText(value));
+}
+
+function validateSubcategoryCode(value) {
+    return SUB_CODE_PATTERN.test(normalizeText(value));
 }
 
 function getMatNumber(value) {
@@ -88,8 +113,21 @@ function getMatNumber(value) {
     return match ? Number(match[1]) : 0;
 }
 
+function getTypedCodeNumber(value, pattern) {
+    const match = normalizeText(value).match(pattern);
+    return match ? Number(match[1]) : 0;
+}
+
 function formatMatCode(number) {
     return `MAT-${String(number).padStart(6, "0")}`;
+}
+
+function formatCategoryCode(number) {
+    return `CAT-${String(number).padStart(6, "0")}`;
+}
+
+function formatSubcategoryCode(number) {
+    return `SUB-${String(number).padStart(6, "0")}`;
 }
 
 function getSha256(value) {
@@ -137,6 +175,68 @@ function getSubcategoryName(title) {
 
 function hasProductCells(row) {
     return [1, 4, 5, 8, 10, 11].some(index => getCellText(row.getCell(index)));
+}
+
+function parseCatalogRow(row, rowNumber, context = {}) {
+    const title = getCellText(row.getCell(1));
+    const code = getCellText(row.getCell(11));
+    const categoryName = getCategoryName(title);
+    const subcategoryName = getSubcategoryName(title);
+
+    if (categoryName) {
+        return {
+            type: "category",
+            rowNumber,
+            name: categoryName,
+            externalCode: code ? normalizeCategoryCode(code) : "",
+            rawExternalCode: code
+        };
+    }
+
+    if (subcategoryName) {
+        return {
+            type: "subcategory",
+            rowNumber,
+            name: subcategoryName,
+            category: context.currentCategory || "",
+            categoryExternalCode: context.currentCategoryExternalCode || "",
+            externalCode: code ? normalizeSubcategoryCode(code) : "",
+            rawExternalCode: code
+        };
+    }
+
+    if (!hasProductCells(row)) {
+        return {
+            type: "empty",
+            rowNumber
+        };
+    }
+
+    const rawPrice = getCellRawValue(row.getCell(5));
+    const rawWeight = getCellRawValue(row.getCell(10));
+    const priceText = getCellText(row.getCell(5));
+    const weightText = getCellText(row.getCell(10));
+    const unit = normalizeUnit(getCellText(row.getCell(4)));
+
+    return {
+        type: "product",
+        rowNumber,
+        externalId: code ? normalizeMatCode(code) : "",
+        rawExternalId: code,
+        title,
+        category: context.currentCategory || "",
+        categoryExternalCode: context.currentCategoryExternalCode || "",
+        subcategory: context.currentSubcategory || "",
+        subcategoryExternalCode: context.currentSubcategoryExternalCode || "",
+        productGroup: getCellText(row.getCell(8)),
+        unit,
+        price: priceText ? parseDecimal(rawPrice, null) : null,
+        weight: weightText ? parseDecimal(rawWeight, 0) : 0,
+        priceText,
+        weightText,
+        rawPrice,
+        rawWeight
+    };
 }
 
 async function loadWorkbook(input) {
@@ -272,6 +372,178 @@ async function parseCatalogExcel(input) {
     return {
         sheetName: sheet.name,
         rowsRead: sheet.rowCount,
+        productRows,
+        errors,
+        warnings
+    };
+}
+
+async function parseCatalogExcelV2(input) {
+    const errors = [];
+    const warnings = [];
+    let workbook;
+
+    try {
+        workbook = await loadWorkbook(input);
+    } catch {
+        return {
+            sheetName: "",
+            rowsRead: 0,
+            categoryRows: [],
+            subcategoryRows: [],
+            productRows: [],
+            errors: [createIssue("critical", "FILE_READ_ERROR", "Excel file cannot be read.")],
+            warnings: []
+        };
+    }
+
+    const sheet = workbook.getWorksheet(IMPORT_SHEET_NAME);
+    if (!sheet) {
+        return {
+            sheetName: "",
+            rowsRead: 0,
+            categoryRows: [],
+            subcategoryRows: [],
+            productRows: [],
+            errors: [createIssue("critical", "MISSING_SHEET", `Missing worksheet ${IMPORT_SHEET_NAME}.`)],
+            warnings: []
+        };
+    }
+
+    const categoryRows = [];
+    const subcategoryRows = [];
+    const productRows = [];
+    const seenCategoryCodes = new Map();
+    const seenSubcategoryCodes = new Map();
+    const seenMatCodes = new Map();
+    const titleRows = new Map();
+    const context = {
+        currentCategory: "",
+        currentCategoryExternalCode: "",
+        currentSubcategory: "",
+        currentSubcategoryExternalCode: ""
+    };
+
+    sheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
+        const parsedRow = parseCatalogRow(row, rowNumber, context);
+
+        if (parsedRow.type === "empty") return;
+
+        if (parsedRow.type === "category") {
+            context.currentCategory = parsedRow.name;
+            context.currentCategoryExternalCode = parsedRow.externalCode;
+            context.currentSubcategory = "";
+            context.currentSubcategoryExternalCode = "";
+            if (parsedRow.rawExternalCode && !validateCategoryCode(parsedRow.rawExternalCode)) {
+                errors.push(createIssue("critical", "INVALID_CAT_CODE", "CAT code has invalid format.", rowNumber, { externalCode: parsedRow.rawExternalCode }));
+            }
+            if (parsedRow.externalCode) {
+                if (seenCategoryCodes.has(parsedRow.externalCode)) {
+                    errors.push(createIssue("critical", "DUPLICATE_CAT_CODE", "Duplicate CAT code in Excel.", rowNumber, {
+                        externalCode: parsedRow.externalCode,
+                        firstRowNumber: seenCategoryCodes.get(parsedRow.externalCode)
+                    }));
+                } else {
+                    seenCategoryCodes.set(parsedRow.externalCode, rowNumber);
+                }
+            } else {
+                warnings.push(createIssue("warning", "MISSING_CAT_CODE", "Category row has no CAT code.", rowNumber, { name: parsedRow.name }));
+            }
+            categoryRows.push(parsedRow);
+            warnings.push(createIssue("warning", "SERVICE_ROW_SKIPPED", "Category row skipped as service row.", rowNumber));
+            return;
+        }
+
+        if (parsedRow.type === "subcategory") {
+            context.currentSubcategory = parsedRow.name;
+            context.currentSubcategoryExternalCode = parsedRow.externalCode;
+            if (!context.currentCategory) {
+                errors.push(createIssue("critical", "MISSING_PARENT_CATEGORY", "Subcategory has no parent category.", rowNumber, { name: parsedRow.name }));
+            }
+            if (parsedRow.rawExternalCode && !validateSubcategoryCode(parsedRow.rawExternalCode)) {
+                errors.push(createIssue("critical", "INVALID_SUB_CODE", "SUB code has invalid format.", rowNumber, { externalCode: parsedRow.rawExternalCode }));
+            }
+            if (parsedRow.externalCode) {
+                if (seenSubcategoryCodes.has(parsedRow.externalCode)) {
+                    errors.push(createIssue("critical", "DUPLICATE_SUB_CODE", "Duplicate SUB code in Excel.", rowNumber, {
+                        externalCode: parsedRow.externalCode,
+                        firstRowNumber: seenSubcategoryCodes.get(parsedRow.externalCode)
+                    }));
+                } else {
+                    seenSubcategoryCodes.set(parsedRow.externalCode, rowNumber);
+                }
+            } else {
+                warnings.push(createIssue("warning", "MISSING_SUB_CODE", "Subcategory row has no SUB code.", rowNumber, { name: parsedRow.name }));
+            }
+            subcategoryRows.push(parsedRow);
+            warnings.push(createIssue("warning", "SERVICE_ROW_SKIPPED", "Subcategory row skipped as service row.", rowNumber));
+            return;
+        }
+
+        if (parsedRow.title && isHeaderTitle(parsedRow.title)) {
+            warnings.push(createIssue("warning", "SERVICE_ROW_SKIPPED", "Header row skipped as service row.", rowNumber));
+            return;
+        }
+
+        const normalizedTitle = normalizeKey(parsedRow.title);
+        if (!parsedRow.title) errors.push(createIssue("critical", "MISSING_TITLE", "Product has no title.", rowNumber));
+        if (!parsedRow.category) errors.push(createIssue("critical", "MISSING_CATEGORY", "Product has no category.", rowNumber, { title: parsedRow.title }));
+        if (parsedRow.rawExternalId && !validateMatCode(parsedRow.rawExternalId)) {
+            errors.push(createIssue("critical", "INVALID_MAT_CODE", "MAT code has invalid format.", rowNumber, { externalId: parsedRow.rawExternalId }));
+        }
+        if (parsedRow.externalId) {
+            if (seenMatCodes.has(parsedRow.externalId)) {
+                errors.push(createIssue("critical", "DUPLICATE_MAT_CODE", "Duplicate MAT code in Excel.", rowNumber, {
+                    externalId: parsedRow.externalId,
+                    firstRowNumber: seenMatCodes.get(parsedRow.externalId)
+                }));
+            } else {
+                seenMatCodes.set(parsedRow.externalId, rowNumber);
+            }
+        }
+        if (parsedRow.priceText && parsedRow.price === null) errors.push(createIssue("critical", "INVALID_PRICE", "Invalid price.", rowNumber, { title: parsedRow.title }));
+        if (parsedRow.price !== null && parsedRow.price < 0) errors.push(createIssue("critical", "NEGATIVE_PRICE", "Negative price.", rowNumber, { title: parsedRow.title }));
+        if (parsedRow.weightText && parseDecimal(parsedRow.rawWeight, null) === null) errors.push(createIssue("critical", "INVALID_WEIGHT", "Invalid weight.", rowNumber, { title: parsedRow.title }));
+        if (parsedRow.weight < 0) errors.push(createIssue("critical", "NEGATIVE_WEIGHT", "Negative weight.", rowNumber, { title: parsedRow.title }));
+        if (!ALLOWED_UNITS.has(parsedRow.unit)) errors.push(createIssue("critical", "INVALID_UNIT", "Invalid unit.", rowNumber, { title: parsedRow.title, unit: parsedRow.unit }));
+
+        if (!parsedRow.rawExternalId) warnings.push(createIssue("warning", "MISSING_CODE", "Product row has no MAT code.", rowNumber, { title: parsedRow.title }));
+        if (!parsedRow.priceText) warnings.push(createIssue("warning", "EMPTY_PRICE", "Empty price: treated as price on request.", rowNumber, { title: parsedRow.title }));
+        if (!parsedRow.weightText) warnings.push(createIssue("warning", "EMPTY_WEIGHT", "Empty weight: treated as 0.", rowNumber, { title: parsedRow.title }));
+        if (!parsedRow.subcategory) warnings.push(createIssue("warning", "EMPTY_SUBCATEGORY", "Empty subcategory.", rowNumber, { title: parsedRow.title }));
+        if (!parsedRow.productGroup) warnings.push(createIssue("warning", "EMPTY_GROUP", "Empty product group.", rowNumber, { title: parsedRow.title }));
+        if (normalizedTitle) {
+            if (titleRows.has(normalizedTitle)) {
+                warnings.push(createIssue("warning", "SIMILAR_TITLE", "Similar product title duplicate.", rowNumber, {
+                    title: parsedRow.title,
+                    firstRowNumber: titleRows.get(normalizedTitle)
+                }));
+            } else {
+                titleRows.set(normalizedTitle, rowNumber);
+            }
+        }
+
+        productRows.push({
+            rowNumber,
+            externalId: parsedRow.externalId,
+            title: parsedRow.title,
+            category: parsedRow.category,
+            categoryExternalCode: parsedRow.categoryExternalCode,
+            subcategory: parsedRow.subcategory,
+            subcategoryExternalCode: parsedRow.subcategoryExternalCode,
+            productGroup: parsedRow.productGroup,
+            unit: parsedRow.unit,
+            price: parsedRow.price,
+            weight: parsedRow.weight,
+            sortOrder: productRows.length + 1
+        });
+    });
+
+    return {
+        sheetName: sheet.name,
+        rowsRead: sheet.rowCount,
+        categoryRows,
+        subcategoryRows,
         productRows,
         errors,
         warnings
@@ -433,9 +705,92 @@ function collectNewValues(productRows, existingValues, field, parentField = null
         .filter(Boolean);
 }
 
+function normalizeStructureRow(row) {
+    return {
+        id: row.id,
+        type: row.type,
+        name: row.name || "",
+        normalizedName: row.normalized_name || normalizeKey(row.name),
+        externalCode: row.external_code || "",
+        parentId: row.parent_id || null,
+        sortOrder: Number(row.sort_order) || 0
+    };
+}
+
+function buildStructurePreview(parsed, structureRows) {
+    const categoriesByCode = new Map();
+    const subcategoriesByCode = new Map();
+    const categoriesByName = new Map();
+    const subcategoriesByParentAndName = new Map();
+    const changes = {
+        newCategories: [],
+        renamedCategories: [],
+        missingCategoryCodes: [],
+        newSubcategories: [],
+        renamedSubcategories: [],
+        missingSubcategoryCodes: []
+    };
+
+    structureRows.filter(row => row.type === "category").forEach(row => {
+        if (row.externalCode) categoriesByCode.set(normalizeCategoryCode(row.externalCode), row);
+        categoriesByName.set(normalizeKey(row.name), row);
+    });
+    structureRows.filter(row => row.type === "subcategory").forEach(row => {
+        if (row.externalCode) subcategoriesByCode.set(normalizeSubcategoryCode(row.externalCode), row);
+        subcategoriesByParentAndName.set(`${row.parentId}:${normalizeKey(row.name)}`, row);
+    });
+
+    parsed.categoryRows?.forEach(row => {
+        if (!row.externalCode) {
+            changes.missingCategoryCodes.push(row);
+            return;
+        }
+        const existing = categoriesByCode.get(row.externalCode);
+        if (!existing) {
+            changes.newCategories.push(row);
+            return;
+        }
+        if (normalizeKey(existing.name) !== normalizeKey(row.name)) {
+            changes.renamedCategories.push({
+                externalCode: row.externalCode,
+                rowNumber: row.rowNumber,
+                currentName: existing.name,
+                incomingName: row.name
+            });
+        }
+    });
+
+    parsed.subcategoryRows?.forEach(row => {
+        if (!row.externalCode) {
+            changes.missingSubcategoryCodes.push(row);
+            return;
+        }
+        const existing = subcategoriesByCode.get(row.externalCode);
+        if (!existing) {
+            changes.newSubcategories.push(row);
+            return;
+        }
+        if (normalizeKey(existing.name) !== normalizeKey(row.name)) {
+            changes.renamedSubcategories.push({
+                externalCode: row.externalCode,
+                rowNumber: row.rowNumber,
+                currentName: existing.name,
+                incomingName: row.name
+            });
+        }
+    });
+
+    return changes;
+}
+
 async function buildCatalogImportPreview(db, parsed, file = {}) {
-    const products = await db.all("SELECT * FROM products ORDER BY id ASC");
+    const [products, rawStructureRows] = await Promise.all([
+        db.all("SELECT * FROM products ORDER BY id ASC"),
+        db.all("SELECT * FROM catalog_structure WHERE type IN ('category', 'subcategory') ORDER BY id ASC")
+    ]);
     const dbProducts = products.map(normalizeDbProduct);
+    const structureRows = rawStructureRows.map(normalizeStructureRow);
+    const structureChanges = buildStructurePreview(parsed, structureRows);
     const productsByExternalId = new Map();
     const fileCodes = new Set();
     const changes = {
@@ -450,6 +805,10 @@ async function buildCatalogImportPreview(db, parsed, file = {}) {
         requiresReview: [],
         newCategories: [],
         newSubcategories: [],
+        renamedCategories: [],
+        renamedSubcategories: [],
+        missingCategoryCodes: [],
+        missingSubcategoryCodes: [],
         newGroups: []
     };
 
@@ -551,8 +910,16 @@ async function buildCatalogImportPreview(db, parsed, file = {}) {
     });
     changes.new = changes.trueNew;
 
-    changes.newCategories = collectNewValues(parsed.productRows, dbProducts.map(product => product.category), "category");
-    changes.newSubcategories = collectNewValues(parsed.productRows, dbProducts.map(product => product.subcategory), "subcategory", "category");
+    changes.newCategories = structureChanges.newCategories.length
+        ? structureChanges.newCategories
+        : collectNewValues(parsed.productRows, dbProducts.map(product => product.category), "category");
+    changes.newSubcategories = structureChanges.newSubcategories.length
+        ? structureChanges.newSubcategories
+        : collectNewValues(parsed.productRows, dbProducts.map(product => product.subcategory), "subcategory", "category");
+    changes.renamedCategories = structureChanges.renamedCategories;
+    changes.renamedSubcategories = structureChanges.renamedSubcategories;
+    changes.missingCategoryCodes = structureChanges.missingCategoryCodes;
+    changes.missingSubcategoryCodes = structureChanges.missingSubcategoryCodes;
     changes.newGroups = collectNewValues(parsed.productRows, dbProducts.map(product => product.productGroup), "productGroup");
 
     const errors = parsed.errors;
@@ -569,6 +936,10 @@ async function buildCatalogImportPreview(db, parsed, file = {}) {
         deleted: changes.deleted.length,
         newCategories: changes.newCategories.length,
         newSubcategories: changes.newSubcategories.length,
+        renamedCategories: changes.renamedCategories.length,
+        renamedSubcategories: changes.renamedSubcategories.length,
+        missingCategoryCodes: changes.missingCategoryCodes.length,
+        missingSubcategoryCodes: changes.missingSubcategoryCodes.length,
         newGroups: changes.newGroups.length,
         criticalErrors: errors.length,
         warnings: warnings.length
@@ -601,8 +972,13 @@ async function getCatalogFingerprint(db) {
         FROM products
         ORDER BY id ASC
     `);
+    const structureRows = await db.all(`
+        SELECT id, type, name, normalized_name, external_code, parent_id, sort_order, is_active, updated_at
+        FROM catalog_structure
+        ORDER BY id ASC
+    `);
 
-    return getSha256(JSON.stringify(rows));
+    return getSha256(JSON.stringify({ products: rows, structure: structureRows }));
 }
 
 function cleanupExpiredPreviewTokens() {
@@ -823,6 +1199,108 @@ function createDatabaseBackup() {
     return backupPath;
 }
 
+async function getNextStructureCodeNumber(db, pattern) {
+    const rows = await db.all("SELECT external_code FROM catalog_structure WHERE external_code IS NOT NULL AND external_code != ''");
+    return rows.reduce((max, row) => {
+        const nextNumber = getTypedCodeNumber(row.external_code, pattern);
+        return nextNumber > max ? nextNumber : max;
+    }, 0) + 1;
+}
+
+async function findStructureCategory(db, row) {
+    if (row.externalCode) {
+        const byCode = await db.get("SELECT * FROM catalog_structure WHERE type = 'category' AND external_code = ? LIMIT 1", [row.externalCode]);
+        if (byCode) return byCode;
+    }
+
+    return db.get(
+        "SELECT * FROM catalog_structure WHERE type = 'category' AND normalized_name = ? LIMIT 1",
+        [normalizeKey(row.name)]
+    );
+}
+
+async function findStructureSubcategory(db, row, parentId) {
+    if (row.externalCode) {
+        const byCode = await db.get("SELECT * FROM catalog_structure WHERE type = 'subcategory' AND external_code = ? LIMIT 1", [row.externalCode]);
+        if (byCode) return byCode;
+    }
+
+    return db.get(
+        "SELECT * FROM catalog_structure WHERE type = 'subcategory' AND parent_id = ? AND normalized_name = ? LIMIT 1",
+        [parentId, normalizeKey(row.name)]
+    );
+}
+
+async function upsertCatalogStructureFromParsed(db, parsed, now) {
+    let nextCategoryNumber = await getNextStructureCodeNumber(db, CAT_CODE_PATTERN);
+    let nextSubcategoryNumber = await getNextStructureCodeNumber(db, SUB_CODE_PATTERN);
+    const assignedRows = [];
+    const categoryByFileCodeOrName = new Map();
+
+    for (const row of parsed.categoryRows || []) {
+        const externalCode = row.externalCode || formatCategoryCode(nextCategoryNumber++);
+        const existing = await findStructureCategory(db, { ...row, externalCode });
+        if (existing) {
+            await db.run(
+                `UPDATE catalog_structure
+                 SET name = ?,
+                     normalized_name = ?,
+                     external_code = COALESCE(NULLIF(external_code, ''), ?),
+                     updated_at = ?
+                 WHERE id = ?`,
+                [row.name, normalizeKey(row.name), externalCode, now, existing.id]
+            );
+            categoryByFileCodeOrName.set(row.externalCode || normalizeKey(row.name), { ...existing, id: existing.id, external_code: externalCode });
+        } else {
+            const result = await db.run(
+                `INSERT INTO catalog_structure (
+                    type, name, normalized_name, external_code, parent_id, sort_order, is_active, created_at, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                ["category", row.name, normalizeKey(row.name), externalCode, null, row.rowNumber || 0, 1, now, now]
+            );
+            categoryByFileCodeOrName.set(row.externalCode || normalizeKey(row.name), { id: result.id, external_code: externalCode });
+        }
+        if (!row.externalCode) assignedRows.push({ rowNumber: row.rowNumber, externalId: externalCode });
+    }
+
+    for (const row of parsed.subcategoryRows || []) {
+        const categoryKey = row.categoryExternalCode || normalizeKey(row.category);
+        let parent = categoryByFileCodeOrName.get(categoryKey);
+        if (!parent && row.categoryExternalCode) {
+            parent = await db.get("SELECT * FROM catalog_structure WHERE type = 'category' AND external_code = ? LIMIT 1", [row.categoryExternalCode]);
+        }
+        if (!parent) {
+            parent = await db.get("SELECT * FROM catalog_structure WHERE type = 'category' AND normalized_name = ? LIMIT 1", [normalizeKey(row.category)]);
+        }
+        if (!parent) continue;
+
+        const externalCode = row.externalCode || formatSubcategoryCode(nextSubcategoryNumber++);
+        const existing = await findStructureSubcategory(db, { ...row, externalCode }, parent.id);
+        if (existing) {
+            await db.run(
+                `UPDATE catalog_structure
+                 SET name = ?,
+                     normalized_name = ?,
+                     external_code = COALESCE(NULLIF(external_code, ''), ?),
+                     parent_id = ?,
+                     updated_at = ?
+                 WHERE id = ?`,
+                [row.name, normalizeKey(row.name), externalCode, parent.id, now, existing.id]
+            );
+        } else {
+            await db.run(
+                `INSERT INTO catalog_structure (
+                    type, name, normalized_name, external_code, parent_id, sort_order, is_active, created_at, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                ["subcategory", row.name, normalizeKey(row.name), externalCode, parent.id, row.rowNumber || 0, 1, now, now]
+            );
+        }
+        if (!row.externalCode) assignedRows.push({ rowNumber: row.rowNumber, externalId: externalCode });
+    }
+
+    return assignedRows;
+}
+
 async function createExcelCopy(tokenData, assignedRows) {
     const copiesDir = path.join(__dirname, "..", "imported-excel");
     fs.mkdirSync(copiesDir, { recursive: true });
@@ -856,6 +1334,7 @@ async function applyCatalogImport(db, token, options = {}, user = {}) {
         created: 0,
         updated: 0,
         assignedMat: 0,
+        assignedStructureCodes: 0,
         hidden: 0,
         requiresReview: Number(latestPreview.summary?.requiresReview || 0),
         skippedRequiresReview: latestPreview.changes?.requiresReview || [],
@@ -874,6 +1353,9 @@ async function applyCatalogImport(db, token, options = {}, user = {}) {
     try {
         const dbProducts = await db.all("SELECT * FROM products ORDER BY id ASC");
         let nextMatNumber = getMaxMatNumberFromProducts(dbProducts) + 1;
+        const assignedStructureRows = await upsertCatalogStructureFromParsed(db, tokenData.parsed, now);
+        result.assignedStructureCodes = assignedStructureRows.length;
+        assignedRows.push(...assignedStructureRows);
 
         for (const item of latestPreview.changes.updated || []) {
             const row = tokenData.parsed.productRows.find(productRow => productRow.externalId === item.externalId);
@@ -964,9 +1446,9 @@ async function applyCatalogImport(db, token, options = {}, user = {}) {
     const logResult = await db.run(
         `INSERT INTO catalog_import_logs (
             user_id, user_name, file_name, file_hash, backup_path, excel_copy_path,
-            created_count, updated_count, assigned_mat_count, hidden_count, requires_review_count,
+            created_count, updated_count, assigned_mat_count, assigned_structure_count, hidden_count, requires_review_count,
             error_count, summary_json, created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
             user?.id || null,
             user?.name || "",
@@ -977,6 +1459,7 @@ async function applyCatalogImport(db, token, options = {}, user = {}) {
             result.created,
             result.updated,
             result.assignedMat,
+            result.assignedStructureCodes,
             result.hidden,
             result.requiresReview,
             0,
@@ -1010,14 +1493,22 @@ async function getCatalogImportExcelCopy(db, id) {
 module.exports = {
     normalizeMatCode,
     validateMatCode,
-    parseCatalogExcel,
-    validateCatalogRows: parseCatalogExcel,
+    parseCatalogExcel: parseCatalogExcelV2,
+    parseCatalogRow,
+    validateCatalogRows: parseCatalogExcelV2,
     buildCatalogImportPreview,
     createCatalogImportPreviewToken,
     applyCatalogImport,
     getCatalogImportExcelCopy,
+    upsertCatalogStructureFromParsed,
     getNextMatExternalId,
     compareProductFields,
     formatMatCode,
+    formatCategoryCode,
+    formatSubcategoryCode,
+    normalizeCategoryCode,
+    normalizeSubcategoryCode,
+    validateCategoryCode,
+    validateSubcategoryCode,
     sanitizeUploadFileName
 };

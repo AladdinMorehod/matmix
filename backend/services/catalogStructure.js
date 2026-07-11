@@ -52,6 +52,7 @@ async function ensureCatalogStructureSchema(db) {
             type TEXT NOT NULL,
             name TEXT NOT NULL,
             normalized_name TEXT NOT NULL,
+            external_code TEXT,
             parent_id INTEGER NULL REFERENCES catalog_structure(id),
             sort_order INTEGER NOT NULL DEFAULT 0,
             is_active INTEGER NOT NULL DEFAULT 1,
@@ -63,6 +64,7 @@ async function ensureCatalogStructureSchema(db) {
     await ensureColumn(db, "catalog_structure", "type", "TEXT");
     await ensureColumn(db, "catalog_structure", "name", "TEXT");
     await ensureColumn(db, "catalog_structure", "normalized_name", "TEXT");
+    await ensureColumn(db, "catalog_structure", "external_code", "TEXT");
     await ensureColumn(db, "catalog_structure", "parent_id", "INTEGER");
     await ensureColumn(db, "catalog_structure", "sort_order", "INTEGER NOT NULL DEFAULT 0");
     await ensureColumn(db, "catalog_structure", "is_active", "INTEGER NOT NULL DEFAULT 1");
@@ -74,6 +76,7 @@ async function ensureCatalogStructureSchema(db) {
     await run("CREATE INDEX IF NOT EXISTS idx_catalog_structure_sort_order ON catalog_structure(sort_order)");
     await run("CREATE UNIQUE INDEX IF NOT EXISTS idx_catalog_structure_category_unique ON catalog_structure(normalized_name) WHERE type = 'category'");
     await run("CREATE UNIQUE INDEX IF NOT EXISTS idx_catalog_structure_subcategory_unique ON catalog_structure(parent_id, normalized_name) WHERE type = 'subcategory'");
+    await run("CREATE UNIQUE INDEX IF NOT EXISTS idx_catalog_structure_external_code_unique ON catalog_structure(external_code) WHERE external_code IS NOT NULL AND external_code != ''");
 }
 
 function rememberFirstStructureItem(map, name, product) {
@@ -129,6 +132,7 @@ async function insertStructureItem(db, { type, name, normalizedName, parentId = 
         name,
         normalized_name: normalizedName,
         parent_id: parentId,
+        external_code: null,
         sort_order: sortOrder,
         is_active: 1,
         created_at: now,
@@ -147,6 +151,7 @@ function toPublicStructureItem(row) {
         name: row.name,
         sortOrder: Number(row.sort_order) || 0
     };
+    if (row.external_code) item.externalCode = row.external_code;
 
     if (row.type === "subcategory") {
         item.parentId = row.parent_id;
@@ -455,7 +460,7 @@ async function syncCatalogStructureFromProducts(db) {
 
 async function getCatalogStructureTree(db) {
     const rows = await db.all(`
-        SELECT id, type, name, parent_id, sort_order
+        SELECT id, type, name, external_code, parent_id, sort_order
         FROM catalog_structure
         WHERE is_active = 1
           AND type IN ('category', 'subcategory')
@@ -468,6 +473,7 @@ async function getCatalogStructureTree(db) {
         const category = {
             id: row.id,
             name: row.name,
+            externalCode: row.external_code || "",
             sortOrder: Number(row.sort_order) || 0,
             subcategories: []
         };
@@ -482,6 +488,7 @@ async function getCatalogStructureTree(db) {
         parent.subcategories.push({
             id: row.id,
             name: row.name,
+            externalCode: row.external_code || "",
             sortOrder: Number(row.sort_order) || 0
         });
     });
@@ -492,7 +499,7 @@ async function getCatalogStructureTree(db) {
 async function getPublicCatalogStructureTree(db) {
     const [structureRows, productRows] = await Promise.all([
         db.all(`
-            SELECT id, type, name, normalized_name, parent_id, sort_order
+            SELECT id, type, name, normalized_name, external_code, parent_id, sort_order
             FROM catalog_structure
             WHERE is_active = 1
               AND type IN ('category', 'subcategory')
@@ -516,6 +523,7 @@ async function getPublicCatalogStructureTree(db) {
             id: row.id,
             name: row.name,
             normalizedName: row.normalized_name,
+            externalCode: row.external_code || "",
             subcategories: []
         };
         categoriesById.set(row.id, category);
@@ -530,7 +538,8 @@ async function getPublicCatalogStructureTree(db) {
         const subcategory = {
             id: row.id,
             name: row.name,
-            normalizedName: row.normalized_name
+            normalizedName: row.normalized_name,
+            externalCode: row.external_code || ""
         };
         parent.subcategories.push(subcategory);
         subcategoriesByParentAndName.set(`${row.parent_id}:${row.normalized_name}`, subcategory);

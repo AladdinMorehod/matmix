@@ -32,6 +32,10 @@ const importSummaryCards = [
     { key: "manualOnly", label: "Только в CRM" },
     { key: "newCategories", label: "Новые категории" },
     { key: "newSubcategories", label: "Новые подкатегории" },
+    { key: "renamedCategories", label: "Переимен. категории" },
+    { key: "renamedSubcategories", label: "Переимен. подкат." },
+    { key: "missingCategoryCodes", label: "Без CAT" },
+    { key: "missingSubcategoryCodes", label: "Без SUB" },
     { key: "newGroups", label: "Новые группы" },
     { key: "warnings", label: "Предупреждения" }
 ];
@@ -64,6 +68,10 @@ function getImportArray(key) {
         return [
             ...(importPreview.changes?.newCategories || []),
             ...(importPreview.changes?.newSubcategories || []),
+            ...(importPreview.changes?.renamedCategories || []),
+            ...(importPreview.changes?.renamedSubcategories || []),
+            ...(importPreview.changes?.missingCategoryCodes || []),
+            ...(importPreview.changes?.missingSubcategoryCodes || []),
             ...(importPreview.changes?.newGroups || [])
         ];
     }
@@ -78,6 +86,10 @@ function getImportTabCount(tabId) {
     if (tabId === "structure") {
         return Number(importPreview.summary?.newCategories || 0)
             + Number(importPreview.summary?.newSubcategories || 0)
+            + Number(importPreview.summary?.renamedCategories || 0)
+            + Number(importPreview.summary?.renamedSubcategories || 0)
+            + Number(importPreview.summary?.missingCategoryCodes || 0)
+            + Number(importPreview.summary?.missingSubcategoryCodes || 0)
             + Number(importPreview.summary?.newGroups || 0);
     }
     if (tabId === "issues") {
@@ -185,6 +197,8 @@ async function submitImportApply() {
                     <div><dt>Назначить MAT</dt><dd>${Number(summary.missingCodes || 0)}</dd></div>
                     <div><dt>Скрыть</dt><dd>${Number(summary.missingFromFile || 0)}</dd></div>
                     <div><dt>Новые категории</dt><dd>${Number(summary.newCategories || 0)}</dd></div>
+                    <div><dt>Переименовать CAT/SUB</dt><dd>${Number(summary.renamedCategories || 0) + Number(summary.renamedSubcategories || 0)}</dd></div>
+                    <div><dt>Назначить CAT/SUB</dt><dd>${Number(summary.missingCategoryCodes || 0) + Number(summary.missingSubcategoryCodes || 0)}</dd></div>
                     <div><dt>Требуют решения</dt><dd>${Number(summary.requiresReview || 0)}</dd></div>
                 </dl>
                 <label class="product-checkbox">
@@ -501,15 +515,23 @@ function renderMissingCodesTab() {
 function renderStructureTab() {
     const categories = importPreview.changes?.newCategories || [];
     const subcategories = importPreview.changes?.newSubcategories || [];
+    const renamedCategories = importPreview.changes?.renamedCategories || [];
+    const renamedSubcategories = importPreview.changes?.renamedSubcategories || [];
+    const missingCategoryCodes = importPreview.changes?.missingCategoryCodes || [];
+    const missingSubcategoryCodes = importPreview.changes?.missingSubcategoryCodes || [];
     const groups = importPreview.changes?.newGroups || [];
-    if (!categories.length && !subcategories.length && !groups.length) {
+    if (!categories.length && !subcategories.length && !renamedCategories.length && !renamedSubcategories.length && !missingCategoryCodes.length && !missingSubcategoryCodes.length && !groups.length) {
         return renderEmptyImportState("Новых элементов структуры нет.");
     }
 
     return `
         <div class="import-structure-grid">
-            ${renderStructureList("Новые категории", categories, item => item.name)}
-            ${renderStructureList("Новые подкатегории", subcategories, item => `${item.category || "Без категории"} / ${item.name}`)}
+            ${renderStructureList("Новые категории", categories, item => `${item.externalCode || "CAT будет назначен"} · ${item.name}`)}
+            ${renderStructureList("Новые подкатегории", subcategories, item => `${item.externalCode || "SUB будет назначен"} · ${item.category || "Без категории"} / ${item.name}`)}
+            ${renderStructureList("Переименованные категории", renamedCategories, item => `${item.externalCode}: ${item.currentName} -> ${item.incomingName}`)}
+            ${renderStructureList("Переименованные подкатегории", renamedSubcategories, item => `${item.externalCode}: ${item.currentName} -> ${item.incomingName}`)}
+            ${renderStructureList("Категории без CAT", missingCategoryCodes, item => `${item.name} · строка ${item.rowNumber}`)}
+            ${renderStructureList("Подкатегории без SUB", missingSubcategoryCodes, item => `${item.category || "Без категории"} / ${item.name} · строка ${item.rowNumber}`)}
             ${renderStructureList("Новые группы", groups, item => `${item.category || "Без категории"} / ${item.subcategory || "Без подкатегории"} / ${item.name}`)}
         </div>
     `;
