@@ -2,6 +2,8 @@
 let importSelectedFile = null;
 let importPreview = null;
 let importLoading = false;
+let importApplying = false;
+let importApplyResult = null;
 let importActiveTab = "new";
 let importSearchQuery = "";
 let importSearchTimer = null;
@@ -11,6 +13,7 @@ const IMPORT_MAX_FILE_SIZE = 30 * 1024 * 1024;
 const importTabs = [
     { id: "new", label: "Новые" },
     { id: "updated", label: "Обновления" },
+    { id: "requiresReview", label: "Требуют решения" },
     { id: "missingFromFile", label: "Отсутствуют в файле" },
     { id: "manualOnly", label: "Только в CRM" },
     { id: "missingCodes", label: "Без кода" },
@@ -21,6 +24,7 @@ const importTabs = [
 const importSummaryCards = [
     { key: "new", label: "Новые товары", primary: true },
     { key: "updated", label: "Обновятся", primary: true },
+    { key: "requiresReview", label: "Требуют решения", primary: true },
     { key: "missingFromFile", label: "Отсутствуют в файле", primary: true },
     { key: "missingCodes", label: "Без MAT-кода", primary: true },
     { key: "criticalErrors", label: "Критические ошибки", primary: true },
@@ -122,6 +126,7 @@ function setImportFile(file) {
     const error = validateImportFile(file);
     importSelectedFile = error ? null : file;
     importPreview = null;
+    importApplyResult = null;
     importSearchQuery = "";
     renderImportView(error);
 }
@@ -129,7 +134,9 @@ function setImportFile(file) {
 function resetImportPreview({ clearFile = false } = {}) {
     if (clearFile) importSelectedFile = null;
     importPreview = null;
+    importApplyResult = null;
     importLoading = false;
+    importApplying = false;
     importActiveTab = "new";
     importSearchQuery = "";
     renderImportView();
@@ -149,6 +156,7 @@ async function submitImportPreview() {
         const formData = new FormData();
         formData.append("file", importSelectedFile);
         importPreview = await CrmApi.post("/api/products/import/preview", formData);
+        importApplyResult = null;
         importActiveTab = importTabs.find(tab => getImportTabCount(tab.id) > 0)?.id || "new";
         importSearchQuery = "";
         window.CrmToast?.success("Файл проанализирован.");
@@ -157,6 +165,62 @@ async function submitImportPreview() {
         notifyError(error, "Не удалось проанализировать Excel-файл.");
     } finally {
         importLoading = false;
+        renderImportView();
+    }
+}
+
+async function submitImportApply() {
+    if (!importPreview?.token || importApplying) return;
+
+    const summary = importPreview.summary || {};
+    const formData = await CrmModal.form({
+        title: "Применить импорт",
+        description: "Импорт выполнится в одной транзакции. Перед изменениями будет создан backup базы.",
+        submitText: "Применить импорт",
+        content: `
+            <div class="import-apply-confirm">
+                <dl>
+                    <div><dt>Создать</dt><dd>${Number(summary.new || 0)}</dd></div>
+                    <div><dt>Обновить</dt><dd>${Number(summary.updated || 0)}</dd></div>
+                    <div><dt>Назначить MAT</dt><dd>${Number(summary.missingCodes || 0)}</dd></div>
+                    <div><dt>Скрыть</dt><dd>${Number(summary.missingFromFile || 0)}</dd></div>
+                    <div><dt>Новые категории</dt><dd>${Number(summary.newCategories || 0)}</dd></div>
+                    <div><dt>Требуют решения</dt><dd>${Number(summary.requiresReview || 0)}</dd></div>
+                </dl>
+                <label class="product-checkbox">
+                    <input name="assignMissingCodes" type="checkbox" checked>
+                    <span>Назначить MAT строкам без кода, если найден однозначный товар в CRM</span>
+                </label>
+                <label>
+                    <span>Отсутствующие в Excel</span>
+                    <select name="missingFromFileAction">
+                        <option value="keep" selected>Оставить без изменений</option>
+                        <option value="hide">Скрыть excel-товары</option>
+                    </select>
+                </label>
+            </div>
+        `
+    });
+    if (!formData) return;
+
+    importApplying = true;
+    renderImportView();
+
+    try {
+        importApplyResult = await CrmApi.post("/api/products/import/apply", {
+            token: importPreview.token,
+            options: {
+                assignMissingCodes: formData.get("assignMissingCodes") === "on",
+                missingFromFileAction: String(formData.get("missingFromFileAction") || "keep")
+            }
+        });
+        importPreview = null;
+        importSelectedFile = null;
+        notifySuccess("Импорт каталога применен.");
+    } catch (error) {
+        notifyError(error, "Не удалось применить импорт каталога.");
+    } finally {
+        importApplying = false;
         renderImportView();
     }
 }
@@ -200,6 +264,38 @@ function renderImportUpload(error = "") {
                     <button class="import-rerun" type="button" ${isReady ? "" : "disabled"}>Проверить заново</button>
                 ` : ""}
             </div>
+        </section>
+    `;
+}
+
+function renderApplyActions() {
+    if (!importPreview || !importPreview.canImport) return "";
+    return `
+        <section class="import-apply-panel">
+            <div>
+                <strong>Preview готов к применению</strong>
+                <span>Token активен до ${escapeHtml(formatDate(importPreview.tokenExpiresAt))}</span>
+            </div>
+            <button class="import-apply-submit" type="button" ${importApplying ? "disabled" : ""}>Применить импорт</button>
+        </section>
+    `;
+}
+
+function renderApplyResult() {
+    if (!importApplyResult) return "";
+    return `
+        <section class="import-apply-result">
+            <h2>Импорт применен</h2>
+            <dl>
+                <div><dt>Создано</dt><dd>${Number(importApplyResult.created || 0)}</dd></div>
+                <div><dt>Обновлено</dt><dd>${Number(importApplyResult.updated || 0)}</dd></div>
+                <div><dt>Назначено MAT</dt><dd>${Number(importApplyResult.assignedMat || 0)}</dd></div>
+                <div><dt>Скрыто</dt><dd>${Number(importApplyResult.hidden || 0)}</dd></div>
+                <div><dt>Требуют решения</dt><dd>${Number(importApplyResult.requiresReview || 0)}</dd></div>
+            </dl>
+            <p>Backup создан: ${escapeHtml(importApplyResult.backupPath || "")}</p>
+            <p>Integrity check: ${escapeHtml(importApplyResult.integrityCheck || "")}</p>
+            ${importApplyResult.excelCopyUrl ? `<button class="import-download-copy" type="button">Скачать обновленный Excel</button>` : ""}
         </section>
     `;
 }
@@ -252,12 +348,38 @@ function renderImportTabPanel() {
     if (!importPreview) return "";
     if (importActiveTab === "new") return renderNewProductsTab();
     if (importActiveTab === "updated") return renderUpdatedTab();
+    if (importActiveTab === "requiresReview") return renderRequiresReviewTab();
     if (importActiveTab === "missingFromFile") return renderMissingFromFileTab();
     if (importActiveTab === "manualOnly") return renderManualOnlyTab();
     if (importActiveTab === "missingCodes") return renderMissingCodesTab();
     if (importActiveTab === "structure") return renderStructureTab();
     if (importActiveTab === "issues") return renderIssuesTab();
     return "";
+}
+
+function renderRequiresReviewTab() {
+    const items = getFilteredImportItems("requiresReview");
+    if (!items.length) return renderEmptyImportState("Товаров, требующих решения, нет.");
+    return `
+        <p class="import-tab-note">Эти строки похожи на уже существующие несвязанные товары. Они не создаются автоматически.</p>
+        ${items.map(item => `
+            <article class="import-preview-row">
+                <div>
+                    <strong>${escapeHtml(item.title)}</strong>
+                    <code>${escapeHtml(item.externalId)}</code>
+                    ${renderProductMeta(item)}
+                    <span class="import-row-number">${escapeHtml(item.reviewReason || "REQUIRES_REVIEW")}</span>
+                </div>
+                ${item.candidate ? `
+                    <dl>
+                        <div><dt>Кандидат CRM</dt><dd>${escapeHtml(item.candidate.title)}</dd></div>
+                        <div><dt>ID</dt><dd>${escapeHtml(item.candidate.id)}</dd></div>
+                        <div><dt>Похожесть</dt><dd>${escapeHtml(item.similarity || "")}</dd></div>
+                    </dl>
+                ` : ""}
+            </article>
+        `).join("")}
+    `;
 }
 
 function renderEmptyImportState(message) {
@@ -458,10 +580,13 @@ function renderImportView(error = "") {
             </aside>
             <main class="import-main">
                 ${importLoading ? renderCrmLoader("Анализируем файл и сравниваем каталог...") : ""}
+                ${importApplying ? renderCrmLoader("Применяем импорт, создаем backup и Excel-копию...") : ""}
                 ${renderImportStatus()}
+                ${renderApplyActions()}
+                ${renderApplyResult()}
                 ${renderImportSummary()}
                 ${renderImportTabs()}
-                ${!importPreview && !importLoading ? renderEmptyImportState("Выберите Excel-файл, чтобы увидеть предварительный просмотр.") : ""}
+                ${!importPreview && !importLoading && !importApplying && !importApplyResult ? renderEmptyImportState("Выберите Excel-файл, чтобы увидеть предварительный просмотр.") : ""}
             </main>
         </section>
     `;
@@ -512,6 +637,20 @@ importView?.addEventListener("click", event => {
     const otherButton = event.target.closest(".import-select-other");
     if (otherButton) {
         resetImportPreview({ clearFile: true });
+        return;
+    }
+
+    const applyButton = event.target.closest(".import-apply-submit");
+    if (applyButton) {
+        submitImportApply();
+        return;
+    }
+
+    const copyButton = event.target.closest(".import-download-copy");
+    if (copyButton && importApplyResult?.excelCopyUrl) {
+        CrmApi.download(importApplyResult.excelCopyUrl).catch(error => {
+            notifyError(error, "Не удалось скачать обновленный Excel.");
+        });
         return;
     }
 

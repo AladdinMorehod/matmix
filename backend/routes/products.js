@@ -12,7 +12,9 @@ const {
 } = require("../services/catalogStructure");
 const {
     parseCatalogExcel,
-    buildCatalogImportPreview,
+    createCatalogImportPreviewToken,
+    applyCatalogImport,
+    getCatalogImportExcelCopy,
     getNextMatExternalId,
     sanitizeUploadFileName
 } = require("../services/catalogImport");
@@ -706,10 +708,10 @@ router.post("/import/preview", requireRole(["admin"]), async (req, res) => {
     try {
         const upload = await readMultipartXlsxUpload(req);
         const parsed = await parseCatalogExcel(upload.buffer);
-        const preview = await buildCatalogImportPreview({ all }, parsed, {
+        const preview = await createCatalogImportPreviewToken({ all }, parsed, {
             name: upload.name,
             mimeType: upload.mimeType
-        });
+        }, req.session.user || {}, upload.buffer);
 
         res.json(preview);
     } catch (error) {
@@ -724,6 +726,40 @@ router.post("/import/preview", requireRole(["admin"]), async (req, res) => {
                 message: error.status ? error.message : "Файл невозможно прочитать."
             }],
             warnings: []
+        });
+    }
+});
+
+router.post("/import/apply", requireRole(["admin"]), async (req, res) => {
+    try {
+        const result = await applyCatalogImport(
+            { all, get, run },
+            req.body?.token,
+            req.body?.options || {},
+            req.session.user || {}
+        );
+
+        res.json(result);
+    } catch (error) {
+        console.error("Products import apply error:", error);
+        res.status(error.status || 500).json({
+            success: false,
+            message: error.status ? error.message : "Не удалось применить импорт каталога.",
+            code: error.code || "IMPORT_APPLY_ERROR"
+        });
+    }
+});
+
+router.get("/import/excel-copy/:id", requireRole(["admin"]), async (req, res) => {
+    try {
+        const copy = await getCatalogImportExcelCopy({ get }, req.params.id);
+        setExcelHeaders(res, copy.filename);
+        res.sendFile(copy.path);
+    } catch (error) {
+        console.error("Products import Excel copy error:", error);
+        res.status(error.status || 500).json({
+            success: false,
+            message: error.status ? error.message : "Не удалось скачать копию Excel."
         });
     }
 });

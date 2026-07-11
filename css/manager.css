@@ -2879,6 +2879,8 @@ a[role="button"],
 .import-main,
 .import-upload-panel,
 .import-preview,
+.import-apply-panel,
+.import-apply-result,
 .import-structure-list,
 .import-issues-grid > section {
     min-width: 0;
@@ -2896,6 +2898,8 @@ a[role="button"],
 
 .import-upload-panel,
 .import-preview,
+.import-apply-panel,
+.import-apply-result,
 .import-structure-list,
 .import-issues-grid > section {
     background: #fff;
@@ -2964,6 +2968,89 @@ a[role="button"],
     flex-wrap: wrap;
     gap: 10px;
     margin-top: 14px;
+}
+
+.import-apply-panel,
+.import-apply-result {
+    display: grid;
+    gap: 14px;
+}
+
+.import-apply-panel {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    border-color: #b8dcc8;
+    background: #f3fbf6;
+}
+
+.import-apply-panel strong,
+.import-apply-result h2 {
+    color: #173d30;
+}
+
+.import-apply-panel span,
+.import-apply-result p {
+    color: #647063;
+    font-size: 0.88rem;
+}
+
+.import-apply-submit,
+.import-download-copy {
+    border: 0;
+    border-radius: 8px;
+    background: #205742;
+    color: #fff;
+    cursor: pointer;
+    font-weight: 800;
+    padding: 12px 16px;
+}
+
+.import-apply-result dl,
+.import-apply-confirm dl {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+    margin: 0;
+}
+
+.import-apply-result dl div,
+.import-apply-confirm dl div {
+    border: 1px solid #dce7dc;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.import-apply-result dt,
+.import-apply-confirm dt {
+    color: #647063;
+    font-size: 0.76rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+}
+
+.import-apply-result dd,
+.import-apply-confirm dd {
+    color: #173d30;
+    font-size: 1.2rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+.import-apply-confirm {
+    display: grid;
+    gap: 14px;
+}
+
+.import-apply-confirm label {
+    display: grid;
+    gap: 6px;
+}
+
+.import-apply-confirm select {
+    border: 1px solid #dce7dc;
+    border-radius: 8px;
+    padding: 10px 12px;
 }
 
 .import-actions button,

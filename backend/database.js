@@ -135,6 +135,7 @@ async function initDatabase() {
     await ensureColumn("users", "deleted_at", "TEXT");
 
     await initProductsTable();
+    await initCatalogImportLogsTable();
     await ensureCatalogStructureSchema({ run, all });
 
     const admin = await get("SELECT id FROM users WHERE login = ?", ["admin"]);
@@ -153,6 +154,28 @@ async function initDatabase() {
 
     await seedProductsFromPublicCatalog();
     await syncCatalogStructureFromProducts({ run, get, all });
+}
+
+async function initCatalogImportLogsTable() {
+    await run(`
+        CREATE TABLE IF NOT EXISTS catalog_import_logs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER,
+            user_name TEXT,
+            file_name TEXT,
+            file_hash TEXT,
+            backup_path TEXT,
+            excel_copy_path TEXT,
+            created_count INTEGER DEFAULT 0,
+            updated_count INTEGER DEFAULT 0,
+            assigned_mat_count INTEGER DEFAULT 0,
+            hidden_count INTEGER DEFAULT 0,
+            requires_review_count INTEGER DEFAULT 0,
+            error_count INTEGER DEFAULT 0,
+            summary_json TEXT,
+            created_at TEXT NOT NULL
+        )
+    `);
 }
 
 async function initProductsTable() {
@@ -364,5 +387,6 @@ module.exports = {
     get,
     all,
     initDatabase,
-    getOrderNumber
+    getOrderNumber,
+    databasePath
 };
