@@ -1,0 +1,363 @@
+MAT resolution apply
+Generated: 2026-07-11T09:34:04.608Z
+Excel MAT rows: 3910
+Already linked: 3325
+Resolved exact: 452
+Resolved normalized: 0
+Resolved by attributes: 11
+Resolved duplicate sequence: 0
+Unresolved not found: 122
+Unresolved ambiguous: 0
+Partially resolved duplicate groups: 10
+Conflicts: 0
+Planned updates: 463
+Applied: true
+Backup: C:\Users\Aladd\Desktop\MatMix\backend\database\backups\matmix-before-mat-resolution-2026-07-11-12-34-04.db
+Integrity: ok
+
+Resolved sample:
+- row 1962: MAT-001954 -> product 1807 (RESOLVED_EXACT) Гвозди для монтажного пистолета 3.0 х 16 мм усиленные 1000 шт.
+- row 1963: MAT-001955 -> product 1808 (RESOLVED_EXACT) Гвозди для монтажного пистолета 3.0 х 19 мм усиленные 1000 шт.
+- row 1964: MAT-001956 -> product 1809 (RESOLVED_EXACT) Гвозди для монтажного пистолета 3.0 х 22 мм усиленные 1000 шт.
+- row 1965: MAT-001957 -> product 1810 (RESOLVED_EXACT) Гвозди для монтажного пистолета 3.0 х 25 мм усиленные 1000 шт.
+- row 1966: MAT-001958 -> product 1811 (RESOLVED_EXACT) Газовый баллон для монтажных пистолетов 165 мм 80мл
+- row 2237: MAT-002229 -> product 2072 (RESOLVED_EXACT) Труба гладкая для кабеля ПВХ D20 мм 2 м цвет черный
+- row 2267: MAT-002259 -> product 2101 (RESOLVED_EXACT) Профиль перф. П-образный 1,5х3000 мм, для монтажа металлических лотков
+- row 2268: MAT-002260 -> product 2102 (RESOLVED_EXACT) Профиль перф. С-образный 1,5х3000 мм, для монтажа металлических лотков
+- row 2272: MAT-002264 -> product 2105 (RESOLVED_EXACT) Гильза кабельная медная ГМЛ под кабель 4 мм
+- row 2273: MAT-002265 -> product 2106 (RESOLVED_EXACT) Гильза кабельная медная ГМЛ под кабель 6 мм
+- row 2274: MAT-002266 -> product 2107 (RESOLVED_EXACT) Гильза кабельная медная ГМЛ под кабель 8 мм
+- row 2275: MAT-002267 -> product 2108 (RESOLVED_EXACT) Гильза кабельная медная ГМЛ под кабель 10 мм
+- row 2276: MAT-002268 -> product 2109 (RESOLVED_EXACT) Гильза кабельная медная ГМЛ под кабель 12 мм
+- row 2284: MAT-002276 -> product 2117 (RESOLVED_EXACT) Наконечник НШВИ 1,5 мм (100 шт)
+- row 2285: MAT-002277 -> product 2118 (RESOLVED_EXACT) Наконечник НШВИ 2,5 мм (100 шт)
+- row 2702: MAT-002694 -> product 2502 (RESOLVED_EXACT) Душевой трап с боковым отводом 100х100, нерж
+- row 2703: MAT-002695 -> product 2503 (RESOLVED_EXACT) Трап Лоток душевой TIM с гидрозатвором 600 мм d50 мм решетка из нержавеющей стали
+- row 2710: MAT-002702 -> product 2509 (RESOLVED_EXACT) Сифон для ванны Mcalpine 1 1/2 х 40 мм с выпуском и ревизией полуавтомат хром
+- row 2713: MAT-002705 -> product 2511 (RESOLVED_EXACT) Подводка 0,6м г/ш
+- row 2714: MAT-002706 -> product 2512 (RESOLVED_EXACT) Подводка 1м г/ш
+- row 2715: MAT-002707 -> product 2513 (RESOLVED_EXACT) Подводка 1,5м г/ш
+- row 2716: MAT-002708 -> product 2514 (RESOLVED_EXACT) Подводка 2м г/ш
+- row 2717: MAT-002709 -> product 2515 (RESOLVED_EXACT) Подводка 3м г/ш
+- row 2718: MAT-002710 -> product 2516 (RESOLVED_EXACT) Подводка 0,6м г/г
+- row 2719: MAT-002711 -> product 2517 (RESOLVED_EXACT) Подводка 1м г/г
+- row 2720: MAT-002712 -> product 2518 (RESOLVED_EXACT) Подводка 1,5м г/г
+- row 2721: MAT-002713 -> product 2519 (RESOLVED_EXACT) Подводка 2м г/г
+- row 2722: MAT-002714 -> product 2520 (RESOLVED_EXACT) Подводка 3м г/г
+- row 2724: MAT-002716 -> product 2521 (RESOLVED_EXACT) Унипак 75г
+- row 2725: MAT-002717 -> product 2522 (RESOLVED_EXACT) Унипак 250г
+- row 2726: MAT-002718 -> product 2523 (RESOLVED_EXACT) Лен сантехнический
+- row 2727: MAT-002719 -> product 2524 (RESOLVED_EXACT) Комплект сантехнический Лен + Unipak 75 г
+- row 2728: MAT-002720 -> product 2525 (RESOLVED_EXACT) Лента ФУМ 12 мм 15 м
+- row 2729: MAT-002721 -> product 2526 (RESOLVED_EXACT) Тангит унилок 20м
+- row 2730: MAT-002722 -> product 2527 (RESOLVED_EXACT) Тангит унилок 80м
+- row 2732: MAT-002724 -> product 2529 (RESOLVED_EXACT) Шаблон для монтажа водорозеток
+- row 2740: MAT-002732 -> product 2536 (RESOLVED_EXACT) Комплект крепеления для инсталляции КИ-01 сталь
+- row 2741: MAT-002733 -> product 2537 (RESOLVED_EXACT) Крепление одинарное для монтажа инсталяции Tece 9030002
+- row 2742: MAT-002734 -> product 2538 (RESOLVED_EXACT) Уголок для монтажа инсталяции Tece
+- row 2743: MAT-002735 -> product 2539 (RESOLVED_EXACT) Профиль для монтажа инсталяции Tece 4,5 м
+- row 2745: MAT-002737 -> product 2540 (RESOLVED_EXACT) Труба 16 stabil Rehau
+- row 2746: MAT-002738 -> product 2541 (RESOLVED_EXACT) Труба 20 stabil Rehau
+- row 2747: MAT-002739 -> product 2542 (RESOLVED_EXACT) Труба 25 stabil Rehau
+- row 2752: MAT-002744 -> product 2547 (RESOLVED_EXACT) Труба 16 pink Rehau
+- row 2753: MAT-002745 -> product 2548 (RESOLVED_EXACT) Труба 20 pink Rehau
+- row 2754: MAT-002746 -> product 2549 (RESOLVED_EXACT) Труба 25 pink Rehau
+- row 2755: MAT-002747 -> product 2550 (RESOLVED_EXACT) Гильза 16 Rehau PVDF
+- row 2756: MAT-002748 -> product 2551 (RESOLVED_EXACT) Гильза 20 Rehau PVDF
+- row 2757: MAT-002749 -> product 2552 (RESOLVED_EXACT) Гильза 25 Rehau PVDF
+- row 2759: MAT-002751 -> product 2554 (RESOLVED_EXACT) Тройник 16 Rehau PVDF
+- row 2760: MAT-002752 -> product 2555 (RESOLVED_EXACT) Тройник 20 Rehau PVDF
+- row 2761: MAT-002753 -> product 2556 (RESOLVED_EXACT) Тройник 25 Rehau PVDF
+- row 2765: MAT-002757 -> product 2560 (RESOLVED_EXACT) Тройник 25х20 Rehau PVDF
+- row 2777: MAT-002769 -> product 2572 (RESOLVED_EXACT) Муфта 16 Rehau PVDF
+- row 2778: MAT-002770 -> product 2573 (RESOLVED_EXACT) Муфта 20 Rehau PVDF
+- row 2779: MAT-002771 -> product 2574 (RESOLVED_EXACT) Муфта 25 Rehau PVDF
+- row 2781: MAT-002773 -> product 2576 (RESOLVED_EXACT) Муфта 20х16 Rehau PVDF
+- row 2791: MAT-002783 -> product 2586 (RESOLVED_EXACT) Муфта 16х1/2н Rehau бронза
+- row 2792: MAT-002784 -> product 2587 (RESOLVED_EXACT) Муфта 16х3/4н Rehau бронза
+- row 2793: MAT-002785 -> product 2588 (RESOLVED_EXACT) Муфта 16х3/4в Rehau латунь
+- row 2794: MAT-002786 -> product 2589 (RESOLVED_EXACT) Муфта 20х1/2н Rehau бронза
+- row 2795: MAT-002787 -> product 2590 (RESOLVED_EXACT) Муфта 20х3/4н Rehau бронза
+- row 2796: MAT-002788 -> product 2591 (RESOLVED_EXACT) Муфта 25х1/2н Rehau бронза
+- row 2797: MAT-002789 -> product 2592 (RESOLVED_EXACT) Муфта 25х3/4н Rehau бронза
+- row 2799: MAT-002791 -> product 2594 (RESOLVED_EXACT) Муфта 25х1н Rehau бронза
+- row 2800: MAT-002792 -> product 2595 (RESOLVED_EXACT) Муфта 16х1/2в Rehau бронза
+- row 2801: MAT-002793 -> product 2596 (RESOLVED_EXACT) Муфта 20х1/2в Rehau бронза
+- row 2802: MAT-002794 -> product 2597 (RESOLVED_EXACT) Муфта 20х3/4в Rehau бронза
+- row 2803: MAT-002795 -> product 2598 (RESOLVED_EXACT) Муфта 25х1/2в Rehau бронза
+- row 2804: MAT-002796 -> product 2599 (RESOLVED_EXACT) Муфта 25х3/4в Rehau бронза
+- row 2806: MAT-002798 -> product 2601 (RESOLVED_EXACT) Муфта переходник на евроконус 16-G 3/4" Rehau
+- row 2807: MAT-002799 -> product 2602 (RESOLVED_EXACT) Муфта с накидной гайкой 16х1/2в Rehau бронза
+- row 2808: MAT-002800 -> product 2603 (RESOLVED_EXACT) Муфта с накидной гайкой 16х3/4в Rehau бронза
+- row 2809: MAT-002801 -> product 2604 (RESOLVED_EXACT) Муфта с накидной гайкой 20х1/2в Rehau бронза
+- row 2810: MAT-002802 -> product 2605 (RESOLVED_EXACT) Муфта с накидной гайкой 20х3/4в Rehau бронза
+- row 2811: MAT-002803 -> product 2606 (RESOLVED_EXACT) Муфта с накидной гайкой 25х3/4в Rehau бронза
+- row 2812: MAT-002804 -> product 2607 (RESOLVED_EXACT) Муфта с накидной гайкой 25х1в Rehau бронза
+- row 2813: MAT-002805 -> product 2608 (RESOLVED_EXACT) Уголок 16 Rehau PVDF
+- row 2814: MAT-002806 -> product 2609 (RESOLVED_EXACT) Уголок 20 Rehau PVDF
+- row 2815: MAT-002807 -> product 2610 (RESOLVED_EXACT) Уголок 25 Rehau PVDF
+- row 2818: MAT-002810 -> product 2613 (RESOLVED_EXACT) Уголок 20 Rehau бронза
+- row 2819: MAT-002811 -> product 2614 (RESOLVED_EXACT) Уголок 25 Rehau бронза
+- row 2821: MAT-002813 -> product 2616 (RESOLVED_EXACT) Уголок 16х1/2н Rehau бронза
+- row 2823: MAT-002815 -> product 2618 (RESOLVED_EXACT) Уголок 20х3/4н Rehau бронза
+- row 2825: MAT-002817 -> product 2620 (RESOLVED_EXACT) Уголок 16х1/2в Rehau бронза
+- row 2826: MAT-002818 -> product 2621 (RESOLVED_EXACT) Уголок 16х3/4в Rehau бронза
+- row 2827: MAT-002819 -> product 2622 (RESOLVED_EXACT) Уголок 20х1/2в Rehau бронза
+- row 2830: MAT-002822 -> product 2625 (RESOLVED_EXACT) Уголок установочный 16х1/2в Rehau бронза
+- row 2831: MAT-002823 -> product 2626 (RESOLVED_EXACT) Уголок установочный 20х1/2в Rehau бронза
+- row 2833: MAT-002825 -> product 2628 (RESOLVED_EXACT) Уголок установочный 25х3/4в Rehau бронза
+- row 2834: MAT-002826 -> product 2629 (RESOLVED_EXACT) Уголок установочный 16х1/2н Rehau бронза
+- row 2835: MAT-002827 -> product 2630 (RESOLVED_EXACT) Уголок установочный 20х1/2н Rehau бронза
+- row 2837: MAT-002829 -> product 2632 (RESOLVED_EXACT) Уголок установочный 25х3/4н Rehau бронза
+- row 2840: MAT-002832 -> product 2635 (RESOLVED_EXACT) Планка 2-й Rehau тип О 75/150 длинный
+- row 2841: MAT-002833 -> product 2636 (RESOLVED_EXACT) Планка 1-й Rehau тип Z 30 короткий
+- row 2843: MAT-002835 -> product 2638 (RESOLVED_EXACT) Трубка из. нерж. стали для подкл. радиатора, Г-образная 16/250
+- row 2845: MAT-002837 -> product 2640 (RESOLVED_EXACT) Трубка из. нерж. стали для подкл. радиатора, Г-образная 20/250
+- row 2847: MAT-002839 -> product 2642 (RESOLVED_EXACT) Трубка для радиатора Rehau 20 х 15 х 20 х 250 мм Т-образная нерж. Сталь
+- row 2848: MAT-002840 -> product 2643 (RESOLVED_EXACT) Резьбозажимное соединение (Евроконус) для металлической трубки G 3/4 -15
+- row 2849: MAT-002841 -> product 2644 (RESOLVED_EXACT) Резьбозажимное соединение (Евроконус) flex/pink 16х2,2xG3/4
+
+RESOLVED_BY_ATTRIBUTES diagnostics:
+- row 676: MAT-000668 -> product 592
+  uniqueByField=weight usedPrice=true usedWeight=true usedSortOrder=false usedExcelRowProximity=false
+  selected=Профнастил С-20, крашеный (1 сторона), 1150х2000х0,4 мм
+  rejected candidate 593: reason=REJECTED_BY_WEIGHT matched=title,category,subcategory,productGroup,unit,price different=weight,sortOrder
+  rejected candidate 594: reason=REJECTED_BY_WEIGHT matched=title,category,subcategory,productGroup,unit,price different=weight,sortOrder
+- row 677: MAT-000669 -> product 593
+  uniqueByField=weight usedPrice=true usedWeight=true usedSortOrder=false usedExcelRowProximity=false
+  selected=Профнастил С-20, крашеный (1 сторона), 1150х2000х0,4 мм
+  rejected candidate 594: reason=REJECTED_BY_WEIGHT matched=title,category,subcategory,productGroup,unit,price different=weight,sortOrder
+- row 1124: MAT-001116 -> product 1013
+  uniqueByField=sortOrder usedPrice=true usedWeight=true usedSortOrder=true usedExcelRowProximity=false
+  selected=Стамеска 32 мм
+  rejected candidate 1015: reason=REJECTED_BY_SORTORDER matched=title,category,subcategory,productGroup,unit,price,weight different=sortOrder
+- row 1125: MAT-001117 -> product 1014
+  uniqueByField=sortOrder usedPrice=true usedWeight=true usedSortOrder=true usedExcelRowProximity=false
+  selected=Стамеска 50 мм
+  rejected candidate 1016: reason=REJECTED_BY_SORTORDER matched=title,category,subcategory,productGroup,unit,price,weight different=sortOrder
+- row 1129: MAT-001121 -> product 1018
+  uniqueByField=sortOrder usedPrice=true usedWeight=true usedSortOrder=true usedExcelRowProximity=false
+  selected=Стамеска 32 мм Премиум
+  rejected candidate 1020: reason=REJECTED_BY_SORTORDER matched=title,category,subcategory,productGroup,unit,price,weight different=sortOrder
+- row 1130: MAT-001122 -> product 1019
+  uniqueByField=sortOrder usedPrice=true usedWeight=true usedSortOrder=true usedExcelRowProximity=false
+  selected=Стамеска 50 мм Премиум
+  rejected candidate 1021: reason=REJECTED_BY_SORTORDER matched=title,category,subcategory,productGroup,unit,price,weight different=sortOrder
+- row 1584: MAT-001576 -> product 1450
+  uniqueByField=sortOrder usedPrice=true usedWeight=true usedSortOrder=true usedExcelRowProximity=false
+  selected=Диск сетчатый липучка для шлифмашинки диаметром 240мм P-240
+  rejected candidate 1451: reason=REJECTED_BY_SORTORDER matched=title,category,subcategory,productGroup,unit,price,weight different=sortOrder
+- row 2281: MAT-002273 -> product 2114
+  uniqueByField=sortOrder usedPrice=true usedWeight=true usedSortOrder=true usedExcelRowProximity=false
+  selected=Наконечник НШВИ 0,5 мм (100 шт)
+  rejected candidate 2122: reason=REJECTED_BY_SORTORDER matched=title,category,subcategory,productGroup,unit,price,weight different=sortOrder
+- row 2282: MAT-002274 -> product 2115
+  uniqueByField=sortOrder usedPrice=true usedWeight=true usedSortOrder=true usedExcelRowProximity=false
+  selected=Наконечник НШВИ 0,75 мм (100 шт)
+  rejected candidate 2123: reason=REJECTED_BY_SORTORDER matched=title,category,subcategory,productGroup,unit,price,weight different=sortOrder
+- row 2296: MAT-002288 -> product 2129
+  uniqueByField=sortOrder usedPrice=true usedWeight=true usedSortOrder=true usedExcelRowProximity=false
+  selected=Наконечник кабельный медный луженый 4 мм
+  rejected candidate 2131: reason=REJECTED_BY_SORTORDER matched=title,category,subcategory,productGroup,unit,price,weight different=sortOrder
+- row 3659: MAT-003651 -> product 3441
+  uniqueByField=sortOrder usedPrice=true usedWeight=true usedSortOrder=true usedExcelRowProximity=false
+  selected=Манжет 50х32 Ostendorf
+  rejected candidate 3442: reason=REJECTED_BY_SORTORDER matched=title,category,subcategory,productGroup,unit,price,weight different=sortOrder
+
+PARTIALLY_RESOLVED_DUPLICATE_GROUPS:
+- group 1: excelRows=3 dbCandidates=3
+  blockers=PARTIALLY_LINKED linked=2 remainingExcel=1 remainingDb=1
+  linked row 676: MAT-000668 -> product 592 (RESOLVED_BY_ATTRIBUTES)
+  linked row 677: MAT-000669 -> product 593 (RESOLVED_BY_ATTRIBUTES)
+  remaining product 594: excel-metall-proflist-s-20-krashen-profnastil-s-20-krashenyy-1-storona-1150h2000h0-4-mm-678 Профнастил С-20, крашеный (1 сторона), 1150х2000х0,4 мм
+- group 2: excelRows=2 dbCandidates=2
+  blockers=PARTIALLY_LINKED linked=1 remainingExcel=1 remainingDb=1
+  linked row 1124: MAT-001116 -> product 1013 (RESOLVED_BY_ATTRIBUTES)
+  remaining product 1015: excel-instrument-ruchnoy-instrument-stameska-stameska-32-mm-1126 Стамеска 32 мм
+- group 3: excelRows=2 dbCandidates=2
+  blockers=PARTIALLY_LINKED linked=1 remainingExcel=1 remainingDb=1
+  linked row 1125: MAT-001117 -> product 1014 (RESOLVED_BY_ATTRIBUTES)
+  remaining product 1016: excel-instrument-ruchnoy-instrument-stameska-stameska-50-mm-1127 Стамеска 50 мм
+- group 4: excelRows=2 dbCandidates=2
+  blockers=PARTIALLY_LINKED linked=1 remainingExcel=1 remainingDb=1
+  linked row 1129: MAT-001121 -> product 1018 (RESOLVED_BY_ATTRIBUTES)
+  remaining product 1020: excel-instrument-ruchnoy-instrument-stameska-stameska-32-mm-premium-1131 Стамеска 32 мм Премиум
+- group 5: excelRows=2 dbCandidates=2
+  blockers=PARTIALLY_LINKED linked=1 remainingExcel=1 remainingDb=1
+  linked row 1130: MAT-001122 -> product 1019 (RESOLVED_BY_ATTRIBUTES)
+  remaining product 1021: excel-instrument-ruchnoy-instrument-stameska-stameska-50-mm-premium-1132 Стамеска 50 мм Премиум
+- group 6: excelRows=2 dbCandidates=2
+  blockers=PARTIALLY_LINKED linked=1 remainingExcel=1 remainingDb=1
+  linked row 1584: MAT-001576 -> product 1450 (RESOLVED_BY_ATTRIBUTES)
+  remaining product 1451: excel-rashodnik-dlya-shlif-mashinki-disk-125mm-disk-setchatyy-lipuchka-dlya-shlifmashinki-diametrom-240mm-p-240-1585 Диск сетчатый липучка для шлифмашинки диаметром 240мм P-240
+- group 7: excelRows=2 dbCandidates=2
+  blockers=PARTIALLY_LINKED linked=1 remainingExcel=1 remainingDb=1
+  linked row 2281: MAT-002273 -> product 2114 (RESOLVED_BY_ATTRIBUTES)
+  remaining product 2122: excel-elektrika-gilzy-nakonechniki-nshvi-nakonechnik-nshvi-0-5-mm-100-sht-2289 Наконечник НШВИ 0,5 мм (100 шт)
+- group 8: excelRows=2 dbCandidates=2
+  blockers=PARTIALLY_LINKED linked=1 remainingExcel=1 remainingDb=1
+  linked row 2282: MAT-002274 -> product 2115 (RESOLVED_BY_ATTRIBUTES)
+  remaining product 2123: excel-elektrika-gilzy-nakonechniki-nshvi-nakonechnik-nshvi-0-75-mm-100-sht-2290 Наконечник НШВИ 0,75 мм (100 шт)
+- group 9: excelRows=2 dbCandidates=2
+  blockers=PARTIALLY_LINKED linked=1 remainingExcel=1 remainingDb=1
+  linked row 2296: MAT-002288 -> product 2129 (RESOLVED_BY_ATTRIBUTES)
+  remaining product 2131: excel-elektrika-gilzy-nakonechniki-luzhenyy-nakonechnik-kabelnyy-mednyy-luzhenyy-4-mm-2298 Наконечник кабельный медный луженый 4 мм
+- group 10: excelRows=2 dbCandidates=2
+  blockers=PARTIALLY_LINKED linked=1 remainingExcel=1 remainingDb=1
+  linked row 3659: MAT-003651 -> product 3441 (RESOLVED_BY_ATTRIBUTES)
+  remaining product 3442: excel-santehnika-truba-kanalizacionnaya-ostendorf-manzhet-manzhet-50h32-ostendorf-3660 Манжет 50х32 Ostendorf
+
+Unresolved sample:
+- row 540: MAT-000532 NOT_FOUND Подложка вспененная 3мм, (рул ? м2)
+  candidate 469: score=0.833 diff=title Подложка вспененная 3мм, (рул м2)
+  candidate 470: score=0.571 diff=title,weight,sortOrder Подложка вспененная 5мм, (рул м2)
+- row 541: MAT-000533 NOT_FOUND Подложка вспененная 5мм, (рул ? м2)
+  candidate 470: score=0.833 diff=title Подложка вспененная 5мм, (рул м2)
+  candidate 469: score=0.571 diff=title,weight,sortOrder Подложка вспененная 3мм, (рул м2)
+- row 678: MAT-000670 NOT_FOUND Профнастил С-20, крашеный (1 сторона), 1150х2000х0,4 мм
+  candidate 592: score=1 diff=weight,sortOrder Профнастил С-20, крашеный (1 сторона), 1150х2000х0,4 мм
+  candidate 593: score=1 diff=weight,sortOrder Профнастил С-20, крашеный (1 сторона), 1150х2000х0,4 мм
+  candidate 594: score=1 diff=- Профнастил С-20, крашеный (1 сторона), 1150х2000х0,4 мм
+- row 1126: MAT-001118 NOT_FOUND Стамеска 32 мм
+  candidate 1013: score=1 diff=sortOrder Стамеска 32 мм
+  candidate 1015: score=1 diff=- Стамеска 32 мм
+  candidate 1018: score=0.75 diff=title,sortOrder Стамеска 32 мм Премиум
+- row 1127: MAT-001119 NOT_FOUND Стамеска 50 мм
+  candidate 1014: score=1 diff=sortOrder Стамеска 50 мм
+  candidate 1016: score=1 diff=- Стамеска 50 мм
+  candidate 1019: score=0.75 diff=title,sortOrder Стамеска 50 мм Премиум
+- row 1131: MAT-001123 NOT_FOUND Стамеска 32 мм Премиум
+  candidate 1018: score=1 diff=sortOrder Стамеска 32 мм Премиум
+  candidate 1020: score=1 diff=- Стамеска 32 мм Премиум
+  candidate 1013: score=0.75 diff=title,sortOrder Стамеска 32 мм
+- row 1132: MAT-001124 NOT_FOUND Стамеска 50 мм Премиум
+  candidate 1019: score=1 diff=sortOrder Стамеска 50 мм Премиум
+  candidate 1021: score=1 diff=- Стамеска 50 мм Премиум
+  candidate 1014: score=0.75 diff=title,sortOrder Стамеска 50 мм
+- row 1585: MAT-001577 NOT_FOUND Диск сетчатый липучка для шлифмашинки диаметром 240мм P-240
+  candidate 1450: score=1 diff=sortOrder Диск сетчатый липучка для шлифмашинки диаметром 240мм P-240
+  candidate 1451: score=1 diff=- Диск сетчатый липучка для шлифмашинки диаметром 240мм P-240
+- row 2167: MAT-002159 NOT_FOUND Кабель ПВ-3 (ПУГВ) 1,5 цвет ?
+  candidate 2006: score=0.875 diff=title Кабель ПВ-3 (ПУГВ) 1,5 цвет
+  candidate 2007: score=0.667 diff=title,weight,sortOrder Кабель ПВ-3 (ПУГВ) 2,5 цвет
+  candidate 2008: score=0.5 diff=title,weight,sortOrder Кабель ПВ-3 (ПУГВ) 4,0 цвет
+- row 2168: MAT-002160 NOT_FOUND Кабель ПВ-3 (ПУГВ) 2,5 цвет ?
+  candidate 2007: score=0.875 diff=title Кабель ПВ-3 (ПУГВ) 2,5 цвет
+  candidate 2006: score=0.667 diff=title,weight,sortOrder Кабель ПВ-3 (ПУГВ) 1,5 цвет
+  candidate 2008: score=0.5 diff=title,weight,sortOrder Кабель ПВ-3 (ПУГВ) 4,0 цвет
+- row 2169: MAT-002161 NOT_FOUND Кабель ПВ-3 (ПУГВ) 4,0 цвет ?
+  candidate 2008: score=0.875 diff=title Кабель ПВ-3 (ПУГВ) 4,0 цвет
+  candidate 2009: score=0.667 diff=title,price,weight,sortOrder Кабель ПВ-3 (ПУГВ) 6,0 цвет
+  candidate 2010: score=0.667 diff=title,weight,sortOrder Кабель ПВ-3 (ПУГВ) 10,0 цвет
+- row 2170: MAT-002162 NOT_FOUND Кабель ПВ-3 (ПУГВ) 6,0 цвет ?
+  candidate 2009: score=0.875 diff=title Кабель ПВ-3 (ПУГВ) 6,0 цвет
+  candidate 2008: score=0.667 diff=title,price,weight,sortOrder Кабель ПВ-3 (ПУГВ) 4,0 цвет
+  candidate 2010: score=0.667 diff=title,price,weight,sortOrder Кабель ПВ-3 (ПУГВ) 10,0 цвет
+- row 2171: MAT-002163 NOT_FOUND Кабель ПВ-3 (ПУГВ) 10,0 цвет ?
+  candidate 2010: score=0.875 diff=title Кабель ПВ-3 (ПУГВ) 10,0 цвет
+  candidate 2008: score=0.667 diff=title,weight,sortOrder Кабель ПВ-3 (ПУГВ) 4,0 цвет
+  candidate 2009: score=0.667 diff=title,price,weight,sortOrder Кабель ПВ-3 (ПУГВ) 6,0 цвет
+- row 2172: MAT-002164 NOT_FOUND Кабель ПВ-3 (ПУГВ) 16,0 цвет ?
+  candidate 2011: score=0.875 diff=title Кабель ПВ-3 (ПУГВ) 16,0 цвет
+  candidate 2008: score=0.667 diff=title,weight,sortOrder Кабель ПВ-3 (ПУГВ) 4,0 цвет
+  candidate 2009: score=0.667 diff=title,price,weight,sortOrder Кабель ПВ-3 (ПУГВ) 6,0 цвет
+- row 2173: MAT-002165 NOT_FOUND Кабель ПВ-3 (ПУГВ) 26,0 цвет ?
+  candidate 2012: score=0.875 diff=title Кабель ПВ-3 (ПУГВ) 26,0 цвет
+  candidate 2008: score=0.667 diff=title,weight,sortOrder Кабель ПВ-3 (ПУГВ) 4,0 цвет
+  candidate 2009: score=0.667 diff=title,price,weight,sortOrder Кабель ПВ-3 (ПУГВ) 6,0 цвет
+- row 2289: MAT-002281 NOT_FOUND Наконечник НШВИ 0,5 мм (100 шт)
+  candidate 2114: score=1 diff=sortOrder Наконечник НШВИ 0,5 мм (100 шт)
+  candidate 2122: score=1 diff=- Наконечник НШВИ 0,5 мм (100 шт)
+  candidate 2115: score=0.75 diff=title,sortOrder Наконечник НШВИ 0,75 мм (100 шт)
+- row 2290: MAT-002282 NOT_FOUND Наконечник НШВИ 0,75 мм (100 шт)
+  candidate 2115: score=1 diff=sortOrder Наконечник НШВИ 0,75 мм (100 шт)
+  candidate 2123: score=1 diff=- Наконечник НШВИ 0,75 мм (100 шт)
+  candidate 2114: score=0.75 diff=title,sortOrder Наконечник НШВИ 0,5 мм (100 шт)
+- row 2298: MAT-002290 NOT_FOUND Наконечник кабельный медный луженый 4 мм
+  candidate 2129: score=1 diff=sortOrder Наконечник кабельный медный луженый 4 мм
+  candidate 2131: score=1 diff=- Наконечник кабельный медный луженый 4 мм
+- row 3660: MAT-003652 NOT_FOUND Манжет 50х32 Ostendorf
+  candidate 3441: score=1 diff=sortOrder Манжет 50х32 Ostendorf
+  candidate 3442: score=1 diff=- Манжет 50х32 Ostendorf
+  candidate 3438: score=0.4 diff=title,price,sortOrder Манжет 123х110 чугун/пласт Ostendorf
+- row 3973: MAT-003965 NOT_FOUND Вентилятор электрический вытяжной d100
+- row 3974: MAT-003966 NOT_FOUND Вентилятор накладной круглый электрический вытяжной d100
+- row 3975: MAT-003967 NOT_FOUND Решетка вентиляционная 200х200 мм, белый
+- row 3976: MAT-003968 NOT_FOUND Воздуховод плоский 110*55 мм х 0,5м
+- row 3977: MAT-003969 NOT_FOUND Воздуховод плоский 110*55 мм х 1м
+- row 3978: MAT-003970 NOT_FOUND Воздуховод плоский 110*55 мм х 1,5м
+- row 3979: MAT-003971 NOT_FOUND Воздуховод плоский 110*55 мм х 2м
+- row 3980: MAT-003972 NOT_FOUND Воздуховод плоский 110*55 мм х 2,5м
+- row 3981: MAT-003973 NOT_FOUND Воздуховод плоский 110*55 мм х 3м
+- row 3982: MAT-003974 NOT_FOUND Воздуховод плоский 120*60 мм х 0,5м
+- row 3983: MAT-003975 NOT_FOUND Воздуховод плоский 120*60 мм х 1м
+- row 3984: MAT-003976 NOT_FOUND Воздуховод плоский 120*60 мм х 1,5м
+- row 3985: MAT-003977 NOT_FOUND Воздуховод плоский 120*60 мм х 2м
+- row 3986: MAT-003978 NOT_FOUND Воздуховод плоский 120*60 мм х 2,5м
+- row 3987: MAT-003979 NOT_FOUND Воздуховод плоский 204*60 мм х 0,5м
+- row 3988: MAT-003980 NOT_FOUND Воздуховод плоский 204*60 мм х 1м
+- row 3989: MAT-003981 NOT_FOUND Воздуховод плоский 204*60 мм х 1,5м
+- row 3990: MAT-003982 NOT_FOUND Воздуховод плоский 204*60 мм х 2м
+- row 3991: MAT-003983 NOT_FOUND Воздуховод плоский 204*60 мм х 2,5м
+- row 3992: MAT-003984 NOT_FOUND Воздуховод круглый 100 мм 0,5м
+- row 3993: MAT-003985 NOT_FOUND Воздуховод круглый 100 мм 1м
+- row 3994: MAT-003986 NOT_FOUND Воздуховод круглый 100 мм 1,5м
+- row 3995: MAT-003987 NOT_FOUND Воздуховод круглый 100 мм 2м
+- row 3996: MAT-003988 NOT_FOUND Воздуховод круглый 100 мм 2,5м
+- row 3997: MAT-003989 NOT_FOUND Воздуховод круглый 125 мм 0,5м
+- row 3998: MAT-003990 NOT_FOUND Воздуховод круглый 125 мм 1м
+- row 3999: MAT-003991 NOT_FOUND Воздуховод круглый 125 мм 1,5м
+- row 4000: MAT-003992 NOT_FOUND Воздуховод круглый 125 мм 2м
+- row 4001: MAT-003993 NOT_FOUND Воздуховод круглый 125 мм 2,5м
+- row 4002: MAT-003994 NOT_FOUND Воздуховод круглый 150 мм 0,5м
+- row 4003: MAT-003995 NOT_FOUND Воздуховод круглый 150 мм 1м
+- row 4004: MAT-003996 NOT_FOUND Воздуховод круглый 150 мм 1,5м
+- row 4005: MAT-003997 NOT_FOUND Воздуховод круглый 150 мм 2м
+- row 4006: MAT-003998 NOT_FOUND Воздуховод круглый 150 мм 2,5м
+- row 4007: MAT-003999 NOT_FOUND Воздуховод круглый 200 мм 1м
+- row 4008: MAT-004000 NOT_FOUND Воздуховод круглый 200 мм 2м
+- row 4009: MAT-004001 NOT_FOUND Воздуховод круглый 200 мм 2,5м
+- row 4010: MAT-004002 NOT_FOUND Соединитель воздуховодов плоских 110*55
+- row 4011: MAT-004003 NOT_FOUND Соединитель воздуховодов плоских 120*60
+- row 4012: MAT-004004 NOT_FOUND Соединитель воздуховодов плоских 204*60
+- row 4013: MAT-004005 NOT_FOUND Соединитель воздуховодов плоских с обратным клапаном 110*55
+- row 4014: MAT-004006 NOT_FOUND Соединитель воздуховодов плоских с обратным клапаном 120*60
+- row 4015: MAT-004007 NOT_FOUND Соединитель воздуховодов плоских с обратным клапаном 204*60
+- row 4016: MAT-004008 NOT_FOUND Колено вертикальное 110*55 мм
+- row 4017: MAT-004009 NOT_FOUND Колено вертикальное 120*60 мм
+- row 4018: MAT-004010 NOT_FOUND Колено вертикальное 204*60 мм
+- row 4019: MAT-004011 NOT_FOUND Колено горизонтальное 110*55 мм
+- row 4020: MAT-004012 NOT_FOUND Колено горизонтальное 120*60 мм
+- row 4021: MAT-004013 NOT_FOUND Колено горизонтальное 204*60 мм
+- row 4022: MAT-004014 NOT_FOUND Колено горизонтальное разноугловое 110*55 мм
+- row 4023: MAT-004015 NOT_FOUND Колено горизонтальное разноугловое 204*60 мм
+- row 4024: MAT-004016 NOT_FOUND Колено круглое 100 мм
+- row 4025: MAT-004017 NOT_FOUND Колено круглое 125 мм
+- row 4026: MAT-004018 NOT_FOUND Колено круглое 150 мм
+- row 4027: MAT-004019 NOT_FOUND Тройник 110*55 мм
+- row 4028: MAT-004020 NOT_FOUND Тройник 120*60 мм
+- row 4029: MAT-004021 NOT_FOUND Тройник 204*60 мм
+- row 4030: MAT-004022 NOT_FOUND Тройник 110*55/100 мм
+- row 4031: MAT-004023 NOT_FOUND Настенная пластина 110*55 мм
+- row 4032: MAT-004024 NOT_FOUND Настенная пластина 120*60 мм
+- row 4033: MAT-004025 NOT_FOUND Настенная пластина 204*60 мм
+- row 4034: MAT-004026 NOT_FOUND Тройник 100 мм
+- row 4035: MAT-004027 NOT_FOUND Тройник 125 мм
+- row 4036: MAT-004028 NOT_FOUND Тройник 150 мм
+- row 4037: MAT-004029 NOT_FOUND Тройник плоский (по центру круглый) 100х55х100 мм
+- row 4038: MAT-004030 NOT_FOUND Тройник плоский (по центру круглый) 120х60х100 мм
+- row 4039: MAT-004031 NOT_FOUND Держатель 110*55 мм
+- row 4040: MAT-004032 NOT_FOUND Держатель 120*60 мм
+- row 4041: MAT-004033 NOT_FOUND Держатель 204*60 мм
+- row 4042: MAT-004034 NOT_FOUND Держатель 100 мм
+- row 4043: MAT-004035 NOT_FOUND Держатель 125 мм
+- row 4044: MAT-004036 NOT_FOUND Держатель 150 мм
+- row 4045: MAT-004037 NOT_FOUND Держатель 200 мм
+- row 4046: MAT-004038 NOT_FOUND Редуктор прямоугольный 110*55 мм х 204*60 мм
+- row 4047: MAT-004039 NOT_FOUND Редуктор 100/125 мм
+- row 4048: MAT-004040 NOT_FOUND Редуктор 125/150 мм
+- row 4049: MAT-004041 NOT_FOUND Редуктор 200/150 мм
+- row 4050: MAT-004042 NOT_FOUND Редуктор 150/125/120/100/80 мм
+- row 4051: MAT-004043 NOT_FOUND Соединитель 110*55 х 100 мм
+- row 4052: MAT-004044 NOT_FOUND Соединитель 120*60 х 100 мм
+- row 4053: MAT-004045 NOT_FOUND Соединитель 204*60 х 125 мм

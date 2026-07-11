@@ -7,6 +7,8 @@
     "start": "node backend/server.js",
     "dev": "nodemon backend/server.js",
     "import:products:reset": "node backend/scripts/reset-and-import-products.js",
+    "catalog:migrate-mat": "node backend/scripts/migrate-mat-external-ids.js",
+    "catalog:resolve-mat": "node backend/scripts/resolve-mat-external-ids.js",
     "catalog:fixes": "node backend/scripts/apply-catalog-fixes.js",
     "fix:plywood-groups": "npm run catalog:fixes"
   },

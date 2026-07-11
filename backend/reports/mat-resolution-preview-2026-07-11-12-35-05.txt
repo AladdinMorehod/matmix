@@ -1,0 +1,155 @@
+MAT resolution preview
+Generated: 2026-07-11T09:35:05.730Z
+Excel MAT rows: 3910
+Already linked: 3788
+Resolved exact: 10
+Resolved normalized: 0
+Resolved by attributes: 0
+Resolved duplicate sequence: 0
+Unresolved not found: 112
+Unresolved ambiguous: 0
+Partially resolved duplicate groups: 0
+Conflicts: 0
+Planned updates: 10
+Applied: false
+Backup: -
+Integrity: ok
+
+Resolved sample:
+- row 678: MAT-000670 -> product 594 (RESOLVED_EXACT) Профнастил С-20, крашеный (1 сторона), 1150х2000х0,4 мм
+- row 1126: MAT-001118 -> product 1015 (RESOLVED_EXACT) Стамеска 32 мм
+- row 1127: MAT-001119 -> product 1016 (RESOLVED_EXACT) Стамеска 50 мм
+- row 1131: MAT-001123 -> product 1020 (RESOLVED_EXACT) Стамеска 32 мм Премиум
+- row 1132: MAT-001124 -> product 1021 (RESOLVED_EXACT) Стамеска 50 мм Премиум
+- row 1585: MAT-001577 -> product 1451 (RESOLVED_EXACT) Диск сетчатый липучка для шлифмашинки диаметром 240мм P-240
+- row 2289: MAT-002281 -> product 2122 (RESOLVED_EXACT) Наконечник НШВИ 0,5 мм (100 шт)
+- row 2290: MAT-002282 -> product 2123 (RESOLVED_EXACT) Наконечник НШВИ 0,75 мм (100 шт)
+- row 2298: MAT-002290 -> product 2131 (RESOLVED_EXACT) Наконечник кабельный медный луженый 4 мм
+- row 3660: MAT-003652 -> product 3442 (RESOLVED_EXACT) Манжет 50х32 Ostendorf
+
+Unresolved sample:
+- row 540: MAT-000532 NOT_FOUND Подложка вспененная 3мм, (рул ? м2)
+  candidate 469: score=0.833 diff=title Подложка вспененная 3мм, (рул м2)
+  candidate 470: score=0.571 diff=title,weight,sortOrder Подложка вспененная 5мм, (рул м2)
+- row 541: MAT-000533 NOT_FOUND Подложка вспененная 5мм, (рул ? м2)
+  candidate 470: score=0.833 diff=title Подложка вспененная 5мм, (рул м2)
+  candidate 469: score=0.571 diff=title,weight,sortOrder Подложка вспененная 3мм, (рул м2)
+- row 2167: MAT-002159 NOT_FOUND Кабель ПВ-3 (ПУГВ) 1,5 цвет ?
+  candidate 2006: score=0.875 diff=title Кабель ПВ-3 (ПУГВ) 1,5 цвет
+  candidate 2007: score=0.667 diff=title,weight,sortOrder Кабель ПВ-3 (ПУГВ) 2,5 цвет
+  candidate 2008: score=0.5 diff=title,weight,sortOrder Кабель ПВ-3 (ПУГВ) 4,0 цвет
+- row 2168: MAT-002160 NOT_FOUND Кабель ПВ-3 (ПУГВ) 2,5 цвет ?
+  candidate 2007: score=0.875 diff=title Кабель ПВ-3 (ПУГВ) 2,5 цвет
+  candidate 2006: score=0.667 diff=title,weight,sortOrder Кабель ПВ-3 (ПУГВ) 1,5 цвет
+  candidate 2008: score=0.5 diff=title,weight,sortOrder Кабель ПВ-3 (ПУГВ) 4,0 цвет
+- row 2169: MAT-002161 NOT_FOUND Кабель ПВ-3 (ПУГВ) 4,0 цвет ?
+  candidate 2008: score=0.875 diff=title Кабель ПВ-3 (ПУГВ) 4,0 цвет
+  candidate 2009: score=0.667 diff=title,price,weight,sortOrder Кабель ПВ-3 (ПУГВ) 6,0 цвет
+  candidate 2010: score=0.667 diff=title,weight,sortOrder Кабель ПВ-3 (ПУГВ) 10,0 цвет
+- row 2170: MAT-002162 NOT_FOUND Кабель ПВ-3 (ПУГВ) 6,0 цвет ?
+  candidate 2009: score=0.875 diff=title Кабель ПВ-3 (ПУГВ) 6,0 цвет
+  candidate 2008: score=0.667 diff=title,price,weight,sortOrder Кабель ПВ-3 (ПУГВ) 4,0 цвет
+  candidate 2010: score=0.667 diff=title,price,weight,sortOrder Кабель ПВ-3 (ПУГВ) 10,0 цвет
+- row 2171: MAT-002163 NOT_FOUND Кабель ПВ-3 (ПУГВ) 10,0 цвет ?
+  candidate 2010: score=0.875 diff=title Кабель ПВ-3 (ПУГВ) 10,0 цвет
+  candidate 2008: score=0.667 diff=title,weight,sortOrder Кабель ПВ-3 (ПУГВ) 4,0 цвет
+  candidate 2009: score=0.667 diff=title,price,weight,sortOrder Кабель ПВ-3 (ПУГВ) 6,0 цвет
+- row 2172: MAT-002164 NOT_FOUND Кабель ПВ-3 (ПУГВ) 16,0 цвет ?
+  candidate 2011: score=0.875 diff=title Кабель ПВ-3 (ПУГВ) 16,0 цвет
+  candidate 2008: score=0.667 diff=title,weight,sortOrder Кабель ПВ-3 (ПУГВ) 4,0 цвет
+  candidate 2009: score=0.667 diff=title,price,weight,sortOrder Кабель ПВ-3 (ПУГВ) 6,0 цвет
+- row 2173: MAT-002165 NOT_FOUND Кабель ПВ-3 (ПУГВ) 26,0 цвет ?
+  candidate 2012: score=0.875 diff=title Кабель ПВ-3 (ПУГВ) 26,0 цвет
+  candidate 2008: score=0.667 diff=title,weight,sortOrder Кабель ПВ-3 (ПУГВ) 4,0 цвет
+  candidate 2009: score=0.667 diff=title,price,weight,sortOrder Кабель ПВ-3 (ПУГВ) 6,0 цвет
+- row 3973: MAT-003965 NOT_FOUND Вентилятор электрический вытяжной d100
+- row 3974: MAT-003966 NOT_FOUND Вентилятор накладной круглый электрический вытяжной d100
+- row 3975: MAT-003967 NOT_FOUND Решетка вентиляционная 200х200 мм, белый
+- row 3976: MAT-003968 NOT_FOUND Воздуховод плоский 110*55 мм х 0,5м
+- row 3977: MAT-003969 NOT_FOUND Воздуховод плоский 110*55 мм х 1м
+- row 3978: MAT-003970 NOT_FOUND Воздуховод плоский 110*55 мм х 1,5м
+- row 3979: MAT-003971 NOT_FOUND Воздуховод плоский 110*55 мм х 2м
+- row 3980: MAT-003972 NOT_FOUND Воздуховод плоский 110*55 мм х 2,5м
+- row 3981: MAT-003973 NOT_FOUND Воздуховод плоский 110*55 мм х 3м
+- row 3982: MAT-003974 NOT_FOUND Воздуховод плоский 120*60 мм х 0,5м
+- row 3983: MAT-003975 NOT_FOUND Воздуховод плоский 120*60 мм х 1м
+- row 3984: MAT-003976 NOT_FOUND Воздуховод плоский 120*60 мм х 1,5м
+- row 3985: MAT-003977 NOT_FOUND Воздуховод плоский 120*60 мм х 2м
+- row 3986: MAT-003978 NOT_FOUND Воздуховод плоский 120*60 мм х 2,5м
+- row 3987: MAT-003979 NOT_FOUND Воздуховод плоский 204*60 мм х 0,5м
+- row 3988: MAT-003980 NOT_FOUND Воздуховод плоский 204*60 мм х 1м
+- row 3989: MAT-003981 NOT_FOUND Воздуховод плоский 204*60 мм х 1,5м
+- row 3990: MAT-003982 NOT_FOUND Воздуховод плоский 204*60 мм х 2м
+- row 3991: MAT-003983 NOT_FOUND Воздуховод плоский 204*60 мм х 2,5м
+- row 3992: MAT-003984 NOT_FOUND Воздуховод круглый 100 мм 0,5м
+- row 3993: MAT-003985 NOT_FOUND Воздуховод круглый 100 мм 1м
+- row 3994: MAT-003986 NOT_FOUND Воздуховод круглый 100 мм 1,5м
+- row 3995: MAT-003987 NOT_FOUND Воздуховод круглый 100 мм 2м
+- row 3996: MAT-003988 NOT_FOUND Воздуховод круглый 100 мм 2,5м
+- row 3997: MAT-003989 NOT_FOUND Воздуховод круглый 125 мм 0,5м
+- row 3998: MAT-003990 NOT_FOUND Воздуховод круглый 125 мм 1м
+- row 3999: MAT-003991 NOT_FOUND Воздуховод круглый 125 мм 1,5м
+- row 4000: MAT-003992 NOT_FOUND Воздуховод круглый 125 мм 2м
+- row 4001: MAT-003993 NOT_FOUND Воздуховод круглый 125 мм 2,5м
+- row 4002: MAT-003994 NOT_FOUND Воздуховод круглый 150 мм 0,5м
+- row 4003: MAT-003995 NOT_FOUND Воздуховод круглый 150 мм 1м
+- row 4004: MAT-003996 NOT_FOUND Воздуховод круглый 150 мм 1,5м
+- row 4005: MAT-003997 NOT_FOUND Воздуховод круглый 150 мм 2м
+- row 4006: MAT-003998 NOT_FOUND Воздуховод круглый 150 мм 2,5м
+- row 4007: MAT-003999 NOT_FOUND Воздуховод круглый 200 мм 1м
+- row 4008: MAT-004000 NOT_FOUND Воздуховод круглый 200 мм 2м
+- row 4009: MAT-004001 NOT_FOUND Воздуховод круглый 200 мм 2,5м
+- row 4010: MAT-004002 NOT_FOUND Соединитель воздуховодов плоских 110*55
+- row 4011: MAT-004003 NOT_FOUND Соединитель воздуховодов плоских 120*60
+- row 4012: MAT-004004 NOT_FOUND Соединитель воздуховодов плоских 204*60
+- row 4013: MAT-004005 NOT_FOUND Соединитель воздуховодов плоских с обратным клапаном 110*55
+- row 4014: MAT-004006 NOT_FOUND Соединитель воздуховодов плоских с обратным клапаном 120*60
+- row 4015: MAT-004007 NOT_FOUND Соединитель воздуховодов плоских с обратным клапаном 204*60
+- row 4016: MAT-004008 NOT_FOUND Колено вертикальное 110*55 мм
+- row 4017: MAT-004009 NOT_FOUND Колено вертикальное 120*60 мм
+- row 4018: MAT-004010 NOT_FOUND Колено вертикальное 204*60 мм
+- row 4019: MAT-004011 NOT_FOUND Колено горизонтальное 110*55 мм
+- row 4020: MAT-004012 NOT_FOUND Колено горизонтальное 120*60 мм
+- row 4021: MAT-004013 NOT_FOUND Колено горизонтальное 204*60 мм
+- row 4022: MAT-004014 NOT_FOUND Колено горизонтальное разноугловое 110*55 мм
+- row 4023: MAT-004015 NOT_FOUND Колено горизонтальное разноугловое 204*60 мм
+- row 4024: MAT-004016 NOT_FOUND Колено круглое 100 мм
+- row 4025: MAT-004017 NOT_FOUND Колено круглое 125 мм
+- row 4026: MAT-004018 NOT_FOUND Колено круглое 150 мм
+- row 4027: MAT-004019 NOT_FOUND Тройник 110*55 мм
+- row 4028: MAT-004020 NOT_FOUND Тройник 120*60 мм
+- row 4029: MAT-004021 NOT_FOUND Тройник 204*60 мм
+- row 4030: MAT-004022 NOT_FOUND Тройник 110*55/100 мм
+- row 4031: MAT-004023 NOT_FOUND Настенная пластина 110*55 мм
+- row 4032: MAT-004024 NOT_FOUND Настенная пластина 120*60 мм
+- row 4033: MAT-004025 NOT_FOUND Настенная пластина 204*60 мм
+- row 4034: MAT-004026 NOT_FOUND Тройник 100 мм
+- row 4035: MAT-004027 NOT_FOUND Тройник 125 мм
+- row 4036: MAT-004028 NOT_FOUND Тройник 150 мм
+- row 4037: MAT-004029 NOT_FOUND Тройник плоский (по центру круглый) 100х55х100 мм
+- row 4038: MAT-004030 NOT_FOUND Тройник плоский (по центру круглый) 120х60х100 мм
+- row 4039: MAT-004031 NOT_FOUND Держатель 110*55 мм
+- row 4040: MAT-004032 NOT_FOUND Держатель 120*60 мм
+- row 4041: MAT-004033 NOT_FOUND Держатель 204*60 мм
+- row 4042: MAT-004034 NOT_FOUND Держатель 100 мм
+- row 4043: MAT-004035 NOT_FOUND Держатель 125 мм
+- row 4044: MAT-004036 NOT_FOUND Держатель 150 мм
+- row 4045: MAT-004037 NOT_FOUND Держатель 200 мм
+- row 4046: MAT-004038 NOT_FOUND Редуктор прямоугольный 110*55 мм х 204*60 мм
+- row 4047: MAT-004039 NOT_FOUND Редуктор 100/125 мм
+- row 4048: MAT-004040 NOT_FOUND Редуктор 125/150 мм
+- row 4049: MAT-004041 NOT_FOUND Редуктор 200/150 мм
+- row 4050: MAT-004042 NOT_FOUND Редуктор 150/125/120/100/80 мм
+- row 4051: MAT-004043 NOT_FOUND Соединитель 110*55 х 100 мм
+- row 4052: MAT-004044 NOT_FOUND Соединитель 120*60 х 100 мм
+- row 4053: MAT-004045 NOT_FOUND Соединитель 204*60 х 125 мм
+- row 4054: MAT-004046 NOT_FOUND Соединитель 120*60 х 100 мм симметричный
+- row 4055: MAT-004047 NOT_FOUND Соединительное колено 110*55 х 100 мм
+- row 4056: MAT-004048 NOT_FOUND Соединительное колено 120*60 х 100 мм
+- row 4057: MAT-004049 NOT_FOUND Соединительное колено 204*60 х 100 мм
+- row 4058: MAT-004050 NOT_FOUND Соединительное колено 204*60 х 125 мм
+- row 4059: MAT-004051 NOT_FOUND Соединительное колено (кобра) 204*60 х 150 мм
+- row 4060: MAT-004052 NOT_FOUND Соединитель круглых воздуховодов 100 мм
+- row 4061: MAT-004053 NOT_FOUND Соединитель круглых воздуховодов 125 мм
+- row 4062: MAT-004054 NOT_FOUND Соединитель круглых воздуховодов 150 мм
+- row 4063: MAT-004055 NOT_FOUND Соединитель круглых воздуховодов 200 мм
