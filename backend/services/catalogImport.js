@@ -3,7 +3,10 @@ const fs = require("fs");
 const crypto = require("crypto");
 const ExcelJS = require("exceljs");
 const { databasePath } = require("../database");
-const { syncCatalogStructureFromProducts } = require("./catalogStructure");
+const {
+    normalizeCatalogStructureName,
+    syncCatalogStructureFromProducts
+} = require("./catalogStructure");
 
 const IMPORT_SHEET_NAME = "ШАБЛОН";
 const MAT_CODE_PATTERN = /^MAT-(\d{6,})$/i;
@@ -710,9 +713,11 @@ function normalizeStructureRow(row) {
         id: row.id,
         type: row.type,
         name: row.name || "",
-        normalizedName: row.normalized_name || normalizeKey(row.name),
+        normalizedName: row.normalized_name || normalizeCatalogStructureName(row.name),
         externalCode: row.external_code || "",
         parentId: row.parent_id || null,
+        isActive: Number(row.is_active) === 1,
+        isSystem: Number(row.is_system) === 1,
         sortOrder: Number(row.sort_order) || 0
     };
 }
@@ -731,13 +736,13 @@ function buildStructurePreview(parsed, structureRows) {
         missingSubcategoryCodes: []
     };
 
-    structureRows.filter(row => row.type === "category").forEach(row => {
+    structureRows.filter(row => row.type === "category" && row.isActive && !row.isSystem).forEach(row => {
         if (row.externalCode) categoriesByCode.set(normalizeCategoryCode(row.externalCode), row);
-        categoriesByName.set(normalizeKey(row.name), row);
+        categoriesByName.set(normalizeCatalogStructureName(row.name), row);
     });
-    structureRows.filter(row => row.type === "subcategory").forEach(row => {
+    structureRows.filter(row => row.type === "subcategory" && row.isActive && !row.isSystem).forEach(row => {
         if (row.externalCode) subcategoriesByCode.set(normalizeSubcategoryCode(row.externalCode), row);
-        subcategoriesByParentAndName.set(`${row.parentId}:${normalizeKey(row.name)}`, row);
+        subcategoriesByParentAndName.set(`${row.parentId}:${normalizeCatalogStructureName(row.name)}`, row);
     });
 
     parsed.categoryRows?.forEach(row => {
@@ -750,7 +755,7 @@ function buildStructurePreview(parsed, structureRows) {
             changes.newCategories.push(row);
             return;
         }
-        if (normalizeKey(existing.name) !== normalizeKey(row.name)) {
+        if (normalizeCatalogStructureName(existing.name) !== normalizeCatalogStructureName(row.name)) {
             changes.renamedCategories.push({
                 externalCode: row.externalCode,
                 rowNumber: row.rowNumber,
@@ -770,7 +775,7 @@ function buildStructurePreview(parsed, structureRows) {
             changes.newSubcategories.push(row);
             return;
         }
-        if (normalizeKey(existing.name) !== normalizeKey(row.name)) {
+        if (normalizeCatalogStructureName(existing.name) !== normalizeCatalogStructureName(row.name)) {
             changes.renamedSubcategories.push({
                 externalCode: row.externalCode,
                 rowNumber: row.rowNumber,
@@ -1209,25 +1214,25 @@ async function getNextStructureCodeNumber(db, pattern) {
 
 async function findStructureCategory(db, row) {
     if (row.externalCode) {
-        const byCode = await db.get("SELECT * FROM catalog_structure WHERE type = 'category' AND external_code = ? LIMIT 1", [row.externalCode]);
+        const byCode = await db.get("SELECT * FROM catalog_structure WHERE type = 'category' AND external_code = ? AND is_active = 1 AND COALESCE(is_system, 0) = 0 LIMIT 1", [row.externalCode]);
         if (byCode) return byCode;
     }
 
     return db.get(
-        "SELECT * FROM catalog_structure WHERE type = 'category' AND normalized_name = ? LIMIT 1",
-        [normalizeKey(row.name)]
+        "SELECT * FROM catalog_structure WHERE type = 'category' AND normalized_name = ? AND is_active = 1 AND COALESCE(is_system, 0) = 0 LIMIT 1",
+        [normalizeCatalogStructureName(row.name)]
     );
 }
 
 async function findStructureSubcategory(db, row, parentId) {
     if (row.externalCode) {
-        const byCode = await db.get("SELECT * FROM catalog_structure WHERE type = 'subcategory' AND external_code = ? LIMIT 1", [row.externalCode]);
+        const byCode = await db.get("SELECT * FROM catalog_structure WHERE type = 'subcategory' AND external_code = ? AND is_active = 1 AND COALESCE(is_system, 0) = 0 LIMIT 1", [row.externalCode]);
         if (byCode) return byCode;
     }
 
     return db.get(
-        "SELECT * FROM catalog_structure WHERE type = 'subcategory' AND parent_id = ? AND normalized_name = ? LIMIT 1",
-        [parentId, normalizeKey(row.name)]
+        "SELECT * FROM catalog_structure WHERE type = 'subcategory' AND parent_id = ? AND normalized_name = ? AND is_active = 1 AND COALESCE(is_system, 0) = 0 LIMIT 1",
+        [parentId, normalizeCatalogStructureName(row.name)]
     );
 }
 
@@ -1248,29 +1253,29 @@ async function upsertCatalogStructureFromParsed(db, parsed, now) {
                      external_code = COALESCE(NULLIF(external_code, ''), ?),
                      updated_at = ?
                  WHERE id = ?`,
-                [row.name, normalizeKey(row.name), externalCode, now, existing.id]
+                [row.name, normalizeCatalogStructureName(row.name), externalCode, now, existing.id]
             );
-            categoryByFileCodeOrName.set(row.externalCode || normalizeKey(row.name), { ...existing, id: existing.id, external_code: externalCode });
+            categoryByFileCodeOrName.set(row.externalCode || normalizeCatalogStructureName(row.name), { ...existing, id: existing.id, external_code: externalCode });
         } else {
             const result = await db.run(
                 `INSERT INTO catalog_structure (
-                    type, name, normalized_name, external_code, parent_id, sort_order, is_active, created_at, updated_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-                ["category", row.name, normalizeKey(row.name), externalCode, null, row.rowNumber || 0, 1, now, now]
+                    type, name, normalized_name, external_code, parent_id, sort_order, is_active, is_system, created_at, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                ["category", row.name, normalizeCatalogStructureName(row.name), externalCode, null, row.rowNumber || 0, 1, 0, now, now]
             );
-            categoryByFileCodeOrName.set(row.externalCode || normalizeKey(row.name), { id: result.id, external_code: externalCode });
+            categoryByFileCodeOrName.set(row.externalCode || normalizeCatalogStructureName(row.name), { id: result.id, external_code: externalCode });
         }
         if (!row.externalCode) assignedRows.push({ rowNumber: row.rowNumber, externalId: externalCode });
     }
 
     for (const row of parsed.subcategoryRows || []) {
-        const categoryKey = row.categoryExternalCode || normalizeKey(row.category);
+        const categoryKey = row.categoryExternalCode || normalizeCatalogStructureName(row.category);
         let parent = categoryByFileCodeOrName.get(categoryKey);
         if (!parent && row.categoryExternalCode) {
-            parent = await db.get("SELECT * FROM catalog_structure WHERE type = 'category' AND external_code = ? LIMIT 1", [row.categoryExternalCode]);
+            parent = await db.get("SELECT * FROM catalog_structure WHERE type = 'category' AND external_code = ? AND is_active = 1 AND COALESCE(is_system, 0) = 0 LIMIT 1", [row.categoryExternalCode]);
         }
         if (!parent) {
-            parent = await db.get("SELECT * FROM catalog_structure WHERE type = 'category' AND normalized_name = ? LIMIT 1", [normalizeKey(row.category)]);
+            parent = await db.get("SELECT * FROM catalog_structure WHERE type = 'category' AND normalized_name = ? AND is_active = 1 AND COALESCE(is_system, 0) = 0 LIMIT 1", [normalizeCatalogStructureName(row.category)]);
         }
         if (!parent) continue;
 
@@ -1285,14 +1290,14 @@ async function upsertCatalogStructureFromParsed(db, parsed, now) {
                      parent_id = ?,
                      updated_at = ?
                  WHERE id = ?`,
-                [row.name, normalizeKey(row.name), externalCode, parent.id, now, existing.id]
+                [row.name, normalizeCatalogStructureName(row.name), externalCode, parent.id, now, existing.id]
             );
         } else {
             await db.run(
                 `INSERT INTO catalog_structure (
-                    type, name, normalized_name, external_code, parent_id, sort_order, is_active, created_at, updated_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-                ["subcategory", row.name, normalizeKey(row.name), externalCode, parent.id, row.rowNumber || 0, 1, now, now]
+                    type, name, normalized_name, external_code, parent_id, sort_order, is_active, is_system, created_at, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                ["subcategory", row.name, normalizeCatalogStructureName(row.name), externalCode, parent.id, row.rowNumber || 0, 1, 0, now, now]
             );
         }
         if (!row.externalCode) assignedRows.push({ rowNumber: row.rowNumber, externalId: externalCode });

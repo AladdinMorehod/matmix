@@ -354,6 +354,7 @@ async function getProductsWithCatalogOrder(query = {}) {
             SELECT id, type, normalized_name, parent_id, sort_order
             FROM catalog_structure
             WHERE is_active = 1
+              AND COALESCE(is_system, 0) = 0
               AND type IN ('category', 'subcategory')
             ORDER BY sort_order ASC, id ASC
         `)

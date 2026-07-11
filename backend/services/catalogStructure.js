@@ -1,10 +1,14 @@
 function normalizeCatalogStructureName(value) {
     return String(value || "")
+        .normalize("NFKC")
         .trim()
         .replace(/ё/g, "е")
         .replace(/Ё/g, "е")
+        .replace(/\u0451/g, "\u0435")
+        .replace(/\u0401/g, "\u0435")
+        .replace(/[\u2010-\u2015\u2212]/g, "-")
         .toLowerCase()
-        .replace(/\s*-\s*/g, " - ")
+        .replace(/\s*-\s*/g, "-")
         .replace(/\s+/g, " ")
         .trim();
 }
@@ -56,6 +60,7 @@ async function ensureCatalogStructureSchema(db) {
             parent_id INTEGER NULL REFERENCES catalog_structure(id),
             sort_order INTEGER NOT NULL DEFAULT 0,
             is_active INTEGER NOT NULL DEFAULT 1,
+            is_system INTEGER NOT NULL DEFAULT 0,
             created_at TEXT NOT NULL,
             updated_at TEXT NOT NULL
         )
@@ -68,14 +73,17 @@ async function ensureCatalogStructureSchema(db) {
     await ensureColumn(db, "catalog_structure", "parent_id", "INTEGER");
     await ensureColumn(db, "catalog_structure", "sort_order", "INTEGER NOT NULL DEFAULT 0");
     await ensureColumn(db, "catalog_structure", "is_active", "INTEGER NOT NULL DEFAULT 1");
+    await ensureColumn(db, "catalog_structure", "is_system", "INTEGER NOT NULL DEFAULT 0");
     await ensureColumn(db, "catalog_structure", "created_at", "TEXT");
     await ensureColumn(db, "catalog_structure", "updated_at", "TEXT");
 
     await run("CREATE INDEX IF NOT EXISTS idx_catalog_structure_type ON catalog_structure(type)");
     await run("CREATE INDEX IF NOT EXISTS idx_catalog_structure_parent_id ON catalog_structure(parent_id)");
     await run("CREATE INDEX IF NOT EXISTS idx_catalog_structure_sort_order ON catalog_structure(sort_order)");
-    await run("CREATE UNIQUE INDEX IF NOT EXISTS idx_catalog_structure_category_unique ON catalog_structure(normalized_name) WHERE type = 'category'");
-    await run("CREATE UNIQUE INDEX IF NOT EXISTS idx_catalog_structure_subcategory_unique ON catalog_structure(parent_id, normalized_name) WHERE type = 'subcategory'");
+    await run("DROP INDEX IF EXISTS idx_catalog_structure_category_unique");
+    await run("DROP INDEX IF EXISTS idx_catalog_structure_subcategory_unique");
+    await run("CREATE UNIQUE INDEX IF NOT EXISTS idx_catalog_structure_category_active_unique ON catalog_structure(normalized_name) WHERE type = 'category' AND is_active = 1 AND is_system = 0");
+    await run("CREATE UNIQUE INDEX IF NOT EXISTS idx_catalog_structure_subcategory_active_unique ON catalog_structure(parent_id, normalized_name) WHERE type = 'subcategory' AND is_active = 1 AND is_system = 0");
     await run("CREATE UNIQUE INDEX IF NOT EXISTS idx_catalog_structure_external_code_unique ON catalog_structure(external_code) WHERE external_code IS NOT NULL AND external_code != ''");
 }
 
@@ -99,14 +107,14 @@ function rememberFirstStructureItem(map, name, product) {
 
 async function findCategory(db, normalizedName) {
     return db.get(
-        "SELECT * FROM catalog_structure WHERE type = 'category' AND normalized_name = ? LIMIT 1",
+        "SELECT * FROM catalog_structure WHERE type = 'category' AND normalized_name = ? AND is_active = 1 AND COALESCE(is_system, 0) = 0 LIMIT 1",
         [normalizedName]
     );
 }
 
 async function findSubcategory(db, parentId, normalizedName) {
     return db.get(
-        "SELECT * FROM catalog_structure WHERE type = 'subcategory' AND parent_id = ? AND normalized_name = ? LIMIT 1",
+        "SELECT * FROM catalog_structure WHERE type = 'subcategory' AND parent_id = ? AND normalized_name = ? AND is_active = 1 AND COALESCE(is_system, 0) = 0 LIMIT 1",
         [parentId, normalizedName]
     );
 }
@@ -120,10 +128,11 @@ async function insertStructureItem(db, { type, name, normalizedName, parentId = 
             parent_id,
             sort_order,
             is_active,
+            is_system,
             created_at,
             updated_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-        [type, name, normalizedName, parentId, sortOrder, 1, now, now]
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [type, name, normalizedName, parentId, sortOrder, 1, 0, now, now]
     );
 
     return {
@@ -135,6 +144,7 @@ async function insertStructureItem(db, { type, name, normalizedName, parentId = 
         external_code: null,
         sort_order: sortOrder,
         is_active: 1,
+        is_system: 0,
         created_at: now,
         updated_at: now
     };
@@ -181,6 +191,7 @@ async function getStructureLevelRows(db, { type, parentId = null }) {
          FROM catalog_structure
          WHERE type = ?
            AND is_active = 1
+           AND COALESCE(is_system, 0) = 0
            AND ${parentCondition}
          ORDER BY sort_order ASC, id ASC`,
         params
@@ -194,7 +205,7 @@ async function validateStructurePosition(db, { type, parentId = null, position =
     }
 
     const item = await db.get(
-        "SELECT * FROM catalog_structure WHERE id = ? AND type = ? AND is_active = 1 LIMIT 1",
+        "SELECT * FROM catalog_structure WHERE id = ? AND type = ? AND is_active = 1 AND COALESCE(is_system, 0) = 0 LIMIT 1",
         [Number(afterId) || 0, type]
     );
     const isValid = item && (
@@ -281,7 +292,7 @@ async function createCategory(db, { name, position = "end", afterId = null }) {
 async function createSubcategory(db, { categoryId, name, position = "end", afterId = null }) {
     const parentId = Number(categoryId) || 0;
     const parent = await db.get(
-        "SELECT * FROM catalog_structure WHERE id = ? AND type = 'category' AND is_active = 1 LIMIT 1",
+        "SELECT * FROM catalog_structure WHERE id = ? AND type = 'category' AND is_active = 1 AND COALESCE(is_system, 0) = 0 LIMIT 1",
         [parentId]
     );
     if (!parent) {
@@ -296,7 +307,7 @@ async function createSubcategory(db, { categoryId, name, position = "end", after
     const normalizedName = normalizeCatalogStructureName(cleanName);
     const duplicate = await findSubcategory(db, parent.id, normalizedName);
     if (duplicate) {
-        throw createStructureError(409, "Подкатегория с таким названием уже существует в выбранной категории.");
+        throw createStructureError(409, "Такая подкатегория уже существует в выбранной категории.");
     }
 
     return runInTransaction(db, async () => {
@@ -347,7 +358,7 @@ async function validateProductStructureSelection(db, payload, existing = null) {
     }
 
     const categoryRow = await findCategory(db, normalizeCatalogStructureName(category));
-    if (!categoryRow || !categoryRow.is_active) {
+    if (!categoryRow || !categoryRow.is_active || Number(categoryRow.is_system) === 1) {
         return "Выберите категорию из списка.";
     }
 
@@ -356,7 +367,7 @@ async function validateProductStructureSelection(db, payload, existing = null) {
     }
 
     const subcategoryRow = await findSubcategory(db, categoryRow.id, normalizeCatalogStructureName(subcategory));
-    if (!subcategoryRow || !subcategoryRow.is_active) {
+    if (!subcategoryRow || !subcategoryRow.is_active || Number(subcategoryRow.is_system) === 1) {
         return "Выберите подкатегорию из списка выбранной категории.";
     }
 
@@ -463,6 +474,7 @@ async function getCatalogStructureTree(db) {
         SELECT id, type, name, external_code, parent_id, sort_order
         FROM catalog_structure
         WHERE is_active = 1
+          AND COALESCE(is_system, 0) = 0
           AND type IN ('category', 'subcategory')
         ORDER BY sort_order ASC, id ASC
     `);
@@ -502,6 +514,7 @@ async function getPublicCatalogStructureTree(db) {
             SELECT id, type, name, normalized_name, external_code, parent_id, sort_order
             FROM catalog_structure
             WHERE is_active = 1
+              AND COALESCE(is_system, 0) = 0
               AND type IN ('category', 'subcategory')
             ORDER BY sort_order ASC, id ASC
         `),
