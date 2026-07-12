@@ -81,6 +81,10 @@ crmNav?.addEventListener("click", event => {
         loadProducts();
     }
 
+    if (button.dataset.section === "catalogStructure") {
+        loadCatalogStructureAudit();
+    }
+
     if (button.dataset.section === "catalogImport") {
         renderImportView();
     }

@@ -16,6 +16,7 @@ function setActiveSection(section) {
     const isClients = section === "clients";
     const isSettings = section === "settings";
     const isCatalog = section === "catalog";
+    const isCatalogStructure = section === "catalogStructure";
     const isImport = section === "catalogImport";
     const orderModeTitle = isMyOrders ? "Мои заказы" : "Заказы";
     const orderModeSubtitle = isMyOrders ? "Заявки, закрепленные за вами" : "Заявки с сайта MatMix";
@@ -26,6 +27,7 @@ function setActiveSection(section) {
     ordersList?.classList.toggle("hidden", !(isOrders || isMyOrders));
     clientsView?.classList.toggle("hidden", !isClients);
     productsView?.classList.toggle("hidden", !isCatalog);
+    catalogStructureView?.classList.toggle("hidden", !isCatalogStructure);
     importView?.classList.toggle("hidden", !isImport);
     settingsView?.classList.toggle("hidden", !isSettings);
     const ordersTitle = ordersTopbar?.querySelector("h1");

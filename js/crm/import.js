@@ -8,9 +8,11 @@ let importActiveTab = "new";
 let importSearchQuery = "";
 let importSearchTimer = null;
 let importPriceFilter = "changed";
+let importVisibleCount = 100;
+let importShowAllSummary = false;
 
 const IMPORT_MAX_FILE_SIZE = 30 * 1024 * 1024;
-const IMPORT_PRICE_RENDER_LIMIT = 500;
+const IMPORT_RESULT_PAGE_SIZE = 100;
 
 const importTabs = [
     { id: "new", label: "Новые" },
@@ -40,14 +42,78 @@ const importSummaryCards = [
     { key: "renamedSubcategories", label: "Переимен. подкат." },
     { key: "assignedCategoryCodes", label: "Будет записано CAT" },
     { key: "assignedSubcategoryCodes", label: "Будет записано SUB" },
-    { key: "missingCategoryCodes", label: "Missing CAT" },
-    { key: "missingSubcategoryCodes", label: "Missing SUB" },
+    { key: "missingCategoryCodes", label: "Не найдена категория" },
+    { key: "missingSubcategoryCodes", label: "Не найдена подкатегория" },
     { key: "priceIncreased", label: "Цена выше" },
     { key: "priceDecreased", label: "Цена ниже" },
     { key: "priceWarnings", label: "Риски цены" },
     { key: "newGroups", label: "Новые группы" },
     { key: "warnings", label: "Предупреждения" }
 ];
+
+const importSummaryGroups = [
+    {
+        label: "Каталог",
+        cards: [
+            { key: "new", label: "Новые товары", always: true, description: "Товары из Excel, которых еще нет в CRM." },
+            { key: "updated", label: "Обновятся", always: true, description: "Существующие товары, у которых найдено изменение данных." },
+            { key: "requiresReview", label: "Требуют решения", always: true, description: "Похожие товары требуют ручной проверки перед импортом." },
+            { key: "missingFromFile", label: "Отсутствуют в файле", description: "Товары CRM, которых нет в текущем Excel." },
+            { key: "manualOnly", label: "Только в CRM", description: "Ручные товары CRM, которых нет в Excel." },
+            { key: "unchanged", label: "Без изменений", description: "Строки Excel, совпавшие с текущими данными CRM." }
+        ]
+    },
+    {
+        label: "Цены",
+        cards: [
+            { key: "priceChanged", label: "Цены изменятся", always: true, priceFilter: "changed", description: "Товары, у которых Apply обновит цену." },
+            { key: "priceIncreased", label: "Цена выше", priceFilter: "increased", description: "Товары с повышением цены." },
+            { key: "priceDecreased", label: "Цена ниже", priceFilter: "decreased", description: "Товары со снижением цены." },
+            { key: "priceWarnings", label: "Риски цены", priceFilter: "warnings", description: "Ценовые предупреждения и конфликтные строки." }
+        ]
+    },
+    {
+        label: "Структура",
+        cards: [
+            { key: "newCategories", label: "Новые категории", description: "Категории, которых нет в структуре CRM." },
+            { key: "newSubcategories", label: "Новые подкатегории", description: "Подкатегории, которых нет в структуре CRM." },
+            { key: "renamedCategories", label: "Переименованы категории", description: "Категории с отличающимся названием." },
+            { key: "renamedSubcategories", label: "Переименованы подкатегории", description: "Подкатегории с отличающимся названием." },
+            { key: "assignedCategoryCodes", label: "Будет записано CAT", description: "CAT найден в структуре и будет записан в Excel-копию после Apply." },
+            { key: "assignedSubcategoryCodes", label: "Будет записано SUB", description: "SUB найден в структуре и будет записан в Excel-копию после Apply." },
+            { key: "missingCategoryCodes", label: "Не найдена категория", description: "Категория не найдена в catalog_structure." },
+            { key: "missingSubcategoryCodes", label: "Не найдена подкатегория", description: "Подкатегория не найдена в catalog_structure." },
+            { key: "newGroups", label: "Новые группы", description: "Группы товаров, появившиеся в Excel." }
+        ]
+    },
+    {
+        label: "Контроль",
+        cards: [
+            { key: "missingCodes", label: "Без MAT-кода", description: "Товары без MAT-кода, которым будет предложен код." },
+            { key: "criticalErrors", label: "Критические ошибки", always: true, description: "Ошибки, блокирующие Apply." },
+            { key: "warnings", label: "Предупреждения", always: true, description: "Некритичные предупреждения предварительной проверки." }
+        ]
+    }
+];
+
+const importPriceSummaryCardByFilter = {
+    changed: "priceChanged",
+    increased: "priceIncreased",
+    decreased: "priceDecreased",
+    warnings: "priceWarnings"
+};
+
+const importStructureLabels = {
+    newCategories: "Новые категории",
+    newSubcategories: "Новые подкатегории",
+    renamedCategories: "Переименованы категории",
+    renamedSubcategories: "Переименованы подкатегории",
+    assignedCategoryCodes: "Будет записано CAT",
+    assignedSubcategoryCodes: "Будет записано SUB",
+    missingCategoryCodes: "Не найдена категория",
+    missingSubcategoryCodes: "Не найдена подкатегория",
+    newGroups: "Новые группы"
+};
 
 const importFieldLabels = {
     title: "Название",
@@ -121,6 +187,57 @@ function getImportTabCount(tabId) {
             + Number(priceChanges.productNotFound || 0);
     }
     return Number(importPreview.summary?.[tabId] || 0);
+}
+
+function getImportSummaryCard(key) {
+    return importSummaryGroups.flatMap(group => group.cards).find(card => card.key === key) || null;
+}
+
+function getImportSummaryCount(key) {
+    if (!importPreview) return 0;
+    const priceChanges = getPriceChanges();
+    if (key === "priceChanged") return Number(priceChanges.changed || 0);
+    if (key === "priceIncreased") return Number(priceChanges.increased || 0);
+    if (key === "priceDecreased") return Number(priceChanges.decreased || 0);
+    if (key === "priceWarnings") {
+        return (priceChanges.warningSummary || []).reduce((total, item) => total + Number(item.count || 0), 0);
+    }
+    return Number(importPreview.summary?.[key] || 0);
+}
+
+function getInitialImportSummaryKey() {
+    if (getImportSummaryCount("criticalErrors") > 0) return "criticalErrors";
+    if (getImportSummaryCount("requiresReview") > 0) return "requiresReview";
+    if (getImportSummaryCount("new") > 0) return "new";
+    if (getImportSummaryCount("updated") > 0) return "updated";
+    const firstWithRows = importSummaryGroups
+        .flatMap(group => group.cards)
+        .find(card => getImportSummaryCount(card.key) > 0);
+    return firstWithRows?.key || "new";
+}
+
+function activateImportSummary(key, resetSearch = true) {
+    const card = getImportSummaryCard(key);
+    if (!card) return;
+    importActiveTab = key;
+    importVisibleCount = IMPORT_RESULT_PAGE_SIZE;
+    if (card.priceFilter) importPriceFilter = card.priceFilter;
+    if (resetSearch) importSearchQuery = "";
+}
+
+function getVisibleImportItems(items) {
+    return items.slice(0, importVisibleCount);
+}
+
+function renderImportLoadMore(total) {
+    if (total <= IMPORT_RESULT_PAGE_SIZE) return "";
+    const shown = Math.min(importVisibleCount, total);
+    return `
+        <div class="import-load-more">
+            <span>Показано ${escapeHtml(shown)} из ${escapeHtml(total)}</span>
+            ${shown < total ? `<button type="button" data-import-load-more>Показать ещё 100</button>` : ""}
+        </div>
+    `;
 }
 
 function getImportSearchText(item) {
@@ -216,6 +333,7 @@ function setImportFile(file) {
     importApplyResult = null;
     importSearchQuery = "";
     importPriceFilter = "changed";
+    importVisibleCount = IMPORT_RESULT_PAGE_SIZE;
     renderImportView(error);
 }
 
@@ -228,6 +346,7 @@ function resetImportPreview({ clearFile = false } = {}) {
     importActiveTab = "new";
     importSearchQuery = "";
     importPriceFilter = "changed";
+    importVisibleCount = IMPORT_RESULT_PAGE_SIZE;
     renderImportView();
 }
 
@@ -246,8 +365,9 @@ async function submitImportPreview() {
         formData.append("file", importSelectedFile);
         importPreview = await CrmApi.post("/api/products/import/preview", formData);
         importApplyResult = null;
-        importActiveTab = importTabs.find(tab => getImportTabCount(tab.id) > 0)?.id || "new";
+        importActiveTab = getInitialImportSummaryKey();
         importSearchQuery = "";
+        importVisibleCount = IMPORT_RESULT_PAGE_SIZE;
         window.CrmToast?.success("Файл проанализирован.");
     } catch (error) {
         importPreview = null;
@@ -360,11 +480,22 @@ function renderImportUpload(error = "") {
 }
 
 function renderApplyActions() {
-    if (!importPreview || !importPreview.canImport) return "";
+    if (!importPreview) return "";
+    if (!importPreview.canImport) {
+        return `
+            <section class="import-apply-panel blocked">
+                <div>
+                    <strong>Применение импорта недоступно</strong>
+                    <span>Сначала устраните обязательные конфликты и повторите предварительную проверку.</span>
+                </div>
+                <button class="import-apply-submit" type="button" disabled>Применить импорт</button>
+            </section>
+        `;
+    }
     return `
         <section class="import-apply-panel">
             <div>
-                <strong>Preview готов к применению</strong>
+                <strong>Предварительная проверка завершена.</strong>
                 <span>Token активен до ${escapeHtml(formatDate(importPreview.tokenExpiresAt))}</span>
             </div>
             <button class="import-apply-submit" type="button" ${importApplying ? "disabled" : ""}>Применить импорт</button>
@@ -400,8 +531,37 @@ function renderImportStatus() {
 
 function renderImportSummary() {
     if (!importPreview) return "";
+    const visibleGroups = importSummaryGroups.map(group => ({
+        ...group,
+        cards: group.cards.filter(card => importShowAllSummary || card.always || getImportSummaryCount(card.key) > 0)
+    })).filter(group => group.cards.length);
+
     return `
-        <section class="import-summary" aria-label="Сводка preview">
+        <section class="import-summary" aria-label="Сводка предварительной проверки">
+            ${visibleGroups.map(group => `
+                <section class="import-summary-group" aria-label="${escapeHtml(group.label)}">
+                    <h3>${escapeHtml(group.label)}</h3>
+                    <div class="import-summary-group-grid">
+                        ${group.cards.map(card => {
+                            const count = getImportSummaryCount(card.key);
+                            const isActive = importActiveTab === card.key;
+                            return `
+                                <button class="import-summary-card${card.always ? " primary" : ""}${isActive ? " active" : ""}${count ? "" : " is-zero"}" type="button" data-summary-key="${escapeHtml(card.key)}" aria-pressed="${isActive ? "true" : "false"}" aria-controls="importPreviewPanel">
+                                    <span>${escapeHtml(card.label)}</span>
+                                    <strong>${escapeHtml(count)}</strong>
+                                </button>
+                            `;
+                        }).join("")}
+                    </div>
+                </section>
+            `).join("")}
+            <button class="import-summary-toggle" type="button" data-summary-toggle>
+                ${importShowAllSummary ? "Скрыть нулевые" : "Показать все показатели"}
+            </button>
+        </section>
+    `;
+    return `
+        <section class="import-summary" aria-label="Сводка предварительной проверки">
             ${importSummaryCards.map(card => `
                 <article class="import-summary-card${card.primary ? " primary" : ""}">
                     <span>${escapeHtml(card.label)}</span>
@@ -414,6 +574,28 @@ function renderImportSummary() {
 
 function renderImportTabs() {
     if (!importPreview) return "";
+    const activeCard = getImportSummaryCard(importActiveTab) || getImportSummaryCard(getInitialImportSummaryKey());
+    const activeCount = getImportSummaryCount(activeCard?.key || importActiveTab);
+    return `
+        <section id="import-preview-results" class="import-preview">
+            <header class="import-preview-header">
+                <div>
+                    <h2>${escapeHtml(activeCard?.label || "Предварительная проверка")}</h2>
+                    <p>${escapeHtml(activeCard?.description || "Выберите показатель выше, чтобы посмотреть строки предварительной проверки.")}</p>
+                </div>
+                <strong>${escapeHtml(activeCount)}</strong>
+            </header>
+            <div class="import-preview-tools">
+                <label class="import-search">
+                    <span>Поиск в выбранном списке</span>
+                    <input id="importPreviewSearch" type="search" value="${escapeHtml(importSearchQuery)}" placeholder="MAT-код, название, категория" autocomplete="off">
+                </label>
+            </div>
+            <div id="importPreviewPanel" class="import-preview-panel">
+                ${renderImportTabPanel()}
+            </div>
+        </section>
+    `;
     return `
         <section class="import-preview">
             <div class="import-preview-tools">
@@ -437,6 +619,11 @@ function renderImportTabs() {
 
 function renderImportTabPanel() {
     if (!importPreview) return "";
+    if (["priceChanged", "priceIncreased", "priceDecreased", "priceWarnings"].includes(importActiveTab)) return renderPriceChangesTab();
+    if (Object.prototype.hasOwnProperty.call(importStructureLabels, importActiveTab)) return renderStructureItemsTab(importActiveTab);
+    if (importActiveTab === "criticalErrors") return renderIssuesTab("critical");
+    if (importActiveTab === "warnings") return renderIssuesTab("warning");
+    if (importActiveTab === "unchanged") return renderSimpleProductsTab("unchanged", "Товаров без изменений нет.");
     if (importActiveTab === "new") return renderNewProductsTab();
     if (importActiveTab === "updated") return renderUpdatedTab();
     if (importActiveTab === "prices") return renderPriceChangesTab();
@@ -449,12 +636,84 @@ function renderImportTabPanel() {
     return "";
 }
 
-function renderRequiresReviewTab() {
+function getImportStructureOptions() {
+    return importPreview?.structureOptions || { categories: [], subcategories: [] };
+}
+
+function renderSelectOptions(items, selectedId, labelBuilder = item => item.name) {
+    return (items || []).map(item => `
+        <option value="${escapeHtml(item.id)}" ${Number(selectedId) === Number(item.id) ? "selected" : ""}>${escapeHtml(labelBuilder(item))}</option>
+    `).join("");
+}
+
+function getStructureResolutionActions(item) {
+    const keepCurrent = item.productId ? [["keep_current_structure", "Сохранить текущую структуру CRM"]] : [];
+    if (item.conflictType === "missing_category") {
+        return [
+            ...keepCurrent,
+            ["create_category", "Создать категорию"],
+            ["map_category", "Связать с категорией CRM"],
+            ["exclude", "Исключить из импорта"]
+        ];
+    }
+    return [
+        ...keepCurrent,
+        ["create_subcategory", "Создать подкатегорию"],
+        ["map_subcategory", "Связать с подкатегорией CRM"],
+        ["exclude", "Исключить из импорта"]
+    ];
+}
+
+function renderStructureResolutionControls(item) {
+    if (item.reviewReason !== "STRUCTURE_CONFLICT") return "";
+    const options = getImportStructureOptions();
+    const resolution = item.resolution || {};
+    const actions = getStructureResolutionActions(item);
+    const selectedAction = resolution.action || actions[0]?.[0] || "exclude";
+    const selectedCategoryId = resolution.categoryId || item.structureConflict?.categoryId || options.categories?.[0]?.id || "";
+    const selectedSubcategoryId = resolution.subcategoryId || options.subcategories?.find(sub => Number(sub.parentId) === Number(selectedCategoryId))?.id || "";
+
+    return `
+        <div class="import-resolution-panel">
+            <div class="import-resolution-status ${item.resolved ? "is-resolved" : ""}">
+                ${item.resolved ? "Решение сохранено" : "Требуется решение"}
+            </div>
+            <label>
+                <span>Действие</span>
+                <select data-import-resolution-action>
+                    ${actions.map(([value, label]) => `<option value="${escapeHtml(value)}" ${selectedAction === value ? "selected" : ""}>${escapeHtml(label)}</option>`).join("")}
+                </select>
+            </label>
+            <label>
+                <span>Категория CRM</span>
+                <select data-import-resolution-category>
+                    ${renderSelectOptions(options.categories || [], selectedCategoryId)}
+                </select>
+            </label>
+            <label>
+                <span>Подкатегория CRM</span>
+                <select data-import-resolution-subcategory>
+                    ${renderSelectOptions(options.subcategories || [], selectedSubcategoryId, item => `${item.name} · #${item.parentId}`)}
+                </select>
+            </label>
+            <div class="import-resolution-actions">
+                <button type="button" data-import-resolution-save data-row-id="${escapeHtml(item.rowId || item.rowNumber)}">
+                    ${item.resolved ? "Изменить решение" : "Сохранить решение"}
+                </button>
+                <button type="button" data-import-resolution-exclude data-row-id="${escapeHtml(item.rowId || item.rowNumber)}">Исключить из импорта</button>
+            </div>
+        </div>
+    `;
+}
+
+function renderRequiresReviewTabLegacy() {
     const items = getFilteredImportItems("requiresReview");
+    const visibleItems = getVisibleImportItems(items);
     if (!items.length) return renderEmptyImportState("Товаров, требующих решения, нет.");
     return `
         <p class="import-tab-note">Эти строки похожи на уже существующие несвязанные товары. Они не создаются автоматически.</p>
-        ${items.map(item => `
+        <p class="import-tab-note">Ручное решение будет доступно на следующем этапе.</p>
+        ${visibleItems.map(item => `
             <article class="import-preview-row">
                 <div>
                     <strong>${escapeHtml(item.title)}</strong>
@@ -471,6 +730,38 @@ function renderRequiresReviewTab() {
                 ` : ""}
             </article>
         `).join("")}
+        ${renderImportLoadMore(items.length)}
+    `;
+}
+
+function renderRequiresReviewTab() {
+    const items = getFilteredImportItems("requiresReview");
+    const visibleItems = getVisibleImportItems(items);
+    if (!items.length) return renderEmptyImportState("Товаров, требующих решения, нет.");
+    const structureItems = (importPreview.changes?.requiresReview || []).filter(item => item.reviewReason === "STRUCTURE_CONFLICT");
+    const resolvedStructureItems = structureItems.filter(item => item.resolved).length;
+    return `
+        ${structureItems.length ? `<p class="import-tab-note">Решено ${escapeHtml(resolvedStructureItems)} из ${escapeHtml(structureItems.length)} структурных конфликтов.</p>` : ""}
+        <p class="import-tab-note">При связывании с существующим товаром данные товара берутся из Excel, а MAT-код и текущая структура CRM сохраняются, если для них не выбрано отдельное решение.</p>
+        ${visibleItems.map(item => `
+            <article class="import-preview-row">
+                <div>
+                    <strong>${escapeHtml(item.title)}</strong>
+                    <code>${escapeHtml(item.externalId)}</code>
+                    ${renderProductMeta(item)}
+                    <span class="import-row-number">${escapeHtml(item.reasonLabel || item.reviewReason || "REQUIRES_REVIEW")}</span>
+                </div>
+                ${item.candidate ? `
+                    <dl>
+                        <div><dt>Кандидат CRM</dt><dd>${escapeHtml(item.candidate.title)}</dd></div>
+                        <div><dt>ID</dt><dd>${escapeHtml(item.candidate.id)}</dd></div>
+                        <div><dt>Похожесть</dt><dd>${escapeHtml(item.similarity || "")}</dd></div>
+                    </dl>
+                ` : ""}
+                ${renderStructureResolutionControls(item)}
+            </article>
+        `).join("")}
+        ${renderImportLoadMore(items.length)}
     `;
 }
 
@@ -495,13 +786,16 @@ function renderProductMeta(item) {
 
 function renderNewProductsTab() {
     const items = getFilteredImportItems("new");
+    const visibleItems = getVisibleImportItems(items);
     if (!items.length) return renderEmptyImportState("Новых товаров нет.");
-    return items.map(item => `
+    return `
+        ${visibleItems.map(item => `
         <article class="import-preview-row">
             <div>
                 <strong>${escapeHtml(item.title)}</strong>
                 <code>${escapeHtml(item.externalId)}</code>
                 ${renderProductMeta(item)}
+                <span class="import-row-number">${escapeHtml(item.reasonLabel || "MAT-код не найден в CRM")}</span>
             </div>
             <dl>
                 <div><dt>Цена</dt><dd>${item.price === null ? "По запросу" : escapeHtml(item.price)}</dd></div>
@@ -509,18 +803,23 @@ function renderNewProductsTab() {
                 <div><dt>Ед.</dt><dd>${escapeHtml(item.unit)}</dd></div>
             </dl>
         </article>
-    `).join("");
+        `).join("")}
+        ${renderImportLoadMore(items.length)}
+    `;
 }
 
 function renderUpdatedTab() {
     const items = getFilteredImportItems("updated");
+    const visibleItems = getVisibleImportItems(items);
     if (!items.length) return renderEmptyImportState("Изменений не найдено.");
-    return items.map(item => `
+    return `
+        ${visibleItems.map(item => `
         <article class="import-preview-row import-updated-row">
             <div>
                 <strong>${escapeHtml(item.title)}</strong>
                 <code>${escapeHtml(item.externalId)}</code>
                 ${item.rowNumber ? `<span class="import-row-number">Строка ${escapeHtml(item.rowNumber)}</span>` : ""}
+                ${item.structureNote ? `<p class="import-tab-note">${escapeHtml(item.structureNote)}</p>` : ""}
             </div>
             <div class="import-diff-list">
                 ${(item.changes || []).map(change => `
@@ -532,7 +831,9 @@ function renderUpdatedTab() {
                 `).join("")}
             </div>
         </article>
-    `).join("");
+        `).join("")}
+        ${renderImportLoadMore(items.length)}
+    `;
 }
 
 function filterPriceItems(items) {
@@ -554,13 +855,13 @@ function filterPriceItems(items) {
 function renderPriceChangesTab() {
     const priceChanges = getPriceChanges();
     const filteredItems = filterPriceItems(priceChanges.items || []);
-    const visibleItems = filteredItems.slice(0, IMPORT_PRICE_RENDER_LIMIT);
+    const visibleItems = getVisibleImportItems(filteredItems);
     const filterOptions = [
         { id: "changed", label: "Все изменения" },
         { id: "increased", label: "Повышение" },
         { id: "decreased", label: "Снижение" },
         { id: "newPrice", label: "Новая цена" },
-        { id: "warnings", label: "Предупреждения" },
+        { id: "warnings", label: "Риски" },
         { id: "errors", label: "Ошибки" },
         { id: "unchanged", label: "Без изменений" }
     ];
@@ -589,8 +890,8 @@ function renderPriceChangesTab() {
                     </button>
                 `).join("")}
             </div>
-            ${filteredItems.length > IMPORT_PRICE_RENDER_LIMIT ? `<p class="import-tab-note">Показаны первые ${IMPORT_PRICE_RENDER_LIMIT} из ${escapeHtml(filteredItems.length)} товаров.</p>` : ""}
             ${visibleItems.length ? renderPriceTable(visibleItems) : renderEmptyImportState("По выбранному фильтру строк нет.")}
+            ${renderImportLoadMore(filteredItems.length)}
         </section>
     `;
 }
@@ -647,10 +948,11 @@ function renderPriceTable(items) {
 
 function renderMissingFromFileTab() {
     const items = getFilteredImportItems("missingFromFile");
+    const visibleItems = getVisibleImportItems(items);
     if (!items.length) return renderEmptyImportState("Отсутствующих в файле товаров нет.");
     return `
         <p class="import-tab-note">На следующем этапе можно будет выбрать: скрыть, оставить без изменений или обработать вручную.</p>
-        ${items.map(item => `
+        ${visibleItems.map(item => `
             <article class="import-preview-row">
                 <div>
                     <strong>${escapeHtml(item.title)}</strong>
@@ -661,15 +963,17 @@ function renderMissingFromFileTab() {
                 <span class="import-pill muted">${escapeHtml(item.status || "")}</span>
             </article>
         `).join("")}
+        ${renderImportLoadMore(items.length)}
     `;
 }
 
 function renderManualOnlyTab() {
     const items = getFilteredImportItems("manualOnly");
+    const visibleItems = getVisibleImportItems(items);
     if (!items.length) return renderEmptyImportState("Товаров только в CRM нет.");
     return `
         <p class="import-tab-note">Эти товары созданы вручную в CRM и отсутствуют в Excel. Они не будут автоматически скрыты.</p>
-        ${items.map(item => `
+        ${visibleItems.map(item => `
             <article class="import-preview-row">
                 <div>
                     <strong>${escapeHtml(item.title)}</strong>
@@ -679,15 +983,17 @@ function renderManualOnlyTab() {
                 <span class="import-pill">manual</span>
             </article>
         `).join("")}
+        ${renderImportLoadMore(items.length)}
     `;
 }
 
 function renderMissingCodesTab() {
     const items = getFilteredImportItems("missingCodes");
+    const visibleItems = getVisibleImportItems(items);
     if (!items.length) return renderEmptyImportState("Товаров без MAT-кода нет.");
     return `
         <p class="import-tab-note">Код будет предложен автоматически, но на этом этапе файл и база не изменяются.</p>
-        ${items.map(item => `
+        ${visibleItems.map(item => `
             <article class="import-preview-row">
                 <div>
                     <strong>${escapeHtml(item.title)}</strong>
@@ -697,7 +1003,55 @@ function renderMissingCodesTab() {
                 <code>${escapeHtml(item.suggestedExternalId)}</code>
             </article>
         `).join("")}
+        ${renderImportLoadMore(items.length)}
     `;
+}
+
+function renderSimpleProductsTab(key, emptyText) {
+    const items = getFilteredImportItems(key);
+    const visibleItems = getVisibleImportItems(items);
+    if (!items.length) return renderEmptyImportState(emptyText);
+    return `
+        ${visibleItems.map(item => `
+            <article class="import-preview-row">
+                <div>
+                    <strong>${escapeHtml(item.title || item.name || item.productName || "Товар")}</strong>
+                    ${item.externalId || item.productCode ? `<code>${escapeHtml(item.externalId || item.productCode)}</code>` : ""}
+                    ${renderProductMeta(item)}
+                </div>
+                ${item.status ? `<span class="import-pill muted">${escapeHtml(item.status)}</span>` : ""}
+            </article>
+        `).join("")}
+        ${renderImportLoadMore(items.length)}
+    `;
+}
+
+function renderStructureItemsTab(key) {
+    const items = getFilteredImportItems(key);
+    const visibleItems = getVisibleImportItems(items);
+    const title = importStructureLabels[key] || "Структура";
+    if (!items.length) return renderEmptyImportState(`${title}: строк нет.`);
+    return `
+        <section class="import-structure-list import-structure-list-wide">
+            <h3>${escapeHtml(title)}</h3>
+            <ul>
+                ${visibleItems.map(item => `<li>${escapeHtml(formatStructureItem(key, item))}</li>`).join("")}
+            </ul>
+        </section>
+        ${renderImportLoadMore(items.length)}
+    `;
+}
+
+function formatStructureItem(key, item) {
+    if (key === "newCategories") return `${item.externalCode || "CAT будет назначен"} · ${item.name || ""}`;
+    if (key === "newSubcategories") return `${item.externalCode || "SUB будет назначен"} · ${item.category || "Без категории"} / ${item.name || ""}`;
+    if (key === "renamedCategories" || key === "renamedSubcategories") return `${item.externalCode || ""}: ${item.currentName || ""} -> ${item.incomingName || ""}`;
+    if (key === "assignedCategoryCodes") return `${item.name || ""} · ${item.externalCode || ""} · строка ${item.rowNumber || ""}`;
+    if (key === "assignedSubcategoryCodes") return `${item.category || "Без категории"} / ${item.name || ""} · ${item.externalCode || ""} · строка ${item.rowNumber || ""}`;
+    if (key === "missingCategoryCodes") return `${item.name || ""} · строка ${item.rowNumber || ""}`;
+    if (key === "missingSubcategoryCodes") return `${item.category || "Без категории"} / ${item.name || ""} · строка ${item.rowNumber || ""}`;
+    if (key === "newGroups") return `${item.category || "Без категории"} / ${item.subcategory || "Без подкатегории"} / ${item.name || ""}`;
+    return item.name || item.title || JSON.stringify(item);
 }
 
 function renderStructureTab() {
@@ -740,9 +1094,11 @@ function renderStructureList(title, items, getLabel) {
     `;
 }
 
-function renderIssuesTab() {
+function renderIssuesTab(type = "all") {
     const errors = (importPreview.errors || []).filter(item => getImportSearchText(item).includes(normalizeImportSearch(importSearchQuery)));
     const warnings = (importPreview.warnings || []).filter(item => getImportSearchText(item).includes(normalizeImportSearch(importSearchQuery)));
+    if (type === "critical") return renderIssueList(errors, "Критических ошибок нет.");
+    if (type === "warning") return renderIssueList(warnings, "Предупреждений нет.");
     if (!errors.length && !warnings.length) return renderEmptyImportState("Критических ошибок нет.");
     return `
         <div class="import-issues-grid">
@@ -760,7 +1116,8 @@ function renderIssuesTab() {
 
 function renderIssueList(items, emptyText) {
     if (!items.length) return `<p class="import-tab-note">${escapeHtml(emptyText)}</p>`;
-    return items.map(item => `
+    const visibleItems = getVisibleImportItems(items);
+    return visibleItems.map(item => `
         <article class="import-issue ${item.severity === "critical" ? "critical" : "warning"}">
             <strong>${escapeHtml(item.code || item.severity)}</strong>
             <p>${escapeHtml(item.message || "Проверьте строку Excel.")}</p>
@@ -770,7 +1127,7 @@ function renderIssueList(items, emptyText) {
                 ${item.title ? `<span>${escapeHtml(item.title)}</span>` : ""}
             </div>
         </article>
-    `).join("");
+    `).join("") + renderImportLoadMore(items.length);
 }
 
 function renderImportView(error = "") {
@@ -809,6 +1166,37 @@ function renderImportView(error = "") {
 function updateImportPreviewPanel() {
     const panel = importView?.querySelector("#importPreviewPanel");
     if (panel) panel.innerHTML = renderImportTabPanel();
+}
+
+async function saveImportStructureResolution(button, forcedAction = "") {
+    if (!importPreview?.token || !button) return;
+    const row = button.closest(".import-preview-row");
+    if (!row) return;
+
+    const action = forcedAction || row.querySelector("[data-import-resolution-action]")?.value || "";
+    const payload = {
+        rowId: button.dataset.rowId || "",
+        action,
+        categoryId: Number(row.querySelector("[data-import-resolution-category]")?.value || 0) || null,
+        subcategoryId: Number(row.querySelector("[data-import-resolution-subcategory]")?.value || 0) || null
+    };
+
+    button.disabled = true;
+    try {
+        const result = await CrmApi.patch(`/api/products/import/preview/${importPreview.token}/resolutions`, {
+            resolutions: [payload]
+        });
+        if (result?.data?.preview) {
+            importPreview = result.data.preview;
+        }
+        importActiveTab = "requiresReview";
+        importVisibleCount = Math.max(importVisibleCount, IMPORT_RESULT_PAGE_SIZE);
+        window.CrmToast?.success("Решение сохранено.");
+        renderImportView();
+    } catch (error) {
+        notifyError(error, "Не удалось сохранить решение импорта.");
+        button.disabled = false;
+    }
 }
 
 importView?.addEventListener("change", event => {
@@ -868,10 +1256,16 @@ importView?.addEventListener("click", event => {
         return;
     }
 
-    const tabButton = event.target.closest("button[data-import-tab]");
-    if (tabButton) {
-        importActiveTab = tabButton.dataset.importTab;
-        importSearchQuery = "";
+    const summaryButton = event.target.closest("button[data-summary-key]");
+    if (summaryButton) {
+        activateImportSummary(summaryButton.dataset.summaryKey);
+        renderImportView();
+        return;
+    }
+
+    const summaryToggle = event.target.closest("button[data-summary-toggle]");
+    if (summaryToggle) {
+        importShowAllSummary = !importShowAllSummary;
         renderImportView();
         return;
     }
@@ -879,6 +1273,27 @@ importView?.addEventListener("click", event => {
     const priceFilterButton = event.target.closest("button[data-price-filter]");
     if (priceFilterButton) {
         importPriceFilter = priceFilterButton.dataset.priceFilter || "changed";
+        importVisibleCount = IMPORT_RESULT_PAGE_SIZE;
+        importActiveTab = importPriceSummaryCardByFilter[importPriceFilter] || "priceChanged";
+        renderImportView();
+        return;
+    }
+
+    const resolutionSaveButton = event.target.closest("button[data-import-resolution-save]");
+    if (resolutionSaveButton) {
+        saveImportStructureResolution(resolutionSaveButton);
+        return;
+    }
+
+    const resolutionExcludeButton = event.target.closest("button[data-import-resolution-exclude]");
+    if (resolutionExcludeButton) {
+        saveImportStructureResolution(resolutionExcludeButton, "exclude");
+        return;
+    }
+
+    const loadMoreButton = event.target.closest("button[data-import-load-more]");
+    if (loadMoreButton) {
+        importVisibleCount += IMPORT_RESULT_PAGE_SIZE;
         updateImportPreviewPanel();
     }
 });
@@ -887,6 +1302,7 @@ importView?.addEventListener("input", event => {
     const searchInput = event.target.closest("#importPreviewSearch");
     if (!searchInput) return;
     importSearchQuery = searchInput.value;
+    importVisibleCount = IMPORT_RESULT_PAGE_SIZE;
     window.clearTimeout(importSearchTimer);
     importSearchTimer = window.setTimeout(updateImportPreviewPanel, 200);
 });

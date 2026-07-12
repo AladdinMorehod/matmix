@@ -1,6 +1,7 @@
 function normalizeCatalogStructureName(value) {
     return String(value || "")
         .normalize("NFKC")
+        .replace(/[\u00a0\u2000-\u200b\u202f\u205f\u3000\ufeff]/g, " ")
         .trim()
         .replace(/ё/g, "е")
         .replace(/Ё/g, "е")
@@ -20,6 +21,12 @@ function cleanCatalogStructureName(value) {
 function createStructureError(status, message) {
     const error = new Error(message);
     error.status = status;
+    return error;
+}
+
+function createStructureCodeError(status, code, message) {
+    const error = createStructureError(status, message);
+    error.code = code;
     return error;
 }
 
@@ -168,6 +175,33 @@ function toPublicStructureItem(row) {
     }
 
     return item;
+}
+
+function toStructureRow(row) {
+    return {
+        id: row.id,
+        type: row.type,
+        name: row.name || "",
+        normalizedName: normalizeCatalogStructureName(row.name || row.normalized_name),
+        externalCode: row.external_code || "",
+        parentId: row.parent_id || null,
+        sortOrder: Number(row.sort_order) || 0,
+        isActive: Number(row.is_active) === 1,
+        isSystem: Number(row.is_system) === 1
+    };
+}
+
+function addIssue(target, issue) {
+    target.push({
+        severity: issue.severity || "warning",
+        code: issue.code,
+        message: issue.message,
+        itemId: issue.itemId || null,
+        itemType: issue.itemType || "",
+        itemName: issue.itemName || "",
+        parentId: issue.parentId || null,
+        parentName: issue.parentName || ""
+    });
 }
 
 async function runInTransaction(db, callback) {
@@ -336,6 +370,142 @@ async function createSubcategory(db, { categoryId, name, position = "end", after
 
         const created = await db.get("SELECT * FROM catalog_structure WHERE id = ?", [item.id]);
         return toPublicStructureItem(created);
+    });
+}
+
+async function getMoveSubcategoriesPreview(db, { subcategoryIds = [], targetCategoryId }) {
+    const ids = Array.from(new Set((subcategoryIds || []).map(Number).filter(Boolean)));
+    const targetId = Number(targetCategoryId) || 0;
+    if (!ids.length) {
+        throw createStructureCodeError(400, "CATALOG_STRUCTURE_INVALID_SELECTION", "Выберите подкатегории для перемещения.");
+    }
+
+    const target = await db.get(
+        "SELECT * FROM catalog_structure WHERE id = ? AND type = 'category' AND is_active = 1 AND parent_id IS NULL AND COALESCE(is_system, 0) = 0 LIMIT 1",
+        [targetId]
+    );
+    if (!target) {
+        throw createStructureCodeError(400, "CATALOG_STRUCTURE_INVALID_TARGET", "Выберите активную корневую категорию.");
+    }
+
+    const placeholders = ids.map(() => "?").join(",");
+    const rows = await db.all(
+        `SELECT child.*, parent.name AS parent_name
+         FROM catalog_structure child
+         LEFT JOIN catalog_structure parent ON parent.id = child.parent_id
+         WHERE child.id IN (${placeholders})
+           AND child.type = 'subcategory'
+           AND child.is_active = 1
+           AND COALESCE(child.is_system, 0) = 0`,
+        ids
+    );
+    if (rows.length !== ids.length) {
+        throw createStructureCodeError(404, "CATALOG_STRUCTURE_SUBCATEGORY_NOT_FOUND", "Одна или несколько подкатегорий не найдены.");
+    }
+
+    const conflicts = [];
+    const items = [];
+    let affectedProducts = 0;
+    const sourceCategories = new Map();
+
+    for (const row of rows) {
+        if (Number(row.parent_id) === target.id) {
+            conflicts.push({
+                code: "SAME_PARENT",
+                message: `Подкатегория "${row.name}" уже находится в выбранной категории.`,
+                subcategoryId: row.id
+            });
+        }
+
+        const duplicate = await db.get(
+            `SELECT id, name
+             FROM catalog_structure
+             WHERE type = 'subcategory'
+               AND parent_id = ?
+               AND normalized_name = ?
+               AND id != ?
+               AND is_active = 1
+               AND COALESCE(is_system, 0) = 0
+             LIMIT 1`,
+            [target.id, normalizeCatalogStructureName(row.name), row.id]
+        );
+        if (duplicate) {
+            conflicts.push({
+                code: "TARGET_DUPLICATE_SUBCATEGORY",
+                message: `В выбранной категории уже есть подкатегория "${duplicate.name}".`,
+                subcategoryId: row.id,
+                duplicateId: duplicate.id
+            });
+        }
+
+        const productRow = await db.get(
+            `SELECT COUNT(*) AS count
+             FROM products
+             WHERE deleted_at IS NULL
+               AND category = ?
+               AND subcategory = ?`,
+            [row.parent_name || "", row.name]
+        );
+        const productCount = Number(productRow?.count || 0);
+        affectedProducts += productCount;
+        if (row.parent_name) sourceCategories.set(row.parent_name, (sourceCategories.get(row.parent_name) || 0) + 1);
+        items.push({
+            id: row.id,
+            name: row.name,
+            currentCategoryId: row.parent_id,
+            currentCategoryName: row.parent_name || "",
+            targetCategoryId: target.id,
+            targetCategoryName: target.name,
+            productCount
+        });
+    }
+
+    return {
+        canMove: conflicts.length === 0,
+        targetCategory: toPublicStructureItem(target),
+        items,
+        affectedProducts,
+        sourceCategories: Array.from(sourceCategories.entries()).map(([name, count]) => ({ name, count })),
+        conflicts
+    };
+}
+
+async function moveSubcategories(db, payload) {
+    const preview = await getMoveSubcategoriesPreview(db, payload);
+    if (!preview.canMove) {
+        throw createStructureCodeError(409, "CATALOG_STRUCTURE_CONFLICT", preview.conflicts[0]?.message || "Перемещение невозможно.");
+    }
+
+    return runInTransaction(db, async () => {
+        const now = new Date().toISOString();
+        for (const item of preview.items) {
+            await db.run(
+                "UPDATE catalog_structure SET parent_id = ?, updated_at = ? WHERE id = ? AND type = 'subcategory'",
+                [preview.targetCategory.id, now, item.id]
+            );
+            await db.run(
+                `UPDATE products
+                 SET category = ?,
+                     updated_at = ?
+                 WHERE deleted_at IS NULL
+                   AND category = ?
+                   AND subcategory = ?`,
+                [preview.targetCategory.name, now, item.currentCategoryName, item.name]
+            );
+        }
+        await reorderStructureLevel(db, {
+            type: "subcategory",
+            parentId: preview.targetCategory.id,
+            itemId: preview.items[0].id,
+            position: "end"
+        });
+
+        return {
+            moved: preview.items.length,
+            affectedProducts: preview.affectedProducts,
+            targetCategory: preview.targetCategory,
+            items: preview.items
+        };
     });
 }
 
@@ -508,6 +678,229 @@ async function getCatalogStructureTree(db) {
     return categories;
 }
 
+async function getCatalogStructureAudit(db) {
+    const [rawRows, products] = await Promise.all([
+        db.all(`
+            SELECT id, type, name, normalized_name, external_code, parent_id, sort_order, is_active, is_system
+            FROM catalog_structure
+            WHERE type IN ('category', 'subcategory')
+            ORDER BY sort_order ASC, id ASC
+        `),
+        db.all(`
+            SELECT id, title, category, subcategory, product_group, is_active, deleted_at
+            FROM products
+            WHERE deleted_at IS NULL
+        `)
+    ]);
+    const rows = rawRows.map(toStructureRow);
+    const categories = rows.filter(row => row.type === "category");
+    const subcategories = rows.filter(row => row.type === "subcategory");
+    const categoriesById = new Map(categories.map(row => [Number(row.id), row]));
+    const activeCategoriesByName = new Map();
+    const activeSubcategoriesByParentAndName = new Map();
+    const productCountByCategory = new Map();
+    const productCountBySubcategory = new Map();
+    const issues = [];
+
+    categories.filter(row => row.isActive && !row.isSystem).forEach(row => {
+        activeCategoriesByName.set(row.normalizedName, row);
+    });
+    subcategories.filter(row => row.isActive && !row.isSystem).forEach(row => {
+        activeSubcategoriesByParentAndName.set(`${row.parentId}:${row.normalizedName}`, row);
+    });
+
+    products.forEach(product => {
+        const normalizedCategory = normalizeCatalogStructureName(product.category);
+        const category = activeCategoriesByName.get(normalizedCategory);
+        if (category) {
+            productCountByCategory.set(category.id, (productCountByCategory.get(category.id) || 0) + 1);
+        }
+
+        const normalizedSubcategory = normalizeCatalogStructureName(product.subcategory);
+        if (category && normalizedSubcategory) {
+            const subcategory = activeSubcategoriesByParentAndName.get(`${category.id}:${normalizedSubcategory}`);
+            if (subcategory) {
+                productCountBySubcategory.set(subcategory.id, (productCountBySubcategory.get(subcategory.id) || 0) + 1);
+            }
+        }
+    });
+
+    categories.forEach(category => {
+        if (category.parentId) {
+            addIssue(issues, {
+                severity: "warning",
+                code: "CATEGORY_HAS_PARENT",
+                message: `Категория "${category.name}" ошибочно имеет parent_id.`,
+                itemId: category.id,
+                itemType: "category",
+                itemName: category.name,
+                parentId: category.parentId
+            });
+        }
+        if (category.isActive && !productCountByCategory.get(category.id)) {
+            addIssue(issues, {
+                severity: "info",
+                code: "EMPTY_CATEGORY",
+                message: `В категории "${category.name}" нет товаров.`,
+                itemId: category.id,
+                itemType: "category",
+                itemName: category.name
+            });
+        }
+    });
+
+    subcategories.forEach(subcategory => {
+        const parent = categoriesById.get(Number(subcategory.parentId));
+        if (!subcategory.parentId || !parent) {
+            addIssue(issues, {
+                severity: "critical",
+                code: "SUBCATEGORY_WITHOUT_PARENT",
+                message: `Подкатегория "${subcategory.name}" не привязана к существующей категории.`,
+                itemId: subcategory.id,
+                itemType: "subcategory",
+                itemName: subcategory.name,
+                parentId: subcategory.parentId
+            });
+            return;
+        }
+        if (!parent.isActive && subcategory.isActive) {
+            addIssue(issues, {
+                severity: "warning",
+                code: "SUBCATEGORY_IN_INACTIVE_CATEGORY",
+                message: `Подкатегория "${subcategory.name}" находится в неактивной категории "${parent.name}".`,
+                itemId: subcategory.id,
+                itemType: "subcategory",
+                itemName: subcategory.name,
+                parentId: parent.id,
+                parentName: parent.name
+            });
+        }
+        if (subcategory.isActive && !productCountBySubcategory.get(subcategory.id)) {
+            addIssue(issues, {
+                severity: "info",
+                code: "EMPTY_SUBCATEGORY",
+                message: `В подкатегории "${subcategory.name}" нет товаров.`,
+                itemId: subcategory.id,
+                itemType: "subcategory",
+                itemName: subcategory.name,
+                parentId: parent.id,
+                parentName: parent.name
+            });
+        }
+    });
+
+    const categoryNames = new Map();
+    categories.forEach(category => {
+        if (!categoryNames.has(category.normalizedName)) categoryNames.set(category.normalizedName, []);
+        categoryNames.get(category.normalizedName).push(category);
+    });
+    categoryNames.forEach(items => {
+        if (items.length < 2) return;
+        items.forEach(item => addIssue(issues, {
+            severity: "warning",
+            code: "DUPLICATE_CATEGORY_NAME",
+            message: `Категория "${item.name}" имеет дубль после нормализации.`,
+            itemId: item.id,
+            itemType: "category",
+            itemName: item.name
+        }));
+    });
+
+    const subNamesByParent = new Map();
+    subcategories.forEach(subcategory => {
+        const key = `${subcategory.parentId}:${subcategory.normalizedName}`;
+        if (!subNamesByParent.has(key)) subNamesByParent.set(key, []);
+        subNamesByParent.get(key).push(subcategory);
+    });
+    subNamesByParent.forEach(items => {
+        if (items.length < 2) return;
+        items.forEach(item => addIssue(issues, {
+            severity: "warning",
+            code: "DUPLICATE_SUBCATEGORY_NAME",
+            message: `Подкатегория "${item.name}" имеет дубль в своей категории.`,
+            itemId: item.id,
+            itemType: "subcategory",
+            itemName: item.name,
+            parentId: item.parentId
+        }));
+    });
+
+    const suspiciousNames = new Map();
+    subcategories.forEach(subcategory => {
+        if (!suspiciousNames.has(subcategory.normalizedName)) suspiciousNames.set(subcategory.normalizedName, []);
+        suspiciousNames.get(subcategory.normalizedName).push(subcategory);
+    });
+    suspiciousNames.forEach(items => {
+        if (items.length < 2) return;
+        items.forEach(item => {
+            const parent = categoriesById.get(Number(item.parentId));
+            addIssue(issues, {
+                severity: "info",
+                code: "SAME_SUBCATEGORY_NAME_IN_MULTIPLE_CATEGORIES",
+                message: `Подкатегория "${item.name}" встречается в нескольких категориях.`,
+                itemId: item.id,
+                itemType: "subcategory",
+                itemName: item.name,
+                parentId: item.parentId,
+                parentName: parent?.name || ""
+            });
+        });
+    });
+
+    let productsWithoutStructure = 0;
+    products.forEach(product => {
+        const category = activeCategoriesByName.get(normalizeCatalogStructureName(product.category));
+        const normalizedSubcategory = normalizeCatalogStructureName(product.subcategory);
+        const subcategory = category && normalizedSubcategory
+            ? activeSubcategoriesByParentAndName.get(`${category.id}:${normalizedSubcategory}`)
+            : null;
+        if (!category || (normalizedSubcategory && !subcategory)) {
+            productsWithoutStructure += 1;
+        }
+    });
+
+    if (productsWithoutStructure) {
+        addIssue(issues, {
+            severity: "warning",
+            code: "PRODUCTS_WITHOUT_STRUCTURE",
+            message: `Есть товары без активной связки category/subcategory в структуре: ${productsWithoutStructure}.`,
+            itemType: "catalog",
+            count: productsWithoutStructure
+        });
+    }
+
+    const categoriesForTree = categories.map(category => ({
+        ...category,
+        productCount: productCountByCategory.get(category.id) || 0,
+        subcategoryCount: subcategories.filter(item => Number(item.parentId) === Number(category.id)).length,
+        issues: issues.filter(issue => issue.itemType === "category" && Number(issue.itemId) === Number(category.id)),
+        subcategories: subcategories
+            .filter(item => Number(item.parentId) === Number(category.id))
+            .map(subcategory => ({
+                ...subcategory,
+                parentName: category.name,
+                productCount: productCountBySubcategory.get(subcategory.id) || 0,
+                issues: issues.filter(issue => issue.itemType === "subcategory" && Number(issue.itemId) === Number(subcategory.id))
+            }))
+    }));
+
+    return {
+        summary: {
+            categories: categories.length,
+            subcategories: subcategories.length,
+            products: products.length,
+            productsWithoutStructure,
+            issues: issues.length,
+            criticalIssues: issues.filter(issue => issue.severity === "critical").length,
+            warnings: issues.filter(issue => issue.severity === "warning").length,
+            inactiveItems: rows.filter(row => !row.isActive).length,
+            duplicateIssues: issues.filter(issue => issue.code.includes("DUPLICATE")).length
+        },
+        categories: categoriesForTree,
+        issues
+    };
+}
+
 async function getPublicCatalogStructureTree(db) {
     const [structureRows, productRows] = await Promise.all([
         db.all(`
@@ -594,8 +987,11 @@ module.exports = {
     syncCatalogStructureFromProducts,
     getCatalogStructureTree,
     getPublicCatalogStructureTree,
+    getCatalogStructureAudit,
     createCategory,
     createSubcategory,
+    getMoveSubcategoriesPreview,
+    moveSubcategories,
     reorderStructureLevel,
     validateStructurePosition,
     validateProductStructureSelection

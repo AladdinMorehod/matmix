@@ -6,13 +6,17 @@ const {
     normalizeCatalogStructureName,
     getCatalogStructureTree,
     getPublicCatalogStructureTree,
+    getCatalogStructureAudit,
     createCategory,
     createSubcategory,
+    getMoveSubcategoriesPreview,
+    moveSubcategories,
     validateProductStructureSelection
 } = require("../services/catalogStructure");
 const {
     parseCatalogExcel,
     createCatalogImportPreviewToken,
+    updateCatalogImportResolutions,
     applyCatalogImport,
     getCatalogImportExcelCopy,
     getNextMatExternalId,
@@ -23,6 +27,29 @@ const router = express.Router();
 const publicRouter = express.Router();
 const allowedCrmUnits = new Set(["шт", "кг", "м", "м2"]);
 let productCreateQueue = Promise.resolve();
+
+const safeErrorMessages = {
+    400: "Проверьте данные запроса.",
+    401: "Сессия истекла. Войдите снова.",
+    403: "У вас недостаточно прав для выполнения операции.",
+    404: "Запрошенные данные не найдены.",
+    409: "Операцию нельзя выполнить из-за конфликта данных.",
+    413: "Файл слишком большой.",
+    422: "В файле обнаружены критические ошибки.",
+    500: "Произошла внутренняя ошибка сервера."
+};
+
+function sendApiError(res, error, fallbackMessage, fallbackCode = "REQUEST_FAILED") {
+    const status = Number(error?.status) || 500;
+    const message = error?.status && error?.message
+        ? error.message
+        : (fallbackMessage || safeErrorMessages[status] || safeErrorMessages[500]);
+    res.status(status).json({
+        success: false,
+        code: error?.code || fallbackCode,
+        message
+    });
+}
 
 function normalizeText(value) {
     return String(value || "").replace(/\s+/g, " ").trim();
@@ -698,10 +725,40 @@ router.get("/export/excel", requireRole(["admin", "manager"]), async (req, res) 
 router.get("/structure", requireRole(["admin", "manager"]), async (req, res) => {
     try {
         const categories = await getCatalogStructureTree({ all });
-        res.json({ success: true, categories });
+        res.json({ success: true, categories, data: { categories } });
     } catch (error) {
         console.error("Catalog structure load error:", error);
         res.status(500).json({ success: false, message: "Не удалось загрузить структуру каталога." });
+    }
+});
+
+router.get("/structure/audit", requireRole(["admin", "manager"]), async (req, res) => {
+    try {
+        const audit = await getCatalogStructureAudit({ all });
+        res.json({ success: true, data: audit });
+    } catch (error) {
+        console.error("Catalog structure audit error:", error);
+        sendApiError(res, error, "Не удалось выполнить аудит структуры каталога.", "CATALOG_STRUCTURE_AUDIT_FAILED");
+    }
+});
+
+router.post("/structure/subcategories/move-preview", requireRole(["admin"]), async (req, res) => {
+    try {
+        const preview = await getMoveSubcategoriesPreview({ all, get }, req.body || {});
+        res.json({ success: true, data: preview });
+    } catch (error) {
+        console.error("Catalog subcategory move preview error:", error);
+        sendApiError(res, error, "Не удалось подготовить предварительный просмотр перемещения.", "CATALOG_STRUCTURE_MOVE_PREVIEW_FAILED");
+    }
+});
+
+router.post("/structure/subcategories/move", requireRole(["admin"]), async (req, res) => {
+    try {
+        const result = await moveSubcategories({ all, get, run }, req.body || {});
+        res.json({ success: true, data: result });
+    } catch (error) {
+        console.error("Catalog subcategory move error:", error);
+        sendApiError(res, error, "Не удалось переместить подкатегории.", "CATALOG_STRUCTURE_MOVE_FAILED");
     }
 });
 
@@ -717,17 +774,38 @@ router.post("/import/preview", requireRole(["admin"]), async (req, res) => {
         res.json(preview);
     } catch (error) {
         console.error("Products import preview error:", error);
-        res.status(error.status || 500).json({
+        const status = Number(error?.status) || 500;
+        const message = error?.status && error?.message
+            ? error.message
+            : "Не удалось выполнить предварительную проверку файла.";
+        res.status(status).json({
             success: false,
             canImport: false,
-            message: error.status ? error.message : "Не удалось проанализировать Excel-файл.",
+            code: error?.code || (error?.status ? "UPLOAD_ERROR" : "IMPORT_PREVIEW_FAILED"),
+            message,
             errors: [{
                 severity: "critical",
-                code: error.status ? "UPLOAD_ERROR" : "IMPORT_PREVIEW_ERROR",
-                message: error.status ? error.message : "Файл невозможно прочитать."
+                code: error?.code || (error?.status ? "UPLOAD_ERROR" : "IMPORT_PREVIEW_FAILED"),
+                message
             }],
             warnings: []
         });
+    }
+});
+
+router.patch("/import/preview/:token/resolutions", requireRole(["admin"]), async (req, res) => {
+    try {
+        const result = await updateCatalogImportResolutions(
+            { all, get },
+            req.params.token,
+            req.body?.resolutions || [],
+            req.session.user || {}
+        );
+
+        res.json(result);
+    } catch (error) {
+        console.error("Products import resolution error:", error);
+        sendApiError(res, error, "Не удалось сохранить решение импорта.", "IMPORT_RESOLUTION_FAILED");
     }
 });
 
@@ -743,11 +821,7 @@ router.post("/import/apply", requireRole(["admin"]), async (req, res) => {
         res.json(result);
     } catch (error) {
         console.error("Products import apply error:", error);
-        res.status(error.status || 500).json({
-            success: false,
-            message: error.status ? error.message : "Не удалось применить импорт каталога.",
-            code: error.code || "IMPORT_APPLY_ERROR"
-        });
+        sendApiError(res, error, "Не удалось применить импорт.", "IMPORT_APPLY_FAILED");
     }
 });
 
@@ -758,17 +832,14 @@ router.get("/import/excel-copy/:id", requireRole(["admin"]), async (req, res) =>
         res.sendFile(copy.path);
     } catch (error) {
         console.error("Products import Excel copy error:", error);
-        res.status(error.status || 500).json({
-            success: false,
-            message: error.status ? error.message : "Не удалось скачать копию Excel."
-        });
+        sendApiError(res, error, "Не удалось скачать копию Excel.", "IMPORT_EXCEL_COPY_FAILED");
     }
 });
 
 router.post("/structure/categories", requireRole(["admin"]), async (req, res) => {
     try {
         const item = await createCategory({ run, get, all }, req.body || {});
-        res.status(201).json({ success: true, item });
+        res.status(201).json({ success: true, item, data: { item } });
     } catch (error) {
         console.error("Catalog category create error:", error);
         res.status(error.status || 500).json({
@@ -781,7 +852,7 @@ router.post("/structure/categories", requireRole(["admin"]), async (req, res) =>
 router.post("/structure/subcategories", requireRole(["admin"]), async (req, res) => {
     try {
         const item = await createSubcategory({ run, get, all }, req.body || {});
-        res.status(201).json({ success: true, item });
+        res.status(201).json({ success: true, item, data: { item } });
     } catch (error) {
         console.error("Catalog subcategory create error:", error);
         res.status(error.status || 500).json({
