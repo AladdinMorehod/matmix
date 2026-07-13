@@ -9,6 +9,7 @@ const {
     getCatalogStructureAudit,
     createCategory,
     createSubcategory,
+    moveRootCategoryToIndex,
     getMoveSubcategoriesPreview,
     moveSubcategories,
     validateProductStructureSelection
@@ -17,6 +18,8 @@ const {
     parseCatalogExcel,
     createCatalogImportPreviewToken,
     updateCatalogImportResolutions,
+    getCatalogImportMatConflictAudit,
+    getCatalogImportGroupResolutionDryRun,
     applyCatalogImport,
     getCatalogImportExcelCopy,
     getNextMatExternalId,
@@ -809,6 +812,37 @@ router.patch("/import/preview/:token/resolutions", requireRole(["admin"]), async
     }
 });
 
+router.get("/import/preview/:token/mat-conflicts/audit", requireRole(["admin"]), async (req, res) => {
+    try {
+        const result = await getCatalogImportMatConflictAudit(
+            { all, get },
+            req.params.token,
+            req.session.user || {}
+        );
+
+        res.json(result);
+    } catch (error) {
+        console.error("Products import MAT conflict audit error:", error);
+        sendApiError(res, error, "РќРµ СѓРґР°Р»РѕСЃСЊ РІС‹РїРѕР»РЅРёС‚СЊ Р°СѓРґРёС‚ MAT-РєРѕРЅС„Р»РёРєС‚РѕРІ.", "IMPORT_MAT_CONFLICT_AUDIT_FAILED");
+    }
+});
+
+router.post("/import/preview/:token/group-resolution/dry-run", requireRole(["admin"]), async (req, res) => {
+    try {
+        const result = await getCatalogImportGroupResolutionDryRun(
+            { all, get },
+            req.params.token,
+            req.body || {},
+            req.session.user || {}
+        );
+
+        res.json(result);
+    } catch (error) {
+        console.error("Products import group resolution dry run error:", error);
+        sendApiError(res, error, "РќРµ СѓРґР°Р»РѕСЃСЊ РїРѕРґРіРѕС‚РѕРІРёС‚СЊ dry run РіСЂСѓРїРїРѕРІРѕРіРѕ СЂРµС€РµРЅРёСЏ.", "IMPORT_GROUP_RESOLUTION_DRY_RUN_FAILED");
+    }
+});
+
 router.post("/import/apply", requireRole(["admin"]), async (req, res) => {
     try {
         const result = await applyCatalogImport(
@@ -845,6 +879,22 @@ router.post("/structure/categories", requireRole(["admin"]), async (req, res) =>
         res.status(error.status || 500).json({
             success: false,
             message: error.status ? error.message : "Не удалось добавить категорию."
+        });
+    }
+});
+
+router.patch("/structure/categories/:id/order", requireRole(["admin"]), async (req, res) => {
+    try {
+        const order = await moveRootCategoryToIndex({ run, get, all }, {
+            categoryId: req.params.id,
+            targetIndex: Number(req.body?.targetIndex)
+        });
+        res.json({ success: true, order, data: { order } });
+    } catch (error) {
+        console.error("Catalog category reorder error:", error);
+        res.status(error.status || 500).json({
+            success: false,
+            message: error.status ? error.message : "Не удалось изменить порядок категорий."
         });
     }
 });

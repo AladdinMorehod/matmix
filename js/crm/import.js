@@ -55,9 +55,11 @@ const importSummaryGroups = [
     {
         label: "Каталог",
         cards: [
-            { key: "new", label: "Новые товары", always: true, description: "Товары из Excel, которых еще нет в CRM." },
+            { key: "new", label: "Новые товары", always: true, description: "Безопасное создание: MAT отсутствует в CRM и не найдены конфликты." },
             { key: "updated", label: "Обновятся", always: true, description: "Существующие товары, у которых найдено изменение данных." },
             { key: "requiresReview", label: "Требуют решения", always: true, description: "Похожие товары требуют ручной проверки перед импортом." },
+            { key: "matConflicts", label: "MAT-конфликты", description: "Новый MAT похож на существующий товар и требует решения." },
+            { key: "excluded", label: "Исключено", description: "Строки, явно исключенные из импорта." },
             { key: "missingFromFile", label: "Отсутствуют в файле", description: "Товары CRM, которых нет в текущем Excel." },
             { key: "manualOnly", label: "Только в CRM", description: "Ручные товары CRM, которых нет в Excel." },
             { key: "unchanged", label: "Без изменений", description: "Строки Excel, совпавшие с текущими данными CRM." }
@@ -79,8 +81,8 @@ const importSummaryGroups = [
             { key: "newSubcategories", label: "Новые подкатегории", description: "Подкатегории, которых нет в структуре CRM." },
             { key: "renamedCategories", label: "Переименованы категории", description: "Категории с отличающимся названием." },
             { key: "renamedSubcategories", label: "Переименованы подкатегории", description: "Подкатегории с отличающимся названием." },
-            { key: "assignedCategoryCodes", label: "Будет записано CAT", description: "CAT найден в структуре и будет записан в Excel-копию после Apply." },
-            { key: "assignedSubcategoryCodes", label: "Будет записано SUB", description: "SUB найден в структуре и будет записан в Excel-копию после Apply." },
+            { key: "assignedCategoryCodes", label: "Распознано CAT", description: "CAT распознан в структуре каталога для Excel-строк." },
+            { key: "assignedSubcategoryCodes", label: "Распознано SUB", description: "SUB распознан в структуре каталога для Excel-строк." },
             { key: "missingCategoryCodes", label: "Не найдена категория", description: "Категория не найдена в catalog_structure." },
             { key: "missingSubcategoryCodes", label: "Не найдена подкатегория", description: "Подкатегория не найдена в catalog_structure." },
             { key: "newGroups", label: "Новые группы", description: "Группы товаров, появившиеся в Excel." }
@@ -108,8 +110,8 @@ const importStructureLabels = {
     newSubcategories: "Новые подкатегории",
     renamedCategories: "Переименованы категории",
     renamedSubcategories: "Переименованы подкатегории",
-    assignedCategoryCodes: "Будет записано CAT",
-    assignedSubcategoryCodes: "Будет записано SUB",
+    assignedCategoryCodes: "Распознано CAT",
+    assignedSubcategoryCodes: "Распознано SUB",
     missingCategoryCodes: "Не найдена категория",
     missingSubcategoryCodes: "Не найдена подкатегория",
     newGroups: "Новые группы"
@@ -200,7 +202,7 @@ function getImportSummaryCount(key) {
     if (key === "priceIncreased") return Number(priceChanges.increased || 0);
     if (key === "priceDecreased") return Number(priceChanges.decreased || 0);
     if (key === "priceWarnings") {
-        return (priceChanges.warningSummary || []).reduce((total, item) => total + Number(item.count || 0), 0);
+        return Number(priceChanges.warningRows || importPreview.summary?.priceWarnings || 0);
     }
     return Number(importPreview.summary?.[key] || 0);
 }
@@ -380,6 +382,10 @@ async function submitImportPreview() {
 
 async function submitImportApply() {
     if (!importPreview?.token || importApplying) return;
+    if (!importPreview.canImport) {
+        notifyWarning("Сначала решите или исключите конфликтные строки.");
+        return;
+    }
 
     const summary = importPreview.summary || {};
     const formData = await CrmModal.form({
@@ -486,9 +492,9 @@ function renderApplyActions() {
             <section class="import-apply-panel blocked">
                 <div>
                     <strong>Применение импорта недоступно</strong>
-                    <span>Сначала устраните обязательные конфликты и повторите предварительную проверку.</span>
+                    <span>Перед применением импорта необходимо решить или исключить конфликтные строки.</span>
                 </div>
-                <button class="import-apply-submit" type="button" disabled>Применить импорт</button>
+                <button class="import-apply-submit" type="button" disabled aria-disabled="true" title="Сначала решите или исключите конфликтные строки.">Применить импорт</button>
             </section>
         `;
     }
@@ -524,9 +530,18 @@ function renderApplyResult() {
 
 function renderImportStatus() {
     if (!importPreview) return "";
+    const summary = importPreview.summary || {};
+    const criticalErrors = Number(summary.criticalErrors || 0);
+    const unresolved = Number(summary.unresolvedReviewConflicts || summary.structureConflicts || 0);
+    if (criticalErrors > 0) {
+        return `<p class="import-status danger" aria-live="polite">Файл содержит критические ошибки. Применение импорта невозможно.</p>`;
+    }
+    if (unresolved > 0) {
+        return `<p class="import-status warning" aria-live="polite"><strong>Предварительная проверка завершена.</strong> Обнаружено ${escapeHtml(unresolved)} конфликтных строк. Перед импортом их необходимо решить или исключить.</p>`;
+    }
     return importPreview.canImport
-        ? `<p class="import-status success">Файл прошел проверку. Критических ошибок нет.</p>`
-        : `<p class="import-status danger">Файл содержит критические ошибки. Применение импорта невозможно.</p>`;
+        ? `<p class="import-status success" aria-live="polite">Файл прошел проверку. Критических ошибок нет.</p>`
+        : `<p class="import-status warning" aria-live="polite">Предварительная проверка завершена, но применимых строк для импорта нет.</p>`;
 }
 
 function renderImportSummary() {
@@ -706,6 +721,137 @@ function renderStructureResolutionControls(item) {
     `;
 }
 
+function renderProductCandidateOptions(item, selectedId) {
+    const candidates = (item.candidates?.length ? item.candidates : [item.candidate]).filter(Boolean);
+    if (!candidates.length) {
+        return `<option value="">Кандидаты не найдены</option>`;
+    }
+    return candidates.map(candidate => {
+        const crmMat = candidate.hasValidMat && candidate.matCode
+            ? candidate.matCode
+            : (candidate.externalIdRaw ? `не MAT: ${candidate.externalIdRaw}` : "MAT отсутствует в CRM");
+        const details = [
+            crmMat,
+            candidate.title,
+            `ID ${candidate.id}`
+        ].filter(Boolean).join(" · ");
+        return `<option title="${escapeHtml(details)}" value="${escapeHtml(candidate.id)}" ${Number(selectedId) === Number(candidate.id) ? "selected" : ""}>${escapeHtml(details)}</option>`;
+    }).join("");
+}
+
+function getProductResolutionNote(action) {
+    if (action === "accept_excel_mat") {
+        return "Товар будет обновлён по ID CRM. MAT, цена и наименование будут взяты из Excel. Перед применением будет проверена уникальность MAT.";
+    }
+    if (action === "create_new") {
+        return "Будет создан новый товар с MAT из Excel. Перед Apply повторно проверяется уникальность MAT.";
+    }
+    if (action === "exclude") {
+        return "Строка не будет создана или обновлена.";
+    }
+    return "Цена и наименование будут взяты из Excel. MAT и текущая структура товара в CRM сохранятся.";
+}
+
+function renderCandidateDetails(item, selectedId) {
+    const candidates = (item.candidates?.length ? item.candidates : [item.candidate]).filter(Boolean);
+    return candidates.map(candidate => {
+        const isSelected = Number(selectedId) === Number(candidate.id);
+        const crmMat = candidate.hasValidMat && candidate.matCode
+            ? candidate.matCode
+            : (candidate.externalIdRaw ? `Невалидный MAT в CRM: ${candidate.externalIdRaw}` : "MAT отсутствует в CRM");
+        return `
+            <div class="import-candidate-card ${isSelected ? "" : "hidden"}" data-import-candidate-card="${escapeHtml(candidate.id)}">
+                <span>ID ${escapeHtml(candidate.id)}</span>
+                <span>${escapeHtml(crmMat)}</span>
+                <strong>${escapeHtml(candidate.title || "")}</strong>
+                <span>${escapeHtml([candidate.category, candidate.subcategory].filter(Boolean).join(" / ") || "Без структуры")}</span>
+                ${candidate.price === null || candidate.price === undefined ? "" : `<span>Цена ${escapeHtml(candidate.price)} ₽</span>`}
+                <span>${escapeHtml(item.reasonLabel || item.conflictCode || item.reviewReason || "")}</span>
+            </div>
+        `;
+    }).join("");
+}
+
+function renderProductCandidateOptions(item, selectedId) {
+    const candidates = (item.candidates?.length ? item.candidates : [item.candidate]).filter(Boolean);
+    if (!candidates.length) {
+        return `<option value="">Кандидаты не найдены</option>`;
+    }
+    return candidates.map(candidate => {
+        const crmMat = candidate.hasValidMat && candidate.matCode
+            ? candidate.matCode
+            : (candidate.externalIdRaw ? `не MAT: ${candidate.externalIdRaw}` : "MAT отсутствует в CRM");
+        const label = [
+            candidate.title,
+            `ID ${candidate.id}`
+        ].filter(Boolean).join(" · ");
+        const details = [label, crmMat].filter(Boolean).join(" · ");
+        return `<option title="${escapeHtml(details)}" value="${escapeHtml(candidate.id)}" ${Number(selectedId) === Number(candidate.id) ? "selected" : ""}>${escapeHtml(label)}</option>`;
+    }).join("");
+}
+
+function renderCandidateDetails(item, selectedId) {
+    const candidates = (item.candidates?.length ? item.candidates : [item.candidate]).filter(Boolean);
+    return candidates.map(candidate => {
+        const isSelected = Number(selectedId) === Number(candidate.id);
+        const matStatus = candidate.hasValidMat
+            ? "Валидный MAT"
+            : (candidate.externalIdRaw ? "Невалидный MAT" : "MAT отсутствует");
+        return `
+            <div class="import-candidate-card ${isSelected ? "" : "hidden"}" data-import-candidate-card="${escapeHtml(candidate.id)}">
+                <span><b>Статус MAT</b>${escapeHtml(matStatus)}</span>
+                <span><b>ID</b>${escapeHtml(candidate.id)}</span>
+                <strong>${escapeHtml(candidate.title || "")}</strong>
+                <span>${escapeHtml([candidate.category, candidate.subcategory].filter(Boolean).join(" / ") || "Без структуры")}</span>
+                ${candidate.price === null || candidate.price === undefined ? "" : `<span>Цена ${escapeHtml(candidate.price)} ₽</span>`}
+                <span>${escapeHtml(item.reasonLabel || item.conflictCode || item.reviewReason || "")}</span>
+                ${candidate.externalIdRaw ? `<code class="import-candidate-external-id">${escapeHtml(candidate.externalIdRaw)}</code>` : ""}
+            </div>
+        `;
+    }).join("");
+}
+
+function renderProductResolutionControls(item) {
+    if (item.reviewReason === "STRUCTURE_CONFLICT") return "";
+    const resolution = item.resolution || {};
+    const selectedAction = resolution.action || "map_existing";
+    const candidateId = resolution.productId || item.candidate?.id || "";
+    const candidateCount = (item.candidates?.length ? item.candidates : [item.candidate]).filter(Boolean).length;
+
+    return `
+        <div class="import-resolution-panel">
+            <div class="import-resolution-status ${item.resolved ? "is-resolved" : ""}">
+                ${item.resolved ? "Решение сохранено" : "Требуется решение"}
+            </div>
+            <div class="import-resolution-row">
+                <label>
+                    <span>Действие</span>
+                    <select data-import-resolution-action>
+                        <option value="map_existing" ${selectedAction === "map_existing" ? "selected" : ""}>Связать, MAT CRM сохранить</option>
+                        <option value="accept_excel_mat" ${selectedAction === "accept_excel_mat" ? "selected" : ""}>Связать и принять MAT из Excel</option>
+                        <option value="create_new" ${selectedAction === "create_new" ? "selected" : ""}>Создать новым товаром</option>
+                        <option value="exclude" ${selectedAction === "exclude" ? "selected" : ""}>Исключить из импорта</option>
+                    </select>
+                </label>
+                <label>
+                    <span>Товар CRM${candidateCount > 1 ? `: ${candidateCount} кандидатов` : ""}</span>
+                    <select data-import-resolution-product ${item.candidate || item.candidates?.length ? "" : "disabled"}>
+                        ${renderProductCandidateOptions(item, candidateId)}
+                    </select>
+                </label>
+            </div>
+            ${renderCandidateDetails(item, candidateId)}
+            <p class="import-resolution-note" data-import-resolution-note>${escapeHtml(getProductResolutionNote(selectedAction))}</p>
+            <div class="import-resolution-actions">
+                <button type="button" data-import-resolution-save data-row-id="${escapeHtml(item.rowId || item.rowNumber)}">
+                    ${item.resolved ? "Изменить решение" : "Сохранить решение"}
+                </button>
+                <button type="button" data-import-resolution-exclude data-row-id="${escapeHtml(item.rowId || item.rowNumber)}">Исключить из импорта</button>
+            </div>
+        </div>
+    `;
+}
+
 function renderRequiresReviewTabLegacy() {
     const items = getFilteredImportItems("requiresReview");
     const visibleItems = getVisibleImportItems(items);
@@ -740,8 +886,12 @@ function renderRequiresReviewTab() {
     if (!items.length) return renderEmptyImportState("Товаров, требующих решения, нет.");
     const structureItems = (importPreview.changes?.requiresReview || []).filter(item => item.reviewReason === "STRUCTURE_CONFLICT");
     const resolvedStructureItems = structureItems.filter(item => item.resolved).length;
+    const productItems = (importPreview.changes?.requiresReview || []).filter(item => item.reviewReason !== "STRUCTURE_CONFLICT");
+    const resolvedProductItems = productItems.filter(item => item.resolved).length;
     return `
         ${structureItems.length ? `<p class="import-tab-note">Решено ${escapeHtml(resolvedStructureItems)} из ${escapeHtml(structureItems.length)} структурных конфликтов.</p>` : ""}
+        ${productItems.length ? `<p class="import-tab-note">Решено ${escapeHtml(resolvedProductItems)} из ${escapeHtml(productItems.length)} MAT-конфликтов.</p>` : ""}
+        ${productItems.length ? `<div class="import-resolution-actions"><button type="button" data-import-link-unambiguous>Связать и принять безопасные MAT</button></div>` : ""}
         <p class="import-tab-note">При связывании с существующим товаром данные товара берутся из Excel, а MAT-код и текущая структура CRM сохраняются, если для них не выбрано отдельное решение.</p>
         ${visibleItems.map(item => `
             <article class="import-preview-row">
@@ -759,6 +909,7 @@ function renderRequiresReviewTab() {
                     </dl>
                 ` : ""}
                 ${renderStructureResolutionControls(item)}
+                ${renderProductResolutionControls(item)}
             </article>
         `).join("")}
         ${renderImportLoadMore(items.length)}
@@ -1063,8 +1214,9 @@ function renderStructureTab() {
     const assignedSubcategoryCodes = importPreview.changes?.assignedSubcategoryCodes || [];
     const missingCategoryCodes = importPreview.changes?.missingCategoryCodes || [];
     const missingSubcategoryCodes = importPreview.changes?.missingSubcategoryCodes || [];
+    const structureCodeConflicts = importPreview.changes?.structureCodeConflicts || [];
     const groups = importPreview.changes?.newGroups || [];
-    if (!categories.length && !subcategories.length && !renamedCategories.length && !renamedSubcategories.length && !assignedCategoryCodes.length && !assignedSubcategoryCodes.length && !missingCategoryCodes.length && !missingSubcategoryCodes.length && !groups.length) {
+    if (!categories.length && !subcategories.length && !renamedCategories.length && !renamedSubcategories.length && !assignedCategoryCodes.length && !assignedSubcategoryCodes.length && !missingCategoryCodes.length && !missingSubcategoryCodes.length && !structureCodeConflicts.length && !groups.length) {
         return renderEmptyImportState("Новых элементов структуры нет.");
     }
 
@@ -1074,8 +1226,8 @@ function renderStructureTab() {
             ${renderStructureList("Новые подкатегории", subcategories, item => `${item.externalCode || "SUB будет назначен"} · ${item.category || "Без категории"} / ${item.name}`)}
             ${renderStructureList("Переименованные категории", renamedCategories, item => `${item.externalCode}: ${item.currentName} -> ${item.incomingName}`)}
             ${renderStructureList("Переименованные подкатегории", renamedSubcategories, item => `${item.externalCode}: ${item.currentName} -> ${item.incomingName}`)}
-            ${renderStructureList("Будет записано CAT", assignedCategoryCodes, item => `${item.name} · ${item.externalCode} · строка ${item.rowNumber}`)}
-            ${renderStructureList("Будет записано SUB", assignedSubcategoryCodes, item => `${item.category || "Без категории"} / ${item.name} · ${item.externalCode} · строка ${item.rowNumber}`)}
+            ${renderStructureList("Распознано CAT", assignedCategoryCodes, item => `${item.name} · ${item.externalCode} · строка ${item.rowNumber}`)}
+            ${renderStructureList("Распознано SUB", assignedSubcategoryCodes, item => `${item.category || "Без категории"} / ${item.name} · ${item.externalCode} · строка ${item.rowNumber}`)}
             ${renderStructureList("Не удалось определить CAT", missingCategoryCodes, item => `${item.name} · строка ${item.rowNumber}`)}
             ${renderStructureList("Не удалось определить SUB", missingSubcategoryCodes, item => `${item.category || "Без категории"} / ${item.name} · строка ${item.rowNumber}`)}
             ${renderStructureList("Новые группы", groups, item => `${item.category || "Без категории"} / ${item.subcategory || "Без подкатегории"} / ${item.name}`)}
@@ -1178,8 +1330,23 @@ async function saveImportStructureResolution(button, forcedAction = "") {
         rowId: button.dataset.rowId || "",
         action,
         categoryId: Number(row.querySelector("[data-import-resolution-category]")?.value || 0) || null,
-        subcategoryId: Number(row.querySelector("[data-import-resolution-subcategory]")?.value || 0) || null
+        subcategoryId: Number(row.querySelector("[data-import-resolution-subcategory]")?.value || 0) || null,
+        productId: Number(row.querySelector("[data-import-resolution-product]")?.value || 0) || null,
+        externalId: row.querySelector("code")?.textContent || ""
     };
+
+    if (action === "create_new" && row.querySelector("[data-import-resolution-product]")) {
+        const title = row.querySelector("strong")?.textContent || "";
+        const matExcel = row.querySelector("code")?.textContent || "";
+        const candidateText = row.querySelector("[data-import-resolution-product] option:checked")?.textContent || "";
+        const confirmed = await CrmModal.open({
+            title: "Создать как новый товар?",
+            message: `В CRM найден похожий товар. Вы уверены, что это отдельный новый товар? Excel: ${matExcel} · ${title}. Кандидат CRM: ${candidateText}.`,
+            confirmText: "Создать новым",
+            cancelText: "Вернуться"
+        });
+        if (!confirmed) return;
+    }
 
     button.disabled = true;
     try {
@@ -1199,7 +1366,234 @@ async function saveImportStructureResolution(button, forcedAction = "") {
     }
 }
 
+async function linkUnambiguousImportMatches(button) {
+    if (!importPreview?.token || !button) return;
+    const strategyForm = await CrmModal.form({
+        title: "Стратегия группового связывания",
+        description: "Решения будут сохранены только в Preview-token. Apply не запускается.",
+        submitText: "Показать связи",
+        content: `
+            <label class="product-form-wide">
+                <span>Стратегия</span>
+                <select name="strategy">
+                    <option value="map_existing" selected>Связать, MAT CRM сохранить</option>
+                    <option value="accept_excel_mat">Связать и принять MAT из Excel, где это безопасно</option>
+                </select>
+            </label>
+        `
+    });
+    if (!strategyForm) return;
+    const strategy = String(strategyForm.get("strategy") || "map_existing");
+    const usedProductIds = new Set();
+    const usedExcelMat = new Set();
+    const excludedReasons = [];
+    const matches = (importPreview.changes?.requiresReview || [])
+        .filter(item => item.reviewReason !== "STRUCTURE_CONFLICT" && !item.resolved && item.candidate?.id)
+        .filter(item => {
+            const candidates = (item.candidates?.length ? item.candidates : [item.candidate]).filter(Boolean);
+            const productId = Number(item.candidate.id);
+            const similarity = Number(item.similarity ?? item.candidate.similarity ?? 0);
+            const excelMat = String(item.externalId || "");
+            if (item.conflictCode !== "TITLE_MATCH_MAT_DIFFERS" && item.reviewReason !== "TITLE_MATCH_MAT_DIFFERS") {
+                excludedReasons.push("не exact title");
+                return false;
+            }
+            if (candidates.length !== 1 || !productId || usedProductIds.has(productId) || similarity !== 1) {
+                excludedReasons.push("неоднозначный кандидат или повтор productId");
+                return false;
+            }
+            if (strategy === "accept_excel_mat" && usedExcelMat.has(excelMat)) {
+                excludedReasons.push("повтор MAT Excel");
+                return false;
+            }
+            usedProductIds.add(productId);
+            if (strategy === "accept_excel_mat") usedExcelMat.add(excelMat);
+            return true;
+        });
+    const resolutions = matches.map(item => ({
+            rowId: item.rowId || String(item.rowNumber || ""),
+            action: strategy,
+            productId: Number(item.candidate.id),
+            externalId: item.externalId || ""
+        }));
+
+    if (!resolutions.length) {
+        window.CrmToast?.info("Нет однозначных совпадений для группового связывания.");
+        return;
+    }
+
+    const sample = matches.slice(0, 5).map(item =>
+        `строка ${item.rowNumber}: ${item.externalId} -> ${(item.candidate.hasValidMat && item.candidate.matCode) || item.candidate.externalIdRaw || "MAT отсутствует"} · ${item.candidate.title} · ID ${item.candidate.id}`
+    ).join("; ");
+    const confirmed = await CrmModal.open({
+        title: "Связать однозначные совпадения?",
+        message: `Будет сохранено решений: ${resolutions.length}. MAT будет обновлён: ${strategy === "accept_excel_mat" ? resolutions.length : 0}. MAT CRM сохранится: ${strategy === "map_existing" ? resolutions.length : 0}. Исключено из группы: ${excludedReasons.length}. ${sample}${matches.length > 5 ? `; еще ${matches.length - 5}` : ""}. Решения будут записаны только в Preview-token, без Apply.`,
+        confirmText: "Связать",
+        cancelText: "Отмена"
+    });
+    if (!confirmed) return;
+
+    button.disabled = true;
+    try {
+        const result = await CrmApi.patch(`/api/products/import/preview/${importPreview.token}/resolutions`, {
+            resolutions
+        });
+        if (result?.data?.preview) {
+            importPreview = result.data.preview;
+        }
+        importActiveTab = "requiresReview";
+        window.CrmToast?.success(`Связано строк: ${resolutions.length}.`);
+        renderImportView();
+    } catch (error) {
+        notifyError(error, "Не удалось связать совпадения.");
+        button.disabled = false;
+    }
+}
+
+function getImportDryRunBlockReasonLabel(reason) {
+    const labels = {
+        ALREADY_RESOLVED: "строка уже решена",
+        EXCLUDED_BY_USER: "строка исключена",
+        STRUCTURE_CONFLICT: "конфликт структуры",
+        NO_CANDIDATE: "нет кандидата CRM",
+        MULTIPLE_CANDIDATES: "несколько кандидатов",
+        NOT_EXACT_TITLE_CONFLICT: "не exact-title конфликт",
+        TITLE_NOT_EXACT: "название совпадает не точно",
+        STRUCTURE_DIFFERS: "структура Excel отличается от CRM",
+        EMPTY_EXCEL_MAT: "пустой MAT Excel",
+        INVALID_EXCEL_MAT: "невалидный MAT Excel",
+        DUPLICATE_EXCEL_MAT_IN_PREVIEW: "MAT Excel повторяется в Preview",
+        DUPLICATE_PRODUCT: "productId повторяется",
+        EXCEL_MAT_TAKEN: "MAT Excel уже занят",
+        CRM_HAS_VALID_MAT: "в CRM уже есть валидный MAT",
+        CANDIDATE_DELETED: "кандидат удален"
+    };
+    return labels[reason] || reason || "иная причина";
+}
+
+function renderImportDryRunList(items = [], limit = 20) {
+    const visibleItems = items.slice(0, limit);
+    if (!visibleItems.length) return `<p class="import-tab-note">Строк нет.</p>`;
+    return `
+        <div class="import-dry-run-list">
+            ${visibleItems.map(item => `
+                <div class="import-dry-run-row">
+                    <strong>Строка ${escapeHtml(item.rowNumber)} · ${escapeHtml(item.excelMat)}</strong>
+                    <span>${escapeHtml(item.titleExcel || "")}</span>
+                    <small>ID ${escapeHtml(item.candidateProductId || "")} · ${escapeHtml(item.titleCrm || "")}</small>
+                    <small>${escapeHtml(item.externalIdChange || `${item.crmExternalIdRaw || "external_id пустой"} -> ${item.excelMat || ""}`)}</small>
+                    ${(item.blockReasons || []).length ? `<small>${escapeHtml((item.blockReasonLabels || item.blockReasons.map(getImportDryRunBlockReasonLabel)).join(", "))}</small>` : ""}
+                </div>
+            `).join("")}
+            ${items.length > limit ? `<p class="import-tab-note">Показаны первые ${escapeHtml(limit)} из ${escapeHtml(items.length)}.</p>` : ""}
+        </div>
+    `;
+}
+
+async function linkUnambiguousImportMatches(button) {
+    if (!importPreview?.token || !button) return;
+
+    button.disabled = true;
+    let dryRun;
+    try {
+        const result = await CrmApi.post(`/api/products/import/preview/${importPreview.token}/group-resolution/dry-run`, {
+            strategy: "accept_excel_mat"
+        });
+        dryRun = result.data;
+    } catch (error) {
+        notifyError(error, "Не удалось подготовить dry run группового решения.");
+        button.disabled = false;
+        return;
+    }
+
+    const resolutions = dryRun?.resolutions || [];
+    const blockedReasonText = Object.entries(dryRun.blockedReasonCounts || {})
+        .map(([reason, count]) => `${getImportDryRunBlockReasonLabel(reason)}: ${count}`)
+        .join("; ");
+
+    if (!resolutions.length) {
+        await CrmModal.form({
+            title: "Безопасные MAT не найдены",
+            description: "Групповое решение ничего не сохранит. Ниже показаны причины блокировки строк.",
+            submitText: "Закрыть",
+            content: `
+                <section class="import-dry-run-summary">
+                    <span>Конфликтов: <strong>${escapeHtml(dryRun.totalConflicts || 0)}</strong></span>
+                    <span>Безопасно связать: <strong>${escapeHtml(dryRun.eligibleRows || 0)}</strong></span>
+                    <span>Останутся для ручной проверки: <strong>${escapeHtml(dryRun.blockedRows || 0)}</strong></span>
+                </section>
+                ${blockedReasonText ? `<p class="import-tab-note">${escapeHtml(blockedReasonText)}</p>` : ""}
+                <details open>
+                    <summary>Заблокированные строки и причины</summary>
+                    ${renderImportDryRunList(dryRun.blocked || [], 200)}
+                </details>
+            `
+        });
+        button.disabled = false;
+        return;
+    }
+
+    const formData = await CrmModal.form({
+        title: "Подтвердить групповые решения",
+        description: `Будут связаны ${dryRun.eligibleRows} товаров. Для них MAT в CRM будет заменен MAT-кодом из Excel. Цена и наименование также будут взяты из Excel при применении импорта.`,
+        submitText: "Подтвердить решения",
+        cancelText: "Отмена",
+        content: `
+            <section class="import-dry-run-summary">
+                <span>MAT-изменений: <strong>${escapeHtml(dryRun.matChangesPlanned || 0)}</strong></span>
+                <span>Исключено из группы: <strong>${escapeHtml(dryRun.blockedRows || 0)}</strong></span>
+                <span>Уникальных товаров: <strong>${escapeHtml(dryRun.uniqueProducts || 0)}</strong></span>
+            </section>
+            ${blockedReasonText ? `<p class="import-tab-note">${escapeHtml(blockedReasonText)}</p>` : ""}
+            <details open>
+                <summary>Первые безопасные строки</summary>
+                ${renderImportDryRunList(dryRun.eligiblePreview || [], 20)}
+            </details>
+            <details>
+                <summary>Заблокированные строки и причины</summary>
+                ${renderImportDryRunList(dryRun.blocked || [], 200)}
+            </details>
+        `
+    });
+    if (!formData) {
+        button.disabled = false;
+        return;
+    }
+
+    try {
+        const result = await CrmApi.patch(`/api/products/import/preview/${importPreview.token}/resolutions`, {
+            resolutions
+        });
+        if (result?.data?.preview) {
+            importPreview = result.data.preview;
+        }
+        importActiveTab = "requiresReview";
+        window.CrmToast?.success(`Сохранено решений: ${resolutions.length}. Рабочая БД не изменена.`);
+        renderImportView();
+    } catch (error) {
+        notifyError(error, "Не удалось сохранить групповые решения.");
+        button.disabled = false;
+    }
+}
+
 importView?.addEventListener("change", event => {
+    const resolutionAction = event.target.closest("[data-import-resolution-action]");
+    if (resolutionAction) {
+        const row = resolutionAction.closest(".import-preview-row");
+        const note = row?.querySelector("[data-import-resolution-note]");
+        if (note) note.textContent = getProductResolutionNote(resolutionAction.value);
+        return;
+    }
+
+    const resolutionProduct = event.target.closest("[data-import-resolution-product]");
+    if (resolutionProduct) {
+        const row = resolutionProduct.closest(".import-preview-row");
+        row?.querySelectorAll("[data-import-candidate-card]").forEach(card => {
+            card.classList.toggle("hidden", Number(card.dataset.importCandidateCard) !== Number(resolutionProduct.value));
+        });
+        return;
+    }
+
     const input = event.target.closest("#catalogImportFile");
     if (!input) return;
     setImportFile(input.files?.[0] || null);
@@ -1244,6 +1638,10 @@ importView?.addEventListener("click", event => {
 
     const applyButton = event.target.closest(".import-apply-submit");
     if (applyButton) {
+        if (applyButton.disabled || applyButton.getAttribute("aria-disabled") === "true" || !importPreview?.canImport) {
+            notifyWarning("Сначала решите или исключите конфликтные строки.");
+            return;
+        }
         submitImportApply();
         return;
     }
@@ -1288,6 +1686,12 @@ importView?.addEventListener("click", event => {
     const resolutionExcludeButton = event.target.closest("button[data-import-resolution-exclude]");
     if (resolutionExcludeButton) {
         saveImportStructureResolution(resolutionExcludeButton, "exclude");
+        return;
+    }
+
+    const linkUnambiguousButton = event.target.closest("button[data-import-link-unambiguous]");
+    if (linkUnambiguousButton) {
+        linkUnambiguousImportMatches(linkUnambiguousButton);
         return;
     }
 

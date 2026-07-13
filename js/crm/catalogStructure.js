@@ -98,17 +98,27 @@ function renderCatalogStructureStats() {
     `;
 }
 
-function renderCatalogStructureCategory(category) {
+function renderCatalogStructureCategory(category, rootCategories = []) {
     const isExpanded = expandedStructureCategories.has(String(category.id));
     const subcategories = category.subcategories || [];
+    const rootIndex = rootCategories.findIndex(item => Number(item.id) === Number(category.id));
+    const canReorder = canEditCatalogStructure() && rootIndex >= 0;
     return `
         <article class="structure-category">
-            <button class="structure-category-header" type="button" data-structure-toggle="${escapeHtml(category.id)}" aria-expanded="${isExpanded ? "true" : "false"}">
-                <span>${isExpanded ? "−" : "+"}</span>
-                <strong>${escapeHtml(category.name)}</strong>
-                <small>${escapeHtml(subcategories.length)} SUB · ${escapeHtml(category.productCount || 0)} товаров</small>
-                ${renderStructureIssuePills(category.issues || [])}
-            </button>
+            <div class="structure-category-header">
+                <button class="structure-toggle-button" type="button" data-structure-toggle="${escapeHtml(category.id)}" aria-expanded="${isExpanded ? "true" : "false"}">
+                    <span>${isExpanded ? "−" : "+"}</span>
+                    <strong>${escapeHtml(category.name)}</strong>
+                    <small>${escapeHtml(subcategories.length)} SUB · ${escapeHtml(category.productCount || 0)} товаров</small>
+                    ${renderStructureIssuePills(category.issues || [])}
+                </button>
+                ${canReorder ? `
+                    <div class="structure-order-actions">
+                        <button type="button" data-structure-category-order="${escapeHtml(category.id)}" data-target-index="${escapeHtml(rootIndex - 1)}" ${rootIndex <= 0 ? "disabled" : ""}>Поднять</button>
+                        <button type="button" data-structure-category-order="${escapeHtml(category.id)}" data-target-index="${escapeHtml(rootIndex + 1)}" ${rootIndex >= rootCategories.length - 1 ? "disabled" : ""}>Опустить</button>
+                    </div>
+                ` : ""}
+            </div>
             ${isExpanded ? `
                 <div class="structure-subcategory-list">
                     ${subcategories.length ? subcategories.map(renderCatalogStructureSubcategory).join("") : `<p class="settings-muted">Подкатегорий нет.</p>`}
@@ -134,10 +144,11 @@ function renderCatalogStructureSubcategory(subcategory) {
 
 function renderCatalogStructureTree() {
     const categories = getVisibleStructureCategories();
+    const rootCategories = (catalogStructureAudit?.categories || []).filter(category => category.type === "category" && !category.parentId);
     if (!categories.length) {
         return `<section class="empty-state"><h2>Структура не найдена</h2><p>Измените поиск или фильтр.</p></section>`;
     }
-    return `<section class="structure-tree">${categories.map(renderCatalogStructureCategory).join("")}</section>`;
+    return `<section class="structure-tree">${categories.map(category => renderCatalogStructureCategory(category, rootCategories)).join("")}</section>`;
 }
 
 function renderCatalogStructureView() {
@@ -231,6 +242,22 @@ async function createCatalogStructureCategory() {
     await loadCatalogStructureAudit();
 }
 
+async function moveCatalogStructureCategory(button) {
+    const categoryId = Number(button.dataset.structureCategoryOrder || 0);
+    const targetIndex = Number(button.dataset.targetIndex);
+    if (!categoryId || !Number.isInteger(targetIndex)) return;
+
+    button.disabled = true;
+    try {
+        await CrmApi.patch(`/api/products/structure/categories/${categoryId}/order`, { targetIndex });
+        notifySuccess("Порядок категорий обновлен.");
+        await loadCatalogStructureAudit();
+    } catch (error) {
+        notifyError(error, "Не удалось изменить порядок категорий.");
+        button.disabled = false;
+    }
+}
+
 async function moveSelectedCatalogSubcategories() {
     if (!selectedStructureSubcategories.size) {
         notifyWarning("Выберите подкатегории для перемещения.");
@@ -305,6 +332,11 @@ catalogStructureView?.addEventListener("click", event => {
     }
     if (event.target.closest(".structure-create-category")) {
         createCatalogStructureCategory().catch(error => notifyError(error, "Не удалось создать категорию."));
+        return;
+    }
+    const categoryOrderButton = event.target.closest("button[data-structure-category-order]");
+    if (categoryOrderButton) {
+        moveCatalogStructureCategory(categoryOrderButton);
         return;
     }
     if (event.target.closest(".structure-move-selected")) {

@@ -289,6 +289,36 @@ async function reorderStructureLevel(db, { type, parentId = null, itemId, positi
     }
 }
 
+async function moveRootCategoryToIndex(db, { categoryId, targetIndex }) {
+    const itemId = Number(categoryId) || 0;
+    const rows = await getStructureLevelRows(db, { type: "category", parentId: null });
+    const item = rows.find(row => Number(row.id) === itemId);
+    if (!item) {
+        throw createStructureError(404, "Категория не найдена или недоступна для сортировки.");
+    }
+
+    const safeIndex = Number(targetIndex);
+    if (!Number.isInteger(safeIndex) || safeIndex < 0 || safeIndex >= rows.length) {
+        throw createStructureError(400, "Позиция категории недоступна.");
+    }
+
+    return runInTransaction(db, async () => {
+        const orderedRows = rows.filter(row => Number(row.id) !== itemId);
+        orderedRows.splice(safeIndex, 0, item);
+        const now = new Date().toISOString();
+
+        for (let index = 0; index < orderedRows.length; index += 1) {
+            await db.run(
+                "UPDATE catalog_structure SET sort_order = ?, updated_at = ? WHERE id = ?",
+                [(index + 1) * 10, now, orderedRows[index].id]
+            );
+        }
+
+        const updatedRows = await getStructureLevelRows(db, { type: "category", parentId: null });
+        return updatedRows.map(toPublicStructureItem);
+    });
+}
+
 async function createCategory(db, { name, position = "end", afterId = null }) {
     const cleanName = cleanCatalogStructureName(name);
     if (isSkippedCatalogStructureName(cleanName)) {
@@ -990,6 +1020,7 @@ module.exports = {
     getCatalogStructureAudit,
     createCategory,
     createSubcategory,
+    moveRootCategoryToIndex,
     getMoveSubcategoriesPreview,
     moveSubcategories,
     reorderStructureLevel,
