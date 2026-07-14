@@ -37502,18 +37502,26 @@ function getPublicSearchQuery() {
     return searchQuery.trim();
 }
 
-function clearPublicSearchQuery() {
-    searchQuery = "";
-    if (searchInput) searchInput.value = "";
-    searchSuggestionsRequestId += 1;
-    resetSearchSuggestions();
-    hideSearchDropdown();
-}
-
 function resetSearchSuggestions() {
     searchSuggestions = [];
     searchSuggestionsLoading = false;
     activeSearchSuggestionIndex = -1;
+}
+
+function closeSearchSuggestions(options = {}) {
+    const { clearQuery = false, cancelRequest = true } = options;
+    window.clearTimeout(publicSearchTimer);
+    if (cancelRequest) searchSuggestionsRequestId += 1;
+    if (clearQuery) {
+        searchQuery = "";
+        if (searchInput) searchInput.value = "";
+    }
+    resetSearchSuggestions();
+    hideSearchDropdown();
+}
+
+function clearPublicSearchQuery() {
+    closeSearchSuggestions({ clearQuery: true, cancelRequest: true });
 }
 
 async function loadPublicProducts(options = {}) {
@@ -38276,6 +38284,7 @@ catalogBreadcrumbCategory?.addEventListener("click", async () => {
     const path = catalogBreadcrumbCategory.dataset.path;
     if (!path) return;
 
+    closeSearchSuggestions({ clearQuery: true, cancelRequest: true });
     activeCategoryPath = path;
     showAllCatalogProducts = false;
     showAllSubcategories = false;
@@ -38289,6 +38298,7 @@ catalogBreadcrumbSubcategory?.addEventListener("click", async () => {
     const path = catalogBreadcrumbSubcategory.dataset.path;
     if (!path) return;
 
+    closeSearchSuggestions({ clearQuery: true, cancelRequest: true });
     activeCategoryPath = path;
     showAllCatalogProducts = false;
     showAllGroups = false;
@@ -38679,8 +38689,7 @@ async function loadSearchSuggestions(query) {
     const requestId = ++searchSuggestionsRequestId;
 
     if (normalizedQuery.length < SEARCH_SUGGESTION_MIN_LENGTH) {
-        resetSearchSuggestions();
-        hideSearchDropdown();
+        closeSearchSuggestions({ clearQuery: false, cancelRequest: false });
         return;
     }
 
@@ -38716,9 +38725,7 @@ function scheduleSearchSuggestionsLoad() {
     const query = getPublicSearchQuery();
 
     if (query.length < SEARCH_SUGGESTION_MIN_LENGTH) {
-        searchSuggestionsRequestId += 1;
-        resetSearchSuggestions();
-        hideSearchDropdown();
+        closeSearchSuggestions({ clearQuery: false, cancelRequest: true });
         return;
     }
 
@@ -38749,8 +38756,7 @@ function selectSearchSuggestion(productId) {
     if (!Number.isInteger(id)) return;
 
     const visibleCard = grid?.querySelector(`.card[data-product-id="${id}"]`);
-    hideSearchDropdown();
-    clearPublicSearchQuery();
+    closeSearchSuggestions({ clearQuery: true, cancelRequest: true });
 
     if (visibleCard) {
         visibleCard.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -39426,7 +39432,7 @@ document.addEventListener("click", event => {
     cartModal.classList.add("hidden");
     hideCartPreview();
     showCartView();
-    hideSearchDropdown();
+    closeSearchSuggestions({ clearQuery: false, cancelRequest: true });
     closeMenu();
     documentMouseDownStartedInsideCheckout = false;
 });
@@ -39434,7 +39440,7 @@ document.addEventListener("click", event => {
 document.addEventListener("keydown", event => {
     if (event.key === "Escape") {
         hideCartPreview();
-        hideSearchDropdown();
+        closeSearchSuggestions({ clearQuery: false, cancelRequest: true });
     }
 });
 
@@ -39509,7 +39515,7 @@ searchInput?.addEventListener("keydown", event => {
 
     if (event.key === "Escape") {
         event.preventDefault();
-        hideSearchDropdown();
+        closeSearchSuggestions({ clearQuery: false, cancelRequest: true });
         return;
     }
 
@@ -39577,6 +39583,7 @@ categoryControls?.addEventListener("click", async event => {
 
     const button = event.target.closest(".category-control");
     if (!button) return;
+    closeSearchSuggestions({ clearQuery: true, cancelRequest: true });
 
     const nextPath = button.dataset.path || "";
     if (!nextPath || nextPath.startsWith("category:")) {
@@ -39594,6 +39601,7 @@ categoryControls?.addEventListener("click", async event => {
 categoryControls?.addEventListener("change", async event => {
     const select = event.target.closest(".category-subcategory-select select, .category-group-select select");
     if (!select) return;
+    closeSearchSuggestions({ clearQuery: true, cancelRequest: true });
 
     activeCategoryPath = select.value || "";
     showAllCatalogProducts = false;

@@ -733,7 +733,60 @@ function addProductSearchWhere(where, params, search) {
     });
 }
 
-function buildProductListWhere(query = {}, defaults = {}) {
+function getNormalizedProductTitle(row = {}) {
+    return normalizeSearchText(row.title);
+}
+
+function containsWholeSearchToken(value, query) {
+    if (!value || !query) return false;
+    return value === query
+        || value.startsWith(`${query} `)
+        || value.endsWith(` ${query}`)
+        || value.includes(` ${query} `);
+}
+
+function getProductSearchRank(row = {}, normalizedQuery = "") {
+    const title = getNormalizedProductTitle(row);
+    if (!normalizedQuery) return 99;
+
+    if (title === normalizedQuery) return 0;
+    if (title.startsWith(`${normalizedQuery} `)) return 1;
+    if (title.startsWith(normalizedQuery)) return 2;
+    if (containsWholeSearchToken(title, normalizedQuery)) return 3;
+    if (title.includes(normalizedQuery)) return 4;
+
+    const secondaryText = normalizeSearchText([
+        row.external_id,
+        row.slug,
+        row.category,
+        row.subcategory,
+        row.product_group
+    ].filter(value => value !== null && value !== undefined).join(" "));
+    if (containsWholeSearchToken(secondaryText, normalizedQuery) || secondaryText.includes(normalizedQuery)) return 5;
+
+    const searchableText = getProductSearchText(row);
+    if (searchableText.includes(normalizedQuery)) return 6;
+
+    return 99;
+}
+
+function compareProductSearchRows(first, second, normalizedQuery = "") {
+    const firstRank = getProductSearchRank(first, normalizedQuery);
+    const secondRank = getProductSearchRank(second, normalizedQuery);
+    if (firstRank !== secondRank) return firstRank - secondRank;
+
+    const firstSort = Number(first.sort_order) || 0;
+    const secondSort = Number(second.sort_order) || 0;
+    if (firstSort !== secondSort) return firstSort - secondSort;
+
+    const titleCompare = normalizeText(first.title).localeCompare(normalizeText(second.title), "ru");
+    if (titleCompare) return titleCompare;
+
+    return (Number(first.id) || 0) - (Number(second.id) || 0);
+}
+
+function buildProductListWhere(query = {}, defaults = {}, options = {}) {
+    const { includeSearch = true } = options;
     const params = [];
     const where = [];
     const category = normalizeText(query.category);
@@ -765,7 +818,9 @@ function buildProductListWhere(query = {}, defaults = {}) {
         where.push("deleted_at IS NULL");
     }
 
-    addProductSearchWhere(where, params, query.search);
+    if (includeSearch) {
+        addProductSearchWhere(where, params, query.search);
+    }
 
     return {
         whereSql: where.length ? `WHERE ${where.join(" AND ")}` : "",
@@ -775,7 +830,11 @@ function buildProductListWhere(query = {}, defaults = {}) {
 
 async function getPaginatedProductRows(query = {}, defaults = {}) {
     const paginationParams = getPaginationParams(query);
-    const { whereSql, params } = buildProductListWhere(query, defaults);
+    const normalizedSearchQuery = normalizeSearchText(query.search);
+    const searchWords = getSearchWords(query.search);
+    const { whereSql, params } = buildProductListWhere(query, defaults, {
+        includeSearch: !normalizedSearchQuery
+    });
     const orderSql = `
         ORDER BY category COLLATE NOCASE ASC,
                  subcategory COLLATE NOCASE ASC,
@@ -784,6 +843,29 @@ async function getPaginatedProductRows(query = {}, defaults = {}) {
                  title COLLATE NOCASE ASC,
                  id ASC
     `;
+    if (normalizedSearchQuery) {
+        const rows = await all(`
+            SELECT *
+            FROM products
+            ${whereSql}
+        `, params);
+
+        const filteredRows = rows
+            .filter(row => {
+                const searchableText = getProductSearchText(row);
+                return searchWords.every(word => searchableText.includes(word));
+            })
+            .sort((first, second) => compareProductSearchRows(first, second, normalizedSearchQuery));
+
+        return {
+            rows: filteredRows.slice(paginationParams.offset, paginationParams.offset + paginationParams.limit),
+            pagination: buildPaginationMeta({
+                ...paginationParams,
+                total: filteredRows.length
+            })
+        };
+    }
+
     const [countRow, rows] = await Promise.all([
         get(`SELECT COUNT(*) AS total FROM products ${whereSql}`, params),
         all(`

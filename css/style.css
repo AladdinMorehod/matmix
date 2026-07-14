@@ -55,7 +55,7 @@ body {
     height: auto;
     max-height: 92px;
     object-fit: contain;
-    filter: contrast(1.12) saturate(1.08);
+    filter: none;
 }
 
 .header-search {
@@ -318,6 +318,9 @@ body {
 }
 
 .cart {
+    --cart-red: #a61f29;
+    --cart-red-hover: #8f1b23;
+    --cart-red-active: #78171e;
     position: relative;
     display: flex;
     align-items: center;
@@ -329,7 +332,7 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 58px;
+    width: 66px;
     height: 44px;
     padding: 2px 4px;
     border: none;
@@ -342,12 +345,12 @@ body {
 .cart-icon-btn::before {
     content: "";
     display: block;
-    width: 52px;
-    height: 47px;
-    background: #A81417;
+    width: 64px;
+    height: 58px;
+    background: var(--cart-red);
     -webkit-mask: url("../img/Logo2.png") center / contain no-repeat;
     mask: url("../img/Logo2.png") center / contain no-repeat;
-    filter: drop-shadow(0 1px 0 rgba(168, 20, 23, 0.28));
+    filter: drop-shadow(0 1px 0 rgba(89, 22, 29, 0.22));
     transition: background-color 180ms ease, filter 180ms ease;
 }
 
@@ -357,10 +360,19 @@ body {
     outline: none;
 }
 
+.cart-icon-btn:focus-visible {
+    box-shadow: 0 0 0 3px rgba(166, 31, 41, 0.28);
+}
+
 .cart-icon-btn:hover::before,
 .cart-icon-btn:focus-visible::before {
-    background: #941115;
-    filter: drop-shadow(0 1px 0 rgba(148, 17, 21, 0.34));
+    background: var(--cart-red-hover);
+    filter: drop-shadow(0 1px 0 rgba(83, 18, 25, 0.28));
+}
+
+.cart-icon-btn:active::before {
+    background: var(--cart-red-active);
+    filter: drop-shadow(0 1px 0 rgba(72, 15, 21, 0.22));
 }
 
 .cart-icon-btn img {
@@ -368,29 +380,29 @@ body {
     opacity: 0;
     pointer-events: none;
     width: auto;
-    height: 47px;
-    max-width: 52px;
+    height: 58px;
+    max-width: 64px;
     object-fit: contain;
 }
 
 .cart-count {
     position: absolute;
-    top: 1px;
-    right: 0;
+    top: -2px;
+    right: 1px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 18px;
-    height: 18px;
+    min-width: 20px;
+    height: 20px;
     padding: 0 5px;
     border: 2px solid rgba(255, 255, 255, 0.92);
     border-radius: 999px;
-    background: var(--brand-burgundy);
+    background: var(--cart-red);
     color: white;
-    font-size: 0.68rem;
+    font-size: 0.7rem;
     font-weight: 800;
     line-height: 1;
-    box-shadow: 0 5px 12px rgba(90, 31, 40, 0.28);
+    box-shadow: 0 5px 12px rgba(89, 22, 29, 0.26);
 }
 
 .cart-count.hidden {
