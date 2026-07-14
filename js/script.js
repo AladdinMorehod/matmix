@@ -37185,6 +37185,7 @@ const menuToggle = document.getElementById("menuToggle");
 const mainNav = document.getElementById("mainNav");
 const searchInput = document.getElementById("searchInput");
 const headerSearch = searchInput?.closest(".header-search");
+const siteHeader = document.querySelector(".header");
 const searchDropdown = document.createElement("div");
 
 let cart = [];
@@ -37201,6 +37202,7 @@ let publicProductsPagination = { page: 1, limit: 50, total: 0, totalPages: 1, ha
 let publicProductsLoadingMore = false;
 let publicProductsRequestId = 0;
 let publicSearchTimer = null;
+let headerScrollFrame = 0;
 let searchSuggestions = [];
 let searchSuggestionsLoading = false;
 let searchSuggestionsRequestId = 0;
@@ -39468,6 +39470,16 @@ function scrollToPageAnchor(href, options = {}) {
     return true;
 }
 
+function updateHeaderScrollState() {
+    siteHeader?.classList.toggle("is-scrolled", window.scrollY > 32);
+    headerScrollFrame = 0;
+}
+
+function scheduleHeaderScrollState() {
+    if (headerScrollFrame) return;
+    headerScrollFrame = window.requestAnimationFrame(updateHeaderScrollState);
+}
+
 menuToggle?.addEventListener("click", event => {
     event.stopPropagation();
     const isOpen = mainNav.classList.toggle("is-open");
@@ -39621,6 +39633,8 @@ window.addEventListener("resize", () => {
     }
 });
 
+window.addEventListener("scroll", scheduleHeaderScrollState, { passive: true });
+
 const searchParams = new URLSearchParams(window.location.search);
 const initialSearchQuery = searchParams.get("search");
 
@@ -39630,6 +39644,7 @@ if (initialSearchQuery && searchInput) {
 }
 
 async function initializeSite() {
+    updateHeaderScrollState();
     products = products.map(normalizeProductForSite);
     rebuildProductsIndex();
     cart = loadCart();
