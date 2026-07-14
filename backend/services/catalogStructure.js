@@ -1037,10 +1037,15 @@ async function getPublicCatalogStructureTree(db) {
             ORDER BY sort_order ASC, id ASC
         `),
         db.all(`
-            SELECT category, subcategory
+            SELECT id, category, subcategory, product_group, sort_order
             FROM products
             WHERE is_active = 1
               AND deleted_at IS NULL
+            ORDER BY category COLLATE NOCASE ASC,
+                     subcategory COLLATE NOCASE ASC,
+                     product_group COLLATE NOCASE ASC,
+                     sort_order ASC,
+                     id ASC
         `)
     ]);
     const categories = [];
@@ -1074,7 +1079,8 @@ async function getPublicCatalogStructureTree(db) {
             normalizedName: row.normalized_name,
             externalCode: row.external_code || "",
             sortOrder: Number(row.sort_order) || 0,
-            productCount: 0
+            productCount: 0,
+            groups: new Map()
         };
         parent.subcategories.push(subcategory);
         subcategoriesByParentAndName.set(`${row.parent_id}:${row.normalized_name}`, subcategory);
@@ -1095,6 +1101,23 @@ async function getPublicCatalogStructureTree(db) {
         if (subcategory) {
             subcategoriesWithProducts.add(subcategory.id);
             subcategory.productCount += 1;
+
+            const groupName = cleanCatalogStructureName(product.product_group);
+            const normalizedGroup = normalizeCatalogStructureName(groupName);
+            if (normalizedGroup && normalizedGroup !== normalizedSubcategory) {
+                const currentGroup = subcategory.groups.get(normalizedGroup);
+                if (currentGroup) {
+                    currentGroup.productCount += 1;
+                } else {
+                    subcategory.groups.set(normalizedGroup, {
+                        name: groupName,
+                        normalizedName: normalizedGroup,
+                        sortOrder: Number(product.sort_order) || 0,
+                        firstProductId: Number(product.id) || 0,
+                        productCount: 1
+                    });
+                }
+            }
         }
     });
 
@@ -1116,7 +1139,19 @@ async function getPublicCatalogStructureTree(db) {
                     title: subcategory.name,
                     name: subcategory.name,
                     sortOrder: subcategory.sortOrder,
-                    productCount: subcategory.productCount
+                    productCount: subcategory.productCount,
+                    groups: Array.from(subcategory.groups.values())
+                        .sort((first, second) => {
+                            return first.sortOrder - second.sortOrder
+                                || first.firstProductId - second.firstProductId
+                                || first.name.localeCompare(second.name, "ru");
+                        })
+                        .map(group => ({
+                            title: group.name,
+                            name: group.name,
+                            sortOrder: group.sortOrder,
+                            productCount: group.productCount
+                        }))
                 }))
         });
     });

@@ -37295,7 +37295,16 @@ function normalizePublicCatalogStructure(items) {
                             code: subcategory?.code || subcategory?.externalCode || subcategory?.external_code || "",
                             name: cleanDisplayText(subcategory?.name || subcategory?.title),
                             sortOrder: Number(subcategory?.sortOrder ?? subcategory?.sort_order) || 0,
-                            productCount: Number(subcategory?.productCount ?? subcategory?.product_count) || 0
+                            productCount: Number(subcategory?.productCount ?? subcategory?.product_count) || 0,
+                            groups: Array.isArray(subcategory.groups)
+                                ? subcategory.groups
+                                    .map(group => ({
+                                        name: cleanDisplayText(group?.name || group?.title),
+                                        sortOrder: Number(group?.sortOrder ?? group?.sort_order) || 0,
+                                        productCount: Number(group?.productCount ?? group?.product_count) || 0
+                                    }))
+                                    .filter(group => group.name)
+                                : []
                         }))
                         .filter(subcategory => subcategory.name)
                     : []
@@ -38071,6 +38080,40 @@ function serializeCategoryFilterGroup(category, subcategories = Array.from(categ
     };
 }
 
+function isUncategorizedSubcategory(value) {
+    const normalized = normalizeSearchText(value);
+    return !normalized
+        || normalized === "без подкатегории"
+        || normalized === "uncategorized"
+        || normalized === "no category"
+        || normalized === "without category";
+}
+
+function getRealSubcategories(group) {
+    return Array.isArray(group?.subcategories)
+        ? group.subcategories.filter(subcategory => !isUncategorizedSubcategory(subcategory.label))
+        : [];
+}
+
+function getUncategorizedSubcategory(group) {
+    return Array.isArray(group?.subcategories)
+        ? group.subcategories.find(subcategory => isUncategorizedSubcategory(subcategory.label)) || null
+        : null;
+}
+
+function getDirectGroupSubcategory(group) {
+    const uncategorized = getUncategorizedSubcategory(group);
+    return getRealSubcategories(group).length === 0 && uncategorized?.groups?.length
+        ? uncategorized
+        : null;
+}
+
+function getSubcategoryDisplayLabel(subcategory, group) {
+    return isUncategorizedSubcategory(subcategory?.label) && getRealSubcategories(group).length > 0
+        ? "Другие товары"
+        : subcategory?.label || "";
+}
+
 function getCategoryFilterGroups() {
     const categories = new Map();
 
@@ -38095,6 +38138,18 @@ function getCategoryFilterGroups() {
                 label: subcategory,
                 path: `subcategory:${normalizedMain}:${normalizedSubcategory}`,
                 groups: new Map()
+            });
+
+            const subcategoryItem = category.subcategories.get(normalizedSubcategory);
+            structureSubcategory.groups?.forEach(structureGroup => {
+                const productGroup = cleanDisplayText(structureGroup.name);
+                const normalizedGroup = normalizeSearchText(productGroup);
+                if (!normalizedGroup || normalizedGroup === normalizedSubcategory || subcategoryItem.groups.has(normalizedGroup)) return;
+
+                subcategoryItem.groups.set(normalizedGroup, {
+                    label: productGroup,
+                    path: `group:${normalizedMain}:${normalizedSubcategory}:${normalizedGroup}`
+                });
             });
         });
     });
@@ -38211,33 +38266,38 @@ function getActiveCategoryTrail(groups = getCategoryFilterGroups()) {
 
         const subcategory = group.subcategories.find(item => item.path === activeCategoryPath);
         if (subcategory) {
+            const isTechnicalSubcategory = isUncategorizedSubcategory(subcategory.label);
+            const hideTechnicalSubcategory = isTechnicalSubcategory && getRealSubcategories(group).length === 0;
             return {
                 category: group.label,
                 categoryPath: group.path,
-                subcategory: subcategory.label,
-                subcategoryPath: subcategory.path,
+                subcategory: hideTechnicalSubcategory ? "" : (isTechnicalSubcategory ? getSubcategoryDisplayLabel(subcategory, group) : subcategory.label),
+                subcategoryPath: hideTechnicalSubcategory ? "" : subcategory.path,
                 group: ""
             };
         }
 
         for (const subcategoryItem of group.subcategories) {
             if (getSubcategoryAllPath(subcategoryItem.path) === activeCategoryPath) {
+                const isTechnicalSubcategory = isUncategorizedSubcategory(subcategoryItem.label);
+                const hideTechnicalSubcategory = isTechnicalSubcategory && getRealSubcategories(group).length === 0;
                 return {
                     category: group.label,
                     categoryPath: group.path,
-                    subcategory: subcategoryItem.label,
-                    subcategoryPath: subcategoryItem.path,
+                    subcategory: hideTechnicalSubcategory ? "" : (isTechnicalSubcategory ? getSubcategoryDisplayLabel(subcategoryItem, group) : subcategoryItem.label),
+                    subcategoryPath: hideTechnicalSubcategory ? "" : subcategoryItem.path,
                     group: ""
                 };
             }
 
             const productGroup = subcategoryItem.groups.find(item => item.path === activeCategoryPath);
             if (productGroup) {
+                const hideTechnicalSubcategory = isUncategorizedSubcategory(subcategoryItem.label);
                 return {
                     category: group.label,
                     categoryPath: group.path,
-                    subcategory: subcategoryItem.label,
-                    subcategoryPath: subcategoryItem.path,
+                    subcategory: hideTechnicalSubcategory ? "" : subcategoryItem.label,
+                    subcategoryPath: hideTechnicalSubcategory ? "" : subcategoryItem.path,
                     group: productGroup.label
                 };
             }
@@ -38541,11 +38601,17 @@ function getCatalogSelectionState(groups = getCategoryFilterGroups()) {
     const activeMainPath = getActiveMainCategoryPath(groups);
     const activeSubcategoryPath = getActiveSubcategoryPath(groups);
     const activeGroup = groups.find(group => group.path === activeMainPath) || null;
-    const activeSubcategory = activeGroup?.subcategories.find(subcategory => subcategory.path === activeSubcategoryPath) || null;
+    const directGroupSubcategory = activeCategoryPath?.startsWith("category:")
+        ? getDirectGroupSubcategory(activeGroup)
+        : null;
+    const activeSubcategory = directGroupSubcategory
+        || activeGroup?.subcategories.find(subcategory => subcategory.path === activeSubcategoryPath)
+        || null;
 
     return {
         activeGroup,
         activeSubcategory,
+        directGroupSubcategory,
         hasSearch: false,
         isCategoryLevel: Boolean(activeCategoryPath && activeCategoryPath.startsWith("category:")),
         isSubcategoryLevel: Boolean(activeCategoryPath && activeCategoryPath.startsWith("subcategory:")),
@@ -38556,6 +38622,8 @@ function getCatalogSelectionState(groups = getCategoryFilterGroups()) {
 
 function getCatalogPromptMessage(state) {
     if (!activeCategoryPath || state.hasSearch) return "";
+
+    if (state.directGroupSubcategory) return "";
 
     if (state.isCategoryLevel && state.activeGroup?.subcategories.length) {
         return "Выберите подкатегорию, чтобы увидеть товары.";
@@ -38888,7 +38956,7 @@ function createSubcategorySelect(activeGroup) {
     activeGroup.subcategories.forEach(subcategory => {
         const option = document.createElement("option");
         option.value = subcategory.path;
-        option.textContent = subcategory.label;
+        option.textContent = getSubcategoryDisplayLabel(subcategory, activeGroup);
         option.selected = subcategory.path === activeCategoryPath;
         select.appendChild(option);
     });
@@ -38897,13 +38965,13 @@ function createSubcategorySelect(activeGroup) {
     return wrapper;
 }
 
-function createGroupSelect(activeSubcategory) {
+function createGroupSelect(activeSubcategory, allLabel = "Все товары подкатегории", allPath = getSubcategoryAllPath(activeSubcategory.path)) {
     const wrapper = document.createElement("label");
     wrapper.className = "category-group-select";
 
     const select = document.createElement("select");
     select.setAttribute("aria-label", "Выберите группу товаров");
-    select.innerHTML = `<option value="${getSubcategoryAllPath(activeSubcategory.path)}">Все товары подкатегории</option>`;
+    select.innerHTML = `<option value="${allPath}">${allLabel}</option>`;
 
     activeSubcategory.groups.forEach(productGroup => {
         const option = document.createElement("option");
@@ -38957,56 +39025,65 @@ function renderCategoryControls() {
         return;
     }
 
-    categoryControls.appendChild(createSubcategorySelect(activeGroup));
+    const directGroupSubcategory = activeCategoryPath?.startsWith("category:")
+        ? getDirectGroupSubcategory(activeGroup)
+        : null;
 
-    const subcategoryList = document.createElement("div");
-    subcategoryList.className = "category-subcategory-list";
-    subcategoryList.classList.toggle("is-expanded", showAllSubcategories);
+    if (!directGroupSubcategory) {
+        categoryControls.appendChild(createSubcategorySelect(activeGroup));
 
-    const visibleSubcategories = showAllSubcategories
-        ? activeGroup.subcategories
-        : activeGroup.subcategories.slice(0, 24);
-    const visibleActiveSubcategory = activeGroup.subcategories.find(subcategory => {
-        return subcategory.path === activeCategoryPath
-            || getSubcategoryAllPath(subcategory.path) === activeCategoryPath;
-    });
-    if (visibleActiveSubcategory && !visibleSubcategories.some(subcategory => subcategory.path === visibleActiveSubcategory.path)) {
-        visibleSubcategories.push(visibleActiveSubcategory);
+        const subcategoryList = document.createElement("div");
+        subcategoryList.className = "category-subcategory-list";
+        subcategoryList.classList.toggle("is-expanded", showAllSubcategories);
+
+        const visibleSubcategories = showAllSubcategories
+            ? activeGroup.subcategories
+            : activeGroup.subcategories.slice(0, 24);
+        const visibleActiveSubcategory = activeGroup.subcategories.find(subcategory => {
+            return subcategory.path === activeCategoryPath
+                || getSubcategoryAllPath(subcategory.path) === activeCategoryPath;
+        });
+        if (visibleActiveSubcategory && !visibleSubcategories.some(subcategory => subcategory.path === visibleActiveSubcategory.path)) {
+            visibleSubcategories.push(visibleActiveSubcategory);
+        }
+
+        visibleSubcategories.forEach(subcategory => {
+            subcategoryList.appendChild(createCategoryButton(
+                getSubcategoryDisplayLabel(subcategory, activeGroup),
+                subcategory.path,
+                "category-control level-1",
+                subcategory.path === activeCategoryPath || getSubcategoryAllPath(subcategory.path) === activeCategoryPath
+            ));
+        });
+
+        categoryControls.appendChild(subcategoryList);
+
+        if (activeGroup.subcategories.length > visibleSubcategories.length || showAllSubcategories) {
+            const toggle = document.createElement("button");
+            toggle.type = "button";
+            toggle.className = "subcategory-toggle";
+            toggle.textContent = showAllSubcategories ? "Свернуть" : "Показать все подкатегории";
+            toggle.setAttribute("aria-expanded", String(showAllSubcategories));
+            subcategoryList.appendChild(toggle);
+        }
     }
 
-    visibleSubcategories.forEach(subcategory => {
-        subcategoryList.appendChild(createCategoryButton(
-            subcategory.label,
-            subcategory.path,
-            "category-control level-1",
-            subcategory.path === activeCategoryPath || getSubcategoryAllPath(subcategory.path) === activeCategoryPath
-        ));
-    });
-
-    categoryControls.appendChild(subcategoryList);
-
-    if (activeGroup.subcategories.length > visibleSubcategories.length || showAllSubcategories) {
-        const toggle = document.createElement("button");
-        toggle.type = "button";
-        toggle.className = "subcategory-toggle";
-        toggle.textContent = showAllSubcategories ? "Свернуть" : "Показать все подкатегории";
-        toggle.setAttribute("aria-expanded", String(showAllSubcategories));
-        categoryControls.appendChild(toggle);
-    }
-
-    const activeSubcategory = activeGroup.subcategories.find(subcategory => subcategory.path === activeSubcategoryPath);
+    const activeSubcategory = directGroupSubcategory
+        || activeGroup.subcategories.find(subcategory => subcategory.path === activeSubcategoryPath);
     if (!activeSubcategory?.groups.length) return;
 
-    categoryControls.appendChild(createGroupSelect(activeSubcategory));
+    const allGroupsLabel = directGroupSubcategory ? "Все товары категории" : "Все товары подкатегории";
+    const allGroupsPath = directGroupSubcategory ? activeGroup.path : getSubcategoryAllPath(activeSubcategory.path);
+    categoryControls.appendChild(createGroupSelect(activeSubcategory, allGroupsLabel, allGroupsPath));
 
     const groupList = document.createElement("div");
     groupList.className = "category-group-list";
     groupList.classList.toggle("is-expanded", showAllGroups);
     groupList.appendChild(createCategoryButton(
-        "Все товары подкатегории",
-        getSubcategoryAllPath(activeSubcategory.path),
+        allGroupsLabel,
+        allGroupsPath,
         "category-control level-2 category-group-all",
-        activeCategoryPath === getSubcategoryAllPath(activeSubcategory.path)
+        activeCategoryPath === allGroupsPath
     ));
 
     const visibleGroups = showAllGroups
@@ -39034,7 +39111,7 @@ function renderCategoryControls() {
         toggle.className = "group-toggle";
         toggle.textContent = showAllGroups ? "Свернуть" : "Показать все группы";
         toggle.setAttribute("aria-expanded", String(showAllGroups));
-        categoryControls.appendChild(toggle);
+        groupList.appendChild(toggle);
     }
 }
 

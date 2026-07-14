@@ -1098,15 +1098,16 @@ body {
     flex-wrap: wrap;
     align-items: center;
     gap: 8px;
+    height: auto;
+    min-height: 0;
     min-width: 0;
 }
 
 .category-subcategory-list,
 .category-group-list {
-    padding-top: 12px;
+    padding-top: 10px;
     border-top: 1px solid rgba(33, 83, 54, 0.12);
-    max-height: 116px;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .category-subcategory-list.is-expanded,
@@ -1181,13 +1182,16 @@ body {
 }
 
 .category-control.level-1 {
-    min-height: 30px;
+    min-height: 32px;
     border-color: rgba(47, 122, 93, 0.18);
     background: rgba(255, 255, 255, 0.86);
     color: var(--primary-dark);
-    padding: 0 11px;
+    padding: 6px 12px;
     font-size: 0.78rem;
     font-weight: 600;
+    line-height: 1.2;
+    white-space: normal;
+    overflow-wrap: anywhere;
 }
 
 .category-control.level-2 {
@@ -1245,16 +1249,19 @@ body {
 .group-toggle {
     justify-self: start;
     width: fit-content;
-    min-height: 34px;
+    max-width: 100%;
+    min-height: 32px;
     border: 1px solid rgba(90, 31, 40, 0.28);
     border-radius: 6px;
     background: transparent;
     color: var(--brand-burgundy);
-    padding: 0 12px;
+    padding: 6px 12px;
     cursor: pointer;
     font: inherit;
     font-size: 0.84rem;
     font-weight: 800;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
 }
 
 .subcategory-toggle:hover,
