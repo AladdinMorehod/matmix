@@ -90,7 +90,7 @@
 .crm-modal {
     display: grid;
     gap: 12px;
-    width: min(440px, 100%);
+    width: min(440px, calc(100vw - 32px));
     max-height: calc(100dvh - 32px);
     padding: 14px;
     border: 1px solid var(--border);
@@ -101,19 +101,43 @@
 }
 
 .crm-modal-wide {
-    width: min(840px, 100%);
+    width: min(840px, calc(100vw - 32px));
 }
 
 .crm-modal-form,
 .crm-modal-content {
     display: grid;
     gap: 14px;
+    min-width: 0;
 }
 
 .crm-modal-content {
     max-height: min(66vh, 620px);
     overflow: auto;
     padding-right: 2px;
+}
+
+.crm-modal-body,
+.crm-modal-content,
+.crm-modal-actions,
+.crm-modal h2,
+.crm-modal p {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.crm-modal-body,
+.crm-modal-content,
+.crm-modal p,
+.crm-modal li,
+.crm-modal code,
+.crm-modal small,
+.crm-modal span,
+.crm-modal strong,
+.crm-modal dd,
+.crm-modal dt {
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .crm-modal-close {
@@ -148,6 +172,8 @@
 }
 
 .crm-modal-actions button {
+    min-width: 0;
+    max-width: 100%;
     min-height: 38px;
     padding: 0 14px;
     border: none;
@@ -241,6 +267,10 @@
         width: 100%;
         max-height: calc(100dvh - 18px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
         overflow: hidden;
+    }
+
+    .crm-modal-form {
+        min-height: 0;
     }
 
     .crm-modal-content {

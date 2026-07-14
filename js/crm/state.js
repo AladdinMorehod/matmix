@@ -54,6 +54,19 @@ const clientsTotalSpent = document.getElementById("clientsTotalSpent");
 
 let orders = [];
 let clients = [];
+let ordersPagination = normalizePaginationMeta();
+let clientsPagination = normalizePaginationMeta();
+let clientsStats = {
+    total: 0,
+    repeat: 0,
+    totalSpent: 0
+};
+let ordersRequestId = 0;
+let clientsRequestId = 0;
+let ordersAppendLoading = false;
+let clientsAppendLoading = false;
+let productsAppendLoading = false;
+let clientsSearchTimer = null;
 let currentUser = null;
 let activeSection = "dashboard";
 let regularOrderStats = {
@@ -74,10 +87,13 @@ let activeSettingsTab = "profile";
 let editingUserId = null;
 let products = [];
 let productCategories = [];
+let productsPagination = normalizePaginationMeta();
+let productsRequestId = 0;
 let productFilters = {
     search: "",
     category: "",
-    status: ""
+    status: "",
+    page: 1
 };
 let productsLoading = false;
 let productsLoaded = false;
@@ -114,11 +130,17 @@ function escapeHtml(value) {
 }
 
 function formatMoney(value) {
-    return `${new Intl.NumberFormat("ru-RU").format(Number(value) || 0)} ₽`;
+    return `${new Intl.NumberFormat("ru-RU", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }).format(Number(value) || 0)} ₽`;
 }
 
 function formatWeight(value) {
-    return `${new Intl.NumberFormat("ru-RU").format(Number(value) || 0)} кг`;
+    return `${new Intl.NumberFormat("ru-RU", {
+        minimumFractionDigits: 3,
+        maximumFractionDigits: 3
+    }).format(Number(value) || 0)} кг`;
 }
 
 function formatDate(value) {

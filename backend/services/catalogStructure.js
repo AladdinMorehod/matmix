@@ -191,11 +191,94 @@ function toStructureRow(row) {
     };
 }
 
+const structureIssueMessages = {
+    CATEGORY_HAS_PARENT: {
+        messageRu: "Категория ошибочно привязана к родительскому элементу.",
+        recommendation: "Проверьте запись категории и уберите родительскую связь, если это корневой раздел."
+    },
+    DUPLICATE_CATEGORY_NAME: {
+        messageRu: "Найдены категории с одинаковым названием.",
+        recommendation: "Проверьте дубли и оставьте одну корректную запись."
+    },
+    DUPLICATE_SUBCATEGORY_NAME: {
+        messageRu: "Внутри одной категории найдены подкатегории с одинаковым названием.",
+        recommendation: "Проверьте дубли и оставьте одну корректную подкатегорию."
+    },
+    DUPLICATE_STRUCTURE_CODE: {
+        messageRu: "Один код структуры используется несколькими записями.",
+        recommendation: "Назначьте уникальные CAT/SUB-коды."
+    },
+    SUBCATEGORY_WITHOUT_PARENT: {
+        messageRu: "У подкатегории отсутствует родительская категория.",
+        recommendation: "Назначьте подкатегории родительскую категорию."
+    },
+    SUBCATEGORY_IN_INACTIVE_CATEGORY: {
+        messageRu: "Подкатегория находится внутри неактивной категории.",
+        recommendation: "Проверьте активность родительской категории перед публикацией раздела."
+    },
+    MISSING_STRUCTURE_CODE: {
+        messageRu: "У элемента структуры отсутствует код.",
+        recommendation: "Заполните CAT/SUB-код для элемента структуры."
+    },
+    EMPTY_CATEGORY: {
+        messageRu: "Категория не содержит подкатегорий или товаров.",
+        recommendation: "Проверьте, нужна ли эта категория в каталоге."
+    },
+    EMPTY_SUBCATEGORY: {
+        messageRu: "Подкатегория не содержит товаров.",
+        recommendation: "Проверьте, нужна ли эта подкатегория в каталоге."
+    },
+    INACTIVE_NODE_WITH_ACTIVE_PRODUCTS: {
+        messageRu: "В неактивном разделе находятся активные товары.",
+        recommendation: "Проверьте активные товары перед деактивацией раздела."
+    },
+    PRODUCT_WITHOUT_CATEGORY: {
+        messageRu: "У товара не указана категория.",
+        recommendation: "Переместите товар в существующую категорию."
+    },
+    PRODUCT_WITHOUT_SUBCATEGORY: {
+        messageRu: "У товара не указана подкатегория.",
+        recommendation: "Укажите подкатегорию товара."
+    },
+    PRODUCT_WITH_MISSING_STRUCTURE: {
+        messageRu: "Товар связан с отсутствующим элементом структуры.",
+        recommendation: "Переместите товар в существующую категорию или подкатегорию."
+    },
+    PRODUCTS_WITHOUT_STRUCTURE: {
+        messageRu: "Есть товары без активной связки category/subcategory в структуре.",
+        recommendation: "Откройте список товаров без структуры и проверьте назначение category/subcategory."
+    },
+    SAME_SUBCATEGORY_NAME_IN_MULTIPLE_CATEGORIES: {
+        messageRu: "Подкатегории с одинаковым названием находятся в разных категориях.",
+        recommendation: "Проверьте, не мешают ли одинаковые названия навигации и импорту."
+    }
+};
+
+function getStructureIssueMeta(code) {
+    return structureIssueMessages[code] || {
+        messageRu: "Обнаружена проблема структуры каталога.",
+        recommendation: "Проверьте запись вручную."
+    };
+}
+
+function normalizeIssueSeverity(severity) {
+    if (severity === "critical" || severity === "error") return "error";
+    if (severity === "warning") return "warning";
+    return "info";
+}
+
 function addIssue(target, issue) {
+    const meta = getStructureIssueMeta(issue.code);
     target.push({
-        severity: issue.severity || "warning",
+        severity: normalizeIssueSeverity(issue.severity || "warning"),
         code: issue.code,
         message: issue.message,
+        messageRu: issue.messageRu || meta.messageRu,
+        recommendation: issue.recommendation || meta.recommendation,
+        entityType: issue.entityType || issue.itemType || "",
+        entityId: issue.entityId || issue.itemId || null,
+        relatedEntityIds: issue.relatedEntityIds || [],
+        details: issue.details || null,
         itemId: issue.itemId || null,
         itemType: issue.itemType || "",
         itemName: issue.itemName || "",
@@ -730,6 +813,10 @@ async function getCatalogStructureAudit(db) {
     const activeSubcategoriesByParentAndName = new Map();
     const productCountByCategory = new Map();
     const productCountBySubcategory = new Map();
+    const activeProductCountByCategory = new Map();
+    const inactiveProductCountByCategory = new Map();
+    const activeProductCountBySubcategory = new Map();
+    const inactiveProductCountBySubcategory = new Map();
     const issues = [];
 
     categories.filter(row => row.isActive && !row.isSystem).forEach(row => {
@@ -744,6 +831,8 @@ async function getCatalogStructureAudit(db) {
         const category = activeCategoriesByName.get(normalizedCategory);
         if (category) {
             productCountByCategory.set(category.id, (productCountByCategory.get(category.id) || 0) + 1);
+            const categoryCountMap = product.is_active ? activeProductCountByCategory : inactiveProductCountByCategory;
+            categoryCountMap.set(category.id, (categoryCountMap.get(category.id) || 0) + 1);
         }
 
         const normalizedSubcategory = normalizeCatalogStructureName(product.subcategory);
@@ -751,6 +840,8 @@ async function getCatalogStructureAudit(db) {
             const subcategory = activeSubcategoriesByParentAndName.get(`${category.id}:${normalizedSubcategory}`);
             if (subcategory) {
                 productCountBySubcategory.set(subcategory.id, (productCountBySubcategory.get(subcategory.id) || 0) + 1);
+                const subcategoryCountMap = product.is_active ? activeProductCountBySubcategory : inactiveProductCountBySubcategory;
+                subcategoryCountMap.set(subcategory.id, (subcategoryCountMap.get(subcategory.id) || 0) + 1);
             }
         }
     });
@@ -902,6 +993,8 @@ async function getCatalogStructureAudit(db) {
     const categoriesForTree = categories.map(category => ({
         ...category,
         productCount: productCountByCategory.get(category.id) || 0,
+        activeProductCount: activeProductCountByCategory.get(category.id) || 0,
+        inactiveProductCount: inactiveProductCountByCategory.get(category.id) || 0,
         subcategoryCount: subcategories.filter(item => Number(item.parentId) === Number(category.id)).length,
         issues: issues.filter(issue => issue.itemType === "category" && Number(issue.itemId) === Number(category.id)),
         subcategories: subcategories
@@ -910,6 +1003,8 @@ async function getCatalogStructureAudit(db) {
                 ...subcategory,
                 parentName: category.name,
                 productCount: productCountBySubcategory.get(subcategory.id) || 0,
+                activeProductCount: activeProductCountBySubcategory.get(subcategory.id) || 0,
+                inactiveProductCount: inactiveProductCountBySubcategory.get(subcategory.id) || 0,
                 issues: issues.filter(issue => issue.itemType === "subcategory" && Number(issue.itemId) === Number(subcategory.id))
             }))
     }));
@@ -921,7 +1016,7 @@ async function getCatalogStructureAudit(db) {
             products: products.length,
             productsWithoutStructure,
             issues: issues.length,
-            criticalIssues: issues.filter(issue => issue.severity === "critical").length,
+            criticalIssues: issues.filter(issue => issue.severity === "error").length,
             warnings: issues.filter(issue => issue.severity === "warning").length,
             inactiveItems: rows.filter(row => !row.isActive).length,
             duplicateIssues: issues.filter(issue => issue.code.includes("DUPLICATE")).length
@@ -960,6 +1055,8 @@ async function getPublicCatalogStructureTree(db) {
             name: row.name,
             normalizedName: row.normalized_name,
             externalCode: row.external_code || "",
+            sortOrder: Number(row.sort_order) || 0,
+            productCount: 0,
             subcategories: []
         };
         categoriesById.set(row.id, category);
@@ -975,7 +1072,9 @@ async function getPublicCatalogStructureTree(db) {
             id: row.id,
             name: row.name,
             normalizedName: row.normalized_name,
-            externalCode: row.external_code || ""
+            externalCode: row.external_code || "",
+            sortOrder: Number(row.sort_order) || 0,
+            productCount: 0
         };
         parent.subcategories.push(subcategory);
         subcategoriesByParentAndName.set(`${row.parent_id}:${row.normalized_name}`, subcategory);
@@ -987,6 +1086,7 @@ async function getPublicCatalogStructureTree(db) {
         if (!category) return;
 
         categoriesWithProducts.add(category.id);
+        category.productCount += 1;
 
         const normalizedSubcategory = normalizeCatalogStructureName(product.subcategory);
         if (!normalizedSubcategory) return;
@@ -994,6 +1094,7 @@ async function getPublicCatalogStructureTree(db) {
         const subcategory = subcategoriesByParentAndName.get(`${category.id}:${normalizedSubcategory}`);
         if (subcategory) {
             subcategoriesWithProducts.add(subcategory.id);
+            subcategory.productCount += 1;
         }
     });
 
@@ -1001,10 +1102,22 @@ async function getPublicCatalogStructureTree(db) {
         if (!categoriesWithProducts.has(category.id)) return;
 
         categories.push({
+            id: category.id,
+            code: category.externalCode,
+            title: category.name,
             name: category.name,
+            sortOrder: category.sortOrder,
+            productCount: category.productCount,
             subcategories: category.subcategories
                 .filter(subcategory => subcategoriesWithProducts.has(subcategory.id))
-                .map(subcategory => ({ name: subcategory.name }))
+                .map(subcategory => ({
+                    id: subcategory.id,
+                    code: subcategory.externalCode,
+                    title: subcategory.name,
+                    name: subcategory.name,
+                    sortOrder: subcategory.sortOrder,
+                    productCount: subcategory.productCount
+                }))
         });
     });
 

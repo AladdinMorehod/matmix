@@ -441,6 +441,7 @@ function renderOrders() {
             ? "Удаленные заявки появятся здесь после удаления из CRM."
             : "Новые заявки появятся здесь после оформления заказа на сайте.");
 
+        if (append) return;
         ordersList.innerHTML = `
             <section class="empty-state">
                 <h2>${emptyTitle}</h2>
@@ -452,11 +453,35 @@ function renderOrders() {
 
     ordersList.innerHTML = visibleOrders
         .map(order => order.deletedAt ? renderDeletedOrder(order) : renderActiveOrder(order))
+        .join("") + renderPaginationControls(ordersPagination, {
+            id: "orders",
+            loadedCount: orders.length
+        });
+}
+
+function appendOrdersToList(nextOrders = []) {
+    updateStats();
+    renderStatusTabs();
+    removeCrmPagination(ordersList);
+
+    const selectedStatus = statusFilter.value;
+    const visibleOrders = selectedStatus && selectedStatus !== deletedStatusFilter
+        ? nextOrders.filter(order => order.status === selectedStatus)
+        : nextOrders;
+    const rowsHtml = visibleOrders
+        .map(order => order.deletedAt ? renderDeletedOrder(order) : renderActiveOrder(order))
         .join("");
+
+    appendCrmHtml(ordersList, rowsHtml);
+    appendCrmHtml(ordersList, renderPaginationControls(ordersPagination, {
+        id: "orders",
+        loadedCount: orders.length
+    }));
 }
 
 async function loadOrders(options = {}) {
-    const { preserveMessage = false } = options;
+    const { preserveMessage = false, append = false } = options;
+    const requestId = ++ordersRequestId;
     if (!preserveMessage) {
         const loadingMessage = activeSection === "myOrders" ? CRM_MESSAGES.LOADING_MY_ORDERS : CRM_MESSAGES.LOADING_ORDERS;
         setMessage(loadingMessage);
@@ -466,10 +491,22 @@ async function loadOrders(options = {}) {
     try {
         const isMyOrders = activeSection === "myOrders";
         const isDeletedFilter = !isMyOrders && statusFilter.value === deletedStatusFilter;
-        const url = isMyOrders ? "/api/orders?mine=true" : (isDeletedFilter ? "/api/orders?deleted=true" : "/api/orders");
+        const params = new URLSearchParams();
+        params.set("page", ordersPagination.page || 1);
+        params.set("limit", CRM_LIST_LIMIT);
+        if (isMyOrders) params.set("mine", "true");
+        if (isDeletedFilter) params.set("deleted", "true");
+        if (statusFilter.value && statusFilter.value !== deletedStatusFilter) params.set("status", statusFilter.value);
+        const url = `/api/orders?${params.toString()}`;
         const result = await CrmApi.get(url);
 
-        orders = result.orders || [];
+        if (requestId !== ordersRequestId) return;
+        const nextOrders = result.orders || [];
+        const uniqueNextOrders = nextOrders.filter(order => !orders.some(existing => Number(existing.id) === Number(order.id)));
+        orders = append
+            ? [...orders, ...uniqueNextOrders].slice(-CRM_DOM_ACCUMULATION_LIMIT)
+            : nextOrders;
+        ordersPagination = normalizePaginationMeta(result.pagination);
         if (!isDeletedFilter) {
             regularOrderStats = {
                 total: orders.length,
@@ -477,11 +514,23 @@ async function loadOrders(options = {}) {
                 work: orders.filter(order => order.status === "В работе").length
             };
         }
+        if (!isDeletedFilter && result.stats) {
+            regularOrderStats = {
+                total: Number(result.stats.total) || ordersPagination.total || orders.length,
+                new: Number(result.stats.new) || 0,
+                work: Number(result.stats.work) || 0
+            };
+        }
         if (!preserveMessage) {
             setMessage("");
         }
-        renderOrders();
+        if (append) {
+            appendOrdersToList(uniqueNextOrders);
+        } else {
+            renderOrders();
+        }
     } catch (error) {
+        if (requestId !== ordersRequestId) return;
         const message = notifyError(error, "Сервер недоступен. Попробуйте обновить список.");
         ordersList.innerHTML = `
             <section class="empty-state error-state">

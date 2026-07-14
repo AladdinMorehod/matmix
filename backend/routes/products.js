@@ -2,6 +2,7 @@ const express = require("express");
 const ExcelJS = require("exceljs");
 const { all, get, run } = require("../database");
 const { requireRole } = require("../middleware/auth");
+const { getPaginationParams, buildPaginationMeta } = require("../utils/pagination");
 const {
     normalizeCatalogStructureName,
     getCatalogStructureTree,
@@ -25,6 +26,7 @@ const {
     getNextMatExternalId,
     sanitizeUploadFileName
 } = require("../services/catalogImport");
+const { ceilMoney, ceilWeight } = require("../utils/numberFormat");
 
 const router = express.Router();
 const publicRouter = express.Router();
@@ -218,6 +220,12 @@ function getWorkbookFileName(prefix) {
     return `${prefix}-${today}.xlsx`;
 }
 
+function getPriceWorkbookFileName(date = new Date()) {
+    const day = date.toISOString().slice(0, 10);
+    const time = date.toTimeString().slice(0, 5).replace(":", "-");
+    return `MatMix_Прайс_${day}_${time}.xlsx`;
+}
+
 function setExcelHeaders(res, filename) {
     const encoded = encodeURIComponent(filename);
     res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -354,11 +362,16 @@ async function getProductsWithCatalogOrder(query = {}) {
     const where = [];
     const searchWords = getSearchWords(query.search);
     const category = normalizeText(query.category);
+    const subcategory = normalizeText(query.subcategory);
     const status = normalizeText(query.status);
 
     if (category) {
         where.push("category = ?");
         params.push(category);
+    }
+    if (subcategory) {
+        where.push("subcategory = ?");
+        params.push(subcategory);
     }
 
     if (status === "active") {
@@ -452,7 +465,6 @@ async function getProductsWithCatalogOrder(query = {}) {
 
             return firstOrder.category - secondOrder.category
                 || firstOrder.subcategory - secondOrder.subcategory
-                || firstOrder.group - secondOrder.group
                 || (Number(first.sort_order) || 0) - (Number(second.sort_order) || 0)
                 || (Number(first.id) || 0) - (Number(second.id) || 0);
         })
@@ -464,6 +476,208 @@ async function getProductsWithCatalogOrder(query = {}) {
 
 async function getPublicProducts() {
     return getProductsWithCatalogOrder({ status: "active", deleted: "false" });
+}
+
+function escapeSqlLike(value) {
+    return String(value || "").replace(/[\\%_]/g, char => `\\${char}`);
+}
+
+function addProductSearchWhere(where, params, search) {
+    const words = getSearchWords(search);
+    words.forEach(word => {
+        const like = `%${escapeSqlLike(word)}%`;
+        where.push(`(
+            LOWER(title) LIKE ? ESCAPE '\\'
+            OR LOWER(COALESCE(external_id, '')) LIKE ? ESCAPE '\\'
+            OR LOWER(COALESCE(slug, '')) LIKE ? ESCAPE '\\'
+            OR LOWER(COALESCE(category, '')) LIKE ? ESCAPE '\\'
+            OR LOWER(COALESCE(subcategory, '')) LIKE ? ESCAPE '\\'
+            OR LOWER(COALESCE(product_group, '')) LIKE ? ESCAPE '\\'
+            OR LOWER(COALESCE(description, '')) LIKE ? ESCAPE '\\'
+        )`);
+        params.push(like, like, like, like, like, like, like);
+    });
+}
+
+function buildProductListWhere(query = {}, defaults = {}) {
+    const params = [];
+    const where = [];
+    const category = normalizeText(query.category);
+    const subcategory = normalizeText(query.subcategory);
+    const productGroup = normalizeText(query.productGroup || query.product_group);
+    const status = normalizeText(query.status || defaults.status);
+    const deleted = query.deleted ?? defaults.deleted;
+
+    if (category) {
+        where.push("category = ?");
+        params.push(category);
+    }
+    if (subcategory) {
+        where.push("subcategory = ?");
+        params.push(subcategory);
+    }
+    if (productGroup) {
+        where.push("product_group = ?");
+        params.push(productGroup);
+    }
+    if (status === "active") {
+        where.push("is_active = 1");
+    } else if (status === "hidden") {
+        where.push("is_active = 0");
+    }
+    if (deleted === "true") {
+        where.push("deleted_at IS NOT NULL");
+    } else {
+        where.push("deleted_at IS NULL");
+    }
+
+    addProductSearchWhere(where, params, query.search);
+
+    return {
+        whereSql: where.length ? `WHERE ${where.join(" AND ")}` : "",
+        params
+    };
+}
+
+async function getPaginatedProductRows(query = {}, defaults = {}) {
+    const paginationParams = getPaginationParams(query);
+    const { whereSql, params } = buildProductListWhere(query, defaults);
+    const orderSql = `
+        ORDER BY category COLLATE NOCASE ASC,
+                 subcategory COLLATE NOCASE ASC,
+                 product_group COLLATE NOCASE ASC,
+                 sort_order ASC,
+                 title COLLATE NOCASE ASC,
+                 id ASC
+    `;
+    const [countRow, rows] = await Promise.all([
+        get(`SELECT COUNT(*) AS total FROM products ${whereSql}`, params),
+        all(`
+            SELECT *
+            FROM products
+            ${whereSql}
+            ${orderSql}
+            LIMIT ? OFFSET ?
+        `, [...params, paginationParams.limit, paginationParams.offset])
+    ]);
+
+    return {
+        rows,
+        pagination: buildPaginationMeta({
+            ...paginationParams,
+            total: countRow?.total
+        })
+    };
+}
+
+function addStructureProductSearchWhere(where, params, search) {
+    addProductSearchWhere(where, params, search);
+}
+
+function addStructureProductStatusWhere(where, status) {
+    if (status === "active") {
+        where.push("p.is_active = 1");
+    } else if (status === "hidden") {
+        where.push("p.is_active = 0");
+    }
+}
+
+async function getCatalogStructureProductRows(query = {}) {
+    const paginationParams = getPaginationParams(query);
+    const mode = normalizeText(query.mode || "node");
+    const type = normalizeText(query.type);
+    const id = Number(query.id || 0);
+    const status = normalizeText(query.status || "all");
+    const where = ["p.deleted_at IS NULL"];
+    const params = [];
+    let node = null;
+
+    if (mode === "withoutStructure") {
+        where.push(`(
+            p.category IS NULL OR TRIM(p.category) = ''
+            OR NOT EXISTS (
+                SELECT 1
+                FROM catalog_structure c
+                WHERE c.type = 'category'
+                  AND c.parent_id IS NULL
+                  AND c.is_active = 1
+                  AND c.name = p.category
+            )
+            OR p.subcategory IS NULL OR TRIM(p.subcategory) = ''
+            OR NOT EXISTS (
+                SELECT 1
+                FROM catalog_structure sc
+                JOIN catalog_structure pc ON pc.id = sc.parent_id
+                WHERE sc.type = 'subcategory'
+                  AND sc.is_active = 1
+                  AND pc.type = 'category'
+                  AND pc.is_active = 1
+                  AND pc.name = p.category
+                  AND sc.name = p.subcategory
+            )
+        )`);
+    } else {
+        if (!id || !["category", "subcategory"].includes(type)) {
+            const error = new Error("Выберите категорию или подкатегорию.");
+            error.status = 400;
+            error.code = "VALIDATION_ERROR";
+            throw error;
+        }
+
+        node = await get(`
+            SELECT item.*, parent.name AS parent_name
+            FROM catalog_structure item
+            LEFT JOIN catalog_structure parent ON parent.id = item.parent_id
+            WHERE item.id = ? AND item.type = ?
+        `, [id, type]);
+        if (!node) {
+            const error = new Error("Узел структуры не найден.");
+            error.status = 404;
+            error.code = "NOT_FOUND";
+            throw error;
+        }
+
+        if (type === "category") {
+            where.push("p.category = ?");
+            params.push(node.name);
+        } else {
+            where.push("p.category = ?");
+            where.push("p.subcategory = ?");
+            params.push(node.parent_name || "", node.name);
+        }
+    }
+
+    addStructureProductStatusWhere(where, status);
+    addStructureProductSearchWhere(where, params, query.search);
+
+    const whereSql = `WHERE ${where.join(" AND ")}`;
+    const orderSql = `
+        ORDER BY p.category COLLATE NOCASE ASC,
+                 p.subcategory COLLATE NOCASE ASC,
+                 p.product_group COLLATE NOCASE ASC,
+                 p.sort_order ASC,
+                 p.title COLLATE NOCASE ASC,
+                 p.id ASC
+    `;
+    const [countRow, rows] = await Promise.all([
+        get(`SELECT COUNT(*) AS total FROM products p ${whereSql}`, params),
+        all(`
+            SELECT p.*
+            FROM products p
+            ${whereSql}
+            ${orderSql}
+            LIMIT ? OFFSET ?
+        `, [...params, paginationParams.limit, paginationParams.offset])
+    ]);
+
+    return {
+        node,
+        rows,
+        pagination: buildPaginationMeta({
+            ...paginationParams,
+            total: countRow?.total
+        })
+    };
 }
 
 function enqueueProductCreate(callback) {
@@ -540,7 +754,7 @@ function addMergedRow(sheet, rowNumber, value, style = {}) {
     cell.border = style.border;
 }
 
-function buildPriceWorkbook(rows) {
+function buildLegacyPriceWorkbook(rows) {
     const workbook = new ExcelJS.Workbook();
     const exportedAt = new Date();
     workbook.creator = "MatMix";
@@ -583,13 +797,32 @@ function buildPriceWorkbook(rows) {
     headerRow.height = 24;
     headerRow.eachCell(applyBaseCellStyle);
 
+    const workbookRows = sections
+        ? sections.flatMap(section => section.subcategories.length
+            ? section.subcategories.flatMap(subcategory => subcategory.products.length
+                ? subcategory.products.map(product => ({
+                    ...product,
+                    category: section.name,
+                    subcategory: subcategory.name
+                }))
+                : [{
+                    __sectionOnly: true,
+                    category: section.name,
+                    subcategory: subcategory.name
+                }])
+            : [{
+                __categoryOnly: true,
+                category: section.name,
+                subcategory: ""
+            }])
+        : rows;
     let currentCategory = "";
     let currentSubcategory = "";
     let currentGroup = "";
     let rowNumber = 5;
     let itemNumber = 0;
 
-    rows.forEach(row => {
+    workbookRows.forEach(row => {
         const category = row.category || "Без категории";
         const subcategory = row.subcategory || "Без подкатегории";
         const productGroup = row.product_group || "";
@@ -631,12 +864,12 @@ function buildPriceWorkbook(rows) {
             itemNumber,
             row.title,
             row.unit || "шт",
-            row.price === null || row.price === undefined ? "" : Number(row.price) || 0,
-            Number(row.weight) || 0
+            row.price === null || row.price === undefined ? "" : ceilMoney(row.price),
+            ceilWeight(row.weight)
         ];
         productRow.getCell(1).alignment = { vertical: "middle", horizontal: "center" };
         productRow.getCell(4).numFmt = '#,##0.00 "₽"';
-        productRow.getCell(5).numFmt = "#,##0.###";
+        productRow.getCell(5).numFmt = "0.000";
         productRow.eachCell(applyBaseCellStyle);
         rowNumber += 1;
     });
@@ -659,17 +892,301 @@ function buildPriceWorkbook(rows) {
     return workbook;
 }
 
-async function sendPriceWorkbook(res, rows) {
-    const workbook = buildPriceWorkbook(rows);
-    setExcelHeaders(res, getWorkbookFileName("MatMix-прайс"));
+function applyPriceRowFill(row, fillColor) {
+    row.eachCell({ includeEmpty: true }, cell => {
+        cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: fillColor } };
+    });
+}
+
+function applyPriceRowFont(row, font) {
+    row.eachCell({ includeEmpty: true }, cell => {
+        cell.font = font;
+    });
+}
+
+function setPriceRowValues(row, values) {
+    values.forEach((value, index) => {
+        row.getCell(index + 1).value = value;
+    });
+}
+
+function addPriceTitleRow(sheet, rowNumber, value, style = {}) {
+    sheet.mergeCells(`A${rowNumber}:H${rowNumber}`);
+    const cell = sheet.getCell(`A${rowNumber}`);
+    cell.value = value;
+    cell.font = style.font || { bold: true };
+    cell.fill = style.fill;
+    cell.alignment = style.alignment || { vertical: "middle", horizontal: "center" };
+}
+
+function parseOptionalExportNumber(value) {
+    if (value === null || value === undefined || value === "") return null;
+    if (typeof value === "string") {
+        const normalized = value.replace(",", ".").replace(/\s+/g, "").trim();
+        if (!normalized) return null;
+        const number = Number(normalized);
+        return Number.isFinite(number) ? number : null;
+    }
+    const number = Number(value);
+    return Number.isFinite(number) ? number : null;
+}
+
+function getExportMatCode(row) {
+    const code = normalizeText(row.external_id);
+    if (!code || /^excel-/i.test(code)) return "";
+    return code;
+}
+
+function sanitizeExcelText(value) {
+    return String(value ?? "").replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, "");
+}
+
+function formatPriceExportDate(date) {
+    return new Intl.DateTimeFormat("ru-RU", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+    }).format(date);
+}
+
+function getPriceSectionKey(value) {
+    return normalizeCatalogStructureName(value || "");
+}
+
+async function getPriceWorkbookSections(rows, query = {}) {
+    const categoryFilter = getPriceSectionKey(query.category);
+    const subcategoryFilter = getPriceSectionKey(query.subcategory);
+    const hasSearch = Boolean(getSearchWords(query.search).length);
+    const productBuckets = new Map();
+    const usedProductIds = new Set();
+
+    rows.forEach(row => {
+        const categoryKey = getPriceSectionKey(row.category);
+        const subcategoryKey = getPriceSectionKey(row.subcategory);
+        const bucketKey = `${categoryKey}\u0000${subcategoryKey}`;
+        if (!productBuckets.has(bucketKey)) productBuckets.set(bucketKey, []);
+        productBuckets.get(bucketKey).push(row);
+    });
+
+    const structureRows = await all(`
+        SELECT id, type, name, normalized_name, parent_id, sort_order
+        FROM catalog_structure
+        WHERE is_active = 1
+          AND COALESCE(is_system, 0) = 0
+          AND type IN ('category', 'subcategory')
+        ORDER BY sort_order ASC, id ASC
+    `);
+    const categoryRows = structureRows.filter(row => row.type === "category");
+    const subcategoriesByParent = new Map();
+    structureRows.filter(row => row.type === "subcategory").forEach(row => {
+        const parentId = Number(row.parent_id) || 0;
+        if (!subcategoriesByParent.has(parentId)) subcategoriesByParent.set(parentId, []);
+        subcategoriesByParent.get(parentId).push(row);
+    });
+
+    const sections = [];
+    categoryRows.forEach(category => {
+        const categoryKey = getPriceSectionKey(category.normalized_name || category.name);
+        if (categoryFilter && categoryKey !== categoryFilter) return;
+
+        const section = {
+            name: category.name,
+            subcategories: []
+        };
+        const withoutSubProducts = productBuckets.get(`${categoryKey}\u0000`) || [];
+        if ((!subcategoryFilter || subcategoryFilter === "") && withoutSubProducts.length) {
+            withoutSubProducts.forEach(row => usedProductIds.add(row.id));
+            section.subcategories.push({
+                name: "Без подкатегории",
+                products: withoutSubProducts
+            });
+        }
+
+        (subcategoriesByParent.get(Number(category.id)) || []).forEach(subcategory => {
+            const subcategoryKey = getPriceSectionKey(subcategory.normalized_name || subcategory.name);
+            if (subcategoryFilter && subcategoryKey !== subcategoryFilter) return;
+            const products = productBuckets.get(`${categoryKey}\u0000${subcategoryKey}`) || [];
+            products.forEach(row => usedProductIds.add(row.id));
+            if (!hasSearch || products.length) {
+                section.subcategories.push({
+                    name: subcategory.name,
+                    products
+                });
+            }
+        });
+
+        if (!hasSearch || section.subcategories.length) {
+            sections.push(section);
+        }
+    });
+
+    const leftoverProducts = rows.filter(row => !usedProductIds.has(row.id));
+    if (leftoverProducts.length) {
+        const leftoverBySubcategory = new Map();
+        leftoverProducts.forEach(row => {
+            const subcategory = normalizeText(row.subcategory) || "Без подкатегории";
+            if (!leftoverBySubcategory.has(subcategory)) leftoverBySubcategory.set(subcategory, []);
+            leftoverBySubcategory.get(subcategory).push(row);
+        });
+        sections.push({
+            name: "Без структуры",
+            subcategories: Array.from(leftoverBySubcategory, ([name, products]) => ({ name, products }))
+        });
+    }
+
+    return sections;
+}
+
+function buildPriceWorkbook(rows, sections = null) {
+    const workbook = new ExcelJS.Workbook();
+    const exportedAt = new Date();
+    workbook.creator = "MatMix";
+    workbook.created = exportedAt;
+    workbook.modified = exportedAt;
+
+    const sheet = workbook.addWorksheet("ПРАЙС", {
+        views: [{ state: "frozen", ySplit: 4, showGridLines: false }]
+    });
+    sheet.properties.outlineProperties = {
+        summaryBelow: false,
+        summaryRight: false
+    };
+    sheet.columns = [
+        { key: "title", width: 64 },
+        { key: "category", width: 28 },
+        { key: "subcategory", width: 34 },
+        { key: "unit", width: 11 },
+        { key: "price", width: 15 },
+        { key: "productGroup", width: 28 },
+        { key: "weight", width: 13 },
+        { key: "mat", width: 18 }
+    ];
+
+    addPriceTitleRow(sheet, 1, sanitizeExcelText("Прайс-лист MatMix"), {
+        font: { bold: true, size: 22, color: { argb: "FFFFFFFF" } },
+        fill: { type: "pattern", pattern: "solid", fgColor: { argb: "FF205742" } }
+    });
+    sheet.getRow(1).height = 30;
+    addPriceTitleRow(sheet, 2, sanitizeExcelText(`Дата формирования: ${formatPriceExportDate(exportedAt)}`), {
+        font: { bold: true, size: 11, color: { argb: "FF4A5348" } }
+    });
+    addPriceTitleRow(sheet, 3, sanitizeExcelText("Актуальные цены на дату формирования"), {
+        font: { italic: true, size: 10, color: { argb: "FF6F766C" } }
+    });
+    sheet.getRow(3).height = 18;
+
+    const headerRow = sheet.getRow(4);
+    setPriceRowValues(headerRow, ["Наименование", "Категория", "Подкатегория", "Ед. изм.", "Цена, ₽", "Группа товаров", "Вес", "MAT-код"].map(sanitizeExcelText));
+    headerRow.font = { bold: true, color: { argb: "FFFFFFFF" } };
+    headerRow.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF205742" } };
+    headerRow.alignment = { vertical: "middle", horizontal: "center", wrapText: true };
+    headerRow.height = 24;
+    headerRow.eachCell({ includeEmpty: true }, applyBaseCellStyle);
+
+    let currentCategory = "";
+    let currentSubcategory = "";
+    let rowNumber = 5;
+
+    rows.forEach(row => {
+        const category = sanitizeExcelText(normalizeText(row.category) || "Без структуры");
+        const subcategory = sanitizeExcelText(normalizeText(row.subcategory) || "Без подкатегории");
+        const price = parseOptionalExportNumber(row.price);
+        const weight = parseOptionalExportNumber(row.weight);
+
+        if (category !== currentCategory) {
+            currentCategory = category;
+            currentSubcategory = "";
+            const categoryRow = sheet.getRow(rowNumber);
+            setPriceRowValues(categoryRow, [`Категория: ${category}`, category, null, null, null, null, null, null].map(value => typeof value === "string" ? sanitizeExcelText(value) : value));
+            categoryRow.height = 24;
+            categoryRow.outlineLevel = 0;
+            categoryRow.alignment = { vertical: "middle", wrapText: true };
+            applyPriceRowFill(categoryRow, "FFE8EFE8");
+            applyPriceRowFont(categoryRow, { bold: true, size: 13, color: { argb: "FF1A4F3A" } });
+            categoryRow.eachCell({ includeEmpty: true }, applyBaseCellStyle);
+            rowNumber += 1;
+        }
+
+        if (row.__categoryOnly) return;
+
+        if (subcategory !== currentSubcategory) {
+            currentSubcategory = subcategory;
+            const subcategoryRow = sheet.getRow(rowNumber);
+            setPriceRowValues(subcategoryRow, [`  Подкатегория: ${subcategory}`, category, subcategory, null, null, null, null, null].map(value => typeof value === "string" ? sanitizeExcelText(value) : value));
+            subcategoryRow.height = 22;
+            subcategoryRow.outlineLevel = 1;
+            subcategoryRow.hidden = true;
+            subcategoryRow.alignment = { vertical: "middle", wrapText: true };
+            applyPriceRowFill(subcategoryRow, "FFF4F6F1");
+            applyPriceRowFont(subcategoryRow, { bold: true, size: 11, color: { argb: "FF205742" } });
+            subcategoryRow.eachCell({ includeEmpty: true }, applyBaseCellStyle);
+            rowNumber += 1;
+        }
+
+        if (row.__sectionOnly) return;
+
+        const productRow = sheet.getRow(rowNumber);
+        setPriceRowValues(productRow, [
+            sanitizeExcelText(row.title),
+            category,
+            subcategory,
+            sanitizeExcelText(row.unit || "шт"),
+            price === null ? null : ceilMoney(price),
+            sanitizeExcelText(row.product_group || ""),
+            weight === null ? null : ceilWeight(weight),
+            sanitizeExcelText(getExportMatCode(row))
+        ]);
+        productRow.outlineLevel = 2;
+        productRow.hidden = true;
+        productRow.getCell(5).numFmt = "#,##0.00";
+        productRow.getCell(7).numFmt = "0.000";
+        productRow.getCell(5).alignment = { vertical: "middle", horizontal: "right" };
+        productRow.getCell(7).alignment = { vertical: "middle", horizontal: "right" };
+        productRow.getCell(8).font = { color: { argb: "FF6F766C" } };
+        productRow.eachCell({ includeEmpty: true }, applyBaseCellStyle);
+        rowNumber += 1;
+    });
+
+    const lastRow = Math.max(4, rowNumber - 1);
+    sheet.autoFilter = {
+        from: "A4",
+        to: `H${lastRow}`
+    };
+    sheet.pageSetup = {
+        orientation: "landscape",
+        fitToWidth: 1,
+        fitToHeight: 0,
+        printTitlesRow: "4:4",
+        printArea: `A1:H${lastRow}`,
+        horizontalCentered: true,
+        margins: {
+            left: 0.35,
+            right: 0.35,
+            top: 0.45,
+            bottom: 0.45,
+            header: 0.2,
+            footer: 0.2
+        }
+    };
+
+    return workbook;
+}
+
+async function sendPriceWorkbook(res, rows, query = {}) {
+    const sections = await getPriceWorkbookSections(rows, query);
+    const workbook = buildPriceWorkbook(rows, sections);
+    setExcelHeaders(res, getPriceWorkbookFileName());
     await workbook.xlsx.write(res);
     res.end();
 }
 
 publicRouter.get("/", async (req, res) => {
     try {
-        const rows = await getPublicProducts();
-        res.json({ success: true, products: rows.map(normalizePublicProduct) });
+        const { rows, pagination } = await getPaginatedProductRows(req.query, { status: "active", deleted: "false" });
+        const products = rows.map(normalizePublicProduct);
+        res.json({ success: true, products, items: products, pagination });
     } catch (error) {
         console.error("Public products load error:", error);
         res.status(500).json({ success: false, message: "Не удалось загрузить каталог." });
@@ -678,8 +1195,8 @@ publicRouter.get("/", async (req, res) => {
 
 publicRouter.get("/export/excel", async (req, res) => {
     try {
-        const rows = await getPublicProducts();
-        await sendPriceWorkbook(res, rows);
+        const rows = await getProductsWithCatalogOrder({ ...req.query, status: "active", deleted: "false" });
+        await sendPriceWorkbook(res, rows, req.query || {});
     } catch (error) {
         console.error("Public products export error:", error);
         res.status(500).json({ success: false, message: "Не удалось сформировать прайс." });
@@ -698,7 +1215,7 @@ publicRouter.get("/structure", async (req, res) => {
 
 router.get("/", requireRole(["admin", "manager"]), async (req, res) => {
     try {
-        const rows = await getFilteredProducts(req.query);
+        const { rows, pagination } = await getPaginatedProductRows(req.query, { deleted: "false" });
         const products = rows.map(normalizeProduct);
         const categoryRows = await all("SELECT DISTINCT category FROM products WHERE deleted_at IS NULL AND category IS NOT NULL AND category != '' ORDER BY category COLLATE NOCASE ASC");
         const subcategoryRows = await all("SELECT DISTINCT subcategory FROM products WHERE deleted_at IS NULL AND subcategory IS NOT NULL AND subcategory != '' ORDER BY subcategory COLLATE NOCASE ASC");
@@ -707,7 +1224,7 @@ router.get("/", requireRole(["admin", "manager"]), async (req, res) => {
         const subcategories = subcategoryRows.map(row => row.subcategory);
         const productGroups = productGroupRows.map(row => row.product_group);
 
-        res.json({ success: true, products, categories, subcategories, productGroups });
+        res.json({ success: true, products, items: products, categories, subcategories, productGroups, pagination });
     } catch (error) {
         console.error("Products load error:", error);
         res.status(500).json({ success: false, message: "Не удалось загрузить каталог." });
@@ -718,7 +1235,7 @@ router.get("/export/excel", requireRole(["admin", "manager"]), async (req, res) 
     try {
         const status = req.query.all === "true" ? "" : (req.query.status || "active");
         const rows = await getProductsWithCatalogOrder({ ...req.query, status, deleted: "false" });
-        await sendPriceWorkbook(res, rows);
+        await sendPriceWorkbook(res, rows, req.query || {});
     } catch (error) {
         console.error("Products export error:", error);
         res.status(500).json({ success: false, message: "Не удалось сформировать прайс." });
@@ -742,6 +1259,34 @@ router.get("/structure/audit", requireRole(["admin", "manager"]), async (req, re
     } catch (error) {
         console.error("Catalog structure audit error:", error);
         sendApiError(res, error, "Не удалось выполнить аудит структуры каталога.", "CATALOG_STRUCTURE_AUDIT_FAILED");
+    }
+});
+
+router.get("/structure/audit/products", requireRole(["admin", "manager"]), async (req, res) => {
+    try {
+        const result = await getCatalogStructureProductRows(req.query || {});
+        const products = result.rows.map(normalizeProduct);
+        res.json({
+            success: true,
+            products,
+            items: products,
+            node: result.node ? {
+                id: result.node.id,
+                type: result.node.type,
+                name: result.node.name,
+                code: result.node.code || "",
+                parentId: result.node.parent_id || null,
+                parentName: result.node.parent_name || "",
+                isActive: Boolean(result.node.is_active),
+                sortOrder: Number(result.node.sort_order) || 0,
+                createdAt: result.node.created_at || "",
+                updatedAt: result.node.updated_at || ""
+            } : null,
+            pagination: result.pagination
+        });
+    } catch (error) {
+        console.error("Catalog structure products audit error:", error);
+        sendApiError(res, error, "Не удалось загрузить товары по структуре каталога.", "CATALOG_STRUCTURE_PRODUCTS_FAILED");
     }
 });
 

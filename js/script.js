@@ -37177,6 +37177,7 @@ const checkoutPhoneInput = checkoutForm?.querySelector("input[name='customerPhon
 const preferredContactMethodInput = checkoutForm?.querySelector("select[name='preferredContactMethod']");
 const checkoutAddressInput = checkoutForm?.querySelector("input[name='deliveryAddress']");
 const checkoutCommentInput = checkoutForm?.querySelector("textarea[name='orderComment']");
+const checkoutPaymentMethodInput = checkoutForm?.querySelector("select[name='paymentMethod']");
 const nameSuggestionsEl = document.getElementById("nameSuggestions");
 const phoneSuggestionsEl = document.getElementById("phoneSuggestions");
 const addressSuggestionsEl = document.getElementById("addressSuggestions");
@@ -37195,10 +37196,21 @@ let showAllGroups = false;
 let productsById = new Map();
 let catalogLoadError = "";
 let publicCatalogStructure = [];
+let publicProductsPagination = { page: 1, limit: 50, total: 0, totalPages: 1, hasNext: false, hasPrevious: false };
+let publicProductsLoadingMore = false;
+let publicProductsRequestId = 0;
 let publicSearchTimer = null;
 let documentMouseDownStartedInsideCheckout = false;
 let cartPreviewWasOpenOnPointerDown = false;
 const MAX_PRODUCT_QTY = 100000;
+const PAYMENT_METHODS = [
+    { value: "cash", label: "Наличные" },
+    { value: "card_transfer", label: "Перевод на карту" },
+    { value: "terminal", label: "Терминал" },
+    { value: "bank_vat", label: "Безнал — с НДС" },
+    { value: "bank_no_vat", label: "Безнал — без НДС" }
+];
+const NUMBER_EPSILON = 1e-9;
 
 searchDropdown.className = "search-dropdown hidden";
 searchDropdown.setAttribute("aria-live", "polite");
@@ -37244,19 +37256,43 @@ function normalizePublicCatalogStructure(items) {
 
     return items
         .map(item => {
-            const name = cleanDisplayText(item?.name);
+            const name = cleanDisplayText(item?.name || item?.title);
             if (!name) return null;
 
             return {
+                id: item?.id || null,
+                code: item?.code || item?.externalCode || item?.external_code || "",
                 name,
+                sortOrder: Number(item?.sortOrder ?? item?.sort_order) || 0,
+                productCount: Number(item?.productCount ?? item?.product_count) || 0,
                 subcategories: Array.isArray(item.subcategories)
                     ? item.subcategories
-                        .map(subcategory => ({ name: cleanDisplayText(subcategory?.name) }))
+                        .map(subcategory => ({
+                            id: subcategory?.id || null,
+                            code: subcategory?.code || subcategory?.externalCode || subcategory?.external_code || "",
+                            name: cleanDisplayText(subcategory?.name || subcategory?.title),
+                            sortOrder: Number(subcategory?.sortOrder ?? subcategory?.sort_order) || 0,
+                            productCount: Number(subcategory?.productCount ?? subcategory?.product_count) || 0
+                        }))
                         .filter(subcategory => subcategory.name)
                     : []
             };
         })
         .filter(Boolean);
+}
+
+async function loadPublicCatalogStructure() {
+    try {
+        const structureResponse = await fetch("/api/public/products/structure");
+        const structureResult = await structureResponse.json().catch(() => ({}));
+
+        publicCatalogStructure = structureResponse.ok && structureResult.success
+            ? normalizePublicCatalogStructure(structureResult.categories)
+            : [];
+    } catch (structureError) {
+        console.warn("Public catalog structure load error:", structureError);
+        publicCatalogStructure = [];
+    }
 }
 
 function getProductById(id) {
@@ -37425,42 +37461,67 @@ async function downloadPublicPrice() {
     }
 }
 
-async function loadPublicProducts() {
+function getCatalogFilterValues(groups = getCategoryFilterGroups()) {
+    const trail = getActiveCategoryTrail(groups);
+    const filters = {};
+
+    if (!activeCategoryPath) return filters;
+    if (trail.categoryPath) filters.category = trail.category;
+    if (trail.subcategoryPath && !activeCategoryPath.startsWith("category:")) filters.subcategory = trail.subcategory;
+    if (trail.group && activeCategoryPath.startsWith("group:")) filters.productGroup = trail.group;
+
+    return filters;
+}
+
+async function loadPublicProducts(options = {}) {
+    const { append = false } = options;
+    const requestId = ++publicProductsRequestId;
     try {
-        const response = await fetch("/api/public/products");
+        const params = new URLSearchParams();
+        params.set("page", append ? (Number(publicProductsPagination.page) || 1) + 1 : 1);
+        params.set("limit", 50);
+        const filters = getCatalogFilterValues();
+        if (filters.category) params.set("category", filters.category);
+        if (filters.subcategory) params.set("subcategory", filters.subcategory);
+        if (filters.productGroup) params.set("productGroup", filters.productGroup);
+        if (searchQuery.trim()) params.set("search", searchQuery.trim());
+        const response = await fetch(`/api/public/products?${params.toString()}`);
         const result = await response.json().catch(() => ({}));
 
+        if (requestId !== publicProductsRequestId) return false;
         if (!response.ok || !result.success || !Array.isArray(result.products)) {
             throw new Error(result.message || "Не удалось загрузить каталог.");
         }
 
-        products = result.products.map(normalizeProductForSite);
-        try {
-            const structureResponse = await fetch("/api/public/products/structure");
-            const structureResult = await structureResponse.json().catch(() => ({}));
-
-            publicCatalogStructure = structureResponse.ok && structureResult.success
-                ? normalizePublicCatalogStructure(structureResult.categories)
-                : [];
-        } catch (structureError) {
-            console.warn("Public catalog structure load error:", structureError);
-            publicCatalogStructure = [];
-        }
-
+        const nextProducts = result.products.map(normalizeProductForSite);
+        products = append
+            ? [...products, ...nextProducts.filter(product => !products.some(existing => Number(existing.id) === Number(product.id)))].slice(-200)
+            : nextProducts;
+        publicProductsPagination = result.pagination || publicProductsPagination;
         rebuildProductsIndex();
         cart = loadCart();
         saveCart();
         catalogLoadError = "";
         showCatalogMessage("");
+        return true;
     } catch (error) {
+        if (requestId !== publicProductsRequestId) return false;
         console.warn("Public catalog load error:", error);
         products = [];
-        publicCatalogStructure = [];
         rebuildProductsIndex();
         cart = loadCart();
         catalogLoadError = "Не удалось загрузить каталог. Проверьте подключение к серверу.";
         showCatalogMessage(catalogLoadError);
+        return false;
     }
+}
+
+async function replacePublicProductsAndRender() {
+    publicProductsLoadingMore = false;
+    await loadPublicProducts();
+    renderCategoryControls();
+    renderProducts();
+    renderSearchDropdown();
 }
 
 function getStoredCheckoutValues(key) {
@@ -37565,6 +37626,7 @@ function resizeCheckoutComment() {
 }
 
 function setupCheckoutFormFields() {
+    setupPaymentMethodSelect();
     updateCheckoutSuggestions();
 
     if (checkoutNameInput) {
@@ -37621,17 +37683,59 @@ function setupCheckoutFormFields() {
 
 function formatPrice(value) {
     if (value === null || value === undefined) return "Цена по запросу";
-    return `${new Intl.NumberFormat("ru-RU").format(value)} ₽`;
+    return `${formatMoneyValue(value)} ₽`;
 }
 
-function getPaymentMethodLabel(value) {
-    const labels = {
-        cash: "Наличными при получении",
-        transfer: "Переводом",
-        invoice: "Безналичный расчет"
-    };
+function toFiniteNumber(value) {
+    const number = Number(value);
+    return Number.isFinite(number) ? number : 0;
+}
 
-    return labels[value] || value || "";
+function ceilNumber(value, precision) {
+    const factor = 10 ** precision;
+    const result = Math.ceil((toFiniteNumber(value) - NUMBER_EPSILON) * factor) / factor;
+    return Object.is(result, -0) ? 0 : result;
+}
+
+function ceilMoney(value) {
+    return ceilNumber(value, 2);
+}
+
+function ceilWeight(value) {
+    return ceilNumber(value, 3);
+}
+
+function formatMoneyValue(value) {
+    return new Intl.NumberFormat("ru-RU", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }).format(ceilMoney(value));
+}
+
+function formatWeightValue(value) {
+    return new Intl.NumberFormat("ru-RU", {
+        minimumFractionDigits: 3,
+        maximumFractionDigits: 3
+    }).format(ceilWeight(value));
+}
+
+function formatWeight(value) {
+    return `${formatWeightValue(value)} кг`;
+}
+
+function renderPaymentMethodOptions(selectedValue = "") {
+    return PAYMENT_METHODS
+        .map(method => `<option value="${method.value}"${method.value === selectedValue ? " selected" : ""}>${method.label}</option>`)
+        .join("");
+}
+
+function setupPaymentMethodSelect() {
+    if (!checkoutPaymentMethodInput) return;
+
+    const selectedValue = PAYMENT_METHODS.some(method => method.value === checkoutPaymentMethodInput.value)
+        ? checkoutPaymentMethodInput.value
+        : "";
+    checkoutPaymentMethodInput.innerHTML = renderPaymentMethodOptions(selectedValue || PAYMENT_METHODS[0].value);
 }
 
 function getUnloadingLabel(value) {
@@ -37648,9 +37752,9 @@ function getCartOrderItems() {
             const product = getProductById(item.productId);
             if (!product) return null;
 
-            const price = Number(product.price) || 0;
+            const price = ceilMoney(product.price);
             const qty = Number(item.quantity) || 0;
-            const weight = Number(product.weight) || 0;
+            const weight = ceilWeight(product.weight);
 
             return {
                 productId: product.id,
@@ -37661,8 +37765,8 @@ function getCartOrderItems() {
                 qty,
                 unit: product.unit || "шт",
                 weight,
-                lineTotal: price * qty,
-                lineWeight: weight * qty
+                lineTotal: ceilMoney(price * qty),
+                lineWeight: ceilWeight(weight * qty)
             };
         })
         .filter(Boolean);
@@ -37881,6 +37985,31 @@ function serializeCategoryFilterGroup(category, subcategories = Array.from(categ
 function getCategoryFilterGroups() {
     const categories = new Map();
 
+    publicCatalogStructure.forEach(structureCategory => {
+        const main = cleanDisplayText(structureCategory.name);
+        const normalizedMain = normalizeSearchText(main);
+        if (!normalizedMain || categories.has(normalizedMain)) return;
+
+        categories.set(normalizedMain, {
+            label: main,
+            path: `category:${normalizedMain}`,
+            subcategories: new Map()
+        });
+
+        const category = categories.get(normalizedMain);
+        structureCategory.subcategories.forEach(structureSubcategory => {
+            const subcategory = cleanDisplayText(structureSubcategory.name);
+            const normalizedSubcategory = normalizeSearchText(subcategory);
+            if (!normalizedSubcategory || category.subcategories.has(normalizedSubcategory)) return;
+
+            category.subcategories.set(normalizedSubcategory, {
+                label: subcategory,
+                path: `subcategory:${normalizedMain}:${normalizedSubcategory}`,
+                groups: new Map()
+            });
+        });
+    });
+
     products.forEach(product => {
         const [main, subcategory, productGroup] = getProductCatalogCategory(product);
         if (!main) return;
@@ -38062,7 +38191,7 @@ function updateCatalogBreadcrumbs(groups) {
     }
 }
 
-catalogBreadcrumbCategory?.addEventListener("click", () => {
+catalogBreadcrumbCategory?.addEventListener("click", async () => {
     if (catalogBreadcrumbCategory.getAttribute("aria-disabled") === "true") return;
 
     const path = catalogBreadcrumbCategory.dataset.path;
@@ -38072,11 +38201,10 @@ catalogBreadcrumbCategory?.addEventListener("click", () => {
     showAllCatalogProducts = false;
     showAllSubcategories = false;
     showAllGroups = false;
-    renderCategoryControls();
-    renderProducts();
+    await replacePublicProductsAndRender();
 });
 
-catalogBreadcrumbSubcategory?.addEventListener("click", () => {
+catalogBreadcrumbSubcategory?.addEventListener("click", async () => {
     if (catalogBreadcrumbSubcategory.getAttribute("aria-disabled") === "true") return;
 
     const path = catalogBreadcrumbSubcategory.dataset.path;
@@ -38085,8 +38213,7 @@ catalogBreadcrumbSubcategory?.addEventListener("click", () => {
     activeCategoryPath = path;
     showAllCatalogProducts = false;
     showAllGroups = false;
-    renderCategoryControls();
-    renderProducts();
+    await replacePublicProductsAndRender();
 });
 
 function productMatchesCategory(product) {
@@ -38128,18 +38255,18 @@ function getSubcategoryAllPath(subcategoryPath) {
 }
 
 function getCartTotal() {
-    return cart.reduce((sum, item) => {
+    return ceilMoney(cart.reduce((sum, item) => {
         const product = getProductById(item.productId);
-        return sum + (Number(product?.price) || 0) * item.quantity;
-    }, 0);
+        return sum + ceilMoney(product?.price) * item.quantity;
+    }, 0));
 }
 
 function getCartWeight() {
-    return cart.reduce((sum, item) => {
+    return ceilWeight(cart.reduce((sum, item) => {
         const product = getProductById(item.productId);
         const weight = Number(product?.weight);
-        return sum + (Number.isFinite(weight) ? weight : 0) * item.quantity;
-    }, 0);
+        return sum + ceilWeight(Number.isFinite(weight) ? weight : 0) * item.quantity;
+    }, 0));
 }
 
 function getCartQty() {
@@ -38187,11 +38314,11 @@ function renderCartPreview() {
     cartPreview.classList.toggle("is-empty", !hasItems);
 
     if (cartPreviewTotal) {
-        cartPreviewTotal.textContent = `${new Intl.NumberFormat("ru-RU").format(getCartTotal())} ₽`;
+        cartPreviewTotal.textContent = `${formatMoneyValue(getCartTotal())} ₽`;
     }
 
     if (cartPreviewWeight) {
-        cartPreviewWeight.textContent = `${new Intl.NumberFormat("ru-RU").format(getCartWeight())} кг`;
+        cartPreviewWeight.textContent = formatWeight(getCartWeight());
     }
 }
 
@@ -38200,8 +38327,8 @@ function updateCartSummary() {
     cartCountEl.textContent = distinctItemsCount;
     cartCountEl.classList.toggle("hidden", distinctItemsCount === 0);
     cartTotalEl.innerHTML = `
-        <span>Итого: ${new Intl.NumberFormat("ru-RU").format(getCartTotal())} ₽</span>
-        <span id="cartWeight">Вес: ${new Intl.NumberFormat("ru-RU").format(getCartWeight())} кг</span>
+        <span>Итого: ${formatMoneyValue(getCartTotal())} ₽</span>
+        <span id="cartWeight">Вес: ${formatWeight(getCartWeight())}</span>
     `;
     renderCartPreview();
     if (openCheckoutBtn) {
@@ -38393,12 +38520,59 @@ function renderProducts() {
     visibleProducts.forEach(({ product, id }) => {
         grid.appendChild(createProductCard(product, id));
     });
+    renderPublicCatalogPagination();
+}
+
+function renderPublicCatalogPagination() {
+    if (!grid || isCatalogDefaultView()) return;
+    const existing = grid.querySelector(".catalog-load-more");
+    existing?.remove();
+    const loadedCount = products.length;
+    const canLoadMore = publicProductsPagination?.hasNext && loadedCount < 200;
+    if (!canLoadMore && !(publicProductsPagination?.hasNext && loadedCount >= 200)) return;
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "catalog-load-more";
+    wrapper.innerHTML = canLoadMore
+        ? `<button type="button" data-public-load-more${publicProductsLoadingMore ? " disabled" : ""}>${publicProductsLoadingMore ? "Загружаем..." : "Показать ещё 50"}</button>`
+        : `<p>Для просмотра следующих товаров уточните категорию или поиск.</p>`;
+    grid.appendChild(wrapper);
+}
+
+function appendPublicCatalogCards() {
+    if (!grid || grid.classList.contains("hidden")) return;
+
+    const existingPagination = grid.querySelector(".catalog-load-more");
+    existingPagination?.remove();
+
+    const existingIds = new Set(
+        Array.from(grid.querySelectorAll(".card[data-product-id]"))
+            .map(card => Number(card.dataset.productId))
+            .filter(Number.isFinite)
+    );
+    const productList = products
+        .map(product => ({ product, id: product.id }))
+        .filter(({ product }) => productMatchesCategory(product));
+    const visibleProducts = smartSearch(searchQuery, productList);
+    const fragment = document.createDocumentFragment();
+
+    visibleProducts.forEach(({ product, id }) => {
+        const numericId = Number(id);
+        if (existingIds.has(numericId)) return;
+
+        existingIds.add(numericId);
+        fragment.appendChild(createProductCard(product, id));
+    });
+
+    grid.appendChild(fragment);
+    renderPublicCatalogPagination();
 }
 
 function createProductCard(product, id) {
     const qty = getCartItemQty(id);
     const card = document.createElement("article");
     card.className = "card";
+    card.dataset.productId = String(id);
 
     card.innerHTML = `
         <div class="card-main">
@@ -38796,6 +38970,24 @@ function commitQtyInput(event) {
     setProductQty(id, nextQty);
 }
 
+grid?.addEventListener("click", async event => {
+    const loadMoreButton = event.target.closest("[data-public-load-more]");
+    if (!loadMoreButton) return;
+    event.preventDefault();
+    if (publicProductsLoadingMore) return;
+
+    publicProductsLoadingMore = true;
+    renderPublicCatalogPagination();
+    try {
+        const loaded = await loadPublicProducts({ append: true });
+        if (loaded) {
+            appendPublicCatalogCards();
+        }
+    } finally {
+        publicProductsLoadingMore = false;
+        renderPublicCatalogPagination();
+    }
+});
 grid?.addEventListener("click", handleQtyClick);
 featuredCatalogGrid?.addEventListener("click", handleQtyClick);
 popularGrid?.addEventListener("click", handleQtyClick);
@@ -38985,7 +39177,7 @@ checkoutForm?.addEventListener("submit", async event => {
         preferredContactMethod: cleanDisplayText(formData.get("preferredContactMethod")),
         address: cleanDisplayText(formData.get("deliveryAddress")),
         unloading: getUnloadingLabel(formData.get("unloading")),
-        paymentMethod: getPaymentMethodLabel(formData.get("paymentMethod")),
+        paymentMethod: cleanDisplayText(formData.get("paymentMethod")),
         comment: cleanDisplayText(formData.get("orderComment")),
         items: orderItems,
         totalPrice: getCartTotal(),
@@ -39120,8 +39312,7 @@ searchInput?.addEventListener("input", () => {
     searchQuery = searchInput.value;
     window.clearTimeout(publicSearchTimer);
     publicSearchTimer = window.setTimeout(() => {
-        renderProducts();
-        renderSearchDropdown();
+        replacePublicProductsAndRender();
     }, 180);
 });
 
@@ -39143,7 +39334,7 @@ searchDropdown.addEventListener("input", event => {
 searchDropdown.addEventListener("change", commitQtyInput);
 searchDropdown.addEventListener("blur", commitQtyInput, true);
 
-categoryControls?.addEventListener("click", event => {
+categoryControls?.addEventListener("click", async event => {
     const toggle = event.target.closest(".subcategory-toggle");
     if (toggle) {
         showAllSubcategories = !showAllSubcategories;
@@ -39171,11 +39362,10 @@ categoryControls?.addEventListener("click", event => {
 
     activeCategoryPath = nextPath;
     showAllCatalogProducts = !activeCategoryPath;
-    renderCategoryControls();
-    renderProducts();
+    await replacePublicProductsAndRender();
 });
 
-categoryControls?.addEventListener("change", event => {
+categoryControls?.addEventListener("change", async event => {
     const select = event.target.closest(".category-subcategory-select select, .category-group-select select");
     if (!select) return;
 
@@ -39184,8 +39374,7 @@ categoryControls?.addEventListener("change", event => {
     if (activeCategoryPath.startsWith("subcategory:")) {
         showAllGroups = false;
     }
-    renderCategoryControls();
-    renderProducts();
+    await replacePublicProductsAndRender();
 });
 
 searchInput?.form?.addEventListener("submit", event => {
@@ -39210,6 +39399,7 @@ async function initializeSite() {
     products = products.map(normalizeProductForSite);
     rebuildProductsIndex();
     cart = loadCart();
+    await loadPublicCatalogStructure();
     await loadPublicProducts();
     renderCategoryControls();
     renderProducts();

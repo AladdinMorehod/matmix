@@ -4,6 +4,8 @@ const ExcelJS = require("exceljs");
 const { all, get, run, getOrderNumber } = require("../database");
 const { requireRole } = require("../middleware/auth");
 const { normalizePhone } = require("../utils/phone");
+const { getPaginationParams, buildPaginationMeta } = require("../utils/pagination");
+const { ceilMoney, ceilWeight, formatMoneyValue, toFiniteNumber } = require("../utils/numberFormat");
 
 const router = express.Router();
 const orderTemplatePath = path.join(__dirname, "..", "templates", "order-template.xlsx");
@@ -19,6 +21,63 @@ const allowedStatuses = [
 
 function normalizeText(value) {
     return String(value || "").trim();
+}
+
+function sanitizeExcelText(value) {
+    if (value === null || value === undefined) return "";
+    return String(value).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\uFFFE\uFFFF]/g, "").trim();
+}
+
+function parseExcelNumber(value) {
+    return toFiniteNumber(value);
+}
+
+function hasOrderUnloading(value) {
+    const normalized = normalizeText(value).toLowerCase();
+    if (!normalized) return false;
+    return !["no", "нет", "0", "false", "не нужна", "без разгрузки"].includes(normalized);
+}
+
+const paymentMethodLabels = new Map([
+    ["cash", "Наличные"],
+    ["наличные", "Наличные"],
+    ["наличными", "Наличные"],
+    ["наличными при получении", "Наличные"],
+    ["transfer", "Перевод на карту"],
+    ["card", "Перевод на карту"],
+    ["card_transfer", "Перевод на карту"],
+    ["перевод", "Перевод на карту"],
+    ["переводом", "Перевод на карту"],
+    ["перевод на карту", "Перевод на карту"],
+    ["terminal", "Терминал"],
+    ["терминал", "Терминал"],
+    ["bank_vat", "Безнал — с НДС"],
+    ["invoice_vat", "Безнал — с НДС"],
+    ["безнал — с ндс", "Безнал — с НДС"],
+    ["безнал - с ндс", "Безнал — с НДС"],
+    ["безналичная — с ндс", "Безнал — с НДС"],
+    ["безналичная - с ндс", "Безнал — с НДС"],
+    ["безналичный расчет с ндс", "Безнал — с НДС"],
+    ["bank_no_vat", "Безнал — без НДС"],
+    ["invoice", "Безнал — без НДС"],
+    ["invoice_no_vat", "Безнал — без НДС"],
+    ["безнал — без ндс", "Безнал — без НДС"],
+    ["безнал - без ндс", "Безнал — без НДС"],
+    ["безналичный расчет", "Безнал — без НДС"],
+    ["безналичная — без ндс", "Безнал — без НДС"],
+    ["безналичная - без ндс", "Безнал — без НДС"],
+    ["безналичный расчет без ндс", "Безнал — без НДС"]
+]);
+
+function normalizePaymentMethod(value) {
+    const method = sanitizeExcelText(value);
+    const normalized = method.toLowerCase();
+
+    return paymentMethodLabels.get(normalized) || method;
+}
+
+function normalizePaymentMethodForExport(value) {
+    return normalizePaymentMethod(value) || "не указана";
 }
 
 function normalizePreferredContactMethod(value) {
@@ -163,7 +222,7 @@ function normalizeOrder(row) {
         clientLastOrderAt: row.client_last_order_at || null,
         address: row.address || "",
         unloading: row.unloading || "",
-        paymentMethod: row.payment_method || "",
+        paymentMethod: normalizePaymentMethod(row.payment_method) || "",
         comment: row.comment || "",
         items: JSON.parse(row.items_json || "[]"),
         totalPrice: row.total_price || 0,
@@ -197,6 +256,154 @@ function copyRowStyle(sourceRow, targetRow) {
         targetCell.fill = cloneStyle(sourceCell.fill);
         targetCell.font = cloneStyle(sourceCell.font);
     }
+}
+
+function unmergeRowsFrom(sheet, startRow) {
+    const merges = Object.entries(sheet._merges || {});
+
+    merges.forEach(([range, merge]) => {
+        if (merge?.model && merge.model.bottom >= startRow) {
+            sheet.unMergeCells(range);
+        }
+    });
+}
+
+function restoreOrderTemplateMerges(sheet, tableRowsCount) {
+    const tableStartRow = 8;
+    const summaryRow = tableStartRow + tableRowsCount;
+    const paymentRow = summaryRow + 2;
+    const amountTextRow = summaryRow + 4;
+    const noteRow = summaryRow + 6;
+
+    for (let index = 0; index < tableRowsCount; index += 1) {
+        mergeTableRow(sheet, tableStartRow + index);
+    }
+
+    sheet.mergeCells(`A${summaryRow}:H${summaryRow}`);
+    sheet.mergeCells(`A${paymentRow}:C${paymentRow}`);
+    sheet.mergeCells(`D${paymentRow}:H${paymentRow}`);
+    sheet.mergeCells(`A${amountTextRow}:I${amountTextRow}`);
+    sheet.mergeCells(`A${noteRow}:F${noteRow}`);
+}
+
+function mergeTableRow(sheet, rowNumber) {
+    sheet.mergeCells(`B${rowNumber}:C${rowNumber}`);
+    sheet.mergeCells(`F${rowNumber}:G${rowNumber}`);
+}
+
+function setFormula(cell, formula, result = 0) {
+    cell.value = { formula, result };
+}
+
+function getExcelFormulaNumber(value, precision = 3) {
+    return toFiniteNumber(value).toFixed(precision).replace(/0+$/g, "").replace(/\.$/, "") || "0";
+}
+
+function getMergedNameCapacity(row) {
+    const worksheet = row.worksheet;
+    const cell = row.getCell("B");
+    const fontSize = cell.font?.size || 9;
+    const columnWidth = [2, 3].reduce((sum, columnNumber) => {
+        return sum + (worksheet.getColumn(columnNumber).width || 8.43);
+    }, 0);
+
+    return Math.max(20, Math.floor(columnWidth * (11 / fontSize)));
+}
+
+function estimateWrappedLineCount(text, charsPerLine = 34) {
+    const capacity = Math.max(8, charsPerLine);
+    const paragraphs = sanitizeExcelText(text)
+        .replace(/[ \t]+/g, " ")
+        .split(/\r?\n/);
+    if (!paragraphs.some(paragraph => paragraph.trim())) return 1;
+
+    return paragraphs.reduce((totalLines, paragraph) => {
+        const words = paragraph.trim().split(/\s+/).filter(Boolean);
+        if (!words.length) return totalLines + 1;
+
+        let currentLineWidth = 0;
+        let paragraphLines = 1;
+
+        words.forEach(word => {
+            const wordWidth = word.length;
+            const separatorWidth = currentLineWidth ? 1 : 0;
+
+            if (wordWidth > capacity) {
+                const wrappedWordLines = Math.ceil(wordWidth / capacity);
+                paragraphLines += currentLineWidth ? wrappedWordLines : wrappedWordLines - 1;
+                currentLineWidth = wordWidth % capacity || capacity;
+                return;
+            }
+
+            if (currentLineWidth && currentLineWidth + separatorWidth + wordWidth > capacity) {
+                paragraphLines += 1;
+                currentLineWidth = wordWidth;
+            } else {
+                currentLineWidth += separatorWidth + wordWidth;
+            }
+        });
+
+        return totalLines + paragraphLines;
+    }, 0);
+}
+
+function getTableRowBorder(row) {
+    for (let column = 1; column <= 9; column += 1) {
+        const border = row.getCell(column).border;
+        if (border && Object.keys(border).length) return border;
+    }
+
+    return {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" }
+    };
+}
+
+function applyCellAlignment(cell, alignment) {
+    cell.alignment = {
+        ...(cell.alignment || {}),
+        ...alignment
+    };
+}
+
+function setCellNumberFormat(cell, numFmt) {
+    cell.style = cloneStyle(cell.style) || {};
+    cell.numFmt = numFmt;
+}
+
+function applyOrderTableRowLayout(row, name) {
+    const baseHeight = row.height || 18;
+
+    applyCellAlignment(row.getCell("B"), { horizontal: "left", vertical: "top", wrapText: true, shrinkToFit: false, indent: 0 });
+    applyCellAlignment(row.getCell("C"), { horizontal: "left", vertical: "top", wrapText: true, shrinkToFit: false, indent: 0 });
+
+    const lineCount = Math.min(4, estimateWrappedLineCount(name, getMergedNameCapacity(row)));
+    const rowHeightByLines = {
+        1: baseHeight,
+        2: Math.max(baseHeight, 30),
+        3: Math.max(baseHeight, 42),
+        4: Math.max(baseHeight, 54)
+    };
+    row.height = rowHeightByLines[lineCount] || rowHeightByLines[4];
+
+    const referenceBorder = getTableRowBorder(row);
+    for (let column = 1; column <= 9; column += 1) {
+        const cell = row.getCell(column);
+        if (!cell.border || !Object.keys(cell.border).length) {
+            cell.border = cloneStyle(referenceBorder);
+        }
+    }
+
+    setCellNumberFormat(row.getCell("A"), "0");
+    applyCellAlignment(row.getCell("A"), { horizontal: "right", vertical: "middle", wrapText: false });
+    applyCellAlignment(row.getCell("D"), { horizontal: "right", vertical: "middle", wrapText: false });
+    applyCellAlignment(row.getCell("E"), { horizontal: "left", vertical: "middle", wrapText: false });
+    applyCellAlignment(row.getCell("F"), { horizontal: "right", vertical: "middle", wrapText: false });
+    applyCellAlignment(row.getCell("G"), { horizontal: "right", vertical: "middle", wrapText: false });
+    applyCellAlignment(row.getCell("H"), { horizontal: "right", vertical: "middle", wrapText: false });
+    applyCellAlignment(row.getCell("I"), { horizontal: "right", vertical: "middle", wrapText: false });
 }
 
 function setMergedRowValue(sheet, rowNumber, cell, value) {
@@ -391,12 +598,14 @@ router.post("/", async (req, res) => {
         }
 
         const now = new Date().toISOString();
+        const normalizedTotalPrice = ceilMoney(req.body.totalPrice);
+        const normalizedTotalWeight = ceilWeight(req.body.totalWeight);
         const preferredContact = getFallbackPreferredContact(req.body, phone);
         const clientId = await findOrCreateClient({
             customerName,
             phone,
             preferredContact,
-            totalPrice: req.body.totalPrice,
+            totalPrice: normalizedTotalPrice,
             now
         });
         const result = await run(
@@ -429,11 +638,11 @@ router.post("/", async (req, res) => {
                 preferredContact.value,
                 normalizeText(req.body.address),
                 normalizeText(req.body.unloading),
-                normalizeText(req.body.paymentMethod),
+                normalizePaymentMethod(req.body.paymentMethod),
                 normalizeText(req.body.comment),
                 JSON.stringify(items),
-                Number(req.body.totalPrice) || 0,
-                Number(req.body.totalWeight) || 0,
+                normalizedTotalPrice,
+                normalizedTotalWeight,
                 "Новая",
                 now,
                 now
@@ -464,6 +673,8 @@ router.get("/", requireRole(["admin", "manager"]), async (req, res) => {
     try {
         const showDeleted = req.query.deleted === "true";
         const showMine = req.query.mine === "true";
+        const requestedStatus = allowedStatuses.includes(req.query.status) ? req.query.status : "";
+        const paginationParams = getPaginationParams(req.query);
         const params = [];
         let where = "orders.deleted_at IS NULL";
 
@@ -483,10 +694,17 @@ router.get("/", requireRole(["admin", "manager"]), async (req, res) => {
                 )`;
             params.push("Новая", req.session.user.id);
         }
+        if (requestedStatus && !showDeleted) {
+            where = `(${where}) AND orders.status = ?`;
+            params.push(requestedStatus);
+        }
+
         const orderBy = showDeleted
-            ? "datetime(orders.deleted_at) DESC"
+            ? "datetime(orders.deleted_at) DESC, orders.id DESC"
             : "datetime(orders.created_at) DESC, orders.id DESC";
-        const rows = await all(`
+        const [countRow, rows, statsRows] = await Promise.all([
+            get(`SELECT COUNT(*) AS total FROM orders WHERE ${where}`, params),
+            all(`
             SELECT
                 orders.*,
                 users.name AS manager_name,
@@ -498,8 +716,28 @@ router.get("/", requireRole(["admin", "manager"]), async (req, res) => {
             LEFT JOIN clients ON clients.id = orders.client_id
             WHERE ${where}
             ORDER BY ${orderBy}
-        `, params);
-        res.json({ success: true, orders: rows.map(normalizeOrder) });
+            LIMIT ? OFFSET ?
+        `, [...params, paginationParams.limit, paginationParams.offset]),
+            all(`
+                SELECT status, COUNT(*) AS count
+                FROM orders
+                WHERE deleted_at IS NULL
+                GROUP BY status
+            `)
+        ]);
+        const normalizedOrders = rows.map(normalizeOrder);
+        const statsByStatus = new Map(statsRows.map(row => [row.status, Number(row.count) || 0]));
+        res.json({
+            success: true,
+            orders: normalizedOrders,
+            items: normalizedOrders,
+            pagination: buildPaginationMeta({ ...paginationParams, total: countRow?.total }),
+            stats: {
+                total: statsRows.reduce((sum, row) => sum + (Number(row.count) || 0), 0),
+                new: statsByStatus.get(allowedStatuses[0]) || 0,
+                work: statsByStatus.get(allowedStatuses[1]) || 0
+            }
+        });
     } catch (error) {
         console.error("Orders list error:", error);
         res.status(500).json({ success: false, message: "Не удалось загрузить заявки." });
@@ -611,56 +849,121 @@ router.get("/:id/export/excel", requireRole(["admin", "manager"]), async (req, r
         const order = normalizeOrder(row);
         const workbook = new ExcelJS.Workbook();
         await workbook.xlsx.readFile(orderTemplatePath);
+        workbook.calcProperties.fullCalcOnLoad = true;
+
         const sheet = workbook.worksheets[0];
         const items = Array.isArray(order.items) ? order.items : [];
-        const itemRowsCount = Math.max(items.length, 5);
+        const includeUnloading = hasOrderUnloading(order.unloading);
+        const tableRowsCount = items.length + 1 + (includeUnloading ? 1 : 0);
+        const templateTableRowsCount = 3;
+        const tableStartRow = 8;
+        const summaryTemplateRow = 11;
 
-        for (let index = 5; index < itemRowsCount; index += 1) {
-            const insertAt = 8 + index;
-            sheet.insertRow(insertAt, []);
-            copyRowStyle(sheet.getRow(12), sheet.getRow(insertAt));
-            sheet.mergeCells(`B${insertAt}:C${insertAt}`);
-            sheet.mergeCells(`F${insertAt}:G${insertAt}`);
+        unmergeRowsFrom(sheet, tableStartRow);
+
+        if (tableRowsCount > templateTableRowsCount) {
+            const insertCount = tableRowsCount - templateTableRowsCount;
+            for (let index = 0; index < insertCount; index += 1) {
+                const insertAt = summaryTemplateRow + index;
+                sheet.insertRow(insertAt, []);
+                copyRowStyle(sheet.getRow(tableStartRow), sheet.getRow(insertAt));
+            }
+        } else if (tableRowsCount < templateTableRowsCount) {
+            const deleteCount = templateTableRowsCount - tableRowsCount;
+            for (let index = 0; index < deleteCount; index += 1) {
+                const deleteAt = tableStartRow + tableRowsCount;
+                sheet.spliceRows(deleteAt, 1);
+            }
         }
 
-        const summaryRow = 8 + itemRowsCount;
+        restoreOrderTemplateMerges(sheet, tableRowsCount);
+
+        const summaryRow = tableStartRow + tableRowsCount;
+        const technicalRow = summaryRow + 1;
         const paymentRow = summaryRow + 2;
-        const commentRow = summaryRow + 3;
         const amountTextRow = summaryRow + 4;
+        const lastTableRow = summaryRow - 1;
         const createdAt = order.createdAt ? new Date(order.createdAt) : new Date();
         const dateText = new Intl.DateTimeFormat("ru-RU").format(createdAt);
 
-        sheet.getCell("A2").value = `${dateText} Товарный чек № ${order.orderNumber || order.id}`;
-        sheet.getCell("A4").value = `Адрес доставки: ${order.address || "не указан"}`;
-        sheet.getCell("A6").value = `Заказчик: ${order.customerName || ""} ${order.phone ? `, ${order.phone}` : ""}`;
+        sheet.getCell("A2").value = `${dateText} Товарный чек № ${sanitizeExcelText(order.orderNumber || order.id)}`;
+        sheet.getCell("A4").value = `Адрес доставки: ${sanitizeExcelText(order.address) || "не указан"}`;
+        sheet.getCell("A6").value = `Заказчик: ${sanitizeExcelText(order.customerName)}${order.phone ? `, ${sanitizeExcelText(order.phone)}` : ""}`;
 
-        for (let index = 0; index < itemRowsCount; index += 1) {
-            const rowNumber = 8 + index;
-            const item = items[index] || {};
-            const qty = Number(item.qty) || 0;
-            const price = Number(item.price) || 0;
-            const weight = Number(item.lineWeight ?? ((Number(item.weight) || 0) * qty)) || 0;
-            const lineTotal = Number(item.lineTotal ?? (price * qty)) || 0;
+        const tableRows = items.map((item, index) => {
+            const qty = parseExcelNumber(item.qty);
+            const price = ceilMoney(parseExcelNumber(item.price));
+            const unitWeight = ceilWeight(parseExcelNumber(item.weight || (qty ? parseExcelNumber(item.lineWeight) / qty : 0)));
+            const weight = ceilWeight(unitWeight * qty);
 
-            setMergedRowValue(sheet, rowNumber, "A", item.name ? index + 1 : "");
-            setMergedRowValue(sheet, rowNumber, "B", item.name || "");
-            setMergedRowValue(sheet, rowNumber, "D", item.name ? qty : "");
-            setMergedRowValue(sheet, rowNumber, "E", item.unit || "");
-            setMergedRowValue(sheet, rowNumber, "F", item.name ? weight : "");
-            setMergedRowValue(sheet, rowNumber, "H", item.name ? price : "");
-            setMergedRowValue(sheet, rowNumber, "I", item.name ? lineTotal : "");
+            return {
+                number: index + 1,
+                name: sanitizeExcelText(item.name),
+                qty,
+                unit: sanitizeExcelText(item.unit || "шт"),
+                unitWeight,
+                weight,
+                price
+            };
+        });
+
+        tableRows.push({
+            number: tableRows.length + 1,
+            name: "Доставка",
+            qty: 1,
+            unit: "шт",
+            unitWeight: 0,
+            weight: 0,
+            price: 0
+        });
+
+        if (includeUnloading) {
+            tableRows.push({
+                number: tableRows.length + 1,
+                name: "Разгрузка",
+                qty: 1,
+                unit: "шт",
+                unitWeight: 0,
+                weight: 0,
+                price: 0
+            });
         }
 
-        sheet.getCell(`I${summaryRow}`).value = Number(order.totalPrice) || items.reduce((sum, item) => sum + (Number(item.lineTotal) || 0), 0);
-        sheet.getCell(`I${summaryRow + 1}`).value = Number(order.totalWeight) || items.reduce((sum, item) => sum + (Number(item.lineWeight) || 0), 0);
-        sheet.getCell(`D${paymentRow}`).value = `Вес товара (кг): ${Number(order.totalWeight) || 0}`;
-        sheet.getCell(`A${paymentRow}`).value = `* Форма оплаты: ${order.paymentMethod || "не указана"}`;
+        const totalPrice = ceilMoney(tableRows.reduce((sum, item) => sum + ceilMoney(item.price * item.qty), 0));
+        const totalWeight = ceilWeight(tableRows.reduce((sum, item) => sum + item.weight, 0));
 
-        if (order.comment) {
-            sheet.getCell(`A${commentRow}`).value = `Комментарий: ${order.comment}`;
-        }
+        tableRows.forEach((item, index) => {
+            const rowNumber = tableStartRow + index;
+            const row = sheet.getRow(rowNumber);
 
-        sheet.getCell(`A${amountTextRow}`).value = `Сумма к оплате: ${Number(order.totalPrice) || 0} рублей. Без НДС.`;
+            setMergedRowValue(sheet, rowNumber, "A", item.number);
+            setMergedRowValue(sheet, rowNumber, "B", item.name);
+            setMergedRowValue(sheet, rowNumber, "D", item.qty);
+            setMergedRowValue(sheet, rowNumber, "E", item.unit);
+            if (item.unitWeight) {
+                setFormula(sheet.getCell(`F${rowNumber}`), `ROUNDUP(D${rowNumber}*${getExcelFormulaNumber(item.unitWeight, 3)},3)`, item.weight);
+            } else {
+                setMergedRowValue(sheet, rowNumber, "F", 0);
+            }
+            setMergedRowValue(sheet, rowNumber, "H", item.price);
+            setFormula(sheet.getCell(`I${rowNumber}`), `ROUNDUP(H${rowNumber}*D${rowNumber},2)`, ceilMoney(item.price * item.qty));
+
+            applyOrderTableRowLayout(row, item.name);
+            setCellNumberFormat(row.getCell("D"), "0.00");
+            setCellNumberFormat(row.getCell("F"), "0.000");
+            setCellNumberFormat(row.getCell("H"), "#,##0.00");
+            setCellNumberFormat(row.getCell("I"), "#,##0.00");
+        });
+
+        setFormula(sheet.getCell(`I${summaryRow}`), `ROUNDUP(SUM(I${tableStartRow}:I${lastTableRow}),2)`, totalPrice);
+        sheet.getCell(`I${summaryRow}`).numFmt = "#,##0.00";
+        sheet.getCell(`I${technicalRow}`).value = null;
+        sheet.getRow(technicalRow).height = 3;
+        sheet.getCell(`D${paymentRow}`).value = "Вес товара (кг):";
+        setFormula(sheet.getCell(`I${paymentRow}`), `ROUNDUP(SUM(F${tableStartRow}:F${lastTableRow}),3)`, totalWeight);
+        sheet.getCell(`I${paymentRow}`).numFmt = "0.000";
+        sheet.getCell(`A${paymentRow}`).value = `* Форма оплаты: ${normalizePaymentMethodForExport(order.paymentMethod)}`;
+        sheet.getCell(`A${amountTextRow}`).value = `Сумма к оплате: ${formatMoneyValue(totalPrice)} рублей. Без НДС.`;
 
         const filename = `${safeExcelFilename(`Заказ-${order.orderNumber || order.id}`)}.xlsx`;
         setExcelHeaders(res, filename);

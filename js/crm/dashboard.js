@@ -55,11 +55,11 @@ function renderDashboard() {
     const stats = getDashboardStats(activeOrders, clients);
 
     if (dashboardUserName) dashboardUserName.textContent = currentUser?.name || "пользователь";
-    if (dashboardNewOrders) dashboardNewOrders.textContent = stats.newOrders;
-    if (dashboardWorkOrders) dashboardWorkOrders.textContent = stats.workOrders;
+    if (dashboardNewOrders) dashboardNewOrders.textContent = regularOrderStats.new || stats.newOrders;
+    if (dashboardWorkOrders) dashboardWorkOrders.textContent = regularOrderStats.work || stats.workOrders;
     if (dashboardWaitingOrders) dashboardWaitingOrders.textContent = stats.waitingOrders;
     if (dashboardDoneToday) dashboardDoneToday.textContent = stats.doneToday;
-    if (dashboardClientsTotal) dashboardClientsTotal.textContent = stats.clientsTotal;
+    if (dashboardClientsTotal) dashboardClientsTotal.textContent = clientsStats.total || stats.clientsTotal;
 
     renderDashboardRecentOrders(activeOrders);
 }
@@ -76,8 +76,8 @@ async function loadDashboard(options = {}) {
 
     try {
         const [ordersResult, clientsResult] = await Promise.all([
-            CrmApi.get("/api/orders"),
-            CrmApi.get("/api/clients")
+            CrmApi.get(`/api/orders?page=1&limit=${CRM_LIST_LIMIT}`),
+            CrmApi.get(`/api/clients?page=1&limit=${CRM_LIST_LIMIT}`)
         ]);
 
         orders = ordersResult.orders || [];
@@ -88,6 +88,20 @@ async function loadDashboard(options = {}) {
             work: orders.filter(order => order.status === "В работе").length
         };
 
+        if (ordersResult.stats) {
+            regularOrderStats = {
+                total: Number(ordersResult.stats.total) || orders.length,
+                new: Number(ordersResult.stats.new) || 0,
+                work: Number(ordersResult.stats.work) || 0
+            };
+        }
+        if (clientsResult.stats) {
+            clientsStats = {
+                total: Number(clientsResult.stats.total) || clients.length,
+                repeat: Number(clientsResult.stats.repeat) || 0,
+                totalSpent: Number(clientsResult.stats.totalSpent) || 0
+            };
+        }
         renderDashboard();
         if (!preserveMessage) setMessage("");
     } catch (error) {

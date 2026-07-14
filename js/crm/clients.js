@@ -39,12 +39,9 @@ function setActiveSection(section) {
 }
 
 function updateClientStats() {
-    if (clientsTotalCount) clientsTotalCount.textContent = clients.length;
-    if (repeatClientsCount) repeatClientsCount.textContent = clients.filter(client => Number(client.ordersCount) > 1).length;
-    if (clientsTotalSpent) {
-        const totalSpent = clients.reduce((sum, client) => sum + (Number(client.totalSpent) || 0), 0);
-        clientsTotalSpent.textContent = formatMoney(totalSpent);
-    }
+    if (clientsTotalCount) clientsTotalCount.textContent = clientsStats.total || clientsPagination.total || clients.length;
+    if (repeatClientsCount) repeatClientsCount.textContent = clientsStats.repeat || clients.filter(client => Number(client.ordersCount) > 1).length;
+    if (clientsTotalSpent) clientsTotalSpent.textContent = formatMoney(clientsStats.totalSpent || clients.reduce((sum, client) => sum + (Number(client.totalSpent) || 0), 0));
 }
 
 function getVisibleClients() {
@@ -90,6 +87,7 @@ function renderClients() {
 
     const visibleClients = getVisibleClients();
     if (!visibleClients.length) {
+        if (append) return;
         clientsList.innerHTML = `
             <section class="empty-state">
                 <h2>Клиенты не найдены</h2>
@@ -129,23 +127,104 @@ function renderClients() {
                 ${isExpanded ? `<section class="client-orders-panel">${renderClientOrders(client.id)}</section>` : ""}
             </article>
         `;
+    }).join("") + renderPaginationControls(clientsPagination, {
+        id: "clients",
+        loadedCount: clients.length
+    });
+}
+
+function appendClientsToList(nextClients = []) {
+    updateClientStats();
+    removeCrmPagination(clientsList);
+
+    const query = String(clientSearchInput?.value || "").trim().toLowerCase();
+    const visibleClients = query
+        ? nextClients.filter(client => {
+            const digits = cleanPhoneForLink(query);
+            const nameMatch = String(client.name || "").toLowerCase().includes(query);
+            const phoneMatch = digits && cleanPhoneForLink(client.phone).includes(digits);
+            return nameMatch || phoneMatch;
+        })
+        : nextClients;
+    const rowsHtml = visibleClients.map(client => {
+        const clientId = String(client.id);
+        const isExpanded = expandedClientOrderIds.has(clientId);
+        const phoneDigits = cleanPhoneForLink(client.phone);
+        const phoneHtml = phoneDigits
+            ? `<a class="client-phone-link" href="tel:+${phoneDigits}">${escapeHtml(client.phone)}</a>`
+            : `<span>${escapeHtml(client.phone)}</span>`;
+
+        return `
+            <article class="client-card" data-client-id="${client.id}">
+                <header class="client-card-header">
+                    <div>
+                        <strong>${escapeHtml(client.name)}</strong>
+                        ${phoneHtml}
+                    </div>
+                    <button class="client-orders-toggle" data-client-id="${client.id}" type="button">
+                        ${isExpanded ? "РЎРєСЂС‹С‚СЊ РёСЃС‚РѕСЂРёСЋ" : "РСЃС‚РѕСЂРёСЏ Р·Р°РєР°Р·РѕРІ"}
+                    </button>
+                </header>
+
+                <div class="client-card-grid">
+                    ${renderInfoRow("РџСЂРµРґРїРѕС‡С‚РёС‚РµР»СЊРЅС‹Р№ РєР°РЅР°Р»", getClientPreferredContactText(client) || "РќРµ СѓРєР°Р·Р°РЅ")}
+                    ${renderInfoRow("Р—Р°РєР°Р·РѕРІ", String(client.ordersCount || 0))}
+                    ${renderInfoRow("РћР±С‰Р°СЏ СЃСѓРјРјР°", formatMoney(client.totalSpent))}
+                    ${client.lastOrderAt ? renderInfoRow("РџРѕСЃР»РµРґРЅРёР№ Р·Р°РєР°Р·", formatDate(client.lastOrderAt)) : ""}
+                </div>
+
+                ${isExpanded ? `<section class="client-orders-panel">${renderClientOrders(client.id)}</section>` : ""}
+            </article>
+        `;
     }).join("");
+
+    appendCrmHtml(clientsList, rowsHtml);
+    appendCrmHtml(clientsList, renderPaginationControls(clientsPagination, {
+        id: "clients",
+        loadedCount: clients.length
+    }));
 }
 
 async function loadClients(options = {}) {
-    const { preserveMessage = false } = options;
+    const { preserveMessage = false, append = false } = options;
+    const requestId = ++clientsRequestId;
     if (!preserveMessage) {
         setMessage(CRM_MESSAGES.LOADING_CLIENTS);
         clientsList.innerHTML = renderCrmLoader(CRM_MESSAGES.LOADING_CLIENTS);
     }
 
     try {
-        const result = await CrmApi.get("/api/clients");
+        const params = new URLSearchParams();
+        params.set("page", clientsPagination.page || 1);
+        params.set("limit", CRM_LIST_LIMIT);
+        if (clientSearchInput?.value?.trim()) params.set("search", clientSearchInput.value.trim());
+        const result = await CrmApi.get(`/api/clients?${params.toString()}`);
 
-        clients = result.clients || [];
+        if (requestId !== clientsRequestId) return;
+        const nextClients = result.clients || [];
+        const uniqueNextClients = nextClients.filter(client => !clients.some(existing => Number(existing.id) === Number(client.id)));
+        clients = append
+            ? [...clients, ...uniqueNextClients].slice(-CRM_DOM_ACCUMULATION_LIMIT)
+            : nextClients;
+        clientsPagination = normalizePaginationMeta(result.pagination);
+        if (result.stats) {
+            clientsStats = {
+                total: Number(result.stats.total) || 0,
+                repeat: Number(result.stats.repeat) || 0,
+                totalSpent: Number(result.stats.totalSpent) || 0
+            };
+            if (clientsTotalCount) clientsTotalCount.textContent = Number(result.stats.total) || 0;
+            if (repeatClientsCount) repeatClientsCount.textContent = Number(result.stats.repeat) || 0;
+            if (clientsTotalSpent) clientsTotalSpent.textContent = formatMoney(result.stats.totalSpent);
+        }
         if (!preserveMessage) setMessage("");
-        renderClients();
+        if (append) {
+            appendClientsToList(uniqueNextClients);
+        } else {
+            renderClients();
+        }
     } catch (error) {
+        if (requestId !== clientsRequestId) return;
         const message = notifyError(error, "Сервер недоступен. Попробуйте обновить список.");
         clientsList.innerHTML = `
             <section class="empty-state error-state">

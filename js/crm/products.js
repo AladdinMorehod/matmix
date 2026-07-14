@@ -242,6 +242,11 @@ function renderProductsList() {
             </div>
             ${products.map(renderProductRow).join("")}
         </div>
+        ${renderPaginationControls(productsPagination, {
+            id: "products",
+            loadedCount: products.length,
+            loading: productsLoading
+        })}
     `;
 }
 
@@ -253,6 +258,22 @@ function renderProductsListContainer() {
     }
 
     list.innerHTML = productsLoading ? renderCrmLoader("Загружаем каталог...") : renderProductsList();
+}
+
+function appendProductsToList(nextProducts = []) {
+    const list = productsView?.querySelector(".products-list");
+    const table = list?.querySelector(".products-table");
+    if (!list || !table) {
+        renderProductsListContainer();
+        return;
+    }
+
+    removeCrmPagination(list);
+    appendCrmHtml(table, nextProducts.map(renderProductRow).join(""));
+    appendCrmHtml(list, renderPaginationControls(productsPagination, {
+        id: "products",
+        loadedCount: products.length
+    }));
 }
 
 function renderProductRow(product) {
@@ -320,30 +341,52 @@ function getProductsQuery(options = {}) {
     } else if (productFilters.status && !isDeletedProductsFilter()) {
         params.set("status", productFilters.status);
     }
+    if (!forExport) {
+        params.set("page", productFilters.page || 1);
+        params.set("limit", CRM_LIST_LIMIT);
+    }
     const query = params.toString();
     return query ? `?${query}` : "";
 }
 
 async function loadProducts(options = {}) {
-    const { preserveControls = false } = options;
-    productsLoading = true;
-    if (preserveControls) {
-        renderProductsListContainer();
-    } else {
-        renderProductsView();
+    const { preserveControls = false, append = false } = options;
+    const requestId = ++productsRequestId;
+    productsLoading = !append;
+    let uniqueNextProducts = [];
+    let loaded = false;
+    if (!append) {
+        if (preserveControls) {
+            renderProductsListContainer();
+        } else {
+            renderProductsView();
+        }
     }
 
     try {
         const result = await CrmApi.get(`/api/products${getProductsQuery()}`);
-        products = result.products || [];
+        if (requestId !== productsRequestId) return;
+        const nextProducts = result.products || [];
+        uniqueNextProducts = nextProducts.filter(product => !products.some(existing => Number(existing.id) === Number(product.id)));
+        products = append
+            ? [...products, ...uniqueNextProducts].slice(-CRM_DOM_ACCUMULATION_LIMIT)
+            : nextProducts;
+        productsPagination = normalizePaginationMeta(result.pagination);
         productCategories = result.categories || [];
         productsLoaded = true;
+        loaded = true;
     } catch (error) {
+        if (requestId !== productsRequestId) return;
         notifyError(error, "Не удалось загрузить каталог.");
-        products = [];
+        if (!append) products = [];
     } finally {
+        if (requestId !== productsRequestId) return;
         productsLoading = false;
-        if (preserveControls) {
+        if (append && loaded) {
+            appendProductsToList(uniqueNextProducts);
+        } else if (append) {
+            return;
+        } else if (preserveControls) {
             renderProductsListContainer();
         } else {
             renderProductsView();
@@ -603,11 +646,30 @@ async function restoreProduct(productId) {
     }
 }
 
-async function downloadProductsPrice() {
+async function downloadProductsPriceLegacy() {
     try {
         await CrmApi.download(`/api/products/export/excel${getProductsQuery({ forExport: true })}`);
         notifySuccess(CRM_MESSAGES.SUCCESS_PRICE_DOWNLOADED);
     } catch (error) {
         notifyError(error, "Не удалось скачать прайс.");
+    }
+}
+
+async function downloadProductsPrice(button = null) {
+    const previousText = button?.textContent || "";
+    if (button) {
+        button.disabled = true;
+        button.textContent = "Формирование прайса...";
+    }
+    try {
+        await CrmApi.download(`/api/products/export/excel${getProductsQuery({ forExport: true })}`);
+        notifySuccess(CRM_MESSAGES.SUCCESS_PRICE_DOWNLOADED);
+    } catch (error) {
+        notifyError(error, "Не удалось скачать прайс.");
+    } finally {
+        if (button?.isConnected) {
+            button.disabled = false;
+            button.textContent = previousText || "Скачать прайс Excel";
+        }
     }
 }

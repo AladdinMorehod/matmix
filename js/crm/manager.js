@@ -41,12 +41,16 @@ deletedOption.value = deletedStatusFilter;
 deletedOption.textContent = "Удалены";
 statusFilter.appendChild(deletedOption);
 
-statusFilter.addEventListener("change", loadOrders);
+statusFilter.addEventListener("change", () => {
+    ordersPagination = normalizePaginationMeta({ page: 1, limit: CRM_LIST_LIMIT });
+    loadOrders();
+});
 statusTabs?.addEventListener("click", event => {
     const button = event.target.closest("button[data-status]");
     if (!button) return;
 
     statusFilter.value = button.dataset.status;
+    ordersPagination = normalizePaginationMeta({ page: 1, limit: CRM_LIST_LIMIT });
     loadOrders();
 });
 crmNav?.addEventListener("click", event => {
@@ -65,19 +69,23 @@ crmNav?.addEventListener("click", event => {
 
     if (button.dataset.section === "orders") {
         statusFilter.value = "";
+        ordersPagination = normalizePaginationMeta({ page: 1, limit: CRM_LIST_LIMIT });
         loadOrders();
     }
 
     if (button.dataset.section === "myOrders") {
         statusFilter.value = "";
+        ordersPagination = normalizePaginationMeta({ page: 1, limit: CRM_LIST_LIMIT });
         loadOrders();
     }
 
     if (button.dataset.section === "clients" && !clients.length) {
+        clientsPagination = normalizePaginationMeta({ page: 1, limit: CRM_LIST_LIMIT });
         loadClients();
     }
 
     if (button.dataset.section === "catalog") {
+        productFilters.page = 1;
         loadProducts();
     }
 
@@ -93,9 +101,44 @@ crmNav?.addEventListener("click", event => {
         loadSettings();
     }
 });
-refreshOrdersBtn.addEventListener("click", loadOrders);
-refreshClientsBtn?.addEventListener("click", () => loadClients());
-clientSearchInput?.addEventListener("input", renderClients);
+refreshOrdersBtn.addEventListener("click", () => {
+    ordersPagination = normalizePaginationMeta({ page: 1, limit: CRM_LIST_LIMIT });
+    loadOrders();
+});
+refreshClientsBtn?.addEventListener("click", () => {
+    clientsPagination = normalizePaginationMeta({ page: 1, limit: CRM_LIST_LIMIT });
+    loadClients();
+});
+clientSearchInput?.addEventListener("input", () => {
+    clientsPagination = normalizePaginationMeta({ page: 1, limit: CRM_LIST_LIMIT });
+    window.clearTimeout(clientsSearchTimer);
+    clientsSearchTimer = window.setTimeout(() => loadClients({ preserveMessage: true }), 250);
+});
+
+clientsList?.addEventListener("click", event => {
+    const paginationButton = event.target.closest(".crm-pagination [data-page]");
+    if (paginationButton) {
+        clientsPagination = normalizePaginationMeta({ ...clientsPagination, page: Number(paginationButton.dataset.page) || 1 });
+        loadClients();
+        return;
+    }
+
+    const loadMoreButton = event.target.closest(".crm-pagination [data-load-more]");
+    if (loadMoreButton) {
+        event.preventDefault();
+        if (clientsAppendLoading) return;
+        clientsAppendLoading = true;
+        loadMoreButton.disabled = true;
+        const previousScrollY = window.scrollY;
+        clientsPagination = normalizePaginationMeta({ ...clientsPagination, page: (Number(clientsPagination.page) || 1) + 1 });
+        loadClients({ preserveMessage: true, append: true }).finally(() => {
+            clientsAppendLoading = false;
+            if (loadMoreButton.isConnected) loadMoreButton.disabled = false;
+            restoreScrollIfApplicationMoved(previousScrollY);
+        });
+    }
+});
+
 logoutBtn.addEventListener("click", async () => {
     try {
         await CrmApi.post("/api/auth/logout");
@@ -118,6 +161,29 @@ ordersList.addEventListener("input", event => {
 });
 
 ordersList.addEventListener("click", event => {
+    const paginationButton = event.target.closest(".crm-pagination [data-page]");
+    if (paginationButton) {
+        ordersPagination = normalizePaginationMeta({ ...ordersPagination, page: Number(paginationButton.dataset.page) || 1 });
+        loadOrders();
+        return;
+    }
+
+    const loadMoreButton = event.target.closest(".crm-pagination [data-load-more]");
+    if (loadMoreButton) {
+        event.preventDefault();
+        if (ordersAppendLoading) return;
+        ordersAppendLoading = true;
+        loadMoreButton.disabled = true;
+        const previousScrollY = window.scrollY;
+        ordersPagination = normalizePaginationMeta({ ...ordersPagination, page: (Number(ordersPagination.page) || 1) + 1 });
+        loadOrders({ preserveMessage: true, append: true }).finally(() => {
+            ordersAppendLoading = false;
+            if (loadMoreButton.isConnected) loadMoreButton.disabled = false;
+            restoreScrollIfApplicationMoved(previousScrollY);
+        });
+        return;
+    }
+
     const retryButton = event.target.closest(".retry-load");
     if (retryButton) {
         loadOrders();
@@ -313,6 +379,7 @@ productsView?.addEventListener("input", event => {
     if (!searchInput) return;
 
     productFilters.search = searchInput.value.trim();
+    productFilters.page = 1;
     window.clearTimeout(productsView.searchTimer);
     productsView.searchTimer = window.setTimeout(() => {
         loadProducts({ preserveControls: true });
@@ -323,6 +390,7 @@ productsView?.addEventListener("change", event => {
     const categoryFilter = event.target.closest("#productCategoryFilter");
     if (categoryFilter) {
         productFilters.category = categoryFilter.value;
+        productFilters.page = 1;
         loadProducts();
         return;
     }
@@ -330,14 +398,38 @@ productsView?.addEventListener("change", event => {
     const statusFilterElement = event.target.closest("#productStatusFilter");
     if (statusFilterElement) {
         productFilters.status = statusFilterElement.value;
+        productFilters.page = 1;
         loadProducts();
     }
 });
 
 productsView?.addEventListener("click", event => {
+    const paginationButton = event.target.closest(".crm-pagination [data-page]");
+    if (paginationButton) {
+        productFilters.page = Number(paginationButton.dataset.page) || 1;
+        loadProducts();
+        return;
+    }
+
+    const loadMoreButton = event.target.closest(".crm-pagination [data-load-more]");
+    if (loadMoreButton) {
+        event.preventDefault();
+        if (productsAppendLoading) return;
+        productsAppendLoading = true;
+        loadMoreButton.disabled = true;
+        const previousScrollY = window.scrollY;
+        productFilters.page = (Number(productsPagination.page) || 1) + 1;
+        loadProducts({ preserveControls: true, append: true }).finally(() => {
+            productsAppendLoading = false;
+            if (loadMoreButton.isConnected) loadMoreButton.disabled = false;
+            restoreScrollIfApplicationMoved(previousScrollY);
+        });
+        return;
+    }
+
     const exportButton = event.target.closest(".products-export");
     if (exportButton) {
-        downloadProductsPrice();
+        downloadProductsPrice(exportButton);
         return;
     }
 

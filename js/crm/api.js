@@ -30,8 +30,9 @@
 
         const data = await readJson(response);
         if (!response.ok || data.success === false) {
+            const errorPayload = { ...data, status: response.status };
             throw new window.CrmApiError(
-                window.CrmErrorHandler.getMessage(data.message, window.CRM_MESSAGES?.ERROR_SERVER),
+                window.CrmErrorHandler.getMessage(errorPayload, window.CRM_MESSAGES?.ERROR_SERVER),
                 { status: response.status, data }
             );
         }
@@ -65,8 +66,9 @@
 
             if (!response.ok) {
                 const data = await readJson(response);
+                const errorPayload = { ...data, status: response.status };
                 throw new window.CrmApiError(
-                    window.CrmErrorHandler.getMessage(data.message, window.CRM_MESSAGES?.ERROR_SERVER),
+                    window.CrmErrorHandler.getMessage(errorPayload, window.CRM_MESSAGES?.ERROR_SERVER),
                     { status: response.status, data }
                 );
             }

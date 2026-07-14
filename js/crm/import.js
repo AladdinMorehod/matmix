@@ -8,11 +8,12 @@ let importActiveTab = "new";
 let importSearchQuery = "";
 let importSearchTimer = null;
 let importPriceFilter = "changed";
-let importVisibleCount = 100;
+let importVisibleCount = 50;
 let importShowAllSummary = false;
 
 const IMPORT_MAX_FILE_SIZE = 30 * 1024 * 1024;
-const IMPORT_RESULT_PAGE_SIZE = 100;
+const IMPORT_RESULT_PAGE_SIZE = 50;
+const IMPORT_DOM_ACCUMULATION_LIMIT = 200;
 
 const importTabs = [
     { id: "new", label: "Новые" },
@@ -228,12 +229,20 @@ function activateImportSummary(key, resetSearch = true) {
 }
 
 function getVisibleImportItems(items) {
-    return items.slice(0, importVisibleCount);
+    return items.slice(0, Math.min(importVisibleCount, IMPORT_DOM_ACCUMULATION_LIMIT));
 }
 
 function renderImportLoadMore(total) {
     if (total <= IMPORT_RESULT_PAGE_SIZE) return "";
-    const shown = Math.min(importVisibleCount, total);
+    const shown = Math.min(importVisibleCount, total, IMPORT_DOM_ACCUMULATION_LIMIT);
+    const canLoadMore = shown < total && shown < IMPORT_DOM_ACCUMULATION_LIMIT;
+    return `
+        <div class="import-load-more">
+            <span>Показано ${escapeHtml(shown)} из ${escapeHtml(total)}</span>
+            ${canLoadMore ? `<button type="button" data-import-load-more>Показать ещё 50</button>` : ""}
+            ${shown < total && !canLoadMore ? `<p class="import-tab-note">Для просмотра следующих результатов воспользуйтесь поиском или переключите вкладку.</p>` : ""}
+        </div>
+    `;
     return `
         <div class="import-load-more">
             <span>Показано ${escapeHtml(shown)} из ${escapeHtml(total)}</span>
@@ -1315,9 +1324,71 @@ function renderImportView(error = "") {
     `;
 }
 
-function updateImportPreviewPanel() {
+function replaceImportLoadMore(panel, nextPanel) {
+    const currentLoadMore = panel.querySelector(".import-load-more");
+    const nextLoadMore = nextPanel.querySelector(".import-load-more");
+    const parent = currentLoadMore?.parentElement || panel;
+
+    currentLoadMore?.remove();
+    if (nextLoadMore) {
+        parent.appendChild(nextLoadMore);
+    }
+}
+
+function appendImportPreviewPanel(previousVisibleCount = 0) {
     const panel = importView?.querySelector("#importPreviewPanel");
-    if (panel) panel.innerHTML = renderImportTabPanel();
+    if (!panel) return;
+
+    const template = document.createElement("template");
+    template.innerHTML = renderImportTabPanel().trim();
+    const nextPanel = template.content;
+    const oldCount = Math.max(0, Number(previousVisibleCount) || 0);
+
+    const currentPriceBody = panel.querySelector(".import-price-table tbody");
+    const nextPriceRows = Array.from(nextPanel.querySelectorAll(".import-price-table tbody tr"));
+    if (currentPriceBody && nextPriceRows.length) {
+        nextPriceRows.slice(oldCount).forEach(row => currentPriceBody.appendChild(row));
+        replaceImportLoadMore(panel, nextPanel);
+        return;
+    }
+
+    const currentRows = panel.querySelectorAll(".import-preview-row");
+    const nextRows = Array.from(nextPanel.querySelectorAll(".import-preview-row"));
+    if (currentRows.length && nextRows.length) {
+        const currentLoadMore = panel.querySelector(".import-load-more");
+        nextRows.slice(oldCount).forEach(row => {
+            if (currentLoadMore) {
+                panel.insertBefore(row, currentLoadMore);
+            } else {
+                panel.appendChild(row);
+            }
+        });
+        replaceImportLoadMore(panel, nextPanel);
+        return;
+    }
+
+    const currentStructureList = panel.querySelector(".import-structure-list ul");
+    const nextStructureItems = Array.from(nextPanel.querySelectorAll(".import-structure-list ul li"));
+    if (currentStructureList && nextStructureItems.length) {
+        nextStructureItems.slice(oldCount).forEach(item => currentStructureList.appendChild(item));
+        replaceImportLoadMore(panel, nextPanel);
+        return;
+    }
+
+    panel.innerHTML = "";
+    panel.appendChild(nextPanel);
+}
+
+function updateImportPreviewPanel(options = {}) {
+    const panel = importView?.querySelector("#importPreviewPanel");
+    if (!panel) return;
+
+    if (options.append) {
+        appendImportPreviewPanel(options.previousVisibleCount);
+        return;
+    }
+
+    panel.innerHTML = renderImportTabPanel();
 }
 
 async function saveImportStructureResolution(button, forcedAction = "") {
@@ -1697,8 +1768,14 @@ importView?.addEventListener("click", event => {
 
     const loadMoreButton = event.target.closest("button[data-import-load-more]");
     if (loadMoreButton) {
-        importVisibleCount += IMPORT_RESULT_PAGE_SIZE;
-        updateImportPreviewPanel();
+        event.preventDefault();
+        if (loadMoreButton.disabled) return;
+        loadMoreButton.disabled = true;
+        const previousScrollY = window.scrollY;
+        const previousVisibleCount = Math.min(importVisibleCount, IMPORT_DOM_ACCUMULATION_LIMIT);
+        importVisibleCount = Math.min(importVisibleCount + IMPORT_RESULT_PAGE_SIZE, IMPORT_DOM_ACCUMULATION_LIMIT);
+        updateImportPreviewPanel({ append: true, previousVisibleCount });
+        restoreScrollIfApplicationMoved(previousScrollY);
     }
 });
 

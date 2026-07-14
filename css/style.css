@@ -1209,6 +1209,38 @@ body {
     font-weight: 700;
 }
 
+.catalog-load-more {
+    grid-column: 1 / -1;
+    display: grid;
+    justify-items: center;
+    gap: 8px;
+    padding-top: 6px;
+}
+
+.catalog-load-more button {
+    width: min(100%, 260px);
+    min-height: 42px;
+    border: none;
+    border-radius: 8px;
+    background: var(--primary);
+    color: #fff;
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.catalog-load-more button:disabled {
+    cursor: wait;
+    opacity: 0.7;
+}
+
+.catalog-load-more p {
+    margin: 0;
+    color: var(--text-muted);
+    font-weight: 700;
+    text-align: center;
+}
+
 .card {
     background: white;
     padding: 16px;

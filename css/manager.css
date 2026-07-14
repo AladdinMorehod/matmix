@@ -27,6 +27,55 @@ body {
     overflow-x: hidden;
 }
 
+body,
+.crm-shell,
+.crm-workspace,
+.dashboard-view,
+.orders-list,
+.clients-view,
+.clients-list,
+.products-view,
+.catalog-structure-view,
+.import-view,
+.settings-view {
+    max-width: 100%;
+}
+
+img,
+svg,
+canvas,
+video {
+    max-width: 100%;
+}
+
+input,
+select,
+textarea,
+button {
+    max-width: 100%;
+}
+
+input,
+select,
+textarea {
+    min-width: 0;
+}
+
+button,
+a,
+label,
+span,
+strong,
+p,
+small,
+code,
+pre,
+dd,
+dt,
+li {
+    min-width: 0;
+}
+
 .crm-mobile-bar,
 .crm-menu-close,
 .crm-sidebar-overlay {
@@ -1526,7 +1575,8 @@ a[role="button"],
 }
 
 .structure-toolbar {
-    grid-template-columns: minmax(240px, 1fr) minmax(220px, 0.35fr);
+    grid-template-columns: minmax(240px, 1fr) minmax(220px, 0.35fr) auto;
+    align-items: end;
 }
 
 .structure-problem-panel {
@@ -1686,9 +1736,181 @@ a[role="button"],
     color: #a42828;
 }
 
+.structure-issue.error {
+    background: #fde2e2;
+    color: #a42828;
+}
+
 .structure-issue.info {
     background: #eef2ef;
     color: var(--text-muted);
+}
+
+.structure-stat-filter {
+    cursor: pointer;
+    font: inherit;
+    text-align: left;
+}
+
+.structure-stat-filter.active,
+.structure-stat-filter[aria-pressed="true"] {
+    border-color: rgba(32, 87, 66, 0.42);
+    background: #f3faf5;
+    box-shadow: 0 0 0 2px rgba(32, 87, 66, 0.08);
+}
+
+.structure-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(360px, 0.45fr);
+    gap: 16px;
+    align-items: start;
+}
+
+.structure-layout > #catalogStructureTreePanel {
+    min-width: 0;
+}
+
+.structure-detail-panel,
+.structure-without-panel {
+    display: grid;
+    gap: 14px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.structure-detail-panel {
+    position: sticky;
+    top: 16px;
+    max-height: calc(100vh - 32px);
+    overflow: auto;
+}
+
+.structure-detail-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.structure-detail-header h2 {
+    margin: 2px 0 0;
+    color: var(--primary-dark);
+    font-size: 1.15rem;
+}
+
+.structure-detail-header span,
+.structure-detail-meta dt {
+    color: var(--text-muted);
+    font-size: 0.76rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.structure-detail-close,
+.structure-node-detail,
+.structure-filter-reset {
+    min-height: 34px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: #ffffff;
+    color: var(--text-main);
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.structure-detail-close {
+    width: 34px;
+    padding: 0;
+    font-size: 1.2rem;
+}
+
+.structure-node-detail {
+    padding: 0 10px;
+    white-space: nowrap;
+}
+
+.structure-detail-meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin: 0;
+}
+
+.structure-detail-meta div {
+    min-width: 0;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: #f8faf8;
+}
+
+.structure-detail-meta dd {
+    margin: 4px 0 0;
+    color: var(--text-main);
+    font-weight: 750;
+    overflow-wrap: anywhere;
+}
+
+.structure-detail-issues {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.structure-detail-issues li {
+    display: grid;
+    gap: 4px;
+    padding: 10px;
+    border-radius: 6px;
+    background: #f8faf8;
+}
+
+.structure-detail-issues li.error {
+    background: #fff1f1;
+}
+
+.structure-detail-issues li.warning {
+    background: #fff8e8;
+}
+
+.structure-detail-issues small,
+.structure-product-row small {
+    color: var(--text-muted);
+    font-weight: 650;
+}
+
+.structure-products-toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(140px, 0.35fr);
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.structure-products-list,
+.structure-subcategory-flat-list {
+    display: grid;
+    gap: 8px;
+}
+
+.structure-product-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: #ffffff;
+}
+
+.structure-product-row > div {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
 }
 
 .products-export,
@@ -2352,7 +2574,7 @@ a[role="button"],
     vertical-align: top;
 }
 
-@media (max-width: 1024px) and (min-width: 761px) {
+@media (max-width: 1024px) and (min-width: 769px) {
     .crm-shell {
         grid-template-columns: 220px minmax(0, 1fr);
     }
@@ -2383,7 +2605,7 @@ a[role="button"],
     }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 768px) {
     body {
         padding-top: 58px;
     }
@@ -3472,6 +3694,64 @@ a[role="button"],
     font-weight: 800;
 }
 
+.crm-pagination {
+    display: grid;
+    gap: 10px;
+    justify-items: center;
+    padding: 12px 0 4px;
+}
+
+.crm-pagination-range,
+.crm-pagination-note {
+    margin: 0;
+    color: #59675d;
+    font-size: 0.86rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.crm-pagination-pages {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    max-width: 100%;
+}
+
+.crm-pagination button {
+    min-height: 36px;
+    padding: 0 11px;
+    border: 1px solid #ccd8c8;
+    border-radius: 8px;
+    background: #fff;
+    color: #205742;
+    font: inherit;
+    font-weight: 800;
+}
+
+.crm-pagination button[aria-current="page"],
+.crm-pagination button:hover:not(:disabled) {
+    background: #205742;
+    color: #fff;
+}
+
+.crm-pagination button:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
+.crm-pagination-more {
+    width: min(100%, 260px);
+}
+
+.crm-pagination-ellipsis {
+    display: inline-flex;
+    min-height: 36px;
+    align-items: center;
+    color: #66746a;
+    font-weight: 800;
+}
+
 .import-preview-row,
 .import-issue {
     display: grid;
@@ -3921,5 +4201,550 @@ a[role="button"],
 
     .import-resolution-panel {
         grid-template-columns: 1fr;
+    }
+}
+
+/* Responsive hardening layer: keep long CRM data inside its own component. */
+.crm-shell *,
+.crm-modal * {
+    min-width: 0;
+}
+
+.crm-topbar,
+.manager-toolbar,
+.clients-toolbar,
+.products-toolbar,
+.settings-panel-header,
+.settings-user-main,
+.order-card-header,
+.order-card-footer,
+.import-preview-header,
+.import-load-more,
+.import-resolution-actions {
+    min-width: 0;
+}
+
+.crm-topbar > *,
+.manager-toolbar > *,
+.clients-toolbar > *,
+.products-toolbar > *,
+.settings-panel-header > *,
+.settings-user-main > *,
+.order-card-header > *,
+.order-card-footer > *,
+.import-preview-header > *,
+.import-load-more > *,
+.import-resolution-actions > * {
+    min-width: 0;
+}
+
+.crm-topbar p,
+.orders-stats span,
+.manager-message,
+.order-card,
+.order-section,
+.order-field,
+.order-field p,
+.info-row,
+.info-row strong,
+.history-event,
+.history-event p,
+.client-card,
+.client-card *,
+.settings-panel,
+.settings-panel *,
+.settings-user-card,
+.settings-user-card *,
+.product-title,
+.product-category,
+.product-info-text,
+.product-meta-pills span,
+.structure-category,
+.structure-subcategory,
+.structure-issue,
+.import-issue,
+.import-dry-run-row,
+.import-structure-list,
+.import-price-table td,
+.import-diff,
+.import-diff del,
+.import-diff ins {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.import-preview-row code,
+.import-candidate-external-id,
+.import-dry-run-row small,
+.import-file-meta,
+.import-row-meta,
+.import-issue p,
+.product-meta-pills span,
+.settings-user-card code,
+.client-card a,
+.order-field a {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.import-preview-row code {
+    display: inline;
+}
+
+.manager-toolbar select,
+.status-select,
+.clients-toolbar input,
+.products-toolbar input,
+.products-toolbar select,
+.settings-form input,
+.settings-form select,
+.settings-user-password-form input,
+.product-form-grid input,
+.product-form-grid select,
+.product-form-grid textarea,
+.import-search input,
+.import-resolution-panel select,
+.import-resolution-panel input,
+.import-apply-confirm select {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+}
+
+.items-table,
+.import-price-table-wrap {
+    max-width: 100%;
+}
+
+.items-table {
+    overflow-x: auto;
+}
+
+.products-table,
+.structure-tree,
+.import-preview-panel,
+.import-diff-list,
+.import-dry-run-list {
+    min-width: 0;
+}
+
+.import-resolution-row {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr);
+}
+
+.import-candidate-card {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+}
+
+.import-candidate-card > span,
+.import-candidate-card > strong {
+    display: block;
+    max-width: 100%;
+}
+
+.import-candidate-card strong {
+    line-height: 1.35;
+}
+
+.import-resolution-actions button,
+.import-actions button,
+.import-load-more button,
+.crm-topbar-actions button,
+.manager-toolbar button,
+.manager-header a,
+.manager-user-panel button,
+.product-actions button,
+.order-actions button,
+.order-actions a,
+.contact-actions a,
+.contact-actions button {
+    white-space: normal;
+}
+
+.crm-nav button,
+.crm-nav a,
+.crm-nav span,
+.status-tabs button,
+.order-tabs button,
+.product-status,
+.settings-user-status,
+.status-badge {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.products-row,
+.dashboard-recent-order,
+.settings-create-user,
+.settings-user-edit-form,
+.product-form-grid,
+.clients-toolbar,
+.client-order-row,
+.structure-subcategory,
+.structure-category-header {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.products-table,
+.products-row,
+.products-head {
+    max-width: 100%;
+}
+
+@media (min-width: 1025px) {
+    .products-row,
+    .products-head {
+        grid-template-columns: minmax(220px, 1.15fr) minmax(260px, 1.35fr) minmax(78px, 0.35fr) minmax(196px, 0.75fr);
+    }
+}
+
+@media (min-width: 769px) {
+    .dashboard-recent-order {
+        grid-template-columns: minmax(150px, 1.2fr) auto minmax(90px, 0.6fr) minmax(120px, 0.8fr);
+    }
+
+    .settings-create-user {
+        grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
+    }
+
+    .settings-user-edit-form {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+    }
+
+    .product-form-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .clients-toolbar {
+        grid-template-columns: minmax(240px, 1fr) minmax(220px, 0.35fr);
+    }
+
+    .client-order-row {
+        grid-template-columns: minmax(90px, 0.8fr) minmax(120px, 1fr) auto minmax(90px, 0.8fr) minmax(140px, 1fr);
+    }
+
+    .structure-subcategory {
+        grid-template-columns: 28px minmax(0, 1fr) auto minmax(120px, auto);
+    }
+}
+
+@media (max-width: 1280px) {
+    .import-layout {
+        grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
+    }
+
+    .import-summary {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 1024px) {
+    .import-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .import-resolution-row {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .dashboard-grid,
+    .settings-create-user,
+    .settings-user-edit-form,
+    .product-form-grid,
+    .client-card-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .structure-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .structure-detail-panel {
+        position: static;
+        max-height: none;
+    }
+
+    .structure-toolbar,
+    .structure-products-toolbar,
+    .structure-detail-meta {
+        grid-template-columns: 1fr;
+    }
+
+    .structure-category-header,
+    .structure-subcategory,
+    .structure-product-row {
+        grid-template-columns: 1fr;
+        align-items: stretch;
+    }
+
+    .structure-toggle-button {
+        grid-template-columns: 28px minmax(0, 1fr);
+    }
+
+    .crm-shell {
+        overflow-x: clip;
+    }
+
+    .manager-toolbar,
+    .clients-toolbar,
+    .products-toolbar,
+    .import-actions,
+    .import-resolution-actions,
+    .import-load-more,
+    .crm-topbar-actions {
+        align-items: stretch;
+    }
+
+    .manager-toolbar > *,
+    .clients-toolbar > *,
+    .products-toolbar > *,
+    .import-actions > *,
+    .import-resolution-actions > *,
+    .import-load-more > *,
+    .crm-topbar-actions > * {
+        flex: 1 1 100%;
+    }
+
+    .import-apply-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .import-preview-row,
+    .import-issue {
+        grid-template-columns: minmax(0, 1fr);
+        padding: 12px;
+    }
+
+    .import-preview-row dl {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 8px;
+    }
+
+    .import-candidate-card {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 8px;
+    }
+
+    .import-resolution-panel {
+        gap: 10px;
+    }
+
+    .import-resolution-row {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .import-candidate-card > span,
+    .import-candidate-card > strong,
+    .import-resolution-note,
+    .import-preview-row strong,
+    .import-preview-row dd {
+        overflow-wrap: break-word;
+        word-break: normal;
+    }
+
+    .import-resolution-actions button,
+    .import-actions button,
+    .import-load-more button,
+    .crm-pagination-more {
+        width: 100%;
+    }
+
+    .crm-pagination {
+        justify-items: stretch;
+    }
+
+    .crm-pagination-pages {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 430px) {
+    .crm-workspace {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .crm-mobile-bar {
+        grid-template-columns: 44px minmax(0, 1fr);
+    }
+
+    .crm-mobile-bar span {
+        grid-column: 2;
+        white-space: normal;
+    }
+
+    .import-upload-panel,
+    .import-preview,
+    .import-apply-panel,
+    .import-apply-result,
+    .import-structure-list,
+    .import-issues-grid > section {
+        padding: 12px;
+    }
+
+    .import-summary,
+    .import-preview-row dl,
+    .import-price-summary,
+    .import-dry-run-summary,
+    .import-structure-grid,
+    .import-issues-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .import-summary-group-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .import-summary-card {
+        min-height: 76px;
+        padding: 14px;
+    }
+
+    .import-summary-card span {
+        font-size: 0.86rem;
+        line-height: 1.3;
+        overflow-wrap: break-word;
+        word-break: normal;
+    }
+
+    .import-summary-card strong {
+        font-size: 1.28rem;
+    }
+
+    .import-preview-row > *,
+    .import-resolution-panel > *,
+    .import-candidate-card > * {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .import-tabs button {
+        white-space: normal;
+    }
+
+    .orders-stats span {
+        min-width: 0;
+    }
+}
+
+@media (max-width: 375px) {
+    .crm-sidebar {
+        width: min(92vw, 318px);
+    }
+
+    .crm-workspace {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .import-preview-row,
+    .import-issue,
+    .import-resolution-panel,
+    .import-candidate-card {
+        padding: 10px;
+    }
+
+    .import-summary-card strong {
+        font-size: 1.15rem;
+    }
+
+    .import-summary-group-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* Import result cards react to their own column, not only to viewport width. */
+.import-main {
+    container-name: import-main;
+    container-type: inline-size;
+}
+
+.import-preview-panel {
+    container-name: import-results;
+    container-type: inline-size;
+}
+
+.import-preview-row > div > strong,
+.import-preview-row dd,
+.import-candidate-card > span,
+.import-candidate-card > strong,
+.import-resolution-note {
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: normal;
+}
+
+.import-preview-row code,
+.import-candidate-external-id {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+@media (max-width: 768px) {
+    .crm-shell {
+        display: block;
+        grid-template-columns: minmax(0, 1fr);
+        width: 100%;
+    }
+
+    .crm-workspace {
+        width: 100%;
+        max-width: none;
+        margin-left: 0;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+}
+
+@container import-main (max-width: 700px) {
+    .import-summary {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .import-summary-group-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@container import-main (max-width: 420px) {
+    .import-summary-group-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@container import-results (max-width: 720px) {
+    .import-preview-row {
+        grid-template-columns: minmax(0, 1fr);
+        align-items: stretch;
+    }
+
+    .import-preview-row dl {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .import-resolution-row,
+    .import-candidate-card {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@container import-results (max-width: 560px) {
+    .import-preview-row {
+        padding: 12px;
+    }
+
+    .import-preview-row dl,
+    .import-resolution-actions {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .import-resolution-actions button {
+        width: 100%;
     }
 }
