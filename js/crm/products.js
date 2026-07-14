@@ -3,6 +3,8 @@ function canEditProducts() {
 }
 
 let productStructure = [];
+const productImageAllowedTypes = ["image/jpeg", "image/png", "image/webp"];
+const productImageMaxSize = 10 * 1024 * 1024;
 const productUnitOptions = ["шт", "кг", "м", "м2"];
 
 function normalizeProductStructureName(value) {
@@ -25,9 +27,60 @@ function isDeletedProductsFilter() {
     return productFilters.status === "deleted";
 }
 
+function getProductImageFilterPayload() {
+    const filters = {};
+    if (productFilters.search) filters.search = productFilters.search;
+    if (productFilters.category) filters.category = productFilters.category;
+    if (productFilters.status === "deleted") {
+        filters.status = "deleted";
+    } else if (productFilters.status) {
+        filters.status = productFilters.status;
+    }
+    return filters;
+}
+
+function hasActiveProductImageFilters() {
+    const filters = getProductImageFilterPayload();
+    return Object.keys(filters).some(key => String(filters[key] || "").trim());
+}
+
+function getFilteredProductImageTargetCount() {
+    return Number(productsPagination?.total) || 0;
+}
+
+function getCatalogProductImageTargetCount() {
+    return Number(productsTotalCount) || 0;
+}
+
 function getProductImage(product) {
     const value = product.image || "";
     return value && value.includes("/") ? `<img src="${escapeHtml(value)}" alt="">` : `<span>${escapeHtml(value || "Т")}</span>`;
+}
+
+function getProductImageUrl(product = {}) {
+    const value = String(product.imageUrl || product.image_url || "").trim();
+    return value.startsWith("/uploads/products/") && !value.includes("..") && !value.includes("\\") ? value : "";
+}
+
+function getProductImage(product) {
+    const imageUrl = getProductImageUrl(product);
+    if (imageUrl) return `<img src="${escapeHtml(imageUrl)}" alt="">`;
+
+    const value = product.image || "";
+    return `<span>${escapeHtml(value && !value.includes("/") ? value : "Т")}</span>`;
+}
+
+function formatProductImageSize(size) {
+    if (!Number.isFinite(size)) return "";
+    if (size >= 1024 * 1024) return `${(size / 1024 / 1024).toFixed(1)} МБ`;
+    return `${Math.max(1, Math.round(size / 1024))} КБ`;
+}
+
+function validateProductImageFile(file) {
+    if (!file) return "Выберите изображение.";
+    if (!productImageAllowedTypes.includes(file.type)) return "Можно загрузить только JPG, PNG или WebP.";
+    if (file.size > productImageMaxSize) return "Файл слишком большой. Максимум 10 МБ.";
+    return "";
 }
 
 function getProductPayloadFromForm(formData) {
@@ -39,7 +92,6 @@ function getProductPayloadFromForm(formData) {
         weight: String(formData.get("weight") || "").trim(),
         unit: String(formData.get("unit") || "шт").trim(),
         description: String(formData.get("description") || "").trim(),
-        image: String(formData.get("image") || "").trim(),
         isActive: formData.get("isActive") === "on"
     };
 }
@@ -109,6 +161,32 @@ function renderUnitOptions(selectedValue = "шт") {
     `;
 }
 
+function renderProductImageManager(product = {}) {
+    const imageUrl = getProductImageUrl(product);
+    const canUpload = Boolean(product.id);
+    const preview = imageUrl
+        ? `<img src="${escapeHtml(imageUrl)}" alt="">`
+        : `<span>${escapeHtml((product.image || "Т").slice(0, 2))}</span>`;
+
+    return `
+        <section class="product-image-manager product-form-wide" data-product-image-manager>
+            <div class="product-image-preview" data-product-image-preview>
+                ${preview}
+            </div>
+            <div class="product-image-controls">
+                <strong>Изображение товара</strong>
+                <small data-product-image-file>${imageUrl ? escapeHtml(imageUrl) : "Фото не назначено"}</small>
+                <input data-product-image-input type="file" accept="image/jpeg,image/png,image/webp"${canUpload ? "" : " disabled"}>
+                <div class="product-image-actions">
+                    <button data-product-image-upload type="button"${canUpload ? "" : " disabled"}>Загрузить</button>
+                    <button data-product-image-delete type="button"${canUpload && imageUrl ? "" : " disabled"}>Удалить</button>
+                </div>
+                ${canUpload ? "" : `<small>Сначала создайте товар, затем загрузите фото.</small>`}
+            </div>
+        </section>
+    `;
+}
+
 function renderProductForm(product = {}) {
     const selectedCategory = product.category || "";
     const selectedSubcategory = product.subcategory || "";
@@ -159,6 +237,7 @@ function renderProductForm(product = {}) {
             </label>
             <label class="product-form-wide">
                 <span>Описание</span>
+                ${renderProductImageManager(product)}
                 <textarea name="description" rows="4">${escapeHtml(product.description || "")}</textarea>
             </label>
             <label class="product-checkbox">
@@ -212,8 +291,30 @@ function renderProductsView() {
             </label>
         </section>
 
+        ${isAdmin ? renderProductImageBulkToolbar() : ""}
+
         <section class="products-list">
             ${productsLoading ? renderCrmLoader("Загружаем каталог...") : renderProductsList()}
+        </section>
+    `;
+}
+
+function renderProductImageBulkToolbar() {
+    const selectedCount = selectedProductIds.size;
+    const filteredCount = getFilteredProductImageTargetCount();
+    const totalCount = getCatalogProductImageTargetCount();
+    return `
+        <section class="products-bulk-image">
+            <strong>Фото для выбранных товаров</strong>
+            <span data-products-selected-count>Выбрано: ${selectedCount}</span>
+            <span data-products-filtered-count>Найдено: ${filteredCount}</span>
+            <span data-products-total-count>Всего в каталоге: ${totalCount}</span>
+            <input id="productBatchImageInput" type="file" accept="image/jpeg,image/png,image/webp">
+            <button class="products-filter-image-upload" type="button" disabled>Назначить всем найденным</button>
+            <button class="products-all-image-upload" type="button" disabled>Назначить всему каталогу</button>
+            <small data-products-batch-image-file>Файл не выбран</small>
+            <button class="products-batch-image-upload" type="button" disabled>Назначить фото</button>
+            <button class="products-selection-clear" type="button"${selectedCount ? "" : " disabled"}>Снять выбор</button>
         </section>
     `;
 }
@@ -260,6 +361,48 @@ function renderProductsListContainer() {
     list.innerHTML = productsLoading ? renderCrmLoader("Загружаем каталог...") : renderProductsList();
 }
 
+function updateProductSelectionControls() {
+    const selectedCount = selectedProductIds.size;
+    const countElement = productsView?.querySelector("[data-products-selected-count]");
+    const filteredCountElement = productsView?.querySelector("[data-products-filtered-count]");
+    const totalCountElement = productsView?.querySelector("[data-products-total-count]");
+    const uploadButton = productsView?.querySelector(".products-batch-image-upload");
+    const filterButton = productsView?.querySelector(".products-filter-image-upload");
+    const allButton = productsView?.querySelector(".products-all-image-upload");
+    const clearButton = productsView?.querySelector(".products-selection-clear");
+    const input = productsView?.querySelector("#productBatchImageInput");
+    const fileLabel = productsView?.querySelector("[data-products-batch-image-file]");
+    const file = input?.files?.[0] || null;
+    const filteredCount = getFilteredProductImageTargetCount();
+    const totalCount = getCatalogProductImageTargetCount();
+    const canUseFiltered = Boolean(file && hasActiveProductImageFilters() && filteredCount > 0);
+
+    if (countElement) countElement.textContent = `Выбрано: ${selectedCount}`;
+    if (fileLabel) fileLabel.textContent = file ? `${file.name} (${formatProductImageSize(file.size)})` : "Файл не выбран";
+    if (filteredCountElement) filteredCountElement.textContent = `Найдено: ${filteredCount}`;
+    if (totalCountElement) totalCountElement.textContent = `Всего в каталоге: ${totalCount}`;
+    if (uploadButton) uploadButton.disabled = !selectedCount || !file;
+    if (filterButton) filterButton.disabled = !canUseFiltered;
+    if (allButton) allButton.disabled = !file || totalCount <= 0;
+    if (clearButton) clearButton.disabled = !selectedCount;
+}
+
+function setProductSelected(productId, isSelected) {
+    const id = String(productId || "");
+    if (!id) return;
+    if (isSelected) selectedProductIds.add(id);
+    else selectedProductIds.delete(id);
+    updateProductSelectionControls();
+}
+
+function clearProductSelection() {
+    selectedProductIds.clear();
+    productsView?.querySelectorAll(".product-select").forEach(input => {
+        input.checked = false;
+    });
+    updateProductSelectionControls();
+}
+
 function appendProductsToList(nextProducts = []) {
     const list = productsView?.querySelector(".products-list");
     const table = list?.querySelector(".products-table");
@@ -274,6 +417,7 @@ function appendProductsToList(nextProducts = []) {
         id: "products",
         loadedCount: products.length
     }));
+    updateProductSelectionControls();
 }
 
 function renderProductRow(product) {
@@ -312,6 +456,7 @@ function renderProductRow(product) {
     return `
         <article class="products-row${isDeleted ? " is-deleted" : ""}" role="row" data-product-id="${product.id}">
             <div class="product-title-cell">
+                ${canEditProducts() && !isDeleted ? `<input class="product-select" type="checkbox" data-product-id="${product.id}"${selectedProductIds.has(String(product.id)) ? " checked" : ""} aria-label="Select product">` : ""}
                 <span class="product-thumb">${getProductImage(product)}</span>
                 <div>
                     <strong>${escapeHtml(product.title)}</strong>
@@ -372,6 +517,7 @@ async function loadProducts(options = {}) {
             ? [...products, ...uniqueNextProducts].slice(-CRM_DOM_ACCUMULATION_LIMIT)
             : nextProducts;
         productsPagination = normalizePaginationMeta(result.pagination);
+        productsTotalCount = Number(result.productTotal) || productsTotalCount || Number(productsPagination.total) || 0;
         productCategories = result.categories || [];
         productsLoaded = true;
         loaded = true;
@@ -534,7 +680,227 @@ async function openCreateSubcategoryForm(formElement) {
     notifySuccess("Подкатегория добавлена.");
 }
 
-function setupProductFormControls(formElement) {
+function updateProductImageManager(manager, product) {
+    if (!manager || !product) return;
+
+    const preview = manager.querySelector("[data-product-image-preview]");
+    const fileLabel = manager.querySelector("[data-product-image-file]");
+    const deleteButton = manager.querySelector("[data-product-image-delete]");
+    const imageUrl = getProductImageUrl(product);
+
+    if (preview) {
+        preview.innerHTML = imageUrl
+            ? `<img src="${escapeHtml(imageUrl)}" alt="">`
+            : `<span>${escapeHtml((product.image || "Т").slice(0, 2))}</span>`;
+    }
+    if (fileLabel) fileLabel.textContent = imageUrl || "Фото не назначено";
+    if (deleteButton) deleteButton.disabled = !imageUrl;
+}
+
+async function uploadProductImage(product, formElement) {
+    const manager = formElement.querySelector("[data-product-image-manager]");
+    const input = manager?.querySelector("[data-product-image-input]");
+    const uploadButton = manager?.querySelector("[data-product-image-upload]");
+    const file = input?.files?.[0] || null;
+    const validationMessage = validateProductImageFile(file);
+    if (validationMessage) {
+        notifyWarning(validationMessage);
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", file);
+    if (uploadButton) uploadButton.disabled = true;
+
+    try {
+        const result = await CrmApi.post(`/api/products/${product.id}/image`, formData);
+        Object.assign(product, result.product || {}, {
+            imageUrl: result.imageUrl || result.image_url || result.product?.imageUrl || "",
+            image_url: result.image_url || result.imageUrl || result.product?.image_url || ""
+        });
+        if (input) input.value = "";
+        updateProductImageManager(manager, product);
+        notifySuccess("Изображение товара загружено.");
+        await loadProducts({ preserveControls: true });
+    } catch (error) {
+        notifyError(error, "Не удалось загрузить изображение товара.");
+    } finally {
+        if (uploadButton) uploadButton.disabled = false;
+    }
+}
+
+async function deleteProductImage(product, formElement) {
+    const manager = formElement.querySelector("[data-product-image-manager]");
+    const deleteButton = manager?.querySelector("[data-product-image-delete]");
+    if (deleteButton) deleteButton.disabled = true;
+
+    try {
+        const result = await CrmApi.delete(`/api/products/${product.id}/image`);
+        Object.assign(product, result.product || {}, { imageUrl: "", image_url: "" });
+        updateProductImageManager(manager, product);
+        notifySuccess("Изображение товара удалено.");
+        await loadProducts({ preserveControls: true });
+    } catch (error) {
+        notifyError(error, "Не удалось удалить изображение товара.");
+    } finally {
+        if (deleteButton) deleteButton.disabled = !getProductImageUrl(product);
+    }
+}
+
+async function uploadImageForSelectedProducts() {
+    const input = productsView?.querySelector("#productBatchImageInput");
+    const file = input?.files?.[0] || null;
+    const validationMessage = validateProductImageFile(file);
+    if (!selectedProductIds.size) {
+        notifyWarning("Выберите товары для назначения фото.");
+        return;
+    }
+    if (validationMessage) {
+        notifyWarning(validationMessage);
+        return;
+    }
+
+    const button = productsView?.querySelector(".products-batch-image-upload");
+    const previousButtonText = button?.textContent || "";
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("productIds", JSON.stringify([...selectedProductIds]));
+    if (button) {
+        button.disabled = true;
+        button.textContent = "Загрузка...";
+    }
+
+    try {
+        const result = await CrmApi.post("/api/products/images/batch", formData);
+        notifySuccess(`Изображение назначено товарам: ${result.updated || selectedProductIds.size}.`);
+        if (input) input.value = "";
+        clearProductSelection();
+        await loadProducts({ preserveControls: true });
+    } catch (error) {
+        notifyError(error, "Не удалось назначить изображение выбранным товарам.");
+    } finally {
+        if (button) button.textContent = previousButtonText || "Назначить фото";
+        updateProductSelectionControls();
+    }
+}
+
+function setProductImageBulkLoading(isLoading, activeButton = null) {
+    const buttons = productsView?.querySelectorAll(".products-bulk-image button") || [];
+    buttons.forEach(button => {
+        button.disabled = isLoading || button.disabled;
+    });
+    if (activeButton) {
+        activeButton.dataset.originalText = activeButton.dataset.originalText || activeButton.textContent || "";
+        activeButton.textContent = isLoading ? "Загрузка..." : (activeButton.dataset.originalText || activeButton.textContent);
+    }
+    if (!isLoading) updateProductSelectionControls();
+}
+
+async function confirmProductImageFilterUpload(scope, targetCount) {
+    if (scope === "filtered") {
+        return CrmModal.open({
+            title: "Назначить изображение найденным",
+            message: `Изображение будет назначено ${targetCount} товарам, соответствующим текущим фильтрам. Продолжить?`,
+            confirmText: "Назначить"
+        });
+    }
+
+    const firstConfirmed = await CrmModal.open({
+        title: "Опасное массовое действие",
+        message: `Вы собираетесь назначить одно изображение всем ${targetCount} товарам каталога. Текущие изображения этих товаров будут заменены. Продолжить?`,
+        confirmText: "Продолжить"
+    });
+    if (!firstConfirmed) return false;
+
+    return CrmModal.open({
+        title: "Финальное подтверждение",
+        message: "Подтвердите назначение изображения всему каталогу.",
+        confirmText: "ПРИМЕНИТЬ"
+    });
+}
+
+async function uploadImageByProductFilter(scope, button) {
+    const input = productsView?.querySelector("#productBatchImageInput");
+    const file = input?.files?.[0] || null;
+    const validationMessage = validateProductImageFile(file);
+    const targetCount = scope === "all" ? getCatalogProductImageTargetCount() : getFilteredProductImageTargetCount();
+
+    if (validationMessage) {
+        notifyWarning(validationMessage);
+        return;
+    }
+    if (scope === "filtered" && !hasActiveProductImageFilters()) {
+        notifyWarning("Задайте фильтр или используйте кнопку назначения всему каталогу.");
+        return;
+    }
+    if (targetCount <= 0) {
+        notifyWarning("Нет товаров для назначения изображения.");
+        return;
+    }
+
+    const confirmed = await confirmProductImageFilterUpload(scope, targetCount);
+    if (!confirmed) return;
+
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("scope", scope);
+    formData.append("filters", JSON.stringify(scope === "filtered" ? getProductImageFilterPayload() : {}));
+
+    setProductImageBulkLoading(true, button);
+    try {
+        const result = await CrmApi.post("/api/products/images/by-filter", formData);
+        notifySuccess(`Изображение назначено товарам: ${result.updated || 0}. URL: ${result.imageUrl || result.image_url || ""}`);
+        if (input) input.value = "";
+        await loadProducts({ preserveControls: true });
+    } catch (error) {
+        notifyError(error, "Не удалось назначить изображение товарам.");
+    } finally {
+        setProductImageBulkLoading(false, button);
+    }
+}
+
+function setupProductImageControls(formElement, product) {
+    const legacyImageInput = formElement.querySelector("input[name='image']");
+    legacyImageInput?.closest("label")?.remove();
+
+    const manager = formElement.querySelector("[data-product-image-manager]");
+    const descriptionLabel = formElement.querySelector("textarea[name='description']")?.closest("label");
+    if (manager && descriptionLabel?.contains(manager)) {
+        descriptionLabel.before(manager);
+    }
+
+    const input = manager?.querySelector("[data-product-image-input]");
+    const preview = manager?.querySelector("[data-product-image-preview]");
+    const fileLabel = manager?.querySelector("[data-product-image-file]");
+    input?.addEventListener("change", () => {
+        const file = input.files?.[0] || null;
+        const validationMessage = file ? validateProductImageFile(file) : "";
+        if (validationMessage) {
+            notifyWarning(validationMessage);
+            input.value = "";
+            updateProductImageManager(manager, product);
+            return;
+        }
+        if (!file) {
+            updateProductImageManager(manager, product);
+            return;
+        }
+
+        const objectUrl = URL.createObjectURL(file);
+        if (preview) {
+            preview.innerHTML = `<img src="${escapeHtml(objectUrl)}" alt="">`;
+            preview.querySelector("img")?.addEventListener("load", () => URL.revokeObjectURL(objectUrl), { once: true });
+        }
+        if (fileLabel) fileLabel.textContent = `${file.name} (${formatProductImageSize(file.size)})`;
+    });
+
+    manager?.querySelector("[data-product-image-upload]")?.addEventListener("click", () => uploadProductImage(product, formElement));
+    manager?.querySelector("[data-product-image-delete]")?.addEventListener("click", () => deleteProductImage(product, formElement));
+}
+
+function setupProductFormControls(formElement, product = {}) {
+    setupProductImageControls(formElement, product);
+
     formElement.querySelector("select[name='category']")?.addEventListener("change", () => {
         refreshSubcategorySelect(formElement, "");
     });
@@ -571,7 +937,7 @@ async function openProductForm(product = null) {
         content: renderProductForm(product || { isActive: true }),
         submitText: product ? "Сохранить" : "Создать",
         draftKey: product ? `product:${product.id}` : "product:new",
-        onReady: ({ formElement }) => setupProductFormControls(formElement)
+        onReady: ({ formElement }) => setupProductFormControls(formElement, product || {})
     });
 
     if (!formData) return;

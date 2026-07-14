@@ -116,8 +116,47 @@ body {
     background: rgba(255, 255, 255, 0.9);
 }
 
+.search-result.active,
+.search-result:hover {
+    background: #fff;
+}
+
 .search-result + .search-result {
     margin-top: 6px;
+}
+
+.search-result-main {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.search-result-thumb {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    overflow: hidden;
+    border-radius: 7px;
+    background: var(--surface);
+    color: var(--primary);
+    font-size: 1rem;
+    font-weight: 900;
+}
+
+.search-result-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 .search-result-info {
@@ -134,10 +173,17 @@ body {
 }
 
 .search-result-info span,
+.search-result-info small,
 .search-empty {
     color: var(--text-muted);
     font-size: 0.82rem;
     font-weight: 600;
+}
+
+.search-result-info small {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .search-empty {
@@ -205,6 +251,11 @@ body {
 .search-result-actions .qty-input:focus {
     border-color: var(--primary);
     outline: none;
+}
+
+.card.is-highlighted {
+    outline: 3px solid rgba(32, 87, 66, 0.32);
+    outline-offset: 3px;
 }
 
 .nav {
@@ -1280,6 +1331,13 @@ body {
     font-size: 0.8rem;
 }
 
+.thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
 .card-info {
     display: flex;
     flex-direction: column;
@@ -2152,6 +2210,14 @@ body {
         right: 0;
         transform: none;
         width: min(100%, calc(100vw - 24px));
+    }
+    .search-result {
+        grid-template-columns: minmax(0, 1fr);
+        align-items: stretch;
+    }
+    .search-result-actions {
+        width: 100%;
+        min-width: 0;
     }
     .products {
         padding: 28px 12px;

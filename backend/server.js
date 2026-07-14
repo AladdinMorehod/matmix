@@ -1,3 +1,4 @@
+const fs = require("fs");
 const path = require("path");
 const cors = require("cors");
 const express = require("express");
@@ -12,6 +13,8 @@ const productsRoutes = require("./routes/products");
 const app = express();
 const port = process.env.PORT || 3000;
 const publicDir = path.join(__dirname, "..");
+const uploadsDir = path.join(publicDir, "public", "uploads");
+const productUploadsDir = path.join(uploadsDir, "products");
 
 app.use(cors());
 app.use(express.json({ limit: "1mb" }));
@@ -34,6 +37,16 @@ app.use(session({
     }
 }));
 
+fs.mkdirSync(productUploadsDir, { recursive: true });
+
+app.use("/uploads", express.static(uploadsDir, {
+    dotfiles: "deny",
+    index: false,
+    maxAge: "7d",
+    setHeaders(res) {
+        res.setHeader("X-Content-Type-Options", "nosniff");
+    }
+}));
 app.use(express.static(publicDir));
 
 app.use("/api/public/products", productsRoutes.publicRouter);

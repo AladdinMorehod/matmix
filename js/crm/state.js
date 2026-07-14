@@ -88,6 +88,7 @@ let editingUserId = null;
 let products = [];
 let productCategories = [];
 let productsPagination = normalizePaginationMeta();
+let productsTotalCount = 0;
 let productsRequestId = 0;
 let productFilters = {
     search: "",
@@ -97,6 +98,7 @@ let productFilters = {
 };
 let productsLoading = false;
 let productsLoaded = false;
+let selectedProductIds = new Set();
 
 const crmNavigation = [
     { id: "dashboard", label: "Главная", enabled: true },

@@ -387,6 +387,24 @@ productsView?.addEventListener("input", event => {
 });
 
 productsView?.addEventListener("change", event => {
+    const batchImageInput = event.target.closest("#productBatchImageInput");
+    if (batchImageInput) {
+        const file = batchImageInput.files?.[0] || null;
+        const validationMessage = file ? validateProductImageFile(file) : "";
+        if (validationMessage) {
+            notifyWarning(validationMessage);
+            batchImageInput.value = "";
+        }
+        updateProductSelectionControls();
+        return;
+    }
+
+    const productSelect = event.target.closest(".product-select");
+    if (productSelect) {
+        setProductSelected(productSelect.dataset.productId, productSelect.checked);
+        return;
+    }
+
     const categoryFilter = event.target.closest("#productCategoryFilter");
     if (categoryFilter) {
         productFilters.category = categoryFilter.value;
@@ -436,6 +454,30 @@ productsView?.addEventListener("click", event => {
     const addButton = event.target.closest(".products-add");
     if (addButton) {
         openProductForm();
+        return;
+    }
+
+    const batchImageButton = event.target.closest(".products-batch-image-upload");
+    if (batchImageButton) {
+        uploadImageForSelectedProducts();
+        return;
+    }
+
+    const filterImageButton = event.target.closest(".products-filter-image-upload");
+    if (filterImageButton) {
+        uploadImageByProductFilter("filtered", filterImageButton);
+        return;
+    }
+
+    const allImageButton = event.target.closest(".products-all-image-upload");
+    if (allImageButton) {
+        uploadImageByProductFilter("all", allImageButton);
+        return;
+    }
+
+    const clearSelectionButton = event.target.closest(".products-selection-clear");
+    if (clearSelectionButton) {
+        clearProductSelection();
         return;
     }
 

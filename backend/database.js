@@ -217,6 +217,7 @@ async function initProductsTable() {
     await ensureColumn("products", "weight", "REAL");
     await ensureColumn("products", "unit", "TEXT");
     await ensureColumn("products", "image", "TEXT");
+    await ensureColumnWithBackup("products", "image_url", "TEXT", "image-url");
     await ensureColumn("products", "description", "TEXT");
     await ensureColumn("products", "is_active", "INTEGER DEFAULT 1");
     await ensureColumn("products", "sort_order", "INTEGER DEFAULT 0");
@@ -240,6 +241,29 @@ async function ensureColumn(tableName, columnName, columnDefinition) {
     if (!exists) {
         await run(`ALTER TABLE ${tableName} ADD COLUMN ${columnName} ${columnDefinition}`);
     }
+}
+
+async function ensureColumnWithBackup(tableName, columnName, columnDefinition, backupReason) {
+    const columns = await all(`PRAGMA table_info(${tableName})`);
+    const exists = columns.some(column => column.name === columnName);
+
+    if (!exists) {
+        createDatabaseBackup(backupReason || `${tableName}-${columnName}`);
+        await run(`ALTER TABLE ${tableName} ADD COLUMN ${columnName} ${columnDefinition}`);
+    }
+}
+
+function createDatabaseBackup(reason) {
+    if (!fs.existsSync(databasePath)) return "";
+
+    const backupDir = path.join(databaseDir, "backups");
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+    const safeReason = String(reason || "schema").replace(/[^a-z0-9_-]+/gi, "-").replace(/^-+|-+$/g, "") || "schema";
+    const backupPath = path.join(backupDir, `matmix-before-${safeReason}-${timestamp}.db`);
+
+    fs.mkdirSync(backupDir, { recursive: true });
+    fs.copyFileSync(databasePath, backupPath);
+    return backupPath;
 }
 
 function extractPublicCatalogProducts() {

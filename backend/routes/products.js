@@ -1,4 +1,7 @@
 const express = require("express");
+const crypto = require("crypto");
+const fs = require("fs");
+const path = require("path");
 const ExcelJS = require("exceljs");
 const { all, get, run } = require("../database");
 const { requireRole } = require("../middleware/auth");
@@ -31,7 +34,17 @@ const { ceilMoney, ceilWeight } = require("../utils/numberFormat");
 const router = express.Router();
 const publicRouter = express.Router();
 const allowedCrmUnits = new Set(["шт", "кг", "м", "м2"]);
+const productUploadsRoot = path.join(__dirname, "..", "..", "public", "uploads", "products");
+const productUploadsUrlPrefix = "/uploads/products/";
+const productImageMaxBytes = 10 * 1024 * 1024;
+const allowedProductImageTypes = new Map([
+    ["image/jpeg", [".jpg", ".jpeg"]],
+    ["image/png", [".png"]],
+    ["image/webp", [".webp"]]
+]);
 let productCreateQueue = Promise.resolve();
+
+fs.mkdirSync(productUploadsRoot, { recursive: true });
 
 const safeErrorMessages = {
     400: "Проверьте данные запроса.",
@@ -58,6 +71,220 @@ function sendApiError(res, error, fallbackMessage, fallbackCode = "REQUEST_FAILE
 
 function normalizeText(value) {
     return String(value || "").replace(/\s+/g, " ").trim();
+}
+
+function createHttpError(status, message, code = "REQUEST_FAILED") {
+    const error = new Error(message);
+    error.status = status;
+    error.code = code;
+    return error;
+}
+
+function normalizeProductImageUrl(value) {
+    const imageUrl = normalizeText(value);
+    if (!imageUrl.startsWith(productUploadsUrlPrefix)) return "";
+    if (imageUrl.includes("\\") || imageUrl.includes("..")) return "";
+
+    const filename = path.posix.basename(imageUrl);
+    if (!filename || filename !== imageUrl.slice(productUploadsUrlPrefix.length)) return "";
+
+    return `${productUploadsUrlPrefix}${filename}`;
+}
+
+function getProductImageUrl(row = {}) {
+    return normalizeProductImageUrl(row.image_url || row.imageUrl);
+}
+
+function getProductImagePath(imageUrl) {
+    const normalizedUrl = normalizeProductImageUrl(imageUrl);
+    if (!normalizedUrl) return "";
+
+    const targetPath = path.resolve(productUploadsRoot, path.posix.basename(normalizedUrl));
+    const rootPath = path.resolve(productUploadsRoot);
+    if (!targetPath.startsWith(`${rootPath}${path.sep}`)) return "";
+
+    return targetPath;
+}
+
+function getImageMagicMime(buffer) {
+    if (!Buffer.isBuffer(buffer) || buffer.length < 12) return "";
+    if (buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff) return "image/jpeg";
+    if (buffer.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))) return "image/png";
+    if (buffer.subarray(0, 4).toString("ascii") === "RIFF" && buffer.subarray(8, 12).toString("ascii") === "WEBP") return "image/webp";
+    return "";
+}
+
+function validateProductImageUpload(upload) {
+    if (!upload?.buffer?.length) {
+        throw createHttpError(400, "Загрузите изображение товара.", "IMAGE_REQUIRED");
+    }
+    if (upload.buffer.length > productImageMaxBytes) {
+        throw createHttpError(413, "Файл изображения слишком большой. Максимум 10 МБ.", "IMAGE_TOO_LARGE");
+    }
+
+    const mimeType = normalizeText(upload.mimeType).toLowerCase();
+    const allowedExtensions = allowedProductImageTypes.get(mimeType);
+    const extension = path.extname(upload.originalName || "").toLowerCase();
+    if (!allowedExtensions || !allowedExtensions.includes(extension)) {
+        throw createHttpError(400, "Допустимы только JPG, PNG или WebP.", "IMAGE_TYPE_NOT_ALLOWED");
+    }
+
+    const magicMime = getImageMagicMime(upload.buffer);
+    if (magicMime !== mimeType) {
+        throw createHttpError(400, "Файл не похож на заявленный формат изображения.", "IMAGE_SIGNATURE_MISMATCH");
+    }
+
+    return { mimeType, extension };
+}
+
+function makeProductImageFilename(product, extension) {
+    const externalId = normalizeText(product.external_id);
+    const prefix = /^MAT-\d+$/i.test(externalId) ? externalId.toUpperCase() : `product-${Number(product.id) || "new"}`;
+    const timestamp = new Date().toISOString().replace(/[-:.TZ]/g, "");
+    const suffix = crypto.randomBytes(3).toString("hex");
+    return `${prefix}-${timestamp}-${suffix}${extension}`;
+}
+
+async function readMultipartProductImageUpload(req, { maxBytes = productImageMaxBytes + 1024 * 1024 } = {}) {
+    const contentType = req.headers["content-type"] || "";
+    const boundaryMatch = contentType.match(/boundary=(?:"([^"]+)"|([^;]+))/i);
+    if (!contentType.toLowerCase().includes("multipart/form-data") || !boundaryMatch) {
+        throw createHttpError(400, "Ожидается multipart/form-data с полем image.", "MULTIPART_REQUIRED");
+    }
+
+    const boundary = `--${boundaryMatch[1] || boundaryMatch[2]}`;
+    const body = await collectRequestBuffer(req, maxBytes);
+    const bodyText = body.toString("latin1");
+    const parts = bodyText.split(boundary);
+    const fields = {};
+    let image = null;
+
+    for (const partText of parts) {
+        const headerEnd = partText.indexOf("\r\n\r\n");
+        if (headerEnd === -1) continue;
+
+        const rawHeaders = partText.slice(0, headerEnd);
+        const nameMatch = rawHeaders.match(/name="([^"]+)"/i);
+        if (!nameMatch) continue;
+
+        const fieldName = nameMatch[1];
+        let valueText = partText.slice(headerEnd + 4).replace(/\r\n--$/, "").replace(/\r\n$/, "");
+        const filenameMatch = rawHeaders.match(/filename="([^"]*)"/i);
+
+        if (filenameMatch) {
+            if (fieldName !== "image") continue;
+            const contentTypeMatch = rawHeaders.match(/Content-Type:\s*([^\r\n]+)/i);
+            image = {
+                originalName: sanitizeUploadFileName(filenameMatch[1] || ""),
+                mimeType: contentTypeMatch?.[1]?.trim() || "",
+                buffer: Buffer.from(valueText, "latin1")
+            };
+        } else {
+            fields[fieldName] = Buffer.from(valueText, "latin1").toString("utf8").trim();
+        }
+    }
+
+    if (!image) {
+        throw createHttpError(400, "Файл не найден в поле image.", "IMAGE_REQUIRED");
+    }
+
+    return { image, fields };
+}
+
+async function saveProductImageFile(product, upload) {
+    const { extension } = validateProductImageUpload(upload);
+    const filename = makeProductImageFilename(product, extension);
+    const filePath = path.join(productUploadsRoot, filename);
+    await fs.promises.writeFile(filePath, upload.buffer, { flag: "wx" });
+    return `${productUploadsUrlPrefix}${filename}`;
+}
+
+async function deleteUnusedProductImage(imageUrl) {
+    const normalizedUrl = normalizeProductImageUrl(imageUrl);
+    if (!normalizedUrl) return false;
+
+    const usage = await get("SELECT COUNT(*) AS count FROM products WHERE image_url = ?", [normalizedUrl]);
+    if (Number(usage?.count) > 0) return false;
+
+    const filePath = getProductImagePath(normalizedUrl);
+    if (!filePath) return false;
+
+    await fs.promises.unlink(filePath).catch(error => {
+        if (error.code !== "ENOENT") throw error;
+    });
+    return true;
+}
+
+function parseProductIdsField(value) {
+    let parsed = [];
+    try {
+        parsed = JSON.parse(value || "[]");
+    } catch (error) {
+        parsed = String(value || "").split(",");
+    }
+
+    return [...new Set((Array.isArray(parsed) ? parsed : [])
+        .map(item => Number(item))
+        .filter(id => Number.isInteger(id) && id > 0))];
+}
+
+function parseProductImageFilters(value) {
+    if (!normalizeText(value)) return {};
+
+    let filters;
+    try {
+        filters = JSON.parse(value);
+    } catch (error) {
+        throw createHttpError(400, "Некорректный JSON фильтров.", "INVALID_FILTERS_JSON");
+    }
+
+    if (!filters || typeof filters !== "object" || Array.isArray(filters)) {
+        throw createHttpError(400, "Фильтры должны быть объектом.", "INVALID_FILTERS");
+    }
+
+    const allowedFields = new Set(["search", "category", "subcategory", "productGroup", "product_group", "status", "deleted"]);
+    const unknownField = Object.keys(filters).find(field => !allowedFields.has(field));
+    if (unknownField) {
+        throw createHttpError(400, "Фильтры содержат неизвестное поле.", "UNKNOWN_FILTER_FIELD");
+    }
+
+    const normalized = {
+        search: normalizeText(filters.search),
+        category: normalizeText(filters.category),
+        subcategory: normalizeText(filters.subcategory),
+        productGroup: normalizeText(filters.productGroup || filters.product_group)
+    };
+    const status = normalizeText(filters.status);
+    const deleted = normalizeText(filters.deleted);
+
+    if (status) {
+        if (!["active", "hidden", "deleted"].includes(status)) {
+            throw createHttpError(400, "Некорректный статус фильтра.", "INVALID_FILTER_STATUS");
+        }
+        if (status === "deleted") {
+            normalized.deleted = "true";
+        } else {
+            normalized.status = status;
+            normalized.deleted = "false";
+        }
+    } else if (deleted === "true") {
+        normalized.deleted = "true";
+    } else {
+        normalized.deleted = "false";
+    }
+
+    return normalized;
+}
+
+function hasActiveProductImageFilter(filters = {}) {
+    return Boolean(
+        normalizeText(filters.search)
+        || normalizeText(filters.category)
+        || normalizeText(filters.subcategory)
+        || normalizeText(filters.productGroup || filters.product_group)
+        || normalizeText(filters.status)
+        || normalizeText(filters.deleted) === "true"
+    );
 }
 
 function normalizeNumber(value, fallback = 0) {
@@ -143,8 +370,10 @@ async function generateUniqueSlug(title, fallback, exceptId = null) {
 }
 
 function normalizeProduct(row) {
+    const imageUrl = getProductImageUrl(row);
     return {
         id: row.id,
+        externalId: row.external_id || "",
         title: row.title,
         category: row.category || "",
         subcategory: row.subcategory || "",
@@ -153,6 +382,8 @@ function normalizeProduct(row) {
         weight: Number(row.weight) || 0,
         unit: row.unit || "шт",
         image: row.image || "",
+        imageUrl,
+        image_url: imageUrl,
         description: row.description || "",
         isActive: Boolean(row.is_active),
         sortOrder: Number(row.sort_order) || 0,
@@ -167,6 +398,7 @@ function normalizeProduct(row) {
 }
 
 function normalizePublicProduct(row) {
+    const imageUrl = getProductImageUrl(row);
     return {
         id: row.id,
         externalId: row.external_id,
@@ -179,6 +411,8 @@ function normalizePublicProduct(row) {
         weight: Number(row.weight) || 0,
         unit: row.unit || "шт",
         image: row.image || "",
+        imageUrl,
+        image_url: imageUrl,
         description: row.description || ""
     };
 }
@@ -196,7 +430,7 @@ function getProductPayload(body, existing = {}) {
         price: body.price === "" || body.price === null || body.price === undefined ? null : normalizeNumber(body.price, null),
         weight: normalizeNumber(body.weight, 0),
         unit: normalizeText(body.unit) || "шт",
-        image: normalizeText(body.image),
+        image: body.image === undefined ? (existing.image || "") : normalizeText(body.image),
         description: normalizeText(body.description),
         isActive: body.isActive === undefined ? (existing.is_active ?? 1) : (body.isActive ? 1 : 0),
         sortOrder: normalizeNumber(body.sortOrder ?? body.sort_order, existing.sort_order || 0)
@@ -1217,14 +1451,26 @@ router.get("/", requireRole(["admin", "manager"]), async (req, res) => {
     try {
         const { rows, pagination } = await getPaginatedProductRows(req.query, { deleted: "false" });
         const products = rows.map(normalizeProduct);
-        const categoryRows = await all("SELECT DISTINCT category FROM products WHERE deleted_at IS NULL AND category IS NOT NULL AND category != '' ORDER BY category COLLATE NOCASE ASC");
-        const subcategoryRows = await all("SELECT DISTINCT subcategory FROM products WHERE deleted_at IS NULL AND subcategory IS NOT NULL AND subcategory != '' ORDER BY subcategory COLLATE NOCASE ASC");
-        const productGroupRows = await all("SELECT DISTINCT product_group FROM products WHERE deleted_at IS NULL AND product_group IS NOT NULL AND product_group != '' ORDER BY product_group COLLATE NOCASE ASC");
+        const [categoryRows, subcategoryRows, productGroupRows, totalRow] = await Promise.all([
+            all("SELECT DISTINCT category FROM products WHERE deleted_at IS NULL AND category IS NOT NULL AND category != '' ORDER BY category COLLATE NOCASE ASC"),
+            all("SELECT DISTINCT subcategory FROM products WHERE deleted_at IS NULL AND subcategory IS NOT NULL AND subcategory != '' ORDER BY subcategory COLLATE NOCASE ASC"),
+            all("SELECT DISTINCT product_group FROM products WHERE deleted_at IS NULL AND product_group IS NOT NULL AND product_group != '' ORDER BY product_group COLLATE NOCASE ASC"),
+            get("SELECT COUNT(*) AS total FROM products WHERE deleted_at IS NULL")
+        ]);
         const categories = categoryRows.map(row => row.category);
         const subcategories = subcategoryRows.map(row => row.subcategory);
         const productGroups = productGroupRows.map(row => row.product_group);
 
-        res.json({ success: true, products, items: products, categories, subcategories, productGroups, pagination });
+        res.json({
+            success: true,
+            products,
+            items: products,
+            categories,
+            subcategories,
+            productGroups,
+            productTotal: Number(totalRow?.total) || 0,
+            pagination
+        });
     } catch (error) {
         console.error("Products load error:", error);
         res.status(500).json({ success: false, message: "Не удалось загрузить каталог." });
@@ -1454,6 +1700,195 @@ router.post("/structure/subcategories", requireRole(["admin"]), async (req, res)
             success: false,
             message: error.status ? error.message : "Не удалось добавить подкатегорию."
         });
+    }
+});
+
+router.post("/images/batch", requireRole(["admin"]), async (req, res) => {
+    let savedImageUrl = "";
+    try {
+        const { image, fields } = await readMultipartProductImageUpload(req);
+        const productIds = parseProductIdsField(fields.productIds || fields.product_ids);
+        if (!productIds.length) {
+            throw createHttpError(400, "Выберите товары для назначения изображения.", "PRODUCT_IDS_REQUIRED");
+        }
+
+        const placeholders = productIds.map(() => "?").join(",");
+        const existingProducts = await all(
+            `SELECT * FROM products WHERE id IN (${placeholders}) AND deleted_at IS NULL`,
+            productIds
+        );
+        if (!existingProducts.length) {
+            throw createHttpError(404, "Выбранные товары не найдены.", "PRODUCTS_NOT_FOUND");
+        }
+
+        savedImageUrl = await saveProductImageFile(existingProducts[0], image);
+        const previousUrls = [...new Set(existingProducts.map(product => getProductImageUrl(product)).filter(Boolean))];
+        const now = new Date().toISOString();
+        await run(
+            `UPDATE products
+             SET image_url = ?,
+                 updated_at = ?
+             WHERE id IN (${placeholders}) AND deleted_at IS NULL`,
+            [savedImageUrl, now, ...productIds]
+        );
+
+        for (const previousUrl of previousUrls) {
+            await deleteUnusedProductImage(previousUrl);
+        }
+
+        res.json({
+            success: true,
+            updated: existingProducts.length,
+            imageUrl: savedImageUrl,
+            image_url: savedImageUrl
+        });
+    } catch (error) {
+        if (savedImageUrl) {
+            await deleteUnusedProductImage(savedImageUrl).catch(cleanupError => {
+                console.error("Batch product image cleanup error:", cleanupError);
+            });
+        }
+        console.error("Product batch image upload error:", error);
+        sendApiError(res, error, "Не удалось назначить изображение выбранным товарам.", "PRODUCT_IMAGE_BATCH_FAILED");
+    }
+});
+
+router.post("/images/by-filter", requireRole(["admin"]), async (req, res) => {
+    let savedImageUrl = "";
+    try {
+        const { image, fields } = await readMultipartProductImageUpload(req);
+        const scope = normalizeText(fields.scope || "filtered");
+        if (!["filtered", "all"].includes(scope)) {
+            throw createHttpError(400, "Некорректная область назначения изображения.", "INVALID_IMAGE_SCOPE");
+        }
+
+        validateProductImageUpload(image);
+        const filters = parseProductImageFilters(fields.filters);
+        if (scope === "filtered" && !hasActiveProductImageFilter(filters)) {
+            throw createHttpError(400, "Для назначения найденным товарам задайте хотя бы один фильтр.", "FILTER_REQUIRED");
+        }
+
+        const query = scope === "all" ? {} : filters;
+        const defaults = scope === "all" ? { deleted: "false" } : {};
+        const { whereSql, params } = buildProductListWhere(query, defaults);
+        const productsToUpdate = await all(
+            `SELECT id, external_id, image_url FROM products ${whereSql} ORDER BY id ASC`,
+            params
+        );
+
+        if (!productsToUpdate.length) {
+            throw createHttpError(400, "По выбранным условиям товары не найдены.", "NO_PRODUCTS_MATCHED");
+        }
+
+        savedImageUrl = await saveProductImageFile(productsToUpdate[0], image);
+        const previousUrls = [...new Set(productsToUpdate.map(product => getProductImageUrl(product)).filter(Boolean))];
+        const now = new Date().toISOString();
+        let updateResult;
+
+        await run("BEGIN IMMEDIATE TRANSACTION");
+        try {
+            updateResult = await run(
+                `UPDATE products
+                 SET image_url = ?,
+                     updated_at = ?
+                 ${whereSql}`,
+                [savedImageUrl, now, ...params]
+            );
+            await run("COMMIT");
+        } catch (error) {
+            await run("ROLLBACK").catch(rollbackError => {
+                console.error("Product image by-filter rollback error:", rollbackError);
+            });
+            throw error;
+        }
+
+        for (const previousUrl of previousUrls) {
+            await deleteUnusedProductImage(previousUrl);
+        }
+
+        const updated = Number(updateResult?.changes) || productsToUpdate.length;
+        res.json({
+            success: true,
+            scope,
+            matched: productsToUpdate.length,
+            updated,
+            skipped: Math.max(0, productsToUpdate.length - updated),
+            imageUrl: savedImageUrl,
+            image_url: savedImageUrl
+        });
+    } catch (error) {
+        if (savedImageUrl) {
+            await deleteUnusedProductImage(savedImageUrl).catch(cleanupError => {
+                console.error("Product image by-filter cleanup error:", cleanupError);
+            });
+        }
+        console.error("Product image by-filter upload error:", error);
+        sendApiError(res, error, "Не удалось назначить изображение по фильтру.", "PRODUCT_IMAGE_BY_FILTER_FAILED");
+    }
+});
+
+router.post("/:id/image", requireRole(["admin"]), async (req, res) => {
+    let savedImageUrl = "";
+    try {
+        const id = Number(req.params.id);
+        if (!id) throw createHttpError(400, "Некорректный товар.", "INVALID_PRODUCT_ID");
+
+        const product = await get("SELECT * FROM products WHERE id = ?", [id]);
+        if (!product) throw createHttpError(404, "Товар не найден.", "PRODUCT_NOT_FOUND");
+        if (product.deleted_at) throw createHttpError(400, "Товар удалён.", "PRODUCT_DELETED");
+
+        const { image } = await readMultipartProductImageUpload(req);
+        const previousUrl = getProductImageUrl(product);
+        savedImageUrl = await saveProductImageFile(product, image);
+        await run(
+            "UPDATE products SET image_url = ?, updated_at = ? WHERE id = ?",
+            [savedImageUrl, new Date().toISOString(), id]
+        );
+        await deleteUnusedProductImage(previousUrl);
+
+        const updatedProduct = await get("SELECT * FROM products WHERE id = ?", [id]);
+        res.json({
+            success: true,
+            imageUrl: savedImageUrl,
+            image_url: savedImageUrl,
+            product: normalizeProduct(updatedProduct)
+        });
+    } catch (error) {
+        if (savedImageUrl) {
+            await deleteUnusedProductImage(savedImageUrl).catch(cleanupError => {
+                console.error("Product image cleanup error:", cleanupError);
+            });
+        }
+        console.error("Product image upload error:", error);
+        sendApiError(res, error, "Не удалось загрузить изображение товара.", "PRODUCT_IMAGE_UPLOAD_FAILED");
+    }
+});
+
+router.delete("/:id/image", requireRole(["admin"]), async (req, res) => {
+    try {
+        const id = Number(req.params.id);
+        if (!id) throw createHttpError(400, "Некорректный товар.", "INVALID_PRODUCT_ID");
+
+        const product = await get("SELECT * FROM products WHERE id = ?", [id]);
+        if (!product) throw createHttpError(404, "Товар не найден.", "PRODUCT_NOT_FOUND");
+
+        const previousUrl = getProductImageUrl(product);
+        await run(
+            "UPDATE products SET image_url = NULL, updated_at = ? WHERE id = ?",
+            [new Date().toISOString(), id]
+        );
+        await deleteUnusedProductImage(previousUrl);
+
+        const updatedProduct = await get("SELECT * FROM products WHERE id = ?", [id]);
+        res.json({
+            success: true,
+            imageUrl: null,
+            image_url: null,
+            product: normalizeProduct(updatedProduct)
+        });
+    } catch (error) {
+        console.error("Product image delete error:", error);
+        sendApiError(res, error, "Не удалось удалить изображение товара.", "PRODUCT_IMAGE_DELETE_FAILED");
     }
 });
 
