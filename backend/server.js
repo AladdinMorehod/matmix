@@ -4,7 +4,7 @@ const crypto = require("crypto");
 const express = require("express");
 const session = require("express-session");
 const SqliteSessionStore = require("./sessionStore");
-const { initDatabase } = require("./database");
+const { initDatabase, databasePath } = require("./database");
 const authRoutes = require("./routes/auth");
 const ordersRouter = require("./routes/orders");
 const clientsRouter = require("./routes/clients");
@@ -14,7 +14,8 @@ const productsRoutes = require("./routes/products");
 const app = express();
 const port = process.env.PORT || 3000;
 const publicDir = path.join(__dirname, "..", "public");
-const productUploadsDir = path.join(publicDir, "uploads", "products");
+const productUploadsDir = path.resolve(process.env.PRODUCT_UPLOADS_PATH || path.join(publicDir, "uploads", "products"));
+const runtimeLockPath = path.resolve(process.env.APP_RUNTIME_LOCK_PATH || path.join(path.dirname(databasePath), "matmix-runtime.lock"));
 
 const isProduction = process.env.NODE_ENV === "production";
 const sessionCookieName = "matmix.sid";
@@ -158,6 +159,8 @@ app.use((req, res) => {
 let httpServer;
 initDatabase()
     .then(() => {
+        fs.mkdirSync(path.dirname(runtimeLockPath), { recursive: true });
+        fs.writeFileSync(runtimeLockPath, JSON.stringify({ pid: process.pid, startedAt: new Date().toISOString() }), { flag: "wx" });
         httpServer = app.listen(port, () => {
             console.log(`MatMix server started: http://localhost:${port}`);
         });
@@ -170,6 +173,7 @@ initDatabase()
 async function shutdown() {
     if (httpServer) await new Promise(resolve => httpServer.close(resolve));
     await sessionStore.close().catch(error => console.error("Session store close error:", error.message));
+    fs.rmSync(runtimeLockPath, { force: true });
 }
 process.once("SIGTERM", () => shutdown().finally(() => process.exit(0)));
 process.once("SIGINT", () => shutdown().finally(() => process.exit(0)));

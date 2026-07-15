@@ -6,7 +6,12 @@ backend/database/*.db
 backend/database/*.sqlite
 backend/database/*.sqlite3
 backend/database/backups/*
+backend/database/production-backups/*
 backend/imported-excel/*
+*.restore-*.tmp
+*.restore-*.old
+matmix-runtime.lock
+restore-report-*.json
 
 # Runtime product uploads (already tracked files remain tracked)
 public/uploads/products/*
