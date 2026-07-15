@@ -1,0 +1,25 @@
+name: pre-release
+on:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: node --check backend/server.js
+      - run: npm run test:database-integrity
+      - run: npm run test:production-readiness
+      - run: npm run test:lifecycle
+      - run: node backend/scripts/test-xss-safety.js
+      - run: npm run test:seo
+      - run: npm run test:legal
+      - run: node backend/scripts/test-backup-restore.js
+      - run: npm run test:product-images
+      - run: npm run test:e2e
