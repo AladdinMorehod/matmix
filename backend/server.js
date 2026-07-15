@@ -6,6 +6,7 @@ const session = require("express-session");
 const SqliteSessionStore = require("./sessionStore");
 const { initDatabase, databasePath, get, all } = require("./database");
 const seo = require("./services/seo");
+const legal = require("./services/legal");
 const authRoutes = require("./routes/auth");
 const ordersRouter = require("./routes/orders");
 const clientsRouter = require("./routes/clients");
@@ -22,6 +23,7 @@ const runtimeLockPath = path.resolve(process.env.APP_RUNTIME_LOCK_PATH || path.j
 const isProduction = process.env.NODE_ENV === "production";
 const seoSettings = seo.seoConfig();
 if (isProduction && process.env.SEO_ALLOW_INDEXING === undefined) console.warn("SEO_ALLOW_INDEXING is not set; public pages will be noindex.");
+if (isProduction && !legal.readiness().ready) console.error("LEGAL READINESS FAILED: run npm run legal:check before launch.");
 const sessionCookieName = "matmix.sid";
 const minimumSessionAge = process.env.NODE_ENV === "test" ? 1000 : 60000;
 const sessionMaxAge = Math.max(minimumSessionAge, Number(process.env.SESSION_TTL_MS) || 8 * 60 * 60 * 1000);

@@ -295,6 +295,12 @@ function renderClientTab(order) {
             ${renderInfoRow("Имя", order.customerName)}
             ${renderInfoRow("Телефон", order.phone)}
             ${renderInfoRow("Предпочтительный способ связи", getPreferredContactText(order))}
+            ${order.consent?.given ? `
+                ${renderInfoRow("Согласие", "Получено")}
+                ${renderInfoRow("Дата согласия", formatDate(order.consent.at))}
+                ${renderInfoRow("Версия политики", order.consent.privacyVersion || "—")}
+                ${renderInfoRow("Версия условий", order.consent.termsVersion || "—")}
+            ` : `<p class="order-consent-legacy">Согласие не зафиксировано — заказ создан до внедрения версионирования.</p>`}
             ${order.clientId ? `
                 <div class="client-mini">
                     <div>

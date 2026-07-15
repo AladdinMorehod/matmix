@@ -8,6 +8,8 @@ const { getPaginationParams, buildPaginationMeta } = require("../utils/paginatio
 const { ceilMoney, ceilWeight, formatMoneyValue, toFiniteNumber } = require("../utils/numberFormat");
 const { sanitizeExcelText } = require("../utils/excelText");
 const { sqliteApiError } = require("../sqlite");
+const { legalConfig } = require("../services/legal");
+const { seoConfig, absolute } = require("../services/seo");
 
 const router = express.Router();
 const orderTemplatePath = path.join(__dirname, "..", "templates", "order-template.xlsx");
@@ -359,7 +361,8 @@ function normalizeOrder(row) {
         deletedById: row.deleted_by_id || null,
         deletedByName: row.deleted_by_name || "",
         createdAt: row.created_at,
-        updatedAt: row.updated_at
+        updatedAt: row.updated_at,
+        consent: row.consent_given === 1 ? { given: true, at: row.consent_at, privacyVersion: row.privacy_policy_version, termsVersion: row.terms_version, privacyUrl: row.privacy_policy_url, termsUrl: row.terms_url } : null
     };
 }
 
@@ -701,6 +704,10 @@ async function restoreOrder(req, res) {
 
 router.post("/", async (req, res) => {
     try {
+        if (req.body?.consent !== true) throw new PublicOrderError(400, "Необходимо подтвердить согласие с политикой и условиями.", "CONSENT_REQUIRED");
+        const documents = legalConfig();
+        const seoSettings = seoConfig();
+        const consentAt = new Date().toISOString();
         const customerName = readOrderText(req.body, "customerName", 160, true);
         const phone = readOrderText(req.body, "phone", 50, true);
         const requestedItems = normalizeRequestedItems(req.body.items);
@@ -731,8 +738,9 @@ router.post("/", async (req, res) => {
                     customer_name, phone, client_id, telegram, max_contact,
                     preferred_contact_method, preferred_contact_value, address,
                     unloading, payment_method, comment, items_json, total_price,
-                    total_weight, status, created_at, updated_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                    total_weight, status, created_at, updated_at, consent_given, consent_at,
+                    privacy_policy_version, terms_version, privacy_policy_url, terms_url
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
                     customerName,
                     phone,
@@ -750,7 +758,13 @@ router.post("/", async (req, res) => {
                     serverOrder.totalWeight,
                     "Новая",
                     now,
-                    now
+                    now,
+                    1,
+                    consentAt,
+                    documents.privacyVersion,
+                    documents.termsVersion,
+                    absolute(seoSettings, "/privacy"),
+                    absolute(seoSettings, "/terms")
                 ]
             );
             const orderNumber = getOrderNumber(result.id, now);

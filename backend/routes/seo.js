@@ -2,6 +2,7 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const seo = require("../services/seo");
+const legal = require("../services/legal");
 
 module.exports = function createSeoRouter({ publicDir, get, all, config }) {
     const router = express.Router();
@@ -24,6 +25,13 @@ module.exports = function createSeoRouter({ publicDir, get, all, config }) {
         const links = `<noscript><section><h2>Категории каталога</h2><ul>${categories.map(item => `<li><a href="${seo.categoryPath(item)}">${seo.escapeHtml(item.name)}</a></li>`).join("")}</ul></section></noscript>`;
         rendered.html = rendered.html.replace("</main>", `${links}</main>`).replace("</body>", `${links}</body>`); send(res, rendered);
     } catch (error) { next(error); } });
+    const legalDocuments = legal.documentDefinitions(legal.legalConfig());
+    for (const legalPath of legal.LEGAL_PATHS) router.get(legalPath, (req, res) => {
+        const document = legalDocuments[legalPath];
+        const nav = `<nav aria-label="Юридические документы">${legal.LEGAL_PATHS.map(item => `<a href="${item}">${seo.escapeHtml(legalDocuments[item].title)}</a>`).join(" · ")}</nav>`;
+        const body = `${nav}${document.sections.map(([heading, text]) => `<section><h2>${seo.escapeHtml(heading)}</h2><p>${seo.escapeHtml(text)}</p></section>`).join("")}`;
+        send(res, seo.page({ config, title: `${document.title} | ${config.siteName}`, description: document.description, pathname: legalPath, h1: document.title, body }));
+    });
     router.get("/product/:code", async (req, res, next) => { try {
         const product = await get(`SELECT p.*,c.external_code category_code,sc.external_code subcategory_code FROM products p LEFT JOIN catalog_structure c ON c.type='category' AND c.is_active=1 AND c.name=p.category LEFT JOIN catalog_structure sc ON sc.type='subcategory' AND sc.is_active=1 AND sc.parent_id=c.id AND sc.name=p.subcategory WHERE p.id<>3670 AND p.is_active=1 AND p.deleted_at IS NULL AND UPPER(p.external_id)=UPPER(?)`, [req.params.code]);
         if (!product) return send(res, seo.notFoundPage(config), 404); const canonical = seo.productPath(product); if (req.path !== canonical) return res.redirect(301, canonical); send(res, seo.productPage(config, product));
@@ -43,7 +51,7 @@ module.exports = function createSeoRouter({ publicDir, get, all, config }) {
     router.get("/sitemap.xml", async (req, res, next) => { try {
         if (!config.indexing) return res.status(404).type("text/plain").send("Sitemap is disabled.");
         const structures = await all("SELECT * FROM catalog_structure WHERE is_active=1 AND id<>3670 AND external_code IS NOT NULL AND type IN ('category','subcategory') ORDER BY sort_order,id"); const categories = new Map(structures.filter(x => x.type === "category").map(x => [x.id, x]));
-        const products = await all("SELECT id,external_id,updated_at FROM products WHERE id<>3670 AND is_active=1 AND deleted_at IS NULL AND external_id IS NOT NULL ORDER BY sort_order,id"); const urls = [{ path: "/" }, { path: "/catalog" }];
+        const products = await all("SELECT id,external_id,updated_at FROM products WHERE id<>3670 AND is_active=1 AND deleted_at IS NULL AND external_id IS NOT NULL ORDER BY sort_order,id"); const urls = [{ path: "/" }, { path: "/catalog" }, ...legal.LEGAL_PATHS.map(path => ({ path }))];
         for (const item of structures) { if (item.type === "category") urls.push({ path: seo.categoryPath(item), updated_at: item.updated_at }); else if (categories.has(item.parent_id)) urls.push({ path: seo.subcategoryPath(categories.get(item.parent_id), item), updated_at: item.updated_at }); } for (const product of products) urls.push({ path: seo.productPath(product), updated_at: product.updated_at });
         if (urls.length > 50000) throw new Error("Sitemap exceeds 50,000 URLs; implement a sitemap index."); const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.map(x => `<url><loc>${seo.escapeXml(seo.absolute(config, x.path))}</loc>${x.updated_at ? `<lastmod>${seo.escapeXml(new Date(x.updated_at).toISOString())}</lastmod>` : ""}</url>`).join("")}</urlset>`; res.set("Cache-Control", "public, max-age=900").type("application/xml").send(xml);
     } catch (error) { next(error); } });

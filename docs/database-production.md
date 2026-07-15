@@ -1,6 +1,6 @@
 # SQLite in production
 
-MatMix uses schema version `1` (`PRAGMA user_version`). Production startup refuses any other version; migrations are deliberately separate from startup.
+MatMix uses schema version `2` (`PRAGMA user_version`). Version 2 adds versioned order-consent metadata; production startup refuses any other version, and migrations are deliberately separate from startup.
 
 Before deployment, stop the application and run `npm run database:migrate -- --dry-run`. Review the orphan report, then run `npm run database:migrate -- --apply --confirm MIGRATE_MATMIX_DATABASE`. Apply refuses to run while the runtime lock exists and creates a consistent `VACUUM INTO` database backup before `BEGIN IMMEDIATE`. A failed migration rolls back; keep the application stopped, inspect the error and restore the generated backup if required.
 

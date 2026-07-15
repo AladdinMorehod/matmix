@@ -3,7 +3,11 @@ const path = require("path");
 const sqlite3 = require("sqlite3").verbose();
 const { configureBusinessConnection } = require("./sqlite");
 
-const CURRENT_SCHEMA_VERSION = 1;
+const CURRENT_SCHEMA_VERSION = 2;
+const CONSENT_COLUMNS = [
+    ["consent_given", "INTEGER"], ["consent_at", "TEXT"], ["privacy_policy_version", "TEXT"],
+    ["terms_version", "TEXT"], ["privacy_policy_url", "TEXT"], ["terms_url", "TEXT"]
+];
 const REQUIRED_INDEXES = [
     "idx_clients_phone", "idx_orders_status_created_at", "idx_orders_client_created_at",
     "idx_order_events_order_created_at", "idx_products_public_order", "idx_products_catalog_order",
@@ -56,12 +60,21 @@ async function migrateDatabase(dbPath, { dryRun = true, injectFailure = false } 
         if (fromVersion > CURRENT_SCHEMA_VERSION) throw new Error(`Unsupported newer schema version ${fromVersion}.`);
         const findings = await audit(db);
         if (dryRun || fromVersion === CURRENT_SCHEMA_VERSION) return { dryRun, fromVersion, toVersion: CURRENT_SCHEMA_VERSION, findings, changed: false };
-        if (fromVersion !== 0) throw new Error(`Unsupported schema version ${fromVersion}.`);
+        if (![0, 1].includes(fromVersion)) throw new Error(`Unsupported schema version ${fromVersion}.`);
         if (findings.eventsWithoutOrder || findings.subcategoriesWithoutParent || findings.activeChildWithInactiveParent
             || findings.duplicateOrderNumbers || findings.duplicateProductCodes || findings.emptyProductCodes) {
             throw new Error("Migration blocked by critical integrity findings.");
         }
         const backupPath = await createDatabaseBackup(db, path.resolve(dbPath));
+        if (fromVersion === 1) {
+            await db.run("BEGIN IMMEDIATE");
+            try {
+                for (const [name, type] of CONSENT_COLUMNS) await db.run(`ALTER TABLE orders ADD COLUMN ${name} ${type}`);
+                if (injectFailure) throw new Error("Injected migration failure");
+                await db.run(`PRAGMA user_version=${CURRENT_SCHEMA_VERSION}`); await db.run("COMMIT");
+            } catch (error) { await db.run("ROLLBACK").catch(() => {}); throw error; }
+            return { dryRun: false, fromVersion, toVersion: CURRENT_SCHEMA_VERSION, findings, changed: true, backupPath };
+        }
         await db.run("BEGIN IMMEDIATE");
         try {
             await db.run("ALTER TABLE order_events RENAME TO order_events_legacy");
@@ -95,6 +108,7 @@ async function migrateDatabase(dbPath, { dryRun = true, injectFailure = false } 
             await db.run("CREATE INDEX IF NOT EXISTS idx_products_group_order ON products(category, subcategory, product_group, sort_order, id)");
             await db.run("CREATE INDEX IF NOT EXISTS idx_products_image_url ON products(image_url)");
             await db.run("DROP INDEX IF EXISTS idx_products_external_id");
+            for (const [name, type] of CONSENT_COLUMNS) await db.run(`ALTER TABLE orders ADD COLUMN ${name} ${type}`);
             if (injectFailure) throw new Error("Injected migration failure");
             const fk = await db.all("PRAGMA foreign_key_check");
             const integrity = await db.get("PRAGMA integrity_check");

@@ -18,7 +18,10 @@
     "test:database-integrity": "node backend/scripts/test-database-integrity.js",
     "images:optimize": "node backend/scripts/optimize-product-images.js",
     "test:product-images": "node backend/scripts/test-product-images.js && node backend/scripts/test-product-image-api.js",
-    "test:seo": "node backend/scripts/test-seo.js"
+    "test:seo": "node backend/scripts/test-seo.js",
+    "legal:check": "node backend/scripts/check-legal-readiness.js",
+    "retention:check": "node backend/scripts/check-data-retention.js",
+    "test:legal": "node backend/scripts/test-legal.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

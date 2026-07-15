@@ -37178,6 +37178,8 @@ const preferredContactMethodInput = checkoutForm?.querySelector("select[name='pr
 const checkoutAddressInput = checkoutForm?.querySelector("input[name='deliveryAddress']");
 const checkoutCommentInput = checkoutForm?.querySelector("textarea[name='orderComment']");
 const checkoutPaymentMethodInput = checkoutForm?.querySelector("select[name='paymentMethod']");
+const checkoutConsentInput = checkoutForm?.querySelector("input[name='consent']");
+const checkoutConsentError = document.getElementById("orderConsentError");
 const nameSuggestionsEl = document.getElementById("nameSuggestions");
 const phoneSuggestionsEl = document.getElementById("phoneSuggestions");
 const addressSuggestionsEl = document.getElementById("addressSuggestions");
@@ -39382,6 +39384,16 @@ checkoutForm?.addEventListener("submit", async event => {
     event.preventDefault();
     clearCheckoutMessage();
 
+    if (!checkoutConsentInput?.checked) {
+        if (checkoutConsentError) checkoutConsentError.textContent = "Подтвердите согласие перед отправкой заказа.";
+        checkoutConsentInput?.setAttribute("aria-invalid", "true");
+        checkoutConsentInput?.focus();
+        showCheckoutError("Подтвердите согласие перед отправкой заказа.");
+        return;
+    }
+    if (checkoutConsentError) checkoutConsentError.textContent = "";
+    checkoutConsentInput.removeAttribute("aria-invalid");
+
     if (checkoutNameInput) {
         saveCheckoutValue(checkoutStorage.names, checkoutNameInput.value);
     }
@@ -39433,7 +39445,8 @@ checkoutForm?.addEventListener("submit", async event => {
         unloading: getUnloadingLabel(formData.get("unloading")),
         paymentMethod: cleanDisplayText(formData.get("paymentMethod")),
         comment: cleanDisplayText(formData.get("orderComment")),
-        items: orderItems
+        items: orderItems,
+        consent: true
     };
 
     setCheckoutSubmitDisabled(true);

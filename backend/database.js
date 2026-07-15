@@ -136,6 +136,12 @@ async function initDatabase() {
     await ensureColumn("orders", "preferred_contact_value", "TEXT");
     await ensureColumn("orders", "client_id", "INTEGER");
     await ensureColumn("orders", "order_number", "TEXT");
+    await ensureColumn("orders", "consent_given", "INTEGER");
+    await ensureColumn("orders", "consent_at", "TEXT");
+    await ensureColumn("orders", "privacy_policy_version", "TEXT");
+    await ensureColumn("orders", "terms_version", "TEXT");
+    await ensureColumn("orders", "privacy_policy_url", "TEXT");
+    await ensureColumn("orders", "terms_url", "TEXT");
     await backfillOrderNumbers();
     await run("CREATE UNIQUE INDEX IF NOT EXISTS idx_orders_order_number ON orders(order_number) WHERE order_number IS NOT NULL");
     await run("CREATE INDEX IF NOT EXISTS idx_orders_status_created_at ON orders(status, created_at DESC)");

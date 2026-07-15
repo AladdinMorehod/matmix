@@ -158,6 +158,10 @@
                 <span>Способ оплаты</span>
                 <select name="paymentMethod" required></select>
             </label>
+            <div class="checkout-consent">
+                <label for="orderConsent"><input id="orderConsent" type="checkbox" name="consent" required aria-describedby="orderConsentError"> <span>Я ознакомился(ась) с <a href="/privacy" target="_blank" rel="noopener">политикой конфиденциальности</a>, соглашаюсь на обработку данных для оформления и исполнения заказа и ознакомился(ась) с <a href="/terms" target="_blank" rel="noopener">условиями продажи</a>.</span></label>
+                <p id="orderConsentError" class="checkout-consent-error" role="alert"></p>
+            </div>
             <p id="checkoutMessage" class="checkout-message" aria-live="polite"></p>
             <div class="checkout-actions">
                 <button id="cancelCheckout" type="button">Отменить</button>
@@ -173,6 +177,7 @@
             <span>Opt-Mat@mail.ru</span>
             <span>Андрей Дмитриевич, руководитель проекта</span>
             <span>Все права защищены</span>
+            <nav class="legal-links" aria-label="Юридическая информация"><a href="/privacy">Политика конфиденциальности</a><a href="/terms">Условия</a><a href="/delivery">Доставка</a><a href="/payment">Оплата</a><a href="/returns">Возврат</a><a href="/contacts">Контакты и реквизиты</a></nav>
         </div>
     </footer>
 
