@@ -29,6 +29,9 @@ public/uploads/products/*
 # Logs
 *.log
 npm-debug.log*
+playwright-report/
+test-results/
+blob-report/
 
 # macOS
 .DS_Store

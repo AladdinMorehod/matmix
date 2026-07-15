@@ -1,0 +1,17 @@
+const { defineConfig, devices } = require("@playwright/test");
+
+module.exports = defineConfig({
+    testDir: "./e2e",
+    timeout: 45000,
+    expect: { timeout: 10000 },
+    fullyParallel: false,
+    retries: process.env.CI ? 1 : 0,
+    reporter: process.env.CI ? [["line"], ["html", { open: "never" }]] : "line",
+    outputDir: "test-results",
+    use: { baseURL: "http://127.0.0.1:4173", trace: "retain-on-failure", screenshot: "only-on-failure", video: "off" },
+    webServer: { command: "node e2e/test-server.js", url: "http://127.0.0.1:4173/health", reuseExistingServer: false, timeout: 120000 },
+    projects: [
+        { name: "chromium", use: { ...devices["Desktop Chrome"], ...(process.env.CI ? {} : { channel: "chrome" }) } },
+        { name: "mobile-chromium", use: { ...devices["Pixel 5"], ...(process.env.CI ? {} : { channel: "chrome" }) } }
+    ]
+});

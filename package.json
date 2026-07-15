@@ -21,7 +21,14 @@
     "test:seo": "node backend/scripts/test-seo.js",
     "legal:check": "node backend/scripts/check-legal-readiness.js",
     "retention:check": "node backend/scripts/check-data-retention.js",
-    "test:legal": "node backend/scripts/test-legal.js"
+    "test:legal": "node backend/scripts/test-legal.js",
+    "production:check": "node backend/scripts/check-production-readiness.js",
+    "release:check": "node backend/scripts/release-check.js",
+    "test:e2e": "playwright test --project=chromium",
+    "test:e2e:headed": "playwright test --project=chromium --headed",
+    "test:e2e:mobile": "playwright test --project=mobile-chromium",
+    "test:production-readiness": "node backend/scripts/test-production-readiness.js",
+    "test:lifecycle": "node backend/scripts/test-production-lifecycle.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -33,6 +40,7 @@
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
+    "@playwright/test": "^1.55.1",
     "nodemon": "^3.1.0"
   }
 }
