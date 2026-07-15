@@ -4,12 +4,14 @@ const crypto = require("crypto");
 const express = require("express");
 const session = require("express-session");
 const SqliteSessionStore = require("./sessionStore");
-const { initDatabase, databasePath } = require("./database");
+const { initDatabase, databasePath, get, all } = require("./database");
+const seo = require("./services/seo");
 const authRoutes = require("./routes/auth");
 const ordersRouter = require("./routes/orders");
 const clientsRouter = require("./routes/clients");
 const usersRoutes = require("./routes/users");
 const productsRoutes = require("./routes/products");
+const createSeoRouter = require("./routes/seo");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -18,6 +20,8 @@ const productUploadsDir = path.resolve(process.env.PRODUCT_UPLOADS_PATH || path.
 const runtimeLockPath = path.resolve(process.env.APP_RUNTIME_LOCK_PATH || path.join(path.dirname(databasePath), "matmix-runtime.lock"));
 
 const isProduction = process.env.NODE_ENV === "production";
+const seoSettings = seo.seoConfig();
+if (isProduction && process.env.SEO_ALLOW_INDEXING === undefined) console.warn("SEO_ALLOW_INDEXING is not set; public pages will be noindex.");
 const sessionCookieName = "matmix.sid";
 const minimumSessionAge = process.env.NODE_ENV === "test" ? 1000 : 60000;
 const sessionMaxAge = Math.max(minimumSessionAge, Number(process.env.SESSION_TTL_MS) || 8 * 60 * 60 * 1000);
@@ -86,9 +90,10 @@ app.use(session({
     }
 }));
 
-app.use(["/api/auth", "/api/clients", "/api/users", "/api/products", "/api/orders"], (req, res, next) => {
+app.use("/api", (req, res, next) => {
     res.setHeader("Cache-Control", "no-store");
     res.setHeader("Pragma", "no-cache");
+    res.setHeader("X-Robots-Tag", "noindex, nofollow");
     next();
 });
 
@@ -158,12 +163,13 @@ function sendPrivateFile(fileName) {
     return (req, res) => {
         res.setHeader("Cache-Control", "no-store");
         res.setHeader("Pragma", "no-cache");
+        res.setHeader("X-Robots-Tag", "noindex, nofollow");
         res.sendFile(path.join(publicDir, fileName));
     };
 }
 
-app.get(["/", "/index.html"], sendPublicFile("index.html"));
-app.get("/catalog.html", sendPublicFile("catalog.html"));
+const seoRouter = createSeoRouter({ publicDir, get, all, config: seoSettings });
+app.use(seoRouter);
 app.get("/login.html", sendPrivateFile("login.html"));
 app.get("/manager.html", sendPrivateFile("manager.html"));
 app.get("/manifest.webmanifest", sendPublicFile("manifest.webmanifest"));
@@ -174,7 +180,7 @@ app.get("/manager", (req, res) => {
 });
 
 app.use((req, res) => {
-    res.status(404).json({ success: false, message: "Маршрут не найден." });
+    seoRouter.notFound(req, res);
 });
 
 let httpServer;

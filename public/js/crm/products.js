@@ -64,7 +64,7 @@ function getProductImageUrl(product = {}) {
 
 function getProductImage(product) {
     const imageUrl = getProductImageUrl(product);
-    if (imageUrl) return `<img src="${escapeHtml(imageUrl)}" alt="" loading="lazy" decoding="async" width="600" height="600">`;
+    if (imageUrl) return `<img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(product.title || product.name || "Товар")}" loading="lazy" decoding="async" width="600" height="600">`;
 
     const value = product.image || "";
     return `<span>${escapeHtml(value && !value.includes("/") ? value : "Т")}</span>`;
