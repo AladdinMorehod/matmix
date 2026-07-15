@@ -172,6 +172,7 @@
         </section>
     </main>
 
+    <script src="js/safe-dom.js"></script>
     <script src="js/error-utils.js"></script>
     <script src="js/crm/messages.js"></script>
     <script src="js/crm/errorHandler.js"></script>
@@ -191,12 +192,5 @@
     <script src="js/crm/catalogStructure.js"></script>
     <script src="js/crm/import.js"></script>
     <script src="js/crm/manager.js"></script>
-    <script>
-        if ("serviceWorker" in navigator) {
-            window.addEventListener("load", () => {
-                navigator.serviceWorker.register("/service-worker.js").catch(() => {});
-            });
-        }
-    </script>
 </body>
 </html>

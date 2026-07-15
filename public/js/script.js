@@ -37187,6 +37187,7 @@ const searchInput = document.getElementById("searchInput");
 const headerSearch = searchInput?.closest(".header-search");
 const siteHeader = document.querySelector(".header");
 const searchDropdown = document.createElement("div");
+document.getElementById("homeCatalogButton")?.addEventListener("click", () => window.location.assign("/catalog.html"));
 
 let cart = [];
 let searchQuery = "";
@@ -37259,13 +37260,12 @@ function normalizeProductForSite(product, index) {
 }
 
 function getProductImageUrl(product = {}) {
-    const value = cleanDisplayText(product.imageUrl || product.image_url);
-    return value.startsWith("/uploads/products/") && !value.includes("..") && !value.includes("\\") ? value : "";
+    return window.MatMixSafe?.productImageUrl(product.imageUrl || product.image_url) || "";
 }
 
 function renderProductThumb(product = {}) {
     const imageUrl = getProductImageUrl(product);
-    if (imageUrl) return `<img src="${escapeHtml(imageUrl)}" alt="" onerror="this.replaceWith(document.createTextNode('Т'))">`;
+    if (imageUrl) return `<img src="${escapeHtml(imageUrl)}" alt="">`;
 
     return escapeHtml(cleanDisplayText(product.image) || "Т");
 }
@@ -37836,12 +37836,7 @@ function cleanDisplayText(value) {
 }
 
 function escapeHtml(value) {
-    return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    return window.MatMixSafe.escapeHtml(value);
 }
 
 function getCartOrderItems() {
@@ -38632,7 +38627,10 @@ function renderProducts() {
     if (catalogLoadError) {
         featuredCatalog?.classList.add("hidden");
         grid.classList.remove("hidden");
-        grid.innerHTML = `<p class="empty-products">${catalogLoadError}</p>`;
+        const message = document.createElement("p");
+        message.className = "empty-products";
+        message.textContent = catalogLoadError;
+        grid.replaceChildren(message);
         return;
     }
 
@@ -38648,7 +38646,10 @@ function renderProducts() {
     const selectionState = getCatalogSelectionState();
     const promptMessage = getCatalogPromptMessage(selectionState);
     if (promptMessage) {
-        grid.innerHTML = `<p class="empty-products catalog-level-prompt">${promptMessage}</p>`;
+        const message = document.createElement("p");
+        message.className = "empty-products catalog-level-prompt";
+        message.textContent = promptMessage;
+        grid.replaceChildren(message);
         return;
     }
 
@@ -38724,8 +38725,8 @@ function createProductCard(product, id) {
         <div class="card-main">
             <div class="thumb" aria-hidden="true">${renderProductThumb(product)}</div>
             <div class="card-info">
-                <h3>${cleanDisplayText(product.name)}</h3>
-                <p>${formatPrice(product.price)} / ${product.unit}</p>
+                <h3>${escapeHtml(cleanDisplayText(product.name))}</h3>
+                <p>${escapeHtml(formatPrice(product.price))} / ${escapeHtml(product.unit)}</p>
             </div>
         </div>
         <div class="actions">
@@ -38939,7 +38940,7 @@ function createSubcategorySelect(activeGroup) {
 
     const select = document.createElement("select");
     select.setAttribute("aria-label", "Выберите подкатегорию");
-    select.innerHTML = `<option value="${activeGroup.path}">Все подкатегории</option>`;
+    select.add(new Option("Все подкатегории", activeGroup.path));
 
     activeGroup.subcategories.forEach(subcategory => {
         const option = document.createElement("option");
@@ -38959,7 +38960,7 @@ function createGroupSelect(activeSubcategory, allLabel = "Все товары п
 
     const select = document.createElement("select");
     select.setAttribute("aria-label", "Выберите группу товаров");
-    select.innerHTML = `<option value="${allPath}">${allLabel}</option>`;
+    select.add(new Option(allLabel, allPath));
 
     activeSubcategory.groups.forEach(productGroup => {
         const option = document.createElement("option");
@@ -39152,8 +39153,8 @@ function renderCart() {
         row.className = "cart-item";
         row.innerHTML = `
             <div>
-                <b>${cleanDisplayText(product.name)}</b>
-                <span>${formatPrice(product.price)} / ${product.unit}</span>
+                <b>${escapeHtml(cleanDisplayText(product.name))}</b>
+                <span>${escapeHtml(formatPrice(product.price))} / ${escapeHtml(product.unit)}</span>
             </div>
             ${getQtyControls(item.productId, qty, true)}
         `;

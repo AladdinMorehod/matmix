@@ -1,5 +1,9 @@
 // CRM entry point and event wiring.
 const crmMenuToggle = document.getElementById("crmMenuToggle");
+
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => navigator.serviceWorker.register("/service-worker.js").catch(() => {}));
+}
 const crmMenuClose = document.getElementById("crmMenuClose");
 const crmSidebar = document.getElementById("crmSidebar");
 const crmSidebarOverlay = document.getElementById("crmSidebarOverlay");

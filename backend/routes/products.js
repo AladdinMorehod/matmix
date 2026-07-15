@@ -6,6 +6,7 @@ const ExcelJS = require("exceljs");
 const { all, get, run } = require("../database");
 const { requireRole } = require("../middleware/auth");
 const { getPaginationParams, buildPaginationMeta } = require("../utils/pagination");
+const { sanitizeExcelText } = require("../utils/excelText");
 const {
     normalizeCatalogStructureName,
     getCatalogStructureTree,
@@ -1252,10 +1253,6 @@ function getExportMatCode(row) {
     const code = normalizeText(row.external_id);
     if (!code || /^excel-/i.test(code)) return "";
     return code;
-}
-
-function sanitizeExcelText(value) {
-    return String(value ?? "").replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, "");
 }
 
 function formatPriceExportDate(date) {

@@ -3,6 +3,7 @@ const fs = require("fs");
 const crypto = require("crypto");
 const ExcelJS = require("exceljs");
 const { databasePath } = require("../database");
+const { sanitizeExcelText } = require("../utils/excelText");
 const {
     normalizeCatalogStructureName,
     syncCatalogStructureFromProducts
@@ -44,11 +45,6 @@ const IMPORT_EXPORT_HEADERS = [
 
 function normalizeText(value) {
     return String(value || "").replace(/\s+/g, " ").trim();
-}
-
-function sanitizeExcelText(value) {
-    const text = normalizeText(value);
-    return /^[=+\-@]/.test(text) ? `'${text}` : text;
 }
 
 function getCatalogExportFileName(date = new Date()) {
