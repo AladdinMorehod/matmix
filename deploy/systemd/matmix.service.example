@@ -1,0 +1,29 @@
+[Unit]
+Description=MatMix web application
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=matmix
+Group=matmix
+WorkingDirectory=/opt/matmix/app
+EnvironmentFile=/etc/matmix/matmix.env
+ExecStartPre=/usr/bin/npm run production:check
+ExecStart=/usr/bin/node backend/server.js
+Restart=on-failure
+RestartSec=5s
+TimeoutStopSec=40s
+KillSignal=SIGTERM
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/matmix /var/backups/matmix /var/log/matmix
+UMask=0027
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=matmix
+
+[Install]
+WantedBy=multi-user.target

@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const express = require("express");
 const { get, run } = require("../database");
 const { requireAuth } = require("../middleware/auth");
+const logger = require("../services/logger");
 
 const router = express.Router();
 const LOGIN_WINDOW_MS = Math.max(1000, Number(process.env.LOGIN_RATE_WINDOW_MS) || 15 * 60 * 1000);
@@ -33,6 +34,7 @@ router.post("/login", async (req, res) => {
         if (currentAttempt && currentAttempt.count >= LOGIN_MAX_ATTEMPTS) {
             const retryAfter = Math.max(1, Math.ceil((currentAttempt.resetAt - Date.now()) / 1000));
             res.setHeader("Retry-After", String(retryAfter));
+            logger.warn("login_rate_limited", { requestId: req.requestId });
             return res.status(429).json({ success: false, code: "LOGIN_RATE_LIMITED", message: "Слишком много попыток входа. Повторите позже." });
         }
 
@@ -42,6 +44,7 @@ router.post("/login", async (req, res) => {
             const attempt = getAttempt(key) || { count: 0, resetAt: Date.now() + LOGIN_WINDOW_MS };
             attempt.count += 1;
             loginAttempts.set(key, attempt);
+            logger.warn("login_failed", { requestId: req.requestId });
             return res.status(401).json({ success: false, code: "INVALID_CREDENTIALS", message: "Неверный логин или пароль" });
         }
 
@@ -49,9 +52,10 @@ router.post("/login", async (req, res) => {
         await regenerateSession(req);
         req.session.user = getPublicUser(user);
         await saveSession(req);
+        logger.info("login_succeeded", { requestId: req.requestId, userId: user.id });
         res.json({ success: true, user: req.session.user });
     } catch (error) {
-        console.error("Login error:", error.message);
+        logger.error("login_error", error, { requestId: req.requestId });
         res.status(500).json({ success: false, code: "LOGIN_FAILED", message: "Не удалось выполнить вход." });
     }
 });

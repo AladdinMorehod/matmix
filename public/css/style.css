@@ -1352,6 +1352,14 @@ body {
     overflow: visible;
 }
 
+.catalog-page .card > img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
 .card-main {
     display: flex;
     flex-direction: column;

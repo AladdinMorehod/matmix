@@ -66,10 +66,11 @@ async function migrateDatabase(dbPath, { dryRun = true, injectFailure = false } 
             throw new Error("Migration blocked by critical integrity findings.");
         }
         const backupPath = await createDatabaseBackup(db, path.resolve(dbPath));
+        const existingOrderColumns = new Set((await db.all("PRAGMA table_info(orders)")).map(column => column.name));
         if (fromVersion === 1) {
             await db.run("BEGIN IMMEDIATE");
             try {
-                for (const [name, type] of CONSENT_COLUMNS) await db.run(`ALTER TABLE orders ADD COLUMN ${name} ${type}`);
+                for (const [name, type] of CONSENT_COLUMNS) if (!existingOrderColumns.has(name)) await db.run(`ALTER TABLE orders ADD COLUMN ${name} ${type}`);
                 if (injectFailure) throw new Error("Injected migration failure");
                 await db.run(`PRAGMA user_version=${CURRENT_SCHEMA_VERSION}`); await db.run("COMMIT");
             } catch (error) { await db.run("ROLLBACK").catch(() => {}); throw error; }
@@ -77,6 +78,7 @@ async function migrateDatabase(dbPath, { dryRun = true, injectFailure = false } 
         }
         await db.run("BEGIN IMMEDIATE");
         try {
+            for (const indexName of ["idx_orders_order_number", "idx_clients_phone", "idx_orders_status_created_at", "idx_orders_client_created_at", "idx_order_events_order_created_at"]) await db.run(`DROP INDEX IF EXISTS ${indexName}`);
             await db.run("ALTER TABLE order_events RENAME TO order_events_legacy");
             await db.run("ALTER TABLE orders RENAME TO orders_legacy");
             const orderSql = (await db.get("SELECT sql FROM sqlite_master WHERE type='table' AND name='orders_legacy'")).sql
@@ -108,7 +110,7 @@ async function migrateDatabase(dbPath, { dryRun = true, injectFailure = false } 
             await db.run("CREATE INDEX IF NOT EXISTS idx_products_group_order ON products(category, subcategory, product_group, sort_order, id)");
             await db.run("CREATE INDEX IF NOT EXISTS idx_products_image_url ON products(image_url)");
             await db.run("DROP INDEX IF EXISTS idx_products_external_id");
-            for (const [name, type] of CONSENT_COLUMNS) await db.run(`ALTER TABLE orders ADD COLUMN ${name} ${type}`);
+            for (const [name, type] of CONSENT_COLUMNS) if (!existingOrderColumns.has(name)) await db.run(`ALTER TABLE orders ADD COLUMN ${name} ${type}`);
             if (injectFailure) throw new Error("Injected migration failure");
             const fk = await db.all("PRAGMA foreign_key_check");
             const integrity = await db.get("PRAGMA integrity_check");

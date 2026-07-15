@@ -10,6 +10,7 @@ const { sanitizeExcelText } = require("../utils/excelText");
 const { sqliteApiError } = require("../sqlite");
 const { legalConfig } = require("../services/legal");
 const { seoConfig, absolute } = require("../services/seo");
+const logger = require("../services/logger");
 
 const router = express.Router();
 const orderTemplatePath = path.join(__dirname, "..", "templates", "order-template.xlsx");
@@ -779,6 +780,7 @@ router.post("/", async (req, res) => {
             return { id: result.id, orderNumber, ...serverOrder };
         });
 
+        logger.info("order_created", { requestId: req.requestId, orderId: createdOrder.id });
         res.status(201).json({
             success: true,
             id: createdOrder.id,

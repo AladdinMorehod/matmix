@@ -13,6 +13,9 @@ const clientsRouter = require("./routes/clients");
 const usersRoutes = require("./routes/users");
 const productsRoutes = require("./routes/products");
 const createSeoRouter = require("./routes/seo");
+const logger = require("./services/logger");
+const { assertProductionEnvironment, operationalReadiness, latestBackup } = require("./services/productionReadiness");
+const { runtimePaths } = require("./services/productionBackup");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -21,9 +24,9 @@ const productUploadsDir = path.resolve(process.env.PRODUCT_UPLOADS_PATH || path.
 const runtimeLockPath = path.resolve(process.env.APP_RUNTIME_LOCK_PATH || path.join(path.dirname(databasePath), "matmix-runtime.lock"));
 
 const isProduction = process.env.NODE_ENV === "production";
+if (isProduction) assertProductionEnvironment();
 const seoSettings = seo.seoConfig();
 if (isProduction && process.env.SEO_ALLOW_INDEXING === undefined) console.warn("SEO_ALLOW_INDEXING is not set; public pages will be noindex.");
-if (isProduction && !legal.readiness().ready) console.error("LEGAL READINESS FAILED: run npm run legal:check before launch.");
 const sessionCookieName = "matmix.sid";
 const minimumSessionAge = process.env.NODE_ENV === "test" ? 1000 : 60000;
 const sessionMaxAge = Math.max(minimumSessionAge, Number(process.env.SESSION_TTL_MS) || 8 * 60 * 60 * 1000);
@@ -36,6 +39,14 @@ const sessionStore = new SqliteSessionStore({ filePath: process.env.SESSION_DB_P
 if (process.env.TRUST_PROXY === "1") app.set("trust proxy", 1);
 app.disable("x-powered-by");
 const allowedOrigins = new Set(String(process.env.CORS_ALLOWED_ORIGINS || "").split(",").map(value => value.trim()).filter(Boolean));
+
+app.use((req, res, next) => {
+    const startedAt = process.hrtime.bigint();
+    req.requestId = /^[A-Za-z0-9._-]{8,100}$/.test(String(req.get("X-Request-ID") || "")) ? req.get("X-Request-ID") : crypto.randomUUID();
+    res.setHeader("X-Request-ID", req.requestId);
+    res.once("finish", () => logger.info("http_request", { requestId: req.requestId, method: req.method, path: req.path, status: res.statusCode, durationMs: Number(process.hrtime.bigint() - startedAt) / 1e6, userId: req.session?.user?.id || undefined }));
+    next();
+});
 
 app.use((req, res, next) => {
     res.setHeader("X-Content-Type-Options", "nosniff");
@@ -92,6 +103,17 @@ app.use(session({
     }
 }));
 
+app.get("/health", (req, res) => res.status(200).json({ status: "ok" }));
+app.get("/ready", async (req, res) => {
+    try {
+        const schema = await get("PRAGMA user_version");
+        const paths = runtimePaths(); const backup = await latestBackup(paths.backupRoot);
+        const backupFresh = backup && (Date.now() - backup.createdAt.getTime()) / 3600000 <= (Number(process.env.BACKUP_MAX_AGE_HOURS) || 36);
+        const ready = Number(schema.user_version) === require("./databaseMigrations").CURRENT_SCHEMA_VERSION && legal.readiness().ready && await sessionStore.ready.then(() => true, () => false) && Boolean(backupFresh);
+        res.status(ready ? 200 : 503).json({ status: ready ? "ready" : "not_ready" });
+    } catch (error) { logger.error("readiness_failure", error, { requestId: req.requestId }); res.status(503).json({ status: "not_ready" }); }
+});
+
 app.use("/api", (req, res, next) => {
     res.setHeader("Cache-Control", "no-store");
     res.setHeader("Pragma", "no-cache");
@@ -99,7 +121,7 @@ app.use("/api", (req, res, next) => {
     next();
 });
 
-fs.mkdirSync(productUploadsDir, { recursive: true });
+if (!isProduction) fs.mkdirSync(productUploadsDir, { recursive: true });
 
 app.use("/uploads/products", async (req, res, next) => {
     let filename;
@@ -176,6 +198,7 @@ app.get("/login.html", sendPrivateFile("login.html"));
 app.get("/manager.html", sendPrivateFile("manager.html"));
 app.get("/manifest.webmanifest", sendPublicFile("manifest.webmanifest"));
 app.get("/service-worker.js", sendPublicFile("service-worker.js"));
+app.get("/favicon.ico", (req, res) => { res.setHeader("Cache-Control", "public, max-age=86400"); res.sendFile(path.join(publicDir, "img", "logo-burgundy.png")); });
 
 app.get("/manager", (req, res) => {
     sendPrivateFile("manager.html")(req, res);
@@ -188,24 +211,33 @@ app.use((req, res) => {
 let httpServer;
 Promise.resolve()
     .then(async () => {
+        if (isProduction) { const production = await operationalReadiness(); if (!production.ready) { const error = new Error("Production operational readiness failed; run npm run production:check for details."); error.code = "PRODUCTION_NOT_READY"; throw error; } }
         const { assertSupportedSchema } = require("./databaseMigrations");
         await assertSupportedSchema(require("./database").get, { production: isProduction });
         await initDatabase();
         fs.mkdirSync(path.dirname(runtimeLockPath), { recursive: true });
         fs.writeFileSync(runtimeLockPath, JSON.stringify({ pid: process.pid, startedAt: new Date().toISOString() }), { flag: "wx" });
         httpServer = app.listen(port, () => {
-            console.log(`MatMix server started: http://localhost:${port}`);
+            logger.info("server_started", { port: Number(port), environment: process.env.NODE_ENV || "development" });
         });
     })
     .catch(error => {
-        console.error("Database init error:", error);
+        logger.error("startup_failure", error);
         process.exit(1);
     });
 
-async function shutdown() {
-    if (httpServer) await new Promise(resolve => httpServer.close(resolve));
-    await sessionStore.close().catch(error => console.error("Session store close error:", error.message));
-    fs.rmSync(runtimeLockPath, { force: true });
+let shuttingDown = false;
+async function shutdown(signal = "shutdown") {
+    if (shuttingDown) return; shuttingDown = true; logger.info("shutdown_started", { signal });
+    const timeoutMs = Math.max(5000, Number(process.env.SHUTDOWN_TIMEOUT_MS) || 30000);
+    const graceful = (async () => {
+        if (httpServer) await new Promise(resolve => httpServer.close(resolve));
+        await sessionStore.close().catch(error => logger.error("session_store_close_failure", error));
+        await new Promise(resolve => require("./database").db.close(() => resolve()));
+        fs.rmSync(runtimeLockPath, { force: true }); logger.info("shutdown_complete", { signal });
+    })();
+    await Promise.race([graceful, new Promise((resolve, reject) => setTimeout(() => reject(new Error("Shutdown timeout exceeded.")), timeoutMs))]);
 }
-process.once("SIGTERM", () => shutdown().finally(() => process.exit(0)));
-process.once("SIGINT", () => shutdown().finally(() => process.exit(0)));
+function handleSignal(signal) { shutdown(signal).then(() => process.exit(0)).catch(error => { logger.error("shutdown_forced", error, { signal }); fs.rmSync(runtimeLockPath, { force: true }); process.exit(1); }); }
+process.once("SIGTERM", () => handleSignal("SIGTERM"));
+process.once("SIGINT", () => handleSignal("SIGINT"));
