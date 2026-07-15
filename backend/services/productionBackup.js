@@ -42,6 +42,8 @@ function sha256(filePath) {
 
 function openDb(filePath, mode = sqlite3.OPEN_READONLY) {
     const db = new sqlite3.Database(filePath, mode);
+    db.configure("busyTimeout", 5000);
+    db.run("PRAGMA foreign_keys=ON");
     return {
         all(sql, params = []) { return new Promise((resolve, reject) => db.all(sql, params, (error, rows) => error ? reject(error) : resolve(rows))); },
         run(sql, params = []) { return new Promise((resolve, reject) => db.run(sql, params, function done(error) { error ? reject(error) : resolve({ changes: this.changes }); })); },

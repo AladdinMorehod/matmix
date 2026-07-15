@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const bcrypt = require("bcryptjs");
 const sqlite3 = require("sqlite3").verbose();
+const { configureBusinessConnection } = require("./sqlite");
 const {
     ensureCatalogStructureSchema,
     syncCatalogStructureFromProducts
@@ -14,8 +15,10 @@ const databaseDir = path.dirname(databasePath);
 fs.mkdirSync(databaseDir, { recursive: true });
 
 const db = new sqlite3.Database(databasePath);
+const connectionReady = configureBusinessConnection(db);
 
-function run(sql, params = []) {
+async function run(sql, params = []) {
+    await connectionReady;
     return new Promise((resolve, reject) => {
         db.run(sql, params, function onRun(error) {
             if (error) {
@@ -28,7 +31,8 @@ function run(sql, params = []) {
     });
 }
 
-function get(sql, params = []) {
+async function get(sql, params = []) {
+    await connectionReady;
     return new Promise((resolve, reject) => {
         db.get(sql, params, (error, row) => {
             if (error) {
@@ -41,7 +45,8 @@ function get(sql, params = []) {
     });
 }
 
-function all(sql, params = []) {
+async function all(sql, params = []) {
+    await connectionReady;
     return new Promise((resolve, reject) => {
         db.all(sql, params, (error, rows) => {
             if (error) {
@@ -82,7 +87,7 @@ async function withTransaction(work) {
     const transaction = createConnectionHelpers(connection);
 
     try {
-        await transaction.run("PRAGMA busy_timeout = 5000");
+        await configureBusinessConnection(connection);
         await transaction.run("BEGIN IMMEDIATE");
         const result = await work(transaction);
         await transaction.run("COMMIT");
@@ -100,6 +105,7 @@ async function withTransaction(work) {
 }
 
 async function initDatabase() {
+    await connectionReady;
     await run(`
         CREATE TABLE IF NOT EXISTS orders (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -132,6 +138,8 @@ async function initDatabase() {
     await ensureColumn("orders", "order_number", "TEXT");
     await backfillOrderNumbers();
     await run("CREATE UNIQUE INDEX IF NOT EXISTS idx_orders_order_number ON orders(order_number) WHERE order_number IS NOT NULL");
+    await run("CREATE INDEX IF NOT EXISTS idx_orders_status_created_at ON orders(status, created_at DESC)");
+    await run("CREATE INDEX IF NOT EXISTS idx_orders_client_created_at ON orders(client_id, created_at DESC)");
 
     await run(`
         CREATE TABLE IF NOT EXISTS clients (
@@ -151,6 +159,7 @@ async function initDatabase() {
             updated_at TEXT
         )
     `);
+    await run("CREATE INDEX IF NOT EXISTS idx_clients_phone ON clients(phone)");
 
     await run(`
         CREATE TABLE IF NOT EXISTS order_events (
@@ -163,6 +172,7 @@ async function initDatabase() {
             created_at TEXT
         )
     `);
+    await run("CREATE INDEX IF NOT EXISTS idx_order_events_order_created_at ON order_events(order_id, created_at)");
 
     await run(`
         CREATE TABLE IF NOT EXISTS users (
@@ -273,10 +283,13 @@ async function initProductsTable() {
     await ensureColumn("products", "deleted_at", "TEXT");
     await ensureColumn("products", "deleted_by_id", "INTEGER");
     await ensureColumn("products", "deleted_by_name", "TEXT");
-    await run("CREATE UNIQUE INDEX IF NOT EXISTS idx_products_external_id ON products(external_id)");
     await run("CREATE INDEX IF NOT EXISTS idx_products_category ON products(category, subcategory, product_group)");
     await run("CREATE INDEX IF NOT EXISTS idx_products_is_active ON products(is_active)");
     await run("CREATE INDEX IF NOT EXISTS idx_products_deleted_at ON products(deleted_at)");
+    await run("CREATE INDEX IF NOT EXISTS idx_products_public_order ON products(is_active, deleted_at, sort_order, id)");
+    await run("CREATE INDEX IF NOT EXISTS idx_products_catalog_order ON products(category, subcategory, sort_order, id)");
+    await run("CREATE INDEX IF NOT EXISTS idx_products_group_order ON products(category, subcategory, product_group, sort_order, id)");
+    await run("CREATE INDEX IF NOT EXISTS idx_products_image_url ON products(image_url)");
 }
 
 async function ensureColumn(tableName, columnName, columnDefinition) {

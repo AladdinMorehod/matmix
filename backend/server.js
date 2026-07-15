@@ -111,6 +111,13 @@ app.use("/api/clients", clientsRouter);
 app.use("/api/users", usersRoutes);
 app.use("/api/products", productsRoutes);
 
+app.use((error, req, res, next) => {
+    if (!error || !String(error.code || "").startsWith("SQLITE_")) return next(error);
+    const { sqliteApiError } = require("./sqlite");
+    const response = sqliteApiError(error);
+    res.status(response.status).json({ success: false, code: response.code, message: response.message });
+});
+
 const publicAssetOptions = {
     dotfiles: "deny",
     index: false,
@@ -157,8 +164,11 @@ app.use((req, res) => {
 });
 
 let httpServer;
-initDatabase()
-    .then(() => {
+Promise.resolve()
+    .then(async () => {
+        const { assertSupportedSchema } = require("./databaseMigrations");
+        await assertSupportedSchema(require("./database").get, { production: isProduction });
+        await initDatabase();
         fs.mkdirSync(path.dirname(runtimeLockPath), { recursive: true });
         fs.writeFileSync(runtimeLockPath, JSON.stringify({ pid: process.pid, startedAt: new Date().toISOString() }), { flag: "wx" });
         httpServer = app.listen(port, () => {

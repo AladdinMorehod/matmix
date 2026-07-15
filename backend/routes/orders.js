@@ -7,6 +7,7 @@ const { normalizePhone } = require("../utils/phone");
 const { getPaginationParams, buildPaginationMeta } = require("../utils/pagination");
 const { ceilMoney, ceilWeight, formatMoneyValue, toFiniteNumber } = require("../utils/numberFormat");
 const { sanitizeExcelText } = require("../utils/excelText");
+const { sqliteApiError } = require("../sqlite");
 
 const router = express.Router();
 const orderTemplatePath = path.join(__dirname, "..", "templates", "order-template.xlsx");
@@ -775,6 +776,11 @@ router.post("/", async (req, res) => {
     } catch (error) {
         if (error instanceof PublicOrderError) {
             res.status(error.status).json({ success: false, code: error.code, message: error.message });
+            return;
+        }
+        if (String(error?.code || "").startsWith("SQLITE_")) {
+            const response = sqliteApiError(error);
+            res.status(response.status).json({ success: false, code: response.code, message: response.message });
             return;
         }
         console.error("Order create error:", error);

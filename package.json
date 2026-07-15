@@ -12,7 +12,10 @@
     "catalog:migrate-structure-codes": "node backend/scripts/migrate-structure-codes.js",
     "catalog:cleanup-structure": "node backend/scripts/cleanup-catalog-structure.js",
     "catalog:fixes": "node backend/scripts/apply-catalog-fixes.js",
-    "fix:plywood-groups": "npm run catalog:fixes"
+    "fix:plywood-groups": "npm run catalog:fixes",
+    "database:migrate": "node backend/scripts/migrate-database.js",
+    "database:health": "node backend/scripts/check-database-health.js",
+    "test:database-integrity": "node backend/scripts/test-database-integrity.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

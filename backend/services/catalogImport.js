@@ -3854,7 +3854,12 @@ async function createExcelCopy(tokenData, assignedRows) {
     return copyPath;
 }
 
+let importApplyActive = false;
+
 async function applyCatalogImport(db, token, options = {}, user = {}) {
+    if (importApplyActive) throw createImportError(409, "Другой импорт уже применяется.", "IMPORT_ALREADY_RUNNING");
+    importApplyActive = true;
+    try {
     const tokenData = await getValidPreviewToken(db, token, user);
     const latestPreview = await buildCatalogImportPreview(db, tokenData.parsed, tokenData.file, {
         resolutions: tokenData.resolutions
@@ -4006,6 +4011,9 @@ async function applyCatalogImport(db, token, options = {}, user = {}) {
     result.excelCopyUrl = `/api/products/import/excel-copy/${logResult.id}`;
     previewTokens.delete(tokenData.token);
     return result;
+    } finally {
+        importApplyActive = false;
+    }
 }
 
 async function getCatalogImportExcelCopy(db, id) {
