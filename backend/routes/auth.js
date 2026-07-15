@@ -4,105 +4,86 @@ const { get, run } = require("../database");
 const { requireAuth } = require("../middleware/auth");
 
 const router = express.Router();
+const LOGIN_WINDOW_MS = Math.max(1000, Number(process.env.LOGIN_RATE_WINDOW_MS) || 15 * 60 * 1000);
+const LOGIN_MAX_ATTEMPTS = Math.max(2, Number(process.env.LOGIN_RATE_MAX) || 5);
+const loginAttempts = new Map();
+const DUMMY_PASSWORD_HASH = "$2a$10$7EqJtq98hPqEX7fNZaFWoO5uHhMZZbJ4k6QYfPvV6S6fY5Q7oQG6i";
 
-function normalizeLogin(value) {
-    return String(value || "").trim();
+function normalizeLogin(value) { return typeof value === "string" ? value.trim() : ""; }
+function getPublicUser(user) { return { id: user.id, login: user.login, role: user.role, name: user.name }; }
+function loginKey(req, login) { return `${req.ip}|${login.toLowerCase().slice(0, 160)}`; }
+function getAttempt(key) {
+    const attempt = loginAttempts.get(key);
+    if (!attempt || attempt.resetAt <= Date.now()) { loginAttempts.delete(key); return null; }
+    return attempt;
 }
-
-function getPublicUser(user) {
-    return {
-        id: user.id,
-        login: user.login,
-        role: user.role,
-        name: user.name
-    };
-}
+function regenerateSession(req) { return new Promise((resolve, reject) => req.session.regenerate(error => error ? reject(error) : resolve())); }
+function saveSession(req) { return new Promise((resolve, reject) => req.session.save(error => error ? reject(error) : resolve())); }
 
 router.post("/login", async (req, res) => {
     try {
-        const login = normalizeLogin(req.body.login);
-        const password = String(req.body.password || "");
+        const login = normalizeLogin(req.body?.login);
+        const password = typeof req.body?.password === "string" ? req.body.password : "";
+        if (!login || !password || login.length > 160 || password.length > 1024) {
+            return res.status(400).json({ success: false, code: "INVALID_LOGIN_PAYLOAD", message: "Введите логин и пароль." });
+        }
 
-        if (!login || !password) {
-            res.status(400).json({ success: false, message: "Введите логин и пароль." });
-            return;
+        const key = loginKey(req, login);
+        const currentAttempt = getAttempt(key);
+        if (currentAttempt && currentAttempt.count >= LOGIN_MAX_ATTEMPTS) {
+            const retryAfter = Math.max(1, Math.ceil((currentAttempt.resetAt - Date.now()) / 1000));
+            res.setHeader("Retry-After", String(retryAfter));
+            return res.status(429).json({ success: false, code: "LOGIN_RATE_LIMITED", message: "Слишком много попыток входа. Повторите позже." });
         }
 
         const user = await get("SELECT * FROM users WHERE login = ?", [login]);
-        if (user && user.deleted_at) {
-            res.status(403).json({ success: false, message: "Пользователь отключен" });
-            return;
+        const isValidPassword = await bcrypt.compare(password, user?.password_hash || DUMMY_PASSWORD_HASH);
+        if (!user || user.deleted_at || Number(user.is_active) === 0 || !isValidPassword) {
+            const attempt = getAttempt(key) || { count: 0, resetAt: Date.now() + LOGIN_WINDOW_MS };
+            attempt.count += 1;
+            loginAttempts.set(key, attempt);
+            return res.status(401).json({ success: false, code: "INVALID_CREDENTIALS", message: "Неверный логин или пароль" });
         }
 
-        if (user && Number(user.is_active) === 0) {
-            res.status(403).json({ success: false, message: "Пользователь отключен" });
-            return;
-        }
-
-        const isValidPassword = user ? await bcrypt.compare(password, user.password_hash) : false;
-
-        if (!user || !isValidPassword) {
-            res.status(401).json({ success: false, message: "Неверный логин или пароль" });
-            return;
-        }
-
+        loginAttempts.delete(key);
+        await regenerateSession(req);
         req.session.user = getPublicUser(user);
+        await saveSession(req);
         res.json({ success: true, user: req.session.user });
     } catch (error) {
-        console.error("Login error:", error);
-        res.status(500).json({ success: false, message: "Не удалось выполнить вход." });
+        console.error("Login error:", error.message);
+        res.status(500).json({ success: false, code: "LOGIN_FAILED", message: "Не удалось выполнить вход." });
     }
 });
 
 router.get("/me", (req, res) => {
-    if (!req.session?.user) {
-        res.status(401).json({ success: false });
-        return;
-    }
-
+    if (!req.session?.user) return res.status(401).json({ success: false, code: "AUTH_REQUIRED" });
     res.json({ success: true, user: req.session.user });
 });
 
 router.patch("/password", requireAuth, async (req, res) => {
     try {
-        const currentPassword = String(req.body.currentPassword || "");
-        const newPassword = String(req.body.newPassword || "");
-
-        if (!currentPassword || newPassword.length < 6) {
-            res.status(400).json({ success: false, message: "Укажите текущий пароль и новый пароль от 6 символов." });
-            return;
-        }
-
+        const currentPassword = typeof req.body?.currentPassword === "string" ? req.body.currentPassword : "";
+        const newPassword = typeof req.body?.newPassword === "string" ? req.body.newPassword : "";
+        if (!currentPassword || newPassword.length < 6 || newPassword.length > 1024) return res.status(400).json({ success: false, message: "Укажите текущий пароль и новый пароль от 6 символов." });
         const user = await get("SELECT id, password_hash FROM users WHERE id = ?", [req.session.user.id]);
         const isValidPassword = user ? await bcrypt.compare(currentPassword, user.password_hash) : false;
-
-        if (!user || !isValidPassword) {
-            res.status(400).json({ success: false, message: "Текущий пароль неверный." });
-            return;
-        }
-
+        if (!user || !isValidPassword) return res.status(400).json({ success: false, message: "Текущий пароль неверный." });
         const passwordHash = await bcrypt.hash(newPassword, 10);
-        await run(
-            "UPDATE users SET password_hash = ?, updated_at = ? WHERE id = ?",
-            [passwordHash, new Date().toISOString(), req.session.user.id]
-        );
-
+        await run("UPDATE users SET password_hash = ?, updated_at = ? WHERE id = ?", [passwordHash, new Date().toISOString(), req.session.user.id]);
         res.json({ success: true });
     } catch (error) {
-        console.error("Password change error:", error);
+        console.error("Password change error:", error.message);
         res.status(500).json({ success: false, message: "Не удалось сменить пароль." });
     }
 });
 
-router.post("/logout", requireAuth, (req, res) => {
+router.post("/logout", (req, res) => {
+    const clear = () => res.clearCookie("matmix.sid", { path: "/" }).json({ success: true });
+    if (!req.session) return clear();
     req.session.destroy(error => {
-        if (error) {
-            res.status(500).json({ success: false, message: "Не удалось выйти." });
-            return;
-        }
-
-        res.clearCookie("connect.sid");
-        res.json({ success: true });
+        if (error) return res.status(500).json({ success: false, code: "LOGOUT_FAILED", message: "Не удалось выйти." });
+        clear();
     });
 });
 
