@@ -3,6 +3,7 @@ let importSelectedFile = null;
 let importPreview = null;
 let importLoading = false;
 let importApplying = false;
+let importExporting = false;
 let importApplyResult = null;
 let importActiveTab = "new";
 let importSearchQuery = "";
@@ -90,9 +91,17 @@ const importSummaryGroups = [
         ]
     },
     {
+        label: "Автогенерация кодов",
+        cards: [
+            { key: "generatedCategoryCodes", label: "Будет создано CAT-кодов", description: "Коды новых категорий будут назначены сервером при Apply." },
+            { key: "generatedSubcategoryCodes", label: "Будет создано SUB-кодов", description: "Коды новых подкатегорий будут назначены сервером при Apply." },
+            { key: "generatedMatCodes", label: "Будет создано MAT-кодов", description: "Коды новых товаров будут назначены сервером при Apply." }
+        ]
+    },
+    {
         label: "Контроль",
         cards: [
-            { key: "missingCodes", label: "Без MAT-кода", description: "Товары без MAT-кода, которым будет предложен код." },
+            { key: "emptyPriceCount", label: "Товаров без цены", description: "Пустая цена означает цену по запросу и не блокирует импорт." },
             { key: "criticalErrors", label: "Критические ошибки", always: true, description: "Ошибки, блокирующие Apply." },
             { key: "warnings", label: "Предупреждения", always: true, description: "Некритичные предупреждения предварительной проверки." }
         ]
@@ -361,6 +370,22 @@ function resetImportPreview({ clearFile = false } = {}) {
     renderImportView();
 }
 
+async function downloadCurrentCatalog() {
+    if (importExporting) return;
+    importExporting = true;
+    renderImportView();
+
+    try {
+        const result = await CrmApi.download("/api/products/import/export/excel");
+        notifySuccess(`Каталог сформирован: ${result.filename}`);
+    } catch (error) {
+        notifyError(error, "Не удалось скачать актуальный каталог Excel.");
+    } finally {
+        importExporting = false;
+        renderImportView();
+    }
+}
+
 async function submitImportPreview() {
     const error = validateImportFile(importSelectedFile);
     if (error) {
@@ -406,17 +431,13 @@ async function submitImportApply() {
                 <dl>
                     <div><dt>Создать</dt><dd>${Number(summary.new || 0)}</dd></div>
                     <div><dt>Обновить</dt><dd>${Number(summary.updated || 0)}</dd></div>
-                    <div><dt>Назначить MAT</dt><dd>${Number(summary.missingCodes || 0)}</dd></div>
+                    <div><dt>Создать MAT-кодов</dt><dd>${Number(summary.generatedMatCodes || 0)}</dd></div>
                     <div><dt>Скрыть</dt><dd>${Number(summary.missingFromFile || 0)}</dd></div>
                     <div><dt>Новые категории</dt><dd>${Number(summary.newCategories || 0)}</dd></div>
                     <div><dt>Переименовать CAT/SUB</dt><dd>${Number(summary.renamedCategories || 0) + Number(summary.renamedSubcategories || 0)}</dd></div>
-                    <div><dt>Записать CAT/SUB</dt><dd>${Number(summary.assignedCategoryCodes || 0) + Number(summary.assignedSubcategoryCodes || 0)}</dd></div>
+                    <div><dt>Создать CAT/SUB-кодов</dt><dd>${Number(summary.generatedCategoryCodes || 0) + Number(summary.generatedSubcategoryCodes || 0)}</dd></div>
                     <div><dt>Требуют решения</dt><dd>${Number(summary.requiresReview || 0)}</dd></div>
                 </dl>
-                <label class="product-checkbox">
-                    <input name="assignMissingCodes" type="checkbox" checked>
-                    <span>Назначить MAT строкам без кода, если найден однозначный товар в CRM</span>
-                </label>
                 <label>
                     <span>Отсутствующие в Excel</span>
                     <select name="missingFromFileAction">
@@ -436,7 +457,6 @@ async function submitImportApply() {
         importApplyResult = await CrmApi.post("/api/products/import/apply", {
             token: importPreview.token,
             options: {
-                assignMissingCodes: formData.get("assignMissingCodes") === "on",
                 missingFromFileAction: String(formData.get("missingFromFileAction") || "keep")
             }
         });
@@ -469,6 +489,13 @@ function renderImportUpload(error = "") {
     const isReady = Boolean(importSelectedFile) && !importLoading;
 
     return `
+        <section class="import-export-panel">
+            <h2>Актуальный каталог Excel</h2>
+            <p>Файл содержит текущие товары и структуру каталога. Его можно изменить и загрузить обратно для обновления и добавления новых позиций.</p>
+            <button class="import-export-current" type="button" ${importExporting ? "disabled" : ""}>
+                ${importExporting ? "Формирование файла…" : "Скачать актуальный каталог Excel"}
+            </button>
+        </section>
         <section class="import-upload-panel">
             <div class="import-dropzone${importSelectedFile ? " has-file" : ""}" data-import-dropzone>
                 <input id="catalogImportFile" class="visually-hidden" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
@@ -530,6 +557,12 @@ function renderApplyResult() {
                 <div><dt>Скрыто</dt><dd>${Number(importApplyResult.hidden || 0)}</dd></div>
                 <div><dt>Требуют решения</dt><dd>${Number(importApplyResult.requiresReview || 0)}</dd></div>
             </dl>
+            ${Array.isArray(importApplyResult.assignedCodes) && importApplyResult.assignedCodes.length ? `
+                <details>
+                    <summary>Назначенные коды (${importApplyResult.assignedCodes.length})</summary>
+                    <ul>${importApplyResult.assignedCodes.slice(0, 100).map(item => `<li>${escapeHtml(item.name || item.entityType || "Новая сущность")} → ${escapeHtml(item.externalId || "")}</li>`).join("")}</ul>
+                </details>
+            ` : ""}
             <p>Backup создан: ${escapeHtml(importApplyResult.backupPath || "")}</p>
             <p>Integrity check: ${escapeHtml(importApplyResult.integrityCheck || "")}</p>
             ${importApplyResult.excelCopyUrl ? `<button class="import-download-copy" type="button">Скачать обновленный Excel</button>` : ""}
@@ -1722,6 +1755,12 @@ importView?.addEventListener("click", event => {
         CrmApi.download(importApplyResult.excelCopyUrl).catch(error => {
             notifyError(error, "Не удалось скачать обновленный Excel.");
         });
+        return;
+    }
+
+    const exportButton = event.target.closest(".import-export-current");
+    if (exportButton) {
+        downloadCurrentCatalog();
         return;
     }
 

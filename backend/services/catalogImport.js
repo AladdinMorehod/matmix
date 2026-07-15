@@ -24,12 +24,421 @@ const COMPARED_FIELDS = [
     "productGroup",
     "price",
     "weight",
-    "unit",
-    "sortOrder"
+    "unit"
+];
+
+const IMPORT_EXPORT_HEADERS = [
+    "Тип / структура / наименование",
+    "Служебная копия",
+    "ID товара",
+    "Ед. изм",
+    "Цена",
+    "Порядок",
+    "Служебное поле",
+    "Группа Товаров",
+    "Служебное поле",
+    "Вес",
+    "Код товара"
 ];
 
 function normalizeText(value) {
     return String(value || "").replace(/\s+/g, " ").trim();
+}
+
+function sanitizeExcelText(value) {
+    const text = normalizeText(value);
+    return /^[=+\-@]/.test(text) ? `'${text}` : text;
+}
+
+function getCatalogExportFileName(date = new Date()) {
+    const pad = value => String(value).padStart(2, "0");
+    return `MatMix_catalog_${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}_${pad(date.getHours())}-${pad(date.getMinutes())}.xlsx`;
+}
+
+async function buildCatalogExportWorkbook(db) {
+    const [products, structureRows] = await Promise.all([
+        db.all(`
+            SELECT id, external_id, title, category, subcategory, product_group,
+                   price, weight, unit, is_active, sort_order, source
+            FROM products
+            WHERE deleted_at IS NULL
+            ORDER BY category COLLATE NOCASE ASC,
+                     subcategory COLLATE NOCASE ASC,
+                     product_group COLLATE NOCASE ASC,
+                     sort_order ASC,
+                     id ASC
+        `),
+        db.all(`
+            SELECT id, type, name, normalized_name, external_code, parent_id, sort_order, is_system
+            FROM catalog_structure
+            WHERE type IN ('category', 'subcategory')
+            ORDER BY sort_order ASC, id ASC
+        `)
+    ]);
+
+    const categories = structureRows.filter(row => row.type === "category");
+    const subcategories = structureRows.filter(row => row.type === "subcategory");
+    const categoryByName = new Map(categories.map(row => [normalizeCatalogStructureName(row.name), row]));
+    const subcategoryByParentAndName = new Map(subcategories.map(row => [
+        `${Number(row.parent_id) || 0}:${normalizeCatalogStructureName(row.name)}`,
+        row
+    ]));
+    const categoryRank = new Map(categories.map((row, index) => [Number(row.id), index]));
+    const subcategoryRank = new Map(subcategories.map((row, index) => [Number(row.id), index]));
+
+    const exportRows = products.map(product => {
+        const category = categoryByName.get(normalizeCatalogStructureName(product.category));
+        const subcategory = category
+            ? subcategoryByParentAndName.get(`${Number(category.id)}:${normalizeCatalogStructureName(product.subcategory)}`)
+            : null;
+        return { product, category, subcategory };
+    }).sort((first, second) => {
+        const firstCategoryRank = first.category ? categoryRank.get(Number(first.category.id)) : Number.MAX_SAFE_INTEGER;
+        const secondCategoryRank = second.category ? categoryRank.get(Number(second.category.id)) : Number.MAX_SAFE_INTEGER;
+        const firstSubcategoryRank = first.subcategory ? subcategoryRank.get(Number(first.subcategory.id)) : Number.MAX_SAFE_INTEGER;
+        const secondSubcategoryRank = second.subcategory ? subcategoryRank.get(Number(second.subcategory.id)) : Number.MAX_SAFE_INTEGER;
+        return firstCategoryRank - secondCategoryRank
+            || firstSubcategoryRank - secondSubcategoryRank
+            || normalizeText(first.product.product_group).localeCompare(normalizeText(second.product.product_group), "ru")
+            || Number(first.product.sort_order || 0) - Number(second.product.sort_order || 0)
+            || Number(first.product.id) - Number(second.product.id);
+    });
+
+    const workbook = new ExcelJS.Workbook();
+    workbook.creator = "MatMix";
+    workbook.created = new Date();
+    const sheet = workbook.addWorksheet(IMPORT_SHEET_NAME, {
+        views: [{ state: "frozen", ySplit: 1 }]
+    });
+    sheet.columns = [
+        { width: 58 }, { width: 2, hidden: true }, { width: 12 }, { width: 12 }, { width: 14 },
+        { width: 12 }, { width: 2, hidden: true }, { width: 26 }, { width: 2, hidden: true }, { width: 12 }, { width: 18 }
+    ];
+
+    const header = sheet.addRow(IMPORT_EXPORT_HEADERS);
+    header.height = 24;
+    header.font = { bold: true, color: { argb: "FFFFFFFF" } };
+    header.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF205742" } };
+    header.alignment = { vertical: "middle", horizontal: "center", wrapText: false };
+    header.eachCell({ includeEmpty: true }, cell => {
+        cell.border = { bottom: { style: "thin", color: { argb: "FF87B48E" } } };
+    });
+    header.getCell(1).alignment = { vertical: "middle", horizontal: "left", wrapText: false };
+    header.getCell(3).note = "Служебный стабильный идентификатор. Для существующего товара не изменяйте; для нового оставьте пустым.";
+    header.getCell(11).note = "Уникальный MAT-код товара. В служебных строках здесь находятся CAT- и SUB-коды.";
+
+    let currentCategoryKey = null;
+    let currentSubcategoryKey = null;
+    exportRows.forEach(({ product, category, subcategory }) => {
+        const categoryName = normalizeText(product.category);
+        const subcategoryName = normalizeText(product.subcategory);
+        const categoryKey = normalizeCatalogStructureName(categoryName);
+        const subcategoryKey = `${categoryKey}:${normalizeCatalogStructureName(subcategoryName)}`;
+
+        if (categoryKey !== currentCategoryKey) {
+            currentCategoryKey = categoryKey;
+            currentSubcategoryKey = null;
+            const row = sheet.addRow([
+                sanitizeExcelText(`Категория - ${categoryName}`),
+                sanitizeExcelText(`Категория - ${categoryName}`),
+                null, null, null, null, null, null, null, null,
+                sanitizeExcelText(category?.external_code || "")
+            ]);
+            row.font = { bold: true, color: { argb: "FF205742" } };
+            row.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFD7E7DC" } };
+            row.height = 22;
+        }
+
+        if (subcategoryName && subcategoryKey !== currentSubcategoryKey) {
+            currentSubcategoryKey = subcategoryKey;
+            const row = sheet.addRow([
+                sanitizeExcelText(`Подкатегория - ${subcategoryName}`),
+                sanitizeExcelText(`Подкатегория - ${subcategoryName}`),
+                null, null, null, null, null, null, null, null,
+                sanitizeExcelText(subcategory?.external_code || "")
+            ]);
+            row.font = { bold: true, color: { argb: "FF2F7A5D" } };
+            row.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFF4F6F1" } };
+            row.height = 21;
+        }
+
+        const price = product.price === null || product.price === undefined ? null : Number(product.price);
+        const weight = product.weight === null || product.weight === undefined ? null : Number(product.weight);
+        const title = sanitizeExcelText(product.title);
+        const row = sheet.addRow([
+            title,
+            title,
+            Number(product.id),
+            sanitizeExcelText(product.unit || "шт"),
+            Number.isFinite(price) ? price : null,
+            Number(product.sort_order) || 0,
+            null,
+            sanitizeExcelText(product.product_group || ""),
+            null,
+            Number.isFinite(weight) ? weight : null,
+            sanitizeExcelText(product.external_id || "")
+        ]);
+        row.getCell(5).numFmt = "#,##0.00";
+        row.getCell(10).numFmt = "0.###";
+        row.getCell(3).numFmt = "0";
+        row.getCell(6).numFmt = "0";
+        row.getCell(3).fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFF0F1F0" } };
+        [1, 4, 5, 6, 8, 10, 11].forEach(columnNumber => {
+            row.getCell(columnNumber).fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFFCFDFC" } };
+        });
+        row.alignment = { vertical: "middle", wrapText: false };
+    });
+
+    sheet.properties.defaultRowHeight = 20;
+
+    const instructions = workbook.addWorksheet("ИНСТРУКЦИЯ", {
+        views: [{ state: "frozen", ySplit: 2 }]
+    });
+    instructions.columns = [{ width: 28 }, { width: 100 }];
+    instructions.getRow(1).height = 30;
+    instructions.getCell("A1").value = "MatMix — работа с каталогом";
+    instructions.mergeCells("A1:B1");
+    instructions.getCell("A1").font = { bold: true, size: 16, color: { argb: "FFFFFFFF" } };
+    instructions.getCell("A1").fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF205742" } };
+    instructions.getCell("A1").alignment = { vertical: "middle", horizontal: "left" };
+    instructions.addRow(["Правило", "Описание"]);
+    const instructionRows = [
+        ["Рабочий лист", "Импорт читает лист «ШАБЛОН». Не удаляйте и не переименовывайте его и обязательные колонки."],
+        ["Существующий товар", "ID товара — служебный стабильный идентификатор. Не изменяйте его без необходимости."],
+        ["Новый товар", "Добавьте строку товара и оставьте ID пустым. Укажите уникальный MAT-код, название, единицу и структуру."],
+        ["Категория", "Строка «Категория - Название» создаёт или сопоставляет категорию; в K указывается CAT-код."],
+        ["Подкатегория", "Строка «Подкатегория - Название» создаёт или сопоставляет подкатегорию; в K указывается SUB-код."],
+        ["Группа товаров", "Название группы задаётся в колонке «Группа Товаров» каждой товарной строки."],
+        ["Цена", "Может быть пустой — это означает цену по запросу. Если указана, должна быть числом не меньше нуля."],
+        ["Вес", "Необязательное числовое поле. Пустое значение импортируется как 0."],
+        ["Изображения", "Excel не управляет изображениями. Обратный импорт не удаляет существующие изображения товаров."],
+        ["Конфликт ID и MAT", "Если ID и MAT относятся к разным товарам CRM, импорт блокируется до разрешения конфликта."],
+        ["Скрытые колонки", "B, G и I — legacy-служебные колонки. Они сохранены для совместимости и скрыты от обычной работы."]
+    ];
+    instructionRows.forEach(values => instructions.addRow(values));
+    const instructionHeader = instructions.getRow(2);
+    instructionHeader.font = { bold: true, color: { argb: "FFFFFFFF" } };
+    instructionHeader.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF2F7A5D" } };
+    instructions.getColumn(1).font = { bold: true, color: { argb: "FF205742" } };
+    instructions.eachRow((row, rowNumber) => {
+        if (rowNumber > 2) row.height = 34;
+        row.alignment = { vertical: "middle", wrapText: true };
+    });
+
+    return {
+        workbook,
+        filename: getCatalogExportFileName(),
+        counts: {
+            products: products.length,
+            active: products.filter(product => Number(product.is_active) === 1).length,
+            inactive: products.filter(product => Number(product.is_active) !== 1).length,
+            deleted: 0
+        }
+    };
+}
+
+const CATALOG_TEMPLATE_PATH = path.join(__dirname, "..", "templates", "catalog-template.xlsx");
+
+function getStructuralLegacyKind(record) {
+    const title = normalizeText(record?.title).replace(/[\u2010-\u2015]/g, "-");
+    const match = title.match(/^(категория|подкатегория)\s*(?:-\s*)?(.+)$/i);
+    return match ? { type: match[1].toLowerCase() === "категория" ? "category" : "subcategory", name: normalizeText(match[2]) } : null;
+}
+
+function classifyCatalogRecord(record) {
+    const externalId = normalizeCodeText(record?.external_id ?? record?.externalId);
+    const legacyStructure = getStructuralLegacyKind(record);
+    const isLegacyImport = String(record?.source || "").toLowerCase() === "excel" && externalId.toLowerCase().startsWith("excel-");
+    const hasProductPayload = Boolean(normalizeText(record?.product_group))
+        || record?.price !== null && record?.price !== undefined && record?.price !== ""
+        || Number(record?.weight || 0) !== 0
+        || !["", "шт"].includes(normalizeText(record?.unit).toLowerCase());
+
+    if (legacyStructure && isLegacyImport && !hasProductPayload) {
+        return { type: "structural_legacy", structureType: legacyStructure.type, structureName: legacyStructure.name };
+    }
+    if (validateMatCode(externalId)) return { type: "product" };
+    if (isLegacyImport && hasProductPayload && !legacyStructure) return { type: "product", legacy: true };
+    if (!externalId || validateCategoryCode(externalId) || validateSubcategoryCode(externalId)) {
+        return { type: "invalid", reason: "INVALID_PRODUCT_CODE" };
+    }
+    return { type: "manual_review", reason: "UNRECOGNIZED_LEGACY_CODE" };
+}
+
+function validateCatalogExportRows(rows, expectedProducts) {
+    const seenCodes = new Set();
+    let productCount = 0;
+    for (const row of rows) {
+        const code = normalizeCodeText(row.values[10]);
+        const expected = row.type === "category" ? validateCategoryCode(code)
+            : row.type === "subcategory" ? validateSubcategoryCode(code)
+                : validateMatCode(code) || row.legacy === true;
+        if (!expected) throw createImportError(409, `Некорректный код строки экспорта ${row.rowNumber} (${row.type}: ${code || "пусто"}).`, "CATALOG_EXPORT_INVALID_CODE");
+        if (seenCodes.has(code)) throw createImportError(409, `Дублирующийся код строки экспорта ${row.rowNumber}.`, "CATALOG_EXPORT_DUPLICATE_CODE");
+        seenCodes.add(code);
+        if (row.type === "product") productCount += 1;
+    }
+    if (productCount !== expectedProducts) {
+        throw createImportError(409, "Количество товаров в сформированном каталоге не прошло проверку.", "CATALOG_EXPORT_COUNT_MISMATCH");
+    }
+}
+
+function cloneExcelStyle(value) {
+    return value ? JSON.parse(JSON.stringify(value)) : value;
+}
+
+function applyTemplateRow(sheet, rowNumber, template, values) {
+    const row = sheet.getRow(rowNumber);
+    row.height = template.height;
+    for (let column = 1; column <= 12; column += 1) {
+        const cell = row.getCell(column);
+        cell.value = values[column - 1] ?? null;
+        cell.style = cloneExcelStyle(template.styles[column - 1]);
+    }
+    sheet.mergeCells(rowNumber, 1, rowNumber, 2);
+    row.commit();
+    return row;
+}
+
+async function buildReferenceCatalogExportWorkbook(db) {
+    const [products, structureRows] = await Promise.all([
+        db.all(`
+            SELECT id, external_id, title, category, subcategory, product_group,
+                   price, weight, unit, is_active, sort_order, source
+            FROM products
+            WHERE deleted_at IS NULL
+            ORDER BY sort_order ASC, id ASC
+        `),
+        db.all(`
+            SELECT id, type, name, normalized_name, external_code, parent_id, sort_order, is_system
+            FROM catalog_structure
+            WHERE type IN ('category', 'subcategory')
+            ORDER BY sort_order ASC, id ASC
+        `)
+    ]);
+
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.readFile(CATALOG_TEMPLATE_PATH);
+    const sheet = workbook.worksheets[0];
+    workbook.creator = "MatMix";
+    workbook.modified = new Date();
+
+    const captureRow = rowNumber => ({
+        height: sheet.getRow(rowNumber).height,
+        styles: Array.from({ length: 12 }, (_, index) => cloneExcelStyle(sheet.getCell(rowNumber, index + 1).style))
+    });
+    const referenceCategoryRank = new Map();
+    const referenceSubcategoryRank = new Map();
+    for (let referenceRow = 7; referenceRow <= sheet.rowCount; referenceRow += 1) {
+        const code = normalizeCodeText(sheet.getCell(referenceRow, 11).value);
+        if (validateCategoryCode(code) && !referenceCategoryRank.has(code)) referenceCategoryRank.set(code, referenceRow);
+        if (validateSubcategoryCode(code) && !referenceSubcategoryRank.has(code)) referenceSubcategoryRank.set(code, referenceRow);
+    }
+    const categoryTemplate = captureRow(7);
+    const subcategoryTemplate = captureRow(8);
+    const productTemplate = captureRow(9);
+
+    for (const range of [...(sheet.model.merges || [])]) {
+        const match = range.match(/^[A-Z]+(\d+):[A-Z]+(\d+)$/);
+        if (match && Number(match[1]) >= 7) sheet.unMergeCells(range);
+    }
+    if (sheet.rowCount > 6) sheet.spliceRows(7, sheet.rowCount - 6);
+    if (sheet.columnCount > 12) sheet.spliceColumns(13, sheet.columnCount - 12);
+    sheet.removeConditionalFormatting();
+    sheet.autoFilter = undefined;
+    sheet.views = cloneExcelStyle(sheet.views);
+
+    const categories = structureRows.filter(row => row.type === "category" && !row.is_system);
+    const subcategories = structureRows.filter(row => row.type === "subcategory");
+    const categoryByName = new Map(categories.map(row => [normalizeCatalogStructureName(row.name), row]));
+    const subcategoryByKey = new Map();
+    subcategories.forEach(row => {
+        const key = `${Number(row.parent_id) || 0}:${normalizeCatalogStructureName(row.name)}`;
+        const existing = subcategoryByKey.get(key);
+        if (!existing || !validateSubcategoryCode(existing.external_code) && validateSubcategoryCode(row.external_code)) subcategoryByKey.set(key, row);
+    });
+    const categoryRank = new Map(categories.map((row, index) => [Number(row.id), referenceCategoryRank.get(normalizeCategoryCode(row.external_code)) ?? 100000 + index]));
+    const subcategoryRank = new Map(subcategories.map((row, index) => [Number(row.id), referenceSubcategoryRank.get(normalizeSubcategoryCode(row.external_code)) ?? 100000 + index]));
+
+    const classifiedProducts = products.map(product => ({ product, classification: classifyCatalogRecord(product) }));
+    const excluded = classifiedProducts.filter(item => item.classification.type === "structural_legacy");
+    const ambiguous = classifiedProducts.filter(item => ["invalid", "manual_review"].includes(item.classification.type));
+    if (ambiguous.length) {
+        console.error("Catalog export blocked by ambiguous records:", ambiguous.map(item => ({ id: item.product.id, reason: item.classification.reason })));
+        throw createImportError(409, "Каталог содержит неоднозначные записи. Выполните диагностику перед экспортом.", "CATALOG_EXPORT_AMBIGUOUS_RECORDS");
+    }
+    if (excluded.length) {
+        console.warn("Catalog export excluded structural legacy records:", excluded.map(item => ({ id: item.product.id, kind: item.classification.structureType })));
+    }
+
+    const rows = classifiedProducts.filter(item => item.classification.type === "product").map(({ product, classification }) => {
+        const category = categoryByName.get(normalizeCatalogStructureName(product.category));
+        const subcategory = category
+            ? subcategoryByKey.get(`${Number(category.id)}:${normalizeCatalogStructureName(product.subcategory)}`)
+            : null;
+        return { product, category, subcategory, classification };
+    }).sort((first, second) => {
+        const firstCategoryRank = first.category ? categoryRank.get(Number(first.category.id)) : Number.MAX_SAFE_INTEGER;
+        const secondCategoryRank = second.category ? categoryRank.get(Number(second.category.id)) : Number.MAX_SAFE_INTEGER;
+        const firstSubcategoryRank = first.subcategory ? subcategoryRank.get(Number(first.subcategory.id)) : Number.MAX_SAFE_INTEGER;
+        const secondSubcategoryRank = second.subcategory ? subcategoryRank.get(Number(second.subcategory.id)) : Number.MAX_SAFE_INTEGER;
+        return firstCategoryRank - secondCategoryRank
+            || firstSubcategoryRank - secondSubcategoryRank
+            || Number(first.product.sort_order || 0) - Number(second.product.sort_order || 0)
+            || Number(first.product.id) - Number(second.product.id);
+    });
+
+    let rowNumber = 7;
+    let currentCategoryKey = null;
+    let currentSubcategoryKey = null;
+    const validationRows = [];
+    for (const { product, category, subcategory, classification } of rows) {
+        const categoryName = normalizeText(product.category);
+        const subcategoryName = normalizeText(product.subcategory);
+        const categoryKey = normalizeCatalogStructureName(categoryName);
+        const subcategoryKey = `${categoryKey}:${normalizeCatalogStructureName(subcategoryName)}`;
+
+        if (categoryKey !== currentCategoryKey) {
+            currentCategoryKey = categoryKey;
+            currentSubcategoryKey = null;
+            const title = sanitizeExcelText(`Категория - ${categoryName}`);
+            const values = [title, title, null, null, null, null, null, null, null, null, sanitizeExcelText(category?.external_code || ""), null];
+            validationRows.push({ type: "category", rowNumber, values });
+            applyTemplateRow(sheet, rowNumber++, categoryTemplate, values);
+        }
+        if (subcategoryName && subcategoryKey !== currentSubcategoryKey) {
+            currentSubcategoryKey = subcategoryKey;
+            const title = sanitizeExcelText(`Подкатегория - ${subcategoryName}`);
+            const values = [title, title, null, null, null, null, null, null, null, null, sanitizeExcelText(subcategory?.external_code || ""), null];
+            validationRows.push({ type: "subcategory", rowNumber, values });
+            applyTemplateRow(sheet, rowNumber++, subcategoryTemplate, values);
+        }
+
+        const price = product.price === null || product.price === undefined ? null : Number(product.price);
+        const weight = product.weight === null || product.weight === undefined ? null : Number(product.weight);
+        const title = sanitizeExcelText(product.title);
+        const values = [
+            title, title, null, sanitizeExcelText(product.unit || "шт"), Number.isFinite(price) ? price : null,
+            null, null, sanitizeExcelText(product.product_group || ""), null,
+            Number.isFinite(weight) ? weight : null, sanitizeExcelText(product.external_id || ""), null
+        ];
+        validationRows.push({ type: "product", legacy: classification.legacy === true, rowNumber, values });
+        applyTemplateRow(sheet, rowNumber++, productTemplate, values);
+    }
+
+    validateCatalogExportRows(validationRows, rows.length);
+
+    return {
+        workbook,
+        filename: getCatalogExportFileName(),
+        counts: {
+            products: rows.length,
+            active: rows.filter(item => Number(item.product.is_active) === 1).length,
+            inactive: rows.filter(item => Number(item.product.is_active) !== 1).length,
+            deleted: 0,
+            excludedStructuralLegacy: excluded.length
+        }
+    };
 }
 
 function normalizeCodeText(value) {
@@ -194,7 +603,7 @@ function createIssue(severity, code, message, rowNumber = null, details = {}) {
 }
 
 function isHeaderTitle(title) {
-    return ["наименование", "наименование товара", "товар", "название"].includes(normalizeKey(title));
+    return ["наименование", "наименование товара", "товар", "название", "тип / структура / наименование"].includes(normalizeKey(title));
 }
 
 function getCategoryName(title) {
@@ -227,10 +636,17 @@ function hasNonTitleProductCells(row) {
 
 function parseCatalogRow(row, rowNumber, context = {}) {
     const title = getCellText(row.getCell(1));
+    const rawProductId = "";
+    const productId = null;
     const code = getCellText(row.getCell(11));
-    const allowLooseServiceRow = !hasNonTitleProductCells(row);
-    const categoryName = getCategoryName(title) || (allowLooseServiceRow ? getLooseCategoryName(title) : "");
-    const subcategoryName = getSubcategoryName(title) || (allowLooseServiceRow ? getLooseSubcategoryName(title) : "");
+    const structuralCandidate = getStructuralLegacyKind({ title });
+    const hasProductPayload = [4, 5, 8, 10].some(index => getCellText(row.getCell(index)));
+    const structuralCodeMatches = !code
+        || structuralCandidate?.type === "category" && validateCategoryCode(code)
+        || structuralCandidate?.type === "subcategory" && validateSubcategoryCode(code);
+    const allowLooseServiceRow = !hasProductPayload && structuralCodeMatches;
+    const categoryName = allowLooseServiceRow && structuralCandidate?.type === "category" ? structuralCandidate.name : "";
+    const subcategoryName = allowLooseServiceRow && structuralCandidate?.type === "subcategory" ? structuralCandidate.name : "";
 
     if (categoryName) {
         return {
@@ -262,6 +678,7 @@ function parseCatalogRow(row, rowNumber, context = {}) {
     }
 
     const rawPrice = getCellRawValue(row.getCell(5));
+    const rawSortOrder = "";
     const rawWeight = getCellRawValue(row.getCell(10));
     const priceText = getCellText(row.getCell(5));
     const weightText = getCellText(row.getCell(10));
@@ -270,6 +687,8 @@ function parseCatalogRow(row, rowNumber, context = {}) {
     return {
         type: "product",
         rowNumber,
+        productId,
+        rawProductId,
         externalId: code ? normalizeMatCode(code) : "",
         rawExternalId: code,
         title,
@@ -284,7 +703,9 @@ function parseCatalogRow(row, rowNumber, context = {}) {
         priceText,
         weightText,
         rawPrice,
-        rawWeight
+        rawWeight,
+        sortOrder: null,
+        rawSortOrder
     };
 }
 
@@ -467,6 +888,7 @@ async function parseCatalogExcelV2(input) {
     const seenCategoryCodes = new Map();
     const seenSubcategoryCodes = new Map();
     const seenMatCodes = new Map();
+    const seenProductIds = new Map();
     const titleRows = new Map();
     const context = {
         currentCategory: "",
@@ -498,11 +920,8 @@ async function parseCatalogExcelV2(input) {
                 } else if (!firstCategoryWithCode) {
                     seenCategoryCodes.set(parsedRow.externalCode, parsedRow);
                 }
-            } else {
-                warnings.push(createIssue("warning", "MISSING_CAT_CODE", "Category row has no CAT code.", rowNumber, { name: parsedRow.name }));
             }
             categoryRows.push(parsedRow);
-            warnings.push(createIssue("warning", "SERVICE_ROW_SKIPPED", "Category row skipped as service row.", rowNumber));
             return;
         }
 
@@ -525,24 +944,36 @@ async function parseCatalogExcelV2(input) {
                 } else if (!firstSubcategoryWithCode) {
                     seenSubcategoryCodes.set(parsedRow.externalCode, parsedRow);
                 }
-            } else {
-                warnings.push(createIssue("warning", "MISSING_SUB_CODE", "Subcategory row has no SUB code.", rowNumber, { name: parsedRow.name }));
             }
             subcategoryRows.push(parsedRow);
-            warnings.push(createIssue("warning", "SERVICE_ROW_SKIPPED", "Subcategory row skipped as service row.", rowNumber));
             return;
         }
 
         if (parsedRow.title && isHeaderTitle(parsedRow.title)) {
-            warnings.push(createIssue("warning", "SERVICE_ROW_SKIPPED", "Header row skipped as service row.", rowNumber));
             return;
         }
 
         const normalizedTitle = normalizeKey(parsedRow.title);
+        if (parsedRow.rawProductId !== "" && !parsedRow.productId) {
+            errors.push(createIssue("critical", "INVALID_PRODUCT_ID", "Product ID must be a positive integer.", rowNumber, { productId: parsedRow.rawProductId }));
+        }
+        if (parsedRow.rawSortOrder !== "" && parsedRow.sortOrder === null) {
+            errors.push(createIssue("critical", "INVALID_SORT_ORDER", "Sort order must be a non-negative integer.", rowNumber, { sortOrder: parsedRow.rawSortOrder }));
+        }
+        if (parsedRow.productId) {
+            if (seenProductIds.has(parsedRow.productId)) {
+                errors.push(createIssue("critical", "DUPLICATE_PRODUCT_ID", "Duplicate product ID in Excel.", rowNumber, {
+                    productId: parsedRow.productId,
+                    firstRowNumber: seenProductIds.get(parsedRow.productId)
+                }));
+            } else {
+                seenProductIds.set(parsedRow.productId, rowNumber);
+            }
+        }
         if (!parsedRow.title) errors.push(createIssue("critical", "MISSING_TITLE", "Product has no title.", rowNumber));
         if (!parsedRow.category) errors.push(createIssue("critical", "MISSING_CATEGORY", "Product has no category.", rowNumber, { title: parsedRow.title }));
         if (parsedRow.rawExternalId && !validateMatCode(parsedRow.rawExternalId)) {
-            errors.push(createIssue("critical", "INVALID_MAT_CODE", "MAT code has invalid format.", rowNumber, { externalId: parsedRow.rawExternalId }));
+            warnings.push(createIssue("warning", "LEGACY_PRODUCT_CODE", "Legacy product code is preserved for compatibility.", rowNumber, { externalId: parsedRow.rawExternalId }));
         }
         if (parsedRow.externalId) {
             if (seenMatCodes.has(parsedRow.externalId)) {
@@ -560,8 +991,7 @@ async function parseCatalogExcelV2(input) {
         if (parsedRow.weight < 0) errors.push(createIssue("critical", "NEGATIVE_WEIGHT", "Negative weight.", rowNumber, { title: parsedRow.title }));
         if (!ALLOWED_UNITS.has(parsedRow.unit)) errors.push(createIssue("critical", "INVALID_UNIT", "Invalid unit.", rowNumber, { title: parsedRow.title, unit: parsedRow.unit }));
 
-        if (!parsedRow.rawExternalId) errors.push(createIssue("critical", "MISSING_MAT_CODE", "В строке отсутствует MAT-код.", rowNumber, { title: parsedRow.title }));
-        if (!parsedRow.priceText) warnings.push(createIssue("warning", "EMPTY_PRICE", "Empty price: treated as price on request.", rowNumber, { title: parsedRow.title }));
+        if (!parsedRow.rawExternalId) parsedRow.codeWillBeGenerated = true;
         if (!parsedRow.weightText) warnings.push(createIssue("warning", "EMPTY_WEIGHT", "Empty weight: treated as 0.", rowNumber, { title: parsedRow.title }));
         if (!parsedRow.subcategory) warnings.push(createIssue("warning", "EMPTY_SUBCATEGORY", "Empty subcategory.", rowNumber, { title: parsedRow.title }));
         if (!parsedRow.productGroup) warnings.push(createIssue("warning", "EMPTY_GROUP", "Empty product group.", rowNumber, { title: parsedRow.title }));
@@ -578,6 +1008,7 @@ async function parseCatalogExcelV2(input) {
 
         productRows.push({
             rowNumber,
+            productId: parsedRow.productId,
             externalId: parsedRow.externalId,
             rawExternalId: parsedRow.rawExternalId,
             title: parsedRow.title,
@@ -591,7 +1022,7 @@ async function parseCatalogExcelV2(input) {
             priceText: parsedRow.priceText,
             rawPrice: parsedRow.rawPrice,
             weight: parsedRow.weight,
-            sortOrder: productRows.length + 1
+            sortOrder: parsedRow.sortOrder
         });
     });
 
@@ -661,7 +1092,7 @@ function buildProductsByMatCode(dbProducts) {
 
     dbProducts.forEach(product => {
         const normalizedCode = normalizeMatCode(product.externalId ?? product.external_id);
-        if (!validateMatCode(normalizedCode)) return;
+        if (!normalizedCode) return;
         productsWithMatCode += 1;
         if (productsByMatCode.has(normalizedCode)) {
             if (!duplicateMatCodes.has(normalizedCode)) {
@@ -1000,6 +1431,7 @@ function getReviewReasonLabel(reason) {
         POSSIBLE_MAT_TYPO: "Возможная опечатка MAT",
         MULTIPLE_CANDIDATES: "Найдено несколько кандидатов CRM",
         POSSIBLE_EXISTING_PRODUCT: "Похож на существующий товар",
+        POSSIBLE_EXISTING_PRODUCT_WITHOUT_CODE: "Возможный существующий товар без MAT-кода",
         SIMILAR_UNLINKED_PRODUCT: "Похож на товар без MAT",
         STRUCTURE_CONFLICT: "Конфликт структуры"
     };
@@ -2153,21 +2585,46 @@ async function buildCatalogImportPreview(db, parsed, file = {}, options = {}) {
 
     parsed.productRows.forEach(row => {
         const normalizedRowCode = normalizeMatCode(row.externalId);
-        if (!normalizedRowCode || !validateMatCode(normalizedRowCode)) {
+        const currentProductById = row.productId ? productsById.get(Number(row.productId)) : null;
+        const currentProductByCode = productsByExternalId.get(normalizedRowCode);
+        if (!normalizedRowCode && !currentProductById) {
+            const suggestedExternalId = formatMatCode(nextCodeNumber);
+            changes.new.push({
+                ...row,
+                externalId: suggestedExternalId,
+                suggestedExternalId,
+                autoGeneratedMat: true,
+                reason: "MAT_CODE_WILL_BE_GENERATED",
+                reasonLabel: "Для нового товара будет автоматически создан MAT-код."
+            });
+            fileCodes.add(suggestedExternalId);
+            nextCodeNumber += 1;
+            return;
+        }
+        if (!validateMatCode(normalizedRowCode) && !currentProductByCode && !currentProductById) {
             changes.missingCodes.push({
                 rowNumber: row.rowNumber,
                 title: row.title,
                 category: row.category,
                 subcategory: row.subcategory,
-                suggestedExternalId: formatMatCode(nextCodeNumber)
+                rawExternalId: row.rawExternalId,
+                reason: "INVALID_LEGACY_PRODUCT_CODE"
             });
-            nextCodeNumber += 1;
             return;
         }
 
-        importDiagnostics.excelRowsWithMatCode += 1;
-        fileCodes.add(normalizedRowCode);
-        let currentProduct = productsByExternalId.get(normalizedRowCode);
+        if (validateMatCode(normalizedRowCode)) importDiagnostics.excelRowsWithMatCode += 1;
+        if (normalizedRowCode) fileCodes.add(normalizedRowCode);
+        if (currentProductById && currentProductByCode && Number(currentProductById.id) !== Number(currentProductByCode.id)) {
+            changes.requiresReview.push(buildReviewItem(row, "ID_MAT_CONFLICT", {
+                importStatus: "ID_MAT_CONFLICT",
+                reasonLabel: "ID товара и MAT-код относятся к разным товарам CRM.",
+                candidate: currentProductById,
+                candidates: [currentProductById, currentProductByCode]
+            }));
+            return;
+        }
+        let currentProduct = currentProductById || currentProductByCode;
         const structureConflict = getProductStructureConflict(row, structureLookup);
         const storedResolution = getStoredResolution(row, resolutions);
         const mappedExistingProduct = !currentProduct && ["map_existing", "accept_excel_mat"].includes(storedResolution?.action)
@@ -2366,9 +2823,16 @@ async function buildCatalogImportPreview(db, parsed, file = {}, options = {}) {
 
     changes.new.forEach(row => {
         const resolution = getStoredResolution(row, resolutions);
-        const classification = resolution?.action === "create_new"
+        let classification = resolution?.action === "create_new"
             ? { classification: "TRUE_NEW", reason: "ABSENT_IN_CRM" }
             : classifyNewProduct(row, dbProducts);
+        if (row.autoGeneratedMat && classification.classification !== "TRUE_NEW") {
+            classification = {
+                ...classification,
+                reason: "POSSIBLE_EXISTING_PRODUCT_WITHOUT_CODE",
+                conflictCode: "POSSIBLE_EXISTING_PRODUCT_WITHOUT_CODE"
+            };
+        }
         const item = {
             ...row,
             importStatus: classification.classification === "TRUE_NEW" ? "SAFE_NEW" : "MAT_CONFLICT",
@@ -2377,7 +2841,7 @@ async function buildCatalogImportPreview(db, parsed, file = {}, options = {}) {
             conflictCode: classification.conflictCode || (classification.classification === "TRUE_NEW" ? "" : classification.reason),
             reasonCode: classification.reasonCode || (classification.classification === "TRUE_NEW" ? "ABSENT_IN_CRM" : ""),
             reasonLabel: classification.classification === "TRUE_NEW"
-                ? "MAT отсутствует в CRM, конфликтов не найдено"
+                ? (row.autoGeneratedMat ? "Для нового товара будет автоматически создан MAT-код." : "MAT отсутствует в CRM, конфликтов не найдено")
                 : getReviewReasonLabel(classification.reason),
             rowId: getResolutionKey(row),
             resolution: resolution || null,
@@ -2483,7 +2947,7 @@ async function buildCatalogImportPreview(db, parsed, file = {}, options = {}) {
     ];
     const errors = [...parsed.errors, ...structureErrors];
     const warnings = [
-        ...parsed.warnings.filter(item => !["MISSING_CAT_CODE", "MISSING_SUB_CODE"].includes(item.code)),
+        ...parsed.warnings.filter(item => !["MISSING_CAT_CODE", "MISSING_SUB_CODE", "SERVICE_ROW_SKIPPED", "EMPTY_PRICE", "EMPTY_WEIGHT", "EMPTY_GROUP"].includes(item.code)),
         ...changes.structureWarnings,
         ...changes.categoryExcelCodesIgnored.map(item => createIssue("warning", "CATEGORY_EXCEL_CODE_IGNORED", "CAT code from Excel was ignored because CRM structure is matched by name.", item.rowNumber, item)),
         ...changes.subcategoryExcelCodesIgnored.map(item => createIssue("warning", "SUBCATEGORY_EXCEL_CODE_IGNORED", "SUB code from Excel was ignored because CRM structure is matched by name and parent.", item.rowNumber, item)),
@@ -2495,6 +2959,17 @@ async function buildCatalogImportPreview(db, parsed, file = {}, options = {}) {
     const warningRows = new Set(warnings.map(item => Number(item.rowNumber || 0)).filter(Boolean)).size;
     const warningBreakdown = buildWarningBreakdown(warnings);
     const applicableRows = changes.updated.length + changes.new.length + changes.missingCodes.length;
+    const generatedMatCodes = changes.new.filter(item => item.autoGeneratedMat).length;
+    const generatedCategoryCodes = changes.newCategories.filter(item => parsed.categoryRows.some(row =>
+        normalizeCatalogStructureName(row.name) === normalizeCatalogStructureName(item.name)
+        && !row.rawExternalCode
+    )).length;
+    const generatedSubcategoryCodes = changes.newSubcategories.filter(item => parsed.subcategoryRows.some(row =>
+        normalizeCatalogStructureName(row.category) === normalizeCatalogStructureName(item.category)
+        && normalizeCatalogStructureName(row.name) === normalizeCatalogStructureName(item.name)
+        && !row.rawExternalCode
+    )).length;
+    const emptyPriceCount = parsed.productRows.filter(item => !item.priceText).length;
     const summary = {
         new: changes.new.length,
         updated: changes.updated.length,
@@ -2502,6 +2977,11 @@ async function buildCatalogImportPreview(db, parsed, file = {}, options = {}) {
         missingFromFile: changes.missingFromFile.length,
         manualOnly: changes.manualOnly.length,
         missingCodes: changes.missingCodes.length,
+        generatedMatCodes,
+        generatedCategoryCodes,
+        generatedSubcategoryCodes,
+        emptyPriceCount,
+        serviceRows: parsed.categoryRows.length + parsed.subcategoryRows.length + 1,
         trueNew: changes.trueNew.length,
         requiresReview: changes.requiresReview.length,
         unresolvedReviewConflicts: unresolvedReviewConflicts.length,
@@ -2934,7 +3414,7 @@ function normalizeIncomingProduct(row, externalId = row.externalId) {
         price: row.price === null || row.price === undefined ? null : Number(row.price),
         weight: Number(row.weight) || 0,
         unit: normalizeUnit(row.unit),
-        sortOrder: Number(row.sortOrder) || 0
+        sortOrder: row.sortOrder === null || row.sortOrder === undefined ? null : (Number(row.sortOrder) || 0)
     };
 }
 
@@ -2991,7 +3471,7 @@ async function insertImportedProduct(db, row, now) {
             "",
             "",
             1,
-            product.sortOrder,
+            product.sortOrder ?? 0,
             "excel",
             now,
             now,
@@ -3028,7 +3508,7 @@ async function updateImportedProduct(db, row, now, productId = null, options = {
              price = ?,
              weight = ?,
              unit = ?,
-             sort_order = ?,
+             sort_order = COALESCE(?, sort_order),
              source = ?,
              last_imported_at = ?,
              updated_at = ?
@@ -3166,7 +3646,7 @@ async function upsertCatalogStructureFromParsed(db, parsed, now) {
             if (row.externalCode) categoryByFileCodeOrName.set(normalizeCategoryCode(row.externalCode), { id: result.id, external_code: externalCode });
             assignedNewCode = true;
         }
-        if (assignedNewCode) assignedRows.push({ rowNumber: row.rowNumber, externalId: externalCode });
+        if (assignedNewCode) assignedRows.push({ rowNumber: row.rowNumber, externalId: externalCode, entityType: "category", name: row.name });
     }
 
     for (const row of parsed.subcategoryRows || []) {
@@ -3212,7 +3692,7 @@ async function upsertCatalogStructureFromParsed(db, parsed, now) {
             );
             assignedNewCode = true;
         }
-        if (assignedNewCode) assignedRows.push({ rowNumber: row.rowNumber, externalId: externalCode });
+        if (assignedNewCode) assignedRows.push({ rowNumber: row.rowNumber, externalId: externalCode, entityType: "subcategory", name: row.name });
     }
 
     return assignedRows;
@@ -3264,7 +3744,6 @@ async function applyCatalogImport(db, token, options = {}, user = {}) {
         integrityCheck: "",
         foreignKeyCheck: []
     };
-    const assignMissingCodes = options.assignMissingCodes === true;
     const hideMissingFromFile = options.missingFromFileAction === "hide";
     const assignedRows = [];
     const effectiveParsed = applyImportResolutionsToParsed(
@@ -3307,54 +3786,21 @@ async function applyCatalogImport(db, token, options = {}, user = {}) {
 
         for (const row of latestPreview.changes.new || []) {
             if (row.classification !== "TRUE_NEW") continue;
-            await insertImportedProduct(db, row, now);
-            result.created += 1;
-        }
-
-        if (assignMissingCodes) {
-            for (const row of latestPreview.changes.missingCodes || []) {
-                const parsedRow = effectiveParsed.productRows.find(productRow => productRow.rowNumber === row.rowNumber);
-                if (!parsedRow) continue;
-                const match = findUniqueUnlinkedMatch(parsedRow, dbProducts);
-                if (!match) continue;
-
-                const externalId = formatMatCode(nextMatNumber);
+            const incomingRow = row.autoGeneratedMat
+                ? { ...row, externalId: formatMatCode(nextMatNumber) }
+                : row;
+            if (row.autoGeneratedMat) {
                 nextMatNumber += 1;
-                const incoming = normalizeIncomingProduct(parsedRow, externalId);
-                await db.run(
-                    `UPDATE products
-                     SET external_id = ?,
-                         title = ?,
-                         category = ?,
-                         subcategory = ?,
-                         product_group = ?,
-                         price = ?,
-                         weight = ?,
-                         unit = ?,
-                         sort_order = ?,
-                         source = ?,
-                         last_imported_at = ?,
-                         updated_at = ?
-                     WHERE id = ?`,
-                    [
-                        incoming.externalId,
-                        incoming.title,
-                        incoming.category,
-                        incoming.subcategory,
-                        incoming.productGroup,
-                        incoming.price,
-                        incoming.weight,
-                        incoming.unit,
-                        incoming.sortOrder,
-                        "excel",
-                        now,
-                        now,
-                        match.id
-                    ]
-                );
-                assignedRows.push({ rowNumber: parsedRow.rowNumber, externalId });
+                assignedRows.push({
+                    rowNumber: row.rowNumber,
+                    externalId: incomingRow.externalId,
+                    entityType: "product",
+                    name: row.title
+                });
                 result.assignedMat += 1;
             }
+            await insertImportedProduct(db, incomingRow, now);
+            result.created += 1;
         }
 
         if (hideMissingFromFile) {
@@ -3379,6 +3825,11 @@ async function applyCatalogImport(db, token, options = {}, user = {}) {
         throw error;
     }
 
+    result.assignedCodes = assignedRows.map(item => ({
+        entityType: item.entityType || "structure",
+        name: item.name || "",
+        externalId: item.externalId
+    }));
     result.excelCopyPath = await createExcelCopy(tokenData, assignedRows);
     const integrity = await db.get("PRAGMA integrity_check");
     result.integrityCheck = integrity?.integrity_check || Object.values(integrity || {})[0] || "";
@@ -3456,5 +3907,7 @@ module.exports = {
     normalizeSubcategoryCode,
     validateCategoryCode,
     validateSubcategoryCode,
-    sanitizeUploadFileName
+    classifyCatalogRecord,
+    sanitizeUploadFileName,
+    buildCatalogExportWorkbook: buildReferenceCatalogExportWorkbook
 };

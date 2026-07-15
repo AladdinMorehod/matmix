@@ -27,7 +27,8 @@ const {
     applyCatalogImport,
     getCatalogImportExcelCopy,
     getNextMatExternalId,
-    sanitizeUploadFileName
+    sanitizeUploadFileName,
+    buildCatalogExportWorkbook
 } = require("../services/catalogImport");
 const { ceilMoney, ceilWeight } = require("../utils/numberFormat");
 
@@ -1567,6 +1568,18 @@ router.get("/export/excel", requireRole(["admin", "manager"]), async (req, res) 
     } catch (error) {
         console.error("Products export error:", error);
         res.status(500).json({ success: false, message: "Не удалось сформировать прайс." });
+    }
+});
+
+router.get("/import/export/excel", requireRole(["admin"]), async (req, res) => {
+    try {
+        const { workbook, filename } = await buildCatalogExportWorkbook({ all });
+        setExcelHeaders(res, filename);
+        await workbook.xlsx.write(res);
+        res.end();
+    } catch (error) {
+        console.error("Catalog import-compatible export error:", error);
+        sendApiError(res, error, "Не удалось сформировать актуальный каталог Excel.", "CATALOG_EXPORT_FAILED");
     }
 });
 
