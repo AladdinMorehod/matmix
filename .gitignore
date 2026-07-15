@@ -5,6 +5,17 @@ node_modules/
 backend/database/*.db
 backend/database/*.sqlite
 backend/database/*.sqlite3
+backend/database/backups/*
+backend/imported-excel/*
+
+# Runtime product uploads (already tracked files remain tracked)
+public/uploads/products/*
+
+# Temporary catalog artifacts
+*.tmp.db
+*.tmp.sqlite
+*.tmp.xlsx
+~$*.xlsx
 
 # Environment
 .env
