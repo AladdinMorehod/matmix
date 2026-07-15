@@ -24,7 +24,8 @@ const COMPARED_FIELDS = [
     "productGroup",
     "price",
     "weight",
-    "unit"
+    "unit",
+    "sortOrder"
 ];
 
 const IMPORT_EXPORT_HEADERS = [
@@ -245,6 +246,27 @@ function getStructuralLegacyKind(record) {
     return match ? { type: match[1].toLowerCase() === "категория" ? "category" : "subcategory", name: normalizeText(match[2]) } : null;
 }
 
+function classifyCatalogStructureRecord(record, context = {}) {
+    const kind = String(record?.type || record?.kind || "").toLowerCase();
+    const code = normalizeCodeText(record?.external_code ?? record?.externalCode ?? record?.external_id ?? record?.externalId);
+    const parentId = Number(record?.parent_id ?? record?.parentId) || null;
+    const isActive = record?.is_active === undefined ? record?.isActive !== false : Number(record.is_active) === 1;
+    const hasRelations = Number(context.childCount || 0) > 0
+        || Number(context.productCount || 0) > 0
+        || context.isPublic === true;
+    const duplicateCode = Number(context.codeCount || 0) > 1;
+
+    if (record?.deleted_at || !isActive) return { type: "legacy_invalid", reason: "INACTIVE_OR_DELETED_STRUCTURE" };
+    if (!["category", "subcategory"].includes(kind)) return { type: "manual_review", reason: "INVALID_STRUCTURE_KIND" };
+    if (kind === "subcategory" && !parentId) return { type: "orphan", reason: "MISSING_STRUCTURE_PARENT" };
+    if (duplicateCode) return { type: "manual_review", reason: "DUPLICATE_STRUCTURE_CODE" };
+    if (kind === "category" && validateCategoryCode(code) || kind === "subcategory" && validateSubcategoryCode(code)) {
+        return { type: "standard", code };
+    }
+    if (code && hasRelations) return { type: "legacy_valid", code };
+    return { type: "manual_review", reason: code ? "UNUSED_LEGACY_STRUCTURE" : "MISSING_STRUCTURE_CODE" };
+}
+
 function classifyCatalogRecord(record) {
     const externalId = normalizeCodeText(record?.external_id ?? record?.externalId);
     const legacyStructure = getStructuralLegacyKind(record);
@@ -255,7 +277,12 @@ function classifyCatalogRecord(record) {
         || !["", "шт"].includes(normalizeText(record?.unit).toLowerCase());
 
     if (legacyStructure && isLegacyImport && !hasProductPayload) {
-        return { type: "structural_legacy", structureType: legacyStructure.type, structureName: legacyStructure.name };
+        return {
+            type: "legacy_invalid",
+            reason: "PRODUCT_ROW_MASQUERADING_AS_STRUCTURE",
+            structureType: legacyStructure.type,
+            structureName: legacyStructure.name
+        };
     }
     if (validateMatCode(externalId)) return { type: "product" };
     if (isLegacyImport && hasProductPayload && !legacyStructure) return { type: "product", legacy: true };
@@ -327,13 +354,6 @@ async function buildReferenceCatalogExportWorkbook(db) {
         height: sheet.getRow(rowNumber).height,
         styles: Array.from({ length: 12 }, (_, index) => cloneExcelStyle(sheet.getCell(rowNumber, index + 1).style))
     });
-    const referenceCategoryRank = new Map();
-    const referenceSubcategoryRank = new Map();
-    for (let referenceRow = 7; referenceRow <= sheet.rowCount; referenceRow += 1) {
-        const code = normalizeCodeText(sheet.getCell(referenceRow, 11).value);
-        if (validateCategoryCode(code) && !referenceCategoryRank.has(code)) referenceCategoryRank.set(code, referenceRow);
-        if (validateSubcategoryCode(code) && !referenceSubcategoryRank.has(code)) referenceSubcategoryRank.set(code, referenceRow);
-    }
     const categoryTemplate = captureRow(7);
     const subcategoryTemplate = captureRow(8);
     const productTemplate = captureRow(9);
@@ -357,18 +377,22 @@ async function buildReferenceCatalogExportWorkbook(db) {
         const existing = subcategoryByKey.get(key);
         if (!existing || !validateSubcategoryCode(existing.external_code) && validateSubcategoryCode(row.external_code)) subcategoryByKey.set(key, row);
     });
-    const categoryRank = new Map(categories.map((row, index) => [Number(row.id), referenceCategoryRank.get(normalizeCategoryCode(row.external_code)) ?? 100000 + index]));
-    const subcategoryRank = new Map(subcategories.map((row, index) => [Number(row.id), referenceSubcategoryRank.get(normalizeSubcategoryCode(row.external_code)) ?? 100000 + index]));
+    const categoryRank = new Map(categories.map((row, index) => [Number(row.id), (Number(row.sort_order) || 0) * 1000 + index]));
+    const subcategoryRank = new Map(subcategories.map((row, index) => [Number(row.id), (Number(row.sort_order) || 0) * 1000 + index]));
 
     const classifiedProducts = products.map(product => ({ product, classification: classifyCatalogRecord(product) }));
-    const excluded = classifiedProducts.filter(item => item.classification.type === "structural_legacy");
+    const excluded = classifiedProducts.filter(item => ["legacy_invalid", "orphan"].includes(item.classification.type));
     const ambiguous = classifiedProducts.filter(item => ["invalid", "manual_review"].includes(item.classification.type));
     if (ambiguous.length) {
         console.error("Catalog export blocked by ambiguous records:", ambiguous.map(item => ({ id: item.product.id, reason: item.classification.reason })));
         throw createImportError(409, "Каталог содержит неоднозначные записи. Выполните диагностику перед экспортом.", "CATALOG_EXPORT_AMBIGUOUS_RECORDS");
     }
     if (excluded.length) {
-        console.warn("Catalog export excluded structural legacy records:", excluded.map(item => ({ id: item.product.id, kind: item.classification.structureType })));
+        console.warn("Catalog export excluded invalid legacy structure records:", excluded.map(item => ({
+            id: item.product.id,
+            kind: item.classification.structureType,
+            reason: item.classification.reason
+        })));
     }
 
     const rows = classifiedProducts.filter(item => item.classification.type === "product").map(({ product, classification }) => {
@@ -896,6 +920,9 @@ async function parseCatalogExcelV2(input) {
         currentSubcategory: "",
         currentSubcategoryExternalCode: ""
     };
+    let categoryOrder = 0;
+    const subcategoryOrderByCategory = new Map();
+    const productOrderBySection = new Map();
 
     sheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
         const parsedRow = parseCatalogRow(row, rowNumber, context);
@@ -903,6 +930,8 @@ async function parseCatalogExcelV2(input) {
         if (parsedRow.type === "empty") return;
 
         if (parsedRow.type === "category") {
+            categoryOrder += 1;
+            parsedRow.sortOrder = categoryOrder;
             context.currentCategory = parsedRow.name;
             context.currentCategoryExternalCode = parsedRow.externalCode;
             context.currentSubcategory = "";
@@ -926,6 +955,10 @@ async function parseCatalogExcelV2(input) {
         }
 
         if (parsedRow.type === "subcategory") {
+            const categoryKey = normalizeCatalogStructureName(context.currentCategory);
+            const subcategoryOrder = (subcategoryOrderByCategory.get(categoryKey) || 0) + 1;
+            subcategoryOrderByCategory.set(categoryKey, subcategoryOrder);
+            parsedRow.sortOrder = subcategoryOrder;
             context.currentSubcategory = parsedRow.name;
             context.currentSubcategoryExternalCode = parsedRow.externalCode;
             if (!context.currentCategory) {
@@ -1006,6 +1039,9 @@ async function parseCatalogExcelV2(input) {
             }
         }
 
+        const productSectionKey = `${normalizeCatalogStructureName(parsedRow.category)}\u0000${normalizeCatalogStructureName(parsedRow.subcategory)}`;
+        const productOrder = (productOrderBySection.get(productSectionKey) || 0) + 1;
+        productOrderBySection.set(productSectionKey, productOrder);
         productRows.push({
             rowNumber,
             productId: parsedRow.productId,
@@ -1022,7 +1058,7 @@ async function parseCatalogExcelV2(input) {
             priceText: parsedRow.priceText,
             rawPrice: parsedRow.rawPrice,
             weight: parsedRow.weight,
-            sortOrder: parsedRow.sortOrder
+            sortOrder: productOrder
         });
     });
 
@@ -2958,7 +2994,13 @@ async function buildCatalogImportPreview(db, parsed, file = {}, options = {}) {
     ];
     const warningRows = new Set(warnings.map(item => Number(item.rowNumber || 0)).filter(Boolean)).size;
     const warningBreakdown = buildWarningBreakdown(warnings);
-    const applicableRows = changes.updated.length + changes.new.length + changes.missingCodes.length;
+    // Applicable means that a product row was parsed and safely matched/planned,
+    // not merely that applying the file would mutate that product. A complete,
+    // unchanged export must remain importable and therefore cannot report zero.
+    const applicableRows = changes.updated.length
+        + changes.new.length
+        + changes.unchanged.length
+        + changes.missingCodes.length;
     const generatedMatCodes = changes.new.filter(item => item.autoGeneratedMat).length;
     const generatedCategoryCodes = changes.newCategories.filter(item => parsed.categoryRows.some(row =>
         normalizeCatalogStructureName(row.name) === normalizeCatalogStructureName(item.name)
@@ -3629,9 +3671,10 @@ async function upsertCatalogStructureFromParsed(db, parsed, now) {
             await db.run(
                 `UPDATE catalog_structure
                  SET external_code = COALESCE(NULLIF(external_code, ''), ?),
+                     sort_order = ?,
                      updated_at = ?
                  WHERE id = ?`,
-                [externalCode, now, existing.id]
+                [externalCode, Number(row.sortOrder) || 0, now, existing.id]
             );
             categoryByFileCodeOrName.set(normalizeCatalogStructureName(row.name), { ...existing, id: existing.id, external_code: externalCode });
             if (row.externalCode) categoryByFileCodeOrName.set(normalizeCategoryCode(row.externalCode), { ...existing, id: existing.id, external_code: externalCode });
@@ -3640,7 +3683,7 @@ async function upsertCatalogStructureFromParsed(db, parsed, now) {
                 `INSERT INTO catalog_structure (
                     type, name, normalized_name, external_code, parent_id, sort_order, is_active, is_system, created_at, updated_at
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-                ["category", row.name, normalizeCatalogStructureName(row.name), externalCode, null, row.rowNumber || 0, 1, 0, now, now]
+                ["category", row.name, normalizeCatalogStructureName(row.name), externalCode, null, Number(row.sortOrder) || 0, 1, 0, now, now]
             );
             categoryByFileCodeOrName.set(normalizeCatalogStructureName(row.name), { id: result.id, external_code: externalCode });
             if (row.externalCode) categoryByFileCodeOrName.set(normalizeCategoryCode(row.externalCode), { id: result.id, external_code: externalCode });
@@ -3679,16 +3722,17 @@ async function upsertCatalogStructureFromParsed(db, parsed, now) {
             await db.run(
                 `UPDATE catalog_structure
                  SET external_code = COALESCE(NULLIF(external_code, ''), ?),
+                     sort_order = ?,
                      updated_at = ?
                  WHERE id = ?`,
-                [externalCode, now, existing.id]
+                [externalCode, Number(row.sortOrder) || 0, now, existing.id]
             );
         } else {
             await db.run(
                 `INSERT INTO catalog_structure (
                     type, name, normalized_name, external_code, parent_id, sort_order, is_active, is_system, created_at, updated_at
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-                ["subcategory", row.name, normalizeCatalogStructureName(row.name), externalCode, parent.id, row.rowNumber || 0, 1, 0, now, now]
+                ["subcategory", row.name, normalizeCatalogStructureName(row.name), externalCode, parent.id, Number(row.sortOrder) || 0, 1, 0, now, now]
             );
             assignedNewCode = true;
         }
@@ -3696,6 +3740,103 @@ async function upsertCatalogStructureFromParsed(db, parsed, now) {
     }
 
     return assignedRows;
+}
+
+async function applyCatalogOrderFromParsed(db, parsed, assignedRows, now) {
+    const structureRows = await db.all(`
+        SELECT id, type, name, normalized_name, parent_id, sort_order, is_system
+        FROM catalog_structure
+        WHERE type IN ('category', 'subcategory')
+        ORDER BY sort_order ASC, id ASC
+    `);
+    const categories = structureRows.filter(row => row.type === "category" && !Number(row.is_system));
+    const categoryByName = new Map(categories.map(row => [normalizeCatalogStructureName(row.normalized_name || row.name), row]));
+    const importedCategoryIds = new Set();
+    let categoryOrder = 0;
+
+    for (const parsedCategory of parsed.categoryRows || []) {
+        const category = categoryByName.get(normalizeCatalogStructureName(parsedCategory.name));
+        if (!category || importedCategoryIds.has(Number(category.id))) continue;
+        categoryOrder += 1;
+        importedCategoryIds.add(Number(category.id));
+        if (Number(category.sort_order) !== categoryOrder) {
+            await db.run("UPDATE catalog_structure SET sort_order = ?, updated_at = ? WHERE id = ?", [categoryOrder, now, category.id]);
+        }
+    }
+    for (const category of categories) {
+        if (importedCategoryIds.has(Number(category.id))) continue;
+        categoryOrder += 1;
+        if (Number(category.sort_order) !== categoryOrder) {
+            await db.run("UPDATE catalog_structure SET sort_order = ?, updated_at = ? WHERE id = ?", [categoryOrder, now, category.id]);
+        }
+    }
+
+    const subcategories = structureRows.filter(row => row.type === "subcategory" && !Number(row.is_system));
+    const subcategoryByKey = new Map(subcategories.map(row => [
+        `${Number(row.parent_id) || 0}:${normalizeCatalogStructureName(row.normalized_name || row.name)}`,
+        row
+    ]));
+    const importedSubcategoryIds = new Set();
+    const nextSubcategoryOrderByParent = new Map();
+    for (const parsedSubcategory of parsed.subcategoryRows || []) {
+        const parent = categoryByName.get(normalizeCatalogStructureName(parsedSubcategory.category));
+        if (!parent) continue;
+        const key = `${Number(parent.id)}:${normalizeCatalogStructureName(parsedSubcategory.name)}`;
+        const subcategory = subcategoryByKey.get(key);
+        if (!subcategory || importedSubcategoryIds.has(Number(subcategory.id))) continue;
+        const nextOrder = (nextSubcategoryOrderByParent.get(Number(parent.id)) || 0) + 1;
+        nextSubcategoryOrderByParent.set(Number(parent.id), nextOrder);
+        importedSubcategoryIds.add(Number(subcategory.id));
+        if (Number(subcategory.sort_order) !== nextOrder) {
+            await db.run("UPDATE catalog_structure SET sort_order = ?, updated_at = ? WHERE id = ?", [nextOrder, now, subcategory.id]);
+        }
+    }
+    for (const subcategory of subcategories) {
+        if (importedSubcategoryIds.has(Number(subcategory.id))) continue;
+        const parentId = Number(subcategory.parent_id) || 0;
+        const nextOrder = (nextSubcategoryOrderByParent.get(parentId) || 0) + 1;
+        nextSubcategoryOrderByParent.set(parentId, nextOrder);
+        if (Number(subcategory.sort_order) !== nextOrder) {
+            await db.run("UPDATE catalog_structure SET sort_order = ?, updated_at = ? WHERE id = ?", [nextOrder, now, subcategory.id]);
+        }
+    }
+
+    const products = await db.all(`
+        SELECT id, external_id, category, subcategory, sort_order
+        FROM products
+        WHERE deleted_at IS NULL
+        ORDER BY sort_order ASC, id ASC
+    `);
+    const productById = new Map(products.map(product => [Number(product.id), product]));
+    const productByExternalId = new Map(products.map(product => [normalizeMatCode(product.external_id), product]));
+    const assignedProductCodeByRow = new Map((assignedRows || [])
+        .filter(row => row.entityType === "product")
+        .map(row => [Number(row.rowNumber), normalizeMatCode(row.externalId)]));
+    const importedProductIds = new Set();
+    const nextProductOrderBySection = new Map();
+
+    for (const parsedProduct of parsed.productRows || []) {
+        const assignedCode = assignedProductCodeByRow.get(Number(parsedProduct.rowNumber));
+        const product = productById.get(Number(parsedProduct.productId))
+            || productByExternalId.get(assignedCode || normalizeMatCode(parsedProduct.externalId));
+        if (!product || importedProductIds.has(Number(product.id))) continue;
+        const sectionKey = `${normalizeCatalogStructureName(product.category)}\u0000${normalizeCatalogStructureName(product.subcategory)}`;
+        const nextOrder = (nextProductOrderBySection.get(sectionKey) || 0) + 1;
+        nextProductOrderBySection.set(sectionKey, nextOrder);
+        importedProductIds.add(Number(product.id));
+        if (Number(product.sort_order) !== nextOrder) {
+            await db.run("UPDATE products SET sort_order = ?, updated_at = ? WHERE id = ?", [nextOrder, now, product.id]);
+        }
+    }
+    for (const product of products) {
+        if (importedProductIds.has(Number(product.id))) continue;
+        const sectionKey = `${normalizeCatalogStructureName(product.category)}\u0000${normalizeCatalogStructureName(product.subcategory)}`;
+        const nextOrder = (nextProductOrderBySection.get(sectionKey) || 0) + 1;
+        nextProductOrderBySection.set(sectionKey, nextOrder);
+        if (Number(product.sort_order) !== nextOrder) {
+            await db.run("UPDATE products SET sort_order = ?, updated_at = ? WHERE id = ?", [nextOrder, now, product.id]);
+        }
+    }
 }
 
 async function createExcelCopy(tokenData, assignedRows) {
@@ -3819,6 +3960,7 @@ async function applyCatalogImport(db, token, options = {}, user = {}) {
         }
 
         await syncCatalogStructureFromProducts(db);
+        await applyCatalogOrderFromParsed(db, effectiveParsed, assignedRows, now);
         await db.run("COMMIT");
     } catch (error) {
         await db.run("ROLLBACK").catch(() => {});
@@ -3907,6 +4049,7 @@ module.exports = {
     normalizeSubcategoryCode,
     validateCategoryCode,
     validateSubcategoryCode,
+    classifyCatalogStructureRecord,
     classifyCatalogRecord,
     sanitizeUploadFileName,
     buildCatalogExportWorkbook: buildReferenceCatalogExportWorkbook
