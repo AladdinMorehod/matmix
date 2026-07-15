@@ -10,6 +10,8 @@
     --accent: #87b48e;
     --brand-burgundy: #5a1f28;
     --border: rgba(33, 83, 54, 0.12);
+    --header-height: 64px;
+    --hero-header-overlap: 14px;
     --hero-panel-top: calc(100% - clamp(44px, 8vh, 88px) - 270px);
 }
 
@@ -33,7 +35,7 @@ body {
     justify-content: flex-start;
     align-items: center;
     gap: 24px;
-    min-height: 64px;
+    min-height: var(--header-height);
     padding: 0 18px 0 0;
     background-color: #0a2d23;
     background-color: rgba(10, 45, 35, 0.72);
@@ -532,8 +534,8 @@ body {
 .hero {
     position: relative;
     min-height: clamp(650px, 78vh, 740px);
-    margin-top: 0;
-    padding: clamp(46px, 6vw, 68px) 20px;
+    margin-top: calc(-1 * var(--hero-header-overlap));
+    padding: calc(clamp(46px, 6vw, 68px) + var(--hero-header-overlap)) 20px clamp(46px, 6vw, 68px);
     background-image:
         linear-gradient(90deg, rgba(10, 55, 40, 0.68) 0%, rgba(10, 55, 40, 0.48) 42%, rgba(10, 55, 40, 0.14) 76%, rgba(10, 55, 40, 0.06) 100%),
         url("../img/ImageHome.png");
@@ -545,7 +547,7 @@ body {
 
 .hero-content {
     position: absolute;
-    top: var(--hero-panel-top);
+    top: calc(var(--hero-panel-top) + var(--hero-header-overlap));
     left: 50%;
     transform: translateX(-50%);
     display: grid;
@@ -2077,9 +2079,14 @@ body {
 }
 
 @media (max-width: 980px) {
+    :root {
+        --header-height: 60px;
+        --hero-header-overlap: 12px;
+    }
+
     .header {
         gap: 10px;
-        min-height: 60px;
+        min-height: var(--header-height);
     }
 
     .hero-content,
@@ -2186,13 +2193,18 @@ body {
 }
 
 @media (max-width: 600px) {
+    :root {
+        --header-height: 96px;
+        --hero-header-overlap: 8px;
+    }
+
     .contact-method-fields {
         grid-template-columns: 1fr;
     }
 
     .hero {
         min-height: 650px;
-        padding: 48px 12px;
+        padding: calc(48px + var(--hero-header-overlap)) 12px 48px;
         background-position: center 24%;
     }
     .hero-copy h1 {
