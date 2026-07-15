@@ -94,6 +94,16 @@ app.use(["/api/auth", "/api/clients", "/api/users", "/api/products", "/api/order
 
 fs.mkdirSync(productUploadsDir, { recursive: true });
 
+app.use("/uploads/products", async (req, res, next) => {
+    let filename;
+    try { filename = decodeURIComponent(req.path).replace(/^\/+/, ""); } catch { res.status(404).end(); return; }
+    if (!filename || filename.includes("/") || filename.includes("\\") || filename.includes("..") || filename.includes("\0")) { res.status(404).end(); return; }
+    const target = path.resolve(productUploadsDir, filename);
+    if (!target.startsWith(`${productUploadsDir}${path.sep}`)) { res.status(404).end(); return; }
+    try { if ((await fs.promises.lstat(target)).isSymbolicLink()) { res.status(404).end(); return; } } catch (error) { if (error.code !== "ENOENT") return next(error); }
+    next();
+});
+
 app.use("/uploads/products", express.static(productUploadsDir, {
     dotfiles: "deny",
     index: false,
@@ -101,6 +111,10 @@ app.use("/uploads/products", express.static(productUploadsDir, {
     maxAge: "7d",
     setHeaders(res) {
         res.setHeader("X-Content-Type-Options", "nosniff");
+        const filename = path.basename(res.req.path || "");
+        if (/-[a-f0-9]{16}\.webp$/i.test(filename)) {
+            res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+        }
     }
 }));
 

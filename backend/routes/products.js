@@ -1,5 +1,4 @@
 const express = require("express");
-const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
 const ExcelJS = require("exceljs");
@@ -32,6 +31,7 @@ const {
     buildCatalogExportWorkbook
 } = require("../services/catalogImport");
 const { ceilMoney, ceilWeight } = require("../utils/numberFormat");
+const { optimizeProductImage } = require("../services/productImages");
 
 const router = express.Router();
 const publicRouter = express.Router();
@@ -128,23 +128,15 @@ function validateProductImageUpload(upload) {
     const allowedExtensions = allowedProductImageTypes.get(mimeType);
     const extension = path.extname(upload.originalName || "").toLowerCase();
     if (!allowedExtensions || !allowedExtensions.includes(extension)) {
-        throw createHttpError(400, "Допустимы только JPG, PNG или WebP.", "IMAGE_TYPE_NOT_ALLOWED");
+        throw createHttpError(415, "Допустимы только JPG, PNG или WebP.", "UNSUPPORTED_IMAGE_FORMAT");
     }
 
     const magicMime = getImageMagicMime(upload.buffer);
     if (magicMime !== mimeType) {
-        throw createHttpError(400, "Файл не похож на заявленный формат изображения.", "IMAGE_SIGNATURE_MISMATCH");
+        throw createHttpError(400, "Файл не похож на заявленный формат изображения.", "CORRUPT_IMAGE");
     }
 
     return { mimeType, extension };
-}
-
-function makeProductImageFilename(product, extension) {
-    const externalId = normalizeText(product.external_id);
-    const prefix = /^MAT-\d+$/i.test(externalId) ? externalId.toUpperCase() : `product-${Number(product.id) || "new"}`;
-    const timestamp = new Date().toISOString().replace(/[-:.TZ]/g, "");
-    const suffix = crypto.randomBytes(3).toString("hex");
-    return `${prefix}-${timestamp}-${suffix}${extension}`;
 }
 
 async function readMultipartProductImageUpload(req, { maxBytes = productImageMaxBytes + 1024 * 1024 } = {}) {
@@ -175,6 +167,7 @@ async function readMultipartProductImageUpload(req, { maxBytes = productImageMax
 
         if (filenameMatch) {
             if (fieldName !== "image") continue;
+            if (image) throw createHttpError(400, "За один запрос можно загрузить только одно изображение.", "TOO_MANY_IMAGE_FILES");
             const contentTypeMatch = rawHeaders.match(/Content-Type:\s*([^\r\n]+)/i);
             image = {
                 originalName: sanitizeUploadFileName(filenameMatch[1] || ""),
@@ -194,11 +187,9 @@ async function readMultipartProductImageUpload(req, { maxBytes = productImageMax
 }
 
 async function saveProductImageFile(product, upload) {
-    const { extension } = validateProductImageUpload(upload);
-    const filename = makeProductImageFilename(product, extension);
-    const filePath = path.join(productUploadsRoot, filename);
-    await fs.promises.writeFile(filePath, upload.buffer, { flag: "wx" });
-    return `${productUploadsUrlPrefix}${filename}`;
+    validateProductImageUpload(upload);
+    const optimized = await optimizeProductImage({ buffer: upload.buffer, product, uploadsRoot: productUploadsRoot });
+    return `${productUploadsUrlPrefix}${optimized.filename}`;
 }
 
 async function deleteUnusedProductImage(imageUrl) {
@@ -1816,13 +1807,18 @@ router.post("/images/batch", requireRole(["admin"]), async (req, res) => {
         savedImageUrl = await saveProductImageFile(existingProducts[0], image);
         const previousUrls = [...new Set(existingProducts.map(product => getProductImageUrl(product)).filter(Boolean))];
         const now = new Date().toISOString();
-        await run(
-            `UPDATE products
-             SET image_url = ?,
-                 updated_at = ?
-             WHERE id IN (${placeholders}) AND deleted_at IS NULL`,
-            [savedImageUrl, now, ...productIds]
-        );
+        await run("BEGIN IMMEDIATE TRANSACTION");
+        try {
+            await run(
+                `UPDATE products SET image_url = ?, updated_at = ?
+                 WHERE id IN (${placeholders}) AND deleted_at IS NULL`,
+                [savedImageUrl, now, ...productIds]
+            );
+            await run("COMMIT");
+        } catch (error) {
+            await run("ROLLBACK").catch(() => {});
+            throw error;
+        }
 
         for (const previousUrl of previousUrls) {
             await deleteUnusedProductImage(previousUrl);

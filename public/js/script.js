@@ -37265,7 +37265,7 @@ function getProductImageUrl(product = {}) {
 
 function renderProductThumb(product = {}) {
     const imageUrl = getProductImageUrl(product);
-    if (imageUrl) return `<img src="${escapeHtml(imageUrl)}" alt="">`;
+    if (imageUrl) return `<img src="${escapeHtml(imageUrl)}" alt="" loading="lazy" decoding="async" width="600" height="600">`;
 
     return escapeHtml(cleanDisplayText(product.image) || "Т");
 }

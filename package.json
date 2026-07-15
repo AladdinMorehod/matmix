@@ -15,7 +15,9 @@
     "fix:plywood-groups": "npm run catalog:fixes",
     "database:migrate": "node backend/scripts/migrate-database.js",
     "database:health": "node backend/scripts/check-database-health.js",
-    "test:database-integrity": "node backend/scripts/test-database-integrity.js"
+    "test:database-integrity": "node backend/scripts/test-database-integrity.js",
+    "images:optimize": "node backend/scripts/optimize-product-images.js",
+    "test:product-images": "node backend/scripts/test-product-images.js && node backend/scripts/test-product-image-api.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -23,6 +25,7 @@
     "exceljs": "^4.4.0",
     "express": "^4.18.3",
     "express-session": "^1.18.0",
+    "sharp": "^0.35.3",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
