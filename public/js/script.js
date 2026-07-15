@@ -37849,22 +37849,10 @@ function getCartOrderItems() {
         .map(item => {
             const product = getProductById(item.productId);
             if (!product) return null;
-
-            const price = ceilMoney(product.price);
             const qty = Number(item.quantity) || 0;
-            const weight = ceilWeight(product.weight);
-
             return {
                 productId: product.id,
-                externalId: product.externalId || "",
-                name: cleanDisplayText(product.name),
-                title: cleanDisplayText(product.name),
-                price,
-                qty,
-                unit: product.unit || "шт",
-                weight,
-                lineTotal: ceilMoney(price * qty),
-                lineWeight: ceilWeight(weight * qty)
+                qty
             };
         })
         .filter(Boolean);
@@ -39444,9 +39432,7 @@ checkoutForm?.addEventListener("submit", async event => {
         unloading: getUnloadingLabel(formData.get("unloading")),
         paymentMethod: cleanDisplayText(formData.get("paymentMethod")),
         comment: cleanDisplayText(formData.get("orderComment")),
-        items: orderItems,
-        totalPrice: getCartTotal(),
-        totalWeight: getCartWeight()
+        items: orderItems
     };
 
     setCheckoutSubmitDisabled(true);

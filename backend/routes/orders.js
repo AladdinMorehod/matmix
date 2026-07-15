@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path");
 const ExcelJS = require("exceljs");
-const { all, get, run, getOrderNumber } = require("../database");
+const { all, get, run, withTransaction, getOrderNumber } = require("../database");
 const { requireRole } = require("../middleware/auth");
 const { normalizePhone } = require("../utils/phone");
 const { getPaginationParams, buildPaginationMeta } = require("../utils/pagination");
@@ -9,6 +9,132 @@ const { ceilMoney, ceilWeight, formatMoneyValue, toFiniteNumber } = require("../
 
 const router = express.Router();
 const orderTemplatePath = path.join(__dirname, "..", "templates", "order-template.xlsx");
+const MAX_ORDER_ITEMS = 100;
+const MAX_ITEM_QUANTITY = 10000;
+
+class PublicOrderError extends Error {
+    constructor(status, message, code) {
+        super(message);
+        this.status = status;
+        this.code = code;
+    }
+}
+
+function readOrderText(body, key, maxLength, required = false) {
+    const value = body?.[key];
+    if (value !== undefined && value !== null && typeof value !== "string") {
+        throw new PublicOrderError(400, `Поле ${key} должно быть строкой.`, "INVALID_FIELD_TYPE");
+    }
+
+    const normalized = String(value || "")
+        .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "")
+        .trim();
+    if (required && !normalized) {
+        throw new PublicOrderError(400, `Поле ${key} обязательно.`, "REQUIRED_FIELD");
+    }
+    if (normalized.length > maxLength) {
+        throw new PublicOrderError(400, `Поле ${key} слишком длинное.`, "FIELD_TOO_LONG");
+    }
+    return normalized;
+}
+
+function normalizeRequestedItems(items) {
+    if (!Array.isArray(items) || !items.length) {
+        throw new PublicOrderError(400, "Корзина пуста.", "EMPTY_CART");
+    }
+    if (items.length > MAX_ORDER_ITEMS) {
+        throw new PublicOrderError(400, "В заказе слишком много позиций.", "TOO_MANY_ITEMS");
+    }
+
+    const quantitiesByProductId = new Map();
+    for (const item of items) {
+        if (!item || typeof item !== "object" || Array.isArray(item)) {
+            throw new PublicOrderError(400, "Некорректная позиция заказа.", "INVALID_ITEM");
+        }
+        const rawProductId = item.productId ?? item.id;
+        const productId = typeof rawProductId === "number" ? rawProductId : Number(rawProductId);
+        const quantity = typeof item.qty === "number" ? item.qty : Number(item.qty ?? item.quantity);
+        if (!Number.isSafeInteger(productId) || productId <= 0) {
+            throw new PublicOrderError(400, "Некорректный идентификатор товара.", "INVALID_PRODUCT_ID");
+        }
+        if (!Number.isSafeInteger(quantity) || quantity <= 0) {
+            throw new PublicOrderError(400, "Количество товара должно быть целым числом больше нуля.", "INVALID_QUANTITY");
+        }
+
+        const combinedQuantity = (quantitiesByProductId.get(productId) || 0) + quantity;
+        if (combinedQuantity > MAX_ITEM_QUANTITY) {
+            throw new PublicOrderError(400, `Количество одного товара не может превышать ${MAX_ITEM_QUANTITY}.`, "QUANTITY_LIMIT");
+        }
+        quantitiesByProductId.set(productId, combinedQuantity);
+    }
+
+    if (quantitiesByProductId.size > MAX_ORDER_ITEMS) {
+        throw new PublicOrderError(400, "В заказе слишком много уникальных позиций.", "TOO_MANY_ITEMS");
+    }
+    return quantitiesByProductId;
+}
+
+function moneyToCents(value) {
+    const number = Number(value);
+    if (!Number.isFinite(number) || number < 0) return null;
+    const cents = Math.round(ceilMoney(number) * 100);
+    return Number.isSafeInteger(cents) ? cents : null;
+}
+
+async function buildServerOrderItems(transaction, quantitiesByProductId) {
+    const productIds = [...quantitiesByProductId.keys()];
+    const placeholders = productIds.map(() => "?").join(", ");
+    const products = await transaction.all(
+        `SELECT id, external_id, title, price, weight, unit, is_active, deleted_at
+         FROM products
+         WHERE id IN (${placeholders})`,
+        productIds
+    );
+    const productsById = new Map(products.map(product => [Number(product.id), product]));
+    const snapshot = [];
+    let totalCents = 0;
+    let totalWeight = 0;
+
+    for (const productId of productIds) {
+        const product = productsById.get(productId);
+        if (!product) throw new PublicOrderError(404, `Товар ${productId} не найден.`, "PRODUCT_NOT_FOUND");
+        if (product.deleted_at || Number(product.is_active) !== 1) {
+            throw new PublicOrderError(409, `Товар ${product.external_id || productId} недоступен для заказа.`, "PRODUCT_UNAVAILABLE");
+        }
+
+        const unitPriceCents = moneyToCents(product.price);
+        if (unitPriceCents === null || product.price === null) {
+            throw new PublicOrderError(409, `Для товара ${product.external_id || productId} цена предоставляется по запросу.`, "PRICE_ON_REQUEST");
+        }
+
+        const quantity = quantitiesByProductId.get(productId);
+        const lineTotalCents = unitPriceCents * quantity;
+        if (!Number.isSafeInteger(lineTotalCents) || !Number.isSafeInteger(totalCents + lineTotalCents)) {
+            throw new PublicOrderError(400, "Сумма заказа превышает допустимый предел.", "ORDER_TOTAL_LIMIT");
+        }
+        const unitWeight = Math.max(0, ceilWeight(product.weight));
+        const lineWeight = ceilWeight(unitWeight * quantity);
+        totalCents += lineTotalCents;
+        totalWeight = ceilWeight(totalWeight + lineWeight);
+        snapshot.push({
+            id: product.id,
+            productId: product.id,
+            externalId: product.external_id,
+            name: product.title,
+            title: product.title,
+            unit: product.unit || "шт",
+            price: unitPriceCents / 100,
+            unitPrice: unitPriceCents / 100,
+            qty: quantity,
+            quantity,
+            weight: unitWeight,
+            lineTotal: lineTotalCents / 100,
+            lineWeight
+        });
+    }
+
+    return { items: snapshot, totalPrice: totalCents / 100, totalWeight };
+}
 
 const allowedStatuses = [
     "Новая",
@@ -130,13 +256,13 @@ function getClientContactFields(method, value, phone) {
     };
 }
 
-async function findOrCreateClient({ customerName, phone, preferredContact, totalPrice, now }) {
+async function findOrCreateClient({ customerName, phone, preferredContact, totalPrice, now, transaction = { get, run } }) {
     const normalizedPhone = normalizePhone(phone);
     const contactFields = getClientContactFields(preferredContact.method, preferredContact.value, phone);
-    const existingClient = await get("SELECT * FROM clients WHERE phone = ?", [normalizedPhone]);
+    const existingClient = await transaction.get("SELECT * FROM clients WHERE phone = ?", [normalizedPhone]);
 
     if (existingClient) {
-        await run(
+        await transaction.run(
             `UPDATE clients
              SET name = ?,
                  preferred_contact_method = ?,
@@ -168,7 +294,7 @@ async function findOrCreateClient({ customerName, phone, preferredContact, total
         return existingClient.id;
     }
 
-    const result = await run(
+    const result = await transaction.run(
         `INSERT INTO clients (
             name,
             phone,
@@ -453,8 +579,8 @@ function sendOrderConflict(res) {
     res.status(409).json({ success: false, message: orderConflictMessage });
 }
 
-async function createOrderEvent({ orderId, userId = null, userName = "Система", eventType, message }) {
-    await run(
+async function createOrderEvent({ orderId, userId = null, userName = "Система", eventType, message, transaction = { run } }) {
+    await transaction.run(
         `INSERT INTO order_events (order_id, user_id, user_name, event_type, message, created_at)
          VALUES (?, ?, ?, ?, ?, ?)`,
         [orderId, userId, userName, eventType, message, new Date().toISOString()]
@@ -578,92 +704,83 @@ async function restoreOrder(req, res) {
 
 router.post("/", async (req, res) => {
     try {
-        const customerName = normalizeText(req.body.customerName);
-        const phone = normalizeText(req.body.phone);
-        const items = Array.isArray(req.body.items) ? req.body.items : [];
-
-        if (!customerName) {
-            res.status(400).json({ success: false, message: "Укажите имя клиента." });
-            return;
-        }
-
-        if (!phone) {
-            res.status(400).json({ success: false, message: "Укажите телефон клиента." });
-            return;
-        }
-
-        if (!items.length) {
-            res.status(400).json({ success: false, message: "Корзина пуста." });
-            return;
-        }
-
+        const customerName = readOrderText(req.body, "customerName", 160, true);
+        const phone = readOrderText(req.body, "phone", 50, true);
+        const requestedItems = normalizeRequestedItems(req.body.items);
+        const safeBody = {
+            preferredContactMethod: readOrderText(req.body, "preferredContactMethod", 50),
+            preferredContactValue: readOrderText(req.body, "preferredContactValue", 200),
+            telegram: readOrderText(req.body, "telegram", 200),
+            maxContact: readOrderText(req.body, "maxContact", 200)
+        };
+        const address = readOrderText(req.body, "address", 500);
+        const unloading = readOrderText(req.body, "unloading", 100);
+        const paymentMethod = readOrderText(req.body, "paymentMethod", 100);
+        const comment = readOrderText(req.body, "comment", 2000);
         const now = new Date().toISOString();
-        const normalizedTotalPrice = ceilMoney(req.body.totalPrice);
-        const normalizedTotalWeight = ceilWeight(req.body.totalWeight);
-        const preferredContact = getFallbackPreferredContact(req.body, phone);
-        const clientId = await findOrCreateClient({
-            customerName,
-            phone,
-            preferredContact,
-            totalPrice: normalizedTotalPrice,
-            now
-        });
-        const result = await run(
-            `INSERT INTO orders (
-                customer_name,
-                phone,
-                client_id,
-                telegram,
-                max_contact,
-                preferred_contact_method,
-                preferred_contact_value,
-                address,
-                unloading,
-                payment_method,
-                comment,
-                items_json,
-                total_price,
-                total_weight,
-                status,
-                created_at,
-                updated_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            [
+        const preferredContact = getFallbackPreferredContact(safeBody, phone);
+        const createdOrder = await withTransaction(async transaction => {
+            const serverOrder = await buildServerOrderItems(transaction, requestedItems);
+            const clientId = await findOrCreateClient({
                 customerName,
                 phone,
-                clientId,
-                normalizeText(req.body.telegram),
-                normalizeText(req.body.maxContact),
-                preferredContact.method,
-                preferredContact.value,
-                normalizeText(req.body.address),
-                normalizeText(req.body.unloading),
-                normalizePaymentMethod(req.body.paymentMethod),
-                normalizeText(req.body.comment),
-                JSON.stringify(items),
-                normalizedTotalPrice,
-                normalizedTotalWeight,
-                "Новая",
+                preferredContact,
+                totalPrice: serverOrder.totalPrice,
                 now,
-                now
-            ]
-        );
-
-        const orderNumber = getOrderNumber(result.id, now);
-        await run(
-            "UPDATE orders SET order_number = ? WHERE id = ?",
-            [orderNumber, result.id]
-        );
-
-        await createOrderEvent({
-            orderId: result.id,
-            userName: "Клиент",
-            eventType: "created",
-            message: "Заявка создана клиентом"
+                transaction
+            });
+            const result = await transaction.run(
+                `INSERT INTO orders (
+                    customer_name, phone, client_id, telegram, max_contact,
+                    preferred_contact_method, preferred_contact_value, address,
+                    unloading, payment_method, comment, items_json, total_price,
+                    total_weight, status, created_at, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                [
+                    customerName,
+                    phone,
+                    clientId,
+                    safeBody.telegram,
+                    safeBody.maxContact,
+                    preferredContact.method,
+                    preferredContact.value,
+                    address,
+                    unloading,
+                    normalizePaymentMethod(paymentMethod),
+                    comment,
+                    JSON.stringify(serverOrder.items),
+                    serverOrder.totalPrice,
+                    serverOrder.totalWeight,
+                    "Новая",
+                    now,
+                    now
+                ]
+            );
+            const orderNumber = getOrderNumber(result.id, now);
+            await transaction.run("UPDATE orders SET order_number = ? WHERE id = ?", [orderNumber, result.id]);
+            await createOrderEvent({
+                orderId: result.id,
+                userName: "Клиент",
+                eventType: "created",
+                message: "Заявка создана клиентом",
+                transaction
+            });
+            return { id: result.id, orderNumber, ...serverOrder };
         });
 
-        res.status(201).json({ success: true, id: result.id });
+        res.status(201).json({
+            success: true,
+            id: createdOrder.id,
+            orderNumber: createdOrder.orderNumber,
+            totalPrice: createdOrder.totalPrice,
+            totalWeight: createdOrder.totalWeight,
+            itemCount: createdOrder.items.length
+        });
     } catch (error) {
+        if (error instanceof PublicOrderError) {
+            res.status(error.status).json({ success: false, code: error.code, message: error.message });
+            return;
+        }
         console.error("Order create error:", error);
         res.status(500).json({ success: false, message: "Не удалось сохранить заказ." });
     }

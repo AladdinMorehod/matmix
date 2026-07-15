@@ -54,6 +54,51 @@ function all(sql, params = []) {
     });
 }
 
+function createConnectionHelpers(connection) {
+    return {
+        run(sql, params = []) {
+            return new Promise((resolve, reject) => {
+                connection.run(sql, params, function onRun(error) {
+                    if (error) return reject(error);
+                    resolve({ id: this.lastID, changes: this.changes });
+                });
+            });
+        },
+        get(sql, params = []) {
+            return new Promise((resolve, reject) => {
+                connection.get(sql, params, (error, row) => error ? reject(error) : resolve(row));
+            });
+        },
+        all(sql, params = []) {
+            return new Promise((resolve, reject) => {
+                connection.all(sql, params, (error, rows) => error ? reject(error) : resolve(rows));
+            });
+        }
+    };
+}
+
+async function withTransaction(work) {
+    const connection = new sqlite3.Database(databasePath);
+    const transaction = createConnectionHelpers(connection);
+
+    try {
+        await transaction.run("PRAGMA busy_timeout = 5000");
+        await transaction.run("BEGIN IMMEDIATE");
+        const result = await work(transaction);
+        await transaction.run("COMMIT");
+        return result;
+    } catch (error) {
+        try {
+            await transaction.run("ROLLBACK");
+        } catch (rollbackError) {
+            console.error("Transaction rollback error:", rollbackError);
+        }
+        throw error;
+    } finally {
+        await new Promise(resolve => connection.close(() => resolve()));
+    }
+}
+
 async function initDatabase() {
     await run(`
         CREATE TABLE IF NOT EXISTS orders (
@@ -412,6 +457,7 @@ module.exports = {
     run,
     get,
     all,
+    withTransaction,
     initDatabase,
     getOrderNumber,
     databasePath
