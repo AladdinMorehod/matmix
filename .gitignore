@@ -5,6 +5,9 @@ node_modules/
 backend/database/*.db
 backend/database/*.sqlite
 backend/database/*.sqlite3
+backend/database/*.db-wal
+backend/database/*.db-shm
+backend/database/*.db-journal
 backend/database/backups/*
 backend/database/production-backups/*
 backend/imported-excel/*
