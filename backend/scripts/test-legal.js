@@ -12,7 +12,33 @@ async function wait(url) { for (let i = 0; i < 80; i += 1) { try { if ((await fe
 function cookie(response) { return response.headers.getSetCookie?.()[0]?.split(";")[0] || response.headers.get("set-cookie")?.split(";")[0] || ""; }
 (async () => {
     assert.strictEqual(readiness({}).ready, false);
-    const root = fs.mkdtempSync(path.join(os.tmpdir(), "matmix-legal-")); const dbPath = path.join(root, "matmix.db"); fs.copyFileSync(path.join(__dirname, "..", "database", "matmix.db"), dbPath); fs.mkdirSync(path.join(root, "uploads")); await migrateDatabase(dbPath, { dryRun: false });
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "matmix-legal-"));
+    const dbPath = path.join(root, "matmix.db");
+    fs.mkdirSync(path.join(root, "uploads"));
+
+    process.env.MATMIX_DB_PATH = dbPath;
+    const { initDatabase, db: initializationDb } = require("../database");
+    await initDatabase();
+    await new Promise((resolve, reject) => initializationDb.close(error => error ? reject(error) : resolve()));
+    await migrateDatabase(dbPath, { dryRun: false });
+
+    const fixtureDb = new sqlite3.Database(dbPath);
+    await new Promise((resolve, reject) => fixtureDb.run(
+        `INSERT INTO products (
+            external_id, title, category, price, unit,
+            description, is_active, sort_order, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)`,
+        [
+            "MAT-LEGAL-001",
+            "Тестовый товар для юридических проверок",
+            "Тестовая категория",
+            1250,
+            "шт",
+            "Тестовый товар"
+        ],
+        error => error ? reject(error) : resolve()
+    ));
+    await new Promise((resolve, reject) => fixtureDb.close(error => error ? reject(error) : resolve()));
     const env = Object.fromEntries(REQUIRED_ENV.map(name => [name, "Approved test value"])); Object.assign(env, { LEGAL_BUSINESS_NAME: "Test & <Company>", PUBLIC_PHONE: "+7 900 000-00-00", PUBLIC_EMAIL: "legal@example.test", PRIVACY_POLICY_VERSION: "test-privacy-v1", TERMS_VERSION: "test-terms-v2", CUSTOMER_DATA_RETENTION: "365", ORDER_DATA_RETENTION: "730", LOG_RETENTION: "30", BACKUP_RETENTION: "14" });
     assert.strictEqual(readiness(env).ready, true); const definitions = documentDefinitions(legalConfig(env)); assert(definitions["/contacts"].sections.flat().join(" ").includes("Test & <Company>"));
     const product = await dbGet(dbPath, "SELECT id,price FROM products WHERE is_active=1 AND deleted_at IS NULL AND price IS NOT NULL ORDER BY id LIMIT 1"); const before = await dbGet(dbPath, "SELECT (SELECT COUNT(*) FROM orders) orders,(SELECT COUNT(*) FROM clients) clients,(SELECT COUNT(*) FROM order_events) events"); const oldOrder = await dbGet(dbPath, "SELECT id FROM orders ORDER BY id LIMIT 1");
