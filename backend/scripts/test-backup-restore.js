@@ -15,7 +15,34 @@ async function copyDir(source, target) { await fs.promises.mkdir(target, { recur
 async function main() {
     const root = await fs.promises.mkdtemp(path.join(os.tmpdir(), "matmix-backup-test-"));
     const paths = { dbPath: path.join(root, "runtime", "matmix.db"), uploadsPath: path.join(root, "runtime", "uploads"), backupRoot: path.join(root, "backups"), lockPath: path.join(root, "runtime", "app.lock"), retentionCount: 2 };
-    await fs.promises.mkdir(path.dirname(paths.dbPath), { recursive: true }); await fs.promises.copyFile(path.join(__dirname, "..", "database", "matmix.db"), paths.dbPath); await copyDir(path.join(__dirname, "..", "..", "public", "uploads", "products"), paths.uploadsPath);
+    await fs.promises.mkdir(path.dirname(paths.dbPath), { recursive: true });
+    await fs.promises.mkdir(paths.uploadsPath, { recursive: true });
+
+    process.env.MATMIX_DB_PATH = paths.dbPath;
+    const { initDatabase, db: initializationDb } = require("../database");
+    await initDatabase();
+    await new Promise((resolve, reject) => initializationDb.close(error => error ? reject(error) : resolve()));
+
+    await dbRun(
+        paths.dbPath,
+        `INSERT INTO products (
+            external_id, title, category, price, unit,
+            description, is_active, sort_order, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)`,
+        [
+            "MAT-BACKUP-001",
+            "Тестовый товар резервного копирования",
+            "Тестовая категория",
+            1000,
+            "шт",
+            "Тестовая запись для проверки backup/restore"
+        ]
+    );
+
+    await fs.promises.writeFile(
+        path.join(paths.uploadsPath, "test-product-image.txt"),
+        "deterministic backup upload fixture"
+    );
     const baseline = { products: (await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM products")).count, orders: (await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM orders")).count, clients: (await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM clients")).count, dbHash: await sha256(paths.dbPath) };
     const backup = await createBackup({ paths }); const verified = await verifyBackup(backup.backupPath); assert(verified.success);
     await dbRun(paths.dbPath, "DELETE FROM products WHERE id=(SELECT MAX(id) FROM products)"); await fs.promises.writeFile(path.join(paths.uploadsPath, "unrelated-test.txt"), "changed");

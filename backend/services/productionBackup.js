@@ -139,7 +139,11 @@ async function verifyBackup(backupPath) {
     return { success: true, backupPath: root, manifest, database: dbCheck, references: await verifyReferences(dbPath, path.join(root, "uploads", "products")) };
 }
 
-function backupName(prefix = "matmix-backup") { return `${prefix}-${new Date().toISOString().replace(/\..+/, "").replace(/[T:]/g, "-")}`; }
+function backupName(prefix = "matmix-backup") {
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+    const suffix = crypto.randomBytes(4).toString("hex");
+    return `${prefix}-${timestamp}-${suffix}`;
+}
 
 async function createBackup(options = {}) {
     const paths = options.paths || runtimePaths(); if (isInside(paths.uploadsPath, paths.backupRoot)) throw new Error("Backup root cannot be inside uploads.");
