@@ -17,6 +17,7 @@ jobs:
       - run: npm run test:database-integrity
       - run: npm run test:production-readiness
       - run: npm run test:lifecycle
+      - run: npm run test:health
       - run: node backend/scripts/test-xss-safety.js
       - run: npm run test:seo
       - run: npm run test:legal

@@ -23,9 +23,26 @@ async function prepare() {
     fs.mkdirSync(path.join(runtime, "backups"), { recursive: true });
 }
 let child;
-async function cleanup(code = 0) { if (child && !child.killed) child.kill("SIGTERM"); await new Promise(resolve => child?.once("exit", resolve) || resolve()); fs.rmSync(runtime, { recursive: true, force: true }); process.exit(code); }
+let cleanupPromise;
+function cleanup(code = 0) {
+    if (cleanupPromise) return cleanupPromise;
+    cleanupPromise = (async () => {
+        if (child && child.exitCode === null && child.signalCode === null) {
+            const childExited = new Promise(resolve => child.once("exit", resolve));
+            if (child.connected) child.send("shutdown");
+            else child.kill("SIGTERM");
+            await childExited;
+        }
+        fs.rmSync(runtime, { recursive: true, force: true });
+        if (process.connected) process.disconnect();
+        process.exitCode = code;
+    })();
+    return cleanupPromise;
+}
 prepare().then(() => {
-    child = spawn(process.execPath, [path.join(root, "backend", "server.js")], { cwd: root, windowsHide: true, stdio: "inherit", env: { ...process.env, NODE_ENV: "test", PORT: "4173", SESSION_SECRET: "e2e-only-secret-not-for-production-1234567890", MATMIX_DB_PATH: dbPath, SESSION_DB_PATH: path.join(runtime, "sessions.db"), PRODUCT_UPLOADS_PATH: path.join(runtime, "uploads"), BACKUP_ROOT_PATH: path.join(runtime, "backups"), APP_RUNTIME_LOCK_PATH: path.join(runtime, "runtime.lock"), PUBLIC_BASE_URL: "http://127.0.0.1:4173", SEO_ALLOW_INDEXING: "true", LOGIN_RATE_MAX: "3", LOGIN_RATE_WINDOW_MS: "60000" } });
-    child.once("exit", code => cleanup(code || 0));
-}).catch(error => { console.error(error); cleanup(1); });
-process.once("SIGTERM", () => cleanup(0)); process.once("SIGINT", () => cleanup(0));
+    child = spawn(process.execPath, [path.join(root, "backend", "server.js")], { cwd: root, windowsHide: true, stdio: ["inherit", "inherit", "inherit", "ipc"], env: { ...process.env, NODE_ENV: "test", PORT: "4173", SESSION_SECRET: "e2e-only-secret-not-for-production-1234567890", MATMIX_DB_PATH: dbPath, SESSION_DB_PATH: path.join(runtime, "sessions.db"), PRODUCT_UPLOADS_PATH: path.join(runtime, "uploads"), BACKUP_ROOT_PATH: path.join(runtime, "backups"), APP_RUNTIME_LOCK_PATH: path.join(runtime, "runtime.lock"), PUBLIC_BASE_URL: "http://127.0.0.1:4173", SEO_ALLOW_INDEXING: "true", LOGIN_RATE_MAX: "3", LOGIN_RATE_WINDOW_MS: "60000" } });
+    child.once("exit", code => { cleanup(code || 0).catch(error => { console.error(error); process.exitCode = 1; }); });
+}).catch(error => { console.error(error); cleanup(1).catch(cleanupError => { console.error(cleanupError); process.exitCode = 1; }); });
+process.once("SIGTERM", () => { cleanup(0).catch(error => { console.error(error); process.exitCode = 1; }); });
+process.once("SIGINT", () => { cleanup(0).catch(error => { console.error(error); process.exitCode = 1; }); });
+process.on("message", message => { if (message === "shutdown") cleanup(0).catch(error => { console.error(error); process.exitCode = 1; }); });

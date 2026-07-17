@@ -13,6 +13,7 @@ const clientsRouter = require("./routes/clients");
 const usersRoutes = require("./routes/users");
 const productsRoutes = require("./routes/products");
 const createSeoRouter = require("./routes/seo");
+const createHealthRouter = require("./routes/health");
 const logger = require("./services/logger");
 const { assertProductionEnvironment, operationalReadiness, latestBackup } = require("./services/productionReadiness");
 const { runtimePaths } = require("./services/productionBackup");
@@ -57,6 +58,8 @@ app.use((req, res, next) => {
     if (isProduction && req.secure) res.setHeader("Strict-Transport-Security", "max-age=31536000");
     next();
 });
+
+app.use(createHealthRouter({ dbProbe: () => get("SELECT 1 AS ok"), logger }));
 
 app.use((req, res, next) => {
     const origin = req.get("Origin");
@@ -103,7 +106,6 @@ app.use(session({
     }
 }));
 
-app.get("/health", (req, res) => res.status(200).json({ status: "ok" }));
 app.get("/ready", async (req, res) => {
     try {
         const schema = await get("PRAGMA user_version");
@@ -241,3 +243,4 @@ async function shutdown(signal = "shutdown") {
 function handleSignal(signal) { shutdown(signal).then(() => process.exit(0)).catch(error => { logger.error("shutdown_forced", error, { signal }); fs.rmSync(runtimeLockPath, { force: true }); process.exit(1); }); }
 process.once("SIGTERM", () => handleSignal("SIGTERM"));
 process.once("SIGINT", () => handleSignal("SIGINT"));
+if (process.env.NODE_ENV === "test" && process.connected) process.on("message", message => { if (message === "shutdown") handleSignal("test-ipc"); });

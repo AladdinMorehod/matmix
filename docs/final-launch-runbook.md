@@ -109,10 +109,12 @@ sudo systemctl enable --now matmix
 sudo systemctl status matmix --no-pager
 sudo journalctl -u matmix -n 200 --no-pager
 curl --fail http://127.0.0.1:3000/health
+curl --fail http://127.0.0.1:3000/health/ready
 curl --fail http://127.0.0.1:3000/ready
 sudo nginx -t
 sudo systemctl reload nginx
 curl --fail --head https://example.invalid/health
+curl --fail --head https://example.invalid/health/ready
 curl --fail --head https://example.invalid/
 ```
 
@@ -160,15 +162,38 @@ The restored standalone backup initially uses SQLite `journal_mode=delete`; this
 
 ## Production smoke checklist
 
-Verify: home/header/hero/footer; catalog hierarchy and pagination; direct category/subcategory/product routes; search (`ГКЛ`, `ГКЛВ`, `Ротбанд`, MAT code, no-result/malicious query); images and missing-image state; cart quantity/removal/reload; consent links and blocked unchecked submit; one approved marked test order; server-calculated total; CRM login and appearance of consent metadata; import **preview only**; Excel export; backup create+verify; logout/back; 404; robots, sitemap, canonical; `/health` and `/ready`.
+Verify: home/header/hero/footer; catalog hierarchy and pagination; direct category/subcategory/product routes; search (`ГКЛ`, `ГКЛВ`, `Ротбанд`, MAT code, no-result/malicious query); images and missing-image state; cart quantity/removal/reload; consent links and blocked unchecked submit; one approved marked test order; server-calculated total; CRM login and appearance of consent metadata; import **preview only**; Excel export; backup create+verify; logout/back; 404; robots, sitemap, canonical; `/health`, `/health/ready` and `/ready`.
 
 Order creation, import apply, product/image edits and backup/restore mutate data. During smoke, do not run import apply or destructive image operations. Mark the test order with the approved identifier. Do not delete it directly; close/anonymize/remove it only through the owner-approved retention/accounting procedure.
 
 ## Soft-launch monitoring
 
+Use `GET /health` for liveness: it confirms that Node.js/Express responds, performs no database or session check, and returns HTTP 200 with `{"status":"ok"}`. Lifecycle and Playwright tests depend on this existing contract. Use `GET /health/ready` for the Better Stack monitor at a three-minute interval: it performs one lightweight `SELECT 1` through the singleton SQLite connection with a 1500 ms response timeout, returns HTTP 200 with `{"status":"ok"}`, or HTTP 503 with `{"status":"unavailable"}` without exposing technical details. This interval is safe for SQLite. Keep `GET /ready` as the legacy deep operational readiness check for schema, legal, session, backup and related production conditions; its existing `ready`/`not_ready` contract is unchanged and it is not the frequent external uptime probe.
+
+```bash
+curl --fail --silent --show-error -D - https://matmix.ru/health
+curl --fail --silent --show-error -D - https://matmix.ru/health/ready
+curl --silent --output /dev/null --write-out "%{http_code}\n" https://matmix.ru/health/ready
+```
+
+```powershell
+Invoke-RestMethod -Uri "https://matmix.ru/health"
+Invoke-RestMethod -Uri "https://matmix.ru/health/ready"
+$response = Invoke-WebRequest -Uri "https://matmix.ru/health/ready"
+$response.StatusCode
+$response.Headers["Cache-Control"]
+$response.Headers["Pragma"]
+$response.Headers["X-Robots-Tag"]
+$response.Content
+```
+
+The healthy production result is HTTP 200, `Cache-Control: no-store` and `{"status":"ok"}`.
+
 | Signal | Initial threshold | Action |
 | --- | --- | --- |
-| `/health`, `/ready` | 2 consecutive failures / 2 min | Stop traffic escalation; inspect systemd, DB, backup/legal readiness |
+| `/health` | 2 consecutive failures / 2 min | Inspect the systemd process and reverse proxy |
+| `/health/ready` (Better Stack every 3 min) | 2 consecutive failures | Inspect the primary SQLite connection and application logs |
+| `/ready` (legacy operational check) | Failure during release or scheduled operations check | Inspect schema, DB/session access, backup/legal readiness and filesystem conditions |
 | Process restarts | >2 in 15 min | Roll back or disable traffic; inspect crash logs |
 | HTTP 5xx | >1% for 5 min or any sustained order 5xx | Page operator; preserve request IDs; consider rollback |
 | Login rate limits | >20/hour or sharp source spike | Review proxy/source IP, do not weaken limits automatically |

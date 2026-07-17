@@ -37,4 +37,29 @@ Alert on process crash/restart loops, sustained 5xx, readiness failure, SQLite b
 
 Manual gates that automation cannot prove: real TLS/DNS, filesystem owner/mode, external encrypted backup, backup schedule, monitoring delivery, legal approval, operator rollback rehearsal, restricted-audience plan and treatment of test orders. Do not use an application-wide shared password. If staging access is needed, use reverse-proxy Basic Auth only on staging/limited soft launch, never as customer authentication.
 
-`/health` is a minimal liveness response. `/ready` returns only `ready`/`not_ready`; it checks schema, DB/session access, legal configuration and backup age without running `integrity_check`. Detailed diagnostics are CLI-only.
+`GET /health` is the minimal liveness probe used by lifecycle tests and Playwright. It confirms that the Node.js/Express process responds, performs no database, session, backup, filesystem, schema or legal check, and returns HTTP 200 with `{"status":"ok"}`.
+
+`GET /health/ready` is the lightweight external readiness probe for Better Stack. It runs `SELECT 1` through the existing singleton SQLite connection with a 1500 ms internal response timeout. It returns HTTP 200 with `{"status":"ok"}` on success and HTTP 503 with `{"status":"unavailable"}` on database error or timeout. It does not check the session store, backups, legal readiness, uploads, free disk space or other secondary dependencies. A single lightweight probe every three minutes is safe for the database. Both health endpoints are public, bypass session middleware, create no session cookie and send `Cache-Control: no-store`, `Pragma: no-cache` and `X-Robots-Tag: noindex, nofollow`.
+
+`GET /ready` remains the legacy operational readiness probe with its existing `ready`/`not_ready` contract. It checks the schema, database/session access, legal configuration and backup age and is not intended as a frequent external uptime probe. Detailed diagnostics remain CLI-only.
+
+After deployment, verify the public probes:
+
+```bash
+curl --fail --silent --show-error -D - https://matmix.ru/health
+curl --fail --silent --show-error -D - https://matmix.ru/health/ready
+curl --silent --output /dev/null --write-out "%{http_code}\n" https://matmix.ru/health/ready
+```
+
+```powershell
+Invoke-RestMethod -Uri "https://matmix.ru/health"
+Invoke-RestMethod -Uri "https://matmix.ru/health/ready"
+$response = Invoke-WebRequest -Uri "https://matmix.ru/health/ready"
+$response.StatusCode
+$response.Headers["Cache-Control"]
+$response.Headers["Pragma"]
+$response.Headers["X-Robots-Tag"]
+$response.Content
+```
+
+The expected healthy result is HTTP 200, `Cache-Control: no-store` and `{"status":"ok"}`. Keep the legacy `/ready` check in the release procedure, but configure Better Stack to request `/health/ready` every three minutes.

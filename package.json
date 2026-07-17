@@ -27,6 +27,7 @@
     "test:e2e": "playwright test --project=chromium",
     "test:e2e:headed": "playwright test --project=chromium --headed",
     "test:e2e:mobile": "playwright test --project=mobile-chromium",
+    "test:health": "node backend/scripts/test-health-checks.js",
     "test:production-readiness": "node backend/scripts/test-production-readiness.js",
     "test:lifecycle": "node backend/scripts/test-production-lifecycle.js"
   },
