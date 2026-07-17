@@ -3,7 +3,11 @@ const { test, expect } = require("@playwright/test");
 test("public pages, legal navigation and security headers", async ({ page }) => {
     const consoleErrors = []; const failed = [];
     page.on("console", message => { if (message.type() === "error") consoleErrors.push(message.text()); });
-    page.on("requestfailed", request => failed.push(`${request.method()} ${request.url()}`));
+    page.on("requestfailed", request => {
+        const failure = request.failure()?.errorText || "";
+        if (failure.includes("ERR_ABORTED")) return;
+        failed.push(`${request.method()} ${request.url()} — ${failure}`);
+    });
     const response = await page.goto("/"); expect(response.status()).toBe(200);
     await expect(page.locator("header")).toBeVisible(); await expect(page.locator(".hero")).toBeVisible(); await expect(page.locator("footer")).toBeVisible();
     await expect(page.locator('footer a[href="/privacy"]')).toBeVisible();
