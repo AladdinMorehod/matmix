@@ -32,9 +32,15 @@ async function concurrentOrder(file, suffix) {
 
 (async () => {
     const root = fs.mkdtempSync(path.join(os.tmpdir(), "matmix-integrity-"));
-    const source = path.join(__dirname, "..", "database", "matmix.db");
     const file = path.join(root, "matmix.db");
-    fs.copyFileSync(source, file);
+    process.env.MATMIX_DB_PATH = file;
+
+    const { initDatabase, db: initializationDb } = require("../database");
+    await initDatabase();
+    await new Promise((resolve, reject) => {
+        initializationDb.close(error => error ? reject(error) : resolve());
+    });
+
     await migrateDatabase(file, { dryRun: false });
     const ids = await Promise.all([concurrentOrder(file, "A"), concurrentOrder(file, "B")]);
     assert.strictEqual(new Set(ids).size, 2);
