@@ -10,7 +10,7 @@ function setHealthHeaders(res) {
 module.exports = function createHealthRouter({ dbProbe, logger, timeoutMs = DEFAULT_READINESS_TIMEOUT_MS }) {
     const router = express.Router();
 
-    router.use((req, res, next) => {
+    router.use(["/health", "/health/ready"], (req, res, next) => {
         setHealthHeaders(res);
         next();
     });
