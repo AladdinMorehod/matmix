@@ -18,8 +18,47 @@ async function upload(url, auth, buffer, name = "фото товара.png", mim
 
 (async () => {
     const root = fs.mkdtempSync(path.join(os.tmpdir(), "matmix-image-api-"));
-    const dbPath = path.join(root, "matmix.db"); const uploads = path.join(root, "uploads");
-    fs.copyFileSync(path.join(__dirname, "..", "database", "matmix.db"), dbPath); fs.mkdirSync(uploads);
+    const dbPath = path.join(root, "matmix.db");
+    const uploads = path.join(root, "uploads");
+    fs.mkdirSync(uploads);
+
+    process.env.MATMIX_DB_PATH = dbPath;
+    const { initDatabase, db: initializationDb } = require("../database");
+    await initDatabase();
+    await new Promise((resolve, reject) => initializationDb.close(error => error ? reject(error) : resolve()));
+
+    const fixtureDb = new sqlite3.Database(dbPath);
+    await new Promise((resolve, reject) => fixtureDb.exec(`
+        INSERT INTO products (
+            external_id, title, category, price, unit,
+            description, is_active, sort_order, created_at, updated_at
+        ) VALUES
+            (
+                'MAT-IMAGE-001',
+                'Тестовый товар изображения 1',
+                'Тестовая категория',
+                1000,
+                'шт',
+                'Тестовый товар',
+                1,
+                1,
+                CURRENT_TIMESTAMP,
+                CURRENT_TIMESTAMP
+            ),
+            (
+                'MAT-IMAGE-002',
+                'Тестовый товар изображения 2',
+                'Тестовая категория',
+                2000,
+                'шт',
+                'Тестовый товар',
+                1,
+                2,
+                CURRENT_TIMESTAMP,
+                CURRENT_TIMESTAMP
+            );
+    `, error => error ? reject(error) : resolve()));
+    await new Promise((resolve, reject) => fixtureDb.close(error => error ? reject(error) : resolve()));
     const port = 41000 + Math.floor(Math.random() * 1000);
     const child = spawn(process.execPath, [path.join(__dirname, "..", "server.js")], {
         cwd: path.join(__dirname, "..", ".."), windowsHide: true,
