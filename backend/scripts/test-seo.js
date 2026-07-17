@@ -18,7 +18,61 @@ async function start(root, dbPath, indexing) {
 async function stop(child) { child.kill("SIGTERM"); await new Promise(resolve => child.once("exit", resolve)); }
 
 (async () => {
-    const root = fs.mkdtempSync(path.join(os.tmpdir(), "matmix-seo-")); fs.mkdirSync(path.join(root, "uploads")); const dbPath = path.join(root, "matmix.db"); fs.copyFileSync(path.join(__dirname, "..", "database", "matmix.db"), dbPath);
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "matmix-seo-"));
+    fs.mkdirSync(path.join(root, "uploads"));
+    const dbPath = path.join(root, "matmix.db");
+
+    process.env.MATMIX_DB_PATH = dbPath;
+    const { initDatabase, db: initializationDb } = require("../database");
+    await initDatabase();
+    await new Promise((resolve, reject) => initializationDb.close(error => error ? reject(error) : resolve()));
+
+    const fixtureDb = new sqlite3.Database(dbPath);
+    await new Promise((resolve, reject) => fixtureDb.exec(`
+        DELETE FROM products;
+        DELETE FROM catalog_structure;
+
+        INSERT INTO catalog_structure (
+            id, type, name, normalized_name, external_code,
+            parent_id, sort_order, is_active, is_system, created_at, updated_at
+        ) VALUES
+            (1, 'category', 'Тестовая категория', 'тестовая категория',
+             'CAT-TEST', NULL, 1, 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+            (3670, 'category', 'Служебная категория', 'служебная категория',
+             'PSEUDO-3670', NULL, 3670, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+        WITH RECURSIVE sequence(id) AS (
+            SELECT 1
+            UNION ALL
+            SELECT id + 1 FROM sequence WHERE id < 3905
+        )
+        INSERT INTO products (
+            id, external_id, title, slug, category, subcategory,
+            product_group, price, weight, unit, description,
+            is_active, sort_order, created_at, updated_at, deleted_at
+        )
+        SELECT
+            id,
+            printf('MAT-%06d', id),
+            printf('Тестовый товар %d', id),
+            printf('test-product-%d', id),
+            'Тестовая категория',
+            'Тестовая подкатегория',
+            'Тестовая группа',
+            100 + id,
+            1,
+            'шт',
+            printf('Описание тестового товара %d', id),
+            CASE WHEN id = 3905 THEN 0 ELSE 1 END,
+            id,
+            CURRENT_TIMESTAMP,
+            CURRENT_TIMESTAMP,
+            NULL
+        FROM sequence;
+    `, error => error ? reject(error) : resolve()));
+
+    await new Promise((resolve, reject) => fixtureDb.close(error => error ? reject(error) : resolve()));
+
     const [product] = await query(dbPath, "SELECT * FROM products WHERE id<>3670 AND is_active=1 AND deleted_at IS NULL AND external_id LIKE 'MAT-%' ORDER BY id LIMIT 1");
     const [inactive] = await query(dbPath, "SELECT * FROM products WHERE is_active<>1 OR deleted_at IS NOT NULL LIMIT 1");
     const legacyProducts = await query(dbPath, "SELECT * FROM products WHERE id IN (469,470,3670)");
