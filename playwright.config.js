@@ -8,7 +8,7 @@ module.exports = defineConfig({
     fullyParallel: false,
     retries: process.env.CI ? 1 : 0,
     reporter: process.env.CI ? [["line"], ["html", { open: "never" }]] : "line",
-    outputDir: "test-results",
+    outputDir: process.env.PLAYWRIGHT_OUTPUT_DIR || "test-results",
     globalSetup: isWindows ? "./e2e/global-setup.js" : undefined,
     use: { baseURL: "http://127.0.0.1:4173", trace: "retain-on-failure", screenshot: "only-on-failure", video: "off" },
     webServer: isWindows ? undefined : { command: "node e2e/test-server.js", url: "http://127.0.0.1:4173/health", reuseExistingServer: false, timeout: 120000 },
