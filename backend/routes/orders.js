@@ -108,18 +108,24 @@ async function buildServerOrderItems(transaction, quantitiesByProductId) {
         }
 
         const unitPriceCents = moneyToCents(product.price);
-        if (unitPriceCents === null || product.price === null) {
-            throw new PublicOrderError(409, `Для товара ${product.external_id || productId} цена предоставляется по запросу.`, "PRICE_ON_REQUEST");
-        }
-
+        const priceOnRequest = unitPriceCents === null || product.price === null;
         const quantity = quantitiesByProductId.get(productId);
-        const lineTotalCents = unitPriceCents * quantity;
-        if (!Number.isSafeInteger(lineTotalCents) || !Number.isSafeInteger(totalCents + lineTotalCents)) {
+        const lineTotalCents = priceOnRequest ? null : unitPriceCents * quantity;
+
+        if (
+            lineTotalCents !== null
+            && (!Number.isSafeInteger(lineTotalCents) || !Number.isSafeInteger(totalCents + lineTotalCents))
+        ) {
             throw new PublicOrderError(400, "Сумма заказа превышает допустимый предел.", "ORDER_TOTAL_LIMIT");
         }
+
         const unitWeight = Math.max(0, ceilWeight(product.weight));
         const lineWeight = ceilWeight(unitWeight * quantity);
-        totalCents += lineTotalCents;
+
+        if (lineTotalCents !== null) {
+            totalCents += lineTotalCents;
+        }
+
         totalWeight = ceilWeight(totalWeight + lineWeight);
         snapshot.push({
             id: product.id,
@@ -128,17 +134,23 @@ async function buildServerOrderItems(transaction, quantitiesByProductId) {
             name: product.title,
             title: product.title,
             unit: product.unit || "шт",
-            price: unitPriceCents / 100,
-            unitPrice: unitPriceCents / 100,
+            price: priceOnRequest ? null : unitPriceCents / 100,
+            unitPrice: priceOnRequest ? null : unitPriceCents / 100,
+            priceOnRequest,
             qty: quantity,
             quantity,
             weight: unitWeight,
-            lineTotal: lineTotalCents / 100,
+            lineTotal: lineTotalCents === null ? null : lineTotalCents / 100,
             lineWeight
         });
     }
 
-    return { items: snapshot, totalPrice: totalCents / 100, totalWeight };
+    return {
+        items: snapshot,
+        totalPrice: totalCents / 100,
+        totalWeight,
+        hasPriceOnRequest: snapshot.some(item => item.priceOnRequest === true)
+    };
 }
 
 const allowedStatuses = [
@@ -353,6 +365,7 @@ function normalizeOrder(row) {
         items: JSON.parse(row.items_json || "[]"),
         totalPrice: row.total_price || 0,
         totalWeight: row.total_weight || 0,
+        hasPriceOnRequest: JSON.parse(row.items_json || "[]").some(item => item?.priceOnRequest === true),
         status: row.status,
         managerId: row.manager_id || null,
         managerName: row.manager_name || null,
@@ -787,6 +800,7 @@ router.post("/", async (req, res) => {
             orderNumber: createdOrder.orderNumber,
             totalPrice: createdOrder.totalPrice,
             totalWeight: createdOrder.totalWeight,
+            hasPriceOnRequest: createdOrder.hasPriceOnRequest,
             itemCount: createdOrder.items.length
         });
     } catch (error) {

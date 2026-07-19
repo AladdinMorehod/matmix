@@ -26,7 +26,9 @@ function renderItems(items = []) {
                         <td>${escapeHtml(item.name)}</td>
                         <td>${escapeHtml(item.qty)} ${escapeHtml(item.unit || "шт")}</td>
                         <td>${formatWeight(item.lineWeight ?? ((item.weight || 0) * (item.qty || 0)))}</td>
-                        <td>${formatMoney(item.lineTotal)}</td>
+                        <td>${item.priceOnRequest || item.lineTotal === null
+                            ? '<strong>Цена по запросу</strong>'
+                            : formatMoney(item.lineTotal)}</td>
                     </tr>
                 `).join("")}
             </tbody>
@@ -215,9 +217,17 @@ function renderInfoRow(label, value) {
 }
 
 function renderOrderSummary(order) {
+    const hasPriceOnRequest = order.hasPriceOnRequest
+        || (Array.isArray(order.items) && order.items.some(item => item?.priceOnRequest === true));
+
     return `
         <div class="order-summary">
-            <span>Итого: <strong>${formatMoney(order.totalPrice)}</strong></span>
+            <span>${hasPriceOnRequest ? "Предварительная сумма" : "Итого"}:
+                <strong>${formatMoney(order.totalPrice)}</strong>
+            </span>
+            ${hasPriceOnRequest
+                ? '<span><strong>Есть позиции с ценой по запросу</strong></span>'
+                : ""}
             <span>Вес: <strong>${formatWeight(order.totalWeight)}</strong></span>
         </div>
     `;

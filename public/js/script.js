@@ -37395,26 +37395,30 @@ function loadCart() {
         const normalizedItems = new Map();
 
         saved.forEach(item => {
-            const id = Number(item?.productId ?? item?.id);
-            const qty = Math.floor(Number(item?.quantity ?? item?.qty));
-            const product = getProductById(id);
+            const productId = Number(item?.productId ?? item?.id);
+            const quantity = Math.floor(Number(item?.quantity ?? item?.qty));
 
-            if (Number.isInteger(id) && product && qty > 0) {
-                normalizedItems.set(id, (normalizedItems.get(id) || 0) + qty);
-            }
-        });
+            if (!Number.isInteger(productId) || quantity <= 0) return;
 
-        return Array.from(normalizedItems, ([productId, quantity]) => {
             const product = getProductById(productId);
-            return {
+            const existing = normalizedItems.get(productId);
+
+            if (existing) {
+                existing.quantity += quantity;
+                return;
+            }
+
+            normalizedItems.set(productId, {
                 productId,
-                title: product.name,
-                price: Number(product.price) || 0,
-                weight: Number(product.weight) || 0,
-                unit: product.unit || "шт",
+                title: product?.name || String(item?.title || "Товар"),
+                price: Number(product?.price ?? item?.price) || 0,
+                weight: Number(product?.weight ?? item?.weight) || 0,
+                unit: product?.unit || item?.unit || "шт",
                 quantity
-            };
+            });
         });
+
+        return Array.from(normalizedItems.values());
     } catch {
         return [];
     }
@@ -37844,11 +37848,20 @@ function escapeHtml(value) {
 function getCartOrderItems() {
     return cart
         .map(item => {
-            const product = getProductById(item.productId);
-            if (!product) return null;
-            const qty = Number(item.quantity) || 0;
+            const productId = Number(item.productId);
+            const qty = Number(item.quantity ?? item.qty);
+
+            if (
+                !Number.isSafeInteger(productId)
+                || productId <= 0
+                || !Number.isSafeInteger(qty)
+                || qty <= 0
+            ) {
+                return null;
+            }
+
             return {
-                productId: product.id,
+                productId,
                 qty
             };
         })
@@ -38393,14 +38406,15 @@ function getSubcategoryAllPath(subcategoryPath) {
 function getCartTotal() {
     return ceilMoney(cart.reduce((sum, item) => {
         const product = getProductById(item.productId);
-        return sum + ceilMoney(product?.price) * item.quantity;
+        const price = Number(product?.price ?? item.price);
+        return sum + ceilMoney(Number.isFinite(price) ? price : 0) * item.quantity;
     }, 0));
 }
 
 function getCartWeight() {
     return ceilWeight(cart.reduce((sum, item) => {
         const product = getProductById(item.productId);
-        const weight = Number(product?.weight);
+        const weight = Number(product?.weight ?? item.weight);
         return sum + ceilWeight(Number.isFinite(weight) ? weight : 0) * item.quantity;
     }, 0));
 }
@@ -38410,7 +38424,7 @@ function getCartQty() {
 }
 
 function getDistinctCartItemsCount() {
-    return cart.filter(item => getProductById(item.productId)).length;
+    return cart.length;
 }
 
 function isCartModalOpen() {
@@ -39137,26 +39151,20 @@ function renderCart() {
         return;
     }
 
-    cart = cart.filter(item => getProductById(item.productId));
-    if (!cart.length) {
-        saveCart();
-        clearCartConfirm?.classList.add("hidden");
-        cartItemsEl.innerHTML = `<p class="empty-cart">Корзина пока пустая</p>`;
-        updateCartSummary();
-        return;
-    }
-
     const fragment = document.createDocumentFragment();
 
     cart.forEach(item => {
         const product = getProductById(item.productId);
+        const title = product?.name || item.title || "Товар";
+        const price = Number(product?.price ?? item.price) || 0;
+        const unit = product?.unit || item.unit || "шт";
         const qty = Number(item.quantity) || 0;
         const row = document.createElement("div");
         row.className = "cart-item";
         row.innerHTML = `
             <div>
-                <b>${escapeHtml(cleanDisplayText(product.name))}</b>
-                <span>${escapeHtml(formatPrice(product.price))} / ${escapeHtml(product.unit)}</span>
+                <b>${escapeHtml(cleanDisplayText(title))}</b>
+                <span>${escapeHtml(formatPrice(price))} / ${escapeHtml(unit)}</span>
             </div>
             ${getQtyControls(item.productId, qty, true)}
         `;
@@ -39466,23 +39474,32 @@ checkoutForm?.addEventListener("submit", async event => {
         }
 
         showCheckoutSuccess();
+
         cart = [];
         saveCart();
         updateCartSummary();
-        hideCartPreview();
-        renderProducts();
-        renderPopularProducts();
-        renderCart();
-        checkoutForm.reset();
-        if (checkoutPhoneInput) {
-            checkoutPhoneInput.value = formatRussianPhone(checkoutPhoneInput.value);
-        }
-        resizeCheckoutComment();
 
         window.setTimeout(() => {
-            cartModal.classList.add("hidden");
+            cartModal?.classList.add("hidden");
             showCartView();
+            setCheckoutSubmitDisabled(false);
         }, 1800);
+
+        try {
+            hideCartPreview();
+            renderProducts();
+            renderPopularProducts();
+            renderCart();
+            checkoutForm?.reset();
+
+            if (checkoutPhoneInput) {
+                checkoutPhoneInput.value = formatRussianPhone(checkoutPhoneInput.value);
+            }
+
+            resizeCheckoutComment();
+        } catch (uiError) {
+            console.error("Checkout success UI update error:", uiError);
+        }
     } catch (error) {
         showCheckoutError(getCheckoutErrorMessage(error));
         setCheckoutSubmitDisabled(false);
