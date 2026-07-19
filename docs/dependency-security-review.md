@@ -19,3 +19,21 @@ The production audit reports 9 affected package entries: 5 high, 2 moderate, 2 l
 ## Launch decision
 
 There is no critical advisory. The low entries and the UUID path do not independently block a restricted soft launch. The five high build-chain entries require a named security/operations owner to sign a time-bounded risk acceptance, with locked `npm ci`, trusted registry, isolated build, immutable deployment and a scheduled `sqlite3@6` compatibility project. Without that written acceptance, the dependency gate remains blocking. Re-run both `npm audit --json` and `npm audit --omit=dev --json` immediately before release because registry data changes.
+
+## Temporary risk acceptance
+
+- Accepted by: MatMix owner
+- Acceptance date: 2026-07-19
+- Review deadline: 2026-08-18
+- Scope: the dependency findings documented above: 5 high, 2 moderate and 2 low; 0 critical.
+- Decision: temporarily accept the documented dependency risk while the current production release remains operational.
+- Conditions:
+  - use the committed lockfile and `npm ci`;
+  - use only a trusted package registry;
+  - do not apply blind `npm audit fix`, dependency overrides or major upgrades directly in production;
+  - keep deployments immutable and production runtime permissions restricted;
+  - perform the `sqlite3@6` compatibility upgrade as a separate tested project;
+  - retest Excel import/export when changing ExcelJS or UUID;
+  - rerun `npm audit --json` and `npm audit --omit=dev --json` at or before the review deadline.
+
+Owner statement: “Принимаю временный риск зависимостей от своего имени как владелец MatMix. Срок пересмотра — 30 дней.”
