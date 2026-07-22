@@ -38501,20 +38501,22 @@ function sanitizeQtyInputValue(value) {
 function setProductQty(id, nextQty, options = {}) {
     const { renderCartView = true, renderSearchView = true, renderProductViews = true } = options;
     const product = getProductById(id);
-    if (!product) return;
-
-    const safeQty = clampProductQty(nextQty);
     const item = getCartItem(id);
+    const safeQty = clampProductQty(nextQty);
 
     if (safeQty <= 0) {
+        if (!item) return;
         cart = cart.filter(entry => Number(entry.productId) !== Number(id));
     } else if (item) {
         item.quantity = safeQty;
-        item.title = product.name;
-        item.price = Number(product.price) || 0;
-        item.weight = Number(product.weight) || 0;
-        item.unit = product.unit || "шт";
+        if (product) {
+            item.title = product.name;
+            item.price = Number(product.price) || 0;
+            item.weight = Number(product.weight) || 0;
+            item.unit = product.unit || "шт";
+        }
     } else {
+        if (!product) return;
         cart.push({
             productId: Number(id),
             title: product.name,

@@ -26,6 +26,72 @@ test("catalog, search, cart persistence and responsive smoke", async ({ page, re
     for (const viewport of [{ width: 320, height: 568 }, { width: 375, height: 812 }, { width: 768, height: 1024 }, { width: 1024, height: 768 }, { width: 1366, height: 768 }, { width: 1920, height: 1080 }]) { await page.setViewportSize(viewport); const dimensions = await page.evaluate(() => ({ scrollWidth: document.documentElement.scrollWidth, clientWidth: document.documentElement.clientWidth, offenders: [...document.querySelectorAll("*")].filter(element => element.getBoundingClientRect().right > document.documentElement.clientWidth + 1).slice(0, 5).map(element => `${element.tagName}.${element.className}:${Math.round(element.getBoundingClientRect().right)}`) })); expect(dimensions.scrollWidth, JSON.stringify({ viewport, dimensions })).toBeLessThanOrEqual(dimensions.clientWidth + 1); }
 });
 
+test("cart quantity works when the product is outside the current catalog page", async ({ page }) => {
+    const category = "Тестовая категория";
+    const subcategory = "Целевая подкатегория";
+    const targetProduct = { id: 9001, externalId: "cart-target", name: "Товар из популярного", price: 125, weight: 2, unit: "шт", category, subcategory, image: "" };
+    const rootProduct = { id: 9002, externalId: "catalog-root", name: "Товар корневой выдачи", price: 75, weight: 1, unit: "шт", category, subcategory: "Другая подкатегория", image: "" };
+    const productResponse = products => ({ success: true, products, items: products, total: products.length, page: 1, limit: 50, totalPages: 1 });
+
+    await page.route("**/api/public/products/structure", route => route.fulfill({
+        contentType: "application/json",
+        body: JSON.stringify({ success: true, categories: [{ name: category, subcategories: [{ name: subcategory, groups: [] }, { name: "Другая подкатегория", groups: [] }] }] })
+    }));
+    await page.route("**/api/public/products?*", async route => {
+        const url = new URL(route.request().url());
+        const products = url.searchParams.has("search") || url.searchParams.get("subcategory") === subcategory
+            ? [targetProduct]
+            : [rootProduct];
+        await route.fulfill({ contentType: "application/json", body: JSON.stringify(productResponse(products)) });
+    });
+
+    const readCartQuantity = productId => page.evaluate(id => {
+        const cart = JSON.parse(localStorage.getItem("matmix_cart") || "[]");
+        return cart.find(item => Number(item.productId ?? item.id) === id)?.quantity ?? null;
+    }, productId);
+
+    await page.goto("/");
+    const popularCard = page.locator(`#popularGrid [data-product-id="${targetProduct.id}"]`);
+    await expect(popularCard).toContainText(targetProduct.name);
+    await popularCard.locator(".add").click();
+    await expect.poll(() => readCartQuantity(targetProduct.id)).toBe(1);
+
+    await page.goto("/catalog.html");
+    await expect(page.locator(`.card[data-product-id="${targetProduct.id}"]`)).toHaveCount(0);
+    await page.locator("#cartBtn").click();
+    const cartItem = page.locator(`.cart-item:has(.qty-input[data-id="${targetProduct.id}"])`);
+    const quantityInput = cartItem.locator(".qty-input");
+    await expect(cartItem).toContainText(targetProduct.name);
+
+    await cartItem.locator(".plus").click();
+    await expect.poll(() => readCartQuantity(targetProduct.id)).toBe(2);
+    await cartItem.locator(".minus").click();
+    await expect.poll(() => readCartQuantity(targetProduct.id)).toBe(1);
+    await quantityInput.fill("7");
+    await quantityInput.press("Enter");
+    await expect.poll(() => readCartQuantity(targetProduct.id)).toBe(7);
+
+    await page.reload();
+    await page.locator("#cartBtn").click();
+    await expect(quantityInput).toHaveValue("7");
+    await quantityInput.fill("1");
+    await quantityInput.press("Enter");
+    await cartItem.locator(".minus").click();
+    await expect.poll(() => readCartQuantity(targetProduct.id)).toBeNull();
+    await expect(cartItem).toHaveCount(0);
+
+    await page.evaluate(product => {
+        localStorage.setItem("matmix_cart", JSON.stringify([{ productId: product.id, title: product.name, price: product.price, weight: product.weight, unit: product.unit, quantity: 1 }]));
+    }, targetProduct);
+    await page.reload();
+    await page.getByRole("button", { name: category, exact: true }).click();
+    await page.getByRole("button", { name: subcategory, exact: true }).click();
+    await expect(page.locator(`#productGrid [data-product-id="${targetProduct.id}"]`)).toBeVisible();
+    await page.locator("#cartBtn").click();
+    await cartItem.locator(".plus").click();
+    await expect.poll(() => readCartQuantity(targetProduct.id)).toBe(2);
+});
+
 test("accessibility and performance smoke", async ({ page }) => {
     const started = Date.now(); let requests = 0; page.on("request", () => { requests += 1; });
     await page.goto("/"); const loadMs = Date.now() - started;
