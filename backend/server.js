@@ -219,8 +219,13 @@ Promise.resolve()
         await initDatabase();
         fs.mkdirSync(path.dirname(runtimeLockPath), { recursive: true });
         fs.writeFileSync(runtimeLockPath, JSON.stringify({ pid: process.pid, startedAt: new Date().toISOString() }), { flag: "wx" });
-        httpServer = app.listen(port, () => {
-            logger.info("server_started", { port: Number(port), environment: process.env.NODE_ENV || "development" });
+        const host = process.env.HOST || "127.0.0.1";
+        httpServer = app.listen(port, host, () => {
+            logger.info("server_started", {
+                host,
+                port: Number(port),
+                environment: process.env.NODE_ENV || "development"
+            });
         });
     })
     .catch(error => {
