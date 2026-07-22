@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Каталог | MatMix</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=20260722-mobile-layout-5">
 </head>
 <body id="top">
 
@@ -14,14 +14,8 @@
         </a>
 
         <form class="header-search" role="search">
-            <input id="searchInput" type="search" placeholder="Поиск товаров" aria-label="Поиск товаров">
+            <input id="searchInput" type="search" placeholder="Поиск товаров" aria-label="Поиск товаров" aria-autocomplete="list" aria-controls="searchDropdown" aria-expanded="false">
         </form>
-
-        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mainNav">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
 
         <nav class="nav" id="mainNav">
             <a href="index.html">Главная</a>
@@ -46,6 +40,12 @@
                 </div>
             </div>
         </div>
+
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mainNav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </header>
 
     <section class="products catalog-page" id="catalog">
@@ -169,16 +169,40 @@
 
     <footer class="footer" id="contacts">
         <div class="footer-inner">
-            <strong>МатМикс</strong>
-            <span>+7 909 944-33-83</span>
-            <span>Opt-Mat@mail.ru</span>
-            <span>Андрей Дмитриевич, руководитель проекта</span>
-            <span>Все права защищены</span>
-            <nav class="legal-links" aria-label="Юридическая информация"><a href="/privacy">Политика конфиденциальности</a><a href="/terms">Условия</a><a href="/delivery">Доставка</a><a href="/payment">Оплата</a><a href="/returns">Возврат</a><a href="/contacts">Контакты и реквизиты</a></nav>
+            <div class="footer-group footer-group-company">
+                <strong class="footer-company-name">МатМикс</strong>
+            </div>
+            <div class="footer-group footer-group-contacts">
+                <p class="footer-group-title">Контакты</p>
+                <div class="footer-group-links">
+                    <a href="tel:+79099443383">+7 909 944-33-83</a>
+                    <a href="mailto:Opt-Mat@mail.ru">Opt-Mat@mail.ru</a>
+                </div>
+            </div>
+            <div class="footer-group footer-group-owner">
+                <span>Андрей Дмитриевич</span>
+                <span>Все права защищены</span>
+            </div>
+            <nav class="footer-group footer-group-buyers" aria-label="Покупателям">
+                <p class="footer-group-title">Покупателям</p>
+                <div class="footer-group-links">
+                    <a href="/delivery">Доставка</a>
+                    <a href="/payment">Оплата</a>
+                    <a href="/returns">Возврат</a>
+                </div>
+            </nav>
+            <nav class="footer-group footer-group-documents" aria-label="Документы">
+                <p class="footer-group-title">Документы</p>
+                <div class="footer-group-links">
+                    <a href="/privacy">Политика конфиденциальности</a>
+                    <a href="/terms">Условия</a>
+                    <a href="/contacts">Контакты и реквизиты</a>
+                </div>
+            </nav>
         </div>
     </footer>
 
     <script src="js/safe-dom.js"></script>
-    <script src="js/script.js"></script>
+    <script src="js/script.js?v=20260722-mobile-layout-5"></script>
 </body>
 </html>
