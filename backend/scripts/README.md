@@ -26,3 +26,25 @@ The script:
 2. Describe `match(product)` for products the fix should inspect.
 3. Describe `update(product)` for the fields that should change.
 4. The script will create the backup and report automatically.
+
+# Резервное копирование и восстановление
+
+## Проверка механизма backup/restore
+
+Команда:
+
+    npm run backup:verify-restore
+
+Проверяет создание копии, восстановление, rollback, контрольные суммы, блокировки и защиту от небезопасных путей.
+
+## Репетиция восстановления внешней копии
+
+Команда:
+
+    npm run backup:rehearse-offsite
+
+Скрипт скачивает последнюю копию из зашифрованного rclone remote, восстанавливает её только во временные пути, проверяет базу и uploads, затем удаляет временные файлы. Production не изменяется.
+
+Для конкретной копии укажи её реальное имя, например:
+
+    npm run backup:rehearse-offsite -- matmix-backup-2026-07-22T03-30-28-546Z-97605dde
