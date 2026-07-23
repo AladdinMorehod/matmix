@@ -1,5 +1,12 @@
 const { test, expect } = require("@playwright/test");
 
+async function movePointerOutsideViewport(page) {
+    await page.mouse.move(-1, -1);
+    await expect.poll(() => page.locator(".hero-actions").evaluate(container =>
+        ![...container.querySelectorAll("a, button")].some(action => action.matches(":hover"))
+    )).toBe(true);
+}
+
 test("public pages, legal navigation and security headers", async ({ page }) => {
     const consoleErrors = []; const failed = [];
     page.on("console", message => { if (message.type() === "error") consoleErrors.push(message.text()); });
@@ -24,6 +31,589 @@ test("catalog, search, cart persistence and responsive smoke", async ({ page, re
     const productsResponse = await request.get("/api/public/products?limit=1"); const productsBody = await productsResponse.json(); const product = (productsBody.items || productsBody.products || productsBody.data || [])[0];
     await page.goto(`/product/${product.externalId || product.external_id}`); const add = page.locator("[data-add-product]"); await expect(add).toBeVisible(); await add.click(); await page.reload(); expect(await page.evaluate(() => Object.keys(localStorage).some(key => key.toLowerCase().includes("cart") && localStorage.getItem(key)?.includes("productId")))).toBeTruthy();
     for (const viewport of [{ width: 320, height: 568 }, { width: 375, height: 812 }, { width: 768, height: 1024 }, { width: 1024, height: 768 }, { width: 1366, height: 768 }, { width: 1920, height: 1080 }]) { await page.setViewportSize(viewport); const dimensions = await page.evaluate(() => ({ scrollWidth: document.documentElement.scrollWidth, clientWidth: document.documentElement.clientWidth, offenders: [...document.querySelectorAll("*")].filter(element => element.getBoundingClientRect().right > document.documentElement.clientWidth + 1).slice(0, 5).map(element => `${element.tagName}.${element.className}:${Math.round(element.getBoundingClientRect().right)}`) })); expect(dimensions.scrollWidth, JSON.stringify({ viewport, dimensions })).toBeLessThanOrEqual(dimensions.clientWidth + 1); }
+});
+
+test("mobile header stays single-line and expands search without layout shift", async ({ page }) => {
+    const viewports = [
+        { width: 320, height: 568 },
+        { width: 360, height: 800 },
+        { width: 375, height: 812 },
+        { width: 390, height: 844 },
+        { width: 414, height: 896 },
+        { width: 430, height: 932 },
+        { width: 480, height: 900 }
+    ];
+    const pages = ["/", "/catalog.html"];
+    const searchProduct = {
+        id: 9101,
+        externalId: "responsive-search-product",
+        name: "Длинное название товара для проверки мобильного поиска",
+        price: 450,
+        weight: 1,
+        unit: "шт",
+        category: "Тестовая категория",
+        subcategory: "Тестовая подкатегория",
+        image: ""
+    };
+    const productResponse = products => ({
+        success: true,
+        products,
+        items: products,
+        total: products.length,
+        page: 1,
+        limit: 50,
+        totalPages: 1
+    });
+
+    await page.route("**/api/public/products?*", async route => {
+        await route.fulfill({ contentType: "application/json", body: JSON.stringify(productResponse([searchProduct])) });
+    });
+
+    for (const pathname of pages) {
+        for (const viewport of viewports) {
+            await page.setViewportSize(viewport);
+            await page.goto(pathname);
+
+            const compact = await page.evaluate(() => {
+                const rect = selector => document.querySelector(selector).getBoundingClientRect();
+                const header = rect(".header");
+                const logo = rect(".logo");
+                const search = rect(".header-search");
+                const input = rect("#searchInput");
+                const cart = rect("#cartBtn");
+                const burger = rect("#menuToggle");
+                const badge = document.querySelector("#cartCount").getBoundingClientRect();
+                return {
+                    header, logo, search, input, cart, burger, badge,
+                    scrollWidth: document.documentElement.scrollWidth,
+                    clientWidth: document.documentElement.clientWidth
+                };
+            });
+
+            expect(compact.header.height).toBeCloseTo(56, 0);
+            expect(compact.logo.x).toBeLessThan(compact.search.x);
+            expect(compact.search.x).toBeLessThan(compact.cart.x);
+            expect(compact.cart.x).toBeLessThan(compact.burger.x);
+            expect(compact.input.width).toBeGreaterThanOrEqual(44);
+            expect(compact.search.height).toBeGreaterThanOrEqual(44);
+            expect(compact.input.height).toBe(32);
+            expect(Math.abs((compact.input.y + compact.input.height / 2) - (compact.search.y + compact.search.height / 2))).toBeLessThanOrEqual(1);
+            expect(compact.cart.width).toBeGreaterThanOrEqual(44);
+            expect(compact.cart.height).toBeGreaterThanOrEqual(44);
+            expect(compact.burger.width).toBeGreaterThanOrEqual(44);
+            expect(compact.burger.height).toBeGreaterThanOrEqual(44);
+            expect(compact.search.x + compact.search.width).toBeLessThanOrEqual(compact.cart.x + 1);
+            expect(compact.cart.x + compact.cart.width).toBeLessThanOrEqual(compact.burger.x + 1);
+            expect(compact.badge.right).toBeLessThanOrEqual(viewport.width + 1);
+            expect(compact.scrollWidth).toBeLessThanOrEqual(compact.clientWidth + 1);
+
+            const headerHeightBeforeFocus = compact.header.height;
+            const searchInput = page.locator("#searchInput");
+            await searchInput.focus();
+            await expect(page.locator(".header")).toHaveClass(/is-search-expanded/);
+            await searchInput.fill("Очень длинный поисковый запрос, который не должен ломать мобильный header");
+            await expect(searchInput).toBeFocused();
+            await expect(page.locator(".search-dropdown")).toBeVisible();
+
+            const expanded = await page.evaluate(() => {
+                const rect = selector => document.querySelector(selector).getBoundingClientRect();
+                return {
+                    header: rect(".header"),
+                    logoDisplay: getComputedStyle(document.querySelector(".logo")).display,
+                    burger: rect("#menuToggle"),
+                    search: rect(".header-search"),
+                    input: rect("#searchInput"),
+                    cart: rect("#cartBtn"),
+                    dropdown: rect(".search-dropdown"),
+                    scrollWidth: document.documentElement.scrollWidth,
+                    clientWidth: document.documentElement.clientWidth
+                };
+            });
+
+            expect(expanded.header.height).toBeCloseTo(headerHeightBeforeFocus, 0);
+            expect(expanded.logoDisplay).toBe("none");
+            expect(expanded.burger.x).toBeLessThan(expanded.search.x);
+            expect(expanded.search.x).toBeLessThan(expanded.cart.x);
+            expect(Math.abs(compact.input.height - expanded.input.height)).toBeLessThanOrEqual(1);
+            expect(Math.abs((expanded.input.y + expanded.input.height / 2) - (expanded.search.y + expanded.search.height / 2))).toBeLessThanOrEqual(1);
+            expect(expanded.input.height).toBe(32);
+            expect(expanded.burger.x + expanded.burger.width).toBeLessThanOrEqual(expanded.search.x + 1);
+            expect(expanded.search.x + expanded.search.width).toBeLessThanOrEqual(expanded.cart.x + 1);
+            expect(expanded.dropdown.x).toBeGreaterThanOrEqual(0);
+            expect(expanded.dropdown.x + expanded.dropdown.width).toBeLessThanOrEqual(viewport.width + 1);
+            expect(expanded.dropdown.y).toBeGreaterThanOrEqual(expanded.header.y + expanded.header.height);
+            expect(expanded.scrollWidth).toBeLessThanOrEqual(expanded.clientWidth + 1);
+
+            await page.mouse.click(4, Math.min(viewport.height - 4, 300));
+            await expect(page.locator(".header")).not.toHaveClass(/is-search-expanded/);
+            await expect(searchInput).toHaveValue("Очень длинный поисковый запрос, который не должен ломать мобильный header");
+            await expect(page.locator(".search-dropdown")).toBeHidden();
+        }
+    }
+
+    await page.setViewportSize({ width: 320, height: 568 });
+    await page.goto("/");
+    await page.evaluate(product => {
+        localStorage.setItem("matmix_cart", JSON.stringify([{
+            productId: product.id,
+            title: product.name,
+            price: product.price,
+            weight: product.weight,
+            unit: product.unit,
+            quantity: 1
+        }]));
+    }, searchProduct);
+    await page.reload();
+    await expect(page.locator("#cartCount")).toBeVisible();
+    await expect(page.locator("#cartCount")).toHaveText("1");
+    const badgeGeometry = await page.evaluate(() => {
+        const badge = document.querySelector("#cartCount").getBoundingClientRect();
+        const burger = document.querySelector("#menuToggle").getBoundingClientRect();
+        return { badgeRight: badge.right, burgerLeft: burger.left, viewportWidth: document.documentElement.clientWidth };
+    });
+    expect(badgeGeometry.badgeRight).toBeLessThanOrEqual(badgeGeometry.burgerLeft);
+    expect(badgeGeometry.badgeRight).toBeLessThanOrEqual(badgeGeometry.viewportWidth + 1);
+    await page.evaluate(() => localStorage.removeItem("matmix_cart"));
+    await page.reload();
+    const searchInput = page.locator("#searchInput");
+    await searchInput.fill("товар");
+    await expect(page.locator(".search-dropdown")).toBeVisible();
+    await expect(page.locator(".search-result")).toHaveCount(1);
+    await searchInput.press("ArrowDown");
+    await expect(page.locator(".search-result.active")).toHaveCount(1);
+    await searchInput.press("Escape");
+    await expect(page.locator(".header")).not.toHaveClass(/is-search-expanded/);
+    await expect(searchInput).toHaveValue("товар");
+
+    await searchInput.focus();
+    await expect(page.locator(".search-dropdown")).toBeVisible();
+    await expect(page.locator(".search-result")).toHaveCount(1);
+    await searchInput.press("ArrowDown");
+    await searchInput.press("Enter");
+    await expect(page.locator(".header")).not.toHaveClass(/is-search-expanded/);
+    await expect(searchInput).toHaveValue("товар");
+
+    await searchInput.focus();
+    await page.locator("#menuToggle").click();
+    await expect(page.locator(".header")).not.toHaveClass(/is-search-expanded/);
+    await expect(page.locator("#mainNav")).toHaveClass(/is-open/);
+    await expect(page.locator("#menuToggle")).toHaveAttribute("aria-expanded", "true");
+    await page.locator("#menuToggle").click();
+
+    await searchInput.focus();
+    await page.locator("#cartBtn").click();
+    await expect(page.locator(".header")).not.toHaveClass(/is-search-expanded/);
+    await expect(page.locator("#cartModal")).not.toHaveClass(/hidden/);
+
+    await page.locator("#closeCart").click();
+    await searchInput.fill("товар");
+    await expect(page.locator(".search-dropdown")).toBeVisible();
+    const addButton = page.locator(".search-dropdown .add");
+    await addButton.click();
+    const quantity = page.locator(`.search-dropdown .qty-input[data-id="${searchProduct.id}"]`);
+    await expect(quantity).toHaveValue("1");
+    await page.locator(".search-dropdown .plus").click();
+    await expect(quantity).toHaveValue("2");
+    await expect(page.locator(".header")).toHaveClass(/is-search-expanded/);
+
+    await page.setViewportSize({ width: 601, height: 900 });
+    await expect(page.locator(".header")).not.toHaveClass(/is-search-expanded/);
+    await expect(searchInput).toHaveValue("товар");
+});
+
+test("home mobile actions and footer remain usable without horizontal overflow", async ({ page }) => {
+    for (const viewport of [
+        { width: 320, height: 568 },
+        { width: 360, height: 800 },
+        { width: 375, height: 812 },
+        { width: 390, height: 844 },
+        { width: 414, height: 896 },
+        { width: 430, height: 932 },
+        { width: 480, height: 900 }
+    ]) {
+        await page.setViewportSize(viewport);
+        await page.goto("/");
+        await movePointerOutsideViewport(page);
+        const measurements = await page.evaluate(() => {
+            const box = selector => {
+                const element = document.querySelector(selector);
+                const rect = element.getBoundingClientRect();
+                const style = getComputedStyle(element);
+                return {
+                    width: rect.width,
+                    height: rect.height,
+                    left: rect.left,
+                    right: rect.right,
+                    top: rect.top,
+                    bottom: rect.bottom,
+                    text: element.textContent.trim(),
+                    backgroundColor: style.backgroundColor,
+                    borderColor: style.borderColor,
+                    borderStyle: style.borderStyle,
+                    borderWidth: style.borderWidth,
+                    color: style.color
+                };
+            };
+            const boxes = selector => [...document.querySelectorAll(selector)].map(element => {
+                const rect = element.getBoundingClientRect();
+                return { width: rect.width, height: rect.height, left: rect.left, right: rect.right };
+            });
+            return {
+                heroActions: {
+                    contact: box('.hero-actions a[href^="tel:"]'),
+                    catalog: box("#homeCatalogButton")
+                },
+                contactActions: boxes(".contact-actions a"),
+                legalLinks: boxes(".footer a"),
+                scrollWidth: document.documentElement.scrollWidth,
+                clientWidth: document.documentElement.clientWidth
+            };
+        });
+
+        const { contact, catalog } = measurements.heroActions;
+        expect(contact.text).toBe("Связаться");
+        expect(catalog.text).toBe("В каталог");
+        expect(contact.top).toBeLessThan(catalog.top);
+        expect(catalog.top - contact.bottom).toBeCloseTo(8, 0);
+        expect(Math.abs(contact.left - catalog.left)).toBeLessThanOrEqual(1);
+        expect(Math.abs(contact.width - catalog.width)).toBeLessThanOrEqual(1);
+        expect(Math.abs(contact.height - catalog.height)).toBeLessThanOrEqual(1);
+        expect(contact.backgroundColor).toBe("rgba(0, 0, 0, 0)");
+        expect(catalog.backgroundColor).toBe(contact.backgroundColor);
+        expect(catalog.borderColor).toBe(contact.borderColor);
+        expect(catalog.borderStyle).toBe(contact.borderStyle);
+        expect(catalog.borderWidth).toBe(contact.borderWidth);
+        expect(catalog.color).toBe(contact.color);
+        for (const action of [contact, catalog]) {
+            expect(action.width).toBeGreaterThanOrEqual(160);
+            expect(action.width).toBeLessThanOrEqual(175);
+            expect(action.height).toBeGreaterThanOrEqual(44);
+            expect(action.height).toBeLessThanOrEqual(48);
+        }
+
+        const geometryBeforeInteraction = { contact, catalog };
+        await page.locator('.hero-actions a[href^="tel:"]').hover();
+        await page.locator("#homeCatalogButton").focus();
+        const geometryAfterInteraction = await page.evaluate(() => {
+            const rect = selector => {
+                const box = document.querySelector(selector).getBoundingClientRect();
+                return { width: box.width, height: box.height, left: box.left, top: box.top };
+            };
+            return {
+                contact: rect('.hero-actions a[href^="tel:"]'),
+                catalog: rect("#homeCatalogButton")
+            };
+        });
+        for (const key of ["contact", "catalog"]) {
+            expect(geometryAfterInteraction[key].width).toBeCloseTo(geometryBeforeInteraction[key].width, 1);
+            expect(geometryAfterInteraction[key].height).toBeCloseTo(geometryBeforeInteraction[key].height, 1);
+            expect(geometryAfterInteraction[key].left).toBeCloseTo(geometryBeforeInteraction[key].left, 1);
+            expect(geometryAfterInteraction[key].top).toBeCloseTo(geometryBeforeInteraction[key].top, 1);
+        }
+        for (const action of measurements.contactActions) {
+            expect(action.height).toBeGreaterThanOrEqual(44);
+            expect(action.left).toBeGreaterThanOrEqual(0);
+            expect(action.right).toBeLessThanOrEqual(viewport.width + 1);
+        }
+        for (const link of measurements.legalLinks) {
+            expect(link.height).toBeGreaterThanOrEqual(26);
+            expect(link.left).toBeGreaterThanOrEqual(0);
+            expect(link.right).toBeLessThanOrEqual(viewport.width + 1);
+        }
+        expect(measurements.scrollWidth).toBeLessThanOrEqual(measurements.clientWidth + 1);
+    }
+});
+
+test("hero CTA keeps one outline style across mobile and desktop", async ({ page }) => {
+    const readActions = () => page.evaluate(() => {
+        const read = selector => {
+            const element = document.querySelector(selector);
+            const rect = element.getBoundingClientRect();
+            const style = getComputedStyle(element);
+            return {
+                text: element.textContent.trim(),
+                width: rect.width,
+                height: rect.height,
+                left: rect.left,
+                top: rect.top,
+                bottom: rect.bottom,
+                backgroundColor: style.backgroundColor,
+                borderColor: style.borderColor,
+                borderStyle: style.borderStyle,
+                borderWidth: style.borderWidth,
+                borderRadius: style.borderRadius,
+                color: style.color
+            };
+        };
+        const heroVisitedRule = [...document.styleSheets]
+            .flatMap(sheet => [...sheet.cssRules])
+            .find(rule => rule.selectorText?.includes(".hero-actions a:visited"));
+        return {
+            contact: read('.hero-actions a[href^="tel:"]'),
+            catalog: read("#homeCatalogButton"),
+            visitedColor: heroVisitedRule?.style.color || "",
+            scrollWidth: document.documentElement.scrollWidth,
+            clientWidth: document.documentElement.clientWidth
+        };
+    });
+
+    for (const viewport of [
+        { width: 320, height: 568 },
+        { width: 414, height: 896 },
+        { width: 600, height: 900 },
+        { width: 601, height: 900 },
+        { width: 768, height: 900 },
+        { width: 980, height: 900 },
+        { width: 1024, height: 900 },
+        { width: 1366, height: 900 },
+        { width: 1920, height: 1080 }
+    ]) {
+        await page.setViewportSize(viewport);
+        await page.goto("/");
+        await movePointerOutsideViewport(page);
+        const initial = await readActions();
+        const { contact, catalog } = initial;
+
+        expect(contact.text).toBe("Связаться");
+        expect(catalog.text).toBe("В каталог");
+        expect(catalog.backgroundColor).toBe("rgba(0, 0, 0, 0)");
+        expect(initial.visitedColor).toBe("white");
+        for (const property of ["backgroundColor", "borderColor", "borderStyle", "borderWidth", "borderRadius", "color"]) {
+            expect(catalog[property]).toBe(contact[property]);
+        }
+        expect(initial.scrollWidth).toBeLessThanOrEqual(initial.clientWidth + 1);
+
+        if (viewport.width <= 600) {
+            expect(contact.top).toBeLessThan(catalog.top);
+            expect(catalog.top - contact.bottom).toBeCloseTo(8, 0);
+            expect(Math.abs(contact.left - catalog.left)).toBeLessThanOrEqual(1);
+            expect(Math.abs(contact.width - catalog.width)).toBeLessThanOrEqual(1);
+            expect(Math.abs(contact.height - catalog.height)).toBeLessThanOrEqual(1);
+            for (const action of [contact, catalog]) {
+                expect(action.width).toBeGreaterThanOrEqual(170);
+                expect(action.width).toBeLessThanOrEqual(175);
+                expect(action.height).toBe(46);
+            }
+        } else {
+            expect(catalog.top).toBeCloseTo(contact.top, 1);
+            expect(catalog.left).toBeLessThan(contact.left);
+        }
+
+        await page.locator('.hero-actions a[href^="tel:"]').hover();
+        const contactHover = await readActions();
+        await page.locator("#homeCatalogButton").hover();
+        const catalogHover = await readActions();
+        for (const property of ["backgroundColor", "borderColor", "borderStyle", "borderWidth", "borderRadius", "color"]) {
+            expect(catalogHover.catalog[property]).toBe(contactHover.contact[property]);
+        }
+
+        await page.locator('.hero-actions a[href^="tel:"]').focus();
+        const contactFocus = await readActions();
+        await page.locator("#homeCatalogButton").focus();
+        const catalogFocus = await readActions();
+        for (const property of ["backgroundColor", "borderColor", "borderStyle", "borderWidth", "borderRadius", "color"]) {
+            expect(catalogFocus.catalog[property]).toBe(contactFocus.contact[property]);
+        }
+        for (const [state, action] of [
+            [contactHover.contact, contact],
+            [catalogHover.catalog, catalog],
+            [contactFocus.contact, contact],
+            [catalogFocus.catalog, catalog]
+        ]) {
+            expect(state.width).toBeCloseTo(action.width, 1);
+            expect(state.height).toBeCloseTo(action.height, 1);
+            expect(state.left).toBeCloseTo(action.left, 1);
+            expect(state.top).toBeCloseTo(action.top, 1);
+        }
+    }
+});
+
+test("footer keeps three compact semantic groups responsive", async ({ page }) => {
+    const paths = ["/", "/catalog.html"];
+    const widths = [320, 350, 351, 375, 414, 480, 600, 601, 768, 1024, 1366, 1920];
+    const expectedClasses = ["footer-brand", "footer-buyers", "footer-service"];
+    const expectedLinks = [
+        ["Доставка", "/delivery"],
+        ["Оплата", "/payment"],
+        ["Возврат", "/returns"],
+        ["Реквизиты", "/contacts"],
+        ["Политика конф.", "/privacy"],
+        ["Условия и Контакты", "/terms"]
+    ];
+
+    for (const path of paths) {
+        for (const width of widths) {
+            await page.setViewportSize({ width, height: 900 });
+            await page.goto(path);
+            const layout = await page.evaluate(() => {
+                const footer = document.querySelector(".footer");
+                const inner = footer.querySelector(".footer-inner");
+                const groups = [...inner.children];
+                const links = [...footer.querySelectorAll("a")];
+                const rect = element => {
+                    const box = element.getBoundingClientRect();
+                    return {
+                        left: box.left,
+                        right: box.right,
+                        top: box.top,
+                        bottom: box.bottom,
+                        width: box.width,
+                        height: box.height,
+                        clipped: element.scrollWidth > element.clientWidth + 1
+                            || element.scrollHeight > element.clientHeight + 1
+                    };
+                };
+                const overlaps = (first, second) => (
+                    first.left < second.right - 1
+                    && first.right > second.left + 1
+                    && first.top < second.bottom - 1
+                    && first.bottom > second.top + 1
+                );
+                const groupBoxes = groups.map(rect);
+                let overlapCount = 0;
+                for (let first = 0; first < groupBoxes.length; first += 1) {
+                    for (let second = first + 1; second < groupBoxes.length; second += 1) {
+                        if (overlaps(groupBoxes[first], groupBoxes[second])) overlapCount += 1;
+                    }
+                }
+                const separators = [...footer.querySelectorAll(".footer-separator")];
+                const visitedRule = [...document.styleSheets]
+                    .flatMap(sheet => [...sheet.cssRules])
+                    .find(rule => rule.selectorText?.includes(".footer a:visited"));
+                const innerStyle = getComputedStyle(inner);
+                const contentTop = Math.min(...groupBoxes.map(box => box.top));
+                const contentBottom = Math.max(...groupBoxes.map(box => box.bottom));
+                return {
+                    directChildClasses: groups.map(group => group.className),
+                    groupBoxes,
+                    linkBoxes: links.map(rect),
+                    overlapCount,
+                    innerBox: rect(inner),
+                    footerBox: rect(footer),
+                    brand: footer.querySelector(".footer-brand").textContent.replace(/\s+/g, " ").trim(),
+                    buyers: footer.querySelector(".footer-buyers").textContent.replace(/\s+/g, " ").trim(),
+                    service: footer.querySelector(".footer-service").textContent.replace(/\s+/g, " ").trim(),
+                    links: links.map(link => [link.textContent.trim(), link.getAttribute("href")]),
+                    separators: separators.map(separator => ({
+                        text: separator.textContent,
+                        ariaHidden: separator.getAttribute("aria-hidden"),
+                        tagName: separator.tagName
+                    })),
+                    oldGroupCount: footer.querySelectorAll(".footer-group, .footer-group-title").length,
+                    forbiddenContactCount: footer.querySelectorAll('a[href^="tel:"], a[href^="mailto:"]').length,
+                    forbiddenText: ["Андрей", "Opt-Mat", "+7 909", "Покупателям", "Документы"]
+                        .filter(text => footer.textContent.includes(text)),
+                    normalLinkColor: getComputedStyle(links[0]).color,
+                    visitedRuleColor: visitedRule?.style.color || "",
+                    paddingTop: contentTop - rect(inner).top,
+                    paddingBottom: rect(inner).bottom - contentBottom,
+                    columnGap: parseFloat(innerStyle.columnGap),
+                    rowGap: parseFloat(innerStyle.rowGap) || 0,
+                    lineHeight: parseFloat(innerStyle.lineHeight),
+                    fontSize: parseFloat(innerStyle.fontSize),
+                    scrollWidth: document.documentElement.scrollWidth,
+                    clientWidth: document.documentElement.clientWidth
+                };
+            });
+
+            expect(layout.directChildClasses).toEqual(expectedClasses);
+            expect(layout.brand).toBe("© МатМикс Все права защищены");
+            expect(layout.buyers).toBe("Доставка· Оплата· Возврат");
+            expect(layout.service).toBe("Реквизиты Политика конф. Условия и Контакты");
+            expect(layout.links).toEqual(expectedLinks);
+            expect(layout.separators).toEqual([
+                { text: "·", ariaHidden: "true", tagName: "SPAN" },
+                { text: "·", ariaHidden: "true", tagName: "SPAN" }
+            ]);
+            expect(layout.oldGroupCount).toBe(0);
+            expect(layout.forbiddenContactCount).toBe(0);
+            expect(layout.forbiddenText).toEqual([]);
+            expect(layout.overlapCount).toBe(0);
+            expect(layout.normalLinkColor).toBe("rgba(255, 255, 255, 0.92)");
+            expect(layout.visitedRuleColor).toBe(layout.normalLinkColor);
+            expect(layout.normalLinkColor).not.toBe("rgb(0, 0, 238)");
+            expect(layout.scrollWidth).toBeLessThanOrEqual(layout.clientWidth + 1);
+            expect(layout.paddingTop).toBeGreaterThanOrEqual(10);
+            expect(layout.paddingTop).toBeLessThanOrEqual(16);
+            expect(layout.paddingBottom).toBeGreaterThanOrEqual(10);
+            expect(layout.paddingBottom).toBeLessThanOrEqual(16);
+            expect(layout.lineHeight / layout.fontSize).toBeGreaterThanOrEqual(1.25);
+            for (const item of [...layout.groupBoxes, ...layout.linkBoxes]) {
+                expect(item.clipped).toBeFalsy();
+                expect(item.left).toBeGreaterThanOrEqual(layout.footerBox.left - 1);
+                expect(item.right).toBeLessThanOrEqual(layout.footerBox.right + 1);
+            }
+
+            const [brand, buyers, service] = layout.groupBoxes;
+            if (width <= 350) {
+                expect(layout.footerBox.height).toBeLessThanOrEqual(225);
+                expect(layout.rowGap).toBeCloseTo(12, 1);
+                expect(brand.bottom).toBeLessThanOrEqual(service.top + 1);
+                expect(service.bottom).toBeLessThanOrEqual(buyers.top + 1);
+                expect(Math.abs(brand.left - service.left)).toBeLessThanOrEqual(1);
+                expect(Math.abs(layout.linkBoxes[0].top - layout.linkBoxes[1].top)).toBeLessThanOrEqual(1);
+                expect(Math.abs(layout.linkBoxes[1].top - layout.linkBoxes[2].top)).toBeLessThanOrEqual(1);
+            } else if (width <= 600) {
+                expect(layout.footerBox.height).toBeLessThanOrEqual(170);
+                expect(layout.rowGap).toBeCloseTo(14, 1);
+                expect(layout.columnGap).toBeCloseTo(20, 1);
+                expect(Math.abs(brand.top - service.top)).toBeLessThanOrEqual(1);
+                expect(brand.right).toBeLessThanOrEqual(service.left + 1);
+                expect(Math.max(brand.bottom, service.bottom)).toBeLessThanOrEqual(buyers.top + 1);
+                expect(Math.abs(
+                    (buyers.left + buyers.right) / 2 - (layout.innerBox.left + layout.innerBox.right) / 2
+                )).toBeLessThanOrEqual(1);
+                expect(Math.abs(layout.linkBoxes[0].top - layout.linkBoxes[1].top)).toBeLessThanOrEqual(1);
+                expect(Math.abs(layout.linkBoxes[1].top - layout.linkBoxes[2].top)).toBeLessThanOrEqual(1);
+            } else {
+                expect(layout.footerBox.height).toBeLessThanOrEqual(120);
+                expect(layout.columnGap).toBeLessThanOrEqual(56);
+                expect(Math.abs(brand.top - buyers.top)).toBeLessThanOrEqual(1);
+                expect(Math.abs(buyers.top - service.top)).toBeLessThanOrEqual(1);
+                expect(brand.right).toBeLessThanOrEqual(buyers.left + 1);
+                expect(buyers.right).toBeLessThanOrEqual(service.left + 1);
+                expect(layout.linkBoxes[0].bottom).toBeLessThanOrEqual(layout.linkBoxes[1].top + 1);
+                expect(layout.linkBoxes[1].bottom).toBeLessThanOrEqual(layout.linkBoxes[2].top + 1);
+                expect(layout.linkBoxes[3].bottom).toBeLessThanOrEqual(layout.linkBoxes[4].top + 1);
+                expect(layout.linkBoxes[4].bottom).toBeLessThanOrEqual(layout.linkBoxes[5].top + 1);
+            }
+        }
+
+        await page.setViewportSize({ width: 768, height: 900 });
+        await page.goto(path);
+        const footerLinks = page.locator(".footer a");
+        await footerLinks.first().hover();
+        await expect.poll(() => footerLinks.first().evaluate(element => getComputedStyle(element).color))
+            .toBe("rgb(255, 255, 255)");
+        await footerLinks.first().focus();
+        await page.keyboard.press("Shift+Tab");
+        await page.keyboard.press("Tab");
+        for (const [, expectedHref] of expectedLinks) {
+            const focusState = await page.evaluate(() => {
+                const active = document.activeElement;
+                const footerBox = document.querySelector(".footer").getBoundingClientRect();
+                const activeBox = active.getBoundingClientRect();
+                const style = getComputedStyle(active);
+                const outlineSpace = parseFloat(style.outlineWidth) + parseFloat(style.outlineOffset);
+                return {
+                    href: active.getAttribute("href"),
+                    outlineStyle: style.outlineStyle,
+                    outlineWidth: parseFloat(style.outlineWidth),
+                    color: style.color,
+                    outlineInsideFooter: activeBox.left - outlineSpace >= footerBox.left
+                        && activeBox.right + outlineSpace <= footerBox.right
+                        && activeBox.top - outlineSpace >= footerBox.top
+                        && activeBox.bottom + outlineSpace <= footerBox.bottom
+                };
+            });
+            expect(focusState.href).toBe(expectedHref);
+            expect(focusState.outlineStyle).not.toBe("none");
+            expect(focusState.outlineWidth).toBeGreaterThanOrEqual(2);
+            expect(focusState.color).not.toBe("rgb(0, 0, 238)");
+            expect(focusState.outlineInsideFooter).toBeTruthy();
+            if (expectedHref !== expectedLinks.at(-1)[1]) await page.keyboard.press("Tab");
+        }
+    }
 });
 
 test("cart quantity works when the product is outside the current catalog page", async ({ page }) => {

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MatMix</title>
-    <link rel="stylesheet" href="css/style.css?v=20260715-hero-overlap">
+    <link rel="stylesheet" href="css/style.css?v=20260723-compact-footer-geometry-1">
 </head>
 <body id="top">
 
@@ -14,14 +14,8 @@
         </a>
 
         <form class="header-search" role="search">
-            <input id="searchInput" type="search" placeholder="Поиск товаров" aria-label="Поиск товаров">
+            <input id="searchInput" type="search" placeholder="Поиск товаров" aria-label="Поиск товаров" aria-autocomplete="list" aria-controls="searchDropdown" aria-expanded="false">
         </form>
-
-        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mainNav">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
 
         <nav class="nav" id="mainNav">
             <a href="index.html">Главная</a>
@@ -46,6 +40,12 @@
                 </div>
             </div>
         </div>
+
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mainNav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </header>
 
     <section class="hero">
@@ -54,7 +54,7 @@
                 <h1>Всё для строительства, ремонта и отделки</h1>
                 <p>Подберем смеси, блоки, грунтовки, расходники и сопутствующие товары под задачу объекта.</p>
                 <div class="hero-actions">
-                    <button id="homeCatalogButton" type="button">Перейти в каталог</button>
+                    <button id="homeCatalogButton" type="button">В каталог</button>
                     <a href="tel:+79099443383">Связаться</a>
                 </div>
             </div>
@@ -220,17 +220,27 @@
 
     <footer class="footer" id="contacts">
         <div class="footer-inner">
-            <strong>МатМикс</strong>
-            <span>+7 909 944-33-83</span>
-            <span>Opt-Mat@mail.ru</span>
-            <span>Андрей Дмитриевич</span>
-            <span>Все права защищены</span>
-            <nav class="legal-links" aria-label="Юридическая информация"><a href="/privacy">Политика конфиденциальности</a><a href="/terms">Условия</a><a href="/delivery">Доставка</a><a href="/payment">Оплата</a><a href="/returns">Возврат</a><a href="/contacts">Контакты и реквизиты</a></nav>
+            <div class="footer-brand">
+                <strong>© МатМикс</strong>
+                <span>Все права защищены</span>
+            </div>
+            <nav class="footer-buyers" aria-label="Покупателям">
+                <div class="footer-link-row">
+                    <a href="/delivery">Доставка</a><span class="footer-separator" aria-hidden="true">·</span>
+                    <a href="/payment">Оплата</a><span class="footer-separator" aria-hidden="true">·</span>
+                    <a href="/returns">Возврат</a>
+                </div>
+            </nav>
+            <nav class="footer-service" aria-label="Служебные ссылки">
+                <a href="/contacts">Реквизиты</a>
+                <a href="/privacy">Политика конф.</a>
+                <a href="/terms">Условия и Контакты</a>
+            </nav>
         </div>
     </footer>
 
     <script src="js/safe-dom.js"></script>
     <script src="js/error-utils.js"></script>
-    <script src="js/script.js"></script>
+    <script src="js/script.js?v=20260722-mobile-layout-5"></script>
 </body>
 </html>
