@@ -1,5 +1,12 @@
 const { test, expect } = require("@playwright/test");
 
+async function movePointerOutsideViewport(page) {
+    await page.mouse.move(-1, -1);
+    await expect.poll(() => page.locator(".hero-actions").evaluate(container =>
+        ![...container.querySelectorAll("a, button")].some(action => action.matches(":hover"))
+    )).toBe(true);
+}
+
 test("public pages, legal navigation and security headers", async ({ page }) => {
     const consoleErrors = []; const failed = [];
     page.on("console", message => { if (message.type() === "error") consoleErrors.push(message.text()); });
@@ -226,6 +233,7 @@ test("home mobile actions and footer remain usable without horizontal overflow",
     ]) {
         await page.setViewportSize(viewport);
         await page.goto("/");
+        await movePointerOutsideViewport(page);
         const measurements = await page.evaluate(() => {
             const box = selector => {
                 const element = document.querySelector(selector);
@@ -362,6 +370,7 @@ test("hero CTA keeps one outline style across mobile and desktop", async ({ page
     ]) {
         await page.setViewportSize(viewport);
         await page.goto("/");
+        await movePointerOutsideViewport(page);
         const initial = await readActions();
         const { contact, catalog } = initial;
 
