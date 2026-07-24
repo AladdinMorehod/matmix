@@ -81,6 +81,16 @@ function createOrderAttachmentStorage({ rootPath = process.env[STORAGE_ENV_NAME]
         return temporaryKey;
     }
 
+    async function createTemporaryWriteStream() {
+        await ensureRoot();
+        const storageKey = generateTemporaryKey();
+        const target = await checkedPath(storageKey, { allowMissing: true });
+        return {
+            storageKey,
+            stream: fs.createWriteStream(target, { flags: "wx", mode: 0o600 })
+        };
+    }
+
     async function moveTemporaryFile(temporaryKey, storageKey) {
         if (!/^tmp-[a-f0-9]{64}$/.test(validateStorageKey(temporaryKey))) throw new TypeError("Invalid temporary attachment storage key.");
         const source = await checkedPath(temporaryKey);
@@ -135,16 +145,30 @@ function createOrderAttachmentStorage({ rootPath = process.env[STORAGE_ENV_NAME]
         return hash.digest("hex");
     }
 
+    async function readFile(storageKey, { maxBytes = 16 * 1024 * 1024 } = {}) {
+        const target = await checkedPath(storageKey);
+        const stat = await fs.promises.lstat(target);
+        if (!stat.isFile()) throw new Error("Attachment storage key does not reference a regular file.");
+        if (!Number.isSafeInteger(maxBytes) || maxBytes <= 0 || stat.size > maxBytes) {
+            const error = new Error("Attachment exceeds the safe read limit.");
+            error.code = "FILE_READ_LIMIT";
+            throw error;
+        }
+        return fs.promises.readFile(target);
+    }
+
     return {
         getStorageRoot: () => configuredRoot,
         ensureRoot,
         generateStorageKey,
         generateTemporaryKey,
         createTemporaryFile,
+        createTemporaryWriteStream,
         moveTemporaryFile,
         deleteFile,
         fileExists,
-        computeSha256
+        computeSha256,
+        readFile
     };
 }
 

@@ -16,6 +16,7 @@
     "database:migrate": "node backend/scripts/migrate-database.js",
     "database:health": "node backend/scripts/check-database-health.js",
     "test:database-integrity": "node backend/scripts/test-database-integrity.js",
+    "test:file-request": "node backend/scripts/test-file-request-api.js",
     "images:optimize": "node backend/scripts/optimize-product-images.js",
     "test:product-images": "node backend/scripts/test-product-images.js && node backend/scripts/test-product-image-api.js",
     "test:seo": "node backend/scripts/test-seo.js",
@@ -35,12 +36,14 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "busboy": "^1.6.0",
     "cors": "^2.8.5",
     "exceljs": "^4.4.0",
     "express": "^4.18.3",
     "express-session": "^1.18.0",
     "sharp": "^0.35.3",
-    "sqlite3": "6.0.1"
+    "sqlite3": "6.0.1",
+    "yauzl": "^3.4.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.1",

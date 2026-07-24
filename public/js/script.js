@@ -37185,13 +37185,17 @@ const uploadDropZone = document.getElementById("uploadDropZone");
 const uploadFileInput = document.getElementById("uploadRequestFiles");
 const uploadFileList = document.getElementById("uploadFileList");
 const uploadFileError = document.getElementById("uploadFileError");
+const uploadNameInput = document.getElementById("uploadCustomerName");
 const uploadPhoneInput = document.getElementById("uploadCustomerPhone");
+const uploadEmailInput = document.getElementById("uploadCustomerEmail");
+const uploadCommentInput = document.getElementById("uploadRequestComment");
 const uploadPaymentMethodInput = document.getElementById("uploadPaymentMethod");
 const uploadCartOption = document.getElementById("uploadCartOption");
 const uploadIncludeCartInput = document.getElementById("uploadIncludeCart");
 const uploadConsentInput = document.getElementById("uploadRequestConsent");
 const uploadConsentError = document.getElementById("uploadConsentError");
 const uploadRequestMessage = document.getElementById("uploadRequestMessage");
+const uploadSubmitButton = uploadRequestForm?.querySelector("button[type='submit']");
 const cancelUploadRequestBtn = document.getElementById("cancelUploadRequest");
 const nameSuggestionsEl = document.getElementById("nameSuggestions");
 const phoneSuggestionsEl = document.getElementById("phoneSuggestions");
@@ -37228,6 +37232,7 @@ let pointerDownStartedInsideSearch = false;
 let uploadRequestFiles = [];
 let uploadDragDepth = 0;
 let uploadCartChoiceTouched = false;
+let uploadRequestSubmitting = false;
 const MAX_PRODUCT_QTY = 100000;
 const SEARCH_SUGGESTION_MIN_LENGTH = 2;
 const SEARCH_SUGGESTION_LIMIT = 10;
@@ -37973,14 +37978,14 @@ function updateUploadCartOption() {
     if (hasItems && wasHidden && !uploadCartChoiceTouched) uploadIncludeCartInput.checked = true;
 }
 
-function resetUploadRequestForm() {
+function resetUploadRequestForm({ preserveMessage = false } = {}) {
     uploadRequestForm?.reset();
     uploadRequestFiles = [];
     uploadDragDepth = 0;
     uploadCartChoiceTouched = false;
     uploadDropZone?.classList.remove("is-drag-over");
     setUploadFileError("");
-    clearUploadRequestMessage();
+    if (!preserveMessage) clearUploadRequestMessage();
     renderUploadFileList();
     syncUploadFileInput();
     setupPaymentMethodSelect();
@@ -39606,8 +39611,9 @@ cancelUploadRequestBtn?.addEventListener("click", () => {
     renderCart();
 });
 
-uploadRequestForm?.addEventListener("submit", event => {
+uploadRequestForm?.addEventListener("submit", async event => {
     event.preventDefault();
+    if (uploadRequestSubmitting) return;
     setUploadFileError("");
     clearUploadRequestMessage();
 
@@ -39627,9 +39633,57 @@ uploadRequestForm?.addEventListener("submit", event => {
         return;
     }
 
-    // Temporary UI-only behavior: replace this notice with the secure multipart request when the backend endpoint is implemented.
-    if (uploadRequestMessage) {
-        uploadRequestMessage.textContent = "Отправка файлов будет подключена на следующем этапе";
+    const includeCart = Boolean(
+        uploadIncludeCartInput
+        && !uploadIncludeCartInput.disabled
+        && uploadIncludeCartInput.checked
+        && cart.length
+    );
+    const formData = new FormData();
+    formData.append("customerName", uploadNameInput?.value.trim() || "");
+    formData.append("phone", uploadPhoneInput?.value.trim() || "");
+    formData.append("email", uploadEmailInput?.value.trim() || "");
+    formData.append("comment", uploadCommentInput?.value.trim() || "");
+    formData.append("paymentMethod", uploadPaymentMethodInput?.value || "");
+    formData.append("includeCart", String(includeCart));
+    if (includeCart) formData.append("items", JSON.stringify(getCartOrderItems()));
+    formData.append("consent", "true");
+    uploadRequestFiles.forEach(file => formData.append("files", file, file.name));
+
+    uploadRequestSubmitting = true;
+    const initialSubmitText = uploadSubmitButton?.textContent || "";
+    if (uploadSubmitButton) {
+        uploadSubmitButton.disabled = true;
+        uploadSubmitButton.textContent = "Отправляем…";
+    }
+
+    try {
+        const response = await fetch("/api/orders/file-request", {
+            method: "POST",
+            body: formData
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.success || !result.orderNumber) {
+            throw new Error(result.message || "Не удалось отправить заявку. Попробуйте ещё раз.");
+        }
+        if (uploadRequestMessage) {
+            uploadRequestMessage.classList.remove("error");
+            uploadRequestMessage.classList.add("success");
+            uploadRequestMessage.textContent = `Заявка №${result.orderNumber} принята. Менеджер свяжется с вами после обработки заявки.`;
+        }
+        resetUploadRequestForm({ preserveMessage: true });
+    } catch (error) {
+        if (uploadRequestMessage) {
+            uploadRequestMessage.classList.remove("success");
+            uploadRequestMessage.classList.add("error");
+            uploadRequestMessage.textContent = error.message || "Не удалось отправить заявку. Попробуйте ещё раз.";
+        }
+    } finally {
+        uploadRequestSubmitting = false;
+        if (uploadSubmitButton) {
+            uploadSubmitButton.disabled = false;
+            uploadSubmitButton.textContent = initialSubmitText;
+        }
     }
 });
 

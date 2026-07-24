@@ -24,8 +24,11 @@ async function dropUploadFiles(page, files) {
     await page.locator("#uploadDropZone").evaluate((zone, fileSpecs) => {
         const transfer = new DataTransfer();
         fileSpecs.forEach(spec => {
+            const content = spec.bytes
+                ? new Uint8Array(spec.bytes)
+                : new Uint8Array(spec.size || 1);
             transfer.items.add(new File(
-                [new Uint8Array(spec.size || 1)],
+                [content],
                 spec.name,
                 { type: spec.type || "application/octet-stream", lastModified: spec.lastModified || 123456789 }
             ));
@@ -989,10 +992,18 @@ test("upload request entry points and tabs use the existing modal accessibly", a
     await expect(page.locator("#uploadDropZone")).toBeFocused();
 });
 
-test("upload request file rules and validation stay client-only", async ({ page }) => {
+test("upload request file rules and validation submit to the secure endpoint", async ({ page }) => {
     let orderPostCount = 0;
+    let fileRequestPostCount = 0;
+    await page.route("**/api/orders/file-request", async route => {
+        await new Promise(resolve => setTimeout(resolve, 150));
+        await route.continue();
+    });
     page.on("request", request => {
-        if (request.method() === "POST" && new URL(request.url()).pathname === "/api/orders") orderPostCount += 1;
+        if (request.method() !== "POST") return;
+        const pathname = new URL(request.url()).pathname;
+        if (pathname === "/api/orders") orderPostCount += 1;
+        if (pathname === "/api/orders/file-request") fileRequestPostCount += 1;
     });
 
     await page.goto("/");
@@ -1062,7 +1073,11 @@ test("upload request file rules and validation stay client-only", async ({ page 
 
     await page.locator("#cancelUploadRequest").click();
     await page.locator("#uploadRequestNav").click();
-    await dropUploadFiles(page, [{ name: "request.csv", type: "text/csv", size: 20 }]);
+    await dropUploadFiles(page, [{
+        name: "request.pdf",
+        type: "application/pdf",
+        bytes: [...Buffer.from("%PDF-1.4\n%%EOF", "ascii")]
+    }]);
     await page.locator("#uploadRequestForm button[type='submit']").click();
     await expect(page.locator("#uploadCustomerName")).toBeFocused();
     await expect(page.locator("#uploadRequestMessage")).not.toContainText("отправлена");
@@ -1075,14 +1090,122 @@ test("upload request file rules and validation stay client-only", async ({ page 
     await expect(page.locator("#uploadRequestConsent")).toBeFocused();
 
     await page.locator("#uploadRequestConsent").check();
-    await page.locator("#uploadRequestForm button[type='submit']").click();
-    await expect(page.locator("#uploadRequestMessage")).toHaveText("Отправка файлов будет подключена на следующем этапе");
-    await expect(page.locator("#uploadRequestMessage")).not.toHaveClass(/success/);
+    await page.locator("#uploadIncludeCart").uncheck();
+    await page.locator("#uploadRequestForm button[type='submit']").evaluate(button => {
+        button.click();
+        button.click();
+    });
+    await expect(page.locator("#uploadRequestForm button[type='submit']")).toBeDisabled();
+    await expect(page.locator("#uploadRequestMessage")).toContainText(/Заявка №MM-\d{4}-\d{6} принята/);
+    await expect(page.locator("#uploadRequestMessage")).toHaveClass(/success/);
     expect(orderPostCount).toBe(0);
+    expect(fileRequestPostCount).toBe(1);
+    await expect(page.locator(".upload-file-item")).toHaveCount(0);
+    expect(await fileInput.evaluate(input => input.files.length)).toBe(0);
     expect(await page.evaluate(() => JSON.parse(localStorage.getItem("matmix_cart") || "[]").length)).toBe(2);
 
     const paymentLabels = await page.locator("#uploadPaymentMethod option").allTextContents();
     expect(paymentLabels).toEqual(["Наличные", "Перевод на карту", "Терминал", "Безнал — с НДС", "Безнал — без НДС"]);
+});
+
+test("file request submission works with cart, without cart and on both public pages", async ({ page, request }) => {
+    const productsResponse = await request.get("/api/public/products?limit=1");
+    const productsBody = await productsResponse.json();
+    const product = (productsBody.items || productsBody.products || productsBody.data || [])[0];
+    const productId = Number(product.id);
+    expect(productId).toBeGreaterThan(0);
+
+    for (const [index, pathname] of ["/", "/catalog.html"].entries()) {
+        await page.goto(pathname);
+        if (index === 0) {
+            await page.evaluate(item => localStorage.setItem("matmix_cart", JSON.stringify([item])), {
+                productId,
+                title: product.title || product.name,
+                price: product.price,
+                weight: product.weight,
+                unit: product.unit,
+                quantity: 2
+            });
+            await page.reload();
+        } else {
+            await page.evaluate(() => localStorage.setItem("matmix_cart", "[]"));
+            await page.reload();
+        }
+
+        await page.locator("#uploadRequestNav").click();
+        if (index === 0) {
+            await expect(page.locator("#uploadCartOption")).toBeVisible();
+            await expect(page.locator("#uploadIncludeCart")).toBeChecked();
+        } else {
+            await expect(page.locator("#uploadCartOption")).toBeHidden();
+        }
+        await page.locator("#uploadCustomerName").fill(`Тестовая заявка ${index + 1}`);
+        await page.locator("#uploadCustomerPhone").fill("9991234567");
+        await page.locator("#uploadCustomerEmail").fill(`request-${index + 1}@example.test`);
+        await page.locator("#uploadRequestComment").fill("Нужен расчёт материалов по приложенным файлам");
+        await page.locator("#uploadRequestConsent").check();
+        const files = [{
+            name: `request-${index + 1}.pdf`,
+            type: "application/pdf",
+            bytes: [...Buffer.from("%PDF-1.4\n%%EOF", "ascii")]
+        }];
+        if (index === 1) {
+            files.push({
+                name: "materials.csv",
+                type: "text/csv",
+                bytes: [...Buffer.from("code,qty\nMAT-E2E-001,2\n", "utf8")]
+            });
+        }
+        await dropUploadFiles(page, files);
+        await page.locator("#uploadRequestForm button[type='submit']").click();
+        await expect(page.locator("#uploadRequestMessage")).toContainText(/Заявка №MM-\d{4}-\d{6} принята/);
+        await expect(page.locator("#uploadRequestMessage")).toHaveClass(/success/);
+        await expect(page.locator(".upload-file-item")).toHaveCount(0);
+        const cartLength = await page.evaluate(() => JSON.parse(localStorage.getItem("matmix_cart") || "[]").length);
+        expect(cartLength).toBe(index === 0 ? 1 : 0);
+    }
+
+    await page.setViewportSize({ width: 320, height: 800 });
+    await page.goto("/");
+    await page.locator("#menuToggle").click();
+    await page.locator("#mainNav #uploadRequestNav").click();
+    await expect(page.locator("#uploadRequestForm")).toBeVisible();
+    const dimensions = await page.evaluate(() => ({
+        scrollWidth: document.documentElement.scrollWidth,
+        clientWidth: document.documentElement.clientWidth
+    }));
+    expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth + 1);
+});
+
+test("file request server errors keep the form retryable", async ({ page }) => {
+    await page.route("**/api/orders/file-request", route => route.fulfill({
+        status: 500,
+        contentType: "application/json",
+        body: JSON.stringify({
+            success: false,
+            code: "FILE_REQUEST_FAILED",
+            message: "Тестовая ошибка отправки"
+        })
+    }));
+    await page.goto("/");
+    await page.locator("#uploadRequestNav").click();
+    await page.locator("#uploadCustomerName").fill("Тестовый клиент");
+    await page.locator("#uploadCustomerPhone").fill("9991234567");
+    await page.locator("#uploadRequestComment").fill("Повторить отправку после ошибки");
+    await page.locator("#uploadRequestConsent").check();
+    await dropUploadFiles(page, [{
+        name: "retry.pdf",
+        type: "application/pdf",
+        bytes: [...Buffer.from("%PDF-1.4\n%%EOF", "ascii")]
+    }]);
+
+    const submit = page.locator("#uploadRequestForm button[type='submit']");
+    await submit.click();
+    await expect(page.locator("#uploadRequestMessage")).toHaveText("Тестовая ошибка отправки");
+    await expect(page.locator("#uploadRequestMessage")).toHaveClass(/error/);
+    await expect(submit).toBeEnabled();
+    await expect(submit).toHaveText("Отправить заявку");
+    await expect(page.locator(".upload-file-item")).toHaveCount(1);
 });
 
 test("upload request cart option and layout remain responsive", async ({ page }) => {

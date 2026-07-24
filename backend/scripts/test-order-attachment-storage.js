@@ -47,6 +47,17 @@ async function expectRejected(work, pattern) {
 
         const content = Buffer.from("MatMix attachment storage test", "utf8");
         const expectedHash = crypto.createHash("sha256").update(content).digest("hex");
+        const streamed = await storage.createTemporaryWriteStream();
+        await new Promise((resolve, reject) => {
+            streamed.stream.once("error", reject);
+            streamed.stream.end(content, resolve);
+        });
+        assert.deepStrictEqual(await storage.readFile(streamed.storageKey, { maxBytes: content.length }), content);
+        await expectRejected(
+            () => storage.readFile(streamed.storageKey, { maxBytes: content.length - 1 }),
+            /safe read limit/
+        );
+        assert.strictEqual(await storage.deleteFile(streamed.storageKey), true);
         const temporaryKey = await storage.createTemporaryFile(content);
         assert.match(temporaryKey, /^tmp-[a-f0-9]{64}$/);
         assert.strictEqual(await storage.fileExists(temporaryKey), true);
@@ -95,6 +106,7 @@ async function expectRejected(work, pattern) {
             mixedSeparators: "rejected",
             symlink,
             sha256: "ok",
+            streamingWriteAndBoundedRead: "ok",
             move: "ok",
             overwrite: "rejected",
             idempotentDelete: "ok",

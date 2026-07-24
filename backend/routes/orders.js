@@ -10,12 +10,23 @@ const { sanitizeExcelText } = require("../utils/excelText");
 const { sqliteApiError } = require("../sqlite");
 const { legalConfig } = require("../services/legal");
 const { seoConfig, absolute } = require("../services/seo");
+const { createOrderAttachmentRepository } = require("../services/orderAttachments");
+const { createOrderAttachmentStorage } = require("../services/orderAttachmentStorage");
+const {
+    FileRequestUploadError,
+    cleanupStorageKeys,
+    parseFileRequestMultipart,
+    validateUploadedFiles
+} = require("../services/fileRequestUpload");
+const { createFileRequestRateLimiter } = require("../services/fileRequestRateLimit");
 const logger = require("../services/logger");
 
 const router = express.Router();
 const orderTemplatePath = path.join(__dirname, "..", "templates", "order-template.xlsx");
 const MAX_ORDER_ITEMS = 100;
 const MAX_ITEM_QUANTITY = 10000;
+const attachmentStorage = createOrderAttachmentStorage();
+const fileRequestRateLimit = createFileRequestRateLimiter();
 
 class PublicOrderError extends Error {
     constructor(status, message, code) {
@@ -206,6 +217,7 @@ const paymentMethodLabels = new Map([
     ["безналичная - без ндс", "Безнал — без НДС"],
     ["безналичный расчет без ндс", "Безнал — без НДС"]
 ]);
+const FILE_REQUEST_PAYMENT_METHODS = new Set(["cash", "card_transfer", "terminal", "bank_vat", "bank_no_vat"]);
 
 function normalizePaymentMethod(value) {
     const method = sanitizeExcelText(value);
@@ -268,9 +280,10 @@ function getClientContactFields(method, value, phone) {
     };
 }
 
-async function findOrCreateClient({ customerName, phone, preferredContact, totalPrice, now, transaction = { get, run } }) {
+async function findOrCreateClient({ customerName, phone, email = "", preferredContact, totalPrice, now, transaction = { get, run } }) {
     const normalizedPhone = normalizePhone(phone);
     const contactFields = getClientContactFields(preferredContact.method, preferredContact.value, phone);
+    if (email) contactFields.email = email;
     const existingClient = await transaction.get("SELECT * FROM clients WHERE phone = ?", [normalizedPhone]);
 
     if (existingClient) {
@@ -601,6 +614,118 @@ async function createOrderEvent({ orderId, userId = null, userName = "Систе
     );
 }
 
+async function createOrderRecord({
+    transaction,
+    customerName,
+    phone,
+    email = null,
+    preferredContact,
+    telegram = "",
+    maxContact = "",
+    address = "",
+    unloading = "",
+    paymentMethod,
+    comment,
+    serverOrder,
+    requestType = "order",
+    eventMessage = "Заявка создана клиентом",
+    now,
+    consentAt,
+    documents,
+    seoSettings
+}) {
+    const clientId = await findOrCreateClient({
+        customerName,
+        phone,
+        email: email || "",
+        preferredContact,
+        totalPrice: serverOrder.totalPrice,
+        now,
+        transaction
+    });
+    const result = await transaction.run(
+        `INSERT INTO orders (
+            customer_name, phone, email, request_type, client_id, telegram, max_contact,
+            preferred_contact_method, preferred_contact_value, address,
+            unloading, payment_method, comment, items_json, total_price,
+            total_weight, status, created_at, updated_at, consent_given, consent_at,
+            privacy_policy_version, terms_version, privacy_policy_url, terms_url
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+            customerName,
+            phone,
+            email,
+            requestType,
+            clientId,
+            telegram,
+            maxContact,
+            preferredContact.method,
+            preferredContact.value,
+            address,
+            unloading,
+            paymentMethod,
+            comment,
+            JSON.stringify(serverOrder.items),
+            serverOrder.totalPrice,
+            serverOrder.totalWeight,
+            "Новая",
+            now,
+            now,
+            1,
+            consentAt,
+            documents.privacyVersion,
+            documents.termsVersion,
+            absolute(seoSettings, "/privacy"),
+            absolute(seoSettings, "/terms")
+        ]
+    );
+    const orderNumber = getOrderNumber(result.id, now);
+    await transaction.run("UPDATE orders SET order_number = ? WHERE id = ?", [orderNumber, result.id]);
+    await createOrderEvent({
+        orderId: result.id,
+        userName: "Клиент",
+        eventType: "created",
+        message: eventMessage,
+        transaction
+    });
+    return { id: result.id, orderNumber, clientId, ...serverOrder };
+}
+
+function parseFileRequestBoolean(value, fieldName) {
+    if (value === "true" || value === "1") return true;
+    if (value === "false" || value === "0") return false;
+    throw new PublicOrderError(400, `Поле ${fieldName} должно быть true или false.`, "INVALID_BOOLEAN");
+}
+
+function readFileRequestEmail(fields) {
+    const email = readOrderText(fields, "email", 254);
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+        throw new PublicOrderError(400, "Укажите корректный email.", "INVALID_EMAIL");
+    }
+    return email || null;
+}
+
+function readFileRequestPhone(fields) {
+    const phone = readOrderText(fields, "phone", 50, true);
+    const normalized = normalizePhone(phone);
+    if (!/^7\d{10}$/.test(normalized)) {
+        throw new PublicOrderError(400, "Укажите корректный российский номер телефона.", "INVALID_PHONE");
+    }
+    return `+${normalized}`;
+}
+
+function readFileRequestItems(fields, includeCart) {
+    if (!includeCart) return null;
+    if (!fields.items) throw new PublicOrderError(400, "Корзина не передана.", "EMPTY_CART");
+    let items;
+    try {
+        items = JSON.parse(fields.items);
+    } catch {
+        throw new PublicOrderError(400, "Некорректный формат корзины.", "INVALID_ITEMS_JSON");
+    }
+    return normalizeRequestedItems(items);
+}
+
 function normalizeOrderEvent(row) {
     return {
         id: row.id,
@@ -716,6 +841,114 @@ async function restoreOrder(req, res) {
     }
 }
 
+router.post("/file-request", fileRequestRateLimit, async (req, res) => {
+    let parsedUpload = null;
+    const permanentKeys = [];
+    try {
+        parsedUpload = await parseFileRequestMultipart(req, { storage: attachmentStorage, logger });
+        const fields = parsedUpload.fields;
+        if (fields.consent !== "true") {
+            throw new PublicOrderError(400, "Необходимо подтвердить согласие с политикой и условиями.", "CONSENT_REQUIRED");
+        }
+        const customerName = readOrderText(fields, "customerName", 160, true);
+        const phone = readFileRequestPhone(fields);
+        const email = readFileRequestEmail(fields);
+        const comment = readOrderText(fields, "comment", 2000, true);
+        const paymentMethodValue = readOrderText(fields, "paymentMethod", 100, true);
+        if (!FILE_REQUEST_PAYMENT_METHODS.has(paymentMethodValue)) {
+            throw new PublicOrderError(400, "Некорректная форма оплаты.", "INVALID_PAYMENT_METHOD");
+        }
+        const includeCart = parseFileRequestBoolean(fields.includeCart, "includeCart");
+        const requestedItems = readFileRequestItems(fields, includeCart);
+        const validatedFiles = await validateUploadedFiles(parsedUpload.files, attachmentStorage);
+        const preparedFiles = validatedFiles.map(file => ({
+            ...file,
+            storageKey: attachmentStorage.generateStorageKey(file.extension)
+        }));
+        const documents = legalConfig();
+        const seoSettings = seoConfig();
+        const now = new Date().toISOString();
+        const consentAt = now;
+        const createdOrder = await withTransaction(async transaction => {
+            const serverOrder = includeCart
+                ? await buildServerOrderItems(transaction, requestedItems)
+                : { items: [], totalPrice: 0, totalWeight: 0, hasPriceOnRequest: false };
+            const order = await createOrderRecord({
+                transaction,
+                customerName,
+                phone,
+                email,
+                preferredContact: { method: "", value: "" },
+                paymentMethod: normalizePaymentMethod(paymentMethodValue),
+                comment,
+                serverOrder,
+                requestType: "file_request",
+                eventMessage: "Файловая заявка создана клиентом",
+                now,
+                consentAt,
+                documents,
+                seoSettings
+            });
+            const attachments = createOrderAttachmentRepository(transaction);
+            for (const file of preparedFiles) {
+                await attachments.createOrderAttachmentMetadata({
+                    orderId: order.id,
+                    originalName: file.originalName,
+                    storageKey: file.storageKey,
+                    mimeType: file.mimeType,
+                    extension: file.extension,
+                    sizeBytes: file.sizeBytes,
+                    sha256: file.sha256,
+                    createdAt: now
+                });
+            }
+            for (const file of preparedFiles) {
+                await attachmentStorage.moveTemporaryFile(file.temporaryKey, file.storageKey);
+                permanentKeys.push(file.storageKey);
+            }
+            return order;
+        });
+
+        logger.info("file_request_created", {
+            requestId: req.requestId,
+            orderId: createdOrder.id,
+            attachmentCount: preparedFiles.length,
+            includeCart
+        });
+        res.status(201).json({
+            success: true,
+            id: createdOrder.id,
+            orderNumber: createdOrder.orderNumber,
+            requestType: "file_request",
+            attachmentCount: preparedFiles.length,
+            totalPrice: createdOrder.totalPrice,
+            totalWeight: createdOrder.totalWeight
+        });
+    } catch (error) {
+        const cleanupKeys = [
+            ...(parsedUpload?.temporaryKeys || []),
+            ...permanentKeys
+        ];
+        await cleanupStorageKeys(attachmentStorage, cleanupKeys, logger, req.requestId);
+        if (req.aborted || res.headersSent) return;
+        if (error instanceof PublicOrderError || error instanceof FileRequestUploadError) {
+            res.status(error.status).json({ success: false, code: error.code, message: error.message });
+            return;
+        }
+        if (String(error?.code || "").startsWith("SQLITE_")) {
+            const response = sqliteApiError(error);
+            res.status(response.status).json({ success: false, code: response.code, message: response.message });
+            return;
+        }
+        logger.error("file_request_create_error", error, { requestId: req.requestId });
+        res.status(500).json({
+            success: false,
+            code: "FILE_REQUEST_FAILED",
+            message: "Не удалось отправить заявку. Попробуйте ещё раз."
+        });
+    }
+});
+
 router.post("/", async (req, res) => {
     try {
         if (req.body?.consent !== true) throw new PublicOrderError(400, "Необходимо подтвердить согласие с политикой и условиями.", "CONSENT_REQUIRED");
@@ -739,58 +972,23 @@ router.post("/", async (req, res) => {
         const preferredContact = getFallbackPreferredContact(safeBody, phone);
         const createdOrder = await withTransaction(async transaction => {
             const serverOrder = await buildServerOrderItems(transaction, requestedItems);
-            const clientId = await findOrCreateClient({
+            return createOrderRecord({
+                transaction,
                 customerName,
                 phone,
                 preferredContact,
-                totalPrice: serverOrder.totalPrice,
+                telegram: safeBody.telegram,
+                maxContact: safeBody.maxContact,
+                address,
+                unloading,
+                paymentMethod: normalizePaymentMethod(paymentMethod),
+                comment,
+                serverOrder,
                 now,
-                transaction
+                consentAt,
+                documents,
+                seoSettings
             });
-            const result = await transaction.run(
-                `INSERT INTO orders (
-                    customer_name, phone, client_id, telegram, max_contact,
-                    preferred_contact_method, preferred_contact_value, address,
-                    unloading, payment_method, comment, items_json, total_price,
-                    total_weight, status, created_at, updated_at, consent_given, consent_at,
-                    privacy_policy_version, terms_version, privacy_policy_url, terms_url
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-                [
-                    customerName,
-                    phone,
-                    clientId,
-                    safeBody.telegram,
-                    safeBody.maxContact,
-                    preferredContact.method,
-                    preferredContact.value,
-                    address,
-                    unloading,
-                    normalizePaymentMethod(paymentMethod),
-                    comment,
-                    JSON.stringify(serverOrder.items),
-                    serverOrder.totalPrice,
-                    serverOrder.totalWeight,
-                    "Новая",
-                    now,
-                    now,
-                    1,
-                    consentAt,
-                    documents.privacyVersion,
-                    documents.termsVersion,
-                    absolute(seoSettings, "/privacy"),
-                    absolute(seoSettings, "/terms")
-                ]
-            );
-            const orderNumber = getOrderNumber(result.id, now);
-            await transaction.run("UPDATE orders SET order_number = ? WHERE id = ?", [orderNumber, result.id]);
-            await createOrderEvent({
-                orderId: result.id,
-                userName: "Клиент",
-                eventType: "created",
-                message: "Заявка создана клиентом",
-                transaction
-            });
-            return { id: result.id, orderNumber, ...serverOrder };
         });
 
         logger.info("order_created", { requestId: req.requestId, orderId: createdOrder.id });
