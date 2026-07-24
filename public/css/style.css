@@ -290,8 +290,13 @@ body {
     margin-left: 0;
 }
 
-.nav a {
+.nav a,
+.nav button {
     color: rgba(255, 255, 255, 0.9);
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font: inherit;
     text-decoration: none;
     font-size: 15px;
     font-weight: 600;
@@ -302,7 +307,8 @@ body {
     transition: color 0.2s ease, background-color 0.2s ease;
 }
 
-.nav a:hover {
+.nav a:hover,
+.nav button:hover {
     color: #ffffff;
     background: rgba(255, 255, 255, 0.1);
 }
@@ -1484,8 +1490,36 @@ body {
 .cart-header {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: 8px;
     min-height: 28px;
     padding: 0 0 6px;
+}
+
+.open-upload-request {
+    min-width: 0;
+    min-height: 28px;
+    padding: 0 8px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--primary);
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.74rem;
+    font-weight: 700;
+    line-height: 1.1;
+    white-space: nowrap;
+}
+
+.open-upload-request:hover {
+    border-color: var(--primary);
+    background: var(--surface-soft);
+}
+
+.open-upload-request:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
 }
 
 .cart-body {
@@ -1756,19 +1790,311 @@ body {
     outline: none;
 }
 
-.checkout-form {
+.checkout-view {
     display: grid;
-    gap: 9px;
+    grid-template-rows: auto minmax(0, 1fr);
     min-height: 0;
     max-height: calc(var(--cart-modal-max-height) - 2 * var(--cart-modal-padding) - 2px);
+    overflow: hidden;
+}
+
+.checkout-view.hidden {
+    display: none;
+}
+
+.checkout-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+}
+
+.checkout-tab {
+    position: relative;
+    min-width: 0;
+    min-height: 34px;
+    padding: 0 4px 7px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 700;
+    line-height: 1.15;
+    white-space: nowrap;
+}
+
+.checkout-tab::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: -1px;
+    left: 0;
+    height: 2px;
+    background: transparent;
+}
+
+.checkout-tab.is-active {
+    color: var(--primary-dark);
+}
+
+.checkout-tab.is-active::after {
+    background: var(--primary);
+}
+
+.checkout-tab:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: -2px;
+}
+
+.checkout-form {
+    display: grid;
+    align-content: start;
+    gap: 9px;
+    min-height: 0;
     overflow-x: hidden;
     overflow-y: auto;
+    padding-right: 3px;
     scrollbar-width: thin;
     scrollbar-color: rgba(74, 83, 72, 0.45) var(--surface-soft);
 }
 
 .checkout-form.hidden {
     display: none;
+}
+
+.upload-request-intro {
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr);
+    align-items: center;
+    gap: 9px;
+    padding: 9px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: var(--surface-soft);
+}
+
+.upload-request-icon {
+    width: 32px;
+    height: 32px;
+    fill: none;
+    stroke: var(--primary);
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.upload-request-intro div {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+}
+
+.upload-request-intro strong {
+    color: var(--text);
+    font-size: 0.84rem;
+    line-height: 1.2;
+}
+
+.upload-request-intro span {
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    line-height: 1.2;
+}
+
+.upload-drop-zone {
+    display: grid;
+    place-content: center;
+    gap: 4px;
+    min-height: 84px;
+    padding: 12px;
+    border: 1px dashed var(--primary);
+    border-radius: 7px;
+    background: rgba(32, 87, 66, 0.04);
+    color: var(--primary-dark);
+    cursor: pointer;
+    text-align: center;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.upload-drop-zone strong {
+    font-size: 0.84rem;
+}
+
+.upload-drop-zone span {
+    color: var(--text-muted);
+    font-size: 0.76rem;
+}
+
+.upload-drop-zone:hover,
+.upload-drop-zone.is-drag-over {
+    border-color: var(--primary-dark);
+    background: rgba(32, 87, 66, 0.1);
+}
+
+.upload-drop-zone:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+.visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+.upload-field-error {
+    min-height: 1.2em;
+    margin: 0;
+    color: var(--brand-burgundy);
+    font-size: 0.76rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.upload-file-list {
+    display: grid;
+    gap: 6px;
+    min-width: 0;
+}
+
+.upload-file-item {
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr) 30px;
+    align-items: center;
+    gap: 7px;
+    min-width: 0;
+    padding: 6px 7px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: var(--surface-soft);
+}
+
+.upload-file-type {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 28px;
+    border-radius: 5px;
+    background: var(--surface);
+    color: var(--primary-dark);
+    font-size: 0.62rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.upload-file-details {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+}
+
+.upload-file-name {
+    overflow: hidden;
+    color: var(--text);
+    font-size: 0.78rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.upload-file-size {
+    color: var(--text-muted);
+    font-size: 0.7rem;
+}
+
+.upload-file-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: none;
+    border-radius: 5px;
+    background: transparent;
+    color: var(--brand-burgundy);
+    cursor: pointer;
+    font: inherit;
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.upload-file-remove:hover {
+    background: rgba(90, 31, 40, 0.08);
+}
+
+.upload-file-remove:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 1px;
+}
+
+.upload-request-form input:not([type="checkbox"]),
+.upload-request-form select {
+    min-height: 42px;
+}
+
+.upload-request-form textarea {
+    min-height: 58px;
+}
+
+.upload-cart-option {
+    padding: 8px 9px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: var(--surface-soft);
+}
+
+.upload-cart-option.hidden {
+    display: none;
+}
+
+.upload-request-form .upload-cart-option label {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-width: 0;
+    color: var(--text);
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.upload-request-form .upload-cart-option input[type="checkbox"] {
+    width: 18px;
+    min-width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
+    margin: 0;
+    padding: 0;
+}
+
+.upload-request-form .upload-cart-option label span {
+    min-width: 0;
+    color: var(--text);
+    font-size: inherit;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+#cancelUploadRequest {
+    background: var(--accent);
+    color: var(--primary-dark);
+}
+
+#cancelUploadRequest:hover {
+    filter: brightness(0.96);
 }
 
 .checkout-form label {
@@ -2282,11 +2608,14 @@ body {
         transition-delay: 0s;
     }
 
-    .nav a {
+    .nav a,
+    .nav button {
         padding: 14px 18px;
+        text-align: left;
     }
 
-    .nav a:hover {
+    .nav a:hover,
+    .nav button:hover {
         background: rgba(255, 255, 255, 0.08);
     }
 }
@@ -2309,6 +2638,22 @@ body {
 
     .cart-actions {
         gap: 5px;
+    }
+
+    .open-upload-request {
+        min-height: 28px;
+        padding: 0 6px;
+        font-size: 0.68rem;
+    }
+
+    .checkout-tabs {
+        gap: 4px;
+    }
+
+    .checkout-tab {
+        padding-right: 2px;
+        padding-left: 2px;
+        font-size: 0.72rem;
     }
 
     #closeCart,

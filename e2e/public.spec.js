@@ -20,6 +20,22 @@ async function seedCartItems(page, count = 24) {
     await page.reload();
 }
 
+async function dropUploadFiles(page, files) {
+    await page.locator("#uploadDropZone").evaluate((zone, fileSpecs) => {
+        const transfer = new DataTransfer();
+        fileSpecs.forEach(spec => {
+            transfer.items.add(new File(
+                [new Uint8Array(spec.size || 1)],
+                spec.name,
+                { type: spec.type || "application/octet-stream", lastModified: spec.lastModified || 123456789 }
+            ));
+        });
+        for (const type of ["dragenter", "dragover", "drop"]) {
+            zone.dispatchEvent(new DragEvent(type, { bubbles: true, cancelable: true, dataTransfer: transfer }));
+        }
+    }, files);
+}
+
 test("public pages, legal navigation and security headers", async ({ page }) => {
     const consoleErrors = []; const failed = [];
     page.on("console", message => { if (message.type() === "error") consoleErrors.push(message.text()); });
@@ -908,6 +924,295 @@ test("cart keeps fixed sections and one-row actions across responsive viewports"
         expect(checkoutGeometry.formOverflowY).toBe("auto");
         expect(checkoutGeometry.formBottom).toBeLessThanOrEqual(checkoutGeometry.viewportHeight + 1);
         await page.locator("#cancelCheckout").click();
+    }
+});
+
+test("upload request entry points and tabs use the existing modal accessibly", async ({ page }) => {
+    for (const path of ["/", "/catalog.html"]) {
+        await page.setViewportSize({ width: 1280, height: 900 });
+        await page.goto(path);
+        await seedCartItems(page, 2);
+
+        await expect(page.locator("#cartModal")).toHaveCount(1);
+        const headerUpload = page.locator("#mainNav #uploadRequestNav");
+        await expect(headerUpload).toHaveText("Загрузить заявку");
+        await headerUpload.click();
+        await expect(page.locator("#cartModal")).not.toHaveClass(/hidden/);
+        await expect(page.locator("#checkoutView")).toBeVisible();
+        await expect(page.locator("#uploadRequestForm")).toBeVisible();
+        await expect(page.locator("#checkoutForm")).toBeHidden();
+        await expect(page.locator("#uploadRequestTab")).toHaveAttribute("aria-selected", "true");
+        await expect(page.locator("#orderCheckoutTab")).toHaveAttribute("aria-selected", "false");
+        await expect(page.locator("#uploadDropZone")).toBeFocused();
+        expect(await page.locator("#checkoutForm").evaluate(panel =>
+            [...panel.querySelectorAll("input, select, textarea, button, a")].every(element => element.offsetParent === null)
+        )).toBeTruthy();
+
+        await dropUploadFiles(page, [{ name: "materials.pdf", type: "application/pdf", size: 24 }]);
+        await expect(page.locator(".upload-file-item")).toHaveCount(1);
+        await page.locator("#orderCheckoutTab").click();
+        await expect(page.locator("#orderCheckoutTab")).toHaveAttribute("aria-selected", "true");
+        await expect(page.locator("#uploadRequestForm")).toBeHidden();
+        await page.locator("#uploadRequestTab").press("ArrowLeft");
+        await expect(page.locator("#orderCheckoutTab")).toBeFocused();
+        await page.locator("#orderCheckoutTab").press("ArrowRight");
+        await expect(page.locator("#uploadRequestTab")).toBeFocused();
+        await expect(page.locator("#uploadRequestForm")).toBeVisible();
+        await expect(page.locator(".upload-file-item")).toHaveCount(1);
+
+        await page.locator("footer").click({ position: { x: 2, y: 2 } });
+        await expect(page.locator("#cartModal")).toHaveClass(/hidden/);
+        await headerUpload.click();
+        await expect(page.locator("#uploadRequestForm")).toBeVisible();
+        await expect(page.locator(".upload-file-item")).toHaveCount(0);
+
+        await page.locator("#cancelUploadRequest").click();
+        await page.locator("#openCheckout").click();
+        await expect(page.locator("#checkoutForm")).toBeVisible();
+        await expect(page.locator("#orderCheckoutTab")).toHaveAttribute("aria-selected", "true");
+        await page.locator("#cancelCheckout").click();
+        await page.locator("#openUploadRequest").click();
+        await expect(page.locator("#uploadRequestForm")).toBeVisible();
+        await expect(page.locator("#uploadRequestTab")).toHaveAttribute("aria-selected", "true");
+    }
+
+    await page.setViewportSize({ width: 320, height: 800 });
+    await page.goto("/");
+    await page.locator("#searchInput").focus();
+    await expect(page.locator(".header")).toHaveClass(/is-search-expanded/);
+    await page.locator("#menuToggle").click();
+    await expect(page.locator("#mainNav")).toHaveClass(/is-open/);
+    await page.locator("#mainNav #uploadRequestNav").click();
+    await expect(page.locator("#mainNav")).not.toHaveClass(/is-open/);
+    await expect(page.locator("#menuToggle")).toHaveAttribute("aria-expanded", "false");
+    await expect(page.locator("#uploadRequestForm")).toBeVisible();
+    await expect(page.locator("#uploadDropZone")).toBeFocused();
+});
+
+test("upload request file rules and validation stay client-only", async ({ page }) => {
+    let orderPostCount = 0;
+    page.on("request", request => {
+        if (request.method() === "POST" && new URL(request.url()).pathname === "/api/orders") orderPostCount += 1;
+    });
+
+    await page.goto("/");
+    await seedCartItems(page, 2);
+    await page.locator("#uploadRequestNav").click();
+    const fileInput = page.locator("#uploadRequestFiles");
+    await expect(fileInput).toHaveAttribute("multiple", "");
+    await expect(fileInput).toHaveAttribute("accept", ".pdf,.jpg,.jpeg,.png,.xls,.xlsx,.csv");
+    await expect(page.locator("[data-file-count], .upload-file-count")).toHaveCount(0);
+
+    await page.locator("#uploadDropZone").evaluate(zone => {
+        const transfer = new DataTransfer();
+        transfer.items.add(new File(["x"], "drag.pdf", { type: "application/pdf" }));
+        zone.dispatchEvent(new DragEvent("dragenter", { bubbles: true, cancelable: true, dataTransfer: transfer }));
+    });
+    await expect(page.locator("#uploadDropZone")).toHaveClass(/is-drag-over/);
+    await page.locator("#uploadDropZone").evaluate(zone => {
+        zone.dispatchEvent(new DragEvent("dragleave", { bubbles: true, cancelable: true, dataTransfer: new DataTransfer() }));
+    });
+    await expect(page.locator("#uploadDropZone")).not.toHaveClass(/is-drag-over/);
+
+    await dropUploadFiles(page, [{ name: "materials.pdf", type: "application/pdf", size: 32, lastModified: 1 }]);
+    await expect(page.locator(".upload-file-item")).toHaveCount(1);
+    const fileChooserPromise = page.waitForEvent("filechooser");
+    await page.locator("#uploadDropZone").press("Enter");
+    const fileChooser = await fileChooserPromise;
+    expect(fileChooser.isMultiple()).toBeTruthy();
+    await fileChooser.setFiles({ name: "plan.png", mimeType: "image/png", buffer: Buffer.from("png") });
+    await expect(page.locator(".upload-file-item")).toHaveCount(2);
+    expect(await fileInput.evaluate(input => input.files.length)).toBe(2);
+
+    await dropUploadFiles(page, [{ name: "materials.pdf", type: "application/pdf", size: 32, lastModified: 1 }]);
+    await expect(page.locator(".upload-file-item")).toHaveCount(2);
+    await expect(page.locator("#uploadFileError")).toContainText("уже выбран");
+    await page.locator(".upload-file-remove").first().click();
+    await expect(page.locator(".upload-file-item")).toHaveCount(1);
+    expect(await fileInput.evaluate(input => input.files.length)).toBe(1);
+    await dropUploadFiles(page, [{ name: "materials.pdf", type: "application/pdf", size: 32, lastModified: 1 }]);
+    await expect(page.locator(".upload-file-item")).toHaveCount(2);
+
+    await dropUploadFiles(page, [{ name: "unsafe.exe", size: 10 }]);
+    await expect(page.locator("#uploadFileError")).toContainText("неподдерживаемый формат");
+    await dropUploadFiles(page, [{ name: "large.pdf", type: "application/pdf", size: 15 * 1024 * 1024 + 1 }]);
+    await expect(page.locator("#uploadFileError")).toContainText("превышает лимит 15 МБ");
+
+    await page.locator("#cancelUploadRequest").click();
+    await page.locator("#uploadRequestNav").click();
+    await dropUploadFiles(page, Array.from({ length: 6 }, (_, index) => ({
+        name: `file-${index + 1}.pdf`,
+        type: "application/pdf",
+        size: 10,
+        lastModified: index + 10
+    })));
+    await expect(page.locator(".upload-file-item")).toHaveCount(5);
+    await expect(page.locator("#uploadFileError")).toContainText("не более 5 файлов");
+
+    await page.locator("#cancelUploadRequest").click();
+    await page.locator("#uploadRequestNav").click();
+    await dropUploadFiles(page, Array.from({ length: 4 }, (_, index) => ({
+        name: `volume-${index + 1}.pdf`,
+        type: "application/pdf",
+        size: 13 * 1024 * 1024,
+        lastModified: index + 20
+    })));
+    await expect(page.locator(".upload-file-item")).toHaveCount(3);
+    await expect(page.locator("#uploadFileError")).toContainText("50 МБ");
+
+    await page.locator("#cancelUploadRequest").click();
+    await page.locator("#uploadRequestNav").click();
+    await dropUploadFiles(page, [{ name: "request.csv", type: "text/csv", size: 20 }]);
+    await page.locator("#uploadRequestForm button[type='submit']").click();
+    await expect(page.locator("#uploadCustomerName")).toBeFocused();
+    await expect(page.locator("#uploadRequestMessage")).not.toContainText("отправлена");
+
+    await page.locator("#uploadCustomerName").fill("Иван");
+    await page.locator("#uploadCustomerPhone").fill("9991234567");
+    await page.locator("#uploadRequestComment").fill("Нужен расчёт материалов");
+    await page.locator("#uploadRequestForm button[type='submit']").click();
+    await expect(page.locator("#uploadConsentError")).toContainText("Подтвердите согласие");
+    await expect(page.locator("#uploadRequestConsent")).toBeFocused();
+
+    await page.locator("#uploadRequestConsent").check();
+    await page.locator("#uploadRequestForm button[type='submit']").click();
+    await expect(page.locator("#uploadRequestMessage")).toHaveText("Отправка файлов будет подключена на следующем этапе");
+    await expect(page.locator("#uploadRequestMessage")).not.toHaveClass(/success/);
+    expect(orderPostCount).toBe(0);
+    expect(await page.evaluate(() => JSON.parse(localStorage.getItem("matmix_cart") || "[]").length)).toBe(2);
+
+    const paymentLabels = await page.locator("#uploadPaymentMethod option").allTextContents();
+    expect(paymentLabels).toEqual(["Наличные", "Перевод на карту", "Терминал", "Безнал — с НДС", "Безнал — без НДС"]);
+});
+
+test("upload request cart option and layout remain responsive", async ({ page }) => {
+    const viewports = [
+        { width: 320, height: 568 },
+        { width: 350, height: 640 },
+        { width: 351, height: 667 },
+        { width: 360, height: 736 },
+        { width: 375, height: 800 },
+        { width: 390, height: 844 },
+        { width: 414, height: 896 },
+        { width: 480, height: 800 },
+        { width: 600, height: 800 },
+        { width: 601, height: 800 },
+        { width: 768, height: 896 },
+        { width: 980, height: 800 },
+        { width: 1024, height: 800 },
+        { width: 1366, height: 896 },
+        { width: 1920, height: 896 },
+        { width: 568, height: 320 },
+        { width: 667, height: 375 },
+        { width: 896, height: 414 }
+    ];
+
+    await page.goto("/");
+    await page.locator("#uploadRequestNav").click();
+    await expect(page.locator("#uploadCartOption")).toBeHidden();
+    await expect(page.locator("#uploadIncludeCart")).toBeDisabled();
+    await page.locator("#cancelUploadRequest").click();
+    await seedCartItems(page, 2);
+    await page.setViewportSize({ width: 320, height: 568 });
+    await page.locator("#cartBtn").click();
+    const cartHeaderGeometry = await page.locator(".cart-header").evaluate(header => {
+        const title = header.querySelector("h3").getBoundingClientRect();
+        const button = header.querySelector("#openUploadRequest").getBoundingClientRect();
+        return { scrollWidth: header.scrollWidth, clientWidth: header.clientWidth, titleRight: title.right, buttonLeft: button.left };
+    });
+    expect(cartHeaderGeometry.scrollWidth).toBeLessThanOrEqual(cartHeaderGeometry.clientWidth + 1);
+    expect(cartHeaderGeometry.titleRight).toBeLessThanOrEqual(cartHeaderGeometry.buttonLeft + 1);
+    await page.locator("#openUploadRequest").click();
+    await expect(page.locator("#uploadCartOption")).toBeVisible();
+    await expect(page.locator("#uploadIncludeCart")).toBeChecked();
+    const uploadCartText = page.locator("#uploadCartOption label span");
+    const uploadCartGeometry = await page.locator("#uploadCartOption label").evaluate(label => {
+        const input = label.querySelector("input").getBoundingClientRect();
+        const text = label.querySelector("span").getBoundingClientRect();
+        return {
+            inputLeft: input.left,
+            inputRight: input.right,
+            inputCenter: input.top + input.height / 2,
+            textLeft: text.left,
+            textCenter: text.top + text.height / 2,
+            scrollWidth: label.scrollWidth,
+            clientWidth: label.clientWidth
+        };
+    });
+    expect(uploadCartGeometry.inputLeft).toBeLessThan(uploadCartGeometry.textLeft);
+    expect(uploadCartGeometry.inputRight).toBeLessThanOrEqual(uploadCartGeometry.textLeft);
+    expect(Math.abs(uploadCartGeometry.inputCenter - uploadCartGeometry.textCenter)).toBeLessThanOrEqual(1);
+    expect(uploadCartGeometry.scrollWidth).toBeLessThanOrEqual(uploadCartGeometry.clientWidth + 1);
+    await uploadCartText.click();
+    await expect(page.locator("#uploadIncludeCart")).not.toBeChecked();
+    await page.locator("#orderCheckoutTab").click();
+    await page.locator("#uploadRequestTab").click();
+    await expect(page.locator("#uploadIncludeCart")).not.toBeChecked();
+
+    await dropUploadFiles(page, [{
+        name: `${"очень-длинное-название-".repeat(8)}материалов.xlsx`,
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        size: 40
+    }]);
+
+    for (const viewport of viewports) {
+        await page.setViewportSize(viewport);
+        const panel = page.locator("#uploadRequestForm");
+        await panel.evaluate(form => { form.scrollTop = form.scrollHeight; });
+        const dimensions = await page.evaluate(() => {
+            const rect = selector => {
+                const box = document.querySelector(selector).getBoundingClientRect();
+                return { left: box.left, right: box.right, top: box.top, bottom: box.bottom, width: box.width, height: box.height };
+            };
+            const modal = document.querySelector("#cartModal");
+            const panel = document.querySelector("#uploadRequestForm");
+            const tabs = [...document.querySelectorAll(".checkout-tab")].map(tab => ({ ...rect(`#${tab.id}`), clipped: tab.scrollWidth > tab.clientWidth + 1 }));
+            const submit = rect("#uploadRequestForm button[type='submit']");
+            return {
+                modal: rect("#cartModal"),
+                panel: rect("#uploadRequestForm"),
+                dropZone: rect("#uploadDropZone"),
+                fileItem: rect(".upload-file-item"),
+                submit,
+                tabs,
+                uploadCart: (() => {
+                    const label = document.querySelector("#uploadCartOption label");
+                    const input = label.querySelector("input").getBoundingClientRect();
+                    const text = label.querySelector("span").getBoundingClientRect();
+                    return {
+                        inputLeft: input.left,
+                        inputRight: input.right,
+                        inputCenter: input.top + input.height / 2,
+                        textLeft: text.left,
+                        textCenter: text.top + text.height / 2,
+                        scrollWidth: label.scrollWidth,
+                        clientWidth: label.clientWidth
+                    };
+                })(),
+                modalScrollTop: modal.scrollTop,
+                panelScrollTop: panel.scrollTop,
+                documentScrollWidth: document.documentElement.scrollWidth,
+                documentClientWidth: document.documentElement.clientWidth
+            };
+        });
+
+        expect(dimensions.modal.left, JSON.stringify({ viewport, dimensions })).toBeGreaterThanOrEqual(-1);
+        expect(dimensions.modal.right, JSON.stringify({ viewport, dimensions })).toBeLessThanOrEqual(viewport.width + 1);
+        expect(dimensions.modal.bottom, JSON.stringify({ viewport, dimensions })).toBeLessThanOrEqual(viewport.height + 1);
+        expect(dimensions.modalScrollTop).toBe(0);
+        expect(dimensions.panelScrollTop).toBeGreaterThan(0);
+        expect(Math.abs(dimensions.tabs[0].top - dimensions.tabs[1].top)).toBeLessThanOrEqual(1);
+        expect(dimensions.tabs[0].right).toBeLessThanOrEqual(dimensions.tabs[1].left + 1);
+        expect(dimensions.tabs.every(tab => !tab.clipped)).toBeTruthy();
+        expect(dimensions.dropZone.left).toBeGreaterThanOrEqual(dimensions.panel.left - 1);
+        expect(dimensions.dropZone.right).toBeLessThanOrEqual(dimensions.panel.right + 1);
+        expect(dimensions.fileItem.right).toBeLessThanOrEqual(dimensions.panel.right + 1);
+        expect(dimensions.uploadCart.inputLeft).toBeLessThan(dimensions.uploadCart.textLeft);
+        expect(dimensions.uploadCart.inputRight).toBeLessThanOrEqual(dimensions.uploadCart.textLeft);
+        expect(Math.abs(dimensions.uploadCart.inputCenter - dimensions.uploadCart.textCenter)).toBeLessThanOrEqual(1);
+        expect(dimensions.uploadCart.scrollWidth).toBeLessThanOrEqual(dimensions.uploadCart.clientWidth + 1);
+        expect(dimensions.submit.bottom).toBeLessThanOrEqual(dimensions.modal.bottom + 1);
+        expect(dimensions.documentScrollWidth).toBeLessThanOrEqual(dimensions.documentClientWidth + 1);
     }
 });
 
