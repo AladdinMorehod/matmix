@@ -24,6 +24,47 @@ test("public pages, legal navigation and security headers", async ({ page }) => 
     const notFound = await page.goto("/not-a-real-page-e2e"); expect(notFound.status()).toBe(404);
 });
 
+test("header and footer delivery links share canonical navigation", async ({ page }) => {
+    const sourcePaths = ["/", "/catalog"];
+    const deliveryLink = container => container.getByRole("link", { name: "Доставка", exact: true });
+    const pathname = () => new URL(page.url()).pathname;
+
+    await page.setViewportSize({ width: 1280, height: 900 });
+    for (const sourcePath of sourcePaths) {
+        await page.goto(sourcePath);
+        const headerLink = deliveryLink(page.locator("#mainNav"));
+        const footerLink = deliveryLink(page.locator(".footer-buyers"));
+
+        await expect(headerLink).toHaveAttribute("href", "/delivery");
+        await expect(footerLink).toHaveAttribute("href", "/delivery");
+        expect(await headerLink.getAttribute("href")).toBe(await footerLink.getAttribute("href"));
+
+        await headerLink.click();
+        await expect.poll(pathname).toBe("/delivery");
+        await expect(page.getByRole("heading", { level: 1, name: "Доставка", exact: true })).toBeVisible();
+        await page.goBack();
+        await expect.poll(pathname).toBe(sourcePath);
+
+        await deliveryLink(page.locator(".footer-buyers")).click();
+        await expect.poll(pathname).toBe("/delivery");
+        await expect(page.getByRole("heading", { level: 1, name: "Доставка", exact: true })).toBeVisible();
+        await page.goBack();
+        await expect.poll(pathname).toBe(sourcePath);
+    }
+
+    await page.setViewportSize({ width: 320, height: 800 });
+    for (const sourcePath of sourcePaths) {
+        await page.goto(sourcePath);
+        await page.locator("#menuToggle").click();
+        const mobileHeaderLink = deliveryLink(page.locator("#mainNav"));
+        await expect(mobileHeaderLink).toBeVisible();
+        await expect(mobileHeaderLink).toHaveAttribute("href", "/delivery");
+        await mobileHeaderLink.click();
+        await expect.poll(pathname).toBe("/delivery");
+        await expect(page.getByRole("heading", { level: 1, name: "Доставка", exact: true })).toBeVisible();
+    }
+});
+
 test("catalog, search, cart persistence and responsive smoke", async ({ page, request }) => {
     await page.goto("/catalog"); await expect(page.locator("body")).not.toHaveCSS("overflow-x", "scroll");
     await expect(page.locator("#categoryControls button").nth(1)).toBeVisible();
