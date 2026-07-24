@@ -24,21 +24,10 @@
             <a href="#contacts">Контакты</a>
         </nav>
         <div class="cart">
-            <button id="cartBtn" class="cart-icon-btn" type="button" aria-label="Корзина" aria-expanded="false" aria-controls="cartPreview">
+            <button id="cartBtn" class="cart-icon-btn" type="button" aria-label="Корзина" aria-expanded="false" aria-controls="cartModal">
                 <img src="img/Logo2.png" alt="" aria-hidden="true">
                 <span id="cartCount" class="cart-count hidden" aria-hidden="true">0</span>
             </button>
-            <div id="cartPreview" class="cart-preview hidden is-empty" role="status" aria-live="polite">
-                <p class="cart-preview-empty">Корзина пуста</p>
-                <div class="cart-preview-summary">
-                    <span>Итого: <strong id="cartPreviewTotal">0 ₽</strong></span>
-                    <span>Вес: <strong id="cartPreviewWeight">0 кг</strong></span>
-                </div>
-                <div class="cart-preview-actions">
-                    <button id="closeCartPreview" type="button">Закрыть</button>
-                    <button id="checkoutFromPreview" type="button">Заказать</button>
-                </div>
-            </div>
         </div>
 
         <button class="menu-toggle" id="menuToggle" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mainNav">
@@ -144,20 +133,24 @@
         <div id="cartView">
             <div class="cart-header">
                 <h3>Корзина</h3>
-                <button id="clearCartBtn" class="clear-cart-btn" type="button">Очистить</button>
             </div>
-            <div id="clearCartConfirm" class="clear-cart-confirm hidden">
-                <p>Действительно очистить корзину полностью?</p>
-                <div>
-                    <button id="confirmClearCart" type="button">Да</button>
-                    <button id="cancelClearCart" type="button">Нет</button>
+            <div class="cart-body">
+                <div id="clearCartConfirm" class="clear-cart-confirm hidden">
+                    <p>Действительно очистить корзину полностью?</p>
+                    <div>
+                        <button id="confirmClearCart" type="button">Да</button>
+                        <button id="cancelClearCart" type="button">Нет</button>
+                    </div>
                 </div>
+                <div id="cartItems"></div>
             </div>
-            <div id="cartItems"></div>
-            <div id="cartTotal">Итого: 0 ₽</div>
-            <div class="cart-actions">
-                <button id="closeCart" type="button">Закрыть</button>
-                <button id="openCheckout" type="button">Заказать</button>
+            <div class="cart-footer">
+                <div id="cartTotal">Итого: 0 ₽</div>
+                <div class="cart-actions">
+                    <button id="closeCart" type="button">Закрыть</button>
+                    <button id="clearCartBtn" class="clear-cart-btn" type="button">Очистить</button>
+                    <button id="openCheckout" type="button">Заказать</button>
+                </div>
             </div>
         </div>
 

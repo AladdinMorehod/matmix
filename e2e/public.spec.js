@@ -7,6 +7,19 @@ async function movePointerOutsideViewport(page) {
     )).toBe(true);
 }
 
+async function seedCartItems(page, count = 24) {
+    const items = Array.from({ length: count }, (_, index) => ({
+        productId: 98000 + index,
+        title: `Тестовый товар с длинным названием для проверки адаптивной корзины ${index + 1}`,
+        price: 100 + index,
+        weight: 1.25 + index / 10,
+        unit: "шт",
+        quantity: index % 3 + 1
+    }));
+    await page.evaluate(cart => localStorage.setItem("matmix_cart", JSON.stringify(cart)), items);
+    await page.reload();
+}
+
 test("public pages, legal navigation and security headers", async ({ page }) => {
     const consoleErrors = []; const failed = [];
     page.on("console", message => { if (message.type() === "error") consoleErrors.push(message.text()); });
@@ -721,6 +734,181 @@ test("cart quantity works when the product is outside the current catalog page",
     await page.locator("#cartBtn").click();
     await cartItem.locator(".plus").click();
     await expect.poll(() => readCartQuantity(targetProduct.id)).toBe(2);
+});
+
+test("cart opens only by activation and keeps accessible controls", async ({ page }) => {
+    for (const path of ["/", "/catalog.html"]) {
+        await page.goto(path);
+        await seedCartItems(page, 4);
+
+        const cartButton = page.locator("#cartBtn");
+        const cartModal = page.locator("#cartModal");
+        await expect(page.locator("#cartPreview")).toHaveCount(0);
+        await expect(cartButton).toHaveAttribute("aria-controls", "cartModal");
+        await expect(cartButton).toHaveAttribute("aria-expanded", "false");
+
+        await cartButton.hover();
+        await expect(cartModal).toHaveClass(/hidden/);
+        await expect(cartButton).toHaveAttribute("aria-expanded", "false");
+        await cartButton.focus();
+        await expect(cartModal).toHaveClass(/hidden/);
+
+        await cartButton.click();
+        await expect(cartModal).not.toHaveClass(/hidden/);
+        await expect(cartButton).toHaveAttribute("aria-expanded", "true");
+        await page.locator("#closeCart").click();
+        await expect(cartModal).toHaveClass(/hidden/);
+        await expect(cartButton).toHaveAttribute("aria-expanded", "false");
+
+        await cartButton.focus();
+        await cartButton.press("Enter");
+        await expect(cartModal).not.toHaveClass(/hidden/);
+        await expect(cartButton).toHaveAttribute("aria-expanded", "true");
+        await page.locator("footer").click({ position: { x: 2, y: 2 } });
+        await expect(cartModal).toHaveClass(/hidden/);
+        await expect(cartButton).toHaveAttribute("aria-expanded", "false");
+
+        await cartButton.focus();
+        await cartButton.press("Space");
+        await expect(cartModal).not.toHaveClass(/hidden/);
+        await expect(cartButton).toHaveAttribute("aria-expanded", "true");
+        await expect(page.locator("#cartView > .cart-header")).toHaveCount(1);
+        await expect(page.locator("#cartView > .cart-body")).toHaveCount(1);
+        await expect(page.locator("#cartView > .cart-footer")).toHaveCount(1);
+        await expect(page.locator(".cart-actions > button")).toHaveText(["Закрыть", "Очистить", "Заказать"]);
+
+        await page.locator("#openCheckout").click();
+        await expect(page.locator("#checkoutForm")).toBeVisible();
+        await expect(page.locator("#cartView")).toHaveClass(/hidden/);
+        await page.locator("#cancelCheckout").click();
+        await expect(page.locator("#cartView")).toBeVisible();
+
+        await page.locator("#clearCartBtn").click();
+        await expect(page.locator("#clearCartConfirm")).toBeVisible();
+        await expect(page.locator("#confirmClearCart")).toBeFocused();
+        await page.locator("#cancelClearCart").click();
+        await expect(page.locator("#clearCartConfirm")).toBeHidden();
+        await expect(page.locator("#clearCartBtn")).toBeFocused();
+
+        await page.locator("#clearCartBtn").click();
+        await page.locator("#confirmClearCart").click();
+        await expect(page.locator("#cartItems")).toContainText("Корзина пока пустая");
+        await expect(page.locator("#clearCartBtn")).toBeDisabled();
+        await expect(page.locator("#closeCart")).toBeFocused();
+    }
+});
+
+test("cart keeps fixed sections and one-row actions across responsive viewports", async ({ page }) => {
+    const viewports = [
+        { width: 320, height: 568 },
+        { width: 350, height: 640 },
+        { width: 351, height: 667 },
+        { width: 360, height: 736 },
+        { width: 375, height: 800 },
+        { width: 390, height: 844 },
+        { width: 414, height: 896 },
+        { width: 480, height: 800 },
+        { width: 600, height: 800 },
+        { width: 601, height: 800 },
+        { width: 768, height: 896 },
+        { width: 980, height: 800 },
+        { width: 1024, height: 800 },
+        { width: 1366, height: 896 },
+        { width: 1920, height: 896 },
+        { width: 568, height: 320 },
+        { width: 667, height: 375 },
+        { width: 896, height: 414 }
+    ];
+
+    for (const path of ["/", "/catalog.html"]) {
+        await page.setViewportSize({ width: 1024, height: 800 });
+        await page.goto(path);
+        await seedCartItems(page, 36);
+        await page.locator("#cartBtn").click();
+
+        for (const viewport of viewports) {
+            await page.setViewportSize(viewport);
+            const cartBody = page.locator(".cart-body");
+            await cartBody.evaluate(element => { element.scrollTop = 0; });
+            const before = await page.locator("#cartView").evaluate(view => {
+                const box = selector => {
+                    const rect = view.querySelector(selector).getBoundingClientRect();
+                    return { top: rect.top, bottom: rect.bottom };
+                };
+                return { header: box(".cart-header"), footer: box(".cart-footer") };
+            });
+            await cartBody.evaluate(element => { element.scrollTop = element.scrollHeight; });
+            await expect.poll(() => cartBody.evaluate(element => element.scrollTop)).toBeGreaterThan(0);
+
+            const dimensions = await page.evaluate(() => {
+                const rect = selector => {
+                    const box = document.querySelector(selector).getBoundingClientRect();
+                    return { left: box.left, right: box.right, top: box.top, bottom: box.bottom, width: box.width, height: box.height };
+                };
+                const modal = document.querySelector("#cartModal");
+                const body = document.querySelector(".cart-body");
+                const actions = [...document.querySelectorAll(".cart-actions > button")];
+                const actionRects = actions.map(button => ({ ...rect(`#${button.id}`), clipped: button.scrollWidth > button.clientWidth + 1 }));
+                const totals = [...document.querySelectorAll("#cartTotal > span")].map(element => element.getBoundingClientRect());
+                return {
+                    modal: rect("#cartModal"),
+                    header: rect(".cart-header"),
+                    body: rect(".cart-body"),
+                    footer: rect(".cart-footer"),
+                    modalScrollTop: modal.scrollTop,
+                    bodyScrollTop: body.scrollTop,
+                    modalOverflowY: getComputedStyle(modal).overflowY,
+                    bodyOverflowY: getComputedStyle(body).overflowY,
+                    actionRects,
+                    totals: totals.map(box => ({ top: box.top, bottom: box.bottom })),
+                    documentScrollWidth: document.documentElement.scrollWidth,
+                    documentClientWidth: document.documentElement.clientWidth
+                };
+            });
+
+            expect(dimensions.modal.left, JSON.stringify({ path, viewport, dimensions })).toBeGreaterThanOrEqual(-1);
+            expect(dimensions.modal.right, JSON.stringify({ path, viewport, dimensions })).toBeLessThanOrEqual(viewport.width + 1);
+            expect(dimensions.modal.top, JSON.stringify({ path, viewport, dimensions })).toBeGreaterThanOrEqual(0);
+            expect(dimensions.modal.bottom, JSON.stringify({ path, viewport, dimensions })).toBeLessThanOrEqual(viewport.height + 1);
+            expect(dimensions.modalScrollTop).toBe(0);
+            expect(dimensions.bodyScrollTop).toBeGreaterThan(0);
+            expect(dimensions.modalOverflowY).toBe("hidden");
+            expect(dimensions.bodyOverflowY).toBe("auto");
+            expect(Math.abs(dimensions.header.top - before.header.top)).toBeLessThanOrEqual(1);
+            expect(Math.abs(dimensions.footer.bottom - before.footer.bottom)).toBeLessThanOrEqual(1);
+            expect(Math.max(...dimensions.actionRects.map(box => box.top)) - Math.min(...dimensions.actionRects.map(box => box.top))).toBeLessThanOrEqual(1);
+            expect(dimensions.actionRects.every(box => !box.clipped)).toBeTruthy();
+            expect(dimensions.actionRects[0].right).toBeLessThanOrEqual(dimensions.actionRects[1].left + 1);
+            expect(dimensions.actionRects[1].right).toBeLessThanOrEqual(dimensions.actionRects[2].left + 1);
+            expect(Math.max(...dimensions.totals.map(box => box.top)) - Math.min(...dimensions.totals.map(box => box.top))).toBeLessThanOrEqual(1);
+            expect(dimensions.documentScrollWidth).toBeLessThanOrEqual(dimensions.documentClientWidth + 1);
+        }
+
+        await page.setViewportSize({ width: 320, height: 568 });
+        await page.locator("#openCheckout").click();
+        await expect(page.locator("#checkoutForm")).toBeVisible();
+        const checkoutGeometry = await page.evaluate(() => {
+            const modal = document.querySelector("#cartModal");
+            const form = document.querySelector("#checkoutForm");
+            return {
+                modalScrollTop: modal.scrollTop,
+                modalScrollHeight: modal.scrollHeight,
+                modalClientHeight: modal.clientHeight,
+                modalOverflowY: getComputedStyle(modal).overflowY,
+                formScrollTop: form.scrollTop,
+                formScrollHeight: form.scrollHeight,
+                formClientHeight: form.clientHeight,
+                formOverflowY: getComputedStyle(form).overflowY,
+                formBottom: form.getBoundingClientRect().bottom,
+                viewportHeight: innerHeight
+            };
+        });
+        expect(checkoutGeometry.modalScrollTop, JSON.stringify(checkoutGeometry)).toBe(0);
+        expect(checkoutGeometry.modalOverflowY).toBe("hidden");
+        expect(checkoutGeometry.formOverflowY).toBe("auto");
+        expect(checkoutGeometry.formBottom).toBeLessThanOrEqual(checkoutGeometry.viewportHeight + 1);
+        await page.locator("#cancelCheckout").click();
+    }
 });
 
 test("accessibility and performance smoke", async ({ page }) => {
