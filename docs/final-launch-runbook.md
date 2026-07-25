@@ -14,6 +14,7 @@ The source of truth is `backend/services/productionReadiness.js`, `backend/servi
 | `MATMIX_DB_PATH` | Runtime path | absolute, outside app/web root, e.g. `/var/lib/matmix/matmix.db` | Operations | `production:check` |
 | `SESSION_DB_PATH` | Runtime path | absolute, e.g. `/var/lib/matmix/sessions.db`; do not migrate old sessions | Operations | `production:check` |
 | `PRODUCT_UPLOADS_PATH` | Runtime path | absolute directory outside web root, e.g. `/var/lib/matmix/uploads/products` | Operations | `production:check` |
+| `ORDER_ATTACHMENTS_PATH` | Private runtime path | absolute persistent directory outside releases, public files, product uploads and backup root, e.g. `/var/lib/matmix/order-attachments` | Operations | `production:check`, attachment audit |
 | `BACKUP_ROOT_PATH` | Runtime path | absolute, outside uploads/web root, e.g. `/var/backups/matmix` | Operations | `production:check`, backup verify |
 | `APP_RUNTIME_LOCK_PATH` | Runtime path | absolute, e.g. `/var/lib/matmix/matmix-runtime.lock` | Operations | startup, migration/restore |
 | `PUBLIC_BASE_URL` | Public | HTTPS origin only, no path, e.g. `https://shop.example.invalid` | Domain owner/Operations | legal and production checks, SEO tests |
@@ -39,7 +40,7 @@ Approved commercial/legal content is also required from Product owner + Legal: `
 ```bash
 sudo useradd --system --home /var/lib/matmix --shell /usr/sbin/nologin matmix
 sudo install -d -o root -g matmix -m 0750 /opt/matmix/app
-sudo install -d -o matmix -g matmix -m 0750 /var/lib/matmix /var/lib/matmix/uploads/products /var/backups/matmix /var/log/matmix
+sudo install -d -o matmix -g matmix -m 0750 /var/lib/matmix /var/lib/matmix/uploads/products /var/lib/matmix/order-attachments /var/backups/matmix /var/log/matmix
 sudo install -d -o root -g matmix -m 0750 /etc/matmix
 node --version
 npm --version
@@ -74,15 +75,19 @@ sudo rsync -a --delete --chown=matmix:matmix /secure-transfer/uploads/products/ 
 sudo -u matmix test -r /var/lib/matmix/matmix.db
 sudo -u matmix test -w /var/lib/matmix
 sudo -u matmix test -r /var/lib/matmix/uploads/products
+sudo -u matmix test -w /var/lib/matmix/uploads/products
+sudo -u matmix test -r /var/lib/matmix/order-attachments
+sudo -u matmix test -w /var/lib/matmix/order-attachments
 ```
 
 Do not transfer a session DB. Do not copy SQLite WAL/SHM files. The source application must be stopped and checkpointed before the main DB is transferred. Confirm product/order/client counts against the signed source inventory. Use `npm run database:health` only after migration; before migration record `PRAGMA user_version` through the approved SQLite inspection procedure.
 
 ## D. Full pre-migration backup
 
-With the environment loaded for the `matmix` account and service stopped:
+Prepare the new immutable release first, but do not switch `/opt/matmix/app`. With the environment loaded for the `matmix` account and service stopped, run the backup implementation from the **new release directory**. Backup format v2 is compatible with a legacy schema that has no `order_attachments` table and records an empty attachment set. This avoids relying on an older active release that cannot include private attachments:
 
 ```bash
+cd /opt/matmix/releases/<new-release>
 sudo -u matmix node backend/scripts/backup-production-data.js --dry-run
 sudo -u matmix node backend/scripts/backup-production-data.js
 sudo -u matmix node backend/scripts/backup-production-data.js --verify-only /var/backups/matmix/<recorded-backup-directory>
@@ -97,9 +102,13 @@ sha256sum /var/backups/matmix/<recorded-backup-directory>/manifest.json
 sudo -u matmix npm run database:migrate -- --dry-run
 sudo -u matmix npm run database:migrate -- --apply --confirm MIGRATE_MATMIX_DATABASE
 sudo -u matmix npm run database:health -- --json
+sudo -u matmix npm run attachments:audit -- --check --json
+sudo -u matmix npm run production:check
 ```
 
-Require schema version 2, `integrity=ok`, zero foreign-key violations, expected counts and no runtime lock. Stop on any discrepancy. Never rerun apply blindly after a partial operational failure; inspect its JSON and generated pre-migration backup first.
+Require schema version 4, expected schema version 4, `integrity=ok`, zero foreign-key violations, `order_attachments`, `idx_order_attachments_order_id`, a healthy attachment audit, expected counts and no runtime lock. These checks must pass before switching `/opt/matmix/app` or starting the new service. Stop on any discrepancy. Never rerun apply blindly after a partial operational failure; inspect its JSON and generated pre-migration backup first.
+
+For the repository deployment script, the enforced sequence is: acquire the deploy lock; build and test the new release; validate protected env and persistent paths; stop `matmix.service`; create and verify an exact format-v2 backup with the new release; run migration dry-run and confirmed apply with the new release; run database health, attachment audit and production readiness; switch the symlink; start the service; run HTTP and post-start operational checks. The script prints both `ROLLBACK_RELEASE` and `ROLLBACK_BACKUP`; record them together.
 
 ## F. Start application and proxy
 
@@ -147,18 +156,31 @@ sudo systemctl stop matmix
 sudo test ! -e /var/lib/matmix/matmix-runtime.lock
 ```
 
-Switch `/opt/matmix/app` to the recorded previous immutable release. Restore DB/uploads only if the migration or production writes require data rollback; a code-only failure does not justify DB restore. First run:
+After migration has started, returning only the symlink is unsafe. Restore the exact verified pre-deployment backup as one data set: main database, product uploads and private order attachments. Never select a backup using a “latest” glob. The automated rollback command requires the recorded release and backup paths:
+
+```bash
+sudo /opt/matmix/app/deploy/scripts/rollback-release.sh \
+  /opt/matmix/releases/<recorded-previous-release> \
+  /var/backups/matmix/<recorded-pre-deployment-backup>
+```
+
+For a supervised manual recovery, keep the service stopped and first run:
 
 ```bash
 sudo -u matmix node backend/scripts/restore-production-data.js /var/backups/matmix/<verified-backup> --dry-run
 sudo -u matmix node backend/scripts/restore-production-data.js /var/backups/matmix/<verified-backup> --apply --confirm RESTORE_MATMIX_DATA
+sudo -u matmix npm run attachments:audit -- --check --json
+# Verify the restored schema with the code that owns it:
+cd /opt/matmix/releases/<recorded-previous-release>
+sudo -u matmix npm run database:health -- --json
+# Only after restore verification and target-release health pass:
+# switch /opt/matmix/app to the recorded previous release.
 sudo systemctl start matmix
 curl --fail --silent --show-error http://127.0.0.1:3000/health
 curl --fail --silent --show-error http://127.0.0.1:3000/ready
-sudo -u matmix npm run database:health -- --json
 ```
 
-The restored standalone backup initially uses SQLite `journal_mode=delete`; this is expected for the verified `VACUUM INTO` artifact. The first normal application connection returns the live database to WAL, so the order above is intentional. Stop the service and investigate if either endpoint or the subsequent health check fails. Repeat HTTPS/order/CRM smoke and preserve incident notes. Restore never runs against a live service.
+The restore stages and verifies all three resources before swapping them and creates an emergency backup of the failed data set. The restored standalone backup initially uses SQLite `journal_mode=delete`; this is expected for the verified `VACUUM INTO` artifact. Run database health from the recorded previous release so its expected schema matches the restored pre-deployment backup; new-release health intentionally rejects a restored schema v2. Stop and investigate if restore, target-release health, attachment audit or either endpoint fails. If apply-restore fails, keep the service stopped and preserve all restore artifacts for manual recovery. Repeat HTTPS/order/CRM attachment-download smoke and preserve incident notes. Restore never runs against a live service.
 
 ## Production smoke checklist
 
@@ -205,7 +227,7 @@ The healthy production result is HTTP 200, `Cache-Control: no-store` and `{"stat
 | Free disk | below `MIN_FREE_DISK_MB` or <15% | Stop imports/uploads/backups; expand/clean by approved policy |
 | Upload/image failure | 3 in 15 min | Pause image changes; inspect size/type/disk |
 | Image queue | no explicit queue metric exists | Monitor active upload duration/errors; do not claim queue telemetry |
-| Schema version | not 2 | Readiness failure; stop deployment |
+| Schema version | not 4 | Readiness failure; stop deployment |
 | TLS expiry | <21 days warning, <7 days critical | Renew and verify chain/redirect |
 
 ## Manual launch gates

@@ -8,6 +8,16 @@ async function loginAsAdmin(page) {
     await page.waitForURL(/manager/);
 }
 
+async function openCrmSection(page, section) {
+    const sectionButton = page.locator(`.crm-nav [data-section="${section}"]`);
+    const menuToggle = page.locator("#crmMenuToggle");
+    if (await menuToggle.isVisible()) {
+        await menuToggle.click();
+        await expect(sectionButton).toBeInViewport();
+    }
+    await sectionButton.click();
+}
+
 test("CRM login, invalid login, session and logout", async ({ page }) => {
     await page.goto("/login.html");
     await page.locator('input[name="login"], input[type="text"]').first().fill("e2e_admin"); await page.locator('input[name="password"], input[type="password"]').fill("wrong"); await page.locator('button[type="submit"]').click(); await expect(page.locator("body")).toContainText(/невер|ошиб/i);
@@ -26,7 +36,7 @@ test("public order API enforces consent and server price", async ({ request }) =
 
 test("CRM shows and securely downloads file request attachments", async ({ page }) => {
     await loginAsAdmin(page);
-    await page.locator('.crm-nav [data-section="orders"]').click();
+    await openCrmSection(page, "orders");
 
     const fileOrder = page.locator("article.order-card", { hasText: "E2E-FILES" });
     const ordinaryOrder = page.locator("article.order-card", { hasText: "E2E-ORDINARY" });

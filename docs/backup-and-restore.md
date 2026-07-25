@@ -71,3 +71,19 @@ Backups on the same disk are not sufficient protection. Keep at least one verifi
 Regularly run `--verify-only`, `npm run attachments:audit -- --check`, and a full restore rehearsal to isolated paths. The off-site rehearsal restores attachments alongside the database and uploads. After an incident: stop MatMix, confirm the runtime lock is absent, verify the selected backup, run restore dry-run, apply with the confirmation phrase, inspect the restore report, run the attachment audit, start the application, and verify API/catalog/orders/images/attachment downloads. Monitor the timestamp and exit status of the most recent successful backup.
 
 For the download check, authenticate in CRM as an authorized manager or administrator, open a restored file request, confirm its attachment metadata, download each representative format, and compare the bytes or SHA-256 with the backup manifest. Never expose `attachments/orders` through static hosting.
+
+## Release backup and rollback
+
+The release script prepares the new immutable release before stopping the service, then creates the pre-migration backup with that **new release's** format-v2 implementation. This is required because an older active release may not know about private attachments. Format v2 safely represents a schema-v2 database without `order_attachments` as an empty attachment set.
+
+Record the exact `ROLLBACK_RELEASE` and `ROLLBACK_BACKUP` printed by deployment. Do not infer the backup from directory ordering or a wildcard. Once migration has started, rollback must restore the exact verified backup's database, product uploads and order attachments before switching back to the recorded previous release:
+
+```sh
+sudo /opt/matmix/app/deploy/scripts/rollback-release.sh \
+  /opt/matmix/releases/<recorded-previous-release> \
+  /var/backups/matmix/<recorded-pre-deployment-backup>
+```
+
+The rollback script verifies the selected backup with the current release, stops the service, performs restore dry-run and confirmed apply through the current release, checks the restored schema with the recorded previous release, switches the symlink, starts the previous release and performs HTTP smoke checks. If restore dry-run fails, data is untouched and the current service can restart. If apply-restore fails, the service remains stopped for manual recovery; the script never silently chooses a different backup.
+
+For a manual recovery, use the same exact backup path with `restore-production-data.js`, keep the service stopped through restore verification and attachment audit, then run database health from the recorded previous release so the expected schema matches the backup. Only then switch the symlink and start the previous release. After startup, repeat public home/catalog health checks and an authorized CRM download of representative restored attachments.

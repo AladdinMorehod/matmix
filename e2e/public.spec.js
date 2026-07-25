@@ -7,6 +7,16 @@ async function movePointerOutsideViewport(page) {
     )).toBe(true);
 }
 
+async function openUploadRequestFromHeader(page) {
+    const uploadRequestLink = page.locator("#mainNav #uploadRequestNav");
+    const menuToggle = page.locator("#menuToggle");
+    if (await menuToggle.isVisible()) {
+        await menuToggle.click();
+        await expect(uploadRequestLink).toBeInViewport();
+    }
+    await uploadRequestLink.click();
+}
+
 async function seedCartItems(page, count = 24) {
     const items = Array.from({ length: count }, (_, index) => ({
         productId: 98000 + index,
@@ -748,7 +758,12 @@ test("cart quantity works when the product is outside the current catalog page",
     }, targetProduct);
     await page.reload();
     await page.getByRole("button", { name: category, exact: true }).click();
-    await page.getByRole("button", { name: subcategory, exact: true }).click();
+    const subcategorySelect = page.locator(".category-subcategory-select select");
+    if (await subcategorySelect.isVisible()) {
+        await subcategorySelect.selectOption({ label: subcategory });
+    } else {
+        await page.getByRole("button", { name: subcategory, exact: true }).click();
+    }
     await expect(page.locator(`#productGrid [data-product-id="${targetProduct.id}"]`)).toBeVisible();
     await page.locator("#cartBtn").click();
     await cartItem.locator(".plus").click();
@@ -1009,7 +1024,7 @@ test("upload request file rules and validation submit to the secure endpoint", a
 
     await page.goto("/");
     await seedCartItems(page, 2);
-    await page.locator("#uploadRequestNav").click();
+    await openUploadRequestFromHeader(page);
     const fileInput = page.locator("#uploadRequestFiles");
     await expect(fileInput).toHaveAttribute("multiple", "");
     await expect(fileInput).toHaveAttribute("accept", ".pdf,.jpg,.jpeg,.png,.xls,.xlsx,.csv,.txt");
@@ -1051,7 +1066,7 @@ test("upload request file rules and validation submit to the secure endpoint", a
     await expect(page.locator("#uploadFileError")).toContainText("превышает лимит 15 МБ");
 
     await page.locator("#cancelUploadRequest").click();
-    await page.locator("#uploadRequestNav").click();
+    await openUploadRequestFromHeader(page);
     await dropUploadFiles(page, Array.from({ length: 6 }, (_, index) => ({
         name: `file-${index + 1}.pdf`,
         type: "application/pdf",
@@ -1062,7 +1077,7 @@ test("upload request file rules and validation submit to the secure endpoint", a
     await expect(page.locator("#uploadFileError")).toContainText("не более 5 файлов");
 
     await page.locator("#cancelUploadRequest").click();
-    await page.locator("#uploadRequestNav").click();
+    await openUploadRequestFromHeader(page);
     await dropUploadFiles(page, Array.from({ length: 4 }, (_, index) => ({
         name: `volume-${index + 1}.pdf`,
         type: "application/pdf",
@@ -1073,7 +1088,7 @@ test("upload request file rules and validation submit to the secure endpoint", a
     await expect(page.locator("#uploadFileError")).toContainText("50 МБ");
 
     await page.locator("#cancelUploadRequest").click();
-    await page.locator("#uploadRequestNav").click();
+    await openUploadRequestFromHeader(page);
     await dropUploadFiles(page, [{
         name: "request.pdf",
         type: "application/pdf",
@@ -1118,7 +1133,7 @@ test("TXT file request reaches CRM metadata and protected download", async ({ pa
 
     await page.goto("/");
     await seedCartItems(page, 1);
-    await page.locator("#uploadRequestNav").click();
+    await openUploadRequestFromHeader(page);
     await expect(page.locator(".upload-request-intro")).toContainText("PDF, JPG, PNG, XLS, XLSX, CSV, TXT");
     await expect(page.locator("#uploadRequestFiles")).toHaveAttribute(
         "accept",
@@ -1213,7 +1228,7 @@ test("TXT file request reaches CRM metadata and protected download", async ({ pa
     await expect(crmOrder.getByRole("button", { name: `Скачать файл ${unicodeTxtName}` })).toBeVisible();
 
     await page.goto("/");
-    await page.locator("#uploadRequestNav").click();
+    await openUploadRequestFromHeader(page);
     await dropUploadFiles(page, [{
         name: "binary.txt",
         type: "application/octet-stream",
@@ -1254,7 +1269,7 @@ test("file request submission works with cart, without cart and on both public p
             await page.reload();
         }
 
-        await page.locator("#uploadRequestNav").click();
+        await openUploadRequestFromHeader(page);
         if (index === 0) {
             await expect(page.locator("#uploadCartOption")).toBeVisible();
             await expect(page.locator("#uploadIncludeCart")).toBeChecked();
@@ -1310,7 +1325,7 @@ test("file request server errors keep the form retryable", async ({ page }) => {
         })
     }));
     await page.goto("/");
-    await page.locator("#uploadRequestNav").click();
+    await openUploadRequestFromHeader(page);
     await page.locator("#uploadCustomerName").fill("Тестовый клиент");
     await page.locator("#uploadCustomerPhone").fill("9991234567");
     await page.locator("#uploadRequestComment").fill("Повторить отправку после ошибки");
@@ -1353,7 +1368,7 @@ test("upload request cart option and layout remain responsive", async ({ page })
     ];
 
     await page.goto("/");
-    await page.locator("#uploadRequestNav").click();
+    await openUploadRequestFromHeader(page);
     await expect(page.locator("#uploadCartOption")).toBeHidden();
     await expect(page.locator("#uploadIncludeCart")).toBeDisabled();
     await page.locator("#cancelUploadRequest").click();
