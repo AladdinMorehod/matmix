@@ -188,6 +188,15 @@ async function abortDownload(base, cookie, orderId, attachmentId) {
             content: "%PDF-1.4 plan bytes",
             createdAt: now
         });
+        const txtContent = Buffer.from("CRM TXT русский текст\r\nSecond line\n", "utf8");
+        const txtAttachment = await seedAttachment(db, storageRoot, fileOrder.id, {
+            originalName: "Комментарий.txt",
+            storageKey: "comment-safe.txt",
+            mimeType: "text/plain",
+            extension: "txt",
+            content: txtContent,
+            createdAt: now
+        });
         const otherAttachment = await seedAttachment(db, storageRoot, secondOrder.id, {
             originalName: "Other.pdf",
             storageKey: "other-safe.pdf",
@@ -248,7 +257,7 @@ async function abortDownload(base, cookie, orderId, attachmentId) {
             if (!["EPERM", "EACCES", "UNKNOWN"].includes(error.code)) throw error;
             console.log(`Symlink download check skipped on this platform: ${error.code}`);
         }
-        const expectedAttachmentCount = 6 + (symlinkFixture ? 1 : 0);
+        const expectedAttachmentCount = 7 + (symlinkFixture ? 1 : 0);
         await close(db);
         db = null;
 
@@ -309,6 +318,10 @@ async function abortDownload(base, cookie, orderId, attachmentId) {
         assert(!serializedMetadata.includes("sha256"));
         assert(!serializedMetadata.includes(storageRoot));
         assert(result.body.attachments.every(item => item.downloadUrl.startsWith(`/api/orders/${fileOrder.id}/attachments/`)));
+        const txtMetadata = result.body.attachments.find(item => item.id === txtAttachment.id);
+        assert.strictEqual(txtMetadata.originalName, "Комментарий.txt");
+        assert.strictEqual(txtMetadata.extension, "txt");
+        assert.strictEqual(txtMetadata.mimeType, "text/plain");
 
         result = await requestJson(`${base}/api/orders/${fileOrder.id}/attachments`, { headers: { Cookie: otherCookie } });
         assert.strictEqual(result.response.status, 403);
@@ -329,7 +342,7 @@ async function abortDownload(base, cookie, orderId, attachmentId) {
         assert.strictEqual(download.status, 200);
         assert.strictEqual(download.headers.get("content-length"), String(first.content.length));
         assert.strictEqual(download.headers.get("content-type"), first.mimeType);
-        assert.strictEqual(download.headers.get("cache-control"), "no-store");
+        assert.strictEqual(download.headers.get("cache-control"), "private, no-store");
         assert.strictEqual(download.headers.get("x-content-type-options"), "nosniff");
         const disposition = download.headers.get("content-disposition");
         assert(disposition.includes("attachment;"));
@@ -339,6 +352,16 @@ async function abortDownload(base, cookie, orderId, attachmentId) {
         assert(!disposition.includes(first.storageKey));
         assert(!disposition.includes(storageRoot));
         assert.deepStrictEqual(Buffer.from(await download.arrayBuffer()), first.content);
+
+        const txtDownload = await fetch(`${base}/api/orders/${fileOrder.id}/attachments/${txtAttachment.id}/download`, {
+            headers: { Cookie: managerCookie }
+        });
+        assert.strictEqual(txtDownload.status, 200);
+        assert.strictEqual(txtDownload.headers.get("content-type"), "text/plain");
+        assert.strictEqual(txtDownload.headers.get("cache-control"), "private, no-store");
+        assert.strictEqual(txtDownload.headers.get("x-content-type-options"), "nosniff");
+        assert(txtDownload.headers.get("content-disposition").includes("attachment;"));
+        assert.deepStrictEqual(Buffer.from(await txtDownload.arrayBuffer()), txtContent);
 
         const headerDownload = await fetch(`${base}/api/orders/${fileOrder.id}/attachments/${headerFixture.id}/download`, {
             headers: { Cookie: managerCookie }

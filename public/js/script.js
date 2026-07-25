@@ -37239,7 +37239,7 @@ const SEARCH_SUGGESTION_LIMIT = 10;
 const UPLOAD_MAX_FILES = 5;
 const UPLOAD_MAX_FILE_BYTES = 15 * 1024 * 1024;
 const UPLOAD_MAX_TOTAL_BYTES = 50 * 1024 * 1024;
-const UPLOAD_ALLOWED_EXTENSIONS = new Set(["pdf", "jpg", "jpeg", "png", "xls", "xlsx", "csv"]);
+const UPLOAD_ALLOWED_EXTENSIONS = new Set(["pdf", "jpg", "jpeg", "png", "xls", "xlsx", "csv", "txt"]);
 const MOBILE_SEARCH_MAX_WIDTH = 600;
 const PAYMENT_METHODS = [
     { value: "cash", label: "Наличные" },

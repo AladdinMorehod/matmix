@@ -273,6 +273,8 @@ function testRateLimiter() {
         const png = file("plan.png", "image/png", Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 1]));
         const xls = file("legacy.xls", "application/vnd.ms-excel", Buffer.from([0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1, 1]));
         const csv = file("items.csv", "text/csv", Buffer.from("code,qty\nMAT-FILE-001,2\n", "utf8"));
+        const txtBytes = Buffer.from("Русский и English текст\r\nВторая строка\n", "utf8");
+        const txt = file("notes.txt", "text/plain", txtBytes);
         const xlsxBuffer = await createXlsx();
         const xlsx = file(
             "items.xlsx",
@@ -294,6 +296,22 @@ function testRateLimiter() {
 
         result = await post(base, { files: [xlsx] });
         assert.strictEqual(result.response.status, 201, JSON.stringify(result.body));
+
+        const txtResult = await post(base, { files: [txt] });
+        assert.strictEqual(txtResult.response.status, 201, JSON.stringify(txtResult.body));
+        assert.strictEqual(txtResult.body.requestType, "file_request");
+        assert.strictEqual(txtResult.body.attachmentCount, 1);
+        result = await post(base, {
+            files: [
+                file("UPPER.TXT", "text/plain", Buffer.from("UPPERCASE extension\n", "utf8")),
+                file("bom.txt", "text/plain", Buffer.concat([Buffer.from([0xef, 0xbb, 0xbf]), Buffer.from("Текст с BOM", "utf8")])),
+                file("crlf.txt", "text/plain", Buffer.from("line one\r\nline two\r\n", "utf8")),
+                file("lf.txt", "text/plain", Buffer.from("line one\nline two\n", "utf8")),
+                file("windows.txt", "application/octet-stream", Buffer.from("Strictly validated Windows text", "utf8"))
+            ]
+        });
+        assert.strictEqual(result.response.status, 201, JSON.stringify(result.body));
+        assert.strictEqual(result.body.attachmentCount, 5);
 
         const sanitizedNamesResult = await post(base, {
             files: [
@@ -331,7 +349,8 @@ function testRateLimiter() {
             "image/png",
             "application/vnd.ms-excel",
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            "text/csv"
+            "text/csv",
+            "text/plain"
         ]) {
             assert(normalizedMimeTypes.has(expectedMime), `Missing normalized MIME ${expectedMime}`);
         }
@@ -347,7 +366,52 @@ function testRateLimiter() {
             assert.strictEqual(crypto.createHash("sha256").update(content).digest("hex"), attachment.sha256);
             assert(!attachment.storage_key.includes(attachment.original_name));
         }
+        const txtAttachment = await get(
+            verificationDb,
+            "SELECT * FROM order_attachments WHERE order_id=?",
+            [txtResult.body.id]
+        );
+        assert.strictEqual(txtAttachment.extension, "txt");
+        assert.strictEqual(txtAttachment.mime_type, "text/plain");
+        assert.strictEqual(txtAttachment.size_bytes, txtBytes.length);
+        assert.strictEqual(txtAttachment.sha256, crypto.createHash("sha256").update(txtBytes).digest("hex"));
+        assert.deepStrictEqual(fs.readFileSync(path.join(storageRoot, txtAttachment.storage_key)), txtBytes);
         await close(verificationDb);
+
+        const loginResponse = await fetch(`${base}/api/auth/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ login: "admin", password: "admin123" })
+        });
+        assert.strictEqual(loginResponse.status, 200);
+        const authCookie = loginResponse.headers.getSetCookie?.()[0]?.split(";")[0]
+            || loginResponse.headers.get("set-cookie")?.split(";")[0];
+        assert(authCookie);
+        const crmListResponse = await fetch(`${base}/api/orders`, { headers: { Cookie: authCookie } });
+        const crmList = await crmListResponse.json();
+        const crmTxtOrder = crmList.orders.find(order => order.id === txtResult.body.id);
+        assert(crmTxtOrder);
+        assert.strictEqual(crmTxtOrder.requestType, "file_request");
+        assert.strictEqual(crmTxtOrder.attachmentCount, 1);
+        const metadataResponse = await fetch(`${base}/api/orders/${txtResult.body.id}/attachments`, {
+            headers: { Cookie: authCookie }
+        });
+        const metadataBody = await metadataResponse.json();
+        assert.strictEqual(metadataResponse.status, 200);
+        assert.strictEqual(metadataBody.attachments[0].extension, "txt");
+        assert.strictEqual(metadataBody.attachments[0].mimeType, "text/plain");
+        assert(!JSON.stringify(metadataBody).includes(txtAttachment.storage_key));
+        assert(!JSON.stringify(metadataBody).includes(storageRoot));
+        const downloadResponse = await fetch(
+            `${base}/api/orders/${txtResult.body.id}/attachments/${txtAttachment.id}/download`,
+            { headers: { Cookie: authCookie } }
+        );
+        assert.strictEqual(downloadResponse.status, 200);
+        assert.strictEqual(downloadResponse.headers.get("content-type"), "text/plain");
+        assert.strictEqual(downloadResponse.headers.get("cache-control"), "private, no-store");
+        assert.strictEqual(downloadResponse.headers.get("x-content-type-options"), "nosniff");
+        assert(downloadResponse.headers.get("content-disposition").includes("attachment;"));
+        assert.deepStrictEqual(Buffer.from(await downloadResponse.arrayBuffer()), txtBytes);
 
         const requiredCases = [
             [{ customerName: undefined }, "REQUIRED_FIELD"],
@@ -414,6 +478,13 @@ function testRateLimiter() {
         await expectRejected(base, storageRoot, { status: 413, code: "TOTAL_FILES_TOO_LARGE" }, {
             files: Array.from({ length: 4 }, (_, index) => file(`total-${index}.pdf`, "application/pdf", Buffer.alloc(13 * 1024 * 1024, 1)))
         });
+        await expectRejected(base, storageRoot, { status: 413, code: "FILE_TOO_LARGE" }, {
+            files: [file("large.txt", "text/plain", Buffer.alloc(MAX_ATTACHMENT_SIZE_BYTES + 1, 0x61))]
+        });
+        await expectRejected(base, storageRoot, { status: 413, code: "TOTAL_FILES_TOO_LARGE" }, {
+            files: Array.from({ length: 4 }, (_, index) =>
+                file(`total-${index}.txt`, "text/plain", Buffer.alloc(13 * 1024 * 1024, 0x61)))
+        });
         await expectRejected(base, storageRoot, { status: 400, code: "EMPTY_FILE" }, {
             files: [file("empty.pdf", "application/pdf", Buffer.alloc(0))]
         });
@@ -428,6 +499,21 @@ function testRateLimiter() {
         });
         await expectRejected(base, storageRoot, { status: 400, code: "CORRUPT_FILE" }, {
             files: [file("spoof.png", "image/png", pdf.bytes)]
+        });
+        await expectRejected(base, storageRoot, { status: 400, code: "EMPTY_FILE" }, {
+            files: [file("empty.txt", "text/plain", Buffer.alloc(0))]
+        });
+        await expectRejected(base, storageRoot, { status: 400, code: "CORRUPT_FILE" }, {
+            files: [file("nul.txt", "text/plain", Buffer.from("text\0hidden", "utf8"))]
+        });
+        await expectRejected(base, storageRoot, { status: 400, code: "CORRUPT_FILE" }, {
+            files: [file("binary.txt", "application/octet-stream", Buffer.from([0xff, 0xd8, 0, 1, 2, 3]))]
+        });
+        await expectRejected(base, storageRoot, { status: 415, code: "MIME_MISMATCH" }, {
+            files: [file("mime-spoof.txt", "image/png", Buffer.from("plain text", "utf8"))]
+        });
+        await expectRejected(base, storageRoot, { status: 400, code: "CORRUPT_FILE" }, {
+            files: [file("extension-spoof.pdf", "application/pdf", Buffer.from("plain text", "utf8"))]
         });
         for (const corrupt of [
             file("bad.pdf", "application/pdf", Buffer.from("not pdf")),
@@ -518,7 +604,10 @@ function testRateLimiter() {
             success: true,
             endpoint: "POST /api/orders/file-request",
             streamingMultipart: "busboy@1.6.0",
-            formats: ["pdf", "jpg", "jpeg", "png", "xls", "xlsx", "csv"],
+            formats: ["pdf", "jpg", "jpeg", "png", "xls", "xlsx", "csv", "txt"],
+            txtUtf8BomAndLineEndings: "verified",
+            txtBinaryAndMimeSpoofing: "rejected",
+            txtCrmMetadataAndDownload: "verified",
             serverTotals: "verified",
             metadataAndPrivateFiles: "verified",
             sha256AndSize: "verified",

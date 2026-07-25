@@ -62,7 +62,7 @@ async function main() {
                     OR storage_key GLOB '*[^a-z0-9._-]*'
                     OR length(trim(mime_type)) NOT BETWEEN 3 AND 127 OR mime_type <> lower(mime_type)
                     OR instr(mime_type, '/') <= 1
-                    OR extension NOT IN ('pdf','jpg','jpeg','png','xls','xlsx','csv')
+                    OR extension NOT IN ('pdf','jpg','jpeg','png','xls','xlsx','csv','txt')
                     OR typeof(size_bytes) <> 'integer' OR size_bytes NOT BETWEEN 0 AND 15728640
                     OR length(sha256) <> 64 OR sha256 <> lower(sha256) OR sha256 GLOB '*[^0-9a-f]*'
                     OR length(trim(created_at)) NOT BETWEEN 1 AND 64`)

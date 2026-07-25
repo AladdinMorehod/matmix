@@ -725,7 +725,7 @@ function setAttachmentDownloadHeaders(res, attachment, physicalSize) {
         "Content-Disposition",
         `attachment; filename="${fallback}"; filename*=UTF-8''${encodeContentDispositionValue(filename)}`
     );
-    res.setHeader("Cache-Control", "no-store");
+    res.setHeader("Cache-Control", "private, no-store");
     res.setHeader("X-Content-Type-Options", "nosniff");
 }
 

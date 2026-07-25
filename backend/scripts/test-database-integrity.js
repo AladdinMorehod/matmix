@@ -62,6 +62,17 @@ async function concurrentOrder(file, suffix) {
         createdAt: new Date().toISOString()
     });
     assert.strictEqual(metadata.orderId, ids[0]);
+    const txtMetadata = await attachments.createOrderAttachmentMetadata({
+        orderId: ids[0],
+        originalName: "integrity.txt",
+        storageKey: "c".repeat(64) + ".txt",
+        mimeType: "text/plain",
+        extension: "txt",
+        sizeBytes: 8,
+        sha256: "d".repeat(64),
+        createdAt: new Date().toISOString()
+    });
+    assert.strictEqual(txtMetadata.extension, "txt");
     const before = Number((await db.get("SELECT COUNT(*) n FROM order_events WHERE order_id=?", [ids[0]])).n);
     assert(before > 0);
     await db.run("DELETE FROM orders WHERE id=?", [ids[0]]);
@@ -82,6 +93,7 @@ async function concurrentOrder(file, suffix) {
         foreignKeys: "ok",
         eventCascade: "ok",
         attachmentCascade: "ok",
+        txtAttachmentMetadata: "ok",
         orphanRejected: true,
         invalidRequestTypeRejected: true
     }));

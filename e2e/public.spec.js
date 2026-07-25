@@ -943,6 +943,7 @@ test("upload request entry points and tabs use the existing modal accessibly", a
         await expect(page.locator("#cartModal")).not.toHaveClass(/hidden/);
         await expect(page.locator("#checkoutView")).toBeVisible();
         await expect(page.locator("#uploadRequestForm")).toBeVisible();
+        await expect(page.locator(".upload-request-intro")).toContainText("PDF, JPG, PNG, XLS, XLSX, CSV, TXT");
         await expect(page.locator("#checkoutForm")).toBeHidden();
         await expect(page.locator("#uploadRequestTab")).toHaveAttribute("aria-selected", "true");
         await expect(page.locator("#orderCheckoutTab")).toHaveAttribute("aria-selected", "false");
@@ -1011,7 +1012,7 @@ test("upload request file rules and validation submit to the secure endpoint", a
     await page.locator("#uploadRequestNav").click();
     const fileInput = page.locator("#uploadRequestFiles");
     await expect(fileInput).toHaveAttribute("multiple", "");
-    await expect(fileInput).toHaveAttribute("accept", ".pdf,.jpg,.jpeg,.png,.xls,.xlsx,.csv");
+    await expect(fileInput).toHaveAttribute("accept", ".pdf,.jpg,.jpeg,.png,.xls,.xlsx,.csv,.txt");
     await expect(page.locator("[data-file-count], .upload-file-count")).toHaveCount(0);
 
     await page.locator("#uploadDropZone").evaluate(zone => {
@@ -1106,6 +1107,106 @@ test("upload request file rules and validation submit to the secure endpoint", a
 
     const paymentLabels = await page.locator("#uploadPaymentMethod option").allTextContents();
     expect(paymentLabels).toEqual(["Наличные", "Перевод на карту", "Терминал", "Безнал — с НДС", "Безнал — без НДС"]);
+});
+
+test("TXT file request reaches CRM metadata and protected download", async ({ page, request }) => {
+    const txtBytes = Buffer.from("Русский TXT\r\nEnglish line\n", "utf8");
+    const uniqueEmail = `txt-e2e-${Date.now()}@example.test`;
+
+    await page.goto("/");
+    await seedCartItems(page, 1);
+    await page.locator("#uploadRequestNav").click();
+    await expect(page.locator(".upload-request-intro")).toContainText("PDF, JPG, PNG, XLS, XLSX, CSV, TXT");
+    await expect(page.locator("#uploadRequestFiles")).toHaveAttribute(
+        "accept",
+        ".pdf,.jpg,.jpeg,.png,.xls,.xlsx,.csv,.txt"
+    );
+
+    const chooserPromise = page.waitForEvent("filechooser");
+    await page.locator("#uploadDropZone").press("Enter");
+    const chooser = await chooserPromise;
+    await chooser.setFiles({
+        name: "PICKER.TXT",
+        mimeType: "text/plain",
+        buffer: Buffer.from("Picker text", "utf8")
+    });
+    await expect(page.locator(".upload-file-item")).toContainText("PICKER.TXT");
+    await page.locator(".upload-file-remove").click();
+    await expect(page.locator(".upload-file-item")).toHaveCount(0);
+
+    await dropUploadFiles(page, [{
+        name: "request.txt",
+        type: "text/plain",
+        bytes: [...txtBytes]
+    }]);
+    await expect(page.locator(".upload-file-item")).toHaveCount(1);
+    await expect(page.locator(".upload-file-item")).toContainText("request.txt");
+    await expect(page.locator(".upload-file-item")).toContainText(`${txtBytes.length}`);
+    await page.setViewportSize({ width: 320, height: 800 });
+    const uploadGeometry = await page.locator("#uploadRequestForm").evaluate(form => ({
+        overflow: form.scrollWidth - form.clientWidth,
+        pageOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth
+    }));
+    expect(uploadGeometry.overflow).toBeLessThanOrEqual(1);
+    expect(uploadGeometry.pageOverflow).toBeLessThanOrEqual(1);
+
+    await page.locator("#uploadCustomerName").fill("TXT E2E клиент");
+    await page.locator("#uploadCustomerPhone").fill("9991234567");
+    await page.locator("#uploadCustomerEmail").fill(uniqueEmail);
+    await page.locator("#uploadRequestComment").fill("Проверка TXT заявки");
+    await page.locator("#uploadRequestConsent").check();
+    await page.locator("#uploadIncludeCart").uncheck();
+    await page.locator("#uploadRequestForm button[type='submit']").click();
+    await expect(page.locator("#uploadRequestMessage")).toContainText(/Заявка №MM-\d{4}-\d{6} принята/);
+    expect(await page.evaluate(() => JSON.parse(localStorage.getItem("matmix_cart") || "[]").length)).toBe(1);
+
+    const login = await request.post("/api/auth/login", {
+        data: { login: "e2e_admin", password: "E2eAdmin!234" }
+    });
+    expect(login.ok()).toBeTruthy();
+    const ordersResponse = await request.get("/api/orders");
+    expect(ordersResponse.ok()).toBeTruthy();
+    const ordersBody = await ordersResponse.json();
+    const txtOrder = ordersBody.orders.find(order => order.email === uniqueEmail);
+    expect(txtOrder).toBeTruthy();
+    expect(txtOrder.requestType).toBe("file_request");
+    expect(txtOrder.attachmentCount).toBe(1);
+    const metadataResponse = await request.get(`/api/orders/${txtOrder.id}/attachments`);
+    expect(metadataResponse.ok()).toBeTruthy();
+    const metadata = await metadataResponse.json();
+    expect(metadata.attachments).toHaveLength(1);
+    expect(metadata.attachments[0]).toMatchObject({
+        originalName: "request.txt",
+        extension: "txt",
+        mimeType: "text/plain",
+        sizeBytes: txtBytes.length
+    });
+    expect(JSON.stringify(metadata)).not.toContain("storageKey");
+    const download = await request.get(metadata.attachments[0].downloadUrl);
+    expect(download.ok()).toBeTruthy();
+    expect(download.headers()["content-type"]).toBe("text/plain");
+    expect(download.headers()["cache-control"]).toBe("private, no-store");
+    expect(download.headers()["x-content-type-options"]).toBe("nosniff");
+    expect(download.headers()["content-disposition"]).toContain("attachment;");
+    expect(await download.body()).toEqual(txtBytes);
+
+    await page.locator("#cancelUploadRequest").click();
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.locator("#uploadRequestNav").click();
+    await dropUploadFiles(page, [{
+        name: "binary.txt",
+        type: "application/octet-stream",
+        bytes: [0xff, 0xd8, 0, 1, 2, 3]
+    }]);
+    await page.locator("#uploadCustomerName").fill("TXT binary");
+    await page.locator("#uploadCustomerPhone").fill("9991234567");
+    await page.locator("#uploadRequestComment").fill("Проверка ошибки TXT");
+    await page.locator("#uploadRequestConsent").check();
+    await page.locator("#uploadRequestForm button[type='submit']").click();
+    await expect(page.locator("#uploadRequestMessage")).toContainText(
+        "Файл повреждён или его содержимое не соответствует формату TXT"
+    );
+    await expect(page.locator(".upload-file-item")).toHaveCount(1);
 });
 
 test("file request submission works with cart, without cart and on both public pages", async ({ page, request }) => {

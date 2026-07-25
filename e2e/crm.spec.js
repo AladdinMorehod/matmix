@@ -32,7 +32,7 @@ test("CRM shows and securely downloads file request attachments", async ({ page 
     const ordinaryOrder = page.locator("article.order-card", { hasText: "E2E-ORDINARY" });
     await expect(fileOrder).toBeVisible();
     await expect(fileOrder.locator(".order-request-type")).toContainText("Файловая заявка");
-    await expect(fileOrder.locator(".order-request-type")).toContainText("Файлы: 2");
+    await expect(fileOrder.locator(".order-request-type")).toContainText("Файлы: 3");
     await expect(ordinaryOrder.locator(".order-request-type")).toHaveCount(0);
 
     await fileOrder.getByRole("button", { name: "Клиент" }).click();
@@ -48,8 +48,10 @@ test("CRM shows and securely downloads file request attachments", async ({ page 
     await expect(fileOrder).toContainText("Загружаем документы");
     await expect(fileOrder).toContainText("Смета проекта.xlsx");
     await expect(fileOrder).toContainText("План помещения.pdf");
+    await expect(fileOrder).toContainText("Комментарий.txt");
     await expect(fileOrder).toContainText("XLSX");
     await expect(fileOrder).toContainText("PDF");
+    await expect(fileOrder).toContainText("TXT");
     await expect(fileOrder).not.toContainText("e2e-estimate.xlsx");
     await expect(fileOrder).not.toContainText("order-attachments");
 
@@ -61,6 +63,14 @@ test("CRM shows and securely downloads file request attachments", async ({ page 
     expect(response.headers()["content-disposition"]).toContain("attachment;");
     expect(response.headers()["content-disposition"]).toContain("filename*=UTF-8''");
     expect((await response.body()).toString()).toBe("E2E estimate content");
+
+    const txtButton = fileOrder.getByRole("button", { name: "Скачать файл Комментарий.txt" });
+    const txtAttachmentId = await txtButton.getAttribute("data-attachment-id");
+    const txtResponse = await page.request.get(`/api/orders/${orderId}/attachments/${txtAttachmentId}/download`);
+    expect(txtResponse.ok()).toBeTruthy();
+    expect(txtResponse.headers()["content-type"]).toBe("text/plain");
+    expect(txtResponse.headers()["cache-control"]).toBe("private, no-store");
+    expect((await txtResponse.body()).toString("utf8")).toBe("E2E TXT русский текст\r\n");
 
     await page.route(`**/api/orders/${orderId}/attachments/${attachmentId}/download`, async route => {
         await new Promise(resolve => setTimeout(resolve, 100));

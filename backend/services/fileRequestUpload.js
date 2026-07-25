@@ -40,7 +40,8 @@ const MIME_ALLOWLIST = Object.freeze({
         "application/zip",
         "application/octet-stream"
     ],
-    csv: ["text/csv", "text/plain", "application/csv", "application/vnd.ms-excel"]
+    csv: ["text/csv", "text/plain", "application/csv", "application/vnd.ms-excel"],
+    txt: ["text/plain", "application/octet-stream"]
 });
 const NORMALIZED_MIME = Object.freeze({
     pdf: "application/pdf",
@@ -49,7 +50,8 @@ const NORMALIZED_MIME = Object.freeze({
     png: "image/png",
     xls: "application/vnd.ms-excel",
     xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    csv: "text/csv"
+    csv: "text/csv",
+    txt: "text/plain"
 });
 
 class FileRequestUploadError extends Error {
@@ -278,7 +280,7 @@ function validateXls(buffer) {
         && buffer.subarray(0, 8).equals(Buffer.from([0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1]));
 }
 
-function validateCsv(buffer) {
+function validateUtf8Text(buffer) {
     let text;
     try {
         text = new TextDecoder("utf-8", { fatal: true }).decode(buffer);
@@ -289,9 +291,14 @@ function validateCsv(buffer) {
     if (!text.trim() || text.includes("\0")) return false;
     const controls = [...text].filter(character => {
         const code = character.charCodeAt(0);
-        return code < 32 && ![9, 10, 13].includes(code);
+        return (code < 32 && ![9, 10, 13].includes(code))
+            || (code >= 0x7f && code <= 0x9f);
     }).length;
     return controls === 0;
+}
+
+function validateCsv(buffer) {
+    return validateUtf8Text(buffer);
 }
 
 function validateXlsx(buffer) {
@@ -361,7 +368,13 @@ async function validateUploadedFile(file, storage) {
     else if (file.extension === "xls") valid = validateXls(buffer);
     else if (file.extension === "xlsx") valid = await validateXlsx(buffer);
     else if (file.extension === "csv") valid = validateCsv(buffer);
-    if (!valid) throw uploadError(400, "CORRUPT_FILE", "Файл повреждён или его формат не соответствует расширению.");
+    else if (file.extension === "txt") valid = validateUtf8Text(buffer);
+    if (!valid) {
+        const message = file.extension === "txt"
+            ? "Файл повреждён или его содержимое не соответствует формату TXT."
+            : "Файл повреждён или его формат не соответствует расширению.";
+        throw uploadError(400, "CORRUPT_FILE", message);
+    }
     return { ...file, mimeType: NORMALIZED_MIME[file.extension] };
 }
 
@@ -385,6 +398,7 @@ module.exports = {
     MAX_XLSX_ENTRY_BYTES,
     MAX_XLSX_COMPRESSION_RATIO,
     sanitizeOriginalName,
+    validateUtf8Text,
     cleanupStorageKeys,
     parseFileRequestMultipart,
     validateUploadedFile,

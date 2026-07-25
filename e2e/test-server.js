@@ -89,7 +89,8 @@ async function prepare() {
     fs.mkdirSync(orderAttachmentsPath, { recursive: true });
     const attachments = [
         { name: "Смета проекта.xlsx", key: "e2e-estimate.xlsx", type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", extension: "xlsx", content: Buffer.from("E2E estimate content") },
-        { name: "План помещения.pdf", key: "e2e-plan.pdf", type: "application/pdf", extension: "pdf", content: Buffer.from("%PDF-1.4 E2E plan") }
+        { name: "План помещения.pdf", key: "e2e-plan.pdf", type: "application/pdf", extension: "pdf", content: Buffer.from("%PDF-1.4 E2E plan") },
+        { name: "Комментарий.txt", key: "e2e-comment.txt", type: "text/plain", extension: "txt", content: Buffer.from("E2E TXT русский текст\r\n", "utf8") }
     ];
     for (const attachment of attachments) {
         fs.writeFileSync(path.join(orderAttachmentsPath, attachment.key), attachment.content);
@@ -130,7 +131,7 @@ function cleanup(code = 0) {
     return cleanupPromise;
 }
 prepare().then(() => {
-    child = spawn(process.execPath, [path.join(root, "backend", "server.js")], { cwd: root, windowsHide: true, stdio: ["inherit", "inherit", "inherit", "ipc"], env: { ...process.env, NODE_ENV: "test", PORT: "4173", SESSION_SECRET: "e2e-only-secret-not-for-production-1234567890", MATMIX_DB_PATH: dbPath, SESSION_DB_PATH: path.join(runtime, "sessions.db"), PRODUCT_UPLOADS_PATH: path.join(runtime, "uploads"), ORDER_ATTACHMENTS_PATH: orderAttachmentsPath, BACKUP_ROOT_PATH: path.join(runtime, "backups"), APP_RUNTIME_LOCK_PATH: path.join(runtime, "runtime.lock"), PUBLIC_BASE_URL: "http://127.0.0.1:4173", SEO_ALLOW_INDEXING: "true", LOGIN_RATE_MAX: "3", LOGIN_RATE_WINDOW_MS: "60000", FILE_REQUEST_RATE_MAX: "1000" } });
+    child = spawn(process.execPath, [path.join(root, "backend", "server.js")], { cwd: root, windowsHide: true, stdio: ["inherit", "inherit", "inherit", "ipc"], env: { ...process.env, NODE_ENV: "test", PORT: "4173", SESSION_SECRET: "e2e-only-secret-not-for-production-1234567890", MATMIX_DB_PATH: dbPath, SESSION_DB_PATH: path.join(runtime, "sessions.db"), PRODUCT_UPLOADS_PATH: path.join(runtime, "uploads"), ORDER_ATTACHMENTS_PATH: orderAttachmentsPath, BACKUP_ROOT_PATH: path.join(runtime, "backups"), APP_RUNTIME_LOCK_PATH: path.join(runtime, "runtime.lock"), PUBLIC_BASE_URL: "http://127.0.0.1:4173", SEO_ALLOW_INDEXING: "true", LOGIN_RATE_MAX: "10", LOGIN_RATE_WINDOW_MS: "60000", FILE_REQUEST_RATE_MAX: "1000" } });
     child.once("exit", code => { cleanup(code || 0).catch(error => { console.error(error); process.exitCode = 1; }); });
 }).catch(error => { console.error(error); cleanup(1).catch(cleanupError => { console.error(cleanupError); process.exitCode = 1; }); });
 process.once("SIGTERM", () => { cleanup(0).catch(error => { console.error(error); process.exitCode = 1; }); });
