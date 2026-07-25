@@ -87,6 +87,18 @@ function mapAttachment(row) {
     };
 }
 
+function toSafeAttachmentMetadata(attachment) {
+    if (!attachment) return null;
+    return {
+        id: attachment.id,
+        originalName: attachment.originalName,
+        mimeType: attachment.mimeType,
+        extension: attachment.extension,
+        sizeBytes: attachment.sizeBytes,
+        createdAt: attachment.createdAt
+    };
+}
+
 function createOrderAttachmentRepository(executor) {
     if (!executor || typeof executor.run !== "function" || typeof executor.get !== "function" || typeof executor.all !== "function") {
         throw new TypeError("A database executor with run/get/all is required.");
@@ -165,6 +177,7 @@ module.exports = {
     MAX_ATTACHMENT_SIZE_BYTES,
     normalizeRequestType,
     validateAttachmentMetadata,
+    toSafeAttachmentMetadata,
     createOrderAttachmentRepository,
     createOrderAttachmentMetadata,
     listOrderAttachments,

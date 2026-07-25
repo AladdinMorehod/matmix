@@ -176,3 +176,22 @@ async function downloadOrderExcel(orderId) {
         notifyError(error, "Не удалось скачать заказ.");
     }
 }
+
+async function downloadOrderAttachment(orderId, attachmentId, button) {
+    if (!orderId || !attachmentId || !button || button.disabled) return;
+
+    const originalText = button.textContent;
+    button.disabled = true;
+    button.setAttribute("aria-busy", "true");
+    button.textContent = "Скачиваем…";
+    try {
+        await CrmApi.download(`/api/orders/${orderId}/attachments/${attachmentId}/download`);
+        notifySuccess("Файл скачан.");
+    } catch (error) {
+        notifyError(error, "Не удалось скачать файл.");
+    } finally {
+        button.disabled = false;
+        button.removeAttribute("aria-busy");
+        button.textContent = originalText;
+    }
+}

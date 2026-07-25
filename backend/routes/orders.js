@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const { pipeline } = require("stream/promises");
 const ExcelJS = require("exceljs");
 const { all, get, run, withTransaction, getOrderNumber } = require("../database");
 const { requireRole } = require("../middleware/auth");
@@ -10,7 +11,7 @@ const { sanitizeExcelText } = require("../utils/excelText");
 const { sqliteApiError } = require("../sqlite");
 const { legalConfig } = require("../services/legal");
 const { seoConfig, absolute } = require("../services/seo");
-const { createOrderAttachmentRepository } = require("../services/orderAttachments");
+const { createOrderAttachmentRepository, toSafeAttachmentMetadata } = require("../services/orderAttachments");
 const { createOrderAttachmentStorage } = require("../services/orderAttachmentStorage");
 const {
     FileRequestUploadError,
@@ -363,6 +364,9 @@ function normalizeOrder(row) {
         orderNumber: row.order_number || "",
         customerName: row.customer_name,
         phone: row.phone,
+        email: row.email || "",
+        requestType: row.request_type || "order",
+        attachmentCount: Number(row.attachment_count) || 0,
         telegram: row.telegram || "",
         maxContact: row.max_contact || "",
         preferredContactMethod: row.preferred_contact_method || "",
@@ -689,6 +693,40 @@ async function createOrderRecord({
         transaction
     });
     return { id: result.id, orderNumber, clientId, ...serverOrder };
+}
+
+function parsePositiveRouteId(value) {
+    const normalized = String(value || "");
+    if (!/^[1-9]\d*$/.test(normalized)) return null;
+    const id = Number(normalized);
+    return Number.isSafeInteger(id) ? id : null;
+}
+
+function safeDownloadName(value, attachment) {
+    const name = path.basename(String(value || ""))
+        .replace(/[\u0000-\u001F\u007F]/g, "")
+        .trim()
+        .slice(0, 255);
+    return name || `attachment-${attachment.id}.${attachment.extension}`;
+}
+
+function encodeContentDispositionValue(value) {
+    return encodeURIComponent(value).replace(/['()*]/g, character =>
+        `%${character.charCodeAt(0).toString(16).toUpperCase()}`
+    );
+}
+
+function setAttachmentDownloadHeaders(res, attachment, physicalSize) {
+    const filename = safeDownloadName(attachment.originalName, attachment);
+    const fallback = `attachment-${attachment.id}.${attachment.extension}`;
+    res.setHeader("Content-Type", attachment.mimeType);
+    res.setHeader("Content-Length", physicalSize);
+    res.setHeader(
+        "Content-Disposition",
+        `attachment; filename="${fallback}"; filename*=UTF-8''${encodeContentDispositionValue(filename)}`
+    );
+    res.setHeader("Cache-Control", "no-store");
+    res.setHeader("X-Content-Type-Options", "nosniff");
 }
 
 function parseFileRequestBoolean(value, fieldName) {
@@ -1057,7 +1095,12 @@ router.get("/", requireRole(["admin", "manager"]), async (req, res) => {
                 users.name AS manager_name,
                 clients.orders_count AS client_orders_count,
                 clients.total_spent AS client_total_spent,
-                clients.last_order_at AS client_last_order_at
+                clients.last_order_at AS client_last_order_at,
+                (
+                    SELECT COUNT(*)
+                    FROM order_attachments
+                    WHERE order_attachments.order_id = orders.id
+                ) AS attachment_count
             FROM orders
             LEFT JOIN users ON users.id = orders.manager_id
             LEFT JOIN clients ON clients.id = orders.client_id
@@ -1117,6 +1160,103 @@ router.get("/:id/events", requireRole(["admin", "manager"]), async (req, res) =>
     } catch (error) {
         console.error("Order events read error:", error);
         res.status(500).json({ success: false, message: "Не удалось загрузить историю заявки." });
+    }
+});
+
+router.get("/:id/attachments", requireRole(["admin", "manager"]), async (req, res) => {
+    const orderId = parsePositiveRouteId(req.params.id);
+    if (!orderId) {
+        res.status(400).json({ success: false, message: "Некорректный идентификатор заявки." });
+        return;
+    }
+
+    try {
+        const order = await get(
+            "SELECT id, manager_id, status, deleted_at FROM orders WHERE id = ?",
+            [orderId]
+        );
+        if (!order) {
+            res.status(404).json({ success: false, message: "Заявка не найдена." });
+            return;
+        }
+        if (!canViewOrder(req.session.user, order)) {
+            res.status(403).json({ success: false, message: "Недостаточно прав" });
+            return;
+        }
+
+        const repository = createOrderAttachmentRepository({ run, get, all });
+        const attachments = await repository.listOrderAttachments(orderId);
+        res.json({
+            success: true,
+            attachments: attachments.map(attachment => ({
+                ...toSafeAttachmentMetadata(attachment),
+                downloadUrl: `/api/orders/${orderId}/attachments/${attachment.id}/download`
+            }))
+        });
+    } catch (error) {
+        logger.error("order_attachments_list_failed", error, {
+            orderId,
+            userId: req.session.user.id
+        });
+        res.status(500).json({ success: false, message: "Не удалось загрузить документы заявки." });
+    }
+});
+
+router.get("/:id/attachments/:attachmentId/download", requireRole(["admin", "manager"]), async (req, res) => {
+    const orderId = parsePositiveRouteId(req.params.id);
+    const attachmentId = parsePositiveRouteId(req.params.attachmentId);
+    if (!orderId || !attachmentId) {
+        res.status(400).json({ success: false, message: "Некорректный идентификатор документа." });
+        return;
+    }
+
+    let fileStream = null;
+    try {
+        const order = await get(
+            "SELECT id, manager_id, status, deleted_at FROM orders WHERE id = ?",
+            [orderId]
+        );
+        if (!order) {
+            res.status(404).json({ success: false, message: "Заявка не найдена." });
+            return;
+        }
+        if (!canViewOrder(req.session.user, order)) {
+            res.status(403).json({ success: false, message: "Недостаточно прав" });
+            return;
+        }
+
+        const repository = createOrderAttachmentRepository({ run, get, all });
+        const attachment = await repository.findOrderAttachmentById(orderId, attachmentId);
+        if (!attachment) {
+            res.status(404).json({ success: false, message: "Документ не найден." });
+            return;
+        }
+
+        const openedFile = await attachmentStorage.createReadStream(attachment.storageKey);
+        fileStream = openedFile.stream;
+        if (openedFile.sizeBytes !== Number(attachment.sizeBytes)) {
+            fileStream.destroy();
+            logger.warn("order_attachment_size_mismatch", { orderId, attachmentId });
+            res.status(410).json({ success: false, message: "Файл больше недоступен." });
+            return;
+        }
+
+        setAttachmentDownloadHeaders(res, attachment, openedFile.sizeBytes);
+        await pipeline(fileStream, res);
+    } catch (error) {
+        if (fileStream && !fileStream.destroyed) fileStream.destroy();
+        if (req.aborted || error?.code === "ERR_STREAM_PREMATURE_CLOSE") return;
+
+        logger.error("order_attachment_download_failed", error, {
+            orderId,
+            attachmentId,
+            userId: req.session.user.id
+        });
+        if (!res.headersSent) {
+            res.status(410).json({ success: false, message: "Файл больше недоступен." });
+        } else {
+            res.destroy();
+        }
     }
 });
 
@@ -1330,7 +1470,12 @@ router.get("/:id", requireRole(["admin", "manager"]), async (req, res) => {
                 users.name AS manager_name,
                 clients.orders_count AS client_orders_count,
                 clients.total_spent AS client_total_spent,
-                clients.last_order_at AS client_last_order_at
+                clients.last_order_at AS client_last_order_at,
+                (
+                    SELECT COUNT(*)
+                    FROM order_attachments
+                    WHERE order_attachments.order_id = orders.id
+                ) AS attachment_count
             FROM orders
             LEFT JOIN users ON users.id = orders.manager_id
             LEFT JOIN clients ON clients.id = orders.client_id

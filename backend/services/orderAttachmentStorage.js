@@ -157,6 +157,23 @@ function createOrderAttachmentStorage({ rootPath = process.env[STORAGE_ENV_NAME]
         return fs.promises.readFile(target);
     }
 
+    async function createReadStream(storageKey) {
+        const target = await checkedPath(storageKey);
+        const readFlags = fs.constants.O_RDONLY | (fs.constants.O_NOFOLLOW || 0);
+        const handle = await fs.promises.open(target, readFlags);
+        try {
+            const stat = await handle.stat();
+            if (!stat.isFile()) throw new Error("Attachment storage key does not reference a regular file.");
+            return {
+                sizeBytes: stat.size,
+                stream: handle.createReadStream({ autoClose: true })
+            };
+        } catch (error) {
+            await handle.close();
+            throw error;
+        }
+    }
+
     return {
         getStorageRoot: () => configuredRoot,
         ensureRoot,
@@ -168,7 +185,8 @@ function createOrderAttachmentStorage({ rootPath = process.env[STORAGE_ENV_NAME]
         deleteFile,
         fileExists,
         computeSha256,
-        readFile
+        readFile,
+        createReadStream
     };
 }
 

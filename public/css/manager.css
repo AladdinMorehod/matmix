@@ -589,6 +589,16 @@ a[role="button"],
     font-weight: 700;
 }
 
+.order-title .order-request-type {
+    width: fit-content;
+    padding: 3px 7px;
+    border: 1px solid rgba(98, 52, 67, 0.22);
+    border-radius: 999px;
+    background: rgba(98, 52, 67, 0.07);
+    color: var(--brand-burgundy);
+    font-size: 0.72rem;
+}
+
 .order-sections {
     display: grid;
     grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
@@ -701,6 +711,82 @@ a[role="button"],
     display: grid;
     gap: 8px;
     animation: crmPanelIn 150ms ease-out both;
+}
+
+.order-attachments {
+    display: grid;
+    gap: 7px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.order-attachment {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 9px;
+    min-width: 0;
+    padding: 8px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: rgba(255, 255, 255, 0.72);
+}
+
+.order-attachment-icon {
+    font-size: 1.1rem;
+}
+
+.order-attachment-details {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+}
+
+.order-attachment-details strong {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--text);
+    font-size: 0.87rem;
+}
+
+.order-attachment-details span {
+    color: var(--text-muted);
+    font-size: 0.74rem;
+    font-weight: 700;
+}
+
+.download-order-attachment,
+.retry-order-attachments {
+    min-height: 34px;
+    padding: 0 11px;
+    border: 1px solid var(--brand-burgundy);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--brand-burgundy);
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 800;
+}
+
+.download-order-attachment:disabled {
+    cursor: wait;
+    opacity: 0.65;
+}
+
+.order-attachments-error {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.order-attachments-error p {
+    margin: 0;
+    color: var(--danger);
 }
 
 .status-badge {
@@ -2948,6 +3034,16 @@ a[role="button"],
 
     .order-tabs button {
         flex: 0 0 auto;
+    }
+
+    .order-attachment {
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .download-order-attachment {
+        grid-column: 2;
+        justify-self: start;
+        min-height: 40px;
     }
 
     .clients-toolbar,
