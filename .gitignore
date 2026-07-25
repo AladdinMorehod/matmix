@@ -10,7 +10,9 @@ backend/database/*.db-shm
 backend/database/*.db-journal
 backend/database/backups/*
 backend/database/production-backups/*
+backend/database/migration-backups/
 backend/imported-excel/*
+backend/private/
 *.restore-*.tmp
 *.restore-*.old
 matmix-runtime.lock

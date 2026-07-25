@@ -1,12 +1,14 @@
 const fs = require("fs");
+const os = require("os");
 const path = require("path");
 const { legalConfig, readiness: legalReadiness } = require("./legal");
 const { runtimePaths, verifyBackup, verifyReferences, isInside } = require("./productionBackup");
+const { auditOrderAttachments } = require("./orderAttachmentAudit");
 const { CURRENT_SCHEMA_VERSION } = require("../databaseMigrations");
 
 const REQUIRED_PRODUCTION_ENV = [
     "NODE_ENV", "PORT", "SESSION_SECRET", "SESSION_DB_PATH", "MATMIX_DB_PATH", "PRODUCT_UPLOADS_PATH",
-    "BACKUP_ROOT_PATH", "BACKUP_RETENTION_COUNT", "BACKUP_MAX_AGE_HOURS", "APP_RUNTIME_LOCK_PATH",
+    "ORDER_ATTACHMENTS_PATH", "BACKUP_ROOT_PATH", "BACKUP_RETENTION_COUNT", "BACKUP_MAX_AGE_HOURS", "APP_RUNTIME_LOCK_PATH",
     "PUBLIC_BASE_URL", "SEO_ALLOW_INDEXING", "SITE_NAME", "DEFAULT_OG_IMAGE", "CORS_ALLOWED_ORIGINS",
     "TRUST_PROXY", "LOGIN_RATE_WINDOW_MS", "LOGIN_RATE_MAX", "MIN_FREE_DISK_MB"
 ];
@@ -41,14 +43,22 @@ function validateProductionEnvironment(env = process.env, options = {}) {
     const origins = splitOrigins(env.CORS_ALLOWED_ORIGINS);
     if (!origins.length || origins.some(origin => !isOrigin(origin, true))) errors.push("CORS_ALLOWED_ORIGINS must contain HTTPS origins only.");
     if (env.PUBLIC_BASE_URL && !origins.includes(String(env.PUBLIC_BASE_URL).replace(/\/$/, ""))) errors.push("CORS_ALLOWED_ORIGINS must include PUBLIC_BASE_URL.");
-    for (const name of ["SESSION_DB_PATH", "MATMIX_DB_PATH", "PRODUCT_UPLOADS_PATH", "BACKUP_ROOT_PATH", "APP_RUNTIME_LOCK_PATH"]) {
+    for (const name of ["SESSION_DB_PATH", "MATMIX_DB_PATH", "PRODUCT_UPLOADS_PATH", "ORDER_ATTACHMENTS_PATH", "BACKUP_ROOT_PATH", "APP_RUNTIME_LOCK_PATH"]) {
         if (!isAbsoluteSafeRuntimePath(env[name], projectRoot, publicRoot)) errors.push(`${name} must be an absolute path outside public and .git.`);
     }
+    if (env.ORDER_ATTACHMENTS_PATH && isInside(projectRoot, path.resolve(env.ORDER_ATTACHMENTS_PATH))) errors.push("ORDER_ATTACHMENTS_PATH must be outside the deployed application directory.");
+    if (!options.allowTemporaryPaths && env.ORDER_ATTACHMENTS_PATH && isInside(os.tmpdir(), path.resolve(env.ORDER_ATTACHMENTS_PATH))) errors.push("ORDER_ATTACHMENTS_PATH must not use the operating-system temporary directory.");
     const resolved = runtimePaths(env);
     if (isInside(resolved.uploadsPath, resolved.backupRoot) || isInside(resolved.backupRoot, resolved.uploadsPath)) errors.push("Uploads and backup paths must not contain each other.");
+    for (const [leftName, left, rightName, right] of [
+        ["attachments", resolved.attachmentsPath, "uploads", resolved.uploadsPath],
+        ["attachments", resolved.attachmentsPath, "backups", resolved.backupRoot]
+    ]) {
+        if (isInside(left, right) || isInside(right, left)) errors.push(`${leftName} and ${rightName} paths must not contain each other.`);
+    }
     const legal = legalReadiness(env); if (!legal.ready) errors.push("Legal configuration is incomplete; run npm run legal:check.");
     if (String(env.SEO_ALLOW_INDEXING) === "false") warnings.push("SEO indexing is disabled (appropriate only for intentional soft launch/staging).");
-    return { ready: errors.length === 0, errors, warnings, publicBaseUrl: env.PUBLIC_BASE_URL || "", paths: { db: env.MATMIX_DB_PATH, sessions: env.SESSION_DB_PATH, uploads: env.PRODUCT_UPLOADS_PATH, backups: env.BACKUP_ROOT_PATH, lock: env.APP_RUNTIME_LOCK_PATH }, legalVersions: { privacy: legalConfig(env).privacyVersion, terms: legalConfig(env).termsVersion } };
+    return { ready: errors.length === 0, errors, warnings, publicBaseUrl: env.PUBLIC_BASE_URL || "", paths: { db: env.MATMIX_DB_PATH, sessions: env.SESSION_DB_PATH, uploads: env.PRODUCT_UPLOADS_PATH, attachments: env.ORDER_ATTACHMENTS_PATH, backups: env.BACKUP_ROOT_PATH, lock: env.APP_RUNTIME_LOCK_PATH }, legalVersions: { privacy: legalConfig(env).privacyVersion, terms: legalConfig(env).termsVersion } };
 }
 
 function assertProductionEnvironment(env = process.env) {
@@ -58,6 +68,30 @@ function assertProductionEnvironment(env = process.env) {
 }
 
 async function accessCheck(target, mode) { try { await fs.promises.access(target, mode); return true; } catch { return false; } }
+async function realDirectoryCheck(target) {
+    try {
+        const stat = await fs.promises.lstat(target);
+        return stat.isDirectory() && !stat.isSymbolicLink();
+    } catch {
+        return false;
+    }
+}
+async function attachmentPathCheck(paths, options = {}) {
+    try {
+        const projectRoot = path.resolve(options.projectRoot || path.join(__dirname, "..", ".."));
+        const [attachments, uploads, backups] = await Promise.all([
+            fs.promises.realpath(paths.attachmentsPath),
+            fs.promises.realpath(paths.uploadsPath),
+            fs.promises.realpath(paths.backupRoot)
+        ]);
+        if (isInside(projectRoot, attachments) || isInside(path.join(projectRoot, "public"), attachments) || isInside(path.join(projectRoot, ".git"), attachments)) return false;
+        if (!options.allowTemporaryPaths && isInside(os.tmpdir(), attachments)) return false;
+        return !isInside(attachments, uploads) && !isInside(uploads, attachments)
+            && !isInside(attachments, backups) && !isInside(backups, attachments);
+    } catch {
+        return false;
+    }
+}
 async function diskFreeMb(target) {
     const stat = await fs.promises.statfs(path.dirname(target));
     return Math.floor(Number(stat.bavail) * Number(stat.bsize) / 1024 / 1024);
@@ -71,26 +105,36 @@ async function latestBackup(root) {
     }
     return candidates.filter(item => Number.isFinite(item.createdAt.getTime())).sort((a, b) => b.createdAt - a.createdAt)[0] || null;
 }
-async function operationalReadiness(env = process.env) {
-    const config = validateProductionEnvironment(env); const checks = {}; const paths = runtimePaths(env);
+async function operationalReadiness(env = process.env, options = {}) {
+    const config = validateProductionEnvironment(env, options); const checks = {}; const paths = runtimePaths(env);
     checks.databaseReadable = await accessCheck(paths.dbPath, fs.constants.R_OK);
     checks.databaseDirectoryWritable = await accessCheck(path.dirname(paths.dbPath), fs.constants.W_OK);
     checks.sessionDirectoryWritable = await accessCheck(path.dirname(path.resolve(env.SESSION_DB_PATH || "")), fs.constants.W_OK);
     checks.uploadsReadableWritable = await accessCheck(paths.uploadsPath, fs.constants.R_OK | fs.constants.W_OK);
+    checks.attachmentsReadableWritable = await accessCheck(paths.attachmentsPath, fs.constants.R_OK | fs.constants.W_OK);
+    checks.attachmentsRealDirectory = await realDirectoryCheck(paths.attachmentsPath);
+    checks.attachmentsPathSafe = await attachmentPathCheck(paths, options);
     checks.backupReadableWritable = await accessCheck(paths.backupRoot, fs.constants.R_OK | fs.constants.W_OK);
     checks.lockDirectoryWritable = await accessCheck(path.dirname(paths.lockPath), fs.constants.W_OK);
     const minDisk = Number(env.MIN_FREE_DISK_MB) || 1024; const disk = {};
-    for (const [name, target] of Object.entries({ database: paths.dbPath, uploads: path.join(paths.uploadsPath, ".probe"), backups: path.join(paths.backupRoot, ".probe") })) {
+    for (const [name, target] of Object.entries({ database: paths.dbPath, uploads: path.join(paths.uploadsPath, ".probe"), attachments: path.join(paths.attachmentsPath, ".probe"), backups: path.join(paths.backupRoot, ".probe") })) {
         try { disk[name] = await diskFreeMb(target); } catch { disk[name] = null; }
     }
     checks.diskSpace = Object.values(disk).every(value => value !== null && value >= minDisk);
-    let schemaVersion = null; let foreignKeys = null;
+    let schemaVersion = null; let foreignKeys = null; let attachmentTable = false; let attachmentIndex = false;
     if (checks.databaseReadable) {
         const sqlite3 = require("sqlite3").verbose(); const db = new sqlite3.Database(paths.dbPath, sqlite3.OPEN_READONLY);
-        try { await new Promise((resolve, reject) => db.run("PRAGMA foreign_keys=ON", e => e ? reject(e) : resolve())); schemaVersion = await new Promise((resolve, reject) => db.get("PRAGMA user_version", (e, row) => e ? reject(e) : resolve(Number(row.user_version)))); foreignKeys = await new Promise((resolve, reject) => db.get("PRAGMA foreign_keys", (e, row) => e ? reject(e) : resolve(Number(row.foreign_keys)))); }
+        try {
+            await new Promise((resolve, reject) => db.run("PRAGMA foreign_keys=ON", e => e ? reject(e) : resolve()));
+            schemaVersion = await new Promise((resolve, reject) => db.get("PRAGMA user_version", (e, row) => e ? reject(e) : resolve(Number(row.user_version))));
+            foreignKeys = await new Promise((resolve, reject) => db.get("PRAGMA foreign_keys", (e, row) => e ? reject(e) : resolve(Number(row.foreign_keys))));
+            attachmentTable = Boolean(await new Promise((resolve, reject) => db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='order_attachments'", (e, row) => e ? reject(e) : resolve(row))));
+            attachmentIndex = Boolean(await new Promise((resolve, reject) => db.get("SELECT name FROM sqlite_master WHERE type='index' AND tbl_name='order_attachments' AND name='idx_order_attachments_order_id'", (e, row) => e ? reject(e) : resolve(row))));
+        }
         finally { await new Promise(resolve => db.close(resolve)); }
     }
     checks.schemaVersion = schemaVersion === CURRENT_SCHEMA_VERSION; checks.databaseConnection = schemaVersion !== null; checks.foreignKeysEnabled = foreignKeys === 1;
+    checks.attachmentTable = attachmentTable; checks.attachmentIndex = attachmentIndex;
     const backup = await latestBackup(paths.backupRoot); let backupStatus = { exists: false, verified: false, ageHours: null, path: null, size: null };
     if (backup) {
         const ageHours = (Date.now() - backup.createdAt.getTime()) / 3600000; let verified = false;
@@ -99,8 +143,15 @@ async function operationalReadiness(env = process.env) {
     }
     checks.backupFresh = backupStatus.exists && backupStatus.verified && backupStatus.ageHours <= (Number(env.BACKUP_MAX_AGE_HOURS) || 36);
     let uploadReferences = null; try { uploadReferences = await verifyReferences(paths.dbPath, paths.uploadsPath); checks.uploadsValid = uploadReferences.unsafe.length === 0 && uploadReferences.missing.filter(x => x.active).length === 0; } catch { checks.uploadsValid = false; }
+    let attachmentAudit = null;
+    try {
+        attachmentAudit = await auditOrderAttachments({ dbPath: paths.dbPath, attachmentsPath: paths.attachmentsPath });
+        checks.attachmentsValid = attachmentAudit.healthy;
+    } catch {
+        checks.attachmentsValid = false;
+    }
     const ready = config.ready && Object.values(checks).every(Boolean);
-    return { ready, config, checks, schemaVersion, expectedSchemaVersion: CURRENT_SCHEMA_VERSION, foreignKeys, diskFreeMb: disk, minimumFreeDiskMb: minDisk, backup: backupStatus, uploads: uploadReferences && { missing: uploadReferences.missing.length, unsafe: uploadReferences.unsafe.length, orphans: uploadReferences.orphanFiles.length } };
+    return { ready, config, checks, schemaVersion, expectedSchemaVersion: CURRENT_SCHEMA_VERSION, foreignKeys, diskFreeMb: disk, minimumFreeDiskMb: minDisk, backup: backupStatus, uploads: uploadReferences && { missing: uploadReferences.missing.length, unsafe: uploadReferences.unsafe.length, orphans: uploadReferences.orphanFiles.length }, attachments: attachmentAudit && { healthy: attachmentAudit.healthy, metadata: attachmentAudit.metadataCount, files: attachmentAudit.filesystemFileCount, missing: attachmentAudit.missing.length, corrupt: attachmentAudit.corrupt.length, orphans: attachmentAudit.orphans.length, unsafe: attachmentAudit.unsafe.length, totalBytes: attachmentAudit.totalBytes } };
 }
 
 module.exports = { REQUIRED_PRODUCTION_ENV, validateProductionEnvironment, assertProductionEnvironment, operationalReadiness, latestBackup, diskFreeMb };

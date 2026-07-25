@@ -3,25 +3,32 @@ const crypto = require("crypto");
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
+const { spawn, spawnSync } = require("child_process");
 const sqlite3 = require("sqlite3").verbose();
+const bcrypt = require("bcryptjs");
+const { migrateDatabase } = require("../databaseMigrations");
 const { createBackup, verifyBackup, verifyDatabase, sha256 } = require("../services/productionBackup");
 const { restore } = require("./restore-production-data");
 
-function dbRun(file, sql, params = []) { return new Promise((resolve, reject) => { const db = new sqlite3.Database(file); db.run(sql, params, error => db.close(() => error ? reject(error) : resolve())); }); }
+function dbRun(file, sql, params = []) { return new Promise((resolve, reject) => { const db = new sqlite3.Database(file); db.run(sql, params, function done(error) { const result = { lastID: this?.lastID, changes: this?.changes }; db.close(() => error ? reject(error) : resolve(result)); }); }); }
 function dbGet(file, sql) { return new Promise((resolve, reject) => { const db = new sqlite3.Database(file, sqlite3.OPEN_READONLY); db.get(sql, (error, row) => db.close(() => error ? reject(error) : resolve(row))); }); }
 async function expectFailure(work, pattern) { let error; try { await work(); } catch (caught) { error = caught; } assert(error && pattern.test(error.message), `Expected failure ${pattern}, got ${error?.message}`); }
 async function copyDir(source, target) { await fs.promises.mkdir(target, { recursive: true }); for (const entry of await fs.promises.readdir(source, { withFileTypes: true })) { const src = path.join(source, entry.name); const dst = path.join(target, entry.name); if (entry.isDirectory()) await copyDir(src, dst); else if (entry.isFile()) await fs.promises.copyFile(src, dst); } }
+async function waitForServer(url) { for (let attempt = 0; attempt < 120; attempt += 1) { try { if ((await fetch(url)).ok) return; } catch {} await new Promise(resolve => setTimeout(resolve, 100)); } throw new Error("Restored CRM test server did not start."); }
+async function stopServer(child) { if (!child || child.exitCode !== null) return; child.kill("SIGTERM"); await new Promise(resolve => child.once("exit", resolve)); }
 
 async function main() {
     const root = await fs.promises.mkdtemp(path.join(os.tmpdir(), "matmix-backup-test-"));
-    const paths = { dbPath: path.join(root, "runtime", "matmix.db"), uploadsPath: path.join(root, "runtime", "uploads"), backupRoot: path.join(root, "backups"), lockPath: path.join(root, "runtime", "app.lock"), retentionCount: 2 };
+    const paths = { dbPath: path.join(root, "runtime", "matmix.db"), uploadsPath: path.join(root, "runtime", "uploads"), attachmentsPath: path.join(root, "runtime", "attachments"), backupRoot: path.join(root, "backups"), lockPath: path.join(root, "runtime", "app.lock"), retentionCount: 2 };
     await fs.promises.mkdir(path.dirname(paths.dbPath), { recursive: true });
     await fs.promises.mkdir(paths.uploadsPath, { recursive: true });
+    await fs.promises.mkdir(paths.attachmentsPath, { recursive: true });
 
     process.env.MATMIX_DB_PATH = paths.dbPath;
     const { initDatabase, db: initializationDb } = require("../database");
     await initDatabase();
     await new Promise((resolve, reject) => initializationDb.close(error => error ? reject(error) : resolve()));
+    await migrateDatabase(paths.dbPath, { dryRun: false });
 
     await dbRun(
         paths.dbPath,
@@ -43,14 +50,45 @@ async function main() {
         path.join(paths.uploadsPath, "test-product-image.txt"),
         "deterministic backup upload fixture"
     );
+    const password = "BackupRestore!234";
+    await dbRun(paths.dbPath, "INSERT INTO users(login,password_hash,role,name,is_active,created_at,updated_at) VALUES(?,?,?,?,1,?,?)", ["backup_admin", await bcrypt.hash(password, 10), "admin", "Backup Admin", new Date().toISOString(), new Date().toISOString()]);
+    const order = await dbRun(paths.dbPath, "INSERT INTO orders(customer_name,phone,items_json,created_at,updated_at,request_type) VALUES(?,?,?,?,?,'file_request')", ["Backup fixture", "+70000000000", "[]", new Date().toISOString(), new Date().toISOString()]);
+    const attachmentBody = Buffer.from("deterministic private attachment fixture");
+    const storageKey = `${crypto.randomBytes(32).toString("hex")}.txt`;
+    const attachmentSha = crypto.createHash("sha256").update(attachmentBody).digest("hex");
+    await fs.promises.writeFile(path.join(paths.attachmentsPath, storageKey), attachmentBody);
+    await dbRun(paths.dbPath, "INSERT INTO order_attachments(order_id,original_name,storage_key,mime_type,extension,size_bytes,sha256,created_at) VALUES(?,?,?,?,?,?,?,?)", [order.lastID, "Заявка на материалы.txt", storageKey, "text/plain", "txt", attachmentBody.length, attachmentSha, new Date().toISOString()]);
+    const additionalAttachments = [
+        { key: `${crypto.randomBytes(32).toString("hex")}.pdf`, name: "План.pdf", mime: "application/pdf", extension: "pdf", body: Buffer.from("%PDF-1.4 backup fixture") },
+        { key: `${crypto.randomBytes(32).toString("hex")}.xlsx`, name: "Смета.xlsx", mime: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", extension: "xlsx", body: Buffer.from("xlsx backup fixture") }
+    ];
+    for (const fixture of additionalAttachments) {
+        const digest = crypto.createHash("sha256").update(fixture.body).digest("hex");
+        await fs.promises.writeFile(path.join(paths.attachmentsPath, fixture.key), fixture.body);
+        await dbRun(paths.dbPath, "INSERT INTO order_attachments(order_id,original_name,storage_key,mime_type,extension,size_bytes,sha256,created_at) VALUES(?,?,?,?,?,?,?,?)", [order.lastID, fixture.name, fixture.key, fixture.mime, fixture.extension, fixture.body.length, digest, new Date().toISOString()]);
+    }
     const baseline = { products: (await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM products")).count, orders: (await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM orders")).count, clients: (await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM clients")).count, dbHash: await sha256(paths.dbPath) };
     const backup = await createBackup({ paths }); const verified = await verifyBackup(backup.backupPath); assert(verified.success);
+    const rehearsal = spawnSync(process.execPath, [path.join(__dirname, "rehearse-offsite-restore.js"), "--local-source", backup.backupPath], { cwd: path.resolve(__dirname, "..", ".."), encoding: "utf8" });
+    assert.strictEqual(rehearsal.status, 0, String(rehearsal.stderr || rehearsal.stdout));
     await dbRun(paths.dbPath, "DELETE FROM products WHERE id=(SELECT MAX(id) FROM products)"); await fs.promises.writeFile(path.join(paths.uploadsPath, "unrelated-test.txt"), "changed");
+    await dbRun(paths.dbPath, "DELETE FROM order_attachments");
+    await fs.promises.rm(path.join(paths.attachmentsPath, storageKey));
+    for (const fixture of additionalAttachments) await fs.promises.rm(path.join(paths.attachmentsPath, fixture.key));
     const restored = await restore(backup.backupPath, { paths, apply: true, confirm: "RESTORE_MATMIX_DATA" }); assert(restored.success);
     assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM products")).count, baseline.products); assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM orders")).count, baseline.orders); assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM clients")).count, baseline.clients); assert(!fs.existsSync(path.join(paths.uploadsPath, "unrelated-test.txt"))); await verifyDatabase(paths.dbPath);
+    assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM order_attachments")).count, 3); assert.strictEqual(await sha256(path.join(paths.attachmentsPath, storageKey)), attachmentSha);
 
     const corruptDb = path.join(root, "corrupt-db"); await copyDir(backup.backupPath, corruptDb); await fs.promises.appendFile(path.join(corruptDb, "database", "matmix.db"), "x"); await expectFailure(() => verifyBackup(corruptDb), /checksum/i);
     const corruptUpload = path.join(root, "corrupt-upload"); await copyDir(backup.backupPath, corruptUpload); const upload = verified.manifest.uploads.files[0]; if (upload) { await fs.promises.appendFile(path.join(corruptUpload, "uploads", "products", upload.relativePath), "x"); await expectFailure(() => verifyBackup(corruptUpload), /checksum/i); }
+    const corruptAttachment = path.join(root, "corrupt-attachment"); await copyDir(backup.backupPath, corruptAttachment); await fs.promises.appendFile(path.join(corruptAttachment, "attachments", "orders", storageKey), "x"); await expectFailure(() => verifyBackup(corruptAttachment), /attachment checksum/i);
+    const missingAttachment = path.join(root, "missing-attachment"); await copyDir(backup.backupPath, missingAttachment); await fs.promises.rm(path.join(missingAttachment, "attachments", "orders", storageKey)); await expectFailure(() => verifyBackup(missingAttachment), /ENOENT|no such file/i);
+    const extraAttachment = path.join(root, "extra-attachment"); await copyDir(backup.backupPath, extraAttachment); await fs.promises.writeFile(path.join(extraAttachment, "attachments", "orders", "orphan.txt"), "x"); await expectFailure(() => verifyBackup(extraAttachment), /unlisted attachment/i);
+    const attachmentTraversal = path.join(root, "attachment-traversal"); await copyDir(backup.backupPath, attachmentTraversal); const attachmentTraversalManifest = JSON.parse(await fs.promises.readFile(path.join(attachmentTraversal, "manifest.json"))); attachmentTraversalManifest.attachments.files[0].relativePath = "../outside"; await fs.promises.writeFile(path.join(attachmentTraversal, "manifest.json"), JSON.stringify(attachmentTraversalManifest)); await expectFailure(() => verifyBackup(attachmentTraversal), /traversal|unsafe/i);
+    const attachmentAbsolute = path.join(root, "attachment-absolute"); await copyDir(backup.backupPath, attachmentAbsolute); const attachmentAbsoluteManifest = JSON.parse(await fs.promises.readFile(path.join(attachmentAbsolute, "manifest.json"))); attachmentAbsoluteManifest.attachments.files[0].relativePath = path.resolve(paths.attachmentsPath, storageKey); await fs.promises.writeFile(path.join(attachmentAbsolute, "manifest.json"), JSON.stringify(attachmentAbsoluteManifest)); await expectFailure(() => verifyBackup(attachmentAbsolute), /unsafe/i);
+    const attachmentTotals = path.join(root, "attachment-totals"); await copyDir(backup.backupPath, attachmentTotals); const attachmentTotalsManifest = JSON.parse(await fs.promises.readFile(path.join(attachmentTotals, "manifest.json"))); attachmentTotalsManifest.attachments.totalBytes += 1; await fs.promises.writeFile(path.join(attachmentTotals, "manifest.json"), JSON.stringify(attachmentTotalsManifest)); await expectFailure(() => verifyBackup(attachmentTotals), /totals/i);
+    const legacyIncomplete = path.join(root, "legacy-incomplete"); await copyDir(backup.backupPath, legacyIncomplete); const legacyManifest = JSON.parse(await fs.promises.readFile(path.join(legacyIncomplete, "manifest.json"))); legacyManifest.formatVersion = 1; delete legacyManifest.attachments; await fs.promises.writeFile(path.join(legacyIncomplete, "manifest.json"), JSON.stringify(legacyManifest)); await expectFailure(() => verifyBackup(legacyIncomplete), /legacy backup is incomplete/i);
+    const legacyEmpty = path.join(root, "legacy-empty"); await copyDir(backup.backupPath, legacyEmpty); const legacyDb = path.join(legacyEmpty, "database", "matmix.db"); await dbRun(legacyDb, "DELETE FROM order_attachments"); const legacyEmptyManifest = JSON.parse(await fs.promises.readFile(path.join(legacyEmpty, "manifest.json"))); legacyEmptyManifest.formatVersion = 1; delete legacyEmptyManifest.attachments; legacyEmptyManifest.database.size = (await fs.promises.stat(legacyDb)).size; legacyEmptyManifest.database.sha256 = await sha256(legacyDb); await fs.promises.rm(path.join(legacyEmpty, "attachments"), { recursive: true }); await fs.promises.writeFile(path.join(legacyEmpty, "manifest.json"), JSON.stringify(legacyEmptyManifest)); assert((await verifyBackup(legacyEmpty)).success);
     const traversal = path.join(root, "traversal"); await copyDir(backup.backupPath, traversal); const traversalManifest = JSON.parse(await fs.promises.readFile(path.join(traversal, "manifest.json"))); traversalManifest.database.filename = "../matmix.db"; await fs.promises.writeFile(path.join(traversal, "manifest.json"), JSON.stringify(traversalManifest)); await expectFailure(() => verifyBackup(traversal), /traversal|unsafe/i);
     const version = path.join(root, "version"); await copyDir(backup.backupPath, version); const versionManifest = JSON.parse(await fs.promises.readFile(path.join(version, "manifest.json"))); versionManifest.formatVersion = 999; await fs.promises.writeFile(path.join(version, "manifest.json"), JSON.stringify(versionManifest)); await expectFailure(() => verifyBackup(version), /unsupported/i);
     const extra = path.join(root, "extra"); await copyDir(backup.backupPath, extra); await fs.promises.writeFile(path.join(extra, "uploads", "products", "extra.txt"), "x"); await expectFailure(() => verifyBackup(extra), /unlisted/i);
@@ -62,9 +100,42 @@ async function main() {
     const beforeRollback = await sha256(paths.dbPath); await expectFailure(() => restore(backup.backupPath, { paths, apply: true, confirm: "RESTORE_MATMIX_DATA", failAt: "after-db" }), /injected/i); assert.strictEqual(await sha256(paths.dbPath), beforeRollback);
     await new Promise(resolve => setTimeout(resolve, 1100));
     await expectFailure(() => restore(backup.backupPath, { paths, apply: true, confirm: "RESTORE_MATMIX_DATA", failAt: "after-uploads" }), /injected/i); assert.strictEqual(await sha256(paths.dbPath), beforeRollback);
+    await expectFailure(() => restore(backup.backupPath, { paths, apply: true, confirm: "RESTORE_MATMIX_DATA", failAt: "after-attachments" }), /injected/i); assert.strictEqual(await sha256(paths.dbPath), beforeRollback); assert.strictEqual(await sha256(path.join(paths.attachmentsPath, storageKey)), attachmentSha);
     await fs.promises.writeFile(paths.lockPath, "running"); await expectFailure(() => restore(backup.backupPath, { paths, apply: true, confirm: "RESTORE_MATMIX_DATA" }), /lock/i); await fs.promises.rm(paths.lockPath);
-    if (process.platform !== "win32" && verified.manifest.uploads.files[0]) { const symlinkBackup = path.join(root, "symlink"); await copyDir(backup.backupPath, symlinkBackup); const rel = verified.manifest.uploads.files[0].relativePath; await fs.promises.rm(path.join(symlinkBackup, "uploads", "products", rel)); await fs.promises.symlink(paths.dbPath, path.join(symlinkBackup, "uploads", "products", rel)); await expectFailure(() => verifyBackup(symlinkBackup), /symbolic|checksum|unsafe/i); }
-    console.log(JSON.stringify({ success: true, baseline, backupUploads: verified.manifest.uploads.count, restore: "ok", rollback: "ok", corruption: "ok", malformedManifest: "ok", traversal: "ok", absolutePath: "ok", missingAndExtraUploads: "ok", confirmation: "ok", lock: "ok", symlink: process.platform === "win32" ? "skipped-windows" : "ok", emergencyBackup: path.basename(restored.emergencyBackup) }));
+    const port = 46300 + Math.floor(Math.random() * 200);
+    const base = `http://127.0.0.1:${port}`;
+    const server = spawn(process.execPath, [path.join(__dirname, "..", "server.js")], {
+        cwd: path.resolve(__dirname, "..", ".."),
+        windowsHide: true,
+        stdio: "ignore",
+        env: { ...process.env, NODE_ENV: "test", PORT: String(port), SESSION_SECRET: "backup-restore-test-secret-12345678901234567890", MATMIX_DB_PATH: paths.dbPath, SESSION_DB_PATH: path.join(root, "sessions.db"), PRODUCT_UPLOADS_PATH: paths.uploadsPath, ORDER_ATTACHMENTS_PATH: paths.attachmentsPath, BACKUP_ROOT_PATH: paths.backupRoot, APP_RUNTIME_LOCK_PATH: paths.lockPath, PUBLIC_BASE_URL: base, SEO_ALLOW_INDEXING: "false" }
+    });
+    try {
+        await waitForServer(`${base}/health`);
+        const login = await fetch(`${base}/api/auth/login`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ login: "backup_admin", password }) });
+        assert.strictEqual(login.status, 200);
+        const cookie = login.headers.get("set-cookie").split(";")[0];
+        const metadataResponse = await fetch(`${base}/api/orders/${order.lastID}/attachments`, { headers: { Cookie: cookie } });
+        assert.strictEqual(metadataResponse.status, 200);
+        const metadata = await metadataResponse.json();
+        assert.strictEqual(metadata.attachments[0].originalName, "Заявка на материалы.txt");
+        const download = await fetch(`${base}${metadata.attachments[0].downloadUrl}`, { headers: { Cookie: cookie } });
+        assert.strictEqual(download.status, 200);
+        assert.deepStrictEqual(Buffer.from(await download.arrayBuffer()), attachmentBody);
+    } finally {
+        await stopServer(server);
+    }
+    if (process.platform !== "win32" && verified.manifest.uploads.files[0]) { const symlinkBackup = path.join(root, "symlink"); await copyDir(backup.backupPath, symlinkBackup); const rel = verified.manifest.uploads.files[0].relativePath; await fs.promises.rm(path.join(symlinkBackup, "uploads", "products", rel)); await fs.promises.symlink(paths.dbPath, path.join(symlinkBackup, "uploads", "products", rel)); await expectFailure(() => verifyBackup(symlinkBackup), /symbolic|checksum|unsafe/i); const attachmentSymlink = path.join(root, "attachment-symlink"); await copyDir(backup.backupPath, attachmentSymlink); await fs.promises.rm(path.join(attachmentSymlink, "attachments", "orders", storageKey)); await fs.promises.symlink(paths.dbPath, path.join(attachmentSymlink, "attachments", "orders", storageKey)); await expectFailure(() => verifyBackup(attachmentSymlink), /symbolic|checksum|unsafe/i); }
+    const retentionBackups = [];
+    for (let index = 0; index < 3; index += 1) retentionBackups.push(await createBackup({ paths }));
+    const retained = (await fs.promises.readdir(paths.backupRoot)).filter(name => /^matmix-backup-/.test(name));
+    assert.strictEqual(retained.length, 2);
+    await fs.promises.appendFile(path.join(paths.attachmentsPath, storageKey), "changed");
+    await expectFailure(() => createBackup({ paths }), /attachment audit failed/i);
+    const afterFailedBackup = await fs.promises.readdir(paths.backupRoot);
+    assert.strictEqual(afterFailedBackup.filter(name => /^matmix-backup-/.test(name)).length, 2);
+    assert.strictEqual(afterFailedBackup.filter(name => name.includes(".tmp-")).length, 0);
+    console.log(JSON.stringify({ success: true, baseline, backupUploads: verified.manifest.uploads.count, backupAttachments: verified.manifest.attachments.fileCount, offsiteRehearsalOnTemporaryData: "ok", restore: "ok", crmMetadataAfterRestore: "ok", crmDownloadAfterRestore: "ok", rollback: "ok", corruption: "ok", attachmentCorruption: "ok", attachmentMissingAndExtra: "ok", attachmentManifestTraversalAndTotals: "ok", legacyEmptyAccepted: "ok", legacyIncompleteRejected: "ok", malformedManifest: "ok", traversal: "ok", absolutePath: "ok", missingAndExtraUploads: "ok", retention: retained.length, failedBackupExcludedFromRetention: "ok", temporaryBackupCleanup: "ok", confirmation: "ok", lock: "ok", symlink: process.platform === "win32" ? "skipped-windows" : "ok", emergencyBackup: path.basename(restored.emergencyBackup) }));
     await fs.promises.rm(root, { recursive: true, force: true });
 }
 main().catch(error => { console.error(error); process.exitCode = 1; });

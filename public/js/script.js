@@ -37153,13 +37153,8 @@ const downloadPublicPriceBtn = document.getElementById("downloadPublicPrice");
 const catalogMessage = document.getElementById("catalogMessage");
 const cartBtn = document.getElementById("cartBtn");
 const cartCountEl = document.getElementById("cartCount");
-const cartContainer = cartBtn?.closest(".cart");
-const cartPreview = document.getElementById("cartPreview");
-const cartPreviewTotal = document.getElementById("cartPreviewTotal");
-const cartPreviewWeight = document.getElementById("cartPreviewWeight");
-const closeCartPreviewBtn = document.getElementById("closeCartPreview");
-const checkoutFromPreviewBtn = document.getElementById("checkoutFromPreview");
 const cartModal = document.getElementById("cartModal");
+const cartBody = document.querySelector(".cart-body");
 const cartItemsEl = document.getElementById("cartItems");
 const closeCartBtn = document.getElementById("closeCart");
 const clearCartBtn = document.getElementById("clearCartBtn");
@@ -37169,6 +37164,11 @@ const cancelClearCartBtn = document.getElementById("cancelClearCart");
 const cartTotalEl = document.getElementById("cartTotal");
 const cartView = document.getElementById("cartView");
 const openCheckoutBtn = document.getElementById("openCheckout");
+const openUploadRequestBtn = document.getElementById("openUploadRequest");
+const uploadRequestNav = document.getElementById("uploadRequestNav");
+const checkoutView = document.getElementById("checkoutView");
+const orderCheckoutTab = document.getElementById("orderCheckoutTab");
+const uploadRequestTab = document.getElementById("uploadRequestTab");
 const checkoutForm = document.getElementById("checkoutForm");
 const cancelCheckoutBtn = document.getElementById("cancelCheckout");
 const checkoutMessage = document.getElementById("checkoutMessage");
@@ -37180,6 +37180,23 @@ const checkoutCommentInput = checkoutForm?.querySelector("textarea[name='orderCo
 const checkoutPaymentMethodInput = checkoutForm?.querySelector("select[name='paymentMethod']");
 const checkoutConsentInput = checkoutForm?.querySelector("input[name='consent']");
 const checkoutConsentError = document.getElementById("orderConsentError");
+const uploadRequestForm = document.getElementById("uploadRequestForm");
+const uploadDropZone = document.getElementById("uploadDropZone");
+const uploadFileInput = document.getElementById("uploadRequestFiles");
+const uploadFileList = document.getElementById("uploadFileList");
+const uploadFileError = document.getElementById("uploadFileError");
+const uploadNameInput = document.getElementById("uploadCustomerName");
+const uploadPhoneInput = document.getElementById("uploadCustomerPhone");
+const uploadEmailInput = document.getElementById("uploadCustomerEmail");
+const uploadCommentInput = document.getElementById("uploadRequestComment");
+const uploadPaymentMethodInput = document.getElementById("uploadPaymentMethod");
+const uploadCartOption = document.getElementById("uploadCartOption");
+const uploadIncludeCartInput = document.getElementById("uploadIncludeCart");
+const uploadConsentInput = document.getElementById("uploadRequestConsent");
+const uploadConsentError = document.getElementById("uploadConsentError");
+const uploadRequestMessage = document.getElementById("uploadRequestMessage");
+const uploadSubmitButton = uploadRequestForm?.querySelector("button[type='submit']");
+const cancelUploadRequestBtn = document.getElementById("cancelUploadRequest");
 const nameSuggestionsEl = document.getElementById("nameSuggestions");
 const phoneSuggestionsEl = document.getElementById("phoneSuggestions");
 const addressSuggestionsEl = document.getElementById("addressSuggestions");
@@ -37212,10 +37229,17 @@ let searchSuggestionsRequestId = 0;
 let activeSearchSuggestionIndex = -1;
 let documentPointerDownStartedInsideInteractive = false;
 let pointerDownStartedInsideSearch = false;
-let cartPreviewWasOpenOnPointerDown = false;
+let uploadRequestFiles = [];
+let uploadDragDepth = 0;
+let uploadCartChoiceTouched = false;
+let uploadRequestSubmitting = false;
 const MAX_PRODUCT_QTY = 100000;
 const SEARCH_SUGGESTION_MIN_LENGTH = 2;
 const SEARCH_SUGGESTION_LIMIT = 10;
+const UPLOAD_MAX_FILES = 5;
+const UPLOAD_MAX_FILE_BYTES = 15 * 1024 * 1024;
+const UPLOAD_MAX_TOTAL_BYTES = 50 * 1024 * 1024;
+const UPLOAD_ALLOWED_EXTENSIONS = new Set(["pdf", "jpg", "jpeg", "png", "xls", "xlsx", "csv", "txt"]);
 const MOBILE_SEARCH_MAX_WIDTH = 600;
 const PAYMENT_METHODS = [
     { value: "cash", label: "Наличные" },
@@ -37828,12 +37852,221 @@ function renderPaymentMethodOptions(selectedValue = "") {
 }
 
 function setupPaymentMethodSelect() {
-    if (!checkoutPaymentMethodInput) return;
+    [checkoutPaymentMethodInput, uploadPaymentMethodInput].filter(Boolean).forEach(select => {
+        const selectedValue = PAYMENT_METHODS.some(method => method.value === select.value)
+            ? select.value
+            : "";
+        select.innerHTML = renderPaymentMethodOptions(selectedValue || PAYMENT_METHODS[0].value);
+    });
+}
 
-    const selectedValue = PAYMENT_METHODS.some(method => method.value === checkoutPaymentMethodInput.value)
-        ? checkoutPaymentMethodInput.value
-        : "";
-    checkoutPaymentMethodInput.innerHTML = renderPaymentMethodOptions(selectedValue || PAYMENT_METHODS[0].value);
+function getUploadFileExtension(fileName) {
+    const match = String(fileName || "").toLowerCase().match(/\.([a-z0-9]+)$/);
+    return match?.[1] || "";
+}
+
+function getUploadFileKey(file) {
+    return `${file.name}\u0000${file.size}\u0000${file.lastModified}`;
+}
+
+function formatUploadFileSize(bytes) {
+    const size = Number(bytes) || 0;
+    if (size < 1024) return `${size} Б`;
+    if (size < 1024 * 1024) return `${(size / 1024).toFixed(1)} КБ`;
+    return `${(size / (1024 * 1024)).toFixed(1)} МБ`;
+}
+
+function setUploadFileError(message = "") {
+    if (uploadFileError) uploadFileError.textContent = message;
+}
+
+function clearUploadRequestMessage() {
+    if (uploadRequestMessage) {
+        uploadRequestMessage.classList.remove("success", "error");
+        uploadRequestMessage.textContent = "";
+    }
+    if (uploadConsentError) uploadConsentError.textContent = "";
+    uploadConsentInput?.removeAttribute("aria-invalid");
+}
+
+function syncUploadFileInput() {
+    if (!uploadFileInput || typeof DataTransfer === "undefined") return;
+    const transfer = new DataTransfer();
+    uploadRequestFiles.forEach(file => transfer.items.add(file));
+    uploadFileInput.files = transfer.files;
+}
+
+function renderUploadFileList() {
+    if (!uploadFileList) return;
+    uploadFileList.innerHTML = uploadRequestFiles.map((file, index) => {
+        const extension = getUploadFileExtension(file.name).toUpperCase();
+        const safeName = escapeHtml(file.name);
+        return `
+            <div class="upload-file-item">
+                <span class="upload-file-type" aria-hidden="true">${escapeHtml(extension)}</span>
+                <span class="upload-file-details">
+                    <span class="upload-file-name" title="${safeName}">${safeName}</span>
+                    <span class="upload-file-size">${formatUploadFileSize(file.size)}</span>
+                </span>
+                <button class="upload-file-remove" type="button" data-upload-file-index="${index}" aria-label="Удалить файл ${safeName}">×</button>
+            </div>
+        `;
+    }).join("");
+}
+
+function addUploadRequestFiles(fileList) {
+    const incomingFiles = Array.from(fileList || []);
+    if (!incomingFiles.length) {
+        if (!uploadRequestFiles.length) setUploadFileError("Выберите хотя бы один файл.");
+        return;
+    }
+
+    const errors = [];
+    const knownKeys = new Set(uploadRequestFiles.map(getUploadFileKey));
+    let totalBytes = uploadRequestFiles.reduce((sum, file) => sum + file.size, 0);
+
+    incomingFiles.forEach(file => {
+        const extension = getUploadFileExtension(file.name);
+        const key = getUploadFileKey(file);
+        if (!UPLOAD_ALLOWED_EXTENSIONS.has(extension)) {
+            errors.push(`Файл «${file.name}» имеет неподдерживаемый формат.`);
+            return;
+        }
+        if (file.size > UPLOAD_MAX_FILE_BYTES) {
+            errors.push(`Файл «${file.name}» превышает лимит 15 МБ.`);
+            return;
+        }
+        if (knownKeys.has(key)) {
+            errors.push(`Файл «${file.name}» уже выбран.`);
+            return;
+        }
+        if (uploadRequestFiles.length >= UPLOAD_MAX_FILES) {
+            errors.push("Можно выбрать не более 5 файлов.");
+            return;
+        }
+        if (totalBytes + file.size > UPLOAD_MAX_TOTAL_BYTES) {
+            errors.push("Общий размер файлов не должен превышать 50 МБ.");
+            return;
+        }
+
+        uploadRequestFiles.push(file);
+        knownKeys.add(key);
+        totalBytes += file.size;
+    });
+
+    syncUploadFileInput();
+    renderUploadFileList();
+    setUploadFileError(errors.join(" "));
+    clearUploadRequestMessage();
+}
+
+function removeUploadRequestFile(index) {
+    if (!Number.isInteger(index) || index < 0 || index >= uploadRequestFiles.length) return;
+    uploadRequestFiles.splice(index, 1);
+    syncUploadFileInput();
+    renderUploadFileList();
+    setUploadFileError("");
+    clearUploadRequestMessage();
+}
+
+function updateUploadCartOption() {
+    if (!uploadCartOption || !uploadIncludeCartInput) return;
+    const hasItems = cart.length > 0;
+    const wasHidden = uploadCartOption.classList.contains("hidden");
+    uploadCartOption.classList.toggle("hidden", !hasItems);
+    uploadIncludeCartInput.disabled = !hasItems;
+    if (hasItems && wasHidden && !uploadCartChoiceTouched) uploadIncludeCartInput.checked = true;
+}
+
+function resetUploadRequestForm({ preserveMessage = false } = {}) {
+    uploadRequestForm?.reset();
+    uploadRequestFiles = [];
+    uploadDragDepth = 0;
+    uploadCartChoiceTouched = false;
+    uploadDropZone?.classList.remove("is-drag-over");
+    setUploadFileError("");
+    if (!preserveMessage) clearUploadRequestMessage();
+    renderUploadFileList();
+    syncUploadFileInput();
+    setupPaymentMethodSelect();
+    if (uploadPhoneInput) uploadPhoneInput.value = formatRussianPhone("");
+    if (uploadIncludeCartInput) uploadIncludeCartInput.checked = true;
+    updateUploadCartOption();
+}
+
+function setCheckoutMode(mode) {
+    const uploadMode = mode === "upload";
+    orderCheckoutTab?.classList.toggle("is-active", !uploadMode);
+    uploadRequestTab?.classList.toggle("is-active", uploadMode);
+    orderCheckoutTab?.setAttribute("aria-selected", String(!uploadMode));
+    uploadRequestTab?.setAttribute("aria-selected", String(uploadMode));
+    orderCheckoutTab?.setAttribute("tabindex", uploadMode ? "-1" : "0");
+    uploadRequestTab?.setAttribute("tabindex", uploadMode ? "0" : "-1");
+    checkoutForm?.classList.toggle("hidden", uploadMode);
+    uploadRequestForm?.classList.toggle("hidden", !uploadMode);
+    checkoutForm?.toggleAttribute("hidden", uploadMode);
+    uploadRequestForm?.toggleAttribute("hidden", !uploadMode);
+    clearCheckoutMessage();
+    clearUploadRequestMessage();
+    if (uploadMode) updateUploadCartOption();
+}
+
+function setupUploadRequestForm() {
+    if (uploadPhoneInput) {
+        uploadPhoneInput.value = formatRussianPhone(uploadPhoneInput.value);
+        uploadPhoneInput.addEventListener("keydown", event => {
+            const isPrefixEdit = ["Backspace", "Delete"].includes(event.key)
+                && uploadPhoneInput.selectionStart <= 2;
+            if (isPrefixEdit) event.preventDefault();
+        });
+        uploadPhoneInput.addEventListener("input", () => {
+            uploadPhoneInput.value = formatRussianPhone(uploadPhoneInput.value);
+        });
+    }
+
+    uploadFileInput?.addEventListener("change", () => addUploadRequestFiles(uploadFileInput.files));
+    uploadDropZone?.addEventListener("click", () => uploadFileInput?.click());
+    uploadDropZone?.addEventListener("keydown", event => {
+        if (!["Enter", " "].includes(event.key)) return;
+        event.preventDefault();
+        uploadFileInput?.click();
+    });
+    uploadDropZone?.addEventListener("dragenter", event => {
+        event.preventDefault();
+        uploadDragDepth += 1;
+        uploadDropZone.classList.add("is-drag-over");
+    });
+    uploadDropZone?.addEventListener("dragover", event => {
+        event.preventDefault();
+        if (event.dataTransfer) event.dataTransfer.dropEffect = "copy";
+        uploadDropZone.classList.add("is-drag-over");
+    });
+    uploadDropZone?.addEventListener("dragleave", event => {
+        event.preventDefault();
+        uploadDragDepth = Math.max(0, uploadDragDepth - 1);
+        if (!uploadDragDepth) uploadDropZone.classList.remove("is-drag-over");
+    });
+    uploadDropZone?.addEventListener("drop", event => {
+        event.preventDefault();
+        uploadDragDepth = 0;
+        uploadDropZone.classList.remove("is-drag-over");
+        addUploadRequestFiles(event.dataTransfer?.files);
+    });
+    uploadFileList?.addEventListener("click", event => {
+        const removeButton = event.target.closest("[data-upload-file-index]");
+        if (!removeButton) return;
+        removeUploadRequestFile(Number(removeButton.dataset.uploadFileIndex));
+    });
+    uploadIncludeCartInput?.addEventListener("change", () => {
+        uploadCartChoiceTouched = true;
+    });
+
+    document.addEventListener("dragover", event => {
+        if (Array.from(event.dataTransfer?.types || []).includes("Files")) event.preventDefault();
+    });
+    document.addEventListener("drop", event => {
+        if (Array.from(event.dataTransfer?.types || []).includes("Files")) event.preventDefault();
+    });
 }
 
 function getUnloadingLabel(value) {
@@ -38434,45 +38667,10 @@ function isCartModalOpen() {
     return Boolean(cartModal && !cartModal.classList.contains("hidden"));
 }
 
-function showCartPreview() {
-    if (!cartPreview || isCartModalOpen()) return;
-    cartPreview.classList.remove("hidden");
-    cartBtn?.setAttribute("aria-expanded", "true");
-}
-
-function hideCartPreview() {
-    if (!cartPreview) return;
-    cartPreview.classList.add("hidden");
-    cartBtn?.setAttribute("aria-expanded", "false");
-}
-
-function toggleCartPreview() {
-    if (!cartPreview || isCartModalOpen()) {
-        hideCartPreview();
-        return;
-    }
-
-    if (!cartPreviewWasOpenOnPointerDown) {
-        showCartPreview();
-        return;
-    }
-
-    hideCartPreview();
-}
-
-function renderCartPreview() {
-    if (!cartPreview) return;
-
-    const hasItems = getDistinctCartItemsCount() > 0;
-    cartPreview.classList.toggle("is-empty", !hasItems);
-
-    if (cartPreviewTotal) {
-        cartPreviewTotal.textContent = `${formatMoneyValue(getCartTotal())} ₽`;
-    }
-
-    if (cartPreviewWeight) {
-        cartPreviewWeight.textContent = formatWeight(getCartWeight());
-    }
+function setCartModalOpen(isOpen) {
+    cartModal?.classList.toggle("hidden", !isOpen);
+    cartBtn?.setAttribute("aria-expanded", String(isOpen));
+    if (!isOpen) resetUploadRequestForm();
 }
 
 function updateCartSummary() {
@@ -38483,10 +38681,10 @@ function updateCartSummary() {
         <span>Итого: ${formatMoneyValue(getCartTotal())} ₽</span>
         <span id="cartWeight">Вес: ${formatWeight(getCartWeight())}</span>
     `;
-    renderCartPreview();
     if (openCheckoutBtn) {
         openCheckoutBtn.disabled = !cart.length;
     }
+    updateUploadCartOption();
 }
 
 function clampProductQty(value) {
@@ -38549,18 +38747,22 @@ function setProductQty(id, nextQty, options = {}) {
 
 function showCartView() {
     cartView?.classList.remove("hidden");
-    checkoutForm?.classList.add("hidden");
+    checkoutView?.classList.add("hidden");
     clearCartConfirm?.classList.add("hidden");
     clearCheckoutMessage();
+    clearUploadRequestMessage();
 }
 
-function showCheckoutForm() {
-    if (!cart.length) return;
+function showCheckoutForm(mode = "order") {
+    if (mode === "order" && !cart.length) return;
     cartView?.classList.add("hidden");
-    checkoutForm?.classList.remove("hidden");
+    checkoutView?.classList.remove("hidden");
+    setCheckoutMode(mode);
     clearCheckoutMessage();
     setCheckoutSubmitDisabled(false);
-    checkoutForm?.querySelector("input")?.focus();
+    window.requestAnimationFrame(() => {
+        (mode === "upload" ? uploadDropZone : checkoutNameInput)?.focus();
+    });
 }
 
 function isCatalogDefaultView() {
@@ -39325,48 +39527,28 @@ document.addEventListener("click", event => {
     managerPhoneAction.classList.remove("is-phone-visible");
 });
 
-cartContainer?.addEventListener("mouseenter", showCartPreview);
-cartContainer?.addEventListener("mouseleave", hideCartPreview);
-cartContainer?.addEventListener("focusin", showCartPreview);
-cartContainer?.addEventListener("focusout", event => {
-    if (!cartContainer.contains(event.relatedTarget)) {
-        hideCartPreview();
-    }
-});
-
-cartBtn.addEventListener("pointerdown", () => {
-    cartPreviewWasOpenOnPointerDown = Boolean(cartPreview && !cartPreview.classList.contains("hidden"));
-});
-
 cartBtn.addEventListener("click", event => {
     event.stopPropagation();
     collapseMobileSearch({ blurInput: true, preserveQuery: true });
-    cartModal.classList.toggle("hidden");
-    if (isCartModalOpen()) {
-        hideCartPreview();
-    } else {
-        toggleCartPreview();
-    }
+    setCartModalOpen(!isCartModalOpen());
     showCartView();
     renderCart();
 });
 
 closeCartBtn.addEventListener("click", () => {
-    cartModal.classList.add("hidden");
-});
-
-closeCartPreviewBtn?.addEventListener("click", event => {
-    event.stopPropagation();
-    hideCartPreview();
+    setCartModalOpen(false);
 });
 
 clearCartBtn?.addEventListener("click", () => {
     if (!cart.length) return;
     clearCartConfirm?.classList.remove("hidden");
+    if (cartBody) cartBody.scrollTop = 0;
+    confirmClearCartBtn?.focus();
 });
 
 cancelClearCartBtn?.addEventListener("click", () => {
     clearCartConfirm?.classList.add("hidden");
+    clearCartBtn?.focus();
 });
 
 confirmClearCartBtn?.addEventListener("click", () => {
@@ -39379,25 +39561,130 @@ confirmClearCartBtn?.addEventListener("click", () => {
     if (searchInput?.value.trim()) {
         renderSearchDropdown();
     }
+    closeCartBtn?.focus();
 });
 
 openCheckoutBtn?.addEventListener("click", () => {
-    hideCartPreview();
-    showCheckoutForm();
+    showCheckoutForm("order");
 });
 
-checkoutFromPreviewBtn?.addEventListener("click", event => {
-    event.stopPropagation();
-    if (!cart.length) return;
+function openUploadRequestMode(event) {
+    event?.preventDefault();
+    event?.stopPropagation();
+    collapseMobileSearch({ blurInput: true, preserveQuery: true });
+    closeMenu();
+    setCartModalOpen(true);
+    showCheckoutForm("upload");
+}
 
-    hideCartPreview();
-    cartModal.classList.remove("hidden");
-    showCheckoutForm();
+uploadRequestNav?.addEventListener("click", openUploadRequestMode);
+openUploadRequestBtn?.addEventListener("click", openUploadRequestMode);
+
+[orderCheckoutTab, uploadRequestTab].filter(Boolean).forEach(tab => {
+    tab.addEventListener("click", () => {
+        setCheckoutMode(tab === uploadRequestTab ? "upload" : "order");
+    });
+    tab.addEventListener("keydown", event => {
+        const tabs = [orderCheckoutTab, uploadRequestTab].filter(Boolean);
+        const currentIndex = tabs.indexOf(tab);
+        let nextIndex = currentIndex;
+        if (event.key === "ArrowRight") nextIndex = (currentIndex + 1) % tabs.length;
+        else if (event.key === "ArrowLeft") nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+        else if (event.key === "Home") nextIndex = 0;
+        else if (event.key === "End") nextIndex = tabs.length - 1;
+        else return;
+        event.preventDefault();
+        const nextTab = tabs[nextIndex];
+        setCheckoutMode(nextTab === uploadRequestTab ? "upload" : "order");
+        nextTab.focus();
+    });
 });
 
 cancelCheckoutBtn?.addEventListener("click", () => {
     showCartView();
     renderCart();
+});
+
+cancelUploadRequestBtn?.addEventListener("click", () => {
+    resetUploadRequestForm();
+    showCartView();
+    renderCart();
+});
+
+uploadRequestForm?.addEventListener("submit", async event => {
+    event.preventDefault();
+    if (uploadRequestSubmitting) return;
+    setUploadFileError("");
+    clearUploadRequestMessage();
+
+    if (!uploadRequestFiles.length) {
+        setUploadFileError("Добавьте хотя бы один файл.");
+        uploadDropZone?.focus();
+        return;
+    }
+
+    if (!uploadConsentInput?.checked) {
+        if (uploadConsentError) uploadConsentError.textContent = "Подтвердите согласие перед отправкой заявки.";
+        uploadConsentInput?.setAttribute("aria-invalid", "true");
+    }
+
+    if (!uploadRequestForm.checkValidity()) {
+        uploadRequestForm.reportValidity();
+        return;
+    }
+
+    const includeCart = Boolean(
+        uploadIncludeCartInput
+        && !uploadIncludeCartInput.disabled
+        && uploadIncludeCartInput.checked
+        && cart.length
+    );
+    const formData = new FormData();
+    formData.append("customerName", uploadNameInput?.value.trim() || "");
+    formData.append("phone", uploadPhoneInput?.value.trim() || "");
+    formData.append("email", uploadEmailInput?.value.trim() || "");
+    formData.append("comment", uploadCommentInput?.value.trim() || "");
+    formData.append("paymentMethod", uploadPaymentMethodInput?.value || "");
+    formData.append("includeCart", String(includeCart));
+    if (includeCart) formData.append("items", JSON.stringify(getCartOrderItems()));
+    formData.append("consent", "true");
+    uploadRequestFiles.forEach(file => formData.append("files", file, file.name));
+
+    uploadRequestSubmitting = true;
+    const initialSubmitText = uploadSubmitButton?.textContent || "";
+    if (uploadSubmitButton) {
+        uploadSubmitButton.disabled = true;
+        uploadSubmitButton.textContent = "Отправляем…";
+    }
+
+    try {
+        const response = await fetch("/api/orders/file-request", {
+            method: "POST",
+            body: formData
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.success || !result.orderNumber) {
+            throw new Error(result.message || "Не удалось отправить заявку. Попробуйте ещё раз.");
+        }
+        if (uploadRequestMessage) {
+            uploadRequestMessage.classList.remove("error");
+            uploadRequestMessage.classList.add("success");
+            uploadRequestMessage.textContent = `Заявка №${result.orderNumber} принята. Менеджер свяжется с вами после обработки заявки.`;
+        }
+        resetUploadRequestForm({ preserveMessage: true });
+    } catch (error) {
+        if (uploadRequestMessage) {
+            uploadRequestMessage.classList.remove("success");
+            uploadRequestMessage.classList.add("error");
+            uploadRequestMessage.textContent = error.message || "Не удалось отправить заявку. Попробуйте ещё раз.";
+        }
+    } finally {
+        uploadRequestSubmitting = false;
+        if (uploadSubmitButton) {
+            uploadSubmitButton.disabled = false;
+            uploadSubmitButton.textContent = initialSubmitText;
+        }
+    }
 });
 
 checkoutForm?.addEventListener("submit", async event => {
@@ -39492,13 +39779,12 @@ checkoutForm?.addEventListener("submit", async event => {
         updateCartSummary();
 
         window.setTimeout(() => {
-            cartModal?.classList.add("hidden");
+            setCartModalOpen(false);
             showCartView();
             setCheckoutSubmitDisabled(false);
         }, 1800);
 
         try {
-            hideCartPreview();
             renderProducts();
             renderPopularProducts();
             renderCart();
@@ -39540,8 +39826,7 @@ document.addEventListener("click", event => {
         return;
     }
 
-    cartModal.classList.add("hidden");
-    hideCartPreview();
+    setCartModalOpen(false);
     showCartView();
     collapseMobileSearch({ blurInput: true, preserveQuery: true });
     closeMenu();
@@ -39551,7 +39836,6 @@ document.addEventListener("click", event => {
 
 document.addEventListener("keydown", event => {
     if (event.key === "Escape") {
-        hideCartPreview();
         collapseMobileSearch({ blurInput: true, preserveQuery: true });
     }
 });
@@ -39793,6 +40077,7 @@ async function initializeSite() {
     renderProducts();
     renderPopularProducts();
     setupCheckoutFormFields();
+    setupUploadRequestForm();
     updateCartSummary();
     if (getPublicSearchQuery().length >= SEARCH_SUGGESTION_MIN_LENGTH) {
         scheduleSearchSuggestionsLoad();

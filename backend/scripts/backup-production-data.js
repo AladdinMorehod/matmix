@@ -1,4 +1,5 @@
 const { createBackup, verifyBackup, runtimePaths, verifyReferences } = require("../services/productionBackup");
+const { auditOrderAttachments } = require("../services/orderAttachmentAudit");
 
 async function main() {
     const args = process.argv.slice(2);
@@ -8,7 +9,8 @@ async function main() {
     }
     if (args.includes("--dry-run")) {
         const paths = runtimePaths(); const references = await verifyReferences(paths.dbPath, paths.uploadsPath);
-        const result = { success: true, dryRun: true, database: paths.dbPath, uploads: paths.uploadsPath, backupRoot: paths.backupRoot, references };
+        const attachments = await auditOrderAttachments({ dbPath: paths.dbPath, attachmentsPath: paths.attachmentsPath });
+        const result = { success: attachments.healthy, dryRun: true, database: paths.dbPath, uploads: paths.uploadsPath, attachmentsPath: paths.attachmentsPath, backupRoot: paths.backupRoot, references, attachments };
         console.log("Backup dry-run completed; no files created."); console.log(JSON.stringify(result)); return;
     }
     const result = await createBackup(); console.log(`Backup created: ${result.backupPath}`); console.log(JSON.stringify(result));

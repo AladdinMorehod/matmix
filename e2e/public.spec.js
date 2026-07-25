@@ -7,6 +7,48 @@ async function movePointerOutsideViewport(page) {
     )).toBe(true);
 }
 
+async function openUploadRequestFromHeader(page) {
+    const uploadRequestLink = page.locator("#mainNav #uploadRequestNav");
+    const menuToggle = page.locator("#menuToggle");
+    if (await menuToggle.isVisible()) {
+        await menuToggle.click();
+        await expect(uploadRequestLink).toBeInViewport();
+    }
+    await uploadRequestLink.click();
+}
+
+async function seedCartItems(page, count = 24) {
+    const items = Array.from({ length: count }, (_, index) => ({
+        productId: 98000 + index,
+        title: `Тестовый товар с длинным названием для проверки адаптивной корзины ${index + 1}`,
+        price: 100 + index,
+        weight: 1.25 + index / 10,
+        unit: "шт",
+        quantity: index % 3 + 1
+    }));
+    await page.evaluate(cart => localStorage.setItem("matmix_cart", JSON.stringify(cart)), items);
+    await page.reload();
+}
+
+async function dropUploadFiles(page, files) {
+    await page.locator("#uploadDropZone").evaluate((zone, fileSpecs) => {
+        const transfer = new DataTransfer();
+        fileSpecs.forEach(spec => {
+            const content = spec.bytes
+                ? new Uint8Array(spec.bytes)
+                : new Uint8Array(spec.size || 1);
+            transfer.items.add(new File(
+                [content],
+                spec.name,
+                { type: spec.type || "application/octet-stream", lastModified: spec.lastModified || 123456789 }
+            ));
+        });
+        for (const type of ["dragenter", "dragover", "drop"]) {
+            zone.dispatchEvent(new DragEvent(type, { bubbles: true, cancelable: true, dataTransfer: transfer }));
+        }
+    }, files);
+}
+
 test("public pages, legal navigation and security headers", async ({ page }) => {
     const consoleErrors = []; const failed = [];
     page.on("console", message => { if (message.type() === "error") consoleErrors.push(message.text()); });
@@ -716,11 +758,722 @@ test("cart quantity works when the product is outside the current catalog page",
     }, targetProduct);
     await page.reload();
     await page.getByRole("button", { name: category, exact: true }).click();
-    await page.getByRole("button", { name: subcategory, exact: true }).click();
+    const subcategorySelect = page.locator(".category-subcategory-select select");
+    if (await subcategorySelect.isVisible()) {
+        await subcategorySelect.selectOption({ label: subcategory });
+    } else {
+        await page.getByRole("button", { name: subcategory, exact: true }).click();
+    }
     await expect(page.locator(`#productGrid [data-product-id="${targetProduct.id}"]`)).toBeVisible();
     await page.locator("#cartBtn").click();
     await cartItem.locator(".plus").click();
     await expect.poll(() => readCartQuantity(targetProduct.id)).toBe(2);
+});
+
+test("cart opens only by activation and keeps accessible controls", async ({ page }) => {
+    for (const path of ["/", "/catalog.html"]) {
+        await page.goto(path);
+        await seedCartItems(page, 4);
+
+        const cartButton = page.locator("#cartBtn");
+        const cartModal = page.locator("#cartModal");
+        await expect(page.locator("#cartPreview")).toHaveCount(0);
+        await expect(cartButton).toHaveAttribute("aria-controls", "cartModal");
+        await expect(cartButton).toHaveAttribute("aria-expanded", "false");
+
+        await cartButton.hover();
+        await expect(cartModal).toHaveClass(/hidden/);
+        await expect(cartButton).toHaveAttribute("aria-expanded", "false");
+        await cartButton.focus();
+        await expect(cartModal).toHaveClass(/hidden/);
+
+        await cartButton.click();
+        await expect(cartModal).not.toHaveClass(/hidden/);
+        await expect(cartButton).toHaveAttribute("aria-expanded", "true");
+        await page.locator("#closeCart").click();
+        await expect(cartModal).toHaveClass(/hidden/);
+        await expect(cartButton).toHaveAttribute("aria-expanded", "false");
+
+        await cartButton.focus();
+        await cartButton.press("Enter");
+        await expect(cartModal).not.toHaveClass(/hidden/);
+        await expect(cartButton).toHaveAttribute("aria-expanded", "true");
+        await page.locator("footer").click({ position: { x: 2, y: 2 } });
+        await expect(cartModal).toHaveClass(/hidden/);
+        await expect(cartButton).toHaveAttribute("aria-expanded", "false");
+
+        await cartButton.focus();
+        await cartButton.press("Space");
+        await expect(cartModal).not.toHaveClass(/hidden/);
+        await expect(cartButton).toHaveAttribute("aria-expanded", "true");
+        await expect(page.locator("#cartView > .cart-header")).toHaveCount(1);
+        await expect(page.locator("#cartView > .cart-body")).toHaveCount(1);
+        await expect(page.locator("#cartView > .cart-footer")).toHaveCount(1);
+        await expect(page.locator(".cart-actions > button")).toHaveText(["Закрыть", "Очистить", "Заказать"]);
+
+        await page.locator("#openCheckout").click();
+        await expect(page.locator("#checkoutForm")).toBeVisible();
+        await expect(page.locator("#cartView")).toHaveClass(/hidden/);
+        await page.locator("#cancelCheckout").click();
+        await expect(page.locator("#cartView")).toBeVisible();
+
+        await page.locator("#clearCartBtn").click();
+        await expect(page.locator("#clearCartConfirm")).toBeVisible();
+        await expect(page.locator("#confirmClearCart")).toBeFocused();
+        await page.locator("#cancelClearCart").click();
+        await expect(page.locator("#clearCartConfirm")).toBeHidden();
+        await expect(page.locator("#clearCartBtn")).toBeFocused();
+
+        await page.locator("#clearCartBtn").click();
+        await page.locator("#confirmClearCart").click();
+        await expect(page.locator("#cartItems")).toContainText("Корзина пока пустая");
+        await expect(page.locator("#clearCartBtn")).toBeDisabled();
+        await expect(page.locator("#closeCart")).toBeFocused();
+    }
+});
+
+test("cart keeps fixed sections and one-row actions across responsive viewports", async ({ page }) => {
+    const viewports = [
+        { width: 320, height: 568 },
+        { width: 350, height: 640 },
+        { width: 351, height: 667 },
+        { width: 360, height: 736 },
+        { width: 375, height: 800 },
+        { width: 390, height: 844 },
+        { width: 414, height: 896 },
+        { width: 480, height: 800 },
+        { width: 600, height: 800 },
+        { width: 601, height: 800 },
+        { width: 768, height: 896 },
+        { width: 980, height: 800 },
+        { width: 1024, height: 800 },
+        { width: 1366, height: 896 },
+        { width: 1920, height: 896 },
+        { width: 568, height: 320 },
+        { width: 667, height: 375 },
+        { width: 896, height: 414 }
+    ];
+
+    for (const path of ["/", "/catalog.html"]) {
+        await page.setViewportSize({ width: 1024, height: 800 });
+        await page.goto(path);
+        await seedCartItems(page, 36);
+        await page.locator("#cartBtn").click();
+
+        for (const viewport of viewports) {
+            await page.setViewportSize(viewport);
+            const cartBody = page.locator(".cart-body");
+            await cartBody.evaluate(element => { element.scrollTop = 0; });
+            const before = await page.locator("#cartView").evaluate(view => {
+                const box = selector => {
+                    const rect = view.querySelector(selector).getBoundingClientRect();
+                    return { top: rect.top, bottom: rect.bottom };
+                };
+                return { header: box(".cart-header"), footer: box(".cart-footer") };
+            });
+            await cartBody.evaluate(element => { element.scrollTop = element.scrollHeight; });
+            await expect.poll(() => cartBody.evaluate(element => element.scrollTop)).toBeGreaterThan(0);
+
+            const dimensions = await page.evaluate(() => {
+                const rect = selector => {
+                    const box = document.querySelector(selector).getBoundingClientRect();
+                    return { left: box.left, right: box.right, top: box.top, bottom: box.bottom, width: box.width, height: box.height };
+                };
+                const modal = document.querySelector("#cartModal");
+                const body = document.querySelector(".cart-body");
+                const actions = [...document.querySelectorAll(".cart-actions > button")];
+                const actionRects = actions.map(button => ({ ...rect(`#${button.id}`), clipped: button.scrollWidth > button.clientWidth + 1 }));
+                const totals = [...document.querySelectorAll("#cartTotal > span")].map(element => element.getBoundingClientRect());
+                return {
+                    modal: rect("#cartModal"),
+                    header: rect(".cart-header"),
+                    body: rect(".cart-body"),
+                    footer: rect(".cart-footer"),
+                    modalScrollTop: modal.scrollTop,
+                    bodyScrollTop: body.scrollTop,
+                    modalOverflowY: getComputedStyle(modal).overflowY,
+                    bodyOverflowY: getComputedStyle(body).overflowY,
+                    actionRects,
+                    totals: totals.map(box => ({ top: box.top, bottom: box.bottom })),
+                    documentScrollWidth: document.documentElement.scrollWidth,
+                    documentClientWidth: document.documentElement.clientWidth
+                };
+            });
+
+            expect(dimensions.modal.left, JSON.stringify({ path, viewport, dimensions })).toBeGreaterThanOrEqual(-1);
+            expect(dimensions.modal.right, JSON.stringify({ path, viewport, dimensions })).toBeLessThanOrEqual(viewport.width + 1);
+            expect(dimensions.modal.top, JSON.stringify({ path, viewport, dimensions })).toBeGreaterThanOrEqual(0);
+            expect(dimensions.modal.bottom, JSON.stringify({ path, viewport, dimensions })).toBeLessThanOrEqual(viewport.height + 1);
+            expect(dimensions.modalScrollTop).toBe(0);
+            expect(dimensions.bodyScrollTop).toBeGreaterThan(0);
+            expect(dimensions.modalOverflowY).toBe("hidden");
+            expect(dimensions.bodyOverflowY).toBe("auto");
+            expect(Math.abs(dimensions.header.top - before.header.top)).toBeLessThanOrEqual(1);
+            expect(Math.abs(dimensions.footer.bottom - before.footer.bottom)).toBeLessThanOrEqual(1);
+            expect(Math.max(...dimensions.actionRects.map(box => box.top)) - Math.min(...dimensions.actionRects.map(box => box.top))).toBeLessThanOrEqual(1);
+            expect(dimensions.actionRects.every(box => !box.clipped)).toBeTruthy();
+            expect(dimensions.actionRects[0].right).toBeLessThanOrEqual(dimensions.actionRects[1].left + 1);
+            expect(dimensions.actionRects[1].right).toBeLessThanOrEqual(dimensions.actionRects[2].left + 1);
+            expect(Math.max(...dimensions.totals.map(box => box.top)) - Math.min(...dimensions.totals.map(box => box.top))).toBeLessThanOrEqual(1);
+            expect(dimensions.documentScrollWidth).toBeLessThanOrEqual(dimensions.documentClientWidth + 1);
+        }
+
+        await page.setViewportSize({ width: 320, height: 568 });
+        await page.locator("#openCheckout").click();
+        await expect(page.locator("#checkoutForm")).toBeVisible();
+        const checkoutGeometry = await page.evaluate(() => {
+            const modal = document.querySelector("#cartModal");
+            const form = document.querySelector("#checkoutForm");
+            return {
+                modalScrollTop: modal.scrollTop,
+                modalScrollHeight: modal.scrollHeight,
+                modalClientHeight: modal.clientHeight,
+                modalOverflowY: getComputedStyle(modal).overflowY,
+                formScrollTop: form.scrollTop,
+                formScrollHeight: form.scrollHeight,
+                formClientHeight: form.clientHeight,
+                formOverflowY: getComputedStyle(form).overflowY,
+                formBottom: form.getBoundingClientRect().bottom,
+                viewportHeight: innerHeight
+            };
+        });
+        expect(checkoutGeometry.modalScrollTop, JSON.stringify(checkoutGeometry)).toBe(0);
+        expect(checkoutGeometry.modalOverflowY).toBe("hidden");
+        expect(checkoutGeometry.formOverflowY).toBe("auto");
+        expect(checkoutGeometry.formBottom).toBeLessThanOrEqual(checkoutGeometry.viewportHeight + 1);
+        await page.locator("#cancelCheckout").click();
+    }
+});
+
+test("upload request entry points and tabs use the existing modal accessibly", async ({ page }) => {
+    for (const path of ["/", "/catalog.html"]) {
+        await page.setViewportSize({ width: 1280, height: 900 });
+        await page.goto(path);
+        await seedCartItems(page, 2);
+
+        await expect(page.locator("#cartModal")).toHaveCount(1);
+        const headerUpload = page.locator("#mainNav #uploadRequestNav");
+        await expect(headerUpload).toHaveText("Загрузить заявку");
+        await headerUpload.click();
+        await expect(page.locator("#cartModal")).not.toHaveClass(/hidden/);
+        await expect(page.locator("#checkoutView")).toBeVisible();
+        await expect(page.locator("#uploadRequestForm")).toBeVisible();
+        await expect(page.locator(".upload-request-intro")).toContainText("PDF, JPG, PNG, XLS, XLSX, CSV, TXT");
+        await expect(page.locator("#checkoutForm")).toBeHidden();
+        await expect(page.locator("#uploadRequestTab")).toHaveAttribute("aria-selected", "true");
+        await expect(page.locator("#orderCheckoutTab")).toHaveAttribute("aria-selected", "false");
+        await expect(page.locator("#uploadDropZone")).toBeFocused();
+        expect(await page.locator("#checkoutForm").evaluate(panel =>
+            [...panel.querySelectorAll("input, select, textarea, button, a")].every(element => element.offsetParent === null)
+        )).toBeTruthy();
+
+        await dropUploadFiles(page, [{ name: "materials.pdf", type: "application/pdf", size: 24 }]);
+        await expect(page.locator(".upload-file-item")).toHaveCount(1);
+        await page.locator("#orderCheckoutTab").click();
+        await expect(page.locator("#orderCheckoutTab")).toHaveAttribute("aria-selected", "true");
+        await expect(page.locator("#uploadRequestForm")).toBeHidden();
+        await page.locator("#uploadRequestTab").press("ArrowLeft");
+        await expect(page.locator("#orderCheckoutTab")).toBeFocused();
+        await page.locator("#orderCheckoutTab").press("ArrowRight");
+        await expect(page.locator("#uploadRequestTab")).toBeFocused();
+        await expect(page.locator("#uploadRequestForm")).toBeVisible();
+        await expect(page.locator(".upload-file-item")).toHaveCount(1);
+
+        await page.locator("footer").click({ position: { x: 2, y: 2 } });
+        await expect(page.locator("#cartModal")).toHaveClass(/hidden/);
+        await headerUpload.click();
+        await expect(page.locator("#uploadRequestForm")).toBeVisible();
+        await expect(page.locator(".upload-file-item")).toHaveCount(0);
+
+        await page.locator("#cancelUploadRequest").click();
+        await page.locator("#openCheckout").click();
+        await expect(page.locator("#checkoutForm")).toBeVisible();
+        await expect(page.locator("#orderCheckoutTab")).toHaveAttribute("aria-selected", "true");
+        await page.locator("#cancelCheckout").click();
+        await page.locator("#openUploadRequest").click();
+        await expect(page.locator("#uploadRequestForm")).toBeVisible();
+        await expect(page.locator("#uploadRequestTab")).toHaveAttribute("aria-selected", "true");
+    }
+
+    await page.setViewportSize({ width: 320, height: 800 });
+    await page.goto("/");
+    await page.locator("#searchInput").focus();
+    await expect(page.locator(".header")).toHaveClass(/is-search-expanded/);
+    await page.locator("#menuToggle").click();
+    await expect(page.locator("#mainNav")).toHaveClass(/is-open/);
+    await page.locator("#mainNav #uploadRequestNav").click();
+    await expect(page.locator("#mainNav")).not.toHaveClass(/is-open/);
+    await expect(page.locator("#menuToggle")).toHaveAttribute("aria-expanded", "false");
+    await expect(page.locator("#uploadRequestForm")).toBeVisible();
+    await expect(page.locator("#uploadDropZone")).toBeFocused();
+});
+
+test("upload request file rules and validation submit to the secure endpoint", async ({ page }) => {
+    let orderPostCount = 0;
+    let fileRequestPostCount = 0;
+    await page.route("**/api/orders/file-request", async route => {
+        await new Promise(resolve => setTimeout(resolve, 150));
+        await route.continue();
+    });
+    page.on("request", request => {
+        if (request.method() !== "POST") return;
+        const pathname = new URL(request.url()).pathname;
+        if (pathname === "/api/orders") orderPostCount += 1;
+        if (pathname === "/api/orders/file-request") fileRequestPostCount += 1;
+    });
+
+    await page.goto("/");
+    await seedCartItems(page, 2);
+    await openUploadRequestFromHeader(page);
+    const fileInput = page.locator("#uploadRequestFiles");
+    await expect(fileInput).toHaveAttribute("multiple", "");
+    await expect(fileInput).toHaveAttribute("accept", ".pdf,.jpg,.jpeg,.png,.xls,.xlsx,.csv,.txt");
+    await expect(page.locator("[data-file-count], .upload-file-count")).toHaveCount(0);
+
+    await page.locator("#uploadDropZone").evaluate(zone => {
+        const transfer = new DataTransfer();
+        transfer.items.add(new File(["x"], "drag.pdf", { type: "application/pdf" }));
+        zone.dispatchEvent(new DragEvent("dragenter", { bubbles: true, cancelable: true, dataTransfer: transfer }));
+    });
+    await expect(page.locator("#uploadDropZone")).toHaveClass(/is-drag-over/);
+    await page.locator("#uploadDropZone").evaluate(zone => {
+        zone.dispatchEvent(new DragEvent("dragleave", { bubbles: true, cancelable: true, dataTransfer: new DataTransfer() }));
+    });
+    await expect(page.locator("#uploadDropZone")).not.toHaveClass(/is-drag-over/);
+
+    await dropUploadFiles(page, [{ name: "materials.pdf", type: "application/pdf", size: 32, lastModified: 1 }]);
+    await expect(page.locator(".upload-file-item")).toHaveCount(1);
+    const fileChooserPromise = page.waitForEvent("filechooser");
+    await page.locator("#uploadDropZone").press("Enter");
+    const fileChooser = await fileChooserPromise;
+    expect(fileChooser.isMultiple()).toBeTruthy();
+    await fileChooser.setFiles({ name: "plan.png", mimeType: "image/png", buffer: Buffer.from("png") });
+    await expect(page.locator(".upload-file-item")).toHaveCount(2);
+    expect(await fileInput.evaluate(input => input.files.length)).toBe(2);
+
+    await dropUploadFiles(page, [{ name: "materials.pdf", type: "application/pdf", size: 32, lastModified: 1 }]);
+    await expect(page.locator(".upload-file-item")).toHaveCount(2);
+    await expect(page.locator("#uploadFileError")).toContainText("уже выбран");
+    await page.locator(".upload-file-remove").first().click();
+    await expect(page.locator(".upload-file-item")).toHaveCount(1);
+    expect(await fileInput.evaluate(input => input.files.length)).toBe(1);
+    await dropUploadFiles(page, [{ name: "materials.pdf", type: "application/pdf", size: 32, lastModified: 1 }]);
+    await expect(page.locator(".upload-file-item")).toHaveCount(2);
+
+    await dropUploadFiles(page, [{ name: "unsafe.exe", size: 10 }]);
+    await expect(page.locator("#uploadFileError")).toContainText("неподдерживаемый формат");
+    await dropUploadFiles(page, [{ name: "large.pdf", type: "application/pdf", size: 15 * 1024 * 1024 + 1 }]);
+    await expect(page.locator("#uploadFileError")).toContainText("превышает лимит 15 МБ");
+
+    await page.locator("#cancelUploadRequest").click();
+    await openUploadRequestFromHeader(page);
+    await dropUploadFiles(page, Array.from({ length: 6 }, (_, index) => ({
+        name: `file-${index + 1}.pdf`,
+        type: "application/pdf",
+        size: 10,
+        lastModified: index + 10
+    })));
+    await expect(page.locator(".upload-file-item")).toHaveCount(5);
+    await expect(page.locator("#uploadFileError")).toContainText("не более 5 файлов");
+
+    await page.locator("#cancelUploadRequest").click();
+    await openUploadRequestFromHeader(page);
+    await dropUploadFiles(page, Array.from({ length: 4 }, (_, index) => ({
+        name: `volume-${index + 1}.pdf`,
+        type: "application/pdf",
+        size: 13 * 1024 * 1024,
+        lastModified: index + 20
+    })));
+    await expect(page.locator(".upload-file-item")).toHaveCount(3);
+    await expect(page.locator("#uploadFileError")).toContainText("50 МБ");
+
+    await page.locator("#cancelUploadRequest").click();
+    await openUploadRequestFromHeader(page);
+    await dropUploadFiles(page, [{
+        name: "request.pdf",
+        type: "application/pdf",
+        bytes: [...Buffer.from("%PDF-1.4\n%%EOF", "ascii")]
+    }]);
+    await page.locator("#uploadRequestForm button[type='submit']").click();
+    await expect(page.locator("#uploadCustomerName")).toBeFocused();
+    await expect(page.locator("#uploadRequestMessage")).not.toContainText("отправлена");
+
+    await page.locator("#uploadCustomerName").fill("Иван");
+    await page.locator("#uploadCustomerPhone").fill("9991234567");
+    await page.locator("#uploadRequestComment").fill("Нужен расчёт материалов");
+    await page.locator("#uploadRequestForm button[type='submit']").click();
+    await expect(page.locator("#uploadConsentError")).toContainText("Подтвердите согласие");
+    await expect(page.locator("#uploadRequestConsent")).toBeFocused();
+
+    await page.locator("#uploadRequestConsent").check();
+    await page.locator("#uploadIncludeCart").uncheck();
+    await page.locator("#uploadRequestForm button[type='submit']").evaluate(button => {
+        button.click();
+        button.click();
+    });
+    await expect(page.locator("#uploadRequestForm button[type='submit']")).toBeDisabled();
+    await expect(page.locator("#uploadRequestMessage")).toContainText(/Заявка №MM-\d{4}-\d{6} принята/);
+    await expect(page.locator("#uploadRequestMessage")).toHaveClass(/success/);
+    expect(orderPostCount).toBe(0);
+    expect(fileRequestPostCount).toBe(1);
+    await expect(page.locator(".upload-file-item")).toHaveCount(0);
+    expect(await fileInput.evaluate(input => input.files.length)).toBe(0);
+    expect(await page.evaluate(() => JSON.parse(localStorage.getItem("matmix_cart") || "[]").length)).toBe(2);
+
+    const paymentLabels = await page.locator("#uploadPaymentMethod option").allTextContents();
+    expect(paymentLabels).toEqual(["Наличные", "Перевод на карту", "Терминал", "Безнал — с НДС", "Безнал — без НДС"]);
+});
+
+test("TXT file request reaches CRM metadata and protected download", async ({ page, request }) => {
+    const txtBytes = Buffer.from("Русский TXT\r\nEnglish line\n", "utf8");
+    const unicodeTxtName = "ЗАПРОС.txt";
+    const uniqueSuffix = Date.now();
+    const uniqueEmail = `txt-e2e-${uniqueSuffix}@example.test`;
+    const uniqueCustomerName = `TXT E2E ${uniqueSuffix}`;
+
+    await page.goto("/");
+    await seedCartItems(page, 1);
+    await openUploadRequestFromHeader(page);
+    await expect(page.locator(".upload-request-intro")).toContainText("PDF, JPG, PNG, XLS, XLSX, CSV, TXT");
+    await expect(page.locator("#uploadRequestFiles")).toHaveAttribute(
+        "accept",
+        ".pdf,.jpg,.jpeg,.png,.xls,.xlsx,.csv,.txt"
+    );
+
+    const chooserPromise = page.waitForEvent("filechooser");
+    await page.locator("#uploadDropZone").press("Enter");
+    const chooser = await chooserPromise;
+    await chooser.setFiles({
+        name: "PICKER.TXT",
+        mimeType: "text/plain",
+        buffer: Buffer.from("Picker text", "utf8")
+    });
+    await expect(page.locator(".upload-file-item")).toContainText("PICKER.TXT");
+    await page.locator(".upload-file-remove").click();
+    await expect(page.locator(".upload-file-item")).toHaveCount(0);
+
+    await dropUploadFiles(page, [{
+        name: unicodeTxtName,
+        type: "text/plain",
+        bytes: [...txtBytes]
+    }]);
+    await expect(page.locator(".upload-file-item")).toHaveCount(1);
+    await expect(page.locator(".upload-file-item")).toContainText(unicodeTxtName);
+    await expect(page.locator(".upload-file-item")).toContainText(`${txtBytes.length}`);
+    await page.setViewportSize({ width: 320, height: 800 });
+    const uploadGeometry = await page.locator("#uploadRequestForm").evaluate(form => ({
+        overflow: form.scrollWidth - form.clientWidth,
+        pageOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth
+    }));
+    expect(uploadGeometry.overflow).toBeLessThanOrEqual(1);
+    expect(uploadGeometry.pageOverflow).toBeLessThanOrEqual(1);
+
+    await page.locator("#uploadCustomerName").fill(uniqueCustomerName);
+    await page.locator("#uploadCustomerPhone").fill("9991234567");
+    await page.locator("#uploadCustomerEmail").fill(uniqueEmail);
+    await page.locator("#uploadRequestComment").fill("Проверка TXT заявки");
+    await page.locator("#uploadRequestConsent").check();
+    await page.locator("#uploadIncludeCart").uncheck();
+    await page.locator("#uploadRequestForm button[type='submit']").click();
+    await expect(page.locator("#uploadRequestMessage")).toContainText(/Заявка №MM-\d{4}-\d{6} принята/);
+    expect(await page.evaluate(() => JSON.parse(localStorage.getItem("matmix_cart") || "[]").length)).toBe(1);
+
+    const login = await request.post("/api/auth/login", {
+        data: { login: "e2e_admin", password: "E2eAdmin!234" }
+    });
+    expect(login.ok()).toBeTruthy();
+    const ordersResponse = await request.get("/api/orders");
+    expect(ordersResponse.ok()).toBeTruthy();
+    const ordersBody = await ordersResponse.json();
+    const txtOrder = ordersBody.orders.find(order => order.email === uniqueEmail);
+    expect(txtOrder).toBeTruthy();
+    expect(txtOrder.requestType).toBe("file_request");
+    expect(txtOrder.attachmentCount).toBe(1);
+    const metadataResponse = await request.get(`/api/orders/${txtOrder.id}/attachments`);
+    expect(metadataResponse.ok()).toBeTruthy();
+    const metadata = await metadataResponse.json();
+    expect(metadata.attachments).toHaveLength(1);
+    expect(metadata.attachments[0]).toMatchObject({
+        originalName: unicodeTxtName,
+        extension: "txt",
+        mimeType: "text/plain",
+        sizeBytes: txtBytes.length
+    });
+    expect(JSON.stringify(metadata)).not.toContain("storageKey");
+    const download = await request.get(metadata.attachments[0].downloadUrl);
+    expect(download.ok()).toBeTruthy();
+    expect(download.headers()["content-type"]).toBe("text/plain");
+    expect(download.headers()["cache-control"]).toBe("private, no-store");
+    expect(download.headers()["x-content-type-options"]).toBe("nosniff");
+    expect(download.headers()["content-disposition"]).toContain("attachment;");
+    expect(download.headers()["content-disposition"]).toContain(
+        `filename*=UTF-8''${encodeURIComponent(unicodeTxtName)}`
+    );
+    expect(download.headers()["content-disposition"]).not.toMatch(/%25(?:D0|D1)/i);
+    expect(await download.body()).toEqual(txtBytes);
+
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto("/login.html");
+    await page.locator('input[name="login"], input[type="text"]').first().fill("e2e_admin");
+    await page.locator('input[name="password"], input[type="password"]').fill("E2eAdmin!234");
+    await page.locator('button[type="submit"]').click();
+    await page.waitForURL(/manager/);
+    await page.locator('.crm-nav [data-section="orders"]').click();
+    const crmOrder = page.locator(`article.order-card[data-id="${txtOrder.id}"]`);
+    await expect(crmOrder).toBeVisible();
+    await crmOrder.getByRole("button", { name: "Документы" }).click();
+    await expect(crmOrder).toContainText(unicodeTxtName);
+    const crmText = await crmOrder.textContent();
+    expect(crmText).not.toMatch(/Ð|Ñ|Гђ|Г‘|Р Сџ/);
+    await expect(crmOrder.getByRole("button", { name: `Скачать файл ${unicodeTxtName}` })).toBeVisible();
+
+    await page.goto("/");
+    await openUploadRequestFromHeader(page);
+    await dropUploadFiles(page, [{
+        name: "binary.txt",
+        type: "application/octet-stream",
+        bytes: [0xff, 0xd8, 0, 1, 2, 3]
+    }]);
+    await page.locator("#uploadCustomerName").fill("TXT binary");
+    await page.locator("#uploadCustomerPhone").fill("9991234567");
+    await page.locator("#uploadRequestComment").fill("Проверка ошибки TXT");
+    await page.locator("#uploadRequestConsent").check();
+    await page.locator("#uploadRequestForm button[type='submit']").click();
+    await expect(page.locator("#uploadRequestMessage")).toContainText(
+        "Файл повреждён или его содержимое не соответствует формату TXT"
+    );
+    await expect(page.locator(".upload-file-item")).toHaveCount(1);
+});
+
+test("file request submission works with cart, without cart and on both public pages", async ({ page, request }) => {
+    const productsResponse = await request.get("/api/public/products?limit=1");
+    const productsBody = await productsResponse.json();
+    const product = (productsBody.items || productsBody.products || productsBody.data || [])[0];
+    const productId = Number(product.id);
+    expect(productId).toBeGreaterThan(0);
+
+    for (const [index, pathname] of ["/", "/catalog.html"].entries()) {
+        await page.goto(pathname);
+        if (index === 0) {
+            await page.evaluate(item => localStorage.setItem("matmix_cart", JSON.stringify([item])), {
+                productId,
+                title: product.title || product.name,
+                price: product.price,
+                weight: product.weight,
+                unit: product.unit,
+                quantity: 2
+            });
+            await page.reload();
+        } else {
+            await page.evaluate(() => localStorage.setItem("matmix_cart", "[]"));
+            await page.reload();
+        }
+
+        await openUploadRequestFromHeader(page);
+        if (index === 0) {
+            await expect(page.locator("#uploadCartOption")).toBeVisible();
+            await expect(page.locator("#uploadIncludeCart")).toBeChecked();
+        } else {
+            await expect(page.locator("#uploadCartOption")).toBeHidden();
+        }
+        await page.locator("#uploadCustomerName").fill(`Тестовая заявка ${index + 1}`);
+        await page.locator("#uploadCustomerPhone").fill("9991234567");
+        await page.locator("#uploadCustomerEmail").fill(`request-${index + 1}@example.test`);
+        await page.locator("#uploadRequestComment").fill("Нужен расчёт материалов по приложенным файлам");
+        await page.locator("#uploadRequestConsent").check();
+        const files = [{
+            name: `request-${index + 1}.pdf`,
+            type: "application/pdf",
+            bytes: [...Buffer.from("%PDF-1.4\n%%EOF", "ascii")]
+        }];
+        if (index === 1) {
+            files.push({
+                name: "materials.csv",
+                type: "text/csv",
+                bytes: [...Buffer.from("code,qty\nMAT-E2E-001,2\n", "utf8")]
+            });
+        }
+        await dropUploadFiles(page, files);
+        await page.locator("#uploadRequestForm button[type='submit']").click();
+        await expect(page.locator("#uploadRequestMessage")).toContainText(/Заявка №MM-\d{4}-\d{6} принята/);
+        await expect(page.locator("#uploadRequestMessage")).toHaveClass(/success/);
+        await expect(page.locator(".upload-file-item")).toHaveCount(0);
+        const cartLength = await page.evaluate(() => JSON.parse(localStorage.getItem("matmix_cart") || "[]").length);
+        expect(cartLength).toBe(index === 0 ? 1 : 0);
+    }
+
+    await page.setViewportSize({ width: 320, height: 800 });
+    await page.goto("/");
+    await page.locator("#menuToggle").click();
+    await page.locator("#mainNav #uploadRequestNav").click();
+    await expect(page.locator("#uploadRequestForm")).toBeVisible();
+    const dimensions = await page.evaluate(() => ({
+        scrollWidth: document.documentElement.scrollWidth,
+        clientWidth: document.documentElement.clientWidth
+    }));
+    expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth + 1);
+});
+
+test("file request server errors keep the form retryable", async ({ page }) => {
+    await page.route("**/api/orders/file-request", route => route.fulfill({
+        status: 500,
+        contentType: "application/json",
+        body: JSON.stringify({
+            success: false,
+            code: "FILE_REQUEST_FAILED",
+            message: "Тестовая ошибка отправки"
+        })
+    }));
+    await page.goto("/");
+    await openUploadRequestFromHeader(page);
+    await page.locator("#uploadCustomerName").fill("Тестовый клиент");
+    await page.locator("#uploadCustomerPhone").fill("9991234567");
+    await page.locator("#uploadRequestComment").fill("Повторить отправку после ошибки");
+    await page.locator("#uploadRequestConsent").check();
+    await dropUploadFiles(page, [{
+        name: "retry.pdf",
+        type: "application/pdf",
+        bytes: [...Buffer.from("%PDF-1.4\n%%EOF", "ascii")]
+    }]);
+
+    const submit = page.locator("#uploadRequestForm button[type='submit']");
+    await submit.click();
+    await expect(page.locator("#uploadRequestMessage")).toHaveText("Тестовая ошибка отправки");
+    await expect(page.locator("#uploadRequestMessage")).toHaveClass(/error/);
+    await expect(submit).toBeEnabled();
+    await expect(submit).toHaveText("Отправить заявку");
+    await expect(page.locator(".upload-file-item")).toHaveCount(1);
+});
+
+test("upload request cart option and layout remain responsive", async ({ page }) => {
+    const viewports = [
+        { width: 320, height: 568 },
+        { width: 350, height: 640 },
+        { width: 351, height: 667 },
+        { width: 360, height: 736 },
+        { width: 375, height: 800 },
+        { width: 390, height: 844 },
+        { width: 414, height: 896 },
+        { width: 480, height: 800 },
+        { width: 600, height: 800 },
+        { width: 601, height: 800 },
+        { width: 768, height: 896 },
+        { width: 980, height: 800 },
+        { width: 1024, height: 800 },
+        { width: 1366, height: 896 },
+        { width: 1920, height: 896 },
+        { width: 568, height: 320 },
+        { width: 667, height: 375 },
+        { width: 896, height: 414 }
+    ];
+
+    await page.goto("/");
+    await openUploadRequestFromHeader(page);
+    await expect(page.locator("#uploadCartOption")).toBeHidden();
+    await expect(page.locator("#uploadIncludeCart")).toBeDisabled();
+    await page.locator("#cancelUploadRequest").click();
+    await seedCartItems(page, 2);
+    await page.setViewportSize({ width: 320, height: 568 });
+    await page.locator("#cartBtn").click();
+    const cartHeaderGeometry = await page.locator(".cart-header").evaluate(header => {
+        const title = header.querySelector("h3").getBoundingClientRect();
+        const button = header.querySelector("#openUploadRequest").getBoundingClientRect();
+        return { scrollWidth: header.scrollWidth, clientWidth: header.clientWidth, titleRight: title.right, buttonLeft: button.left };
+    });
+    expect(cartHeaderGeometry.scrollWidth).toBeLessThanOrEqual(cartHeaderGeometry.clientWidth + 1);
+    expect(cartHeaderGeometry.titleRight).toBeLessThanOrEqual(cartHeaderGeometry.buttonLeft + 1);
+    await page.locator("#openUploadRequest").click();
+    await expect(page.locator("#uploadCartOption")).toBeVisible();
+    await expect(page.locator("#uploadIncludeCart")).toBeChecked();
+    const uploadCartText = page.locator("#uploadCartOption label span");
+    const uploadCartGeometry = await page.locator("#uploadCartOption label").evaluate(label => {
+        const input = label.querySelector("input").getBoundingClientRect();
+        const text = label.querySelector("span").getBoundingClientRect();
+        return {
+            inputLeft: input.left,
+            inputRight: input.right,
+            inputCenter: input.top + input.height / 2,
+            textLeft: text.left,
+            textCenter: text.top + text.height / 2,
+            scrollWidth: label.scrollWidth,
+            clientWidth: label.clientWidth
+        };
+    });
+    expect(uploadCartGeometry.inputLeft).toBeLessThan(uploadCartGeometry.textLeft);
+    expect(uploadCartGeometry.inputRight).toBeLessThanOrEqual(uploadCartGeometry.textLeft);
+    expect(Math.abs(uploadCartGeometry.inputCenter - uploadCartGeometry.textCenter)).toBeLessThanOrEqual(1);
+    expect(uploadCartGeometry.scrollWidth).toBeLessThanOrEqual(uploadCartGeometry.clientWidth + 1);
+    await uploadCartText.click();
+    await expect(page.locator("#uploadIncludeCart")).not.toBeChecked();
+    await page.locator("#orderCheckoutTab").click();
+    await page.locator("#uploadRequestTab").click();
+    await expect(page.locator("#uploadIncludeCart")).not.toBeChecked();
+
+    await dropUploadFiles(page, [{
+        name: `${"очень-длинное-название-".repeat(8)}материалов.xlsx`,
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        size: 40
+    }]);
+
+    for (const viewport of viewports) {
+        await page.setViewportSize(viewport);
+        const panel = page.locator("#uploadRequestForm");
+        await panel.evaluate(form => { form.scrollTop = form.scrollHeight; });
+        const dimensions = await page.evaluate(() => {
+            const rect = selector => {
+                const box = document.querySelector(selector).getBoundingClientRect();
+                return { left: box.left, right: box.right, top: box.top, bottom: box.bottom, width: box.width, height: box.height };
+            };
+            const modal = document.querySelector("#cartModal");
+            const panel = document.querySelector("#uploadRequestForm");
+            const tabs = [...document.querySelectorAll(".checkout-tab")].map(tab => ({ ...rect(`#${tab.id}`), clipped: tab.scrollWidth > tab.clientWidth + 1 }));
+            const submit = rect("#uploadRequestForm button[type='submit']");
+            return {
+                modal: rect("#cartModal"),
+                panel: rect("#uploadRequestForm"),
+                dropZone: rect("#uploadDropZone"),
+                fileItem: rect(".upload-file-item"),
+                submit,
+                tabs,
+                uploadCart: (() => {
+                    const label = document.querySelector("#uploadCartOption label");
+                    const input = label.querySelector("input").getBoundingClientRect();
+                    const text = label.querySelector("span").getBoundingClientRect();
+                    return {
+                        inputLeft: input.left,
+                        inputRight: input.right,
+                        inputCenter: input.top + input.height / 2,
+                        textLeft: text.left,
+                        textCenter: text.top + text.height / 2,
+                        scrollWidth: label.scrollWidth,
+                        clientWidth: label.clientWidth
+                    };
+                })(),
+                modalScrollTop: modal.scrollTop,
+                panelScrollTop: panel.scrollTop,
+                documentScrollWidth: document.documentElement.scrollWidth,
+                documentClientWidth: document.documentElement.clientWidth
+            };
+        });
+
+        expect(dimensions.modal.left, JSON.stringify({ viewport, dimensions })).toBeGreaterThanOrEqual(-1);
+        expect(dimensions.modal.right, JSON.stringify({ viewport, dimensions })).toBeLessThanOrEqual(viewport.width + 1);
+        expect(dimensions.modal.bottom, JSON.stringify({ viewport, dimensions })).toBeLessThanOrEqual(viewport.height + 1);
+        expect(dimensions.modalScrollTop).toBe(0);
+        expect(dimensions.panelScrollTop).toBeGreaterThan(0);
+        expect(Math.abs(dimensions.tabs[0].top - dimensions.tabs[1].top)).toBeLessThanOrEqual(1);
+        expect(dimensions.tabs[0].right).toBeLessThanOrEqual(dimensions.tabs[1].left + 1);
+        expect(dimensions.tabs.every(tab => !tab.clipped)).toBeTruthy();
+        expect(dimensions.dropZone.left).toBeGreaterThanOrEqual(dimensions.panel.left - 1);
+        expect(dimensions.dropZone.right).toBeLessThanOrEqual(dimensions.panel.right + 1);
+        expect(dimensions.fileItem.right).toBeLessThanOrEqual(dimensions.panel.right + 1);
+        expect(dimensions.uploadCart.inputLeft).toBeLessThan(dimensions.uploadCart.textLeft);
+        expect(dimensions.uploadCart.inputRight).toBeLessThanOrEqual(dimensions.uploadCart.textLeft);
+        expect(Math.abs(dimensions.uploadCart.inputCenter - dimensions.uploadCart.textCenter)).toBeLessThanOrEqual(1);
+        expect(dimensions.uploadCart.scrollWidth).toBeLessThanOrEqual(dimensions.uploadCart.clientWidth + 1);
+        expect(dimensions.submit.bottom).toBeLessThanOrEqual(dimensions.modal.bottom + 1);
+        expect(dimensions.documentScrollWidth).toBeLessThanOrEqual(dimensions.documentClientWidth + 1);
+    }
 });
 
 test("accessibility and performance smoke", async ({ page }) => {

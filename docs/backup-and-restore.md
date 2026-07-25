@@ -1,17 +1,31 @@
 # MatMix backup and restore
 
-The production backup contains a consistent SQLite copy of the main database and every regular file from the physical product uploads directory. It does not contain sessions, cookies, `.env`, secrets, logs, imported workbooks, old backups, `node_modules`, Git metadata, or deployment files. Templates and application code are restored from Git/deployment.
+Backup format v2 contains a consistent SQLite copy of the main database, every regular file from the physical product uploads directory, and every private order attachment referenced by the SQLite snapshot. It does not contain sessions, cookies, `.env`, secrets, logs, imported workbooks, old backups, `node_modules`, Git metadata, or deployment files. Templates and application code are restored from Git/deployment.
+
+The backup layout is:
+
+```text
+database/matmix.db
+uploads/products/...
+attachments/orders/<storageKey>
+manifest.json
+```
+
+The attachment manifest contains only the opaque storage key, relative backup path, byte size, and SHA-256. Original filenames, attachment contents, and absolute runtime paths are never written to logs or the manifest.
 
 ## Runtime configuration
 
 - `MATMIX_DB_PATH`: main SQLite database.
 - `SESSION_DB_PATH`: session database; deliberately excluded from disaster-recovery backups.
 - `PRODUCT_UPLOADS_PATH`: physical product-image directory mounted publicly as `/uploads/products`.
+- `ORDER_ATTACHMENTS_PATH`: private physical order-attachment directory. It must be an absolute path outside the deployed application, public root, Git metadata, operating-system temporary directory, product uploads, and backup root.
 - `BACKUP_ROOT_PATH`: destination for completed backup directories.
 - `BACKUP_RETENTION_COUNT`: number of successful `matmix-backup-*` directories retained; default 14.
 - `APP_RUNTIME_LOCK_PATH`: application lock checked by restore.
 
-Use absolute paths outside the deployment and web root in production. Do not put `BACKUP_ROOT_PATH` inside uploads. The application creates the runtime lock while running; restore requires the application to be stopped and the lock absent.
+Use absolute paths outside the deployment and web root in production. Product uploads, private attachments, and backups must not contain one another. The application creates the runtime lock while running; restore requires the application to be stopped and the lock absent.
+
+Create the private attachment directory for the MatMix runtime user with directory mode `0700` and file mode `0600` (or an equivalently restrictive reviewed policy). The runtime user needs read/write access; the reverse proxy and public web user do not. A SQLite `ON DELETE CASCADE` removes attachment metadata only—it does not remove the physical file—so lifecycle code or a separately reviewed orphan-cleanup procedure must handle physical deletion.
 
 ## Commands
 
@@ -21,11 +35,26 @@ node backend/scripts/backup-production-data.js
 node backend/scripts/backup-production-data.js --verify-only /path/to/matmix-backup-YYYY-MM-DD-HH-mm-ss
 node backend/scripts/restore-production-data.js /path/to/backup --dry-run
 node backend/scripts/restore-production-data.js /path/to/backup --apply --confirm RESTORE_MATMIX_DATA
+npm run attachments:audit -- --check
+npm run backup:rehearse-offsite -- --local-source /path/to/copied-backup
 ```
 
-Backup uses SQLite `VACUUM INTO`, checks `integrity_check` and `foreign_key_check`, hashes the DB and every upload with SHA-256, writes `manifest.json`, verifies the complete temporary directory, and atomically renames it into place. Restore verifies everything before touching runtime data, creates a full `pre-restore-*` emergency backup, stages DB/uploads, swaps both, and rolls back both if a later step fails. Restore reports are written under the backup root.
+Backup uses SQLite `VACUUM INTO`, reads attachment metadata from that snapshot, safely opens each attachment without following symbolic links, and checks its size and SHA-256 while copying. It hashes the DB, every upload, and every attachment, writes `manifest.json`, verifies the complete temporary directory, and atomically renames that directory into place. A failed or incomplete backup never enters retention.
+
+Restore verifies everything before touching runtime data, creates a full `pre-restore-*` emergency backup, stages DB/uploads/attachments, verifies the staged attachment set against the staged database, and then swaps all three resources. A handled error triggers compensating rollback of every swapped resource. Restore reports are written under the backup root.
+
+SQLite plus two filesystem trees cannot be switched in one operating-system transaction. A machine failure between rename operations can therefore leave `.restore-*.old` and `.restore-*.tmp` recovery artifacts. Keep the application stopped, preserve those artifacts, and inspect the database, uploads, and attachments as one set before retrying. Do not delete them blindly.
 
 Missing images referenced by active products are reported because existing data may intentionally use placeholders; they do not block backup. Unsafe references, orphan files, and shared references are listed in verification output.
+
+Attachment audit is deliberately strict and read-only:
+
+- missing files, size/SHA mismatches, unsafe entries, symbolic links, non-regular entries, and orphan files make the audit fail;
+- orphan files are never deleted automatically;
+- backup, production readiness, and release validation require a healthy audit;
+- cleanup requires a separate reviewed operational procedure.
+
+Legacy format v1 backups remain verifiable and restorable only when their SQLite snapshot has no `order_attachments` rows. A v1 backup containing attachment metadata is rejected because it cannot contain the corresponding private files. No placeholders are created.
 
 ## Scheduling and retention
 
@@ -39,4 +68,22 @@ A systemd timer can run the same command daily with `WorkingDirectory` and envir
 
 Backups on the same disk are not sufficient protection. Keep at least one verified copy on another server, external media, or object storage. Encrypt off-site backups using production infrastructure or a reviewed external tool; this project does not implement custom cryptography.
 
-Regularly run `--verify-only` and perform a full restore rehearsal to isolated paths. After an incident: stop MatMix, confirm the runtime lock is absent, verify the selected backup, run restore dry-run, apply with the confirmation phrase, inspect the restore report, start the application, and verify API/catalog/orders/images. Monitor the timestamp and exit status of the most recent successful backup.
+Regularly run `--verify-only`, `npm run attachments:audit -- --check`, and a full restore rehearsal to isolated paths. The off-site rehearsal restores attachments alongside the database and uploads. After an incident: stop MatMix, confirm the runtime lock is absent, verify the selected backup, run restore dry-run, apply with the confirmation phrase, inspect the restore report, run the attachment audit, start the application, and verify API/catalog/orders/images/attachment downloads. Monitor the timestamp and exit status of the most recent successful backup.
+
+For the download check, authenticate in CRM as an authorized manager or administrator, open a restored file request, confirm its attachment metadata, download each representative format, and compare the bytes or SHA-256 with the backup manifest. Never expose `attachments/orders` through static hosting.
+
+## Release backup and rollback
+
+The release script prepares the new immutable release before stopping the service, then creates the pre-migration backup with that **new release's** format-v2 implementation. This is required because an older active release may not know about private attachments. Format v2 safely represents a schema-v2 database without `order_attachments` as an empty attachment set.
+
+Record the exact `ROLLBACK_RELEASE` and `ROLLBACK_BACKUP` printed by deployment. Do not infer the backup from directory ordering or a wildcard. Once migration has started, rollback must restore the exact verified backup's database, product uploads and order attachments before switching back to the recorded previous release:
+
+```sh
+sudo /opt/matmix/app/deploy/scripts/rollback-release.sh \
+  /opt/matmix/releases/<recorded-previous-release> \
+  /var/backups/matmix/<recorded-pre-deployment-backup>
+```
+
+The rollback script verifies the selected backup with the current release, stops the service, performs restore dry-run and confirmed apply through the current release, checks the restored schema with the recorded previous release, switches the symlink, starts the previous release and performs HTTP smoke checks. If restore dry-run fails, data is untouched and the current service can restart. If apply-restore fails, the service remains stopped for manual recovery; the script never silently chooses a different backup.
+
+For a manual recovery, use the same exact backup path with `restore-production-data.js`, keep the service stopped through restore verification and attachment audit, then run database health from the recorded previous release so the expected schema matches the backup. Only then switch the symlink and start the previous release. After startup, repeat public home/catalog health checks and an authorized CRM download of representative restored attachments.

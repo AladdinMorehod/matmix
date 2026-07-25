@@ -94,12 +94,12 @@ function findLatestBackup() {
 }
 
 async function main() {
-    const requestedBackup = process.argv
-        .slice(2)
-        .find(argument => !argument.startsWith("--"));
-
-    const keepTemporary = process.argv.includes("--keep");
-    const backupName = requestedBackup || findLatestBackup();
+    const args = process.argv.slice(2);
+    const localSourceIndex = args.indexOf("--local-source");
+    const localSource = localSourceIndex >= 0 ? path.resolve(args[localSourceIndex + 1] || "") : null;
+    const requestedBackup = localSource ? null : args.find(argument => !argument.startsWith("--"));
+    const keepTemporary = args.includes("--keep");
+    const backupName = localSource ? path.basename(localSource) : (requestedBackup || findLatestBackup());
 
     if (!/^matmix-backup-[A-Za-z0-9._-]+$/.test(backupName)) {
         throw new Error(`Unsafe backup name: ${backupName}`);
@@ -115,33 +115,39 @@ async function main() {
     const paths = {
         dbPath: path.join(runtimeRoot, "matmix.db"),
         uploadsPath: path.join(runtimeRoot, "uploads"),
+        attachmentsPath: path.join(runtimeRoot, "attachments"),
         backupRoot: path.join(rehearsalRoot, "restore-backups"),
         lockPath: path.join(runtimeRoot, "app.lock"),
         retentionCount: 2
     };
 
     try {
-        console.log(`Downloading ${RCLONE_REMOTE}:${backupName}`);
-
-        run("sudo", [
-            "rclone",
-            "--config",
-            RCLONE_CONFIG,
-            "copy",
-            `${RCLONE_REMOTE}:${backupName}`,
-            sourcePath,
-            "--checkers",
-            "4",
-            "--transfers",
-            "2"
-        ]);
-
-        run("sudo", [
-            "chown",
-            "-R",
-            `${process.getuid()}:${process.getgid()}`,
-            rehearsalRoot
-        ]);
+        if (localSource) {
+            const localStat = await fs.promises.lstat(localSource);
+            if (localStat.isSymbolicLink() || !localStat.isDirectory()) throw new Error("Local rehearsal source must be a real backup directory.");
+            console.log(`Copying local rehearsal source: ${backupName}`);
+            await copyTree(localSource, sourcePath);
+        } else {
+            console.log(`Downloading ${RCLONE_REMOTE}:${backupName}`);
+            run("sudo", [
+                "rclone",
+                "--config",
+                RCLONE_CONFIG,
+                "copy",
+                `${RCLONE_REMOTE}:${backupName}`,
+                sourcePath,
+                "--checkers",
+                "4",
+                "--transfers",
+                "2"
+            ]);
+            run("sudo", [
+                "chown",
+                "-R",
+                `${process.getuid()}:${process.getgid()}`,
+                rehearsalRoot
+            ]);
+        }
 
         const verified = await verifyBackup(sourcePath);
 
@@ -158,6 +164,14 @@ async function main() {
             path.join(sourcePath, "uploads", "products"),
             paths.uploadsPath
         );
+        if (verified.manifest.formatVersion === 2) {
+            await copyTree(
+                path.join(sourcePath, "attachments", "orders"),
+                paths.attachmentsPath
+            );
+        } else {
+            await fs.promises.mkdir(paths.attachmentsPath, { recursive: true });
+        }
 
         const sourceDbHash = await sha256(
             path.join(sourcePath, "database", "matmix.db")
@@ -207,6 +221,7 @@ async function main() {
             databaseRestoredExactly: true,
             uploadsReplaced: true,
             uploadCount: verified.manifest.uploads.count,
+            attachmentCount: verified.manifest.attachments?.fileCount || 0,
             references: restored.references,
             emergencyBackup: restored.emergencyBackup,
             temporaryPath: keepTemporary ? rehearsalRoot : null

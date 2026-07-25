@@ -1,13 +1,19 @@
 // Order rendering, filters, and list loading.
+const orderAttachments = new Map();
+const orderAttachmentErrors = new Map();
+const orderAttachmentsLoading = new Set();
+
 function renderStatusOptions(selectedStatus) {
     return statuses
         .map(status => `<option value="${escapeHtml(status)}"${status === selectedStatus ? " selected" : ""}>${escapeHtml(status)}</option>`)
         .join("");
 }
 
-function renderItems(items = []) {
+function renderItems(items = [], requestType = "order") {
     if (!items.length) {
-        return "<p>Товары не указаны.</p>";
+        return requestType === "file_request"
+            ? '<p class="history-empty">Товары к заявке не добавлены.</p>'
+            : "<p>Товары не указаны.</p>";
     }
 
     return `
@@ -271,6 +277,81 @@ function renderOrderTabs(order) {
     `;
 }
 
+function formatAttachmentSize(sizeBytes) {
+    const size = Number(sizeBytes) || 0;
+    if (size < 1024) return `${size} Б`;
+    if (size < 1024 * 1024) return `${Math.ceil(size / 1024)} КБ`;
+    return `${(size / (1024 * 1024)).toFixed(size >= 10 * 1024 * 1024 ? 0 : 1)} МБ`;
+}
+
+function renderOrderDocuments(order) {
+    const orderId = String(order.id);
+    const attachments = orderAttachments.get(orderId);
+    const error = orderAttachmentErrors.get(orderId);
+
+    if (orderAttachmentsLoading.has(orderId) || (!attachments && !error)) {
+        return renderCrmLoader("Загружаем документы...");
+    }
+    if (error) {
+        return `
+            <div class="order-attachments-error" role="alert">
+                <p>${escapeHtml(error)}</p>
+                <button class="retry-order-attachments" data-order-id="${order.id}" type="button">Повторить</button>
+            </div>
+        `;
+    }
+    if (!attachments.length) {
+        return '<p class="history-empty">Документов пока нет.</p>';
+    }
+
+    return `
+        <ul class="order-attachments">
+            ${attachments.map(attachment => {
+                const originalName = String(attachment.originalName || "Документ");
+                const extension = String(attachment.extension || "").toUpperCase();
+                return `
+                    <li class="order-attachment">
+                        <span class="order-attachment-icon" aria-hidden="true">📎</span>
+                        <span class="order-attachment-details">
+                            <strong title="${escapeHtml(originalName)}">${escapeHtml(originalName)}</strong>
+                            <span>${escapeHtml(extension)} · ${escapeHtml(formatAttachmentSize(attachment.sizeBytes))} · ${escapeHtml(formatDate(attachment.createdAt))}</span>
+                        </span>
+                        <button
+                            class="download-order-attachment"
+                            data-order-id="${order.id}"
+                            data-attachment-id="${attachment.id}"
+                            type="button"
+                            aria-label="Скачать файл ${escapeHtml(originalName)}"
+                        >Скачать</button>
+                    </li>
+                `;
+            }).join("")}
+        </ul>
+    `;
+}
+
+async function loadOrderAttachments(orderId) {
+    const normalizedOrderId = String(orderId);
+    if (orderAttachmentsLoading.has(normalizedOrderId)) return;
+
+    orderAttachmentsLoading.add(normalizedOrderId);
+    orderAttachmentErrors.delete(normalizedOrderId);
+    renderOrders();
+    try {
+        const result = await CrmApi.get(`/api/orders/${normalizedOrderId}/attachments`);
+        orderAttachments.set(normalizedOrderId, Array.isArray(result.attachments) ? result.attachments : []);
+    } catch (error) {
+        orderAttachmentErrors.set(
+            normalizedOrderId,
+            window.CrmErrorHandler?.getMessage(error, "Не удалось загрузить документы.")
+                || "Не удалось загрузить документы."
+        );
+    } finally {
+        orderAttachmentsLoading.delete(normalizedOrderId);
+        renderOrders();
+    }
+}
+
 function renderOverviewTab(order) {
     return `
         <div class="order-sections">
@@ -286,7 +367,7 @@ function renderOverviewTab(order) {
 
             <section class="order-section order-section-wide">
                 <h2>Заказ</h2>
-                ${renderItems(order.items)}
+                ${renderItems(order.items, order.requestType)}
                 ${renderOrderSummary(order)}
             </section>
         </div>
@@ -304,6 +385,7 @@ function renderClientTab(order) {
             <h2>Клиент</h2>
             ${renderInfoRow("Имя", order.customerName)}
             ${renderInfoRow("Телефон", order.phone)}
+            ${renderInfoRow("Email", order.email)}
             ${renderInfoRow("Предпочтительный способ связи", getPreferredContactText(order))}
             ${order.consent?.given ? `
                 ${renderInfoRow("Согласие", "Получено")}
@@ -336,7 +418,7 @@ function renderOrderTabContent(order) {
     }
 
     if (activeTab === "documents") {
-        return `<section class="order-section order-section-wide"><h2>Документы</h2><p class="history-empty">Документов пока нет.</p></section>`;
+        return `<section class="order-section order-section-wide"><h2>Документы</h2>${renderOrderDocuments(order)}</section>`;
     }
 
     return renderOverviewTab(order);
@@ -378,7 +460,7 @@ function renderDeletedOrder(order) {
                     </section>
                     <section class="order-section order-section-wide">
                         <h2>Заказ</h2>
-                        ${renderItems(order.items)}
+                        ${renderItems(order.items, order.requestType)}
                         ${renderOrderSummary(order)}
                     </section>
                 </div>
@@ -394,6 +476,9 @@ function renderActiveOrder(order) {
                 <div class="order-title">
                     <strong>${escapeHtml(getOrderTitle(order))}</strong>
                     <span>${escapeHtml(formatDate(order.createdAt))}</span>
+                    ${order.requestType === "file_request"
+                        ? `<span class="order-request-type">Файловая заявка${order.attachmentCount ? ` · Файлы: ${escapeHtml(order.attachmentCount)}` : ""}</span>`
+                        : ""}
                 </div>
                 <div class="order-header-side">
                     ${renderAssignment(order)}
@@ -557,3 +642,31 @@ async function loadOrders(options = {}) {
         `;
     }
 }
+
+ordersList.addEventListener("click", event => {
+    const documentsTab = event.target.closest('.order-tabs button[data-tab="documents"]');
+    if (documentsTab) {
+        const orderId = String(documentsTab.dataset.orderId);
+        if (!orderAttachments.has(orderId) && !orderAttachmentsLoading.has(orderId)) {
+            loadOrderAttachments(orderId);
+        }
+        return;
+    }
+
+    const retryButton = event.target.closest(".retry-order-attachments");
+    if (retryButton) {
+        loadOrderAttachments(retryButton.dataset.orderId);
+        return;
+    }
+
+    const downloadButton = event.target.closest(".download-order-attachment");
+    if (downloadButton) {
+        event.preventDefault();
+        event.stopPropagation();
+        downloadOrderAttachment(
+            downloadButton.dataset.orderId,
+            downloadButton.dataset.attachmentId,
+            downloadButton
+        );
+    }
+});
