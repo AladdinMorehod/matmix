@@ -322,6 +322,7 @@ async function abortDownload(base, cookie, orderId, attachmentId) {
         assert.strictEqual(txtMetadata.originalName, "Комментарий.txt");
         assert.strictEqual(txtMetadata.extension, "txt");
         assert.strictEqual(txtMetadata.mimeType, "text/plain");
+        assert(!/[ÐÑ]/.test(txtMetadata.originalName));
 
         result = await requestJson(`${base}/api/orders/${fileOrder.id}/attachments`, { headers: { Cookie: otherCookie } });
         assert.strictEqual(result.response.status, 403);
@@ -360,7 +361,14 @@ async function abortDownload(base, cookie, orderId, attachmentId) {
         assert.strictEqual(txtDownload.headers.get("content-type"), "text/plain");
         assert.strictEqual(txtDownload.headers.get("cache-control"), "private, no-store");
         assert.strictEqual(txtDownload.headers.get("x-content-type-options"), "nosniff");
-        assert(txtDownload.headers.get("content-disposition").includes("attachment;"));
+        const txtDisposition = txtDownload.headers.get("content-disposition");
+        assert(txtDisposition.includes("attachment;"));
+        assert(txtDisposition.includes(`filename="attachment-${txtAttachment.id}.txt"`));
+        assert(txtDisposition.includes(`filename*=UTF-8''${encodeURIComponent("Комментарий.txt")}`));
+        assert(!/%25(?:D0|D1)/i.test(txtDisposition));
+        assert(!/[\r\n]/.test(txtDisposition));
+        assert(!txtDisposition.includes(txtAttachment.storageKey));
+        assert(!txtDisposition.includes(storageRoot));
         assert.deepStrictEqual(Buffer.from(await txtDownload.arrayBuffer()), txtContent);
 
         const headerDownload = await fetch(`${base}/api/orders/${fileOrder.id}/attachments/${headerFixture.id}/download`, {

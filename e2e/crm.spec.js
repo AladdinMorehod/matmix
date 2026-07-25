@@ -49,6 +49,7 @@ test("CRM shows and securely downloads file request attachments", async ({ page 
     await expect(fileOrder).toContainText("Смета проекта.xlsx");
     await expect(fileOrder).toContainText("План помещения.pdf");
     await expect(fileOrder).toContainText("Комментарий.txt");
+    expect(await fileOrder.textContent()).not.toMatch(/Ð|Ñ|Гђ|Г‘|Р Сџ/);
     await expect(fileOrder).toContainText("XLSX");
     await expect(fileOrder).toContainText("PDF");
     await expect(fileOrder).toContainText("TXT");
@@ -70,6 +71,10 @@ test("CRM shows and securely downloads file request attachments", async ({ page 
     expect(txtResponse.ok()).toBeTruthy();
     expect(txtResponse.headers()["content-type"]).toBe("text/plain");
     expect(txtResponse.headers()["cache-control"]).toBe("private, no-store");
+    expect(txtResponse.headers()["content-disposition"]).toContain(
+        `filename*=UTF-8''${encodeURIComponent("Комментарий.txt")}`
+    );
+    expect(txtResponse.headers()["content-disposition"]).not.toMatch(/%25(?:D0|D1)/i);
     expect((await txtResponse.body()).toString("utf8")).toBe("E2E TXT русский текст\r\n");
 
     await page.route(`**/api/orders/${orderId}/attachments/${attachmentId}/download`, async route => {

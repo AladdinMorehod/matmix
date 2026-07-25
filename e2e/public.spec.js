@@ -1111,7 +1111,10 @@ test("upload request file rules and validation submit to the secure endpoint", a
 
 test("TXT file request reaches CRM metadata and protected download", async ({ page, request }) => {
     const txtBytes = Buffer.from("Русский TXT\r\nEnglish line\n", "utf8");
-    const uniqueEmail = `txt-e2e-${Date.now()}@example.test`;
+    const unicodeTxtName = "ЗАПРОС.txt";
+    const uniqueSuffix = Date.now();
+    const uniqueEmail = `txt-e2e-${uniqueSuffix}@example.test`;
+    const uniqueCustomerName = `TXT E2E ${uniqueSuffix}`;
 
     await page.goto("/");
     await seedCartItems(page, 1);
@@ -1135,12 +1138,12 @@ test("TXT file request reaches CRM metadata and protected download", async ({ pa
     await expect(page.locator(".upload-file-item")).toHaveCount(0);
 
     await dropUploadFiles(page, [{
-        name: "request.txt",
+        name: unicodeTxtName,
         type: "text/plain",
         bytes: [...txtBytes]
     }]);
     await expect(page.locator(".upload-file-item")).toHaveCount(1);
-    await expect(page.locator(".upload-file-item")).toContainText("request.txt");
+    await expect(page.locator(".upload-file-item")).toContainText(unicodeTxtName);
     await expect(page.locator(".upload-file-item")).toContainText(`${txtBytes.length}`);
     await page.setViewportSize({ width: 320, height: 800 });
     const uploadGeometry = await page.locator("#uploadRequestForm").evaluate(form => ({
@@ -1150,7 +1153,7 @@ test("TXT file request reaches CRM metadata and protected download", async ({ pa
     expect(uploadGeometry.overflow).toBeLessThanOrEqual(1);
     expect(uploadGeometry.pageOverflow).toBeLessThanOrEqual(1);
 
-    await page.locator("#uploadCustomerName").fill("TXT E2E клиент");
+    await page.locator("#uploadCustomerName").fill(uniqueCustomerName);
     await page.locator("#uploadCustomerPhone").fill("9991234567");
     await page.locator("#uploadCustomerEmail").fill(uniqueEmail);
     await page.locator("#uploadRequestComment").fill("Проверка TXT заявки");
@@ -1176,7 +1179,7 @@ test("TXT file request reaches CRM metadata and protected download", async ({ pa
     const metadata = await metadataResponse.json();
     expect(metadata.attachments).toHaveLength(1);
     expect(metadata.attachments[0]).toMatchObject({
-        originalName: "request.txt",
+        originalName: unicodeTxtName,
         extension: "txt",
         mimeType: "text/plain",
         sizeBytes: txtBytes.length
@@ -1188,10 +1191,28 @@ test("TXT file request reaches CRM metadata and protected download", async ({ pa
     expect(download.headers()["cache-control"]).toBe("private, no-store");
     expect(download.headers()["x-content-type-options"]).toBe("nosniff");
     expect(download.headers()["content-disposition"]).toContain("attachment;");
+    expect(download.headers()["content-disposition"]).toContain(
+        `filename*=UTF-8''${encodeURIComponent(unicodeTxtName)}`
+    );
+    expect(download.headers()["content-disposition"]).not.toMatch(/%25(?:D0|D1)/i);
     expect(await download.body()).toEqual(txtBytes);
 
-    await page.locator("#cancelUploadRequest").click();
     await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto("/login.html");
+    await page.locator('input[name="login"], input[type="text"]').first().fill("e2e_admin");
+    await page.locator('input[name="password"], input[type="password"]').fill("E2eAdmin!234");
+    await page.locator('button[type="submit"]').click();
+    await page.waitForURL(/manager/);
+    await page.locator('.crm-nav [data-section="orders"]').click();
+    const crmOrder = page.locator(`article.order-card[data-id="${txtOrder.id}"]`);
+    await expect(crmOrder).toBeVisible();
+    await crmOrder.getByRole("button", { name: "Документы" }).click();
+    await expect(crmOrder).toContainText(unicodeTxtName);
+    const crmText = await crmOrder.textContent();
+    expect(crmText).not.toMatch(/Ð|Ñ|Гђ|Г‘|Р Сџ/);
+    await expect(crmOrder.getByRole("button", { name: `Скачать файл ${unicodeTxtName}` })).toBeVisible();
+
+    await page.goto("/");
     await page.locator("#uploadRequestNav").click();
     await dropUploadFiles(page, [{
         name: "binary.txt",

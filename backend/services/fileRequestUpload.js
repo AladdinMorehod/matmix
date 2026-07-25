@@ -109,6 +109,7 @@ function parseFileRequestMultipart(req, { storage, logger } = {}) {
     try {
         parser = Busboy({
             headers: req.headers,
+            defParamCharset: "utf8",
             limits: {
                 files: MAX_FILE_COUNT,
                 fileSize: MAX_ATTACHMENT_SIZE_BYTES,

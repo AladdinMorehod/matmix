@@ -207,6 +207,7 @@ function testRateLimiter() {
     const moveFailureMarker = path.join(root, "fail-move");
     const preloadPath = path.join(root, "fail-attachment-move.js");
     let child;
+    let serverStderr = "";
 
     try {
         process.env.MATMIX_DB_PATH = dbPath;
@@ -248,7 +249,7 @@ function testRateLimiter() {
         child = spawn(process.execPath, [path.join(__dirname, "..", "server.js")], {
             cwd: path.join(__dirname, "..", ".."),
             windowsHide: true,
-            stdio: ["ignore", "ignore", "inherit"],
+            stdio: ["ignore", "ignore", "pipe"],
             env: {
                 ...process.env,
                 NODE_OPTIONS: `--require=${preloadPath}`,
@@ -266,6 +267,10 @@ function testRateLimiter() {
                 FILE_REQUEST_FAIL_MOVE_MARKER: moveFailureMarker
             }
         });
+        child.stderr.setEncoding("utf8");
+        child.stderr.on("data", chunk => {
+            serverStderr += chunk;
+        });
         await waitForServer(`${base}/health`);
 
         const pdf = file("request.pdf", "application/pdf", Buffer.from("%PDF-1.4\n%%EOF", "ascii"));
@@ -274,7 +279,8 @@ function testRateLimiter() {
         const xls = file("legacy.xls", "application/vnd.ms-excel", Buffer.from([0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1, 1]));
         const csv = file("items.csv", "text/csv", Buffer.from("code,qty\nMAT-FILE-001,2\n", "utf8"));
         const txtBytes = Buffer.from("Русский и English текст\r\nВторая строка\n", "utf8");
-        const txt = file("notes.txt", "text/plain", txtBytes);
+        const unicodeTxtName = "ЗАПРОС.txt";
+        const txt = file(unicodeTxtName, "text/plain", txtBytes);
         const xlsxBuffer = await createXlsx();
         const xlsx = file(
             "items.xlsx",
@@ -301,6 +307,23 @@ function testRateLimiter() {
         assert.strictEqual(txtResult.response.status, 201, JSON.stringify(txtResult.body));
         assert.strictEqual(txtResult.body.requestType, "file_request");
         assert.strictEqual(txtResult.body.attachmentCount, 1);
+        const unicodeNames = [
+            "Оплата Связь от 20.07.26.pdf",
+            "УлучшБлокЦпр.jpg",
+            "Смета-MatMix-2026.xlsx",
+            "見積書 (final).txt",
+            "English name.with.several.dots.xls"
+        ];
+        const unicodeNameFiles = [
+            file(unicodeNames[0], "application/pdf", pdf.bytes),
+            file(unicodeNames[1], "image/jpeg", jpeg.bytes),
+            file(unicodeNames[2], "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", xlsxBuffer),
+            file(unicodeNames[3], "text/plain", Buffer.from("日本語 UTF-8 text\n", "utf8")),
+            file(unicodeNames[4], "application/vnd.ms-excel", xls.bytes)
+        ];
+        const unicodeNamesResult = await post(base, { files: unicodeNameFiles });
+        assert.strictEqual(unicodeNamesResult.response.status, 201, JSON.stringify(unicodeNamesResult.body));
+        assert.strictEqual(unicodeNamesResult.body.attachmentCount, unicodeNames.length);
         result = await post(base, {
             files: [
                 file("UPPER.TXT", "text/plain", Buffer.from("UPPERCASE extension\n", "utf8")),
@@ -359,7 +382,27 @@ function testRateLimiter() {
             "SELECT original_name FROM order_attachments WHERE order_id=? ORDER BY id",
             [sanitizedNamesResult.body.id]
         );
-        assert.deepStrictEqual(sanitizedNames.map(row => row.original_name), ["traversal.pdf", "windows.pdf"]);
+        assert.deepStrictEqual(
+            sanitizedNames.map(row => row.original_name).sort(),
+            ["traversal.pdf", "windows.pdf"]
+        );
+        const savedUnicodeAttachments = await all(
+            verificationDb,
+            "SELECT * FROM order_attachments WHERE order_id=? ORDER BY id",
+            [unicodeNamesResult.body.id]
+        );
+        assert.deepStrictEqual(
+            savedUnicodeAttachments.map(row => row.original_name).sort(),
+            [...unicodeNames].sort()
+        );
+        const unicodeFilesByName = new Map(unicodeNameFiles.map(upload => [upload.name, upload]));
+        for (const attachment of savedUnicodeAttachments) {
+            assert.deepStrictEqual(
+                fs.readFileSync(path.join(storageRoot, attachment.storage_key)),
+                unicodeFilesByName.get(attachment.original_name).bytes
+            );
+            assert(!attachment.storage_key.includes(attachment.original_name));
+        }
         for (const attachment of savedAttachments) {
             const content = fs.readFileSync(path.join(storageRoot, attachment.storage_key));
             assert.strictEqual(content.length, attachment.size_bytes);
@@ -373,6 +416,7 @@ function testRateLimiter() {
         );
         assert.strictEqual(txtAttachment.extension, "txt");
         assert.strictEqual(txtAttachment.mime_type, "text/plain");
+        assert.strictEqual(txtAttachment.original_name, unicodeTxtName);
         assert.strictEqual(txtAttachment.size_bytes, txtBytes.length);
         assert.strictEqual(txtAttachment.sha256, crypto.createHash("sha256").update(txtBytes).digest("hex"));
         assert.deepStrictEqual(fs.readFileSync(path.join(storageRoot, txtAttachment.storage_key)), txtBytes);
@@ -398,6 +442,7 @@ function testRateLimiter() {
         });
         const metadataBody = await metadataResponse.json();
         assert.strictEqual(metadataResponse.status, 200);
+        assert.strictEqual(metadataBody.attachments[0].originalName, unicodeTxtName);
         assert.strictEqual(metadataBody.attachments[0].extension, "txt");
         assert.strictEqual(metadataBody.attachments[0].mimeType, "text/plain");
         assert(!JSON.stringify(metadataBody).includes(txtAttachment.storage_key));
@@ -410,7 +455,14 @@ function testRateLimiter() {
         assert.strictEqual(downloadResponse.headers.get("content-type"), "text/plain");
         assert.strictEqual(downloadResponse.headers.get("cache-control"), "private, no-store");
         assert.strictEqual(downloadResponse.headers.get("x-content-type-options"), "nosniff");
-        assert(downloadResponse.headers.get("content-disposition").includes("attachment;"));
+        const txtDisposition = downloadResponse.headers.get("content-disposition");
+        assert(txtDisposition.includes("attachment;"));
+        assert(txtDisposition.includes(`filename="attachment-${txtAttachment.id}.txt"`));
+        assert(txtDisposition.includes(`filename*=UTF-8''${encodeURIComponent(unicodeTxtName)}`));
+        assert(!/%25(?:D0|D1)/i.test(txtDisposition));
+        assert(!/[\r\n]/.test(txtDisposition));
+        assert(!txtDisposition.includes(txtAttachment.storage_key));
+        assert(!txtDisposition.includes(storageRoot));
         assert.deepStrictEqual(Buffer.from(await downloadResponse.arrayBuffer()), txtBytes);
 
         const requiredCases = [
@@ -543,6 +595,14 @@ function testRateLimiter() {
         assert.strictEqual(sanitizeOriginalName("C:\\temp\\safe.pdf"), "safe.pdf");
         assert.throws(() => sanitizeOriginalName("safe\u0000.pdf"), error => error.code === "INVALID_FILE_NAME");
         assert.strictEqual(sanitizeOriginalName("safe\u0001.pdf"), "safe.pdf");
+        assert.strictEqual(sanitizeOriginalName("safe\r\nX-Injected.pdf"), "safeX-Injected.pdf");
+        assert.strictEqual(sanitizeOriginalName("Смета (финал)-2026.v2.xlsx"), "Смета (финал)-2026.v2.xlsx");
+        const unicodeWithinLimit = `${"😀".repeat(120)}.txt`;
+        assert.strictEqual(sanitizeOriginalName(unicodeWithinLimit), unicodeWithinLimit);
+        assert.throws(
+            () => sanitizeOriginalName(`${"😀".repeat(128)}.txt`),
+            error => error.code === "FILE_NAME_TOO_LONG"
+        );
         assert.throws(() => sanitizeOriginalName(`${"a".repeat(256)}.pdf`), error => error.code === "FILE_NAME_TOO_LONG");
 
         const unexpected = buildForm(defaultFields(), [pdf]);
@@ -579,6 +639,10 @@ function testRateLimiter() {
         );
         await close(beforeFailureDb);
         await expectRejected(base, storageRoot, { status: 409, code: "DATABASE_CONFLICT" }, { files: [pdf] });
+        assert(serverStderr.includes('"event":"file_request_database_error"'));
+        assert(serverStderr.includes('"code":"SQLITE_CONSTRAINT'));
+        assert(!serverStderr.includes("request@example.test"));
+        assert(!serverStderr.includes(pdf.name));
         const removeTriggerDb = open(dbPath);
         await run(removeTriggerDb, "DROP TRIGGER fail_file_request_metadata");
         assert.deepStrictEqual(
@@ -608,6 +672,9 @@ function testRateLimiter() {
             txtUtf8BomAndLineEndings: "verified",
             txtBinaryAndMimeSpoofing: "rejected",
             txtCrmMetadataAndDownload: "verified",
+            unicodeMultipartFilenames: "verified",
+            unicodeSqliteCrmAndDownload: "verified",
+            sqliteFailureLogging: "verified",
             serverTotals: "verified",
             metadataAndPrivateFiles: "verified",
             sha256AndSize: "verified",

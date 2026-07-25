@@ -974,6 +974,7 @@ router.post("/file-request", fileRequestRateLimit, async (req, res) => {
             return;
         }
         if (String(error?.code || "").startsWith("SQLITE_")) {
+            logger.error("file_request_database_error", error, { requestId: req.requestId });
             const response = sqliteApiError(error);
             res.status(response.status).json({ success: false, code: response.code, message: response.message });
             return;
