@@ -2,10 +2,14 @@ const crypto = require("crypto");
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
+const { pipeline } = require("stream/promises");
 const sqlite3 = require("sqlite3").verbose();
+const { auditOrderAttachments, listAttachmentMetadata } = require("./orderAttachmentAudit");
+const { createOrderAttachmentStorage, validateStorageKey } = require("./orderAttachmentStorage");
 
-const FORMAT_VERSION = 1;
-const TOOL_VERSION = "1.0.0";
+const FORMAT_VERSION = 2;
+const LEGACY_FORMAT_VERSION = 1;
+const TOOL_VERSION = "2.0.0";
 const REQUIRED_TABLES = ["products", "catalog_structure", "clients", "orders", "users"];
 
 function runtimePaths(env = process.env) {
@@ -14,6 +18,7 @@ function runtimePaths(env = process.env) {
     return {
         dbPath,
         uploadsPath: path.resolve(env.PRODUCT_UPLOADS_PATH || path.join(projectRoot, "public", "uploads", "products")),
+        attachmentsPath: path.resolve(env.ORDER_ATTACHMENTS_PATH || path.join(projectRoot, "backend", "private", "order-attachments")),
         backupRoot: path.resolve(env.BACKUP_ROOT_PATH || path.join(path.dirname(dbPath), "production-backups")),
         lockPath: path.resolve(env.APP_RUNTIME_LOCK_PATH || path.join(path.dirname(dbPath), "matmix-runtime.lock")),
         retentionCount: Math.max(1, Number(env.BACKUP_RETENTION_COUNT) || 14)
@@ -27,6 +32,7 @@ function isInside(parent, child) {
 
 function safeRelative(value) {
     if (typeof value !== "string" || !value || path.isAbsolute(value)) throw new Error("Manifest contains an unsafe path.");
+    if (value.includes("\\") || /^[A-Za-z]:/.test(value) || value.startsWith("//")) throw new Error("Manifest contains an unsafe path.");
     const normalized = value.replace(/\\/g, "/");
     if (normalized.split("/").some(part => !part || part === "." || part === "..")) throw new Error("Manifest contains path traversal.");
     return normalized;
@@ -103,6 +109,46 @@ async function copyUploads(sourceRoot, targetRoot) {
     return { files: manifestFiles, count: files.length, totalSize };
 }
 
+function manifestSize(value, fieldName) {
+    if (!Number.isSafeInteger(value) || value < 0) throw new Error(`${fieldName} must be a non-negative safe integer.`);
+    return value;
+}
+
+function manifestSha256(value, fieldName) {
+    if (!/^[a-f0-9]{64}$/.test(String(value || ""))) throw new Error(`${fieldName} must be a lowercase SHA-256.`);
+    return value;
+}
+
+async function copyAttachments(dbPath, sourceRoot, targetRoot) {
+    const audit = await auditOrderAttachments({ dbPath, attachmentsPath: sourceRoot, includeMetadata: true });
+    if (!audit.healthy) {
+        throw new Error(`Attachment audit failed before backup: missing=${audit.missing.length}, corrupt=${audit.corrupt.length}, orphan=${audit.orphans.length}, unsafe=${audit.unsafe.length}`);
+    }
+    const storage = createOrderAttachmentStorage({ rootPath: sourceRoot });
+    const files = [];
+    let totalBytes = 0;
+    for (const item of audit.metadata) {
+        const storageKey = validateStorageKey(item.storageKey);
+        const opened = await storage.createReadStream(storageKey);
+        if (opened.sizeBytes !== item.sizeBytes) throw new Error(`Attachment changed during backup: ${storageKey}`);
+        const target = path.join(targetRoot, storageKey);
+        await pipeline(opened.stream, fs.createWriteStream(target, { flags: "wx", mode: 0o600 }));
+        const stat = await fs.promises.lstat(target);
+        const digest = await sha256(target);
+        if (!stat.isFile() || stat.size !== item.sizeBytes || digest !== item.sha256) {
+            throw new Error(`Attachment changed during backup: ${storageKey}`);
+        }
+        files.push({
+            storageKey,
+            relativePath: `attachments/orders/${storageKey}`,
+            sizeBytes: stat.size,
+            sha256: digest
+        });
+        totalBytes += stat.size;
+    }
+    return { root: "attachments/orders", fileCount: files.length, totalBytes, files };
+}
+
 async function gitCommit(projectRoot) {
     try { return require("child_process").execFileSync("git", ["rev-parse", "HEAD"], { cwd: projectRoot, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim(); } catch { return null; }
 }
@@ -123,20 +169,58 @@ async function verifyReferences(dbPath, uploadsPath) {
 async function verifyBackup(backupPath) {
     const root = path.resolve(backupPath); const rootStat = await fs.promises.lstat(root); if (rootStat.isSymbolicLink() || !rootStat.isDirectory()) throw new Error("Backup path must be a real directory.");
     const manifest = JSON.parse(await fs.promises.readFile(path.join(root, "manifest.json"), "utf8"));
-    if (manifest.formatVersion !== FORMAT_VERSION || manifest.application !== "MatMix") throw new Error("Unsupported backup manifest.");
+    if (![LEGACY_FORMAT_VERSION, FORMAT_VERSION].includes(manifest.formatVersion) || manifest.application !== "MatMix") throw new Error("Unsupported backup manifest.");
     const dbRelative = safeRelative(manifest.database.filename); const dbPath = path.join(root, ...dbRelative.split("/"));
     if (!isInside(root, dbPath) || (await fs.promises.lstat(dbPath)).isSymbolicLink()) throw new Error("Unsafe backup database path.");
-    const dbStat = await fs.promises.stat(dbPath); if (dbStat.size !== manifest.database.size || await sha256(dbPath) !== manifest.database.sha256) throw new Error("Database checksum mismatch.");
+    const dbSize = manifestSize(manifest.database.size, "database.size"); const dbSha256 = manifestSha256(manifest.database.sha256, "database.sha256");
+    const dbStat = await fs.promises.stat(dbPath); if (dbStat.size !== dbSize || await sha256(dbPath) !== dbSha256) throw new Error("Database checksum mismatch.");
     const dbCheck = await verifyDatabase(dbPath); const listed = new Set();
     for (const file of manifest.uploads.files) {
         const relative = safeRelative(file.relativePath); if (listed.has(relative)) throw new Error("Duplicate upload in manifest."); listed.add(relative);
         const target = path.join(root, "uploads", "products", ...relative.split("/"));
         if (!isInside(path.join(root, "uploads", "products"), target)) throw new Error("Unsafe upload path.");
-        const stat = await fs.promises.lstat(target); if (stat.isSymbolicLink() || !stat.isFile() || stat.size !== file.size || await sha256(target) !== file.sha256) throw new Error(`Upload checksum mismatch: ${relative}`);
+        const size = manifestSize(file.size, "uploads.files[].size"); const digest = manifestSha256(file.sha256, "uploads.files[].sha256");
+        const stat = await fs.promises.lstat(target); if (stat.isSymbolicLink() || !stat.isFile() || stat.size !== size || await sha256(target) !== digest) throw new Error(`Upload checksum mismatch: ${relative}`);
     }
     const actual = await walkUploads(path.join(root, "uploads", "products"));
     if (actual.length !== listed.size || actual.some(file => !listed.has(file.relative))) throw new Error("Backup contains unlisted upload files.");
-    return { success: true, backupPath: root, manifest, database: dbCheck, references: await verifyReferences(dbPath, path.join(root, "uploads", "products")) };
+    let attachments;
+    const attachmentRows = await listAttachmentMetadata(dbPath);
+    if (manifest.formatVersion === LEGACY_FORMAT_VERSION) {
+        if (attachmentRows.length) throw new Error("Legacy backup is incomplete: database contains attachment metadata.");
+        attachments = { healthy: true, legacy: true, metadataCount: 0, filesystemFileCount: 0, totalBytes: 0 };
+    } else {
+        if (!manifest.attachments || manifest.attachments.root !== "attachments/orders" || !Array.isArray(manifest.attachments.files)) {
+            throw new Error("Backup attachment manifest is invalid.");
+        }
+        const attachmentRoot = path.join(root, "attachments", "orders");
+        const attachmentListed = new Set();
+        let totalBytes = 0;
+        for (const file of manifest.attachments.files) {
+            const storageKey = validateStorageKey(file.storageKey);
+            const relative = safeRelative(file.relativePath);
+            if (relative !== `attachments/orders/${storageKey}` || attachmentListed.has(storageKey)) throw new Error("Backup attachment manifest contains an unsafe or duplicate entry.");
+            attachmentListed.add(storageKey);
+            const target = path.join(attachmentRoot, storageKey);
+            if (!isInside(attachmentRoot, target)) throw new Error("Unsafe backup attachment path.");
+            const sizeBytes = manifestSize(file.sizeBytes, "attachments.files[].sizeBytes"); const digest = manifestSha256(file.sha256, "attachments.files[].sha256");
+            const stat = await fs.promises.lstat(target);
+            if (stat.isSymbolicLink() || !stat.isFile() || stat.size !== sizeBytes || await sha256(target) !== digest) {
+                throw new Error(`Attachment checksum mismatch: ${storageKey}`);
+            }
+            totalBytes += stat.size;
+        }
+        const actualAttachments = await walkUploads(attachmentRoot);
+        if (actualAttachments.length !== attachmentListed.size || actualAttachments.some(file => !attachmentListed.has(file.relative))) {
+            throw new Error("Backup contains unlisted attachment files.");
+        }
+        if (manifestSize(manifest.attachments.fileCount, "attachments.fileCount") !== attachmentListed.size || manifestSize(manifest.attachments.totalBytes, "attachments.totalBytes") !== totalBytes) {
+            throw new Error("Backup attachment manifest totals do not match.");
+        }
+        attachments = await auditOrderAttachments({ dbPath, attachmentsPath: attachmentRoot });
+        if (!attachments.healthy) throw new Error("Backup attachment audit failed.");
+    }
+    return { success: true, backupPath: root, manifest, database: dbCheck, attachments, references: await verifyReferences(dbPath, path.join(root, "uploads", "products")) };
 }
 
 function backupName(prefix = "matmix-backup") {
@@ -146,14 +230,19 @@ function backupName(prefix = "matmix-backup") {
 }
 
 async function createBackup(options = {}) {
-    const paths = options.paths || runtimePaths(); if (isInside(paths.uploadsPath, paths.backupRoot)) throw new Error("Backup root cannot be inside uploads.");
+    const paths = options.paths || runtimePaths();
+    if (isInside(paths.uploadsPath, paths.backupRoot)) throw new Error("Backup root cannot be inside uploads.");
+    if (isInside(paths.attachmentsPath, paths.uploadsPath) || isInside(paths.uploadsPath, paths.attachmentsPath)) throw new Error("Attachment and upload roots must not contain each other.");
+    if (isInside(paths.attachmentsPath, paths.backupRoot) || isInside(paths.backupRoot, paths.attachmentsPath)) throw new Error("Backup and attachment roots must not contain each other.");
     await fs.promises.mkdir(paths.backupRoot, { recursive: true }); const name = backupName(options.prefix); const finalPath = path.join(paths.backupRoot, name); const tempPath = `${finalPath}.tmp-${crypto.randomBytes(4).toString("hex")}`;
     if (fs.existsSync(finalPath)) throw new Error("Backup destination already exists.");
     try {
-        await fs.promises.mkdir(path.join(tempPath, "database"), { recursive: true }); await fs.promises.mkdir(path.join(tempPath, "uploads", "products"), { recursive: true });
+        await fs.promises.mkdir(path.join(tempPath, "database"), { recursive: true }); await fs.promises.mkdir(path.join(tempPath, "uploads", "products"), { recursive: true }); await fs.promises.mkdir(path.join(tempPath, "attachments", "orders"), { recursive: true });
         const dbTarget = path.join(tempPath, "database", "matmix.db"); await vacuumInto(paths.dbPath, dbTarget); const dbCheck = await verifyDatabase(dbTarget);
-        const uploads = await copyUploads(paths.uploadsPath, path.join(tempPath, "uploads", "products")); const dbStat = await fs.promises.stat(dbTarget);
-        const manifest = { formatVersion: FORMAT_VERSION, application: "MatMix", createdAt: new Date().toISOString(), database: { filename: "database/matmix.db", size: dbStat.size, sha256: await sha256(dbTarget), integrity: dbCheck.integrity, foreignKeys: dbCheck.foreignKeys }, uploads, schemaVersion: dbCheck.schemaVersion, applicationCommit: await gitCommit(path.resolve(__dirname, "..", "..")), nodeVersion: process.version, platform: `${process.platform}-${process.arch}`, backupToolVersion: TOOL_VERSION };
+        const uploads = await copyUploads(paths.uploadsPath, path.join(tempPath, "uploads", "products"));
+        const attachments = await copyAttachments(dbTarget, paths.attachmentsPath, path.join(tempPath, "attachments", "orders"));
+        const dbStat = await fs.promises.stat(dbTarget);
+        const manifest = { formatVersion: FORMAT_VERSION, application: "MatMix", createdAt: new Date().toISOString(), database: { filename: "database/matmix.db", size: dbStat.size, sha256: await sha256(dbTarget), integrity: dbCheck.integrity, foreignKeys: dbCheck.foreignKeys }, uploads, attachments, schemaVersion: dbCheck.schemaVersion, applicationCommit: await gitCommit(path.resolve(__dirname, "..", "..")), nodeVersion: process.version, platform: `${process.platform}-${process.arch}`, backupToolVersion: TOOL_VERSION };
         await fs.promises.writeFile(path.join(tempPath, "manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`, { flag: "wx" }); await verifyBackup(tempPath); await fs.promises.rename(tempPath, finalPath);
         if (!options.skipRetention) await applyRetention(paths.backupRoot, paths.retentionCount, finalPath);
         return { success: true, backupPath: finalPath, manifest, references: await verifyReferences(path.join(finalPath, "database", "matmix.db"), path.join(finalPath, "uploads", "products")) };
@@ -161,8 +250,8 @@ async function createBackup(options = {}) {
 }
 
 async function applyRetention(root, keep, current) {
-    const entries = (await fs.promises.readdir(root, { withFileTypes: true })).filter(e => e.isDirectory() && /^matmix-backup-\d{4}-\d{2}-\d{2}-\d{2}-\d{2}-\d{2}$/.test(e.name)).map(e => path.join(root, e.name)).sort().reverse();
+    const entries = (await fs.promises.readdir(root, { withFileTypes: true })).filter(e => e.isDirectory() && /^matmix-backup-\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}-\d{3}Z-[a-f0-9]{8}$/.test(e.name)).map(e => path.join(root, e.name)).sort().reverse();
     for (const item of entries.slice(keep)) if (path.resolve(item) !== path.resolve(current)) await fs.promises.rm(item, { recursive: true, force: true }).catch(error => console.warn("Retention delete failed:", error.message));
 }
 
-module.exports = { FORMAT_VERSION, runtimePaths, createBackup, verifyBackup, verifyDatabase, verifyReferences, safeRelative, isInside, sha256 };
+module.exports = { FORMAT_VERSION, LEGACY_FORMAT_VERSION, runtimePaths, createBackup, verifyBackup, verifyDatabase, verifyReferences, safeRelative, isInside, sha256, applyRetention };
