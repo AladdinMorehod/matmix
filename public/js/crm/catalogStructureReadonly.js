@@ -249,6 +249,9 @@
                 <section><h3>Проблемы</h3>${(node.issues || []).length
                     ? `<ul class="structure-detail-issues">${node.issues.map(issue => `<li class="${escapeHtml(issue.severity || "info")}"><strong>${escapeHtml(getIssueLabel(issue.code))}</strong><span>${escapeHtml(getIssueMessage(issue))}</span></li>`).join("")}</ul>`
                     : `<p class="settings-muted">Проблем не найдено.</p>`}</section>
+                ${typeof options.onShowProducts === "function" && !node.orphan
+                    ? `<button class="structure-show-products" type="button" data-readonly-show-products data-node-type="${escapeHtml(node.type)}" data-node-id="${escapeHtml(node.id)}">Показать товары</button>`
+                    : ""}
                 <section class="structure-products-panel"><div class="structure-products-toolbar">
                     <label><span>Поиск товаров</span><input data-readonly-products-search type="search" value="${escapeHtml(state.productsSearch)}" placeholder="Название, MAT, группа"></label>
                     <label><span>Статус</span><select data-readonly-products-status>
@@ -378,6 +381,20 @@
         }
 
         function handleClick(event) {
+            const showProducts = event.target.closest("[data-readonly-show-products]");
+            if (showProducts && typeof options.onShowProducts === "function") {
+                const type = showProducts.dataset.nodeType;
+                const id = showProducts.dataset.nodeId;
+                const node = findNode(type, id);
+                options.onShowProducts({
+                    mode: type === "withoutStructure" ? "withoutStructure" : "node",
+                    nodeId: type === "withoutStructure" ? null : id,
+                    label: type === "withoutStructure"
+                        ? "Товары без структуры"
+                        : [node?.parentName, node?.name].filter(Boolean).join(" → ")
+                });
+                return;
+            }
             const summary = event.target.closest("[data-readonly-summary-filter]");
             if (summary) {
                 state.filter = summary.dataset.readonlySummaryFilter || "all";
@@ -439,8 +456,16 @@
             }
         }
 
+        function invalidate() {
+            state.audit = null;
+            state.loadedAt = "";
+            state.detail = null;
+            state.products = [];
+            render();
+        }
+
         bind(root);
-        return { bind, load, render, getState: () => state, openDetail };
+        return { bind, load, render, invalidate, getState: () => state, openDetail };
     }
 
     global.createCatalogStructureReadonlyView = createCatalogStructureReadonlyView;

@@ -412,6 +412,7 @@ productsView?.addEventListener("change", event => {
 
     const categoryFilter = event.target.closest("#productCategoryFilter");
     if (categoryFilter) {
+        activeProductStructureFilter = null;
         productFilters.category = categoryFilter.value;
         productFilters.page = 1;
         clearProductSelection();
@@ -429,6 +430,12 @@ productsView?.addEventListener("change", event => {
 });
 
 productsView?.addEventListener("click", event => {
+    const structureFilterReset = event.target.closest("[data-product-structure-filter-reset]");
+    if (structureFilterReset) {
+        resetProductStructureFilter();
+        return;
+    }
+
     const catalogModeButton = event.target.closest("[data-catalog-mode]");
     if (catalogModeButton) {
         setCatalogInnerMode(catalogModeButton.dataset.catalogMode);

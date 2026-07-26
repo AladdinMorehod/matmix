@@ -37,6 +37,7 @@ async function createCatalogStructureCategory(view) {
     const result = await CrmApi.post("/api/products/structure/categories", {
         name: String(formData.get("name") || "").trim()
     });
+    invalidateCatalogStructureReadonlyCache();
     notifySuccess(`Категория "${result.item?.name || result.data?.item?.name || ""}" создана.`);
     await view.load({ force: true });
 }
@@ -48,6 +49,7 @@ async function moveCatalogStructureCategory(button, view) {
     button.disabled = true;
     try {
         await CrmApi.patch(`/api/products/structure/categories/${categoryId}/order`, { targetIndex });
+        invalidateCatalogStructureReadonlyCache();
         notifySuccess("Порядок категорий обновлен.");
         await view.load({ force: true });
     } catch (error) {
@@ -88,6 +90,7 @@ async function moveSelectedCatalogSubcategories(view) {
     });
     if (!confirmed) return;
     const result = await CrmApi.post("/api/products/structure/subcategories/move", payload);
+    invalidateCatalogStructureReadonlyCache();
     state.selectedSubcategories.clear();
     notifySuccess(`Перемещено подкатегорий: ${result.data?.moved || 0}. Обновлено товаров: ${result.data?.affectedProducts || 0}.`);
     await view.load({ force: true });
@@ -132,7 +135,8 @@ function mountEmbeddedCatalogStructureView(root) {
             root,
             title: "Структура",
             paginationId: "embedded-structure-products",
-            allowMutations: false
+            allowMutations: false,
+            onShowProducts: showProductsForStructure
         });
     } else {
         embeddedCatalogStructureView.bind(root);
@@ -142,4 +146,8 @@ function mountEmbeddedCatalogStructureView(root) {
 
 function loadEmbeddedCatalogStructureAudit(options = {}) {
     return embeddedCatalogStructureView?.load({ force: options.force === true });
+}
+
+function invalidateCatalogStructureReadonlyCache() {
+    embeddedCatalogStructureView?.invalidate();
 }
