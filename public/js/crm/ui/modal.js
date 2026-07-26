@@ -5,9 +5,10 @@
         return modalStack[modalStack.length - 1] || null;
     }
 
-    function closeModal(result = false) {
+    function closeModal(result = false, force = false) {
         const activeModal = getActiveModal();
         if (!activeModal) return;
+        if (activeModal.locked && !force) return;
         const { overlay, previousFocus, resolve } = activeModal;
         modalStack.pop();
         activeModal.overlayPointerStarted = false;
@@ -71,7 +72,7 @@
                 </section>
             `;
 
-            const modal = { overlay, previousFocus, resolve, overlayPointerStarted: false };
+            const modal = { overlay, previousFocus, resolve, overlayPointerStarted: false, locked: false };
             modalStack.push(modal);
             document.body.appendChild(overlay);
 
@@ -113,7 +114,7 @@
                 </section>
             `;
 
-            const modal = { overlay, previousFocus, resolve, overlayPointerStarted: false };
+            const modal = { overlay, previousFocus, resolve, overlayPointerStarted: false, locked: false };
             modalStack.push(modal);
             document.body.appendChild(overlay);
 
@@ -130,14 +131,37 @@
             bindOverlayClose(overlay, null);
             closeButton.addEventListener("click", () => closeModal(null));
             cancelButton.addEventListener("click", () => closeModal(null));
-            formElement.addEventListener("submit", event => {
+            const setBusy = (isBusy, busyText = "Сохранение...") => {
+                modal.locked = Boolean(isBusy);
+                closeButton.disabled = modal.locked;
+                cancelButton.disabled = modal.locked;
+                const submitButton = formElement.querySelector(".crm-modal-primary");
+                submitButton.disabled = modal.locked;
+                submitButton.textContent = modal.locked
+                    ? busyText
+                    : (options.submitText || "Сохранить");
+            };
+            formElement.addEventListener("submit", async event => {
                 event.preventDefault();
+                if (modal.locked) return;
+                const formData = new FormData(formElement);
+                if (typeof options.onSubmit === "function") {
+                    const shouldClose = await options.onSubmit(formData, {
+                        overlay,
+                        dialog,
+                        formElement,
+                        setBusy,
+                        close: result => closeModal(result, true)
+                    });
+                    if (!shouldClose) return;
+                    setBusy(false);
+                }
                 if (draftKey) {
                     window.CrmDrafts?.clear(draftKey);
                 }
-                closeModal(new FormData(formElement));
+                closeModal(formData);
             });
-            options.onReady?.({ overlay, dialog, formElement, close: closeModal });
+            options.onReady?.({ overlay, dialog, formElement, close: closeModal, setBusy });
 
             window.setTimeout(() => formElement.querySelector("input, select, textarea, button")?.focus(), 0);
         });

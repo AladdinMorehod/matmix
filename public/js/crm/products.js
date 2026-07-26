@@ -115,6 +115,17 @@ function renderProductGroupOptions() {
         .join("");
 }
 
+function renderAllProductSubcategoryOptions() {
+    const subcategories = [...new Set(productStructure
+        .flatMap(category => category.subcategories || [])
+        .map(subcategory => String(subcategory.name || "").trim())
+        .filter(Boolean))]
+        .sort((first, second) => first.localeCompare(second, "ru"));
+    return `<option value="">Выберите подкатегорию</option>${subcategories
+        .map(subcategory => `<option value="${escapeHtml(subcategory)}">${escapeHtml(subcategory)}</option>`)
+        .join("")}`;
+}
+
 function getStructureCategoryByName(value) {
     const normalized = normalizeProductStructureName(value);
     return productStructure.find(category => normalizeProductStructureName(category.name) === normalized) || null;
@@ -346,6 +357,7 @@ function renderProductImageBulkToolbar() {
             <button class="products-all-image-upload" type="button" disabled>Назначить всему каталогу</button>
             <small data-products-batch-image-file>Файл не выбран</small>
             <button class="products-batch-image-upload" type="button" disabled>Назначить фото</button>
+            <button class="products-bulk-structure-edit" type="button"${selectedCount ? "" : " hidden"}>Изменить структуру</button>
             <button class="products-selection-clear" type="button"${selectedCount ? "" : " disabled"}>Снять выбор</button>
         </section>
     `;
@@ -402,6 +414,7 @@ function updateProductSelectionControls() {
     const filterButton = productsView?.querySelector(".products-filter-image-upload");
     const allButton = productsView?.querySelector(".products-all-image-upload");
     const clearButton = productsView?.querySelector(".products-selection-clear");
+    const structureButton = productsView?.querySelector(".products-bulk-structure-edit");
     const input = productsView?.querySelector("#productBatchImageInput");
     const fileLabel = productsView?.querySelector("[data-products-batch-image-file]");
     const file = input?.files?.[0] || null;
@@ -417,6 +430,7 @@ function updateProductSelectionControls() {
     if (filterButton) filterButton.disabled = !canUseFiltered;
     if (allButton) allButton.disabled = !file || totalCount <= 0;
     if (clearButton) clearButton.disabled = !selectedCount;
+    if (structureButton) structureButton.hidden = !selectedCount;
 }
 
 function setProductSelected(productId, isSelected) {
@@ -433,6 +447,161 @@ function clearProductSelection() {
         input.checked = false;
     });
     updateProductSelectionControls();
+}
+
+function getBulkProductStructureRequest(formData) {
+    const changes = {};
+    const changeCategory = formData.get("changeCategory") === "on";
+    const changeSubcategory = formData.get("changeSubcategory") === "on";
+    const changeProductGroup = formData.get("changeProductGroup") === "on";
+
+    if (changeCategory) changes.category = String(formData.get("category") || "").trim();
+    if (changeSubcategory) changes.subcategory = String(formData.get("subcategory") || "").trim();
+    if (changeProductGroup) changes.productGroup = String(formData.get("productGroup") || "").trim();
+
+    if (!Object.keys(changes).length) {
+        notifyWarning("Выберите хотя бы одно поле для изменения.");
+        return null;
+    }
+    if (changeCategory && !changes.category) {
+        notifyWarning("Выберите новую категорию.");
+        return null;
+    }
+    if (changeProductGroup && !changes.productGroup) {
+        notifyWarning("Пустая группа не применяется массово.");
+        return null;
+    }
+
+    return {
+        productIds: [...selectedProductIds].map(Number),
+        changes
+    };
+}
+
+function renderBulkProductStructureConfirmation(request) {
+    const valueOrUnchanged = (field, label) => Object.prototype.hasOwnProperty.call(request.changes, field)
+        ? `${label}: ${escapeHtml(request.changes[field] || "пустое значение")}`
+        : `${label}: не изменяется`;
+    return `
+        <section class="bulk-structure-confirmation" role="status">
+            <strong>Будут изменены ${request.productIds.length} товаров.</strong>
+            <span>${valueOrUnchanged("category", "Категория")}</span>
+            <span>${valueOrUnchanged("subcategory", "Подкатегория")}</span>
+            <span>${valueOrUnchanged("productGroup", "Группа")}</span>
+            ${Object.prototype.hasOwnProperty.call(request.changes, "category")
+                && !Object.prototype.hasOwnProperty.call(request.changes, "subcategory")
+                ? "<small>Существующие подкатегории должны быть совместимы с новой категорией.</small>"
+                : ""}
+        </section>
+    `;
+}
+
+async function openBulkProductStructureForm() {
+    if (!canEditProducts() || !selectedProductIds.size) return;
+
+    await CrmModal.form({
+        title: "Изменить структуру товаров",
+        description: `Выбрано товаров: ${selectedProductIds.size}`,
+        submitText: "Продолжить",
+        content: `
+            <div class="product-form-grid bulk-product-structure-form">
+                <label class="product-checkbox">
+                    <input name="changeCategory" type="checkbox">
+                    <span>Изменить категорию</span>
+                </label>
+                <label>
+                    <span>Категория</span>
+                    <select name="category" disabled>${renderCategoryOptions("")}</select>
+                </label>
+                <label class="product-checkbox">
+                    <input name="changeSubcategory" type="checkbox">
+                    <span>Изменить подкатегорию</span>
+                </label>
+                <label>
+                    <span>Подкатегория</span>
+                    <select name="subcategory" disabled>${renderAllProductSubcategoryOptions()}</select>
+                </label>
+                <label class="product-checkbox">
+                    <input name="changeProductGroup" type="checkbox">
+                    <span>Изменить группу</span>
+                </label>
+                <label>
+                    <span>Группа товаров</span>
+                    <input
+                        name="productGroup"
+                        type="text"
+                        list="bulk-product-group-options"
+                        maxlength="${productGroupMaxLength}"
+                        autocomplete="off"
+                        disabled
+                    >
+                    <datalist id="bulk-product-group-options">${renderProductGroupOptions()}</datalist>
+                </label>
+                <div class="product-form-wide" data-bulk-structure-confirmation></div>
+            </div>
+        `,
+        onReady({ formElement }) {
+            const categoryCheckbox = formElement.elements.changeCategory;
+            const subcategoryCheckbox = formElement.elements.changeSubcategory;
+            const groupCheckbox = formElement.elements.changeProductGroup;
+            const categorySelect = formElement.elements.category;
+            const subcategorySelect = formElement.elements.subcategory;
+            const groupInput = formElement.elements.productGroup;
+            const submitButton = formElement.querySelector(".crm-modal-primary");
+            const confirmation = formElement.querySelector("[data-bulk-structure-confirmation]");
+
+            const resetConfirmation = () => {
+                delete formElement.dataset.confirmedRequest;
+                confirmation.innerHTML = "";
+                submitButton.textContent = "Продолжить";
+            };
+            const updateEnabledFields = () => {
+                categorySelect.disabled = !categoryCheckbox.checked;
+                subcategorySelect.disabled = !subcategoryCheckbox.checked;
+                groupInput.disabled = !groupCheckbox.checked;
+            };
+            formElement.addEventListener("change", event => {
+                updateEnabledFields();
+                if (event.target === categorySelect && categoryCheckbox.checked) {
+                    subcategorySelect.innerHTML = renderSubcategoryOptions(categorySelect.value, "");
+                    subcategorySelect.value = "";
+                } else if (event.target === categoryCheckbox || event.target === subcategoryCheckbox) {
+                    subcategorySelect.innerHTML = categoryCheckbox.checked && categorySelect.value
+                        ? renderSubcategoryOptions(categorySelect.value, "")
+                        : renderAllProductSubcategoryOptions();
+                    subcategorySelect.value = "";
+                }
+                resetConfirmation();
+            });
+            formElement.addEventListener("input", resetConfirmation);
+            updateEnabledFields();
+        },
+        async onSubmit(formData, controls) {
+            const request = getBulkProductStructureRequest(formData);
+            if (!request) return false;
+            const serializedRequest = JSON.stringify(request);
+            if (controls.formElement.dataset.confirmedRequest !== serializedRequest) {
+                controls.formElement.dataset.confirmedRequest = serializedRequest;
+                controls.formElement.querySelector("[data-bulk-structure-confirmation]").innerHTML =
+                    renderBulkProductStructureConfirmation(request);
+                controls.formElement.querySelector(".crm-modal-primary").textContent = "Изменить товары";
+                return false;
+            }
+
+            controls.setBusy(true, "Изменение...");
+            try {
+                const result = await CrmApi.patch("/api/products/bulk/structure", request);
+                clearProductSelection();
+                await loadProducts({ preserveControls: true });
+                notifySuccess(`Изменено товаров: ${result.updatedCount}.`);
+                return true;
+            } catch (error) {
+                notifyError(error, "Не удалось изменить структуру выбранных товаров.");
+                controls.setBusy(false);
+                return false;
+            }
+        }
+    });
 }
 
 function appendProductsToList(nextProducts = []) {

@@ -1685,6 +1685,20 @@ a[role="button"],
     font-size: 0.9rem;
 }
 
+.bulk-structure-confirmation {
+    display: grid;
+    gap: 6px;
+    padding: 12px;
+    border: 1px solid rgba(32, 87, 66, 0.14);
+    border-radius: 8px;
+    background: rgba(244, 246, 241, 0.86);
+}
+
+.bulk-structure-confirmation span,
+.bulk-structure-confirmation small {
+    overflow-wrap: anywhere;
+}
+
 .products-bulk-image input {
     max-width: 260px;
 }

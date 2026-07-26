@@ -384,6 +384,7 @@ productsView?.addEventListener("input", event => {
 
     productFilters.search = searchInput.value.trim();
     productFilters.page = 1;
+    clearProductSelection();
     window.clearTimeout(productsView.searchTimer);
     productsView.searchTimer = window.setTimeout(() => {
         loadProducts({ preserveControls: true });
@@ -413,6 +414,7 @@ productsView?.addEventListener("change", event => {
     if (categoryFilter) {
         productFilters.category = categoryFilter.value;
         productFilters.page = 1;
+        clearProductSelection();
         loadProducts();
         return;
     }
@@ -421,6 +423,7 @@ productsView?.addEventListener("change", event => {
     if (statusFilterElement) {
         productFilters.status = statusFilterElement.value;
         productFilters.page = 1;
+        clearProductSelection();
         loadProducts();
     }
 });
@@ -429,6 +432,7 @@ productsView?.addEventListener("click", event => {
     const paginationButton = event.target.closest(".crm-pagination [data-page]");
     if (paginationButton) {
         productFilters.page = Number(paginationButton.dataset.page) || 1;
+        clearProductSelection();
         loadProducts();
         return;
     }
@@ -464,6 +468,12 @@ productsView?.addEventListener("click", event => {
     const batchImageButton = event.target.closest(".products-batch-image-upload");
     if (batchImageButton) {
         uploadImageForSelectedProducts();
+        return;
+    }
+
+    const bulkStructureButton = event.target.closest(".products-bulk-structure-edit");
+    if (bulkStructureButton) {
+        openBulkProductStructureForm();
         return;
     }
 
