@@ -32,13 +32,21 @@ async function prepare() {
     await run(db, "DELETE FROM products");
     await run(db, "DELETE FROM catalog_structure");
 
-    await run(
+    const category = await run(
         db,
         `INSERT INTO catalog_structure (
             type, name, normalized_name, external_code, parent_id,
             sort_order, is_active, is_system, created_at, updated_at
         ) VALUES (?, ?, ?, ?, NULL, 1, 1, 0, ?, ?)`,
-        ["category", "Сухие смеси", "сухие смеси", "DRY-MIXES", now, now]
+        ["category", "Сухие смеси", "сухие смеси", "CAT-000001", now, now]
+    );
+    await run(
+        db,
+        `INSERT INTO catalog_structure (
+            type, name, normalized_name, external_code, parent_id,
+            sort_order, is_active, is_system, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, 1, 1, 0, ?, ?)`,
+        ["subcategory", "Штукатурки", "штукатурки", "SUB-000001", category.id, now, now]
     );
 
     await run(
@@ -49,7 +57,7 @@ async function prepare() {
             is_active, sort_order, created_at, updated_at
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, 1, ?, ?)`,
         [
-            "MAT-E2E-001",
+            "MAT-000001",
             "Ротбанд тестовый",
             "rotband-test",
             "Сухие смеси",
