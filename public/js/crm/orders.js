@@ -353,8 +353,19 @@ async function loadOrderAttachments(orderId) {
 }
 
 function renderOverviewTab(order) {
+    const customerName = String(order.customerName || "").trim() || "Не указано";
+    const customerPhone = String(order.phone || "").trim() || "Телефон не указан";
+
     return `
         <div class="order-sections">
+            <section class="order-section order-section-wide order-customer-summary">
+                <h2>Клиент</h2>
+                <div class="delivery-grid">
+                    ${renderInfoRow("Имя", customerName)}
+                    ${renderInfoRow("Основной телефон", customerPhone)}
+                </div>
+            </section>
+
             <section class="order-section order-delivery-section">
                 <h2>Доставка и оплата</h2>
                 <div class="delivery-grid">
