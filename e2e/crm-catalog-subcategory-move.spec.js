@@ -39,11 +39,8 @@ test("admin previews and moves a subcategory from embedded structure", async ({ 
     const after = await (await page.request.get("/api/products/structure/subcategories/move-context")).json();
     expect(after.subcategories.find(candidate => candidate.id === item.id).parentId).toBe(target.id);
     await expect(page.locator("#catalogEmbeddedStructurePanel .structure-tree")).toContainText(item.name);
-    await page.evaluate(async () => {
-        setActiveSection("catalogStructure");
-        await loadCatalogStructureAudit({ force: true });
-    });
-    await expect(page.locator("#catalogStructureView .structure-tree")).toContainText(item.name);
+    await page.evaluate(() => setActiveSection("catalogStructure"));
+    await expect(page.locator("#catalogEmbeddedStructurePanel .structure-tree")).toContainText(item.name);
     const restoreContext = await (await page.request.get("/api/products/structure/subcategories/move-context")).json();
     const restore = await page.request.post("/api/products/structure/subcategories/move", {
         data: { subcategoryIds: [item.id], targetCategoryId: item.parentId, expectedVersion: restoreContext.version }

@@ -48,11 +48,8 @@ test("admin creates category and subcategory from embedded toolbar", async ({ pa
     expect(subcategory.parentId).toBe(category.id);
     expect(subcategory.productCount).toBe(0);
 
-    await page.evaluate(async () => {
-        setActiveSection("catalogStructure");
-        await loadCatalogStructureAudit({ force: true });
-    });
-    await expect(page.locator("#catalogStructureView .structure-tree")).toContainText(categoryName);
+    await page.evaluate(() => setActiveSection("catalogStructure"));
+    await expect(page.locator("#catalogEmbeddedStructurePanel .structure-tree")).toContainText(categoryName);
 });
 
 test("embedded create validation keeps modal open", async ({ page }) => {

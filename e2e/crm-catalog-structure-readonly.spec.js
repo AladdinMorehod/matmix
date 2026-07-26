@@ -160,15 +160,12 @@ test("embedded structure renders diagnostics, details and no mutations", async (
     await embedded.locator("[data-readonly-node-type='withoutStructure']").click();
     await expect(embedded.locator(".structure-detail-panel")).toContainText("Товары без структуры");
 
-    await page.evaluate(() => {
-        setActiveSection("catalogStructure");
-        loadCatalogStructureAudit({ force: true });
-    });
-    await expect(page.locator("#catalogStructureView .structure-create-category")).toBeVisible();
-    await expect(page.locator("#catalogStructureView [data-readonly-category-order]")).toHaveCount(4);
+    await page.evaluate(() => setActiveSection("catalogStructure"));
+    await expect(page.locator("#catalogEmbeddedStructurePanel .structure-create-embedded-category")).toBeVisible();
+    await expect(page.locator("#catalogStructureView")).toHaveCount(0);
 });
 
-test("manager sees read-only mode and old admin controls remain scoped", async ({ page }) => {
+test("manager sees read-only embedded mode through legacy section mapping", async ({ page }) => {
     const counters = { audit: 0, failNext: false };
     await installApiMocks(page, counters);
     await login(page, "e2e_manager", "E2eManager!234");
@@ -178,12 +175,9 @@ test("manager sees read-only mode and old admin controls remain scoped", async (
     await expect(page.locator("#catalogEmbeddedStructurePanel .structure-tree")).toBeVisible();
     await expect(page.locator("#catalogEmbeddedStructurePanel .structure-create-category")).toHaveCount(0);
 
-    await page.evaluate(() => {
-        setActiveSection("catalogStructure");
-        loadCatalogStructureAudit({ force: true });
-    });
-    await expect(page.locator("#catalogStructureView .structure-tree")).toBeVisible();
-    await expect(page.locator("#catalogStructureView .structure-create-category")).toHaveCount(0);
+    await page.evaluate(() => setActiveSection("catalogStructure"));
+    await expect(page.locator("#catalogEmbeddedStructurePanel .structure-tree")).toBeVisible();
+    await expect(page.locator("#catalogEmbeddedStructurePanel .structure-create-embedded-category")).toHaveCount(0);
 });
 
 test("embedded error retries and mobile layout stays within 320px", async ({ page }) => {
