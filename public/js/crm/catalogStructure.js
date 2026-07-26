@@ -13,11 +13,99 @@ function renderCatalogStructureMutationActions({ state }) {
     `;
 }
 
-function renderEmbeddedCatalogStructureActions() {
+function renderEmbeddedCatalogStructureActions({ state }) {
     return canEditCatalogStructure()
-        ? `<button class="structure-configure-order" type="button">Настроить порядок</button>
+        ? `<button class="structure-create-embedded-category" type="button">Создать категорию</button>
+           <button class="structure-create-embedded-subcategory" type="button" ${(state.audit?.categories || []).length ? "" : "disabled"}>Создать подкатегорию</button>
+           <button class="structure-configure-order" type="button">Настроить порядок</button>
            <button class="structure-move-subcategories" type="button">Переместить подкатегории</button>`
         : "";
+}
+
+function renderStructureCreateError() {
+    return `<div class="structure-create-error" role="alert" aria-live="polite" hidden></div>`;
+}
+
+async function openEmbeddedCategoryCreateModal() {
+    await CrmModal.form({
+        title: "Создать категорию",
+        content: `${renderStructureCreateError()}
+            <div class="product-form-grid">
+                <label class="product-form-wide"><span>Название</span><input name="name" type="text" required autofocus></label>
+                <label class="product-form-wide"><span>Позиция</span><select name="position">
+                    <option value="end">В конец</option><option value="start">В начало</option>
+                </select></label>
+            </div>`,
+        submitText: "Создать",
+        async onSubmit(formData, controls) {
+            controls.setBusy(true, "Создание...");
+            const errorBox = controls.formElement.querySelector(".structure-create-error");
+            try {
+                const item = await CatalogStructureCreate.createCategory({
+                    name: formData.get("name"),
+                    position: formData.get("position")
+                });
+                await loadEmbeddedCatalogStructureAudit({ force: true });
+                notifySuccess(`Категория "${item.name}" создана.`);
+                controls.close(true);
+            } catch (error) {
+                controls.setBusy(false);
+                errorBox.hidden = false;
+                errorBox.textContent = error.message || "Не удалось создать категорию.";
+            }
+            return false;
+        }
+    });
+}
+
+async function openEmbeddedSubcategoryCreateModal() {
+    let audit = embeddedCatalogStructureView?.getState().audit;
+    if (!audit) {
+        await loadEmbeddedCatalogStructureAudit({ force: true });
+        audit = embeddedCatalogStructureView?.getState().audit;
+    }
+    const categories = (audit?.categories || [])
+        .filter(category => category.type === "category" && category.isActive && !category.parentId);
+    if (!categories.length) {
+        notifyWarning("Сначала создайте активную категорию.");
+        return;
+    }
+    await CrmModal.form({
+        title: "Создать подкатегорию",
+        content: `${renderStructureCreateError()}
+            <div class="product-form-grid">
+                <label class="product-form-wide"><span>Категория</span><select name="parentId" required>
+                    <option value="">Выберите категорию</option>
+                    ${categories.map(category => `<option value="${escapeHtml(category.id)}">${escapeHtml(category.name)}</option>`).join("")}
+                </select></label>
+                <label class="product-form-wide"><span>Название подкатегории</span><input name="name" type="text" required></label>
+                <label class="product-form-wide"><span>Позиция</span><select name="position">
+                    <option value="end">В конец категории</option><option value="start">В начало категории</option>
+                </select></label>
+            </div>`,
+        submitText: "Создать",
+        async onSubmit(formData, controls) {
+            controls.setBusy(true, "Создание...");
+            const errorBox = controls.formElement.querySelector(".structure-create-error");
+            try {
+                const parentId = Number(formData.get("parentId"));
+                const parent = categories.find(category => Number(category.id) === parentId);
+                const item = await CatalogStructureCreate.createSubcategory({
+                    parentId,
+                    name: formData.get("name"),
+                    position: formData.get("position")
+                });
+                await loadEmbeddedCatalogStructureAudit({ force: true });
+                notifySuccess(`Подкатегория "${item.name}" создана в категории "${parent?.name || ""}".`);
+                controls.close(true);
+            } catch (error) {
+                controls.setBusy(false);
+                errorBox.hidden = false;
+                errorBox.textContent = error.message || "Не удалось создать подкатегорию.";
+            }
+            return false;
+        }
+    });
 }
 
 function renderSubcategoryMoveSelection(context, search = "") {
@@ -243,7 +331,11 @@ async function openCategoryOrderModal() {
 }
 
 function handleEmbeddedCatalogStructureAction(event) {
-    if (event.target.closest(".structure-configure-order")) {
+    if (event.target.closest(".structure-create-embedded-category")) {
+        openEmbeddedCategoryCreateModal();
+    } else if (event.target.closest(".structure-create-embedded-subcategory")) {
+        openEmbeddedSubcategoryCreateModal();
+    } else if (event.target.closest(".structure-configure-order")) {
         openCategoryOrderModal();
     } else if (event.target.closest(".structure-move-subcategories")) {
         openEmbeddedSubcategoryMoveModal();
@@ -271,11 +363,11 @@ async function createCatalogStructureCategory(view) {
         submitText: "Создать"
     });
     if (!formData) return;
-    const result = await CrmApi.post("/api/products/structure/categories", {
-        name: String(formData.get("name") || "").trim()
+    const item = await CatalogStructureCreate.createCategory({
+        name: String(formData.get("name") || "").trim(),
+        position: "end"
     });
-    invalidateCatalogStructureReadonlyCache();
-    notifySuccess(`Категория "${result.item?.name || result.data?.item?.name || ""}" создана.`);
+    notifySuccess(`Категория "${item?.name || ""}" создана.`);
     await view.load({ force: true });
 }
 

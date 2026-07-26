@@ -1840,6 +1840,15 @@ a[role="button"],
     overflow-wrap: anywhere;
 }
 
+.structure-create-error {
+    margin-bottom: 12px;
+    padding: 10px;
+    border-radius: 6px;
+    background: #fff1f1;
+    color: #9b1c1c;
+    overflow-wrap: anywhere;
+}
+
 .bulk-structure-confirmation {
     display: grid;
     gap: 6px;

@@ -24,6 +24,20 @@ function cleanCatalogStructureName(value) {
     return String(value || "").replace(/\s+/g, " ").trim();
 }
 
+function validateCatalogStructureName(value, label) {
+    if (typeof value !== "string") {
+        throw createStructureError(400, `${label} должно быть строкой.`);
+    }
+    if (/[\u0000-\u001f\u007f]/.test(value)) {
+        throw createStructureError(400, `${label} не должно содержать управляющие символы.`);
+    }
+    const cleanName = cleanCatalogStructureName(value);
+    if (cleanName.length > 200) {
+        throw createStructureError(400, `${label} не должно превышать 200 символов.`);
+    }
+    return cleanName;
+}
+
 function createStructureError(status, message) {
     const error = new Error(message);
     error.status = status;
@@ -464,7 +478,7 @@ async function moveRootCategoryToIndex(db, { categoryId, targetIndex }) {
 }
 
 async function createCategory(db, { name, position = "end", afterId = null }) {
-    const cleanName = cleanCatalogStructureName(name);
+    const cleanName = validateCatalogStructureName(name, "Название категории");
     if (isSkippedCatalogStructureName(cleanName)) {
         throw createStructureError(400, "Укажите название категории.");
     }
@@ -507,7 +521,7 @@ async function createSubcategory(db, { categoryId, name, position = "end", after
         throw createStructureError(400, "Выберите категорию.");
     }
 
-    const cleanName = cleanCatalogStructureName(name);
+    const cleanName = validateCatalogStructureName(name, "Название подкатегории");
     if (isSkippedCatalogStructureName(cleanName)) {
         throw createStructureError(400, "Укажите название подкатегории.");
     }
