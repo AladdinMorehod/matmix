@@ -25,7 +25,6 @@
             query: "",
             filter: "all",
             expanded: new Set(),
-            selectedSubcategories: new Set(),
             detail: null,
             products: [],
             productsPagination: normalizePaginationMeta(),
@@ -36,7 +35,6 @@
             requestId: 0,
             productsSearchTimer: null
         };
-        const allowMutations = options.allowMutations === true;
 
         function getIssueLabel(code) {
             return issueLabels[code] || code || "Проблема";
@@ -153,9 +151,7 @@
         }
 
         function renderSubcategory(item) {
-            const selected = state.selectedSubcategories.has(String(item.id));
             return `<div class="structure-subcategory${item.orphan ? " structure-orphan" : ""}">
-                ${allowMutations ? `<input type="checkbox" data-readonly-subcategory-select="${escapeHtml(item.id)}" ${selected ? "checked" : ""} aria-label="Выбрать ${escapeHtml(item.name)}">` : ""}
                 <span><strong>${escapeHtml(item.name)}</strong>
                     <small>${escapeHtml(item.parentName || "Без родителя")} · ${escapeHtml(item.productCount || 0)} товаров · sort ${escapeHtml(item.sortOrder || 0)}</small>
                     ${renderIssues(item.issues || [])}
@@ -164,9 +160,8 @@
             </div>`;
         }
 
-        function renderCategory(category, rootCategories) {
+        function renderCategory(category) {
             const expanded = state.expanded.has(String(category.id));
-            const rootIndex = rootCategories.findIndex(item => Number(item.id) === Number(category.id));
             return `<article class="structure-category">
                 <div class="structure-category-header">
                     <button class="structure-toggle-button" type="button" data-readonly-toggle="${escapeHtml(category.id)}" aria-expanded="${expanded}">
@@ -175,10 +170,6 @@
                         ${renderIssues(category.issues || [])}
                     </button>
                     <button class="structure-node-detail" type="button" data-readonly-node-type="category" data-readonly-node-id="${escapeHtml(category.id)}">Детали</button>
-                    ${allowMutations && rootIndex >= 0 ? `<div class="structure-order-actions">
-                        <button type="button" data-readonly-category-order="${escapeHtml(category.id)}" data-target-index="${rootIndex - 1}" ${rootIndex === 0 ? "disabled" : ""}>Поднять</button>
-                        <button type="button" data-readonly-category-order="${escapeHtml(category.id)}" data-target-index="${rootIndex + 1}" ${rootIndex === rootCategories.length - 1 ? "disabled" : ""}>Опустить</button>
-                    </div>` : ""}
                 </div>
                 ${expanded ? `<div class="structure-subcategory-list">${(category.subcategories || []).length
                     ? category.subcategories.map(renderSubcategory).join("")
@@ -203,12 +194,11 @@
                     : `<section class="empty-state"><h2>Подкатегории не найдены</h2><p>Измените поиск или фильтр.</p></section>`;
             }
             const categories = (state.audit?.categories || []).filter(categoryMatches);
-            const roots = (state.audit?.categories || []).filter(category => category.type === "category" && !category.parentId);
             const orphanBlock = state.filter === "all" && getOrphans().length
                 ? `<section class="structure-orphans"><h2>Подкатегории без родителя</h2>${getOrphans().map(renderSubcategory).join("")}</section>`
                 : "";
             return `${categories.length
-                ? `<section class="structure-tree">${categories.map(category => renderCategory(category, roots)).join("")}</section>`
+                ? `<section class="structure-tree">${categories.map(renderCategory).join("")}</section>`
                 : `<section class="empty-state"><h2>Структура не найдена</h2><p>Измените поиск или фильтр.</p></section>`}${orphanBlock}`;
         }
 
@@ -265,7 +255,7 @@
         function render() {
             if (!root) return;
             const actions = typeof options.renderActions === "function"
-                ? options.renderActions({ state, allowMutations })
+                ? options.renderActions({ state })
                 : "";
             root.innerHTML = `<header class="crm-topbar structure-view-topbar"><div><h1>${escapeHtml(options.title || "Структура каталога")}</h1>
                 <p>Аудит категорий, подкатегорий и связей с товарами</p></div>
@@ -372,11 +362,6 @@
             } else if (event.target.matches("[data-readonly-products-status]")) {
                 state.productsStatus = event.target.value;
                 loadProducts({ page: 1 });
-            } else if (event.target.matches("[data-readonly-subcategory-select]")) {
-                const id = String(event.target.dataset.readonlySubcategorySelect);
-                if (event.target.checked) state.selectedSubcategories.add(id);
-                else state.selectedSubcategories.delete(id);
-                render();
             }
         }
 
@@ -438,8 +423,6 @@
                 render();
             } else if (typeof options.onAction === "function") {
                 options.onAction(event, { state, load, render });
-            } else if (allowMutations && typeof options.onMutationAction === "function") {
-                options.onMutationAction(event, { state, load, render });
             }
         }
 

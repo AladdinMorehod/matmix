@@ -1934,6 +1934,7 @@ router.patch("/structure/categories/order", requireRole(["admin"]), async (req, 
     }
 });
 
+// Legacy compatibility endpoint. Keep during the standalone CRM structure-view deprecation window.
 router.patch("/structure/categories/:id/order", requireRole(["admin"]), async (req, res) => {
     try {
         const order = await moveRootCategoryToIndex({ run, get, all }, {

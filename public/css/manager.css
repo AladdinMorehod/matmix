@@ -35,7 +35,6 @@ body,
 .clients-view,
 .clients-list,
 .products-view,
-.catalog-structure-view,
 .import-view,
 .settings-view {
     max-width: 100%;
@@ -1958,28 +1957,6 @@ a[role="button"],
     align-items: end;
 }
 
-.structure-problem-panel {
-    display: grid;
-    gap: 8px;
-    margin-bottom: 12px;
-    padding: 14px;
-    border: 1px solid rgba(90, 31, 40, 0.22);
-    border-radius: 8px;
-    background: #fff8f4;
-}
-
-.structure-problem-panel h2 {
-    margin: 0;
-    color: var(--brand-burgundy);
-    font-size: 1rem;
-}
-
-.structure-problem-panel p {
-    margin: 0;
-    color: var(--text-main);
-    font-weight: 650;
-}
-
 .structure-tree {
     display: grid;
     gap: 8px;
@@ -2041,28 +2018,6 @@ a[role="button"],
     color: var(--text-muted);
     font-size: 0.78rem;
     font-weight: 700;
-}
-
-.structure-order-actions {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-}
-
-.structure-order-actions button {
-    min-height: 32px;
-    border-radius: 6px;
-    border: 1px solid var(--border);
-    background: #ffffff;
-    color: var(--text-main);
-    font-weight: 800;
-    cursor: pointer;
-}
-
-.structure-order-actions button:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
 }
 
 .structure-subcategory-list {
@@ -2145,10 +2100,6 @@ a[role="button"],
     align-items: start;
 }
 
-.structure-layout > #catalogStructureTreePanel {
-    min-width: 0;
-}
-
 .structure-detail-panel,
 .structure-without-panel {
     display: grid;
@@ -2188,8 +2139,7 @@ a[role="button"],
 }
 
 .structure-detail-close,
-.structure-node-detail,
-.structure-filter-reset {
+.structure-node-detail {
     min-height: 34px;
     border: 1px solid var(--border);
     border-radius: 6px;
