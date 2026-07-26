@@ -15,8 +15,141 @@ function renderCatalogStructureMutationActions({ state }) {
 
 function renderEmbeddedCatalogStructureActions() {
     return canEditCatalogStructure()
-        ? `<button class="structure-configure-order" type="button">Настроить порядок</button>`
+        ? `<button class="structure-configure-order" type="button">Настроить порядок</button>
+           <button class="structure-move-subcategories" type="button">Переместить подкатегории</button>`
         : "";
+}
+
+function renderSubcategoryMoveSelection(context, search = "") {
+    const query = String(search || "").trim().toLocaleLowerCase("ru");
+    return context.categories.map(category => {
+        const items = context.subcategories.filter(item => Number(item.parentId) === Number(category.id)
+            && (!query || `${item.name} ${item.externalCode || ""}`.toLocaleLowerCase("ru").includes(query)));
+        if (!items.length) return "";
+        return `<fieldset class="subcategory-move-group">
+            <legend>${escapeHtml(category.name)}</legend>
+            ${items.map(item => `<label class="subcategory-move-option">
+                <input type="checkbox" name="subcategoryIds" value="${escapeHtml(item.id)}">
+                <span><strong>${escapeHtml(item.name)}</strong>
+                ${item.externalCode ? `<small>${escapeHtml(item.externalCode)}</small>` : ""}
+                <small>${item.productCount} товаров · текущая категория: ${escapeHtml(category.name)}</small></span>
+            </label>`).join("")}
+        </fieldset>`;
+    }).join("");
+}
+
+function renderSubcategoryMovePreview(preview) {
+    const conflicts = preview.conflicts || [];
+    return `<div class="subcategory-move-summary">
+        <strong>Будут перемещены ${preview.totalSubcategories} подкатегории</strong>
+        <span>Будут обновлены ${preview.totalProducts} товаров</span>
+        <span>Целевая категория: ${escapeHtml(preview.targetCategory.name)}</span>
+    </div>
+    ${(preview.subcategories || []).map(item => `<article class="subcategory-move-preview-card">
+        <strong>${escapeHtml(item.name)}</strong>
+        <span>${escapeHtml(item.sourceCategory.name)} → ${escapeHtml(preview.targetCategory.name)}</span>
+        <span>${item.productCount} товаров: ${item.activeProductCount} активных, ${item.hiddenProductCount} скрытых</span>
+    </article>`).join("")}
+    ${conflicts.map(conflict => `<div class="subcategory-move-conflict" role="alert">${escapeHtml(conflict.message)}</div>`).join("")}`;
+}
+
+async function openEmbeddedSubcategoryMoveModal() {
+    let context;
+    try {
+        context = await CrmApi.get("/api/products/structure/subcategories/move-context");
+    } catch (error) {
+        notifyError(error, "Не удалось загрузить подкатегории.");
+        return;
+    }
+    context = context.data || context;
+    let approvedPreview = null;
+    await CrmModal.form({
+        title: "Переместить подкатегории",
+        description: `Выберите до ${context.batchLimit} подкатегорий, целевую категорию и выполните preview.`,
+        content: `<label class="subcategory-move-search"><span>Поиск</span><input type="search" data-subcategory-move-search></label>
+            <div class="subcategory-move-selection">${renderSubcategoryMoveSelection(context)}</div>
+            <label class="subcategory-move-target"><span>Целевая категория</span>
+                <select name="targetCategoryId" required><option value="">Выберите категорию</option>
+                ${context.categories.map(category => `<option value="${escapeHtml(category.id)}">${escapeHtml(category.name)}</option>`).join("")}</select>
+            </label>
+            <div class="subcategory-move-count">Выбрано: 0</div>
+            <button type="button" class="subcategory-move-preview">Проверить перемещение</button>
+            <div class="subcategory-move-result"></div>
+            <button type="button" class="subcategory-move-refresh" hidden>Обновить данные</button>`,
+        submitText: "Переместить",
+        onReady({ formElement }) {
+            const submit = formElement.querySelector(".crm-modal-primary");
+            const selection = formElement.querySelector(".subcategory-move-selection");
+            const invalidatePreview = () => {
+                approvedPreview = null;
+                submit.disabled = true;
+                formElement.querySelector(".subcategory-move-result").innerHTML = "";
+                formElement.querySelector(".subcategory-move-count").textContent =
+                    `Выбрано: ${formElement.querySelectorAll('input[name="subcategoryIds"]:checked').length}`;
+            };
+            submit.disabled = true;
+            formElement.addEventListener("change", invalidatePreview);
+            formElement.querySelector("[data-subcategory-move-search]").addEventListener("input", event => {
+                const checked = new Set(Array.from(formElement.querySelectorAll('input[name="subcategoryIds"]:checked')).map(input => input.value));
+                selection.innerHTML = renderSubcategoryMoveSelection(context, event.target.value);
+                checked.forEach(id => {
+                    const input = selection.querySelector(`input[value="${CSS.escape(id)}"]`);
+                    if (input) input.checked = true;
+                });
+                invalidatePreview();
+            });
+            formElement.addEventListener("click", async event => {
+                if (event.target.closest(".subcategory-move-preview")) {
+                    const ids = Array.from(formElement.querySelectorAll('input[name="subcategoryIds"]:checked')).map(input => Number(input.value));
+                    const targetCategoryId = Number(formElement.querySelector('[name="targetCategoryId"]').value);
+                    try {
+                        const response = await CrmApi.post("/api/products/structure/subcategories/move-preview", {
+                            subcategoryIds: ids,
+                            targetCategoryId,
+                            expectedVersion: context.version
+                        });
+                        approvedPreview = response.data;
+                        formElement.querySelector(".subcategory-move-result").innerHTML = renderSubcategoryMovePreview(approvedPreview);
+                        submit.disabled = !approvedPreview.canMove;
+                    } catch (error) {
+                        formElement.querySelector(".subcategory-move-result").innerHTML =
+                            `<div class="subcategory-move-conflict" role="alert">${escapeHtml(error.message || "Preview недоступен.")}</div>`;
+                        if (error.status === 409) formElement.querySelector(".subcategory-move-refresh").hidden = false;
+                    }
+                }
+                if (event.target.closest(".subcategory-move-refresh")) {
+                    if (!window.confirm("Текущий preview будет сброшен. Обновить данные?")) return;
+                    const response = await CrmApi.get("/api/products/structure/subcategories/move-context");
+                    context = response.data || response;
+                    selection.innerHTML = renderSubcategoryMoveSelection(context);
+                    formElement.querySelector('[name="targetCategoryId"]').value = "";
+                    formElement.querySelector(".subcategory-move-refresh").hidden = true;
+                    invalidatePreview();
+                }
+            });
+        },
+        async onSubmit(formData, controls) {
+            if (!approvedPreview?.canMove) return false;
+            controls.setBusy(true, "Перемещение...");
+            try {
+                const result = await CrmApi.post("/api/products/structure/subcategories/move", {
+                    subcategoryIds: approvedPreview.subcategories.map(item => Number(item.id)),
+                    targetCategoryId: Number(approvedPreview.targetCategory.id),
+                    expectedVersion: approvedPreview.version
+                });
+                invalidateCatalogStructureReadonlyCache();
+                await loadEmbeddedCatalogStructureAudit({ force: true });
+                notifySuccess(`Перемещено ${result.data.moved} подкатегорий и обновлено ${result.data.affectedProducts} товаров.`);
+                controls.close(true);
+            } catch (error) {
+                controls.setBusy(false);
+                controls.formElement.querySelector(".subcategory-move-result").innerHTML =
+                    `<div class="subcategory-move-conflict" role="alert">${escapeHtml(error.message || "Перемещение не выполнено.")}</div>`;
+                if (error.status === 409) controls.formElement.querySelector(".subcategory-move-refresh").hidden = false;
+            }
+            return false;
+        }
+    });
 }
 
 function renderCategoryOrderRows(categories) {
@@ -112,6 +245,8 @@ async function openCategoryOrderModal() {
 function handleEmbeddedCatalogStructureAction(event) {
     if (event.target.closest(".structure-configure-order")) {
         openCategoryOrderModal();
+    } else if (event.target.closest(".structure-move-subcategories")) {
+        openEmbeddedSubcategoryMoveModal();
     }
 }
 
@@ -179,12 +314,19 @@ async function moveSelectedCatalogSubcategories(view) {
         submitText: "Проверить"
     });
     if (!formData) return;
+    const contextResponse = await CrmApi.get("/api/products/structure/subcategories/move-context");
+    const context = contextResponse.data || contextResponse;
     const payload = {
         subcategoryIds: Array.from(state.selectedSubcategories).map(Number),
-        targetCategoryId: Number(formData.get("targetCategoryId") || 0)
+        targetCategoryId: Number(formData.get("targetCategoryId") || 0),
+        expectedVersion: context.version
     };
     const previewResult = await CrmApi.post("/api/products/structure/subcategories/move-preview", payload);
     const preview = previewResult.data;
+    if (!preview.canMove) {
+        notifyWarning(preview.conflicts.map(conflict => conflict.message).join(" "));
+        return;
+    }
     const confirmed = await CrmModal.open({
         title: "Подтвердить перемещение",
         message: `Будет перемещено подкатегорий: ${preview.items.length}. Затронуто товаров: ${preview.affectedProducts}. Целевая категория: ${preview.targetCategory.name}.`,
