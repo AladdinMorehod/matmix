@@ -6,6 +6,7 @@ let productStructure = [];
 const productImageAllowedTypes = ["image/jpeg", "image/png", "image/webp"];
 const productImageMaxSize = 10 * 1024 * 1024;
 const productUnitOptions = ["шт", "кг", "м", "м2"];
+const productGroupMaxLength = 200;
 
 function normalizeProductStructureName(value) {
     return String(value || "")
@@ -88,12 +89,30 @@ function getProductPayloadFromForm(formData) {
         title: String(formData.get("title") || "").trim(),
         category: String(formData.get("category") || "").trim(),
         subcategory: String(formData.get("subcategory") || "").trim(),
+        productGroup: String(formData.get("productGroup") || "").trim(),
         price: String(formData.get("price") || "").trim(),
         weight: String(formData.get("weight") || "").trim(),
         unit: String(formData.get("unit") || "шт").trim(),
         description: String(formData.get("description") || "").trim(),
         isActive: formData.get("isActive") === "on"
     };
+}
+
+function getProductGroupValue(product = {}) {
+    return String(product.productGroup ?? product.product_group ?? "").trim();
+}
+
+function getProductGroupSuggestions() {
+    return [...new Set(products
+        .map(getProductGroupValue)
+        .filter(Boolean))]
+        .sort((first, second) => first.localeCompare(second, "ru"));
+}
+
+function renderProductGroupOptions() {
+    return getProductGroupSuggestions()
+        .map(group => `<option value="${escapeHtml(group)}"></option>`)
+        .join("");
 }
 
 function getStructureCategoryByName(value) {
@@ -190,6 +209,7 @@ function renderProductImageManager(product = {}) {
 function renderProductForm(product = {}) {
     const selectedCategory = product.category || "";
     const selectedSubcategory = product.subcategory || "";
+    const selectedProductGroup = getProductGroupValue(product);
     const hasKnownCategory = Boolean(getStructureCategoryByName(selectedCategory));
     const canAddStructure = canEditProducts();
 
@@ -216,6 +236,18 @@ function renderProductForm(product = {}) {
                     </select>
                     ${canAddStructure ? `<button class="product-structure-add" data-structure-action="subcategory" type="button"${hasKnownCategory ? "" : " disabled"}>+ Добавить</button>` : ""}
                 </span>
+            </label>
+            <label>
+                <span>Группа товаров</span>
+                <input
+                    name="productGroup"
+                    type="text"
+                    list="product-group-options"
+                    maxlength="${productGroupMaxLength}"
+                    value="${escapeHtml(selectedProductGroup)}"
+                    autocomplete="off"
+                >
+                <datalist id="product-group-options">${renderProductGroupOptions()}</datalist>
             </label>
             <label>
                 <span>Цена</span>

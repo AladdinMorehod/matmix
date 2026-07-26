@@ -36,6 +36,7 @@ const { optimizeProductImage } = require("../services/productImages");
 const router = express.Router();
 const publicRouter = express.Router();
 const allowedCrmUnits = new Set(["шт", "кг", "м", "м2"]);
+const productGroupMaxLength = 200;
 const productUploadsRoot = path.resolve(process.env.PRODUCT_UPLOADS_PATH || path.join(__dirname, "..", "..", "public", "uploads", "products"));
 const productUploadsUrlPrefix = "/uploads/products/";
 const productImageMaxBytes = 10 * 1024 * 1024;
@@ -428,6 +429,25 @@ function getProductPayload(body, existing = {}) {
         isActive: body.isActive === undefined ? (existing.is_active ?? 1) : (body.isActive ? 1 : 0),
         sortOrder: normalizeNumber(body.sortOrder ?? body.sort_order, existing.sort_order || 0)
     };
+}
+
+function validateProductGroupInput(body = {}) {
+    const hasCamelCase = Object.prototype.hasOwnProperty.call(body, "productGroup");
+    const hasSnakeCase = Object.prototype.hasOwnProperty.call(body, "product_group");
+    if (!hasCamelCase && !hasSnakeCase) return "";
+
+    const value = hasCamelCase ? body.productGroup : body.product_group;
+    if (typeof value !== "string") return "Группа товаров должна быть строкой.";
+
+    const normalized = value.trim();
+    if (normalized.length > productGroupMaxLength) {
+        return `Группа товаров не должна превышать ${productGroupMaxLength} символов.`;
+    }
+    if (/[\u0000-\u001F\u007F]/.test(value)) {
+        return "Группа товаров не должна содержать управляющие символы.";
+    }
+
+    return "";
 }
 
 function validateProductPayload(payload, existing = null) {
@@ -1983,7 +2003,8 @@ router.delete("/:id/image", requireRole(["admin"]), async (req, res) => {
 router.post("/", requireRole(["admin"]), async (req, res) => {
     try {
         const payload = getProductPayload(req.body);
-        const validationMessage = validateProductPayload(payload)
+        const validationMessage = validateProductGroupInput(req.body)
+            || validateProductPayload(payload)
             || await validateProductStructureSelection({ get }, payload);
         if (validationMessage) {
             res.status(400).json({ success: false, message: validationMessage });
@@ -2019,7 +2040,8 @@ router.patch("/:id", requireRole(["admin"]), async (req, res) => {
         }
 
         const payload = getProductPayload(req.body, existing);
-        const validationMessage = validateProductPayload(payload, existing)
+        const validationMessage = validateProductGroupInput(req.body)
+            || validateProductPayload(payload, existing)
             || await validateProductStructureSelection({ get }, payload, existing);
         if (validationMessage) {
             res.status(400).json({ success: false, message: validationMessage });
