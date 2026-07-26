@@ -38,6 +38,11 @@ const {
     bulkUpdateProductStructure
 } = require("../services/productBulkStructure");
 const { validateProductGroupInput } = require("../services/productStructureValidation");
+const {
+    buildCatalogStructureIndex,
+    getStructureFilterNode,
+    matchesStructureFilter
+} = require("../services/catalogStructureMembership");
 
 const router = express.Router();
 const publicRouter = express.Router();
@@ -897,6 +902,57 @@ async function getPaginatedProductRows(query = {}, defaults = {}) {
     };
 }
 
+function hasStructureProductFilter(query = {}) {
+    return Boolean(query.structureNodeId || normalizeText(query.structureMode));
+}
+
+async function getStructureFilteredProductRows(query = {}, defaults = {}) {
+    const paginationParams = getPaginationParams(query);
+    const mode = normalizeText(query.structureMode || query.mode);
+    const nodeId = Number(query.structureNodeId || query.id || 0);
+    if (mode && !["node", "withoutStructure"].includes(mode)) {
+        throw createHttpError(400, "Некорректный режим структуры.", "INVALID_STRUCTURE_MODE");
+    }
+    if (!nodeId && mode !== "withoutStructure") {
+        throw createHttpError(400, "Выберите узел структуры.", "STRUCTURE_NODE_REQUIRED");
+    }
+
+    const structureRows = await all(`
+        SELECT id, type, name, normalized_name, parent_id, is_active, is_system
+        FROM catalog_structure
+        WHERE type IN ('category', 'subcategory')
+    `);
+    const index = buildCatalogStructureIndex(structureRows);
+    const filter = mode === "withoutStructure" ? { mode } : { mode: "node", nodeId };
+    const node = mode === "withoutStructure" ? null : getStructureFilterNode(filter, index);
+    if (!node) {
+        if (nodeId && !index.nodesById.has(nodeId)) {
+            throw createHttpError(404, "Узел структуры не найден.", "STRUCTURE_NODE_NOT_FOUND");
+        }
+        if (mode !== "withoutStructure") {
+            throw createHttpError(400, "Узел структуры недоступен для фильтрации.", "INVALID_STRUCTURE_NODE");
+        }
+    }
+
+    const candidateQuery = { ...query };
+    ["category", "subcategory", "structureNodeId", "structureMode", "mode", "id", "type"].forEach(key => {
+        delete candidateQuery[key];
+    });
+    const { whereSql, params } = buildProductListWhere(candidateQuery, defaults, { includeSearch: false });
+    const candidates = await all(`SELECT * FROM products ${whereSql}`, params);
+    const searchWords = getSearchWords(query.search);
+    const filteredRows = candidates
+        .filter(row => matchesStructureFilter(row, filter, index))
+        .filter(row => !searchWords.length || searchWords.every(word => getProductSearchText(row).includes(word)))
+        .sort((first, second) => compareProductSearchRows(first, second, normalizeSearchText(query.search)));
+
+    return {
+        node,
+        rows: filteredRows.slice(paginationParams.offset, paginationParams.offset + paginationParams.limit),
+        pagination: buildPaginationMeta({ ...paginationParams, total: filteredRows.length })
+    };
+}
+
 function addStructureProductSearchWhere(where, params, search) {
     addProductSearchWhere(where, params, search);
 }
@@ -909,7 +965,7 @@ function addStructureProductStatusWhere(where, status) {
     }
 }
 
-async function getCatalogStructureProductRows(query = {}) {
+async function getLegacyCatalogStructureProductRows(query = {}) {
     const paginationParams = getPaginationParams(query);
     const mode = normalizeText(query.mode || "node");
     const type = normalizeText(query.type);
@@ -1005,6 +1061,15 @@ async function getCatalogStructureProductRows(query = {}) {
             total: countRow?.total
         })
     };
+}
+
+async function getCatalogStructureProductRows(query = {}) {
+    const mode = normalizeText(query.mode || "node");
+    return getStructureFilteredProductRows({
+        ...query,
+        structureMode: mode,
+        structureNodeId: mode === "withoutStructure" ? "" : query.id
+    }, { deleted: "false" });
 }
 
 function enqueueProductCreate(callback) {
@@ -1538,7 +1603,9 @@ publicRouter.get("/structure", async (req, res) => {
 
 router.get("/", requireRole(["admin", "manager"]), async (req, res) => {
     try {
-        const { rows, pagination } = await getPaginatedProductRows(req.query, { deleted: "false" });
+        const { rows, pagination } = hasStructureProductFilter(req.query)
+            ? await getStructureFilteredProductRows(req.query, { deleted: "false" })
+            : await getPaginatedProductRows(req.query, { deleted: "false" });
         const products = rows.map(normalizeProduct);
         const [categoryRows, subcategoryRows, productGroupRows, totalRow] = await Promise.all([
             all("SELECT DISTINCT category FROM products WHERE deleted_at IS NULL AND category IS NOT NULL AND category != '' ORDER BY category COLLATE NOCASE ASC"),
@@ -1562,6 +1629,7 @@ router.get("/", requireRole(["admin", "manager"]), async (req, res) => {
         });
     } catch (error) {
         console.error("Products load error:", error);
+        if (error?.status) return sendApiError(res, error, "Не удалось загрузить каталог.", "PRODUCTS_LOAD_FAILED");
         res.status(500).json({ success: false, message: "Не удалось загрузить каталог." });
     }
 });

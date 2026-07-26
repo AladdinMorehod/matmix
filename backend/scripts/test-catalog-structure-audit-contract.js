@@ -39,7 +39,7 @@ async function main() {
     assert.strictEqual(audit.summary.categories, 6);
     assert.strictEqual(audit.summary.subcategories, 7);
     assert.strictEqual(audit.summary.products, 5);
-    assert.strictEqual(audit.summary.productsWithoutStructure, 2);
+    assert.strictEqual(audit.summary.productsWithoutStructure, 3);
     assert.strictEqual(category.productCount, 3);
     assert.strictEqual(category.activeProductCount, 2);
     assert.strictEqual(category.inactiveProductCount, 1);
@@ -58,20 +58,16 @@ async function main() {
     assert(issueCodes.includes("SAME_SUBCATEGORY_NAME_IN_MULTIPLE_CATEGORIES"));
     assert(issueCodes.includes("PRODUCTS_WITHOUT_STRUCTURE"));
 
-    // Current audit contract accepts an empty subcategory when its category exists.
-    assert.strictEqual(audit.summary.productsWithoutStructure, 2);
-    // Current detail SQL additionally treats an empty subcategory as without structure
-    // and compares c.name/sc.name exactly, so IDs 3 and 5 also appear in detail mode.
-    const documentedDetailWithoutStructureIds = [2, 3, 4, 5];
-    assert.deepStrictEqual(documentedDetailWithoutStructureIds, [2, 3, 4, 5]);
+    // Audit, detail and catalog filters now share the same membership contract.
+    const unifiedWithoutStructureIds = [2, 3, 4];
 
     console.log(JSON.stringify({
         success: true,
         summary: audit.summary,
         issueCodes: [...new Set(issueCodes)].sort(),
         orphanInTree: false,
-        auditWithoutStructureIds: [2, 4],
-        detailWithoutStructureIds: documentedDetailWithoutStructureIds
+        auditWithoutStructureIds: unifiedWithoutStructureIds,
+        detailWithoutStructureIds: unifiedWithoutStructureIds
     }));
 }
 
