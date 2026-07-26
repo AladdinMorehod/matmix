@@ -2,6 +2,7 @@ const {
     buildCatalogStructureIndex,
     resolveProductStructureMembership
 } = require("./catalogStructureMembership");
+const crypto = require("crypto");
 
 function normalizeCatalogStructureName(value) {
     return String(value || "")
@@ -320,6 +321,69 @@ async function getStructureLevelRows(db, { type, parentId = null }) {
     );
 }
 
+function getCategoryOrderVersion(rows = []) {
+    const source = rows
+        .map(row => `${Number(row.id)}:${Number(row.sort_order) || 0}:${row.updated_at || ""}`)
+        .join("|");
+    return crypto.createHash("sha256").update(source).digest("hex");
+}
+
+async function getRootCategoryOrder(db) {
+    const rows = await getStructureLevelRows(db, { type: "category", parentId: null });
+    return {
+        categories: rows.map(toPublicStructureItem),
+        version: getCategoryOrderVersion(rows)
+    };
+}
+
+function validateCategoryOrderPayload(categoryIds, currentRows) {
+    if (!Array.isArray(categoryIds)) {
+        throw createStructureCodeError(400, "CATEGORY_ORDER_IDS_REQUIRED", "Передайте полный массив categoryIds.");
+    }
+    if (currentRows.length && !categoryIds.length) {
+        throw createStructureCodeError(400, "CATEGORY_ORDER_EMPTY", "Порядок категорий не может быть пустым.");
+    }
+    const ids = categoryIds.map(Number);
+    if (ids.some((id, index) => !Number.isInteger(id) || id <= 0 || Number(categoryIds[index]) !== id)) {
+        throw createStructureCodeError(400, "CATEGORY_ORDER_INVALID_ID", "Все categoryIds должны быть положительными целыми числами.");
+    }
+    if (new Set(ids).size !== ids.length) {
+        throw createStructureCodeError(400, "CATEGORY_ORDER_DUPLICATE_ID", "categoryIds не должны содержать дубликаты.");
+    }
+    const currentIds = currentRows.map(row => Number(row.id));
+    if (ids.length !== currentIds.length || ids.some(id => !currentIds.includes(id))) {
+        throw createStructureCodeError(409, "CATEGORY_ORDER_SET_CHANGED", "Набор категорий изменился. Обновите список и повторите.");
+    }
+    return ids;
+}
+
+async function applyRootCategoryOrder(db, { categoryIds, expectedVersion }) {
+    if (!expectedVersion || typeof expectedVersion !== "string") {
+        throw createStructureCodeError(400, "CATEGORY_ORDER_VERSION_REQUIRED", "Передайте expectedVersion.");
+    }
+    return runInTransaction(db, async () => {
+        const currentRows = await getStructureLevelRows(db, { type: "category", parentId: null });
+        const oldVersion = getCategoryOrderVersion(currentRows);
+        if (expectedVersion !== oldVersion) {
+            throw createStructureCodeError(409, "CATEGORY_ORDER_STALE", "Порядок категорий изменился. Обновите список и повторите.");
+        }
+        const ids = validateCategoryOrderPayload(categoryIds, currentRows);
+        const now = new Date().toISOString();
+        for (let index = 0; index < ids.length; index += 1) {
+            await db.run(
+                "UPDATE catalog_structure SET sort_order = ?, updated_at = ? WHERE id = ?",
+                [(index + 1) * 10, now, ids[index]]
+            );
+        }
+        const updated = await getRootCategoryOrder(db);
+        return {
+            ...updated,
+            oldVersion,
+            updatedAt: now
+        };
+    });
+}
+
 async function validateStructurePosition(db, { type, parentId = null, position = "end", afterId = null }) {
     const safePosition = normalizePosition(position);
     if (safePosition !== "after") {
@@ -390,21 +454,13 @@ async function moveRootCategoryToIndex(db, { categoryId, targetIndex }) {
         throw createStructureError(400, "Позиция категории недоступна.");
     }
 
-    return runInTransaction(db, async () => {
-        const orderedRows = rows.filter(row => Number(row.id) !== itemId);
-        orderedRows.splice(safeIndex, 0, item);
-        const now = new Date().toISOString();
-
-        for (let index = 0; index < orderedRows.length; index += 1) {
-            await db.run(
-                "UPDATE catalog_structure SET sort_order = ?, updated_at = ? WHERE id = ?",
-                [(index + 1) * 10, now, orderedRows[index].id]
-            );
-        }
-
-        const updatedRows = await getStructureLevelRows(db, { type: "category", parentId: null });
-        return updatedRows.map(toPublicStructureItem);
+    const orderedRows = rows.filter(row => Number(row.id) !== itemId);
+    orderedRows.splice(safeIndex, 0, item);
+    const result = await applyRootCategoryOrder(db, {
+        categoryIds: orderedRows.map(row => Number(row.id)),
+        expectedVersion: getCategoryOrderVersion(rows)
     });
+    return result.categories;
 }
 
 async function createCategory(db, { name, position = "end", afterId = null }) {
@@ -1154,6 +1210,8 @@ module.exports = {
     createCategory,
     createSubcategory,
     moveRootCategoryToIndex,
+    getRootCategoryOrder,
+    applyRootCategoryOrder,
     getMoveSubcategoriesPreview,
     moveSubcategories,
     reorderStructureLevel,

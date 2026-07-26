@@ -15,6 +15,8 @@ const {
     createCategory,
     createSubcategory,
     moveRootCategoryToIndex,
+    getRootCategoryOrder,
+    applyRootCategoryOrder,
     getMoveSubcategoriesPreview,
     moveSubcategories,
     validateProductStructureSelection
@@ -1840,6 +1842,42 @@ router.post("/structure/categories", requireRole(["admin"]), async (req, res) =>
             success: false,
             message: error.status ? error.message : "Не удалось добавить категорию."
         });
+    }
+});
+
+router.get("/structure/categories/order", requireRole(["admin"]), async (req, res) => {
+    try {
+        const result = await getRootCategoryOrder({ all });
+        res.json({ success: true, ...result, data: result });
+    } catch (error) {
+        logger.error("catalog_category_order_read", error, { actorId: req.session.user?.id || null });
+        sendApiError(res, error, "Не удалось загрузить порядок категорий.", "CATEGORY_ORDER_READ_FAILED");
+    }
+});
+
+router.patch("/structure/categories/order", requireRole(["admin"]), async (req, res) => {
+    const categoryIds = req.body?.categoryIds;
+    const expectedVersion = req.body?.expectedVersion;
+    try {
+        const result = await applyRootCategoryOrder({ run, all }, { categoryIds, expectedVersion });
+        logger.info("catalog_category_reorder", {
+            actorId: req.session.user?.id || null,
+            oldVersion: result.oldVersion,
+            newVersion: result.version,
+            categoryCount: result.categories.length,
+            categoryIds: categoryIds.slice(0, 20),
+            outcome: "success"
+        });
+        res.json({ success: true, ...result, data: result });
+    } catch (error) {
+        logger.error("catalog_category_reorder", error, {
+            actorId: req.session.user?.id || null,
+            oldVersion: expectedVersion || "",
+            categoryCount: Array.isArray(categoryIds) ? categoryIds.length : 0,
+            categoryIds: Array.isArray(categoryIds) ? categoryIds.slice(0, 20) : [],
+            outcome: error?.status === 409 ? "stale_conflict" : "failure"
+        });
+        sendApiError(res, error, "Не удалось сохранить порядок категорий.", "CATEGORY_REORDER_FAILED");
     }
 });
 
