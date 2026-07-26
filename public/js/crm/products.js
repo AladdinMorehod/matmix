@@ -3,6 +3,7 @@ function canEditProducts() {
 }
 
 let productStructure = [];
+let catalogInnerMode = "products";
 const productImageAllowedTypes = ["image/jpeg", "image/png", "image/webp"];
 const productImageMaxSize = 10 * 1024 * 1024;
 const productUnitOptions = ["шт", "кг", "м", "м2"];
@@ -303,14 +304,26 @@ function renderProductsView() {
         <header class="crm-topbar">
             <div>
                 <h1>Каталог</h1>
-                <p>Товары MatMix</p>
+                <p>${catalogInnerMode === "products" ? "Товары MatMix" : "Диагностика структуры каталога"}</p>
             </div>
             <div class="crm-topbar-actions">
-                <button class="products-export" type="button">Скачать прайс Excel</button>
-                ${isAdmin ? `<button class="products-add" type="button">Добавить товар</button>` : ""}
+                ${catalogInnerMode === "products" ? `
+                    <button class="products-export" type="button">Скачать прайс Excel</button>
+                    ${isAdmin ? `<button class="products-add" type="button">Добавить товар</button>` : ""}
+                ` : ""}
             </div>
         </header>
 
+        <div class="catalog-inner-tabs" role="tablist" aria-label="Режим каталога">
+            <button type="button" role="tab" id="catalogProductsTab" data-catalog-mode="products"
+                aria-selected="${catalogInnerMode === "products"}" aria-controls="catalogProductsPanel"
+                class="${catalogInnerMode === "products" ? "active" : ""}">Товары</button>
+            <button type="button" role="tab" id="catalogStructureTab" data-catalog-mode="structure"
+                aria-selected="${catalogInnerMode === "structure"}" aria-controls="catalogEmbeddedStructurePanel"
+                class="${catalogInnerMode === "structure" ? "active" : ""}">Структура</button>
+        </div>
+
+        <div id="catalogProductsPanel" role="tabpanel" aria-labelledby="catalogProductsTab"${catalogInnerMode === "products" ? "" : " hidden"}>
         <section class="products-toolbar">
             <label>
                 <span>Поиск</span>
@@ -339,7 +352,23 @@ function renderProductsView() {
         <section class="products-list">
             ${productsLoading ? renderCrmLoader("Загружаем каталог...") : renderProductsList()}
         </section>
+        </div>
+        <section id="catalogEmbeddedStructurePanel" class="catalog-embedded-structure" role="tabpanel"
+            aria-labelledby="catalogStructureTab"${catalogInnerMode === "structure" ? "" : " hidden"}></section>
     `;
+
+    const embeddedRoot = productsView.querySelector("#catalogEmbeddedStructurePanel");
+    if (typeof mountEmbeddedCatalogStructureView === "function") {
+        mountEmbeddedCatalogStructureView(embeddedRoot);
+        if (catalogInnerMode === "structure") loadEmbeddedCatalogStructureAudit();
+    }
+}
+
+function setCatalogInnerMode(mode) {
+    const nextMode = mode === "structure" ? "structure" : "products";
+    if (catalogInnerMode === nextMode) return;
+    catalogInnerMode = nextMode;
+    renderProductsView();
 }
 
 function renderProductImageBulkToolbar() {

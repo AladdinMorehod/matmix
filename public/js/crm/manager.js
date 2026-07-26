@@ -429,6 +429,12 @@ productsView?.addEventListener("change", event => {
 });
 
 productsView?.addEventListener("click", event => {
+    const catalogModeButton = event.target.closest("[data-catalog-mode]");
+    if (catalogModeButton) {
+        setCatalogInnerMode(catalogModeButton.dataset.catalogMode);
+        return;
+    }
+
     const paginationButton = event.target.closest(".crm-pagination [data-page]");
     if (paginationButton) {
         productFilters.page = Number(paginationButton.dataset.page) || 1;
