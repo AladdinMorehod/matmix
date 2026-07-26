@@ -2,8 +2,9 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const ExcelJS = require("exceljs");
-const { all, get, run } = require("../database");
+const { all, get, run, withTransaction } = require("../database");
 const { requireRole } = require("../middleware/auth");
+const logger = require("../services/logger");
 const { getPaginationParams, buildPaginationMeta } = require("../utils/pagination");
 const { sanitizeExcelText } = require("../utils/excelText");
 const {
@@ -37,6 +38,7 @@ const router = express.Router();
 const publicRouter = express.Router();
 const allowedCrmUnits = new Set(["шт", "кг", "м", "м2"]);
 const productGroupMaxLength = 200;
+const productStructureBulkLimit = 500;
 const productUploadsRoot = path.resolve(process.env.PRODUCT_UPLOADS_PATH || path.join(__dirname, "..", "..", "public", "uploads", "products"));
 const productUploadsUrlPrefix = "/uploads/products/";
 const productImageMaxBytes = 10 * 1024 * 1024;
@@ -448,6 +450,89 @@ function validateProductGroupInput(body = {}) {
     }
 
     return "";
+}
+
+function parseBulkProductStructureRequest(body = {}) {
+    if (!Array.isArray(body.productIds) || !body.productIds.length) {
+        throw createHttpError(400, "Передайте непустой массив productIds.", "PRODUCT_IDS_REQUIRED");
+    }
+
+    const invalidIds = body.productIds.filter(id => !Number.isInteger(id) || id <= 0);
+    if (invalidIds.length) {
+        throw createHttpError(400, "Все productIds должны быть положительными целыми числами.", "INVALID_PRODUCT_IDS");
+    }
+
+    if (body.productIds.length > productStructureBulkLimit) {
+        throw createHttpError(
+            400,
+            `За одну операцию можно изменить не более ${productStructureBulkLimit} товаров.`,
+            "PRODUCT_BATCH_LIMIT_EXCEEDED"
+        );
+    }
+    const productIds = [...new Set(body.productIds)];
+
+    const changes = body.changes;
+    if (!changes || typeof changes !== "object" || Array.isArray(changes)) {
+        throw createHttpError(400, "Передайте объект changes.", "PRODUCT_CHANGES_REQUIRED");
+    }
+
+    const supportedFields = new Set(["category", "subcategory", "productGroup", "product_group"]);
+    const unknownFields = Object.keys(changes).filter(field => !supportedFields.has(field));
+    if (unknownFields.length) {
+        throw createHttpError(400, `Неподдерживаемые поля: ${unknownFields.join(", ")}.`, "UNKNOWN_PRODUCT_CHANGE_FIELDS");
+    }
+
+    const hasCategory = Object.prototype.hasOwnProperty.call(changes, "category");
+    const hasSubcategory = Object.prototype.hasOwnProperty.call(changes, "subcategory");
+    const hasCamelGroup = Object.prototype.hasOwnProperty.call(changes, "productGroup");
+    const hasSnakeGroup = Object.prototype.hasOwnProperty.call(changes, "product_group");
+    if (!hasCategory && !hasSubcategory && !hasCamelGroup && !hasSnakeGroup) {
+        throw createHttpError(400, "Выберите хотя бы одно поле структуры для изменения.", "PRODUCT_CHANGES_REQUIRED");
+    }
+    if (hasCamelGroup && hasSnakeGroup) {
+        throw createHttpError(400, "Передайте группу только в одном формате имени поля.", "AMBIGUOUS_PRODUCT_GROUP");
+    }
+
+    for (const field of ["category", "subcategory"]) {
+        if (Object.prototype.hasOwnProperty.call(changes, field) && typeof changes[field] !== "string") {
+            throw createHttpError(400, `Поле ${field} должно быть строкой.`, "INVALID_PRODUCT_STRUCTURE_FIELD");
+        }
+    }
+
+    const normalizedChanges = {};
+    if (hasCategory) normalizedChanges.category = normalizeText(changes.category);
+    if (hasSubcategory) normalizedChanges.subcategory = normalizeText(changes.subcategory);
+    if (hasCamelGroup || hasSnakeGroup) {
+        const groupInput = hasCamelGroup
+            ? { productGroup: changes.productGroup }
+            : { product_group: changes.product_group };
+        const validationMessage = validateProductGroupInput(groupInput);
+        if (validationMessage) {
+            throw createHttpError(400, validationMessage, "INVALID_PRODUCT_GROUP");
+        }
+        normalizedChanges.productGroup = normalizeText(hasCamelGroup ? changes.productGroup : changes.product_group);
+        if (!normalizedChanges.productGroup && body.allowClearProductGroup !== true) {
+            throw createHttpError(
+                400,
+                "Для массовой очистки группы требуется allowClearProductGroup: true.",
+                "PRODUCT_GROUP_CLEAR_CONFIRMATION_REQUIRED"
+            );
+        }
+    }
+
+    return { productIds, changes: normalizedChanges };
+}
+
+function getBulkStructureLogFields(req, productIds, changes, outcome) {
+    const loggedIds = productIds.slice(0, 25);
+    return {
+        actorId: req.session?.user?.id,
+        productCount: productIds.length,
+        productIds: loggedIds,
+        productIdsTruncated: loggedIds.length < productIds.length,
+        changedFields: Object.keys(changes),
+        outcome
+    };
 }
 
 function validateProductPayload(payload, existing = null) {
@@ -1997,6 +2082,134 @@ router.delete("/:id/image", requireRole(["admin"]), async (req, res) => {
     } catch (error) {
         console.error("Product image delete error:", error);
         sendApiError(res, error, "Не удалось удалить изображение товара.", "PRODUCT_IMAGE_DELETE_FAILED");
+    }
+});
+
+router.patch("/bulk/structure", requireRole(["admin"]), async (req, res) => {
+    let parsedRequest = null;
+    try {
+        parsedRequest = parseBulkProductStructureRequest(req.body || {});
+        const { productIds, changes } = parsedRequest;
+        const result = await withTransaction(async transaction => {
+            const existingProducts = [];
+            for (let offset = 0; offset < productIds.length; offset += 400) {
+                const chunk = productIds.slice(offset, offset + 400);
+                const placeholders = chunk.map(() => "?").join(",");
+                existingProducts.push(...await transaction.all(
+                    `SELECT id, category, subcategory, product_group
+                     FROM products
+                     WHERE id IN (${placeholders}) AND deleted_at IS NULL`,
+                    chunk
+                ));
+            }
+
+            const existingById = new Map(existingProducts.map(product => [Number(product.id), product]));
+            const missingProductIds = productIds.filter(id => !existingById.has(id));
+            if (missingProductIds.length) {
+                const error = createHttpError(
+                    404,
+                    "Часть выбранных товаров не найдена.",
+                    "BULK_PRODUCTS_NOT_FOUND"
+                );
+                error.details = { missingProductIds, requestedCount: productIds.length };
+                throw error;
+            }
+
+            const finalStructures = productIds.map(id => {
+                const product = existingById.get(id);
+                return {
+                    id,
+                    category: Object.prototype.hasOwnProperty.call(changes, "category")
+                        ? changes.category
+                        : normalizeText(product.category),
+                    subcategory: Object.prototype.hasOwnProperty.call(changes, "subcategory")
+                        ? changes.subcategory
+                        : normalizeText(product.subcategory),
+                    productGroup: Object.prototype.hasOwnProperty.call(changes, "productGroup")
+                        ? changes.productGroup
+                        : normalizeText(product.product_group)
+                };
+            });
+
+            const uniqueStructures = new Map();
+            for (const structure of finalStructures) {
+                const key = `${normalizeCatalogStructureName(structure.category)}\u0000${normalizeCatalogStructureName(structure.subcategory)}`;
+                if (!uniqueStructures.has(key)) uniqueStructures.set(key, structure);
+            }
+            for (const structure of uniqueStructures.values()) {
+                const validationMessage = await validateProductStructureSelection(transaction, structure);
+                if (validationMessage) {
+                    const affectedProductIds = finalStructures
+                        .filter(candidate =>
+                            normalizeCatalogStructureName(candidate.category) === normalizeCatalogStructureName(structure.category)
+                            && normalizeCatalogStructureName(candidate.subcategory) === normalizeCatalogStructureName(structure.subcategory))
+                        .map(candidate => candidate.id);
+                    const error = createHttpError(400, validationMessage, "INVALID_FINAL_PRODUCT_STRUCTURE");
+                    error.details = { affectedProductIds, requestedCount: productIds.length };
+                    throw error;
+                }
+            }
+
+            const updateFields = [
+                ...(Object.prototype.hasOwnProperty.call(changes, "category") ? ["category = ?"] : []),
+                ...(Object.prototype.hasOwnProperty.call(changes, "subcategory") ? ["subcategory = ?"] : []),
+                ...(Object.prototype.hasOwnProperty.call(changes, "productGroup") ? ["product_group = ?"] : [])
+            ];
+            const getUpdateValues = structure => [
+                ...(Object.prototype.hasOwnProperty.call(changes, "category") ? [structure.category] : []),
+                ...(Object.prototype.hasOwnProperty.call(changes, "subcategory") ? [structure.subcategory] : []),
+                ...(Object.prototype.hasOwnProperty.call(changes, "productGroup") ? [structure.productGroup] : [])
+            ];
+            const now = new Date().toISOString();
+            const sql = `UPDATE products SET ${updateFields.join(", ")}, updated_at = ? WHERE id = ? AND deleted_at IS NULL`;
+
+            let updatedCount = 0;
+            for (const structure of finalStructures) {
+                const updateResult = await transaction.run(sql, [...getUpdateValues(structure), now, structure.id]);
+                if (Number(updateResult.changes) !== 1) {
+                    throw createHttpError(409, `Товар ${structure.id} не был обновлён.`, "BULK_PRODUCT_UPDATE_CONFLICT");
+                }
+                updatedCount += 1;
+            }
+
+            return { updatedCount, updatedAt: now };
+        });
+
+        logger.info(
+            "product_structure_bulk_update",
+            getBulkStructureLogFields(req, productIds, changes, "success")
+        );
+        res.json({
+            success: true,
+            requestedCount: productIds.length,
+            updatedCount: result.updatedCount,
+            updatedProductIds: productIds,
+            appliedChanges: changes,
+            updatedAt: result.updatedAt
+        });
+    } catch (error) {
+        const productIds = parsedRequest?.productIds || [];
+        const changes = parsedRequest?.changes || {};
+        logger.error(
+            "product_structure_bulk_update",
+            error,
+            getBulkStructureLogFields(req, productIds, changes, "failure")
+        );
+        if (error?.details) {
+            res.status(Number(error.status) || 500).json({
+                success: false,
+                code: error.code || "PRODUCT_STRUCTURE_BULK_UPDATE_FAILED",
+                message: error.status ? error.message : safeErrorMessages[500],
+                details: error.details
+            });
+            return;
+        }
+        sendApiError(
+            res,
+            error,
+            "Не удалось изменить структуру выбранных товаров.",
+            "PRODUCT_STRUCTURE_BULK_UPDATE_FAILED"
+        );
     }
 });
 
