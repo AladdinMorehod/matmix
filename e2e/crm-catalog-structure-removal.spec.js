@@ -53,6 +53,19 @@ test("legacy mapping preserves manager read-only access", async ({ page }) => {
     await expect(embedded.locator(".structure-configure-order")).toHaveCount(0);
 });
 
+test("legacy category reorder endpoint remains compatible", async ({ page }) => {
+    await login(page);
+    const orderResponse = await page.request.get("/api/products/structure/categories/order");
+    expect(orderResponse.ok()).toBeTruthy();
+    const order = await orderResponse.json();
+    const firstCategory = order.categories[0];
+    const response = await page.request.patch(`/api/products/structure/categories/${firstCategory.id}/order`, {
+        data: { targetIndex: 0 }
+    });
+    expect(response.ok()).toBeTruthy();
+    expect((await response.json()).success).toBe(true);
+});
+
 test("unknown section falls back to dashboard", async ({ page }) => {
     await login(page);
     await page.evaluate(() => setActiveSection("removed-section"));
