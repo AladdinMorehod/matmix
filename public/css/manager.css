@@ -302,6 +302,7 @@ li {
 .manager-user-panel button,
 .manager-toolbar button,
 .order-actions a,
+.order-customer-contact a,
 .download-order-excel,
 .max-disabled,
 .contact-disabled,
@@ -325,6 +326,17 @@ li {
     font-size: 0.86rem;
     font-weight: 700;
     white-space: nowrap;
+}
+
+.order-customer-contact {
+    min-width: 0;
+}
+
+.order-customer-contact > * {
+    min-width: 0;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
 }
 
 .manager-user-panel {

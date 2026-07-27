@@ -164,45 +164,98 @@ function getTelegramUsername(value) {
     return String(value || "").trim().replace(/^@/, "");
 }
 
-function getPreferredContact(order) {
-    const method = String(order.preferredContactMethod || "").trim();
-    const value = String(order.preferredContactValue || "").trim();
+function normalizeContactMethod(value) {
+    const method = String(value || "").trim().toLowerCase();
+    const aliases = {
+        phone: "Телефон",
+        telephone: "Телефон",
+        "телефон": "Телефон",
+        whatsapp: "WhatsApp",
+        telegram: "Telegram",
+        email: "E-mail",
+        "e-mail": "E-mail",
+        "почта": "E-mail",
+        max: "MAX",
+        maxcontact: "MAX"
+    };
 
-    if (method) {
+    return aliases[method] || "";
+}
+
+function buildContactAction(method, value, source) {
+    if (method === "Телефон") {
+        const phoneDigits = cleanPhoneForLink(value);
+        if (phoneDigits) return { method, value, source, label: "Позвонить", href: `tel:+${phoneDigits}` };
+    }
+
+    if (method === "WhatsApp") {
+        const phoneDigits = cleanPhoneForLink(value);
+        if (phoneDigits) return { method, value, source, label: "WhatsApp", href: `https://wa.me/${phoneDigits}`, external: true };
+    }
+
+    if (method === "Telegram") {
+        const username = getTelegramUsername(value);
+        if (username && !/\s/.test(username)) {
+            return { method, value, source, label: "Telegram", href: `https://t.me/${encodeURIComponent(username)}`, external: true };
+        }
+    }
+
+    if (method === "E-mail" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+        return { method, value, source, label: "E-mail", href: `mailto:${value}` };
+    }
+
+    if (method === "MAX" && value) {
         return {
             method,
-            value: value || (["Телефон", "WhatsApp"].includes(method) ? order.phone : "")
+            value,
+            source,
+            label: "Связь через MAX: контакт указан",
+            disabled: true
         };
     }
 
-    if (order.telegram) {
-        return {
-            method: "Telegram",
-            value: order.telegram
-        };
-    }
+    return null;
+}
 
-    if (order.maxContact) {
-        return {
-            method: "MAX",
-            value: order.maxContact
-        };
+function resolveOrderContact(order = {}) {
+    const preferredMethod = normalizeContactMethod(order.preferredContactMethod || order.preferred_contact_method);
+    const preferredValue = String(order.preferredContactValue || order.preferred_contact_value || "").trim();
+    const preferredContact = buildContactAction(preferredMethod, preferredValue, "preferred");
+    if (preferredContact) return preferredContact;
+
+    const orderPhone = buildContactAction("Телефон", String(order.phone || "").trim(), "order_phone");
+    if (orderPhone) return orderPhone;
+
+    const legacyContacts = [
+        ["Telegram", String(order.telegram || "").trim()],
+        ["E-mail", String(order.email || "").trim()],
+        ["MAX", String(order.maxContact || order.max_contact || "").trim()]
+    ];
+    for (const [method, value] of legacyContacts) {
+        const legacyContact = buildContactAction(method, value, "legacy");
+        if (legacyContact) return legacyContact;
     }
 
     return {
         method: "",
-        value: ""
+        value: "",
+        source: "none",
+        label: "Контакт не указан",
+        disabled: true
+    };
+}
+
+function getPreferredContact(order) {
+    const contact = resolveOrderContact(order);
+    return {
+        method: contact.method,
+        value: contact.value,
+        source: contact.source
     };
 }
 
 function getPreferredContactText(order) {
-    const contact = getPreferredContact(order);
-
-    if (!contact.method) {
-        return "Не выбран";
-    }
-
-    return contact.method === "Почта" ? "E-mail" : contact.method;
+    return resolveOrderContact(order).method || "Не выбран";
 }
 
 function getClientPreferredContactText(client) {
@@ -218,51 +271,9 @@ function getClientPreferredContactText(client) {
     return "";
 }
 
-function getContactAction(order) {
-    const contact = getPreferredContact(order);
-    const method = contact.method;
-    const value = contact.value || "";
-    const phoneDigits = cleanPhoneForLink(value || order.phone);
-
-    if (!method) {
-        return phoneDigits
-            ? { label: "Позвонить", href: `tel:+${phoneDigits}` }
-            : null;
-    }
-
-    if (method === "Телефон") {
-        return phoneDigits
-            ? { label: "Связаться", href: `tel:+${phoneDigits}` }
-            : null;
-    }
-
-    if (method === "WhatsApp") {
-        return phoneDigits
-            ? { label: "Связаться", href: `https://wa.me/${phoneDigits}`, external: true }
-            : null;
-    }
-
-    if (method === "Telegram") {
-        const username = getTelegramUsername(value);
-        return username
-            ? { label: "Связаться", href: `https://t.me/${encodeURIComponent(username)}`, external: true }
-            : null;
-    }
-
-    if (method === "E-mail" || method === "Почта") {
-        return value
-            ? { label: "Связаться", href: `mailto:${value}` }
-            : null;
-    }
-
-    if (method === "MAX") {
-        return {
-            label: value ? `Связь через MAX: контакт указан` : "Связь через MAX: контакт не указан",
-            disabled: true
-        };
-    }
-
-    return null;
+function getContactAction(order = {}) {
+    const contact = resolveOrderContact(order);
+    return contact.source === "none" ? null : contact;
 }
 
 function setMessage(message = "", options = {}) {
