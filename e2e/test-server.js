@@ -32,13 +32,37 @@ async function prepare() {
     await run(db, "DELETE FROM products");
     await run(db, "DELETE FROM catalog_structure");
 
-    await run(
+    const category = await run(
         db,
         `INSERT INTO catalog_structure (
             type, name, normalized_name, external_code, parent_id,
             sort_order, is_active, is_system, created_at, updated_at
         ) VALUES (?, ?, ?, ?, NULL, 1, 1, 0, ?, ?)`,
-        ["category", "Сухие смеси", "сухие смеси", "DRY-MIXES", now, now]
+        ["category", "Сухие смеси", "сухие смеси", "CAT-000001", now, now]
+    );
+    await run(
+        db,
+        `INSERT INTO catalog_structure (
+            type, name, normalized_name, external_code, parent_id,
+            sort_order, is_active, is_system, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, 1, 1, 0, ?, ?)`,
+        ["subcategory", "Штукатурки", "штукатурки", "SUB-000001", category.id, now, now]
+    );
+    const otherCategory = await run(
+        db,
+        `INSERT INTO catalog_structure (
+            type, name, normalized_name, external_code, parent_id,
+            sort_order, is_active, is_system, created_at, updated_at
+        ) VALUES ('category', 'Другие материалы', 'другие материалы', 'CAT-000002', NULL, 2, 1, 0, ?, ?)`,
+        [now, now]
+    );
+    await run(
+        db,
+        `INSERT INTO catalog_structure (
+            type, name, normalized_name, external_code, parent_id,
+            sort_order, is_active, is_system, created_at, updated_at
+        ) VALUES ('subcategory', 'Клеи', 'клеи', 'SUB-000002', ?, 1, 1, 0, ?, ?)`,
+        [otherCategory.id, now, now]
     );
 
     await run(
@@ -49,7 +73,7 @@ async function prepare() {
             is_active, sort_order, created_at, updated_at
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, 1, ?, ?)`,
         [
-            "MAT-E2E-001",
+            "MAT-000001",
             "Ротбанд тестовый",
             "rotband-test",
             "Сухие смеси",
@@ -63,6 +87,28 @@ async function prepare() {
             now
         ]
     );
+    for (const [externalId, title, slug, group, sortOrder] of [
+        ["MAT-000002", "Волма тестовая", "volma-test", "Гипсовые смеси", 2],
+        ["MAT-000003", "Церезит тестовый", "ceresit-test", "Готовые", 3]
+    ]) {
+        await run(
+            db,
+            `INSERT INTO products (
+                external_id, title, slug, category, subcategory,
+                product_group, price, weight, unit, description,
+                is_active, sort_order, created_at, updated_at
+            ) VALUES (?, ?, ?, 'Сухие смеси', 'Штукатурки', ?, 500, 25, 'мешок', '', 1, ?, ?, ?)`,
+            [externalId, title, slug, group, sortOrder, now, now]
+        );
+    }
+    await run(db, `
+        CREATE TRIGGER e2e_bulk_product_structure_failure
+        BEFORE UPDATE OF product_group ON products
+        WHEN NEW.product_group = '__E2E_FORCE_ROLLBACK__' AND OLD.external_id = 'MAT-000002'
+        BEGIN
+            SELECT RAISE(ABORT, 'forced bulk rollback');
+        END
+    `);
 
     await run(db, "INSERT INTO users(login,password_hash,role,name,is_active,created_at,updated_at) VALUES(?,?,?,?,1,?,?)", ["e2e_admin", await bcrypt.hash("E2eAdmin!234", 10), "admin", "E2E Admin", now, now]);
     await run(db, "INSERT INTO users(login,password_hash,role,name,is_active,created_at,updated_at) VALUES(?,?,?,?,1,?,?)", ["e2e_manager", await bcrypt.hash("E2eManager!234", 10), "manager", "E2E Manager", now, now]);

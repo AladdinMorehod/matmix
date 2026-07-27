@@ -1,4 +1,5 @@
 const { test, expect } = require("@playwright/test");
+const ExcelJS = require("exceljs");
 
 async function loginAsAdmin(page) {
     await page.goto("/login.html");
@@ -32,6 +33,86 @@ test("public order API enforces consent and server price", async ({ request }) =
     const payload = { customerName: "E2E Test", phone: "+7 900 000-00-00", address: "E2E address", unloading: "Нет", paymentMethod: "При получении", items: [{ productId: product.id, qty: 1, price: 1 }] };
     const rejected = await request.post("/api/orders", { data: payload }); expect(rejected.status()).toBe(400); expect((await rejected.json()).code).toBe("CONSENT_REQUIRED");
     const accepted = await request.post("/api/orders", { data: { ...payload, consent: true } }); expect([201, 409]).toContain(accepted.status());
+});
+
+test("admin edits a product group and export uses the current value", async ({ page, request }) => {
+    const unauthorizedProducts = await request.get("/api/products?limit=1");
+    expect(unauthorizedProducts.status()).toBe(401);
+
+    await loginAsAdmin(page);
+    const productsResponse = await page.request.get("/api/products?limit=1");
+    expect(productsResponse.ok()).toBeTruthy();
+    const product = (await productsResponse.json()).products[0];
+    expect(product).toBeTruthy();
+
+    await openCrmSection(page, "catalog");
+    const productRow = page.locator(".products-row", { hasText: product.title });
+    await expect(productRow).toBeVisible();
+    await productRow.getByRole("button", { name: "Редактировать" }).click();
+    const modal = page.locator(".crm-modal");
+    const groupInput = modal.locator('input[name="productGroup"]');
+    await expect(groupInput).toHaveValue(product.productGroup);
+    await expect(modal.locator("#product-group-options")).toHaveCount(1);
+    await page.setViewportSize({ width: 320, height: 800 });
+    const mobileLayout = await modal.evaluate(element => ({
+        overflow: element.scrollWidth - element.clientWidth,
+        inputOverflow: element.querySelector('input[name="productGroup"]').scrollWidth
+            - element.querySelector('input[name="productGroup"]').clientWidth
+    }));
+    expect(mobileLayout.overflow).toBeLessThanOrEqual(1);
+    expect(mobileLayout.inputOverflow).toBeLessThanOrEqual(1);
+    await modal.getByRole("button", { name: "Закрыть окно" }).click();
+
+    const updatePayload = {
+        title: product.title,
+        category: product.category,
+        subcategory: product.subcategory,
+        productGroup: "  Сухая смесь  ",
+        price: product.price,
+        weight: product.weight,
+        unit: product.unit,
+        description: product.description,
+        isActive: product.isActive
+    };
+    const updateResponse = await page.request.patch(`/api/products/${product.id}`, { data: updatePayload });
+    expect(updateResponse.ok()).toBeTruthy();
+    const updatedProduct = (await updateResponse.json()).product;
+    expect(updatedProduct.productGroup).toBe("Сухая смесь");
+    expect(updatedProduct.category).toBe(product.category);
+    expect(updatedProduct.subcategory).toBe(product.subcategory);
+
+    const invalidType = await page.request.patch(`/api/products/${product.id}`, {
+        data: { ...updatePayload, productGroup: { value: "invalid" } }
+    });
+    expect(invalidType.status()).toBe(400);
+    expect(await invalidType.json()).toMatchObject({ success: false });
+
+    const tooLong = await page.request.patch(`/api/products/${product.id}`, {
+        data: { ...updatePayload, productGroup: "x".repeat(201) }
+    });
+    expect(tooLong.status()).toBe(400);
+
+    const controlCharacter = await page.request.patch(`/api/products/${product.id}`, {
+        data: { ...updatePayload, productGroup: "Сухая\nсмесь" }
+    });
+    expect(controlCharacter.status()).toBe(400);
+
+    const exportResponse = await page.request.get("/api/products/import/export/excel");
+    expect(exportResponse.ok()).toBeTruthy();
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.load(await exportResponse.body());
+    const sheet = workbook.worksheets[0];
+    const exportedRow = Array.from({ length: sheet.rowCount }, (_, index) => sheet.getRow(index + 1))
+        .find(row => String(row.getCell(11).value || "").trim() === product.externalId);
+    expect(exportedRow).toBeTruthy();
+    expect(String(exportedRow.getCell(8).value || "").trim()).toBe("Сухая смесь");
+    expect(String(exportedRow.getCell(8).value || "").trim()).not.toBe(product.productGroup);
+
+    const emptyGroup = await page.request.patch(`/api/products/${product.id}`, {
+        data: { ...updatePayload, productGroup: "   " }
+    });
+    expect(emptyGroup.ok()).toBeTruthy();
+    expect((await emptyGroup.json()).product.productGroup).toBe("");
 });
 
 test("CRM shows and securely downloads file request attachments", async ({ page }) => {

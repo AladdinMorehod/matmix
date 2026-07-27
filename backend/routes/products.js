@@ -4,6 +4,7 @@ const path = require("path");
 const ExcelJS = require("exceljs");
 const { all, get, run } = require("../database");
 const { requireRole } = require("../middleware/auth");
+const logger = require("../services/logger");
 const { getPaginationParams, buildPaginationMeta } = require("../utils/pagination");
 const { sanitizeExcelText } = require("../utils/excelText");
 const {
@@ -32,6 +33,11 @@ const {
 } = require("../services/catalogImport");
 const { ceilMoney, ceilWeight } = require("../utils/numberFormat");
 const { optimizeProductImage } = require("../services/productImages");
+const {
+    ProductBulkStructureError,
+    bulkUpdateProductStructure
+} = require("../services/productBulkStructure");
+const { validateProductGroupInput } = require("../services/productStructureValidation");
 
 const router = express.Router();
 const publicRouter = express.Router();
@@ -427,6 +433,18 @@ function getProductPayload(body, existing = {}) {
         description: normalizeText(body.description),
         isActive: body.isActive === undefined ? (existing.is_active ?? 1) : (body.isActive ? 1 : 0),
         sortOrder: normalizeNumber(body.sortOrder ?? body.sort_order, existing.sort_order || 0)
+    };
+}
+
+function getBulkStructureLogFields(req, productIds, changes, outcome) {
+    const loggedIds = productIds.slice(0, 25);
+    return {
+        actorId: req.session?.user?.id,
+        productCount: productIds.length,
+        productIds: loggedIds,
+        productIdsTruncated: loggedIds.length < productIds.length,
+        changedFields: Object.keys(changes),
+        outcome
     };
 }
 
@@ -1980,10 +1998,52 @@ router.delete("/:id/image", requireRole(["admin"]), async (req, res) => {
     }
 });
 
+router.patch("/bulk/structure", requireRole(["admin"]), async (req, res) => {
+    try {
+        const result = await bulkUpdateProductStructure(req.body || {});
+
+        logger.info(
+            "product_structure_bulk_update",
+            getBulkStructureLogFields(req, result.updatedProductIds, result.appliedChanges, "success")
+        );
+        res.json(result);
+    } catch (error) {
+        const productIds = error.bulkStructureContext?.productIds || [];
+        const changes = error.bulkStructureContext?.changes || {};
+        logger.error(
+            "product_structure_bulk_update",
+            error,
+            getBulkStructureLogFields(req, productIds, changes, "failure")
+        );
+        if (error instanceof ProductBulkStructureError) {
+            const statusByCode = {
+                BULK_PRODUCTS_NOT_FOUND: 404,
+                BULK_PRODUCT_UPDATE_CONFLICT: 409
+            };
+            const status = statusByCode[error.code] || 400;
+            const payload = {
+                success: false,
+                code: error.code,
+                message: error.message
+            };
+            if (Object.keys(error.details).length) payload.details = error.details;
+            res.status(status).json(payload);
+            return;
+        }
+        sendApiError(
+            res,
+            error,
+            "Не удалось изменить структуру выбранных товаров.",
+            "PRODUCT_STRUCTURE_BULK_UPDATE_FAILED"
+        );
+    }
+});
+
 router.post("/", requireRole(["admin"]), async (req, res) => {
     try {
         const payload = getProductPayload(req.body);
-        const validationMessage = validateProductPayload(payload)
+        const validationMessage = validateProductGroupInput(req.body)
+            || validateProductPayload(payload)
             || await validateProductStructureSelection({ get }, payload);
         if (validationMessage) {
             res.status(400).json({ success: false, message: validationMessage });
@@ -2019,7 +2079,8 @@ router.patch("/:id", requireRole(["admin"]), async (req, res) => {
         }
 
         const payload = getProductPayload(req.body, existing);
-        const validationMessage = validateProductPayload(payload, existing)
+        const validationMessage = validateProductGroupInput(req.body)
+            || validateProductPayload(payload, existing)
             || await validateProductStructureSelection({ get }, payload, existing);
         if (validationMessage) {
             res.status(400).json({ success: false, message: validationMessage });
