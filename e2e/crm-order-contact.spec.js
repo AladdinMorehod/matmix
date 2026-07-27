@@ -201,3 +201,181 @@ test("contact summary keeps two columns and wraps long address and comment at 32
         expect(field.valueScrollWidth).toBeLessThanOrEqual(field.valueClientWidth);
     }
 });
+
+test("mobile order keeps product metrics and footer actions compact", async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 900 });
+    await mockOrders(page, [
+        order({
+            id: 401,
+            orderNumber: "MOBILE-COMPACT",
+            customerName: "Мобильный клиент",
+            phone: "+7 900 111-22-33",
+            managerId: null,
+            managerName: "",
+            items: [
+                {
+                    name: "Плита теплоизоляционная",
+                    qty: 1,
+                    unit: "шт",
+                    weight: 11,
+                    lineWeight: 11,
+                    lineTotal: 102.9,
+                    priceOnRequest: false
+                },
+                {
+                    name: "Материал с ценой по запросу",
+                    qty: 2,
+                    unit: "шт",
+                    weight: 0,
+                    lineWeight: 0,
+                    lineTotal: null,
+                    priceOnRequest: true
+                }
+            ],
+            totalPrice: 102.9,
+            totalWeight: 11
+        }),
+        order({
+            id: 402,
+            orderNumber: "MOBILE-TELEGRAM",
+            customerName: "Клиент Telegram",
+            managerId: null,
+            preferredContactMethod: "telegram",
+            preferredContactValue: "@matmix"
+        }),
+        order({
+            id: 403,
+            orderNumber: "MOBILE-WHATSAPP",
+            customerName: "Клиент WhatsApp",
+            managerId: null,
+            preferredContactMethod: "whatsapp",
+            preferredContactValue: "+7 900 765-43-21"
+        })
+    ]);
+    await login(page);
+    await openOrders(page);
+
+    const card = page.locator('article.order-card[data-id="401"]');
+    const rows = card.locator(".order-item-row");
+    await expect(rows).toHaveCount(2);
+    await expect(card.locator(".order-items-list table")).toHaveCount(0);
+
+    const firstRow = rows.first();
+    await expect(firstRow.locator(".order-item-name")).toHaveText("Плита теплоизоляционная");
+    await expect(firstRow.locator(".order-item-label")).toHaveText(["Кол-во:", "Вес:", "Сумма:"]);
+    await expect(firstRow.locator(".order-item-value")).toHaveText(["1 шт", "11,000 кг", "102,90 ₽"]);
+    await expect(rows.nth(1).locator(".order-item-value").last()).toHaveText("Цена по запросу");
+
+    const metricLayout = await firstRow.locator(".order-item-metrics").evaluate(element => {
+        const metrics = Array.from(element.querySelectorAll(".order-item-metric"));
+        return {
+            display: getComputedStyle(element).display,
+            columns: getComputedStyle(element).gridTemplateColumns,
+            clientWidth: element.clientWidth,
+            scrollWidth: element.scrollWidth,
+            metrics: metrics.map(metric => ({
+                top: metric.getBoundingClientRect().top,
+                fontWeight: getComputedStyle(metric).fontWeight
+            }))
+        };
+    });
+    expect(metricLayout.display).toBe("grid");
+    expect(metricLayout.columns.trim().split(/\s+/)).toHaveLength(3);
+    expect(metricLayout.scrollWidth).toBeLessThanOrEqual(metricLayout.clientWidth);
+    expect(metricLayout.metrics.map(metric => metric.fontWeight)).toEqual(["400", "400", "400"]);
+    expect(new Set(metricLayout.metrics.map(metric => Math.round(metric.top))).size).toBe(1);
+
+    const footer = card.locator(".order-card-footer");
+    const primaryActions = footer.locator(".order-primary-actions-compact");
+    const actions = primaryActions.locator(".order-actions > a, .order-actions > button, .order-controls > button");
+    await expect(actions).toHaveText(["Позвонить", "Скачать заказ", "Взять в работу", "Удалить"]);
+    const actionLayout = await primaryActions.evaluate(element => {
+        const actions = Array.from(element.querySelectorAll(
+            ".order-actions > a, .order-actions > button, .order-controls > button"
+        ));
+        const footer = element.closest(".order-card-footer");
+        const footerBox = footer.getBoundingClientRect();
+        const documentElement = document.documentElement;
+        return {
+            clientWidth: footer.clientWidth,
+            scrollWidth: footer.scrollWidth,
+            documentClientWidth: documentElement.clientWidth,
+            documentScrollWidth: documentElement.scrollWidth,
+            flexWrap: getComputedStyle(element).flexWrap,
+            gap: getComputedStyle(element).columnGap,
+            actions: actions.map(action => ({
+                width: action.getBoundingClientRect().width,
+                height: action.getBoundingClientRect().height,
+                top: action.getBoundingClientRect().top,
+                bottom: action.getBoundingClientRect().bottom,
+                left: action.getBoundingClientRect().left,
+                right: action.getBoundingClientRect().right,
+                whiteSpace: getComputedStyle(action).whiteSpace,
+                fontSize: getComputedStyle(action).fontSize,
+                paddingLeft: getComputedStyle(action).paddingLeft,
+                paddingRight: getComputedStyle(action).paddingRight,
+                backgroundColor: getComputedStyle(action).backgroundColor,
+                color: getComputedStyle(action).color,
+                inlineWidth: action.style.width
+            })),
+            footerLeft: footerBox.left,
+            footerRight: footerBox.right,
+            footerWidth: footerBox.width
+        };
+    });
+    expect(actionLayout.flexWrap).toBe("nowrap");
+    expect(actionLayout.scrollWidth).toBeLessThanOrEqual(actionLayout.clientWidth);
+    expect(actionLayout.documentScrollWidth).toBeLessThanOrEqual(actionLayout.documentClientWidth);
+    expect(new Set(actionLayout.actions.map(action => Math.round(action.height))).size).toBe(1);
+    expect(Math.max(...actionLayout.actions.map(action => action.top))
+        - Math.min(...actionLayout.actions.map(action => action.top))).toBeLessThanOrEqual(2);
+    expect(Math.max(...actionLayout.actions.map(action => action.bottom))
+        - Math.min(...actionLayout.actions.map(action => action.bottom))).toBeLessThanOrEqual(2);
+    for (const action of actionLayout.actions) {
+        expect(action.width).toBeLessThan(actionLayout.footerWidth);
+        expect(action.height).toBeGreaterThanOrEqual(40);
+        expect(action.left).toBeGreaterThanOrEqual(actionLayout.footerLeft);
+        expect(action.right).toBeLessThanOrEqual(actionLayout.footerRight);
+        expect(action.whiteSpace).toBe("nowrap");
+        expect(action.inlineWidth).not.toBe("100%");
+    }
+    const [callAction, downloadAction, takeAction, deleteAction] = actionLayout.actions;
+    expect(callAction.backgroundColor).toBe(takeAction.backgroundColor);
+    expect(downloadAction.backgroundColor).not.toBe(callAction.backgroundColor);
+    expect(downloadAction.backgroundColor).not.toBe(deleteAction.backgroundColor);
+    expect(deleteAction.backgroundColor).not.toBe(callAction.backgroundColor);
+    expect(Number(deleteAction.backgroundColor.match(/\d+/g)[0]))
+        .toBeGreaterThan(Number(deleteAction.backgroundColor.match(/\d+/g)[1]));
+    expect(deleteAction.right).toBeLessThanOrEqual(actionLayout.footerRight);
+
+    const telegram = page.locator('[data-id="402"] .order-card-footer').getByRole("link", { name: "Telegram" });
+    const whatsapp = page.locator('[data-id="403"] .order-card-footer').getByRole("link", { name: "WhatsApp" });
+    await expect(telegram).toHaveAttribute("href", "https://t.me/matmix");
+    await expect(whatsapp).toHaveAttribute("href", "https://wa.me/79007654321");
+    for (const [contactAction, cardId] of [[telegram, "402"], [whatsapp, "403"]]) {
+        const dimensions = await contactAction.evaluate(element => {
+            const footer = element.closest(".order-card-footer");
+            return {
+                label: element.textContent.trim(),
+                width: element.getBoundingClientRect().width,
+                height: element.getBoundingClientRect().height,
+                footerWidth: footer.getBoundingClientRect().width,
+                footerClientWidth: footer.clientWidth,
+                footerScrollWidth: footer.scrollWidth
+            };
+        });
+        expect(dimensions.width).toBeLessThan(dimensions.footerWidth);
+        expect(dimensions.height).toBeGreaterThanOrEqual(40);
+        expect(dimensions.footerScrollWidth).toBeLessThanOrEqual(dimensions.footerClientWidth);
+        await expect(page.locator(`[data-id="${cardId}"] .contact-actions`)).toContainText(dimensions.label);
+        const takeColor = await page.locator(`[data-id="${cardId}"] [data-action="take"]`)
+            .evaluate(element => getComputedStyle(element).backgroundColor);
+        expect(takeColor).toBe(callAction.backgroundColor);
+    }
+
+    const pageOverflow = await page.evaluate(() => ({
+        clientWidth: document.documentElement.clientWidth,
+        scrollWidth: document.documentElement.scrollWidth
+    }));
+    expect(pageOverflow.scrollWidth).toBeLessThanOrEqual(pageOverflow.clientWidth);
+});

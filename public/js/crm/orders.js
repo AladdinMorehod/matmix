@@ -17,28 +17,29 @@ function renderItems(items = [], requestType = "order") {
     }
 
     return `
-        <table class="items-table">
-            <thead>
-                <tr>
-                    <th>Товар</th>
-                    <th>Кол-во</th>
-                    <th>Вес</th>
-                    <th>Сумма</th>
-                </tr>
-            </thead>
-            <tbody>
-                ${items.map(item => `
-                    <tr>
-                        <td>${escapeHtml(item.name)}</td>
-                        <td>${escapeHtml(item.qty)} ${escapeHtml(item.unit || "шт")}</td>
-                        <td>${formatWeight(item.lineWeight ?? ((item.weight || 0) * (item.qty || 0)))}</td>
-                        <td>${item.priceOnRequest || item.lineTotal === null
-                            ? '<strong>Цена по запросу</strong>'
-                            : formatMoney(item.lineTotal)}</td>
-                    </tr>
-                `).join("")}
-            </tbody>
-        </table>
+        <div class="order-items-list">
+            ${items.map(item => `
+                <article class="order-item-row">
+                    <div class="order-item-name">${escapeHtml(item.name)}</div>
+                    <div class="order-item-metrics">
+                        <span class="order-item-metric">
+                            <span class="order-item-label">Кол-во:</span>
+                            <span class="order-item-value">${escapeHtml(item.qty)} ${escapeHtml(item.unit || "шт")}</span>
+                        </span>
+                        <span class="order-item-metric">
+                            <span class="order-item-label">Вес:</span>
+                            <span class="order-item-value">${formatWeight(item.lineWeight ?? ((item.weight || 0) * (item.qty || 0)))}</span>
+                        </span>
+                        <span class="order-item-metric">
+                            <span class="order-item-label">Сумма:</span>
+                            <span class="order-item-value">${item.priceOnRequest || item.lineTotal === null
+                                ? "Цена по запросу"
+                                : formatMoney(item.lineTotal)}</span>
+                        </span>
+                    </div>
+                </article>
+            `).join("")}
+        </div>
     `;
 }
 
@@ -54,10 +55,18 @@ function renderContactControl(action) {
     return `<a href="${escapeHtml(action.href)}"${action.external ? ` target="_blank" rel="noopener"` : ""}>${escapeHtml(action.label)}</a>`;
 }
 
-function renderContactActions(order) {
+function renderOrderActions(order) {
     const action = getContactAction(order);
+    const contactControl = action?.external ? "" : renderContactControl(action);
     const exportButton = `<button class="download-order-excel" data-id="${order.id}" type="button">Скачать заказ</button>`;
-    return `<div class="order-actions">${renderContactControl(action)}${exportButton}</div>`;
+    return `<div class="order-actions">${contactControl}${exportButton}</div>`;
+}
+
+function renderExternalContactActions(order) {
+    const action = getContactAction(order);
+    return action?.external
+        ? `<div class="contact-actions">${renderContactControl(action)}</div>`
+        : "";
 }
 
 function isClosedOrder(order) {
@@ -353,6 +362,10 @@ async function loadOrderAttachments(orderId) {
 function renderOverviewTab(order) {
     const customerName = String(order.customerName || "").trim() || "Не указано";
     const customerPhone = String(order.phone || "").trim() || "Не указан";
+    const contactAction = getContactAction(order);
+    const hasCompactPrimaryActions = contactAction?.href?.startsWith("tel:")
+        && canTakeOrder(order)
+        && canDeleteOrder(order);
 
     return `
         <div class="order-sections">
@@ -376,8 +389,11 @@ function renderOverviewTab(order) {
         </div>
 
         <footer class="order-card-footer">
-            ${renderContactActions(order)}
-            ${renderOrderControls(order)}
+            <div class="order-primary-actions${hasCompactPrimaryActions ? " order-primary-actions-compact" : ""}">
+                ${renderOrderActions(order)}
+                ${renderOrderControls(order)}
+            </div>
+            ${renderExternalContactActions(order)}
         </footer>
     `;
 }

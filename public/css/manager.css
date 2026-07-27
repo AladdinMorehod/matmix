@@ -91,6 +91,11 @@ li {
     clip-path: inset(50%);
 }
 
+.manager-toolbar select.visually-hidden {
+    width: 1px;
+    max-width: 1px;
+}
+
 .import-export-panel {
     display: grid;
     gap: 10px;
@@ -965,33 +970,85 @@ a[role="button"],
     min-width: 190px;
 }
 
-.items-table {
+.order-items-list {
+    display: grid;
     width: 100%;
-    border-collapse: collapse;
-    overflow: hidden;
+    gap: 6px;
+}
+
+.order-item-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 6px 16px;
+    min-width: 0;
+    padding: 7px 8px;
     border: 1px solid var(--border);
     border-radius: 8px;
+    background: #ffffff;
 }
 
-.items-table th,
-.items-table td {
-    padding: 7px 8px;
-    border-bottom: 1px solid var(--border);
-    text-align: left;
-    font-size: 0.84rem;
-}
-
-.items-table th {
-    background: var(--surface-soft);
+.order-item-name {
+    min-width: 0;
     color: var(--primary-dark);
+    font-size: 0.84rem;
     font-weight: 800;
+    overflow-wrap: anywhere;
 }
 
-.items-table tr:last-child td {
-    border-bottom: none;
+.order-item-metrics {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 3px 10px;
+    min-width: 0;
+}
+
+.order-item-metric {
+    display: inline-flex;
+    gap: 3px;
+    min-width: 0;
+    font-size: 0.8rem;
+    font-weight: 400;
+    line-height: 1.35;
+    white-space: nowrap;
+}
+
+.order-item-label,
+.order-item-value {
+    font-weight: 400;
+}
+
+.order-item-value {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
 }
 
 .order-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.order-primary-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 8px;
+    min-width: 0;
+}
+
+.order-primary-actions-compact {
+    flex-wrap: nowrap;
+}
+
+.order-primary-actions-compact .order-actions,
+.order-primary-actions-compact .order-controls {
+    display: contents;
+}
+
+.contact-actions {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
@@ -1006,9 +1063,14 @@ a[role="button"],
 }
 
 .download-order-excel {
-    background: var(--primary);
+    background: #dcefe5;
+    color: #174b38;
     cursor: pointer;
     opacity: 1;
+}
+
+.order-card-footer .assignment-action[data-action="take"] {
+    background: var(--primary);
 }
 
 .contact-disabled {
@@ -2934,11 +2996,6 @@ a[role="button"],
     min-height: 28px;
 }
 
-.items-table th,
-.items-table td {
-    vertical-align: top;
-}
-
 @media (max-width: 1024px) and (min-width: 769px) {
     .crm-shell {
         grid-template-columns: 220px minmax(0, 1fr);
@@ -3297,8 +3354,7 @@ a[role="button"],
     }
 
     .manager-header,
-    .order-card-header,
-    .order-card-footer {
+    .order-card-header {
         align-items: flex-start;
         flex-direction: column;
     }
@@ -3323,6 +3379,11 @@ a[role="button"],
     }
 
     .order-card-footer {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 7px;
         position: sticky;
         bottom: 0;
         z-index: 25;
@@ -3348,7 +3409,6 @@ a[role="button"],
 
     .order-header-side,
     .assignment,
-    .order-controls,
     .status-control {
         width: 100%;
     }
@@ -3360,20 +3420,42 @@ a[role="button"],
 
     .order-controls,
     .order-actions,
-    .order-card-footer,
+    .order-primary-actions,
     .contact-actions {
-        width: 100%;
+        width: auto;
+        max-width: 100%;
+        align-items: center;
+        gap: 7px;
     }
 
-    .order-controls > *,
-    .order-actions > *,
-    .contact-actions > *,
-    .download-order-excel,
-    .delete-order,
-    .restore-order,
-    .assignment-action,
-    .status-control,
-    .status-control select {
+    .order-card-footer .order-controls > button,
+    .order-card-footer .order-actions > *,
+    .order-card-footer .order-primary-actions > *,
+    .order-card-footer .contact-actions > * {
+        width: auto;
+        max-width: 100%;
+        min-height: 42px;
+        flex: 0 1 auto;
+        padding: 0 13px;
+        white-space: normal;
+    }
+
+    .order-card-footer .order-primary-actions-compact {
+        width: 100%;
+        flex-wrap: nowrap;
+    }
+
+    .order-card-footer .order-primary-actions-compact > *,
+    .order-card-footer .order-primary-actions-compact .order-actions > *,
+    .order-card-footer .order-primary-actions-compact .order-controls > * {
+        flex: 0 1 auto;
+        min-width: 0;
+        min-height: 42px;
+        white-space: nowrap;
+    }
+
+    .order-card-footer .status-control,
+    .order-card-footer .status-control select {
         width: 100%;
     }
 
@@ -3381,65 +3463,41 @@ a[role="button"],
         grid-template-columns: 1fr;
     }
 
-    .items-table {
+    .order-item-row {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 5px;
+        padding: 8px 5px;
+    }
+
+    .order-item-metrics {
         display: grid;
-        border-collapse: separate;
-        border-spacing: 0;
-        overflow: visible;
-        border: none;
-        gap: 6px;
-        background: transparent;
+        grid-template-columns: minmax(0, auto) minmax(0, auto) minmax(0, 1fr);
+        justify-content: stretch;
+        gap: 4px;
     }
 
-    .items-table thead {
-        display: none;
-    }
-
-    .items-table tbody,
-    .items-table tr,
-    .items-table td {
-        display: block;
-        width: 100%;
-    }
-
-    .items-table tr {
-        padding: 8px;
-        border: 1px solid var(--border);
-        border-radius: 7px;
-        background: #ffffff;
-    }
-
-    .items-table td {
-        padding: 4px 0;
-        border: none;
-        overflow-wrap: anywhere;
-    }
-
-    .items-table td:nth-child(1) {
-        color: var(--primary-dark);
-        font-weight: 800;
-    }
-
-    .items-table td:nth-child(2)::before {
-        content: "Кол-во: ";
-        color: var(--text-muted);
-        font-weight: 800;
-    }
-
-    .items-table td:nth-child(3)::before {
-        content: "Вес: ";
-        color: var(--text-muted);
-        font-weight: 800;
-    }
-
-    .items-table td:nth-child(4)::before {
-        content: "Сумма: ";
-        color: var(--text-muted);
-        font-weight: 800;
+    .order-item-metric {
+        flex-wrap: wrap;
+        gap: 1px;
+        font-size: 0.72rem;
+        white-space: normal;
     }
 }
 
 @media (max-width: 480px) {
+    .order-card-footer .order-primary-actions-compact {
+        gap: 3px;
+    }
+
+    .order-card-footer .order-primary-actions-compact .order-actions > *,
+    .order-card-footer .order-primary-actions-compact .order-controls > * {
+        min-height: 42px;
+        padding-right: 4px;
+        padding-left: 4px;
+        font-size: 11px;
+        white-space: nowrap;
+    }
+
     .crm-workspace {
         padding: 10px;
         padding-bottom: calc(96px + env(safe-area-inset-bottom));
@@ -4698,13 +4756,13 @@ a[role="button"],
     min-width: 0;
 }
 
-.items-table,
+.order-items-list,
 .import-price-table-wrap {
     max-width: 100%;
 }
 
-.items-table {
-    overflow-x: auto;
+.order-items-list {
+    min-width: 0;
 }
 
 .products-table,
