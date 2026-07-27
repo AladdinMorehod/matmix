@@ -913,12 +913,13 @@ async function openCreateCategoryForm(formElement) {
     });
     if (!formData) return;
 
-    const result = await CrmApi.post("/api/products/structure/categories", {
+    const position = parseStructurePosition(formData.get("position"));
+    const item = await CatalogStructureCreate.createCategory({
         name: String(formData.get("name") || "").trim(),
-        ...parseStructurePosition(formData.get("position"))
+        ...position
     });
     await loadProductStructure();
-    refreshCategorySelect(formElement, result.item.name);
+    refreshCategorySelect(formElement, item.name);
     refreshSubcategorySelect(formElement, "");
     notifySuccess("Категория добавлена.");
 }
@@ -938,14 +939,15 @@ async function openCreateSubcategoryForm(formElement) {
     });
     if (!formData) return;
 
-    const result = await CrmApi.post("/api/products/structure/subcategories", {
-        categoryId: category.id,
+    const position = parseStructurePosition(formData.get("position"));
+    const item = await CatalogStructureCreate.createSubcategory({
+        parentId: category.id,
         name: String(formData.get("name") || "").trim(),
-        ...parseStructurePosition(formData.get("position"))
+        ...position
     });
     await loadProductStructure();
     refreshCategorySelect(formElement, category.name);
-    refreshSubcategorySelect(formElement, result.item.name);
+    refreshSubcategorySelect(formElement, item.name);
     notifySuccess("Подкатегория добавлена.");
 }
 

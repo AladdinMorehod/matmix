@@ -436,6 +436,8 @@
             } else if (event.target.closest("[data-readonly-detail-close]")) {
                 state.detail = null;
                 render();
+            } else if (typeof options.onAction === "function") {
+                options.onAction(event, { state, load, render });
             } else if (allowMutations && typeof options.onMutationAction === "function") {
                 options.onMutationAction(event, { state, load, render });
             }

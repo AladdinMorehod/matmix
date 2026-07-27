@@ -15,10 +15,15 @@ const {
     createCategory,
     createSubcategory,
     moveRootCategoryToIndex,
-    getMoveSubcategoriesPreview,
-    moveSubcategories,
+    getRootCategoryOrder,
+    applyRootCategoryOrder,
     validateProductStructureSelection
 } = require("../services/catalogStructure");
+const {
+    getSubcategoryMoveContext,
+    previewSubcategoryMove,
+    moveSubcategories
+} = require("../services/catalogSubcategoryMove");
 const {
     parseCatalogExcel,
     createCatalogImportPreviewToken,
@@ -1705,22 +1710,72 @@ router.get("/structure/audit/products", requireRole(["admin", "manager"]), async
     }
 });
 
-router.post("/structure/subcategories/move-preview", requireRole(["admin"]), async (req, res) => {
+router.get("/structure/subcategories/move-context", requireRole(["admin"]), async (req, res) => {
     try {
-        const preview = await getMoveSubcategoriesPreview({ all, get }, req.body || {});
+        const context = await getSubcategoryMoveContext({ all });
+        res.json({ success: true, ...context, data: context });
+    } catch (error) {
+        logger.error("catalog_subcategory_move_context", error, { actorId: req.session.user?.id || null });
+        sendApiError(res, error, "Не удалось загрузить данные для перемещения.", "SUBCATEGORY_MOVE_CONTEXT_FAILED");
+    }
+});
+
+router.post("/structure/subcategories/move-preview", requireRole(["admin"]), async (req, res) => {
+    const ids = Array.isArray(req.body?.subcategoryIds) ? req.body.subcategoryIds : [];
+    try {
+        const preview = await previewSubcategoryMove({ all }, req.body || {});
+        logger.info("catalog_subcategory_move_preview", {
+            actorId: req.session.user?.id || null,
+            targetCategoryId: Number(req.body?.targetCategoryId) || null,
+            subcategoryCount: ids.length,
+            subcategoryIds: ids.slice(0, 25),
+            truncated: ids.length > 25,
+            totalProducts: preview.totalProducts,
+            oldVersion: preview.version,
+            conflictCodes: preview.conflicts.map(conflict => conflict.code),
+            outcome: preview.canMove ? "success" : "conflict"
+        });
         res.json({ success: true, data: preview });
     } catch (error) {
-        console.error("Catalog subcategory move preview error:", error);
+        logger.error("catalog_subcategory_move_preview", error, {
+            actorId: req.session.user?.id || null,
+            targetCategoryId: Number(req.body?.targetCategoryId) || null,
+            subcategoryCount: ids.length,
+            subcategoryIds: ids.slice(0, 25),
+            truncated: ids.length > 25,
+            oldVersion: req.body?.expectedVersion || "",
+            outcome: error?.status === 409 ? "stale_conflict" : "failure"
+        });
         sendApiError(res, error, "Не удалось подготовить предварительный просмотр перемещения.", "CATALOG_STRUCTURE_MOVE_PREVIEW_FAILED");
     }
 });
 
 router.post("/structure/subcategories/move", requireRole(["admin"]), async (req, res) => {
+    const ids = Array.isArray(req.body?.subcategoryIds) ? req.body.subcategoryIds : [];
     try {
         const result = await moveSubcategories({ all, get, run }, req.body || {});
+        logger.info("catalog_subcategory_move", {
+            actorId: req.session.user?.id || null,
+            targetCategoryId: Number(req.body?.targetCategoryId) || null,
+            subcategoryCount: ids.length,
+            subcategoryIds: ids.slice(0, 25),
+            truncated: ids.length > 25,
+            totalProducts: result.affectedProducts,
+            oldVersion: result.oldVersion,
+            newVersion: result.version,
+            outcome: "success"
+        });
         res.json({ success: true, data: result });
     } catch (error) {
-        console.error("Catalog subcategory move error:", error);
+        logger.error("catalog_subcategory_move", error, {
+            actorId: req.session.user?.id || null,
+            targetCategoryId: Number(req.body?.targetCategoryId) || null,
+            subcategoryCount: ids.length,
+            subcategoryIds: ids.slice(0, 25),
+            truncated: ids.length > 25,
+            oldVersion: req.body?.expectedVersion || "",
+            outcome: error?.code === "STRUCTURE_VERSION_STALE" ? "stale_conflict" : "failure"
+        });
         sendApiError(res, error, "Не удалось переместить подкатегории.", "CATALOG_STRUCTURE_MOVE_FAILED");
     }
 });
@@ -1840,6 +1895,42 @@ router.post("/structure/categories", requireRole(["admin"]), async (req, res) =>
             success: false,
             message: error.status ? error.message : "Не удалось добавить категорию."
         });
+    }
+});
+
+router.get("/structure/categories/order", requireRole(["admin"]), async (req, res) => {
+    try {
+        const result = await getRootCategoryOrder({ all });
+        res.json({ success: true, ...result, data: result });
+    } catch (error) {
+        logger.error("catalog_category_order_read", error, { actorId: req.session.user?.id || null });
+        sendApiError(res, error, "Не удалось загрузить порядок категорий.", "CATEGORY_ORDER_READ_FAILED");
+    }
+});
+
+router.patch("/structure/categories/order", requireRole(["admin"]), async (req, res) => {
+    const categoryIds = req.body?.categoryIds;
+    const expectedVersion = req.body?.expectedVersion;
+    try {
+        const result = await applyRootCategoryOrder({ run, all }, { categoryIds, expectedVersion });
+        logger.info("catalog_category_reorder", {
+            actorId: req.session.user?.id || null,
+            oldVersion: result.oldVersion,
+            newVersion: result.version,
+            categoryCount: result.categories.length,
+            categoryIds: categoryIds.slice(0, 20),
+            outcome: "success"
+        });
+        res.json({ success: true, ...result, data: result });
+    } catch (error) {
+        logger.error("catalog_category_reorder", error, {
+            actorId: req.session.user?.id || null,
+            oldVersion: expectedVersion || "",
+            categoryCount: Array.isArray(categoryIds) ? categoryIds.length : 0,
+            categoryIds: Array.isArray(categoryIds) ? categoryIds.slice(0, 20) : [],
+            outcome: error?.status === 409 ? "stale_conflict" : "failure"
+        });
+        sendApiError(res, error, "Не удалось сохранить порядок категорий.", "CATEGORY_REORDER_FAILED");
     }
 });
 

@@ -2,6 +2,7 @@ const {
     buildCatalogStructureIndex,
     resolveProductStructureMembership
 } = require("./catalogStructureMembership");
+const crypto = require("crypto");
 
 function normalizeCatalogStructureName(value) {
     return String(value || "")
@@ -21,6 +22,20 @@ function normalizeCatalogStructureName(value) {
 
 function cleanCatalogStructureName(value) {
     return String(value || "").replace(/\s+/g, " ").trim();
+}
+
+function validateCatalogStructureName(value, label) {
+    if (typeof value !== "string") {
+        throw createStructureError(400, `${label} должно быть строкой.`);
+    }
+    if (/[\u0000-\u001f\u007f]/.test(value)) {
+        throw createStructureError(400, `${label} не должно содержать управляющие символы.`);
+    }
+    const cleanName = cleanCatalogStructureName(value);
+    if (cleanName.length > 200) {
+        throw createStructureError(400, `${label} не должно превышать 200 символов.`);
+    }
+    return cleanName;
 }
 
 function createStructureError(status, message) {
@@ -320,6 +335,69 @@ async function getStructureLevelRows(db, { type, parentId = null }) {
     );
 }
 
+function getCategoryOrderVersion(rows = []) {
+    const source = rows
+        .map(row => `${Number(row.id)}:${Number(row.sort_order) || 0}:${row.updated_at || ""}`)
+        .join("|");
+    return crypto.createHash("sha256").update(source).digest("hex");
+}
+
+async function getRootCategoryOrder(db) {
+    const rows = await getStructureLevelRows(db, { type: "category", parentId: null });
+    return {
+        categories: rows.map(toPublicStructureItem),
+        version: getCategoryOrderVersion(rows)
+    };
+}
+
+function validateCategoryOrderPayload(categoryIds, currentRows) {
+    if (!Array.isArray(categoryIds)) {
+        throw createStructureCodeError(400, "CATEGORY_ORDER_IDS_REQUIRED", "Передайте полный массив categoryIds.");
+    }
+    if (currentRows.length && !categoryIds.length) {
+        throw createStructureCodeError(400, "CATEGORY_ORDER_EMPTY", "Порядок категорий не может быть пустым.");
+    }
+    const ids = categoryIds.map(Number);
+    if (ids.some((id, index) => !Number.isInteger(id) || id <= 0 || Number(categoryIds[index]) !== id)) {
+        throw createStructureCodeError(400, "CATEGORY_ORDER_INVALID_ID", "Все categoryIds должны быть положительными целыми числами.");
+    }
+    if (new Set(ids).size !== ids.length) {
+        throw createStructureCodeError(400, "CATEGORY_ORDER_DUPLICATE_ID", "categoryIds не должны содержать дубликаты.");
+    }
+    const currentIds = currentRows.map(row => Number(row.id));
+    if (ids.length !== currentIds.length || ids.some(id => !currentIds.includes(id))) {
+        throw createStructureCodeError(409, "CATEGORY_ORDER_SET_CHANGED", "Набор категорий изменился. Обновите список и повторите.");
+    }
+    return ids;
+}
+
+async function applyRootCategoryOrder(db, { categoryIds, expectedVersion }) {
+    if (!expectedVersion || typeof expectedVersion !== "string") {
+        throw createStructureCodeError(400, "CATEGORY_ORDER_VERSION_REQUIRED", "Передайте expectedVersion.");
+    }
+    return runInTransaction(db, async () => {
+        const currentRows = await getStructureLevelRows(db, { type: "category", parentId: null });
+        const oldVersion = getCategoryOrderVersion(currentRows);
+        if (expectedVersion !== oldVersion) {
+            throw createStructureCodeError(409, "CATEGORY_ORDER_STALE", "Порядок категорий изменился. Обновите список и повторите.");
+        }
+        const ids = validateCategoryOrderPayload(categoryIds, currentRows);
+        const now = new Date().toISOString();
+        for (let index = 0; index < ids.length; index += 1) {
+            await db.run(
+                "UPDATE catalog_structure SET sort_order = ?, updated_at = ? WHERE id = ?",
+                [(index + 1) * 10, now, ids[index]]
+            );
+        }
+        const updated = await getRootCategoryOrder(db);
+        return {
+            ...updated,
+            oldVersion,
+            updatedAt: now
+        };
+    });
+}
+
 async function validateStructurePosition(db, { type, parentId = null, position = "end", afterId = null }) {
     const safePosition = normalizePosition(position);
     if (safePosition !== "after") {
@@ -390,25 +468,17 @@ async function moveRootCategoryToIndex(db, { categoryId, targetIndex }) {
         throw createStructureError(400, "Позиция категории недоступна.");
     }
 
-    return runInTransaction(db, async () => {
-        const orderedRows = rows.filter(row => Number(row.id) !== itemId);
-        orderedRows.splice(safeIndex, 0, item);
-        const now = new Date().toISOString();
-
-        for (let index = 0; index < orderedRows.length; index += 1) {
-            await db.run(
-                "UPDATE catalog_structure SET sort_order = ?, updated_at = ? WHERE id = ?",
-                [(index + 1) * 10, now, orderedRows[index].id]
-            );
-        }
-
-        const updatedRows = await getStructureLevelRows(db, { type: "category", parentId: null });
-        return updatedRows.map(toPublicStructureItem);
+    const orderedRows = rows.filter(row => Number(row.id) !== itemId);
+    orderedRows.splice(safeIndex, 0, item);
+    const result = await applyRootCategoryOrder(db, {
+        categoryIds: orderedRows.map(row => Number(row.id)),
+        expectedVersion: getCategoryOrderVersion(rows)
     });
+    return result.categories;
 }
 
 async function createCategory(db, { name, position = "end", afterId = null }) {
-    const cleanName = cleanCatalogStructureName(name);
+    const cleanName = validateCatalogStructureName(name, "Название категории");
     if (isSkippedCatalogStructureName(cleanName)) {
         throw createStructureError(400, "Укажите название категории.");
     }
@@ -451,7 +521,7 @@ async function createSubcategory(db, { categoryId, name, position = "end", after
         throw createStructureError(400, "Выберите категорию.");
     }
 
-    const cleanName = cleanCatalogStructureName(name);
+    const cleanName = validateCatalogStructureName(name, "Название подкатегории");
     if (isSkippedCatalogStructureName(cleanName)) {
         throw createStructureError(400, "Укажите название подкатегории.");
     }
@@ -488,142 +558,6 @@ async function createSubcategory(db, { categoryId, name, position = "end", after
 
         const created = await db.get("SELECT * FROM catalog_structure WHERE id = ?", [item.id]);
         return toPublicStructureItem(created);
-    });
-}
-
-async function getMoveSubcategoriesPreview(db, { subcategoryIds = [], targetCategoryId }) {
-    const ids = Array.from(new Set((subcategoryIds || []).map(Number).filter(Boolean)));
-    const targetId = Number(targetCategoryId) || 0;
-    if (!ids.length) {
-        throw createStructureCodeError(400, "CATALOG_STRUCTURE_INVALID_SELECTION", "Выберите подкатегории для перемещения.");
-    }
-
-    const target = await db.get(
-        "SELECT * FROM catalog_structure WHERE id = ? AND type = 'category' AND is_active = 1 AND parent_id IS NULL AND COALESCE(is_system, 0) = 0 LIMIT 1",
-        [targetId]
-    );
-    if (!target) {
-        throw createStructureCodeError(400, "CATALOG_STRUCTURE_INVALID_TARGET", "Выберите активную корневую категорию.");
-    }
-
-    const placeholders = ids.map(() => "?").join(",");
-    const rows = await db.all(
-        `SELECT child.*, parent.name AS parent_name
-         FROM catalog_structure child
-         LEFT JOIN catalog_structure parent ON parent.id = child.parent_id
-         WHERE child.id IN (${placeholders})
-           AND child.type = 'subcategory'
-           AND child.is_active = 1
-           AND COALESCE(child.is_system, 0) = 0`,
-        ids
-    );
-    if (rows.length !== ids.length) {
-        throw createStructureCodeError(404, "CATALOG_STRUCTURE_SUBCATEGORY_NOT_FOUND", "Одна или несколько подкатегорий не найдены.");
-    }
-
-    const conflicts = [];
-    const items = [];
-    let affectedProducts = 0;
-    const sourceCategories = new Map();
-
-    for (const row of rows) {
-        if (Number(row.parent_id) === target.id) {
-            conflicts.push({
-                code: "SAME_PARENT",
-                message: `Подкатегория "${row.name}" уже находится в выбранной категории.`,
-                subcategoryId: row.id
-            });
-        }
-
-        const duplicate = await db.get(
-            `SELECT id, name
-             FROM catalog_structure
-             WHERE type = 'subcategory'
-               AND parent_id = ?
-               AND normalized_name = ?
-               AND id != ?
-               AND is_active = 1
-               AND COALESCE(is_system, 0) = 0
-             LIMIT 1`,
-            [target.id, normalizeCatalogStructureName(row.name), row.id]
-        );
-        if (duplicate) {
-            conflicts.push({
-                code: "TARGET_DUPLICATE_SUBCATEGORY",
-                message: `В выбранной категории уже есть подкатегория "${duplicate.name}".`,
-                subcategoryId: row.id,
-                duplicateId: duplicate.id
-            });
-        }
-
-        const productRow = await db.get(
-            `SELECT COUNT(*) AS count
-             FROM products
-             WHERE deleted_at IS NULL
-               AND category = ?
-               AND subcategory = ?`,
-            [row.parent_name || "", row.name]
-        );
-        const productCount = Number(productRow?.count || 0);
-        affectedProducts += productCount;
-        if (row.parent_name) sourceCategories.set(row.parent_name, (sourceCategories.get(row.parent_name) || 0) + 1);
-        items.push({
-            id: row.id,
-            name: row.name,
-            currentCategoryId: row.parent_id,
-            currentCategoryName: row.parent_name || "",
-            targetCategoryId: target.id,
-            targetCategoryName: target.name,
-            productCount
-        });
-    }
-
-    return {
-        canMove: conflicts.length === 0,
-        targetCategory: toPublicStructureItem(target),
-        items,
-        affectedProducts,
-        sourceCategories: Array.from(sourceCategories.entries()).map(([name, count]) => ({ name, count })),
-        conflicts
-    };
-}
-
-async function moveSubcategories(db, payload) {
-    const preview = await getMoveSubcategoriesPreview(db, payload);
-    if (!preview.canMove) {
-        throw createStructureCodeError(409, "CATALOG_STRUCTURE_CONFLICT", preview.conflicts[0]?.message || "Перемещение невозможно.");
-    }
-
-    return runInTransaction(db, async () => {
-        const now = new Date().toISOString();
-        for (const item of preview.items) {
-            await db.run(
-                "UPDATE catalog_structure SET parent_id = ?, updated_at = ? WHERE id = ? AND type = 'subcategory'",
-                [preview.targetCategory.id, now, item.id]
-            );
-            await db.run(
-                `UPDATE products
-                 SET category = ?,
-                     updated_at = ?
-                 WHERE deleted_at IS NULL
-                   AND category = ?
-                   AND subcategory = ?`,
-                [preview.targetCategory.name, now, item.currentCategoryName, item.name]
-            );
-        }
-        await reorderStructureLevel(db, {
-            type: "subcategory",
-            parentId: preview.targetCategory.id,
-            itemId: preview.items[0].id,
-            position: "end"
-        });
-
-        return {
-            moved: preview.items.length,
-            affectedProducts: preview.affectedProducts,
-            targetCategory: preview.targetCategory,
-            items: preview.items
-        };
     });
 }
 
@@ -1154,8 +1088,8 @@ module.exports = {
     createCategory,
     createSubcategory,
     moveRootCategoryToIndex,
-    getMoveSubcategoriesPreview,
-    moveSubcategories,
+    getRootCategoryOrder,
+    applyRootCategoryOrder,
     reorderStructureLevel,
     validateStructurePosition,
     validateProductStructureSelection
