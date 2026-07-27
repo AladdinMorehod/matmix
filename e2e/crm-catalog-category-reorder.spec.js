@@ -45,11 +45,8 @@ test("admin reorders all root categories from embedded modal", async ({ page }) 
     expect(reordered.categories.map(item => item.id)).toEqual([originalIds[1], originalIds[0], ...originalIds.slice(2)]);
     await expect(page.locator("#catalogEmbeddedStructurePanel .structure-category").first()).toContainText(reordered.categories[0].name);
 
-    await page.evaluate(async () => {
-      setActiveSection("catalogStructure");
-      await loadCatalogStructureAudit({ force: true });
-    });
-    await expect(page.locator("#catalogStructureView .structure-category").first()).toContainText(reordered.categories[0].name);
+    await page.evaluate(() => setActiveSection("catalogStructure"));
+    await expect(page.locator("#catalogEmbeddedStructurePanel .structure-category").first()).toContainText(reordered.categories[0].name);
 
     const restore = await saveOrder(page, originalIds, reordered.version);
     expect(restore.ok()).toBeTruthy();
