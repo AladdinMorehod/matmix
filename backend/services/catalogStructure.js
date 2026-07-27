@@ -1,3 +1,8 @@
+const {
+    buildCatalogStructureIndex,
+    resolveProductStructureMembership
+} = require("./catalogStructureMembership");
+
 function normalizeCatalogStructureName(value) {
     return String(value || "")
         .normalize("NFKC")
@@ -809,8 +814,7 @@ async function getCatalogStructureAudit(db) {
     const categories = rows.filter(row => row.type === "category");
     const subcategories = rows.filter(row => row.type === "subcategory");
     const categoriesById = new Map(categories.map(row => [Number(row.id), row]));
-    const activeCategoriesByName = new Map();
-    const activeSubcategoriesByParentAndName = new Map();
+    const structureIndex = buildCatalogStructureIndex(rows);
     const productCountByCategory = new Map();
     const productCountBySubcategory = new Map();
     const activeProductCountByCategory = new Map();
@@ -819,30 +823,18 @@ async function getCatalogStructureAudit(db) {
     const inactiveProductCountBySubcategory = new Map();
     const issues = [];
 
-    categories.filter(row => row.isActive && !row.isSystem).forEach(row => {
-        activeCategoriesByName.set(row.normalizedName, row);
-    });
-    subcategories.filter(row => row.isActive && !row.isSystem).forEach(row => {
-        activeSubcategoriesByParentAndName.set(`${row.parentId}:${row.normalizedName}`, row);
-    });
-
     products.forEach(product => {
-        const normalizedCategory = normalizeCatalogStructureName(product.category);
-        const category = activeCategoriesByName.get(normalizedCategory);
+        const { category, subcategory } = resolveProductStructureMembership(product, structureIndex);
         if (category) {
             productCountByCategory.set(category.id, (productCountByCategory.get(category.id) || 0) + 1);
             const categoryCountMap = product.is_active ? activeProductCountByCategory : inactiveProductCountByCategory;
             categoryCountMap.set(category.id, (categoryCountMap.get(category.id) || 0) + 1);
         }
 
-        const normalizedSubcategory = normalizeCatalogStructureName(product.subcategory);
-        if (category && normalizedSubcategory) {
-            const subcategory = activeSubcategoriesByParentAndName.get(`${category.id}:${normalizedSubcategory}`);
-            if (subcategory) {
-                productCountBySubcategory.set(subcategory.id, (productCountBySubcategory.get(subcategory.id) || 0) + 1);
-                const subcategoryCountMap = product.is_active ? activeProductCountBySubcategory : inactiveProductCountBySubcategory;
-                subcategoryCountMap.set(subcategory.id, (subcategoryCountMap.get(subcategory.id) || 0) + 1);
-            }
+        if (subcategory) {
+            productCountBySubcategory.set(subcategory.id, (productCountBySubcategory.get(subcategory.id) || 0) + 1);
+            const subcategoryCountMap = product.is_active ? activeProductCountBySubcategory : inactiveProductCountBySubcategory;
+            subcategoryCountMap.set(subcategory.id, (subcategoryCountMap.get(subcategory.id) || 0) + 1);
         }
     });
 
@@ -970,14 +962,7 @@ async function getCatalogStructureAudit(db) {
 
     let productsWithoutStructure = 0;
     products.forEach(product => {
-        const category = activeCategoriesByName.get(normalizeCatalogStructureName(product.category));
-        const normalizedSubcategory = normalizeCatalogStructureName(product.subcategory);
-        const subcategory = category && normalizedSubcategory
-            ? activeSubcategoriesByParentAndName.get(`${category.id}:${normalizedSubcategory}`)
-            : null;
-        if (!category || (normalizedSubcategory && !subcategory)) {
-            productsWithoutStructure += 1;
-        }
+        if (!resolveProductStructureMembership(product, structureIndex).hasStructure) productsWithoutStructure += 1;
     });
 
     if (productsWithoutStructure) {

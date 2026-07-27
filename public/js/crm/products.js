@@ -3,6 +3,8 @@ function canEditProducts() {
 }
 
 let productStructure = [];
+let catalogInnerMode = "products";
+let activeProductStructureFilter = null;
 const productImageAllowedTypes = ["image/jpeg", "image/png", "image/webp"];
 const productImageMaxSize = 10 * 1024 * 1024;
 const productUnitOptions = ["шт", "кг", "м", "м2"];
@@ -303,14 +305,30 @@ function renderProductsView() {
         <header class="crm-topbar">
             <div>
                 <h1>Каталог</h1>
-                <p>Товары MatMix</p>
+                <p>${catalogInnerMode === "products" ? "Товары MatMix" : "Диагностика структуры каталога"}</p>
             </div>
             <div class="crm-topbar-actions">
-                <button class="products-export" type="button">Скачать прайс Excel</button>
-                ${isAdmin ? `<button class="products-add" type="button">Добавить товар</button>` : ""}
+                ${catalogInnerMode === "products" ? `
+                    <button class="products-export" type="button">Скачать прайс Excel</button>
+                    ${isAdmin ? `<button class="products-add" type="button">Добавить товар</button>` : ""}
+                ` : ""}
             </div>
         </header>
 
+        <div class="catalog-inner-tabs" role="tablist" aria-label="Режим каталога">
+            <button type="button" role="tab" id="catalogProductsTab" data-catalog-mode="products"
+                aria-selected="${catalogInnerMode === "products"}" aria-controls="catalogProductsPanel"
+                class="${catalogInnerMode === "products" ? "active" : ""}">Товары</button>
+            <button type="button" role="tab" id="catalogStructureTab" data-catalog-mode="structure"
+                aria-selected="${catalogInnerMode === "structure"}" aria-controls="catalogEmbeddedStructurePanel"
+                class="${catalogInnerMode === "structure" ? "active" : ""}">Структура</button>
+        </div>
+
+        <div id="catalogProductsPanel" role="tabpanel" aria-labelledby="catalogProductsTab"${catalogInnerMode === "products" ? "" : " hidden"}>
+        ${activeProductStructureFilter ? `<section class="product-structure-filter-chip" role="status">
+            <strong>Структура: ${escapeHtml(activeProductStructureFilter.label)}</strong>
+            <button type="button" data-product-structure-filter-reset>Сбросить</button>
+        </section>` : ""}
         <section class="products-toolbar">
             <label>
                 <span>Поиск</span>
@@ -318,7 +336,7 @@ function renderProductsView() {
             </label>
             <label>
                 <span>Категория</span>
-                <select id="productCategoryFilter">
+                <select id="productCategoryFilter"${activeProductStructureFilter ? " disabled" : ""}>
                     <option value="">Все категории</option>
                     ${categoryOptions}
                 </select>
@@ -339,7 +357,51 @@ function renderProductsView() {
         <section class="products-list">
             ${productsLoading ? renderCrmLoader("Загружаем каталог...") : renderProductsList()}
         </section>
+        </div>
+        <section id="catalogEmbeddedStructurePanel" class="catalog-embedded-structure" role="tabpanel"
+            aria-labelledby="catalogStructureTab"${catalogInnerMode === "structure" ? "" : " hidden"}></section>
     `;
+
+    const embeddedRoot = productsView.querySelector("#catalogEmbeddedStructurePanel");
+    if (typeof mountEmbeddedCatalogStructureView === "function") {
+        mountEmbeddedCatalogStructureView(embeddedRoot);
+        if (catalogInnerMode === "structure") loadEmbeddedCatalogStructureAudit();
+    }
+}
+
+function setCatalogInnerMode(mode) {
+    const nextMode = mode === "structure" ? "structure" : "products";
+    if (catalogInnerMode === nextMode) return;
+    catalogInnerMode = nextMode;
+    renderProductsView();
+}
+
+async function showProductsForStructure(filter) {
+    if (!filter || (!filter.nodeId && filter.mode !== "withoutStructure")) return;
+    activeProductStructureFilter = {
+        mode: filter.mode === "withoutStructure" ? "withoutStructure" : "node",
+        nodeId: filter.nodeId ? Number(filter.nodeId) : null,
+        label: String(filter.label || "Выбранный узел")
+    };
+    catalogInnerMode = "products";
+    productFilters.search = "";
+    productFilters.category = "";
+    if (productFilters.status === "deleted") productFilters.status = "";
+    productFilters.page = 1;
+    products = [];
+    productsPagination = normalizePaginationMeta();
+    clearProductSelection();
+    renderProductsView();
+    await loadProducts({ preserveControls: true });
+}
+
+async function resetProductStructureFilter() {
+    activeProductStructureFilter = null;
+    productFilters.page = 1;
+    products = [];
+    productsPagination = normalizePaginationMeta();
+    clearProductSelection();
+    await loadProducts();
 }
 
 function renderProductImageBulkToolbar() {
@@ -591,6 +653,7 @@ async function openBulkProductStructureForm() {
             controls.setBusy(true, "Изменение...");
             try {
                 const result = await CrmApi.patch("/api/products/bulk/structure", request);
+                invalidateCatalogStructureReadonlyCache();
                 clearProductSelection();
                 await loadProducts({ preserveControls: true });
                 notifySuccess(`Изменено товаров: ${result.updatedCount}.`);
@@ -682,6 +745,11 @@ function getProductsQuery(options = {}) {
     const params = new URLSearchParams();
     if (productFilters.search) params.set("search", productFilters.search);
     if (productFilters.category) params.set("category", productFilters.category);
+    if (activeProductStructureFilter?.mode === "withoutStructure") {
+        params.set("structureMode", "withoutStructure");
+    } else if (activeProductStructureFilter?.nodeId) {
+        params.set("structureNodeId", activeProductStructureFilter.nodeId);
+    }
     if (!forExport && isDeletedProductsFilter()) {
         params.set("deleted", "true");
     } else if (productFilters.status && !isDeletedProductsFilter()) {
@@ -1152,9 +1220,11 @@ async function openProductForm(product = null) {
     try {
         if (product) {
             await CrmApi.patch(`/api/products/${product.id}`, payload);
+            invalidateCatalogStructureReadonlyCache();
             notifySuccess(CRM_MESSAGES.SUCCESS_PRODUCT_UPDATED);
         } else {
             await CrmApi.post("/api/products", payload);
+            invalidateCatalogStructureReadonlyCache();
             notifySuccess(CRM_MESSAGES.SUCCESS_PRODUCT_CREATED);
         }
         await loadProducts();
@@ -1166,6 +1236,7 @@ async function openProductForm(product = null) {
 async function toggleProductStatus(productId, isActive) {
     try {
         await CrmApi.patch(`/api/products/${productId}/status`, { isActive });
+        invalidateCatalogStructureReadonlyCache();
         notifySuccess(isActive ? CRM_MESSAGES.SUCCESS_PRODUCT_SHOWN : CRM_MESSAGES.SUCCESS_PRODUCT_HIDDEN);
         await loadProducts();
     } catch (error) {
@@ -1186,6 +1257,7 @@ async function deleteProduct(productId) {
 
     try {
         await CrmApi.delete(`/api/products/${productId}`);
+        invalidateCatalogStructureReadonlyCache();
         notifySuccess(CRM_MESSAGES.SUCCESS_PRODUCT_DELETED);
         await loadProducts();
     } catch (error) {
@@ -1206,6 +1278,7 @@ async function restoreProduct(productId) {
 
     try {
         await CrmApi.post(`/api/products/${productId}/restore`);
+        invalidateCatalogStructureReadonlyCache();
         notifySuccess(CRM_MESSAGES.SUCCESS_PRODUCT_RESTORED);
         await loadProducts();
     } catch (error) {
