@@ -245,7 +245,7 @@ assert(!overviewHtml.includes('<Иван "Тест">'));
 
 const emptyOverviewHtml = renderOverviewTab({ id: 2, customerName: null, phone: " ", items: [] });
 assert(emptyOverviewHtml.includes("Не указано"));
-assert(emptyOverviewHtml.includes("Телефон не указан"));
+assert(/<span>Тел\.<\/span>\s*<strong>Не указан<\/strong>/.test(emptyOverviewHtml));
 
 const clientTabHtml = renderClientTab({
     customerName: "Иван",

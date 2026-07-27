@@ -352,30 +352,19 @@ async function loadOrderAttachments(orderId) {
 
 function renderOverviewTab(order) {
     const customerName = String(order.customerName || "").trim() || "Не указано";
-    const customerPhone = String(order.phone || "").trim() || "Телефон не указан";
-    const contactAction = getContactAction(order);
+    const customerPhone = String(order.phone || "").trim() || "Не указан";
 
     return `
         <div class="order-sections">
-            <section class="order-section order-section-wide order-customer-summary">
-                <h2>Клиент</h2>
-                <div class="delivery-grid">
+            <section class="order-section order-section-wide order-customer-summary order-overview-summary">
+                <h2>Клиент и доставка</h2>
+                <div class="order-overview-summary-grid">
                     ${renderInfoRow("Имя", customerName)}
-                    ${renderInfoRow("Основной телефон", customerPhone)}
-                    <div class="info-row order-customer-contact">
-                        <span>Связь</span>
-                        ${renderContactControl(contactAction)}
-                    </div>
-                </div>
-            </section>
-
-            <section class="order-section order-delivery-section">
-                <h2>Доставка и оплата</h2>
-                <div class="delivery-grid">
-                    ${renderInfoRow("Адрес", order.address || "Не указан")}
-                    ${renderInfoRow("Оплата", order.paymentMethod || "Не указана")}
+                    ${renderInfoRow("Тел.", customerPhone)}
                     ${renderInfoRow("Разгрузка", order.unloading || "Нет")}
-                    ${renderInfoRow("Комментарий", order.comment || "—")}
+                    ${renderInfoRow("Оплата", order.paymentMethod || "Не указана")}
+                    ${renderInfoRow("Адрес", order.address || "Не указан")}
+                    ${renderInfoRow("Комментарий", order.comment || "Нет")}
                 </div>
             </section>
 

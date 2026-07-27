@@ -59,13 +59,17 @@ async function mockOrders(page, orders) {
     }));
 }
 
-test("order Overview keeps canonical phone, preferred and no-contact actions", async ({ page }) => {
+test("order Overview renders one compact six-field summary and keeps footer contact actions", async ({ page }) => {
     await mockOrders(page, [
         order({
             id: 101,
             orderNumber: "CONTACT-PHONE",
             customerName: "Клиент с пустым preferred Telegram",
             phone: "+7 900 111-22-33",
+            unloading: "Нет",
+            paymentMethod: "Безнал — с НДС",
+            address: "Не указан",
+            comment: "TEST Download 2",
             preferredContactMethod: "telegram",
             preferredContactValue: " "
         }),
@@ -90,18 +94,48 @@ test("order Overview keeps canonical phone, preferred and no-contact actions", a
     const phoneSummary = phoneCard.locator(".order-customer-summary");
     await expect(phoneSummary).toContainText("Клиент с пустым preferred Telegram");
     await expect(phoneSummary).toContainText("+7 900 111-22-33");
-    await expect(phoneSummary.getByRole("link", { name: "Позвонить" })).toHaveAttribute("href", "tel:+79001112233");
+    await expect(phoneCard.locator(".order-customer-summary")).toHaveCount(1);
+    await expect(phoneCard.locator(".order-delivery-section")).toHaveCount(0);
+    await expect(phoneSummary.locator(".order-overview-summary-grid")).toHaveCount(1);
+    await expect(phoneSummary.locator(".info-row")).toHaveCount(6);
+    await expect(phoneSummary.locator(".info-row > span")).toHaveText([
+        "Имя",
+        "Тел.",
+        "Разгрузка",
+        "Оплата",
+        "Адрес",
+        "Комментарий"
+    ]);
+    await expect(phoneSummary.locator(".info-row > strong")).toHaveText([
+        "Клиент с пустым preferred Telegram",
+        "+7 900 111-22-33",
+        "Нет",
+        "Безнал — с НДС",
+        "Не указан",
+        "TEST Download 2"
+    ]);
+    await expect(phoneSummary.getByRole("link")).toHaveCount(0);
+    await expect(phoneSummary.getByRole("button", { name: "Позвонить" })).toHaveCount(0);
     await expect(phoneCard.locator(".order-card-footer").getByRole("link", { name: "Позвонить" })).toHaveAttribute("href", "tel:+79001112233");
 
     const telegramCard = page.locator('[data-id="102"]');
     const telegramSummary = telegramCard.locator(".order-customer-summary");
-    await expect(telegramSummary.getByRole("link", { name: "Telegram" })).toHaveAttribute("href", "https://t.me/matmix");
-    await expect(telegramSummary.getByRole("link", { name: "Telegram" })).toHaveAttribute("rel", "noopener");
+    await expect(telegramSummary.getByRole("link")).toHaveCount(0);
+    await expect(telegramCard.locator(".order-card-footer").getByRole("link", { name: "Telegram" })).toHaveAttribute("href", "https://t.me/matmix");
+    await expect(telegramCard.locator(".order-card-footer").getByRole("link", { name: "Telegram" })).toHaveAttribute("rel", "noopener");
 
     const noContactCard = page.locator('[data-id="103"]');
     const noContactSummary = noContactCard.locator(".order-customer-summary");
-    await expect(noContactSummary.locator(".contact-disabled")).toHaveText("Контакт не указан");
+    await expect(noContactSummary.locator(".info-row > strong")).toHaveText([
+        "Клиент без контакта",
+        "Не указан",
+        "Нет",
+        "Не указана",
+        "Не указан",
+        "Нет"
+    ]);
     await expect(noContactSummary.locator("a")).toHaveCount(0);
+    await expect(noContactCard.locator(".order-card-footer .contact-disabled")).toHaveText("Контакт не указан");
 });
 
 test("manager sees the same canonical phone fallback", async ({ page }) => {
@@ -117,17 +151,23 @@ test("manager sees the same canonical phone fallback", async ({ page }) => {
     await openOrders(page);
 
     const card = page.locator('[data-id="201"]');
-    await expect(card.locator(".order-customer-summary").getByRole("link", { name: "Позвонить" }))
+    await expect(card.locator(".order-customer-summary")).toContainText("+7 900 777-88-99");
+    await expect(card.locator(".order-customer-summary").getByRole("link")).toHaveCount(0);
+    await expect(card.locator(".order-card-footer").getByRole("link", { name: "Позвонить" }))
         .toHaveAttribute("href", "tel:+79007778899");
 });
 
-test("contact summary fits 320px with a long customer name", async ({ page }) => {
+test("contact summary keeps two columns and wraps long address and comment at 320px", async ({ page }) => {
+    const longAddress = "ОченьДлинныйАдресБезПробеловДляПроверкиПереносаВнутриЛевойКолонки";
+    const longComment = "ОченьДлинныйКомментарийБезПробеловДляПроверкиПереносаВнутриПравойКолонки";
     await page.setViewportSize({ width: 320, height: 900 });
     await mockOrders(page, [order({
         id: 301,
         orderNumber: "CONTACT-MOBILE",
         customerName: "Очень длинное имя клиента для проверки корректного переноса внутри мобильного обзора заказа",
         phone: "+7 (900) 123-45-67",
+        address: longAddress,
+        comment: longComment,
         preferredContactMethod: "whatsapp",
         preferredContactValue: "+7 (900) 765-43-21"
     })]);
@@ -138,13 +178,26 @@ test("contact summary fits 320px with a long customer name", async ({ page }) =>
     await expect(summary).toBeVisible();
     await expect(summary).toContainText("Очень длинное имя клиента");
     await expect(summary).toContainText("+7 (900) 123-45-67");
-    await expect(summary.getByRole("link", { name: "WhatsApp" })).toHaveAttribute("href", "https://wa.me/79007654321");
+    await expect(summary).toContainText(longAddress);
+    await expect(summary).toContainText(longComment);
+    await expect(summary.getByRole("link")).toHaveCount(0);
+    await expect(page.locator('[data-id="301"] .order-card-footer').getByRole("link", { name: "WhatsApp" }))
+        .toHaveAttribute("href", "https://wa.me/79007654321");
     const dimensions = await summary.evaluate(element => ({
         clientWidth: element.clientWidth,
         scrollWidth: element.scrollWidth,
-        actionWidth: element.querySelector(".order-customer-contact")?.getBoundingClientRect().width || 0,
-        actionScrollWidth: element.querySelector(".order-customer-contact")?.scrollWidth || 0
+        columns: getComputedStyle(element.querySelector(".order-overview-summary-grid")).gridTemplateColumns,
+        fields: Array.from(element.querySelectorAll(".info-row")).map(field => ({
+            clientWidth: field.clientWidth,
+            scrollWidth: field.scrollWidth,
+            valueClientWidth: field.querySelector("strong").clientWidth,
+            valueScrollWidth: field.querySelector("strong").scrollWidth
+        }))
     }));
     expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth);
-    expect(dimensions.actionScrollWidth).toBeLessThanOrEqual(Math.ceil(dimensions.actionWidth));
+    expect(dimensions.columns.trim().split(/\s+/)).toHaveLength(2);
+    for (const field of dimensions.fields) {
+        expect(field.scrollWidth).toBeLessThanOrEqual(field.clientWidth);
+        expect(field.valueScrollWidth).toBeLessThanOrEqual(field.valueClientWidth);
+    }
 });

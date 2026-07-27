@@ -641,6 +641,30 @@ a[role="button"],
     gap: 7px;
 }
 
+.order-overview-summary {
+    gap: 5px;
+}
+
+.order-overview-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 5px 10px;
+    min-width: 0;
+}
+
+.order-overview-summary-grid .info-row,
+.order-overview-summary-grid .info-row strong {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.order-overview-summary-grid .info-row strong {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
 .delivery-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3150,6 +3174,16 @@ a[role="button"],
 
     .delivery-grid {
         grid-template-columns: 1fr;
+    }
+
+    .order-overview-summary {
+        gap: 4px;
+        padding: 7px;
+    }
+
+    .order-overview-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 4px 6px;
     }
 
     .deleted-order-header,
