@@ -42,24 +42,22 @@ function renderItems(items = [], requestType = "order") {
     `;
 }
 
-function renderContactActions(order) {
-    const action = getContactAction(order);
-    const exportButton = `<button class="download-order-excel" data-id="${order.id}" type="button">Скачать заказ</button>`;
-
+function renderContactControl(action) {
     if (!action) {
-        return `<div class="order-actions"><span class="contact-disabled">Контакт не указан</span>${exportButton}</div>`;
+        return '<span class="contact-disabled">Контакт не указан</span>';
     }
 
     if (action.disabled) {
-        return `<div class="order-actions"><span class="contact-disabled">${escapeHtml(action.label)}</span>${exportButton}</div>`;
+        return `<span class="contact-disabled">${escapeHtml(action.label)}</span>`;
     }
 
-    return `
-        <div class="order-actions">
-            <a href="${escapeHtml(action.href)}"${action.external ? ` target="_blank" rel="noopener"` : ""}>${escapeHtml(action.label)}</a>
-            ${exportButton}
-        </div>
-    `;
+    return `<a href="${escapeHtml(action.href)}"${action.external ? ` target="_blank" rel="noopener"` : ""}>${escapeHtml(action.label)}</a>`;
+}
+
+function renderContactActions(order) {
+    const action = getContactAction(order);
+    const exportButton = `<button class="download-order-excel" data-id="${order.id}" type="button">Скачать заказ</button>`;
+    return `<div class="order-actions">${renderContactControl(action)}${exportButton}</div>`;
 }
 
 function isClosedOrder(order) {
@@ -355,6 +353,7 @@ async function loadOrderAttachments(orderId) {
 function renderOverviewTab(order) {
     const customerName = String(order.customerName || "").trim() || "Не указано";
     const customerPhone = String(order.phone || "").trim() || "Телефон не указан";
+    const contactAction = getContactAction(order);
 
     return `
         <div class="order-sections">
@@ -363,6 +362,10 @@ function renderOverviewTab(order) {
                 <div class="delivery-grid">
                     ${renderInfoRow("Имя", customerName)}
                     ${renderInfoRow("Основной телефон", customerPhone)}
+                    <div class="info-row order-customer-contact">
+                        <span>Связь</span>
+                        ${renderContactControl(contactAction)}
+                    </div>
                 </div>
             </section>
 
