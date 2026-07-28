@@ -316,6 +316,8 @@ test("mobile order keeps product metrics and footer actions compact", async ({ p
                 paddingRight: getComputedStyle(action).paddingRight,
                 backgroundColor: getComputedStyle(action).backgroundColor,
                 color: getComputedStyle(action).color,
+                clientWidth: action.clientWidth,
+                scrollWidth: action.scrollWidth,
                 inlineWidth: action.style.width
             })),
             footerLeft: footerBox.left,
@@ -333,13 +335,20 @@ test("mobile order keeps product metrics and footer actions compact", async ({ p
         - Math.min(...actionLayout.actions.map(action => action.bottom))).toBeLessThanOrEqual(2);
     for (const action of actionLayout.actions) {
         expect(action.width).toBeLessThan(actionLayout.footerWidth);
-        expect(action.height).toBeGreaterThanOrEqual(40);
+        expect(action.height).toBeGreaterThanOrEqual(34);
+        expect(action.height).toBeLessThanOrEqual(38);
         expect(action.left).toBeGreaterThanOrEqual(actionLayout.footerLeft);
         expect(action.right).toBeLessThanOrEqual(actionLayout.footerRight);
         expect(action.whiteSpace).toBe("nowrap");
+        expect(action.scrollWidth).toBeLessThanOrEqual(action.clientWidth);
         expect(action.inlineWidth).not.toBe("100%");
     }
     const [callAction, downloadAction, takeAction, deleteAction] = actionLayout.actions;
+    expect(callAction.left).toBeLessThan(downloadAction.left);
+    expect(downloadAction.left).toBeLessThan(takeAction.left);
+    expect(takeAction.left).toBeLessThan(deleteAction.left);
+    expect(deleteAction.left - takeAction.right).toBeGreaterThan(0);
+    expect(actionLayout.footerRight - deleteAction.right).toBeLessThanOrEqual(12);
     expect(callAction.backgroundColor).toBe(takeAction.backgroundColor);
     expect(downloadAction.backgroundColor).not.toBe(callAction.backgroundColor);
     expect(downloadAction.backgroundColor).not.toBe(deleteAction.backgroundColor);
@@ -378,4 +387,205 @@ test("mobile order keeps product metrics and footer actions compact", async ({ p
         scrollWidth: document.documentElement.scrollWidth
     }));
     expect(pageOverflow.scrollWidth).toBeLessThanOrEqual(pageOverflow.clientWidth);
+});
+
+test("taken order keeps release, delete, and status control in one row", async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 900 });
+    let mutableOrder = order({
+        id: 501,
+        orderNumber: "MOBILE-STATUS",
+        customerName: "Заказ для смены статуса",
+        phone: "+7 900 111-22-33",
+        managerId: null,
+        managerName: "",
+        updatedAt: "2026-07-27T06:00:00.000Z"
+    });
+    const mutations = [];
+    const fulfillMutation = (route, action) => {
+        mutableOrder = {
+            ...mutableOrder,
+            ...action,
+            updatedAt: new Date(Date.parse(mutableOrder.updatedAt) + 1000).toISOString()
+        };
+        return route.fulfill({
+            status: 200,
+            contentType: "application/json",
+            body: JSON.stringify({ success: true, order: mutableOrder })
+        });
+    };
+
+    await page.route("**/api/orders?**", route => route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+            success: true,
+            orders: [mutableOrder],
+            pagination: { page: 1, limit: 20, total: 1, totalPages: 1 },
+            stats: {
+                total: 1,
+                new: mutableOrder.status === "Новая" ? 1 : 0,
+                work: mutableOrder.status === "В работе" ? 1 : 0
+            }
+        })
+    }));
+    await page.route("**/api/orders/501/take", route => {
+        mutations.push("take");
+        return fulfillMutation(route, {
+            managerId: 2,
+            managerName: "E2E Admin",
+            status: "В работе"
+        });
+    });
+    await page.route("**/api/orders/501/status", async route => {
+        const payload = route.request().postDataJSON();
+        mutations.push(`status:${payload.status}`);
+        return fulfillMutation(route, { status: payload.status });
+    });
+    await page.route("**/api/orders/501/release", route => {
+        mutations.push("release");
+        return fulfillMutation(route, {
+            managerId: null,
+            managerName: "",
+            status: "Новая"
+        });
+    });
+
+    await login(page);
+    await openOrders(page);
+
+    const card = page.locator('article.order-card[data-id="501"]');
+    await card.getByRole("button", { name: "Взять в работу" }).click();
+
+    const primaryActions = card.locator(".order-primary-actions-status");
+    const controls = primaryActions.locator(".order-controls-status");
+    const callButton = primaryActions.getByRole("link", { name: "Позвонить" });
+    const downloadButton = primaryActions.getByRole("button", { name: "Скачать заказ" });
+    const releaseButton = controls.getByRole("button", { name: "Освободить" });
+    const deleteButton = controls.getByRole("button", { name: "Удалить" });
+    const statusSelect = controls.locator(".status-select");
+    await expect(callButton).toBeVisible();
+    await expect(downloadButton).toBeVisible();
+    await expect(releaseButton).toBeVisible();
+    await expect(deleteButton).toBeVisible();
+    await expect(statusSelect).toHaveValue("В работе");
+    await expect(controls.locator(":scope > button")).toHaveText(["Освободить", "Удалить"]);
+    await expect(controls.locator(".status-control > .visually-hidden")).toHaveText("Изменить статус");
+    await expect(controls.locator(".status-control > span:not(.visually-hidden)")).toHaveCount(0);
+    await statusSelect.selectOption("Ожидает клиента");
+    await expect(card.locator(".status-select")).toHaveValue("Ожидает клиента");
+    await expect(primaryActions).toBeVisible();
+
+    const measureLayout = () => primaryActions.evaluate(element => {
+        const footer = element.closest(".order-card-footer");
+        const call = element.querySelector('.order-actions a[href^="tel:"]');
+        const download = element.querySelector(".download-order-excel");
+        const release = element.querySelector('[data-action="release"]');
+        const remove = element.querySelector(".delete-order");
+        const select = element.querySelector(".status-select");
+        const rowStyle = getComputedStyle(element);
+        const selectStyle = getComputedStyle(select);
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+        context.font = selectStyle.font;
+        const selectedText = select.selectedOptions[0].textContent;
+        const selectedTextLetterSpacing = parseFloat(selectStyle.letterSpacing) || 0;
+        const dimensions = target => {
+            const box = target.getBoundingClientRect();
+            return {
+                left: box.left,
+                right: box.right,
+                top: box.top,
+                bottom: box.bottom,
+                width: box.width,
+                height: box.height,
+                clientWidth: target.clientWidth,
+                scrollWidth: target.scrollWidth
+            };
+        };
+        return {
+            display: getComputedStyle(element).display,
+            flexWrap: getComputedStyle(element).flexWrap,
+            gap: rowStyle.columnGap,
+            selectedText,
+            selectedTextWidth: context.measureText(selectedText).width
+                + selectedTextLetterSpacing * Math.max(0, selectedText.length - 1),
+            selectedTextAvailableWidth: select.clientWidth
+                - parseFloat(selectStyle.paddingLeft)
+                - parseFloat(selectStyle.paddingRight),
+            selectFontSize: selectStyle.fontSize,
+            selectPaddingLeft: selectStyle.paddingLeft,
+            selectPaddingRight: selectStyle.paddingRight,
+            call: dimensions(call),
+            download: dimensions(download),
+            release: dimensions(release),
+            remove: dimensions(remove),
+            select: dimensions(select),
+            footerLeft: footer.getBoundingClientRect().left,
+            footerRight: footer.getBoundingClientRect().right,
+            footerClientWidth: footer.clientWidth,
+            footerScrollWidth: footer.scrollWidth,
+            documentClientWidth: document.documentElement.clientWidth,
+            documentScrollWidth: document.documentElement.scrollWidth
+        };
+    });
+    const layout = await measureLayout();
+    expect(layout.display).toBe("flex");
+    expect(layout.flexWrap).toBe("nowrap");
+    expect(layout.call.left).toBeLessThan(layout.download.left);
+    expect(layout.download.left).toBeLessThan(layout.release.left);
+    expect(layout.release.left).toBeLessThan(layout.select.left);
+    expect(layout.select.left).toBeLessThan(layout.remove.left);
+    expect(Math.max(layout.call.top, layout.download.top, layout.release.top, layout.select.top, layout.remove.top)
+        - Math.min(layout.call.top, layout.download.top, layout.release.top, layout.select.top, layout.remove.top)).toBeLessThanOrEqual(2);
+    expect(layout.select.left - layout.release.right).toBeGreaterThanOrEqual(0);
+    expect(layout.remove.left - layout.select.right).toBeGreaterThan(0);
+    expect(layout.footerRight - layout.remove.right).toBeLessThanOrEqual(12);
+    expect(layout.selectedText).toBe("Ожидает клиента");
+    expect(layout.selectedTextWidth).toBeLessThanOrEqual(layout.selectedTextAvailableWidth);
+    for (const item of [layout.call, layout.download, layout.release, layout.select, layout.remove]) {
+        expect(item.scrollWidth).toBeLessThanOrEqual(item.clientWidth);
+        expect(item.height).toBeGreaterThanOrEqual(34);
+        expect(item.height).toBeLessThanOrEqual(38);
+    }
+    expect(layout.footerScrollWidth).toBeLessThanOrEqual(layout.footerClientWidth);
+    expect(layout.documentScrollWidth).toBeLessThanOrEqual(layout.documentClientWidth);
+
+    for (const width of [360, 390, 1280]) {
+        await page.setViewportSize({ width, height: 900 });
+        const responsiveLayout = await measureLayout();
+        expect(responsiveLayout.call.left).toBeLessThan(responsiveLayout.download.left);
+        expect(responsiveLayout.download.left).toBeLessThan(responsiveLayout.release.left);
+        expect(responsiveLayout.release.left).toBeLessThan(responsiveLayout.select.left);
+        expect(responsiveLayout.select.left).toBeLessThan(responsiveLayout.remove.left);
+        expect(Math.max(
+            responsiveLayout.call.top,
+            responsiveLayout.download.top,
+            responsiveLayout.release.top,
+            responsiveLayout.select.top,
+            responsiveLayout.remove.top
+        ) - Math.min(
+            responsiveLayout.call.top,
+            responsiveLayout.download.top,
+            responsiveLayout.release.top,
+            responsiveLayout.select.top,
+            responsiveLayout.remove.top
+        )).toBeLessThanOrEqual(2);
+        expect(responsiveLayout.footerScrollWidth).toBeLessThanOrEqual(responsiveLayout.footerClientWidth);
+        expect(responsiveLayout.documentScrollWidth).toBeLessThanOrEqual(responsiveLayout.documentClientWidth);
+        expect(responsiveLayout.selectedTextWidth).toBeLessThanOrEqual(responsiveLayout.selectedTextAvailableWidth);
+        for (const item of [
+            responsiveLayout.call,
+            responsiveLayout.download,
+            responsiveLayout.release,
+            responsiveLayout.select,
+            responsiveLayout.remove
+        ]) {
+            expect(item.height).toBeLessThanOrEqual(38);
+        }
+    }
+
+    await card.getByRole("button", { name: "Освободить" }).click();
+    await expect(card.getByRole("button", { name: "Взять в работу" })).toBeVisible();
+    await expect(card.locator(".status-select")).toHaveCount(0);
+    expect(mutations).toEqual(["take", "status:Ожидает клиента", "release"]);
 });

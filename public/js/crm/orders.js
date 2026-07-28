@@ -151,7 +151,7 @@ function renderOrderControls(order) {
     const statusControl = canChangeOrderStatus(order)
         ? `
             <label class="order-field status-control">
-                <span>Изменить статус</span>
+                <span class="visually-hidden">Изменить статус</span>
                 <select class="status-select" data-id="${order.id}">
                     ${renderStatusOptions(order.status)}
                 </select>
@@ -170,7 +170,7 @@ function renderOrderControls(order) {
 
     if (!takeButton && !statusControl && !releaseButton && !deleteButton && !lockText) return "";
 
-    return `<div class="order-controls">${takeButton}${statusControl}${releaseButton}${deleteButton}${lockText}</div>`;
+    return `<div class="order-controls${statusControl ? " order-controls-status" : ""}">${takeButton}${releaseButton}${statusControl}${deleteButton}${lockText}</div>`;
 }
 
 function renderEventList(events) {
@@ -366,6 +366,11 @@ function renderOverviewTab(order) {
     const hasCompactPrimaryActions = contactAction?.href?.startsWith("tel:")
         && canTakeOrder(order)
         && canDeleteOrder(order);
+    const hasStatusControls = canChangeOrderStatus(order)
+        && canReleaseOrder(order)
+        && canDeleteOrder(order);
+    const hasUnifiedPrimaryActions = canDeleteOrder(order)
+        && (canTakeOrder(order) || hasStatusControls);
 
     return `
         <div class="order-sections">
@@ -389,7 +394,7 @@ function renderOverviewTab(order) {
         </div>
 
         <footer class="order-card-footer">
-            <div class="order-primary-actions${hasCompactPrimaryActions ? " order-primary-actions-compact" : ""}">
+            <div class="order-primary-actions${hasCompactPrimaryActions ? " order-primary-actions-compact" : ""}${hasStatusControls ? " order-primary-actions-status" : ""}${hasUnifiedPrimaryActions ? " order-primary-actions-unified" : ""}">
                 ${renderOrderActions(order)}
                 ${renderOrderControls(order)}
             </div>
