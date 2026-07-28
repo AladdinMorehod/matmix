@@ -7,6 +7,14 @@ function requireAuth(req, res, next) {
     next();
 }
 
+function isMainAdmin(user) {
+    return user?.login === "admin";
+}
+
+function canReplaceAllProductImages(user) {
+    return user?.role === "admin" && isMainAdmin(user);
+}
+
 function requireRole(roles) {
     const allowedRoles = Array.isArray(roles) ? roles : [roles];
 
@@ -26,6 +34,8 @@ function requireRole(roles) {
 }
 
 module.exports = {
+    canReplaceAllProductImages,
+    isMainAdmin,
     requireAuth,
     requireRole
 };

@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const ExcelJS = require("exceljs");
 const { all, get, run } = require("../database");
-const { requireRole } = require("../middleware/auth");
+const { canReplaceAllProductImages, requireRole } = require("../middleware/auth");
 const logger = require("../services/logger");
 const { getPaginationParams, buildPaginationMeta } = require("../utils/pagination");
 const { sanitizeExcelText } = require("../utils/excelText");
@@ -89,6 +89,18 @@ function sendApiError(res, error, fallbackMessage, fallbackCode = "REQUEST_FAILE
 
 function normalizeText(value) {
     return String(value || "").replace(/\s+/g, " ").trim();
+}
+
+function isTruthyRequestFlag(value) {
+    return ["1", "true", "yes", "on", "all"].includes(normalizeText(value).toLowerCase());
+}
+
+function requestsGlobalProductImageScope(fields = {}) {
+    const scope = normalizeText(fields.scope).toLowerCase();
+    return ["all", "*", "global"].includes(scope)
+        || isTruthyRequestFlag(fields.allProducts)
+        || isTruthyRequestFlag(fields.applyToAll)
+        || isTruthyRequestFlag(fields.replaceAll);
 }
 
 function createHttpError(status, message, code = "REQUEST_FAILED") {
@@ -2024,6 +2036,18 @@ router.post("/images/by-filter", requireRole(["admin"]), async (req, res) => {
     try {
         const { image, fields } = await readMultipartProductImageUpload(req);
         const scope = normalizeText(fields.scope || "filtered");
+        if (requestsGlobalProductImageScope(fields) && !canReplaceAllProductImages(req.session.user)) {
+            logger.warn("product_image_global_replace_forbidden", {
+                actorId: req.session.user.id,
+                scope: "all",
+                outcome: "forbidden"
+            });
+            throw createHttpError(
+                403,
+                "Глобальная замена изображений доступна только главному администратору.",
+                "GLOBAL_PRODUCT_IMAGE_REPLACE_FORBIDDEN"
+            );
+        }
         if (!["filtered", "all"].includes(scope)) {
             throw createHttpError(400, "Некорректная область назначения изображения.", "INVALID_IMAGE_SCOPE");
         }
@@ -2073,6 +2097,13 @@ router.post("/images/by-filter", requireRole(["admin"]), async (req, res) => {
         }
 
         const updated = Number(updateResult?.changes) || productsToUpdate.length;
+        logger.info("product_image_by_filter_replace", {
+            actorId: req.session.user.id,
+            scope,
+            matched: productsToUpdate.length,
+            updated,
+            outcome: "success"
+        });
         res.json({
             success: true,
             scope,

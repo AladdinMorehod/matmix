@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs");
 const express = require("express");
 const { all, get, run } = require("../database");
-const { requireAuth, requireRole } = require("../middleware/auth");
+const { isMainAdmin, requireAuth, requireRole } = require("../middleware/auth");
 
 const router = express.Router();
 
@@ -12,10 +12,6 @@ function normalizeText(value) {
 function normalizeRole(value) {
     const role = normalizeText(value);
     return ["admin", "manager"].includes(role) ? role : "";
-}
-
-function isMainAdmin(user) {
-    return user?.login === "admin";
 }
 
 function normalizeUser(row) {
