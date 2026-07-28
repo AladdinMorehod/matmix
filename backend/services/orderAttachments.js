@@ -5,7 +5,9 @@ const {
 } = require("./orderAttachmentStorage");
 
 const REQUEST_TYPES = Object.freeze(["order", "file_request"]);
-const ALLOWED_ATTACHMENT_EXTENSIONS = new Set(["pdf", "jpg", "jpeg", "png", "xls", "xlsx", "csv", "txt"]);
+const ALLOWED_ATTACHMENT_EXTENSIONS = new Set([
+    "pdf", "jpg", "jpeg", "png", "doc", "docx", "xls", "xlsx", "csv", "txt"
+]);
 const MAX_ATTACHMENT_SIZE_BYTES = 15 * 1024 * 1024;
 const SHA256_PATTERN = /^[a-f0-9]{64}$/;
 const MIME_TYPE_PATTERN = /^[a-z0-9][a-z0-9!#$&^_.+-]*\/[a-z0-9][a-z0-9!#$&^_.+-]*$/;

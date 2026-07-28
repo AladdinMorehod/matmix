@@ -3,7 +3,7 @@ const path = require("path");
 const sqlite3 = require("sqlite3").verbose();
 const { configureBusinessConnection } = require("./sqlite");
 
-const CURRENT_SCHEMA_VERSION = 4;
+const CURRENT_SCHEMA_VERSION = 5;
 const CONSENT_COLUMNS = [
     ["consent_given", "INTEGER"], ["consent_at", "TEXT"], ["privacy_policy_version", "TEXT"],
     ["terms_version", "TEXT"], ["privacy_policy_url", "TEXT"], ["terms_url", "TEXT"]
@@ -132,11 +132,13 @@ async function migrateToV3(db) {
     await db.run("CREATE INDEX IF NOT EXISTS idx_order_attachments_order_id ON order_attachments(order_id)");
 }
 
-async function createOrderAttachmentsTable(db, tableName, { includeTxt, ifNotExists = false } = {}) {
+async function createOrderAttachmentsTable(db, tableName, { includeTxt, includeWord = false, ifNotExists = false } = {}) {
     const safeTableName = quoteIdentifier(tableName);
-    const extensions = includeTxt
-        ? "'pdf', 'jpg', 'jpeg', 'png', 'xls', 'xlsx', 'csv', 'txt'"
-        : "'pdf', 'jpg', 'jpeg', 'png', 'xls', 'xlsx', 'csv'";
+    const extensions = [
+        "pdf", "jpg", "jpeg", "png", "xls", "xlsx", "csv",
+        ...(includeTxt ? ["txt"] : []),
+        ...(includeWord ? ["doc", "docx"] : [])
+    ].map(extension => `'${extension}'`).join(", ");
     await db.run(`CREATE TABLE ${ifNotExists ? "IF NOT EXISTS " : ""}${safeTableName} (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         order_id INTEGER NOT NULL,
@@ -192,6 +194,25 @@ async function migrateToV4(db) {
     await db.run("CREATE INDEX idx_order_attachments_order_id ON order_attachments(order_id)");
 }
 
+async function migrateToV5(db) {
+    const columns = [
+        "id", "order_id", "original_name", "storage_key", "mime_type",
+        "extension", "size_bytes", "sha256", "created_at"
+    ];
+    await createOrderAttachmentsTable(db, "order_attachments_v5", { includeTxt: true, includeWord: true });
+    const columnList = columns.map(quoteIdentifier).join(", ");
+    await db.run(
+        `INSERT INTO ${quoteIdentifier("order_attachments_v5")} (${columnList})
+         SELECT ${columnList} FROM ${quoteIdentifier("order_attachments")}`
+    );
+    const oldCount = Number((await db.get("SELECT COUNT(*) count FROM order_attachments")).count);
+    const newCount = Number((await db.get("SELECT COUNT(*) count FROM order_attachments_v5")).count);
+    if (oldCount !== newCount) throw new Error("Attachment migration row-count verification failed.");
+    await db.run("DROP TABLE order_attachments");
+    await db.run("ALTER TABLE order_attachments_v5 RENAME TO order_attachments");
+    await db.run("CREATE INDEX idx_order_attachments_order_id ON order_attachments(order_id)");
+}
+
 async function migrateDatabase(dbPath, { dryRun = true, injectFailure = false } = {}) {
     const db = await openDatabase(dbPath);
     try {
@@ -199,7 +220,7 @@ async function migrateDatabase(dbPath, { dryRun = true, injectFailure = false } 
         if (fromVersion > CURRENT_SCHEMA_VERSION) throw new Error(`Unsupported newer schema version ${fromVersion}.`);
         const findings = await audit(db);
         if (dryRun || fromVersion === CURRENT_SCHEMA_VERSION) return { dryRun, fromVersion, toVersion: CURRENT_SCHEMA_VERSION, findings, changed: false };
-        if (![0, 1, 2, 3].includes(fromVersion)) throw new Error(`Unsupported schema version ${fromVersion}.`);
+        if (![0, 1, 2, 3, 4].includes(fromVersion)) throw new Error(`Unsupported schema version ${fromVersion}.`);
         if (findings.eventsWithoutOrder || findings.subcategoriesWithoutParent || findings.activeChildWithInactiveParent
             || findings.duplicateOrderNumbers || findings.duplicateProductCodes || findings.emptyProductCodes
             || findings.invalidRequestTypes || findings.attachmentsWithoutOrder) {
@@ -213,7 +234,8 @@ async function migrateDatabase(dbPath, { dryRun = true, injectFailure = false } 
                 for (const [name, type] of CONSENT_COLUMNS) await ensureColumn(db, "orders", name, type);
             }
             if (fromVersion <= 2) await migrateToV3(db);
-            await migrateToV4(db);
+            if (fromVersion <= 3) await migrateToV4(db);
+            await migrateToV5(db);
             if (injectFailure) throw new Error("Injected migration failure");
             const fk = await db.all("PRAGMA foreign_key_check");
             const integrity = await db.get("PRAGMA integrity_check");

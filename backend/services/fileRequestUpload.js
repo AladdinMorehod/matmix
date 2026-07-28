@@ -19,6 +19,14 @@ const MAX_XLSX_ENTRIES = 1000;
 const MAX_XLSX_UNCOMPRESSED_BYTES = 100 * 1024 * 1024;
 const MAX_XLSX_ENTRY_BYTES = 50 * 1024 * 1024;
 const MAX_XLSX_COMPRESSION_RATIO = 100;
+const OLE_SIGNATURE = Buffer.from([0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1]);
+const OLE_FREE_SECTOR = 0xffffffff;
+const OLE_END_OF_CHAIN = 0xfffffffe;
+const DANGEROUS_INTERMEDIATE_EXTENSIONS = new Set([
+    "bat", "cmd", "com", "cpl", "dll", "exe", "hta", "jar", "js", "jse", "lnk",
+    "msi", "msp", "pif", "ps1", "psd1", "psm1", "reg", "scr", "sh", "sys", "vbe",
+    "vbs", "wsf", "wsh"
+]);
 const EXPECTED_FIELDS = new Set([
     "customerName", "phone", "email", "comment", "paymentMethod", "includeCart", "items", "consent"
 ]);
@@ -27,6 +35,11 @@ const MIME_ALLOWLIST = Object.freeze({
     jpg: ["image/jpeg", "image/pjpeg"],
     jpeg: ["image/jpeg", "image/pjpeg"],
     png: ["image/png"],
+    doc: ["application/msword", "application/octet-stream"],
+    docx: [
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "application/octet-stream"
+    ],
     xls: [
         "application/vnd.ms-excel",
         "application/msexcel",
@@ -48,6 +61,8 @@ const NORMALIZED_MIME = Object.freeze({
     jpg: "image/jpeg",
     jpeg: "image/jpeg",
     png: "image/png",
+    doc: "application/msword",
+    docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     xls: "application/vnd.ms-excel",
     xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     csv: "text/csv",
@@ -78,8 +93,13 @@ function sanitizeOriginalName(value) {
 }
 
 function extensionFromName(fileName) {
-    const extension = path.extname(fileName).slice(1).toLowerCase();
+    const normalizedName = String(fileName || "").toLowerCase();
+    const nameParts = normalizedName.split(".");
+    const extension = path.extname(normalizedName).slice(1);
     if (!ALLOWED_ATTACHMENT_EXTENSIONS.has(extension)) {
+        throw uploadError(415, "UNSUPPORTED_FILE_FORMAT", "Формат файла не поддерживается.");
+    }
+    if (nameParts.slice(1, -1).some(part => DANGEROUS_INTERMEDIATE_EXTENSIONS.has(part))) {
         throw uploadError(415, "UNSUPPORTED_FILE_FORMAT", "Формат файла не поддерживается.");
     }
     return extension;
@@ -278,7 +298,88 @@ function validatePng(buffer) {
 
 function validateXls(buffer) {
     return buffer.length >= 8
-        && buffer.subarray(0, 8).equals(Buffer.from([0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1]));
+        && buffer.subarray(0, 8).equals(OLE_SIGNATURE);
+}
+
+function validateDoc(buffer) {
+    if (buffer.length < 512 || !buffer.subarray(0, 8).equals(OLE_SIGNATURE)) return false;
+    if (buffer.readUInt16LE(0x1c) !== 0xfffe) return false;
+    const majorVersion = buffer.readUInt16LE(0x1a);
+    const sectorShift = buffer.readUInt16LE(0x1e);
+    if (!((majorVersion === 3 && sectorShift === 9) || (majorVersion === 4 && sectorShift === 12))) return false;
+
+    const sectorSize = 2 ** sectorShift;
+    const totalSectors = Math.floor(buffer.length / sectorSize) - 1;
+    const fatSectorCount = buffer.readUInt32LE(0x2c);
+    const firstDirectorySector = buffer.readUInt32LE(0x30);
+    const firstDifatSector = buffer.readUInt32LE(0x44);
+    const difatSectorCount = buffer.readUInt32LE(0x48);
+    if (totalSectors < 1 || !fatSectorCount || fatSectorCount > totalSectors
+        || difatSectorCount > totalSectors || firstDirectorySector >= totalSectors) return false;
+
+    const sector = sectorId => {
+        if (sectorId >= totalSectors) return null;
+        const start = (sectorId + 1) * sectorSize;
+        return buffer.subarray(start, start + sectorSize);
+    };
+    const fatSectorIds = [];
+    for (let offset = 0x4c; offset < 0x200 && fatSectorIds.length < fatSectorCount; offset += 4) {
+        const sectorId = buffer.readUInt32LE(offset);
+        if (sectorId !== OLE_FREE_SECTOR) fatSectorIds.push(sectorId);
+    }
+
+    let difatSectorId = firstDifatSector;
+    const seenDifat = new Set();
+    for (let index = 0; index < difatSectorCount; index += 1) {
+        if (difatSectorId >= totalSectors || seenDifat.has(difatSectorId)) return false;
+        seenDifat.add(difatSectorId);
+        const difat = sector(difatSectorId);
+        if (!difat) return false;
+        for (let offset = 0; offset < sectorSize - 4 && fatSectorIds.length < fatSectorCount; offset += 4) {
+            const fatSectorId = difat.readUInt32LE(offset);
+            if (fatSectorId !== OLE_FREE_SECTOR) fatSectorIds.push(fatSectorId);
+        }
+        difatSectorId = difat.readUInt32LE(sectorSize - 4);
+    }
+    if (fatSectorIds.length < fatSectorCount) return false;
+
+    const fat = [];
+    for (const sectorId of fatSectorIds.slice(0, fatSectorCount)) {
+        const fatSector = sector(sectorId);
+        if (!fatSector) return false;
+        for (let offset = 0; offset < sectorSize; offset += 4) fat.push(fatSector.readUInt32LE(offset));
+    }
+
+    const directorySectors = [];
+    const seenDirectory = new Set();
+    let directorySectorId = firstDirectorySector;
+    while (directorySectorId !== OLE_END_OF_CHAIN) {
+        if (directorySectorId >= totalSectors || seenDirectory.has(directorySectorId)
+            || directorySectorId >= fat.length) return false;
+        seenDirectory.add(directorySectorId);
+        const directorySector = sector(directorySectorId);
+        if (!directorySector) return false;
+        directorySectors.push(directorySector);
+        directorySectorId = fat[directorySectorId];
+    }
+    const directory = Buffer.concat(directorySectors);
+    let hasRoot = false;
+    let hasWordDocument = false;
+    for (let offset = 0; offset + 128 <= directory.length; offset += 128) {
+        const nameLength = directory.readUInt16LE(offset + 64);
+        const objectType = directory[offset + 66];
+        if (nameLength < 2 || nameLength > 64 || nameLength % 2 !== 0) continue;
+        const name = directory.subarray(offset, offset + nameLength - 2).toString("utf16le");
+        if (name === "Root Entry" && objectType === 5) hasRoot = true;
+        if (name === "WordDocument" && objectType === 2) {
+            const streamSize = directory.readUInt32LE(offset + 120);
+            const startSector = directory.readUInt32LE(offset + 116);
+            hasWordDocument = streamSize > 0
+                && startSector !== OLE_FREE_SECTOR
+                && startSector !== OLE_END_OF_CHAIN;
+        }
+    }
+    return hasRoot && hasWordDocument;
 }
 
 function validateUtf8Text(buffer) {
@@ -302,23 +403,23 @@ function validateCsv(buffer) {
     return validateUtf8Text(buffer);
 }
 
-function validateXlsx(buffer) {
+function validateOfficeZip(buffer, requiredEntries, format) {
     return new Promise((resolve, reject) => {
         yauzl.fromBuffer(buffer, { lazyEntries: true, decodeStrings: true, validateEntrySizes: true }, (error, zipFile) => {
             if (error) {
                 reject(uploadError(400, "CORRUPT_FILE", "Файл повреждён или его формат не соответствует расширению."));
                 return;
             }
-            const required = new Set(["[Content_Types].xml", "xl/workbook.xml"]);
+            const required = new Set(requiredEntries);
             let entryCount = 0;
             let totalUncompressed = 0;
             let finished = false;
 
-            function rejectZip(code = "UNSAFE_XLSX") {
+            function rejectZip(code = `UNSAFE_${format}`) {
                 if (finished) return;
                 finished = true;
                 zipFile.close();
-                reject(uploadError(400, code, "Файл XLSX имеет небезопасную или повреждённую структуру."));
+                reject(uploadError(400, code, `Файл ${format} имеет небезопасную или повреждённую структуру.`));
             }
 
             zipFile.on("entry", entry => {
@@ -356,6 +457,14 @@ function validateXlsx(buffer) {
     });
 }
 
+function validateXlsx(buffer) {
+    return validateOfficeZip(buffer, ["[Content_Types].xml", "xl/workbook.xml"], "XLSX");
+}
+
+function validateDocx(buffer) {
+    return validateOfficeZip(buffer, ["[Content_Types].xml", "word/document.xml"], "DOCX");
+}
+
 async function validateUploadedFile(file, storage) {
     const allowedMimes = MIME_ALLOWLIST[file.extension] || [];
     if (!allowedMimes.includes(file.declaredMime)) {
@@ -366,6 +475,8 @@ async function validateUploadedFile(file, storage) {
     if (file.extension === "pdf") valid = validatePdf(buffer);
     else if (file.extension === "jpg" || file.extension === "jpeg") valid = validateJpeg(buffer);
     else if (file.extension === "png") valid = validatePng(buffer);
+    else if (file.extension === "doc") valid = validateDoc(buffer);
+    else if (file.extension === "docx") valid = await validateDocx(buffer);
     else if (file.extension === "xls") valid = validateXls(buffer);
     else if (file.extension === "xlsx") valid = await validateXlsx(buffer);
     else if (file.extension === "csv") valid = validateCsv(buffer);

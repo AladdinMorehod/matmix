@@ -1,4 +1,7 @@
 const { test, expect } = require("@playwright/test");
+const { createDocFixture, createDocxFixture } = require("../backend/scripts/word-file-fixtures");
+
+const WORD_UPLOAD_ACCEPT = ".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx,.csv,.txt,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
 async function movePointerOutsideViewport(page) {
     await page.mouse.move(-1, -1);
@@ -958,7 +961,8 @@ test("upload request entry points and tabs use the existing modal accessibly", a
         await expect(page.locator("#cartModal")).not.toHaveClass(/hidden/);
         await expect(page.locator("#checkoutView")).toBeVisible();
         await expect(page.locator("#uploadRequestForm")).toBeVisible();
-        await expect(page.locator(".upload-request-intro")).toContainText("PDF, JPG, PNG, XLS, XLSX, CSV, TXT");
+        await expect(page.locator(".upload-request-intro")).toContainText("PDF, JPG, PNG, DOC, DOCX, XLS, XLSX, CSV, TXT");
+        await expect(page.locator("#uploadRequestFiles")).toHaveAttribute("accept", WORD_UPLOAD_ACCEPT);
         await expect(page.locator("#checkoutForm")).toBeHidden();
         await expect(page.locator("#uploadRequestTab")).toHaveAttribute("aria-selected", "true");
         await expect(page.locator("#orderCheckoutTab")).toHaveAttribute("aria-selected", "false");
@@ -1027,7 +1031,7 @@ test("upload request file rules and validation submit to the secure endpoint", a
     await openUploadRequestFromHeader(page);
     const fileInput = page.locator("#uploadRequestFiles");
     await expect(fileInput).toHaveAttribute("multiple", "");
-    await expect(fileInput).toHaveAttribute("accept", ".pdf,.jpg,.jpeg,.png,.xls,.xlsx,.csv,.txt");
+    await expect(fileInput).toHaveAttribute("accept", WORD_UPLOAD_ACCEPT);
     await expect(page.locator("[data-file-count], .upload-file-count")).toHaveCount(0);
 
     await page.locator("#uploadDropZone").evaluate(zone => {
@@ -1134,10 +1138,10 @@ test("TXT file request reaches CRM metadata and protected download", async ({ pa
     await page.goto("/");
     await seedCartItems(page, 1);
     await openUploadRequestFromHeader(page);
-    await expect(page.locator(".upload-request-intro")).toContainText("PDF, JPG, PNG, XLS, XLSX, CSV, TXT");
+    await expect(page.locator(".upload-request-intro")).toContainText("PDF, JPG, PNG, DOC, DOCX, XLS, XLSX, CSV, TXT");
     await expect(page.locator("#uploadRequestFiles")).toHaveAttribute(
         "accept",
-        ".pdf,.jpg,.jpeg,.png,.xls,.xlsx,.csv,.txt"
+        WORD_UPLOAD_ACCEPT
     );
 
     const chooserPromise = page.waitForEvent("filechooser");
@@ -1244,6 +1248,100 @@ test("TXT file request reaches CRM metadata and protected download", async ({ pa
         "Файл повреждён или его содержимое не соответствует формату TXT"
     );
     await expect(page.locator(".upload-file-item")).toHaveCount(1);
+});
+
+test("DOC and DOCX requests reach CRM metadata and protected downloads", async ({ page, request }) => {
+    const docBytes = createDocFixture();
+    const docxBytes = createDocxFixture();
+    const docName = "Техническое задание.doc";
+    const docxName = `${"длинное-название-".repeat(8)}спецификация.docx`;
+    const uniqueEmail = `word-e2e-${Date.now()}@example.test`;
+
+    await page.goto("/");
+    await openUploadRequestFromHeader(page);
+    await expect(page.locator(".upload-request-intro")).toContainText("DOC, DOCX");
+    await expect(page.locator("#uploadRequestFiles")).toHaveAttribute("accept", WORD_UPLOAD_ACCEPT);
+    await dropUploadFiles(page, [
+        { name: docName, type: "application/msword", bytes: [...docBytes] },
+        {
+            name: docxName,
+            type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            bytes: [...docxBytes]
+        }
+    ]);
+    await expect(page.locator(".upload-file-item")).toHaveCount(2);
+    await expect(page.locator(".upload-file-item").nth(0)).toContainText(docName);
+    await expect(page.locator(".upload-file-item").nth(1)).toContainText(docxName);
+    await expect(page.locator(".upload-file-type")).toHaveText(["DOC", "DOCX"]);
+
+    for (const width of [390, 320]) {
+        await page.setViewportSize({ width, height: 800 });
+        const geometry = await page.locator("#uploadRequestForm").evaluate(form => ({
+            formScrollWidth: form.scrollWidth,
+            formClientWidth: form.clientWidth,
+            documentScrollWidth: document.documentElement.scrollWidth,
+            documentClientWidth: document.documentElement.clientWidth
+        }));
+        expect(geometry.formScrollWidth).toBeLessThanOrEqual(geometry.formClientWidth + 1);
+        expect(geometry.documentScrollWidth).toBeLessThanOrEqual(geometry.documentClientWidth + 1);
+    }
+
+    await page.locator("#uploadCustomerName").fill("Word E2E");
+    await page.locator("#uploadCustomerPhone").fill("9991234567");
+    await page.locator("#uploadCustomerEmail").fill(uniqueEmail);
+    await page.locator("#uploadRequestComment").fill("Проверка DOC и DOCX");
+    await page.locator("#uploadRequestConsent").check();
+    await page.locator("#uploadRequestForm button[type='submit']").click();
+    await expect(page.locator("#uploadRequestMessage")).toContainText(/Заявка №MM-\d{4}-\d{6} принята/);
+
+    const login = await request.post("/api/auth/login", {
+        data: { login: "e2e_admin", password: "E2eAdmin!234" }
+    });
+    expect(login.ok()).toBeTruthy();
+    const ordersResponse = await request.get("/api/orders");
+    expect(ordersResponse.ok()).toBeTruthy();
+    const ordersBody = await ordersResponse.json();
+    const wordOrder = ordersBody.orders.find(order => order.email === uniqueEmail);
+    expect(wordOrder).toBeTruthy();
+    expect(wordOrder.attachmentCount).toBe(2);
+
+    const metadataResponse = await request.get(`/api/orders/${wordOrder.id}/attachments`);
+    expect(metadataResponse.ok()).toBeTruthy();
+    const metadata = await metadataResponse.json();
+    const attachmentsByExtension = new Map(metadata.attachments.map(attachment => [attachment.extension, attachment]));
+    expect(attachmentsByExtension.get("doc")).toMatchObject({
+        originalName: docName,
+        extension: "doc",
+        mimeType: "application/msword"
+    });
+    expect(attachmentsByExtension.get("docx")).toMatchObject({
+        originalName: docxName,
+        extension: "docx",
+        mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    });
+    for (const attachment of metadata.attachments) {
+        const download = await request.get(attachment.downloadUrl);
+        expect(download.ok()).toBeTruthy();
+        expect(download.headers()["content-type"]).toBe(attachment.mimeType);
+        expect(download.headers()["content-disposition"]).toContain("attachment;");
+        expect(await download.body()).toEqual(attachment.extension === "doc" ? docBytes : docxBytes);
+    }
+
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto("/login.html");
+    await page.locator('input[name="login"], input[type="text"]').first().fill("e2e_admin");
+    await page.locator('input[name="password"], input[type="password"]').fill("E2eAdmin!234");
+    await page.locator('button[type="submit"]').click();
+    await page.waitForURL(/manager/);
+    await page.locator('.crm-nav [data-section="orders"]').click();
+    const crmOrder = page.locator(`article.order-card[data-id="${wordOrder.id}"]`);
+    await expect(crmOrder).toBeVisible();
+    await crmOrder.locator(".order-card-header").click();
+    await crmOrder.getByRole("button", { name: "Документы" }).click();
+    await expect(crmOrder).toContainText(docName);
+    await expect(crmOrder).toContainText(docxName);
+    await expect(crmOrder.getByRole("button", { name: `Скачать файл ${docName}` })).toBeVisible();
+    await expect(crmOrder.getByRole("button", { name: `Скачать файл ${docxName}` })).toBeVisible();
 });
 
 test("file request submission works with cart, without cart and on both public pages", async ({ page, request }) => {

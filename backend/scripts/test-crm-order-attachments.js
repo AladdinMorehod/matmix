@@ -8,6 +8,7 @@ const { spawn } = require("child_process");
 const sqlite3 = require("sqlite3").verbose();
 const bcrypt = require("bcryptjs");
 const { migrateDatabase } = require("../databaseMigrations");
+const { createDocFixture, createDocxFixture } = require("./word-file-fixtures");
 
 function open(file) {
     return new sqlite3.Database(file);
@@ -197,6 +198,22 @@ async function abortDownload(base, cookie, orderId, attachmentId) {
             content: txtContent,
             createdAt: now
         });
+        const docAttachment = await seedAttachment(db, storageRoot, fileOrder.id, {
+            originalName: "Техническое задание.doc",
+            storageKey: "technical-requirements.doc",
+            mimeType: "application/msword",
+            extension: "doc",
+            content: createDocFixture(),
+            createdAt: now
+        });
+        const docxAttachment = await seedAttachment(db, storageRoot, fileOrder.id, {
+            originalName: "Спецификация.docx",
+            storageKey: "specification.docx",
+            mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            extension: "docx",
+            content: createDocxFixture(),
+            createdAt: now
+        });
         const otherAttachment = await seedAttachment(db, storageRoot, secondOrder.id, {
             originalName: "Other.pdf",
             storageKey: "other-safe.pdf",
@@ -257,7 +274,7 @@ async function abortDownload(base, cookie, orderId, attachmentId) {
             if (!["EPERM", "EACCES", "UNKNOWN"].includes(error.code)) throw error;
             console.log(`Symlink download check skipped on this platform: ${error.code}`);
         }
-        const expectedAttachmentCount = 7 + (symlinkFixture ? 1 : 0);
+        const expectedAttachmentCount = 9 + (symlinkFixture ? 1 : 0);
         await close(db);
         db = null;
 
@@ -323,6 +340,18 @@ async function abortDownload(base, cookie, orderId, attachmentId) {
         assert.strictEqual(txtMetadata.extension, "txt");
         assert.strictEqual(txtMetadata.mimeType, "text/plain");
         assert(!/[ÐÑ]/.test(txtMetadata.originalName));
+        const wordMetadata = result.body.attachments.filter(item => [docAttachment.id, docxAttachment.id].includes(item.id));
+        assert.deepStrictEqual(
+            wordMetadata.map(item => [item.originalName, item.extension, item.mimeType]),
+            [
+                ["Техническое задание.doc", "doc", "application/msword"],
+                [
+                    "Спецификация.docx",
+                    "docx",
+                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                ]
+            ]
+        );
 
         result = await requestJson(`${base}/api/orders/${fileOrder.id}/attachments`, { headers: { Cookie: otherCookie } });
         assert.strictEqual(result.response.status, 403);
@@ -370,6 +399,16 @@ async function abortDownload(base, cookie, orderId, attachmentId) {
         assert(!txtDisposition.includes(txtAttachment.storageKey));
         assert(!txtDisposition.includes(storageRoot));
         assert.deepStrictEqual(Buffer.from(await txtDownload.arrayBuffer()), txtContent);
+        for (const fixture of [docAttachment, docxAttachment]) {
+            const wordDownload = await fetch(
+                `${base}/api/orders/${fileOrder.id}/attachments/${fixture.id}/download`,
+                { headers: { Cookie: managerCookie } }
+            );
+            assert.strictEqual(wordDownload.status, 200);
+            assert.strictEqual(wordDownload.headers.get("content-type"), fixture.mimeType);
+            assert(wordDownload.headers.get("content-disposition").includes(`.${fixture.extension}`));
+            assert.deepStrictEqual(Buffer.from(await wordDownload.arrayBuffer()), fixture.content);
+        }
 
         const headerDownload = await fetch(`${base}/api/orders/${fileOrder.id}/attachments/${headerFixture.id}/download`, {
             headers: { Cookie: managerCookie }
