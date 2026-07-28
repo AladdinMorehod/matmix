@@ -125,6 +125,7 @@ test("CRM shows and securely downloads file request attachments", async ({ page 
     await expect(fileOrder.locator(".order-request-type")).toContainText("Файловая заявка");
     await expect(fileOrder.locator(".order-request-type")).toContainText("Файлы: 3");
     await expect(ordinaryOrder.locator(".order-request-type")).toHaveCount(0);
+    await fileOrder.locator(".order-card-header").click();
 
     await fileOrder.getByRole("button", { name: "Клиент" }).click();
     await expect(fileOrder).toContainText("files@example.test");
@@ -182,6 +183,7 @@ test("CRM shows and securely downloads file request attachments", async ({ page 
     await expect(attachmentButton).toBeEnabled();
     await expect(fileOrder.getByRole("button", { name: "Скачать файл План помещения.pdf" })).toBeEnabled();
 
+    await ordinaryOrder.locator(".order-card-header").click();
     await ordinaryOrder.getByRole("button", { name: "Документы" }).click();
     await expect(ordinaryOrder).toContainText("Документов пока нет.");
 

@@ -1221,6 +1221,7 @@ test("TXT file request reaches CRM metadata and protected download", async ({ pa
     await page.locator('.crm-nav [data-section="orders"]').click();
     const crmOrder = page.locator(`article.order-card[data-id="${txtOrder.id}"]`);
     await expect(crmOrder).toBeVisible();
+    await crmOrder.locator(".order-card-header").click();
     await crmOrder.getByRole("button", { name: "Документы" }).click();
     await expect(crmOrder).toContainText(unicodeTxtName);
     const crmText = await crmOrder.textContent();

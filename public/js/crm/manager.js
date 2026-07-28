@@ -32,6 +32,72 @@ function renderCrmNavigation() {
     crmNavButtons = document.querySelectorAll(".crm-nav button[data-section]");
 }
 
+function loadCrmSectionContent(section, options = {}) {
+    const preserveMessage = Boolean(options.preserveMessage);
+
+    if (section === "dashboard") {
+        loadDashboard({ preserveMessage });
+        return;
+    }
+
+    if (section === "orders" || section === "myOrders") {
+        statusFilter.value = "";
+        ordersPagination = normalizePaginationMeta({ page: 1, limit: CRM_LIST_LIMIT });
+        loadOrders({ preserveMessage });
+        return;
+    }
+
+    if (section === "clients") {
+        if (!clients.length) {
+            clientsPagination = normalizePaginationMeta({ page: 1, limit: CRM_LIST_LIMIT });
+            loadClients({ preserveMessage });
+        }
+        return;
+    }
+
+    if (section === "catalog") {
+        productFilters.page = 1;
+        loadProducts();
+        return;
+    }
+
+    if (section === "catalogImport") {
+        renderImportView();
+        return;
+    }
+
+    if (section === "settings") {
+        loadSettings();
+    }
+}
+
+function getCrmSectionFromUrl() {
+    return new URL(window.location.href).searchParams.get("section") || "dashboard";
+}
+
+function syncCrmSectionUrl(section, historyMode = "push") {
+    if (historyMode === "none") return;
+
+    const url = new URL(window.location.href);
+    const currentSection = url.searchParams.get("section");
+    url.searchParams.set("section", section);
+    const method = historyMode === "replace" || currentSection === section ? "replaceState" : "pushState";
+    window.history[method]({ section }, "", `${url.pathname}${url.search}${url.hash}`);
+}
+
+function navigateToCrmSection(section, options = {}) {
+    setActiveSection(section);
+    syncCrmSectionUrl(activeSection, options.historyMode);
+    const activeButton = Array.from(crmNavButtons).find(button => button.dataset.section === activeSection);
+    if (crmMobileSection && activeButton) {
+        crmMobileSection.textContent = activeButton.textContent.trim();
+    }
+    if (options.load !== false) {
+        loadCrmSectionContent(activeSection, options);
+    }
+    return activeSection;
+}
+
 renderCrmNavigation();
 
 statuses.forEach(status => {
@@ -61,45 +127,8 @@ crmNav?.addEventListener("click", event => {
     const button = event.target.closest("button[data-section]");
     if (!button) return;
 
-    setActiveSection(button.dataset.section);
-    if (crmMobileSection) {
-        crmMobileSection.textContent = button.textContent.trim();
-    }
+    navigateToCrmSection(button.dataset.section);
     closeMobileMenu();
-
-    if (button.dataset.section === "dashboard") {
-        loadDashboard();
-    }
-
-    if (button.dataset.section === "orders") {
-        statusFilter.value = "";
-        ordersPagination = normalizePaginationMeta({ page: 1, limit: CRM_LIST_LIMIT });
-        loadOrders();
-    }
-
-    if (button.dataset.section === "myOrders") {
-        statusFilter.value = "";
-        ordersPagination = normalizePaginationMeta({ page: 1, limit: CRM_LIST_LIMIT });
-        loadOrders();
-    }
-
-    if (button.dataset.section === "clients" && !clients.length) {
-        clientsPagination = normalizePaginationMeta({ page: 1, limit: CRM_LIST_LIMIT });
-        loadClients();
-    }
-
-    if (button.dataset.section === "catalog") {
-        productFilters.page = 1;
-        loadProducts();
-    }
-
-    if (button.dataset.section === "catalogImport") {
-        renderImportView();
-    }
-
-    if (button.dataset.section === "settings") {
-        loadSettings();
-    }
 });
 refreshOrdersBtn.addEventListener("click", () => {
     ordersPagination = normalizePaginationMeta({ page: 1, limit: CRM_LIST_LIMIT });
@@ -225,7 +254,7 @@ ordersList.addEventListener("click", event => {
     const openClientButton = event.target.closest(".open-client");
     if (openClientButton) {
         const clientId = String(openClientButton.dataset.clientId);
-        setActiveSection("clients");
+        navigateToCrmSection("clients", { load: false });
         expandedClientOrderIds.add(clientId);
         loadClients({ preserveMessage: true }).then(() => {
             if (!clientOrders.has(clientId)) {
@@ -294,7 +323,7 @@ dashboardView?.addEventListener("click", event => {
     const sectionButton = event.target.closest(".dashboard-open-section");
     if (!sectionButton) return;
 
-    openDashboardSection(sectionButton.dataset.sectionTarget);
+    navigateToCrmSection(sectionButton.dataset.sectionTarget, { preserveMessage: true });
 });
 
 settingsView?.addEventListener("click", event => {
@@ -545,10 +574,18 @@ document.addEventListener("keydown", event => {
     }
 });
 
+window.addEventListener("popstate", () => {
+    if (!currentUser) return;
+    navigateToCrmSection(getCrmSectionFromUrl(), {
+        historyMode: "none",
+        preserveMessage: true
+    });
+    closeMobileMenu();
+});
+
 checkAccess().then(isAllowed => {
     if (isAllowed) {
         renderCrmNavigation();
-        setActiveSection("dashboard");
-        loadDashboard();
+        navigateToCrmSection(getCrmSectionFromUrl(), { historyMode: "replace" });
     }
 });
