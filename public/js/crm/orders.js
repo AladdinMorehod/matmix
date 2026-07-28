@@ -2,6 +2,37 @@
 const orderAttachments = new Map();
 const orderAttachmentErrors = new Map();
 const orderAttachmentsLoading = new Set();
+const expandedOrdersStorageKey = "matmix.crm.expandedOrderIds";
+
+function readExpandedOrderIds() {
+    try {
+        const storedIds = JSON.parse(window.sessionStorage.getItem(expandedOrdersStorageKey) || "[]");
+        return new Set(Array.isArray(storedIds) ? storedIds.map(String).filter(Boolean) : []);
+    } catch {
+        return new Set();
+    }
+}
+
+const expandedOrderIds = readExpandedOrderIds();
+
+function persistExpandedOrderIds() {
+    try {
+        window.sessionStorage.setItem(expandedOrdersStorageKey, JSON.stringify(Array.from(expandedOrderIds)));
+    } catch {
+        // The cards still work for the current render when storage is unavailable.
+    }
+}
+
+function toggleOrderExpanded(orderId) {
+    const normalizedOrderId = String(orderId);
+    if (expandedOrderIds.has(normalizedOrderId)) {
+        expandedOrderIds.delete(normalizedOrderId);
+    } else {
+        expandedOrderIds.add(normalizedOrderId);
+    }
+    persistExpandedOrderIds();
+    return expandedOrderIds.has(normalizedOrderId);
+}
 
 function renderStatusOptions(selectedStatus) {
     return statuses
@@ -494,26 +525,48 @@ function renderDeletedOrder(order) {
 }
 
 function renderActiveOrder(order) {
+    const orderId = String(order.id);
+    const isExpanded = expandedOrderIds.has(orderId);
+    const panelId = `order-details-${orderId}`;
+    const attachmentCount = Number(order.attachmentCount) || 0;
+    const customerName = String(order.customerName || "").trim() || "Не указан";
+    const customerPhone = String(order.phone || "").trim() || "Не указан";
+
     return `
-        <article class="order-card" data-id="${order.id}">
-            <header class="order-card-header">
-                <div class="order-title">
-                    <strong>${escapeHtml(getOrderTitle(order))}</strong>
-                    <span>${escapeHtml(formatDate(order.createdAt))}</span>
-                    ${order.requestType === "file_request"
-                        ? `<span class="order-request-type">Файловая заявка${order.attachmentCount ? ` · Файлы: ${escapeHtml(order.attachmentCount)}` : ""}</span>`
+        <article class="order-card ${isExpanded ? "expanded" : "collapsed"}" data-id="${order.id}">
+            <header class="order-card-header" data-order-toggle="${order.id}" role="button" tabindex="0"
+                aria-expanded="${isExpanded}" aria-controls="${escapeHtml(panelId)}"
+                aria-label="${isExpanded ? "Свернуть" : "Раскрыть"} ${escapeHtml(getOrderTitle(order))}">
+                <div class="order-header-main">
+                    <div class="order-title">
+                        <strong>${escapeHtml(getOrderTitle(order))}</strong>
+                        <span>${escapeHtml(formatDate(order.createdAt))}</span>
+                    </div>
+                    ${order.requestType === "file_request" && attachmentCount > 0
+                        ? `<span class="order-request-type">Файловая заявка · Файлы: ${escapeHtml(attachmentCount)}</span>`
                         : ""}
+                </div>
+                <div class="order-header-customer">
+                    <span><span class="order-header-customer-label">Клиент:</span> ${escapeHtml(customerName)}</span>
+                    <span><span class="order-header-customer-label">Тел.:</span> ${escapeHtml(customerPhone)}</span>
                 </div>
                 <div class="order-header-side">
                     ${renderAssignment(order)}
-                    <span class="status-badge ${statusClassMap[order.status] || "status-new"}">${escapeHtml(order.status)}</span>
+                    ${order.status === "Новая"
+                        ? ""
+                        : `<span class="status-badge ${statusClassMap[order.status] || "status-new"}">${escapeHtml(order.status)}</span>`}
+                    <span class="order-expand-indicator" aria-hidden="true">⌄</span>
                 </div>
             </header>
 
-            ${renderOrderTabs(order)}
-            <div class="order-tab-panel">
-                ${renderOrderTabContent(order)}
-            </div>
+            ${isExpanded ? `
+                <div id="${escapeHtml(panelId)}" class="order-card-details">
+                    ${renderOrderTabs(order)}
+                    <div class="order-tab-panel">
+                        ${renderOrderTabContent(order)}
+                    </div>
+                </div>
+            ` : ""}
         </article>
     `;
 }
@@ -668,6 +721,17 @@ async function loadOrders(options = {}) {
 }
 
 ordersList.addEventListener("click", event => {
+    const orderHeader = event.target.closest(".order-card-header[data-order-toggle]");
+    if (orderHeader) {
+        const orderId = String(orderHeader.dataset.orderToggle);
+        toggleOrderExpanded(orderId);
+        renderOrders();
+        window.requestAnimationFrame(() => {
+            ordersList.querySelector(`.order-card-header[data-order-toggle="${CSS.escape(orderId)}"]`)?.focus();
+        });
+        return;
+    }
+
     const documentsTab = event.target.closest('.order-tabs button[data-tab="documents"]');
     if (documentsTab) {
         const orderId = String(documentsTab.dataset.orderId);
@@ -693,4 +757,12 @@ ordersList.addEventListener("click", event => {
             downloadButton
         );
     }
+});
+
+ordersList.addEventListener("keydown", event => {
+    const orderHeader = event.target.closest(".order-card-header[data-order-toggle]");
+    if (!orderHeader || !["Enter", " "].includes(event.key)) return;
+
+    event.preventDefault();
+    orderHeader.click();
 });

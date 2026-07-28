@@ -20,6 +20,14 @@ async function openOrders(page) {
 
     await sectionButton.click();
     await expect(page.locator("#ordersList")).toBeVisible();
+
+    const headers = page.locator(".order-card-header[data-order-toggle]");
+    for (let index = 0; index < await headers.count(); index += 1) {
+        const header = headers.nth(index);
+        if (await header.getAttribute("aria-expanded") === "false") {
+            await header.click();
+        }
+    }
 }
 
 function order(overrides) {
