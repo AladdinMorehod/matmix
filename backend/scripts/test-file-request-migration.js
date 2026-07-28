@@ -104,7 +104,7 @@ function initializeEmptyDatabase(file) {
     if (result.status !== 0) throw new Error(result.stderr || result.stdout || "Failed to initialize empty database.");
 }
 
-async function assertV4Schema(db) {
+async function assertCurrentSchema(db) {
     assert.strictEqual(Number((await db.get("PRAGMA user_version")).user_version), CURRENT_SCHEMA_VERSION);
     const orderColumns = new Map((await db.all("PRAGMA table_info(orders)")).map(column => [column.name, column]));
     assert(orderColumns.has("request_type"));
@@ -122,10 +122,10 @@ async function testEmptyDatabase(root) {
     const file = path.join(root, "empty.db");
     initializeEmptyDatabase(file);
     const result = await migrateDatabase(file, { dryRun: false });
-    assert.deepStrictEqual({ from: result.fromVersion, to: result.toVersion, changed: result.changed }, { from: 0, to: 4, changed: true });
+    assert.deepStrictEqual({ from: result.fromVersion, to: result.toVersion, changed: result.changed }, { from: 0, to: 5, changed: true });
     const db = await openDatabase(file);
     try {
-        await assertV4Schema(db);
+        await assertCurrentSchema(db);
     } finally {
         await db.close();
     }
@@ -135,10 +135,10 @@ async function testV2Migration(root) {
     const file = path.join(root, "existing-v2.db");
     await createLegacyFixture(file, 2);
     const result = await migrateDatabase(file, { dryRun: false });
-    assert.deepStrictEqual({ from: result.fromVersion, to: result.toVersion, changed: result.changed }, { from: 2, to: 4, changed: true });
+    assert.deepStrictEqual({ from: result.fromVersion, to: result.toVersion, changed: result.changed }, { from: 2, to: 5, changed: true });
     const db = await openDatabase(file);
     try {
-        await assertV4Schema(db);
+        await assertCurrentSchema(db);
         const oldOrder = await db.get(
             "SELECT id, customer_name, comment, request_type, email, created_at, updated_at FROM orders WHERE id=7"
         );
@@ -225,7 +225,7 @@ async function testV2Migration(root) {
 
     const repeated = await migrateDatabase(file, { dryRun: false });
     assert.strictEqual(repeated.changed, false);
-    assert.strictEqual(repeated.fromVersion, 4);
+    assert.strictEqual(repeated.fromVersion, 5);
 }
 
 async function testLegacyColumnCopy(root) {
@@ -235,7 +235,7 @@ async function testLegacyColumnCopy(root) {
     assert.strictEqual(result.fromVersion, 0);
     const db = await openDatabase(file);
     try {
-        await assertV4Schema(db);
+        await assertCurrentSchema(db);
         assert.deepStrictEqual(
             await db.get("SELECT id, customer_name, comment, request_type, email FROM orders WHERE id=7"),
             { id: 7, customer_name: "Existing customer", comment: "Preserve me", request_type: "order", email: null }
@@ -246,7 +246,7 @@ async function testLegacyColumnCopy(root) {
     }
 }
 
-async function createV3AttachmentFixture(file) {
+async function createAttachmentFixture(file, { version = 3, includeTxt = false } = {}) {
     initializeEmptyDatabase(file);
     const db = rawConnection(file);
     const createdAt = "2026-03-01T12:00:00.000Z";
@@ -273,7 +273,7 @@ async function createV3AttachmentFixture(file) {
                 length(extension) BETWEEN 1 AND 10
                 AND extension = lower(extension)
                 AND substr(extension, 1, 1) <> '.'
-                AND extension IN ('pdf', 'jpg', 'jpeg', 'png', 'xls', 'xlsx', 'csv')
+                AND extension IN ('pdf', 'jpg', 'jpeg', 'png', 'xls', 'xlsx', 'csv'${includeTxt ? ", 'txt'" : ""})
             ),
             size_bytes INTEGER NOT NULL CHECK (typeof(size_bytes) = 'integer' AND size_bytes BETWEEN 0 AND 15728640),
             sha256 TEXT NOT NULL CHECK (
@@ -297,23 +297,23 @@ async function createV3AttachmentFixture(file) {
             "a".repeat(64),
             createdAt
         ]);
-        await db.run("PRAGMA user_version=3");
+        await db.run(`PRAGMA user_version=${version}`);
     } finally {
         await db.close();
     }
 }
 
-async function testV3ToV4Migration(root) {
+async function testV3ToV5Migration(root) {
     const file = path.join(root, "existing-v3.db");
-    await createV3AttachmentFixture(file);
+    await createAttachmentFixture(file);
     const result = await migrateDatabase(file, { dryRun: false });
     assert.deepStrictEqual(
         { from: result.fromVersion, to: result.toVersion, changed: result.changed },
-        { from: 3, to: 4, changed: true }
+        { from: 3, to: 5, changed: true }
     );
     const db = await openDatabase(file);
     try {
-        await assertV4Schema(db);
+        await assertCurrentSchema(db);
         assert.deepStrictEqual(
             await db.get(`SELECT id, order_id, original_name, storage_key, mime_type, extension,
                 size_bytes, sha256, created_at FROM order_attachments WHERE id=73`),
@@ -365,20 +365,71 @@ async function testV3ToV4Migration(root) {
     }
     const repeated = await migrateDatabase(file, { dryRun: false });
     assert.strictEqual(repeated.changed, false);
-    assert.strictEqual(repeated.fromVersion, 4);
+    assert.strictEqual(repeated.fromVersion, 5);
+}
+
+async function testV4ToV5Migration(root) {
+    const file = path.join(root, "existing-v4.db");
+    await createAttachmentFixture(file, { version: 4, includeTxt: true });
+    const beforeDb = await openDatabase(file);
+    const beforeCount = Number((await beforeDb.get("SELECT COUNT(*) count FROM order_attachments")).count);
+    const beforeRow = await beforeDb.get("SELECT * FROM order_attachments WHERE id=73");
+    await beforeDb.close();
+
+    const result = await migrateDatabase(file, { dryRun: false });
+    assert.deepStrictEqual(
+        { from: result.fromVersion, to: result.toVersion, changed: result.changed },
+        { from: 4, to: 5, changed: true }
+    );
+    const db = await openDatabase(file);
+    try {
+        await assertCurrentSchema(db);
+        assert.strictEqual(Number((await db.get("SELECT COUNT(*) count FROM order_attachments")).count), beforeCount);
+        assert.deepStrictEqual(await db.get("SELECT * FROM order_attachments WHERE id=73"), beforeRow);
+        const allowedExtensions = ["pdf", "jpg", "jpeg", "png", "xls", "xlsx", "csv", "txt", "doc", "docx"];
+        for (const [index, extension] of allowedExtensions.entries()) {
+            await db.run(
+                `INSERT INTO order_attachments (
+                    order_id, original_name, storage_key, mime_type, extension, size_bytes, sha256, created_at
+                ) VALUES (41, ?, ?, 'application/octet-stream', ?, 1, ?, ?)`,
+                [
+                    `allowed-${index}.${extension}`,
+                    `${String(index).padStart(2, "0")}${"e".repeat(62)}.${extension}`,
+                    extension,
+                    "e".repeat(64),
+                    "2026-03-04T12:00:00.000Z"
+                ]
+            );
+        }
+        await assert.rejects(
+            db.run(`INSERT INTO order_attachments (
+                order_id, original_name, storage_key, mime_type, extension, size_bytes, sha256, created_at
+            ) VALUES (41, 'bad.exe', ?, 'application/octet-stream', 'exe', 1, ?, ?)`,
+            ["f".repeat(64) + ".exe", "f".repeat(64), "2026-03-04T12:00:00.000Z"]),
+            error => String(error.code).startsWith("SQLITE_CONSTRAINT")
+        );
+        assert.deepStrictEqual(await db.all("PRAGMA foreign_key_check"), []);
+        assert.strictEqual((await db.get("PRAGMA integrity_check")).integrity_check, "ok");
+    } finally {
+        await db.close();
+    }
+    const repeated = await migrateDatabase(file, { dryRun: false });
+    assert.strictEqual(repeated.changed, false);
+    assert.strictEqual(repeated.fromVersion, 5);
 }
 
 (async () => {
-    assert.strictEqual(CURRENT_SCHEMA_VERSION, 4);
+    assert.strictEqual(CURRENT_SCHEMA_VERSION, 5);
     const root = fs.mkdtempSync(path.join(os.tmpdir(), "matmix-file-request-migration-"));
     try {
         await testEmptyDatabase(root);
         await testV2Migration(root);
-        await testV3ToV4Migration(root);
+        await testV3ToV5Migration(root);
+        await testV4ToV5Migration(root);
         await testLegacyColumnCopy(root);
         console.log(JSON.stringify({
             success: true,
-            schema: "3->4",
+            schema: "3/4->5",
             emptyDatabase: "ok",
             existingOrdersPreserved: "ok",
             explicitColumnOrderIndependent: "ok",
@@ -387,6 +438,7 @@ async function testV3ToV4Migration(root) {
             existingAttachmentsPreserved: "ok",
             attachmentIdsPreserved: "ok",
             txtExtension: "accepted",
+            wordExtensions: "accepted",
             foreignKeys: "ok",
             cascade: "ok",
             idempotentFramework: "ok"

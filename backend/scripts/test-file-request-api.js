@@ -18,6 +18,10 @@ const {
 const {
     createFileRequestRateLimiter
 } = require("../services/fileRequestRateLimit");
+const {
+    createDocFixture,
+    createDocxFixture
+} = require("./word-file-fixtures");
 
 function open(file) {
     return new sqlite3.Database(file);
@@ -281,6 +285,14 @@ function testRateLimiter() {
         const txtBytes = Buffer.from("Русский и English текст\r\nВторая строка\n", "utf8");
         const unicodeTxtName = "ЗАПРОС.txt";
         const txt = file(unicodeTxtName, "text/plain", txtBytes);
+        const docBytes = createDocFixture();
+        const docxBytes = createDocxFixture();
+        const doc = file("specification.doc", "application/msword", docBytes);
+        const docx = file(
+            "requirements.docx",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            docxBytes
+        );
         const xlsxBuffer = await createXlsx();
         const xlsx = file(
             "items.xlsx",
@@ -302,6 +314,18 @@ function testRateLimiter() {
 
         result = await post(base, { files: [xlsx] });
         assert.strictEqual(result.response.status, 201, JSON.stringify(result.body));
+
+        const wordResult = await post(base, { files: [doc, docx] });
+        assert.strictEqual(wordResult.response.status, 201, JSON.stringify(wordResult.body));
+        assert.strictEqual(wordResult.body.attachmentCount, 2);
+        result = await post(base, {
+            files: [
+                file("binary-detected.doc", "application/octet-stream", docBytes),
+                file("binary-detected.docx", "application/octet-stream", docxBytes)
+            ]
+        });
+        assert.strictEqual(result.response.status, 201, JSON.stringify(result.body));
+        assert.strictEqual(result.body.attachmentCount, 2);
 
         const txtResult = await post(base, { files: [txt] });
         assert.strictEqual(txtResult.response.status, 201, JSON.stringify(txtResult.body));
@@ -370,6 +394,8 @@ function testRateLimiter() {
             "application/pdf",
             "image/jpeg",
             "image/png",
+            "application/msword",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
             "application/vnd.ms-excel",
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             "text/csv",
@@ -420,6 +446,24 @@ function testRateLimiter() {
         assert.strictEqual(txtAttachment.size_bytes, txtBytes.length);
         assert.strictEqual(txtAttachment.sha256, crypto.createHash("sha256").update(txtBytes).digest("hex"));
         assert.deepStrictEqual(fs.readFileSync(path.join(storageRoot, txtAttachment.storage_key)), txtBytes);
+        const wordAttachments = await all(
+            verificationDb,
+            "SELECT * FROM order_attachments WHERE order_id=? ORDER BY id",
+            [wordResult.body.id]
+        );
+        assert.deepStrictEqual(
+            wordAttachments.map(attachment => [attachment.original_name, attachment.extension, attachment.mime_type]),
+            [
+                ["specification.doc", "doc", "application/msword"],
+                [
+                    "requirements.docx",
+                    "docx",
+                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                ]
+            ]
+        );
+        assert.deepStrictEqual(fs.readFileSync(path.join(storageRoot, wordAttachments[0].storage_key)), docBytes);
+        assert.deepStrictEqual(fs.readFileSync(path.join(storageRoot, wordAttachments[1].storage_key)), docxBytes);
         await close(verificationDb);
 
         const loginResponse = await fetch(`${base}/api/auth/login`, {
@@ -464,6 +508,27 @@ function testRateLimiter() {
         assert(!txtDisposition.includes(txtAttachment.storage_key));
         assert(!txtDisposition.includes(storageRoot));
         assert.deepStrictEqual(Buffer.from(await downloadResponse.arrayBuffer()), txtBytes);
+        const wordMetadataResponse = await fetch(`${base}/api/orders/${wordResult.body.id}/attachments`, {
+            headers: { Cookie: authCookie }
+        });
+        const wordMetadata = await wordMetadataResponse.json();
+        assert.strictEqual(wordMetadataResponse.status, 200);
+        assert.deepStrictEqual(
+            wordMetadata.attachments.map(attachment => attachment.originalName),
+            ["specification.doc", "requirements.docx"]
+        );
+        for (const [index, attachment] of wordMetadata.attachments.entries()) {
+            const wordDownload = await fetch(`${base}${attachment.downloadUrl}`, {
+                headers: { Cookie: authCookie }
+            });
+            assert.strictEqual(wordDownload.status, 200);
+            assert.strictEqual(wordDownload.headers.get("content-type"), wordAttachments[index].mime_type);
+            assert(wordDownload.headers.get("content-disposition").includes(`.${wordAttachments[index].extension}`));
+            assert.deepStrictEqual(
+                Buffer.from(await wordDownload.arrayBuffer()),
+                index === 0 ? docBytes : docxBytes
+            );
+        }
 
         const requiredCases = [
             [{ customerName: undefined }, "REQUIRED_FIELD"],
@@ -543,6 +608,27 @@ function testRateLimiter() {
         await expectRejected(base, storageRoot, { status: 415, code: "UNSUPPORTED_FILE_FORMAT" }, {
             files: [file("unsafe.exe", "application/octet-stream", Buffer.from("MZ"))]
         });
+        await expectRejected(base, storageRoot, { status: 400, code: "CORRUPT_FILE" }, {
+            files: [file("renamed.doc", "application/msword", Buffer.from("MZ executable", "ascii"))]
+        });
+        await expectRejected(base, storageRoot, { status: 415, code: "UNSUPPORTED_FILE_FORMAT" }, {
+            files: [file("unsafe.exe.doc", "application/msword", docBytes)]
+        });
+        await expectRejected(base, storageRoot, { status: 415, code: "UNSUPPORTED_FILE_FORMAT" }, {
+            files: [file("unsafe.cmd.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", docxBytes)]
+        });
+        await expectRejected(base, storageRoot, { status: 415, code: "MIME_MISMATCH" }, {
+            files: [file("forbidden.doc", "image/png", docBytes)]
+        });
+        await expectRejected(base, storageRoot, { status: 415, code: "MIME_MISMATCH" }, {
+            files: [file("forbidden.docx", "application/pdf", docxBytes)]
+        });
+        await expectRejected(base, storageRoot, { status: 400, code: "CORRUPT_FILE" }, {
+            files: [file("invalid-octet.doc", "application/octet-stream", Buffer.from("not a Word file"))]
+        });
+        await expectRejected(base, storageRoot, { status: 400, code: "CORRUPT_FILE" }, {
+            files: [file("invalid-octet.docx", "application/octet-stream", Buffer.from("not a Word file"))]
+        });
         await expectRejected(base, storageRoot, { status: 400, code: "FILE_NAME_TOO_LONG" }, {
             files: [file(`${"a".repeat(256)}.pdf`, "application/pdf", pdf.bytes)]
         });
@@ -571,6 +657,8 @@ function testRateLimiter() {
             file("bad.pdf", "application/pdf", Buffer.from("not pdf")),
             file("bad.jpg", "image/jpeg", Buffer.from([0xff, 0xd8, 0xff, 1])),
             file("bad.png", "image/png", Buffer.from("not png")),
+            file("bad.doc", "application/msword", xls.bytes),
+            file("bad.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", xlsxBuffer),
             file("bad.xls", "application/vnd.ms-excel", Buffer.from("not xls")),
             file("bad.csv", "text/csv", Buffer.from([0, 1, 2, 3]))
         ]) {
@@ -668,7 +756,10 @@ function testRateLimiter() {
             success: true,
             endpoint: "POST /api/orders/file-request",
             streamingMultipart: "busboy@1.6.0",
-            formats: ["pdf", "jpg", "jpeg", "png", "xls", "xlsx", "csv", "txt"],
+            formats: ["pdf", "jpg", "jpeg", "png", "doc", "docx", "xls", "xlsx", "csv", "txt"],
+            wordMimeAndContentValidation: "verified",
+            wordOctetStreamValidation: "verified",
+            dangerousDoubleExtensions: "rejected",
             txtUtf8BomAndLineEndings: "verified",
             txtBinaryAndMimeSpoofing: "rejected",
             txtCrmMetadataAndDownload: "verified",
