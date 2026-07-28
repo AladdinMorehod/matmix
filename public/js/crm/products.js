@@ -366,6 +366,7 @@ function renderProductsView() {
             aria-labelledby="catalogStructureTab"${catalogInnerMode === "structure" ? "" : " hidden"}></section>
     `;
 
+    setupProductImageDropZone();
     const embeddedRoot = productsView.querySelector("#catalogEmbeddedStructurePanel");
     if (typeof mountEmbeddedCatalogStructureView === "function") {
         mountEmbeddedCatalogStructureView(embeddedRoot);
@@ -413,20 +414,101 @@ function renderProductImageBulkToolbar() {
     const filteredCount = getFilteredProductImageTargetCount();
     const totalCount = getCatalogProductImageTargetCount();
     return `
-        <section class="products-bulk-image">
-            <strong>Фото для выбранных товаров</strong>
-            <span data-products-selected-count>Выбрано: ${selectedCount}</span>
-            <span data-products-filtered-count>Найдено: ${filteredCount}</span>
-            <span data-products-total-count>Всего в каталоге: ${totalCount}</span>
-            <input id="productBatchImageInput" type="file" accept="image/jpeg,image/png,image/webp">
-            <button class="products-filter-image-upload" type="button" disabled>Назначить всем найденным</button>
-            ${canReplaceAllProductImages() ? `<button class="products-all-image-upload" type="button" disabled>Назначить всему каталогу</button>` : ""}
-            <small data-products-batch-image-file>Файл не выбран</small>
-            <button class="products-batch-image-upload" type="button" disabled>Назначить фото</button>
-            <button class="products-bulk-structure-edit" type="button"${selectedCount ? "" : " hidden"}>Изменить структуру</button>
-            <button class="products-selection-clear" type="button"${selectedCount ? "" : " disabled"}>Снять выбор</button>
+        <section class="products-bulk-image" aria-labelledby="productsBulkImageTitle">
+            <header class="products-bulk-image-header">
+                <div class="products-bulk-image-heading">
+                    <strong id="productsBulkImageTitle">Фото товаров</strong>
+                    <small>Выберите товары и изображение для назначения</small>
+                </div>
+                <div class="products-bulk-image-counts" aria-label="Количество товаров">
+                    <span data-products-selected-count>Выбрано: ${selectedCount}</span>
+                    <span data-products-filtered-count>Найдено: ${filteredCount}</span>
+                    <span data-products-total-count>В каталоге: ${totalCount}</span>
+                </div>
+            </header>
+            <div class="products-bulk-image-file" data-products-batch-image-drop-zone>
+                <input class="visually-hidden" id="productBatchImageInput" type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    aria-describedby="productBatchImageDropHint productBatchImageFileName">
+                <label class="product-batch-image-picker" for="productBatchImageInput">Выбрать изображение</label>
+                <div class="products-bulk-image-file-copy">
+                    <span id="productBatchImageDropHint" data-products-batch-image-drop-hint>или перетащите изображение сюда</span>
+                    <small id="productBatchImageFileName" data-products-batch-image-file aria-live="polite">Файл не выбран</small>
+                </div>
+            </div>
+            <div class="products-bulk-image-actions">
+                <div class="products-bulk-image-primary-actions" aria-label="Действия с выбранными товарами">
+                    <button class="products-batch-image-upload" type="button" disabled>Назначить выбранным</button>
+                    <button class="products-selection-clear" type="button"${selectedCount ? "" : " disabled"}>Снять выбор</button>
+                    <button class="products-bulk-structure-edit" type="button"${selectedCount ? "" : " hidden"}>Изменить структуру</button>
+                </div>
+                <div class="products-bulk-image-scope-actions" aria-label="Массовые действия">
+                    <button class="products-filter-image-upload" type="button" disabled>Назначить всем найденным</button>
+                    ${canReplaceAllProductImages() ? `<button class="products-all-image-upload" type="button" disabled>Назначить всему каталогу</button>` : ""}
+                </div>
+            </div>
         </section>
     `;
+}
+
+function setupProductImageDropZone() {
+    const dropZone = productsView?.querySelector("[data-products-batch-image-drop-zone]");
+    const input = dropZone?.querySelector("#productBatchImageInput");
+    const hint = dropZone?.querySelector("[data-products-batch-image-drop-hint]");
+    if (!dropZone || !input || !hint) return;
+
+    const defaultHint = hint.textContent;
+    let dragDepth = 0;
+    const setDragState = isActive => {
+        dropZone.classList.toggle("is-drag-over", isActive);
+        hint.textContent = isActive ? "Отпустите файл для выбора" : defaultHint;
+    };
+
+    dropZone.addEventListener("dragenter", event => {
+        event.preventDefault();
+        event.stopPropagation();
+        dragDepth += 1;
+        setDragState(true);
+    });
+
+    dropZone.addEventListener("dragover", event => {
+        event.preventDefault();
+        event.stopPropagation();
+        if (event.dataTransfer) event.dataTransfer.dropEffect = "copy";
+        setDragState(true);
+    });
+
+    dropZone.addEventListener("dragleave", event => {
+        event.preventDefault();
+        event.stopPropagation();
+        dragDepth = Math.max(0, dragDepth - 1);
+        if (dragDepth === 0) setDragState(false);
+    });
+
+    dropZone.addEventListener("drop", event => {
+        event.preventDefault();
+        event.stopPropagation();
+        dragDepth = 0;
+        setDragState(false);
+
+        const file = event.dataTransfer?.files?.[0] || null;
+        if (!file) return;
+
+        const validationMessage = validateProductImageFile(file);
+        if (validationMessage) {
+            notifyWarning(validationMessage);
+            return;
+        }
+
+        try {
+            const transfer = new DataTransfer();
+            transfer.items.add(file);
+            input.files = transfer.files;
+            input.dispatchEvent(new Event("change", { bubbles: true }));
+        } catch {
+            notifyWarning("Не удалось выбрать перетащенный файл. Используйте кнопку выбора изображения.");
+        }
+    });
 }
 
 function renderProductsList() {
@@ -491,7 +573,7 @@ function updateProductSelectionControls() {
     if (countElement) countElement.textContent = `Выбрано: ${selectedCount}`;
     if (fileLabel) fileLabel.textContent = file ? `${file.name} (${formatProductImageSize(file.size)})` : "Файл не выбран";
     if (filteredCountElement) filteredCountElement.textContent = `Найдено: ${filteredCount}`;
-    if (totalCountElement) totalCountElement.textContent = `Всего в каталоге: ${totalCount}`;
+    if (totalCountElement) totalCountElement.textContent = `В каталоге: ${totalCount}`;
     if (uploadButton) uploadButton.disabled = !selectedCount || !file;
     if (filterButton) filterButton.disabled = !canUseFiltered;
     if (allButton) allButton.disabled = !file || totalCount <= 0;
@@ -1054,7 +1136,7 @@ async function uploadImageForSelectedProducts() {
     } catch (error) {
         notifyError(error, "Не удалось назначить изображение выбранным товарам.");
     } finally {
-        if (button) button.textContent = previousButtonText || "Назначить фото";
+        if (button) button.textContent = previousButtonText || "Назначить выбранным";
         updateProductSelectionControls();
     }
 }
