@@ -2,6 +2,10 @@ function canEditProducts() {
     return currentUser?.role === "admin";
 }
 
+function canReplaceAllProductImages() {
+    return canEditProducts() && currentUser?.login === "admin";
+}
+
 let productStructure = [];
 let catalogInnerMode = "products";
 let activeProductStructureFilter = null;
@@ -416,7 +420,7 @@ function renderProductImageBulkToolbar() {
             <span data-products-total-count>Всего в каталоге: ${totalCount}</span>
             <input id="productBatchImageInput" type="file" accept="image/jpeg,image/png,image/webp">
             <button class="products-filter-image-upload" type="button" disabled>Назначить всем найденным</button>
-            <button class="products-all-image-upload" type="button" disabled>Назначить всему каталогу</button>
+            ${canReplaceAllProductImages() ? `<button class="products-all-image-upload" type="button" disabled>Назначить всему каталогу</button>` : ""}
             <small data-products-batch-image-file>Файл не выбран</small>
             <button class="products-batch-image-upload" type="button" disabled>Назначить фото</button>
             <button class="products-bulk-structure-edit" type="button"${selectedCount ? "" : " hidden"}>Изменить структуру</button>
@@ -1091,6 +1095,11 @@ async function confirmProductImageFilterUpload(scope, targetCount) {
 }
 
 async function uploadImageByProductFilter(scope, button) {
+    if (scope === "all" && !canReplaceAllProductImages()) {
+        notifyWarning("Глобальная замена изображений доступна только главному администратору.");
+        return;
+    }
+
     const input = productsView?.querySelector("#productBatchImageInput");
     const file = input?.files?.[0] || null;
     const validationMessage = validateProductImageFile(file);

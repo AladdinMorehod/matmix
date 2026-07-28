@@ -112,6 +112,7 @@ async function prepare() {
 
     await run(db, "INSERT INTO users(login,password_hash,role,name,is_active,created_at,updated_at) VALUES(?,?,?,?,1,?,?)", ["e2e_admin", await bcrypt.hash("E2eAdmin!234", 10), "admin", "E2E Admin", now, now]);
     await run(db, "INSERT INTO users(login,password_hash,role,name,is_active,created_at,updated_at) VALUES(?,?,?,?,1,?,?)", ["e2e_manager", await bcrypt.hash("E2eManager!234", 10), "manager", "E2E Manager", now, now]);
+    await run(db, "INSERT INTO users(login,password_hash,role,name,is_active,created_at,updated_at) VALUES(?,?,?,?,1,?,?)", ["admin", await bcrypt.hash("E2eChiefAdmin!234", 10), "admin", "E2E Chief Admin", now, now]);
     const admin = await get(db, "SELECT id FROM users WHERE login = ?", ["e2e_admin"]);
     const ordinaryOrder = await run(
         db,

@@ -88,7 +88,7 @@ test("CRM section survives reload, supports history and normalizes invalid URLs"
     expect(new URL(page.url()).searchParams.get("section")).toBe("dashboard");
 });
 
-test("order cards collapse independently and restore expanded ids after reload", async ({ page }) => {
+test("order cards collapse independently and reset expanded ids after reload", async ({ page }) => {
     const mockedOrders = [
         order({
             id: 701,
@@ -168,15 +168,18 @@ test("order cards collapse independently and restore expanded ids after reload",
     await expect(first.locator(".order-card-header")).toHaveAttribute("aria-expanded", "true");
     await expect(second.locator(".order-card-header")).toHaveAttribute("aria-expanded", "true");
 
+    await page.evaluate(() => {
+        sessionStorage.setItem("matmix.crm.expandedOrderIds", JSON.stringify(["701", "702"]));
+    });
     await page.reload();
     await expect(page.locator('.crm-nav [data-section="orders"]')).toHaveClass(/active/);
-    await expect(first.locator(".order-card-header")).toHaveAttribute("aria-expanded", "true");
-    await expect(second.locator(".order-card-header")).toHaveAttribute("aria-expanded", "true");
-    await expect(third.locator(".order-card-header")).toHaveAttribute("aria-expanded", "false");
-
-    await first.locator(".order-card-header").click();
+    expect(new URL(page.url()).searchParams.get("section")).toBe("orders");
     await expect(first.locator(".order-card-header")).toHaveAttribute("aria-expanded", "false");
-    await expect(second.locator(".order-card-header")).toHaveAttribute("aria-expanded", "true");
+    await expect(second.locator(".order-card-header")).toHaveAttribute("aria-expanded", "false");
+    await expect(third.locator(".order-card-header")).toHaveAttribute("aria-expanded", "false");
+    await expect(cards.locator(".order-card-details")).toHaveCount(0);
+    await expect(first.locator(".order-tabs")).toHaveCount(0);
+    expect(await page.evaluate(() => sessionStorage.getItem("matmix.crm.expandedOrderIds"))).toBeNull();
 
     const beforeHover = await third.evaluate(element => getComputedStyle(element).transform);
     await third.hover();

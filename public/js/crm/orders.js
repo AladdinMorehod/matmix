@@ -4,24 +4,13 @@ const orderAttachmentErrors = new Map();
 const orderAttachmentsLoading = new Set();
 const expandedOrdersStorageKey = "matmix.crm.expandedOrderIds";
 
-function readExpandedOrderIds() {
-    try {
-        const storedIds = JSON.parse(window.sessionStorage.getItem(expandedOrdersStorageKey) || "[]");
-        return new Set(Array.isArray(storedIds) ? storedIds.map(String).filter(Boolean) : []);
-    } catch {
-        return new Set();
-    }
+try {
+    window.sessionStorage.removeItem(expandedOrdersStorageKey);
+} catch {
+    // The in-memory card state still works when storage is unavailable.
 }
 
-const expandedOrderIds = readExpandedOrderIds();
-
-function persistExpandedOrderIds() {
-    try {
-        window.sessionStorage.setItem(expandedOrdersStorageKey, JSON.stringify(Array.from(expandedOrderIds)));
-    } catch {
-        // The cards still work for the current render when storage is unavailable.
-    }
-}
+const expandedOrderIds = new Set();
 
 function toggleOrderExpanded(orderId) {
     const normalizedOrderId = String(orderId);
@@ -30,7 +19,6 @@ function toggleOrderExpanded(orderId) {
     } else {
         expandedOrderIds.add(normalizedOrderId);
     }
-    persistExpandedOrderIds();
     return expandedOrderIds.has(normalizedOrderId);
 }
 
