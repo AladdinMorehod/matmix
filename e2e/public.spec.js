@@ -820,18 +820,73 @@ test("cart opens only by activation and keeps accessible controls", async ({ pag
         await page.locator("#cancelCheckout").click();
         await expect(page.locator("#cartView")).toBeVisible();
 
+        const cartBodyHeight = await page.locator(".cart-body").evaluate(element => element.getBoundingClientRect().height);
         await page.locator("#clearCartBtn").click();
         await expect(page.locator("#clearCartConfirm")).toBeVisible();
+        await expect(page.locator("#clearCartConfirm")).toContainText("Очистить полностью?");
         await expect(page.locator("#confirmClearCart")).toBeFocused();
+        await expect(page.locator("#clearCartBtn")).toHaveAttribute("aria-expanded", "true");
+        expect(await page.locator(".cart-body").evaluate(element => element.getBoundingClientRect().height)).toBeCloseTo(cartBodyHeight, 0);
         await page.locator("#cancelClearCart").click();
+        await expect(page.locator("#clearCartConfirm")).toBeHidden();
+        await expect(page.locator("#clearCartBtn")).toBeFocused();
+        await expect(page.locator("#clearCartBtn")).toHaveAttribute("aria-expanded", "false");
+
+        await page.locator("#clearCartBtn").click();
+        await page.locator(".cart-header").click();
         await expect(page.locator("#clearCartConfirm")).toBeHidden();
         await expect(page.locator("#clearCartBtn")).toBeFocused();
 
         await page.locator("#clearCartBtn").click();
+        await page.keyboard.press("Escape");
+        await expect(page.locator("#clearCartConfirm")).toBeHidden();
+        await expect(page.locator("#clearCartBtn")).toBeFocused();
+
+        await page.locator("#clearCartBtn").click();
+        await page.locator("#clearCartBtn").click();
+        await expect(page.locator("#clearCartConfirm")).toHaveCount(1);
         await page.locator("#confirmClearCart").click();
         await expect(page.locator("#cartItems")).toContainText("Корзина пока пустая");
         await expect(page.locator("#clearCartBtn")).toBeDisabled();
         await expect(page.locator("#closeCart")).toBeFocused();
+    }
+});
+
+test("clear cart popover stays floating and contained on mobile", async ({ page }) => {
+    for (const path of ["/", "/catalog.html"]) {
+        for (const width of [390, 360, 320]) {
+            await page.setViewportSize({ width, height: 720 });
+            await page.goto(path);
+            await seedCartItems(page, 4);
+            await page.locator("#cartBtn").click();
+
+            const bodyHeightBefore = await page.locator(".cart-body").evaluate(element => element.getBoundingClientRect().height);
+            await page.locator("#clearCartBtn").click();
+            const layout = await page.evaluate(() => {
+                const rect = selector => {
+                    const box = document.querySelector(selector).getBoundingClientRect();
+                    return { left: box.left, right: box.right, top: box.top, bottom: box.bottom, height: box.height };
+                };
+                const popover = rect("#clearCartConfirm");
+                const modal = rect("#cartModal");
+                const trigger = rect("#clearCartBtn");
+                return {
+                    bodyHeight: rect(".cart-body").height,
+                    popover,
+                    modal,
+                    trigger,
+                    documentScrollWidth: document.documentElement.scrollWidth,
+                    documentClientWidth: document.documentElement.clientWidth
+                };
+            });
+
+            expect(Math.abs(layout.bodyHeight - bodyHeightBefore)).toBeLessThanOrEqual(1);
+            expect(layout.popover.bottom).toBeLessThanOrEqual(layout.trigger.top + 1);
+            expect(layout.popover.left).toBeGreaterThanOrEqual(Math.max(0, layout.modal.left) - 1);
+            expect(layout.popover.right).toBeLessThanOrEqual(Math.min(width, layout.modal.right) + 1);
+            expect(layout.popover.top).toBeGreaterThanOrEqual(0);
+            expect(layout.documentScrollWidth).toBeLessThanOrEqual(layout.documentClientWidth + 1);
+        }
     }
 });
 
@@ -1369,6 +1424,8 @@ test("file request submission works with cart, without cart and on both public p
         }
 
         await openUploadRequestFromHeader(page);
+        await expect(page.locator("#uploadRequestStatus")).toHaveCount(1);
+        await expect(page.locator("#uploadRequestStatus #uploadRequestMessage")).toHaveCount(1);
         if (index === 0) {
             await expect(page.locator("#uploadCartOption")).toBeVisible();
             await expect(page.locator("#uploadIncludeCart")).toBeChecked();
@@ -1396,6 +1453,8 @@ test("file request submission works with cart, without cart and on both public p
         await page.locator("#uploadRequestForm button[type='submit']").click();
         await expect(page.locator("#uploadRequestMessage")).toContainText(/Заявка №MM-\d{4}-\d{6} принята/);
         await expect(page.locator("#uploadRequestMessage")).toHaveClass(/success/);
+        await expect(page.locator("#uploadRequestStatus")).toHaveClass(/has-message/);
+        await expect(page.locator("#uploadRequestMessage")).toHaveAttribute("role", "status");
         await expect(page.locator(".upload-file-item")).toHaveCount(0);
         const cartLength = await page.evaluate(() => JSON.parse(localStorage.getItem("matmix_cart") || "[]").length);
         expect(cartLength).toBe(index === 0 ? 1 : 0);
@@ -1414,15 +1473,17 @@ test("file request submission works with cart, without cart and on both public p
 });
 
 test("file request server errors keep the form retryable", async ({ page }) => {
+    const longError = "Тестовая ошибка отправки. Проверьте выбранные документы и контактные данные, затем повторите отправку заявки.";
     await page.route("**/api/orders/file-request", route => route.fulfill({
         status: 500,
         contentType: "application/json",
         body: JSON.stringify({
             success: false,
             code: "FILE_REQUEST_FAILED",
-            message: "Тестовая ошибка отправки"
+            message: longError
         })
     }));
+    await page.setViewportSize({ width: 320, height: 568 });
     await page.goto("/");
     await openUploadRequestFromHeader(page);
     await page.locator("#uploadCustomerName").fill("Тестовый клиент");
@@ -1437,11 +1498,46 @@ test("file request server errors keep the form retryable", async ({ page }) => {
 
     const submit = page.locator("#uploadRequestForm button[type='submit']");
     await submit.click();
-    await expect(page.locator("#uploadRequestMessage")).toHaveText("Тестовая ошибка отправки");
+    await expect(page.locator("#uploadRequestMessage")).toHaveText(longError);
     await expect(page.locator("#uploadRequestMessage")).toHaveClass(/error/);
+    await expect(page.locator("#uploadRequestMessage")).toHaveAttribute("role", "alert");
+    await expect(page.locator("#uploadRequestStatus")).toHaveClass(/has-message/);
     await expect(submit).toBeEnabled();
     await expect(submit).toHaveText("Отправить заявку");
     await expect(page.locator(".upload-file-item")).toHaveCount(1);
+
+    const noticeLayout = await page.evaluate(() => {
+        const form = document.querySelector("#uploadRequestForm");
+        const status = document.querySelector("#uploadRequestStatus");
+        const message = document.querySelector("#uploadRequestMessage");
+        const actions = form.querySelector(".checkout-actions");
+        const formRect = form.getBoundingClientRect();
+        const statusRect = status.getBoundingClientRect();
+        const actionsRect = actions.getBoundingClientRect();
+        return {
+            messageWhiteSpace: getComputedStyle(message).whiteSpace,
+            messageHeight: message.getBoundingClientRect().height,
+            lineHeight: parseFloat(getComputedStyle(message).lineHeight),
+            statusBottom: statusRect.bottom,
+            actionsTop: actionsRect.top,
+            statusVisibleInForm: statusRect.top >= formRect.top - 1 && statusRect.bottom <= formRect.bottom + 1,
+            formScrollWidth: form.scrollWidth,
+            formClientWidth: form.clientWidth,
+            documentScrollWidth: document.documentElement.scrollWidth,
+            documentClientWidth: document.documentElement.clientWidth
+        };
+    });
+    expect(noticeLayout.messageWhiteSpace).toBe("normal");
+    expect(noticeLayout.messageHeight).toBeGreaterThan(noticeLayout.lineHeight * 2);
+    expect(noticeLayout.actionsTop).toBeGreaterThanOrEqual(noticeLayout.statusBottom - 1);
+    expect(noticeLayout.statusVisibleInForm).toBeTruthy();
+    expect(noticeLayout.formScrollWidth).toBeLessThanOrEqual(noticeLayout.formClientWidth + 1);
+    expect(noticeLayout.documentScrollWidth).toBeLessThanOrEqual(noticeLayout.documentClientWidth + 1);
+
+    await submit.click();
+    await expect(page.locator("#uploadRequestStatus")).toHaveCount(1);
+    await expect(page.locator("#uploadRequestStatus #uploadRequestMessage")).toHaveCount(1);
+    await expect(page.locator("#uploadRequestMessage")).toHaveText(longError);
 });
 
 test("upload request cart option and layout remain responsive", async ({ page }) => {
@@ -1550,6 +1646,8 @@ test("upload request cart option and layout remain responsive", async ({ page })
                 })(),
                 modalScrollTop: modal.scrollTop,
                 panelScrollTop: panel.scrollTop,
+                panelScrollHeight: panel.scrollHeight,
+                panelClientHeight: panel.clientHeight,
                 documentScrollWidth: document.documentElement.scrollWidth,
                 documentClientWidth: document.documentElement.clientWidth
             };
@@ -1559,7 +1657,10 @@ test("upload request cart option and layout remain responsive", async ({ page })
         expect(dimensions.modal.right, JSON.stringify({ viewport, dimensions })).toBeLessThanOrEqual(viewport.width + 1);
         expect(dimensions.modal.bottom, JSON.stringify({ viewport, dimensions })).toBeLessThanOrEqual(viewport.height + 1);
         expect(dimensions.modalScrollTop).toBe(0);
-        expect(dimensions.panelScrollTop).toBeGreaterThan(0);
+        expect(dimensions.panelScrollTop).toBeCloseTo(
+            Math.max(0, dimensions.panelScrollHeight - dimensions.panelClientHeight),
+            0
+        );
         expect(Math.abs(dimensions.tabs[0].top - dimensions.tabs[1].top)).toBeLessThanOrEqual(1);
         expect(dimensions.tabs[0].right).toBeLessThanOrEqual(dimensions.tabs[1].left + 1);
         expect(dimensions.tabs.every(tab => !tab.clipped)).toBeTruthy();
