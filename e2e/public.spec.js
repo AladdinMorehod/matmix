@@ -69,6 +69,55 @@ test("public pages, legal navigation and security headers", async ({ page }) => 
     const notFound = await page.goto("/not-a-real-page-e2e"); expect(notFound.status()).toBe(404);
 });
 
+test("public home copies the current contact email without navigation", async ({ page, context }) => {
+    const consoleErrors = [];
+    page.on("console", message => { if (message.type() === "error") consoleErrors.push(message.text()); });
+    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+    await page.goto("/");
+
+    const emailButton = page.locator("#copyContactEmail");
+    const toast = page.locator("#contactEmailToast");
+    const initialUrl = page.url();
+    const initialPageCount = context.pages().length;
+    const readClipboard = () => page.evaluate(() => navigator.clipboard.readText());
+    const clearClipboard = () => page.evaluate(() => navigator.clipboard.writeText(""));
+
+    await expect(emailButton).toHaveText("orders@matmix.ru");
+    await expect(emailButton).not.toHaveAttribute("href", /mailto:/);
+    expect((await page.content()).toLowerCase()).not.toContain("opt-mat@mail.ru");
+
+    await emailButton.click();
+    await expect.poll(readClipboard).toBe("orders@matmix.ru");
+    await expect(toast).toHaveText("Почта скопирована");
+    await expect(toast).toBeVisible();
+
+    for (const activation of ["click", "Enter", "Space"]) {
+        await clearClipboard();
+        activation === "click" ? await emailButton.click() : await emailButton.press(activation);
+        await expect.poll(readClipboard).toBe("orders@matmix.ru");
+    }
+    await expect(toast).toBeHidden({ timeout: 4000 });
+    expect(page.url()).toBe(initialUrl);
+    expect(context.pages()).toHaveLength(initialPageCount);
+
+    await page.evaluate(() => {
+        Object.defineProperty(navigator, "clipboard", { configurable: true, value: undefined });
+        document.execCommand = command => {
+            if (command !== "copy") return false;
+            window.__fallbackContactEmail = document.activeElement?.value || "";
+            return true;
+        };
+    });
+    await emailButton.click();
+    await expect.poll(() => page.evaluate(() => window.__fallbackContactEmail)).toBe("orders@matmix.ru");
+    await expect(toast).toHaveText("Почта скопирована");
+    await expect(page.locator("[data-copy-fallback]")).toHaveCount(0);
+    await page.evaluate(() => { document.execCommand = () => false; });
+    await emailButton.click();
+    await expect(toast).toHaveText("Не удалось скопировать почту");
+    expect(consoleErrors).toEqual([]);
+});
+
 test("header and footer delivery links share canonical navigation", async ({ page }) => {
     const sourcePaths = ["/", "/catalog"];
     const deliveryLink = container => container.getByRole("link", { name: "Доставка", exact: true });
@@ -349,7 +398,7 @@ test("home mobile actions and footer remain usable without horizontal overflow",
                     contact: box('.hero-actions a[href^="tel:"]'),
                     catalog: box("#homeCatalogButton")
                 },
-                contactActions: boxes(".contact-actions a"),
+                contactActions: boxes(".contact-actions a, .contact-email-button"),
                 legalLinks: boxes(".footer a"),
                 scrollWidth: document.documentElement.scrollWidth,
                 clientWidth: document.documentElement.clientWidth
