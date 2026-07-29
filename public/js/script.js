@@ -37149,6 +37149,8 @@ const catalogBreadcrumbGroup = document.getElementById("catalogBreadcrumbGroup")
 const catalogBreadcrumbGroupSeparator = document.getElementById("catalogBreadcrumbGroupSeparator");
 const copyManagerPhoneBtn = document.getElementById("copyManagerPhone");
 const managerPhoneAction = copyManagerPhoneBtn?.closest(".catalog-help-action");
+const copyContactEmailBtn = document.getElementById("copyContactEmail");
+const contactEmailToast = document.getElementById("contactEmailToast");
 const downloadPublicPriceBtn = document.getElementById("downloadPublicPrice");
 const catalogMessage = document.getElementById("catalogMessage");
 const cartBtn = document.getElementById("cartBtn");
@@ -37234,6 +37236,7 @@ let uploadRequestFiles = [];
 let uploadDragDepth = 0;
 let uploadCartChoiceTouched = false;
 let uploadRequestSubmitting = false;
+let contactEmailToastTimer = 0;
 const MAX_PRODUCT_QTY = 100000;
 const SEARCH_SUGGESTION_MIN_LENGTH = 2;
 const SEARCH_SUGGESTION_LIMIT = 10;
@@ -37367,22 +37370,49 @@ function getProductById(id) {
         || null;
 }
 
-function copyTextToClipboard(value) {
+async function copyTextToClipboard(value) {
     const copyWithInput = () => {
-        const input = document.createElement("input");
+        const input = document.createElement("textarea");
         input.value = value;
+        input.setAttribute("readonly", "");
+        input.dataset.copyFallback = "";
+        input.style.cssText = "position:fixed;left:-9999px";
         document.body.appendChild(input);
-        input.select();
-        document.execCommand("copy");
-        input.remove();
+
+        try {
+            input.focus();
+            input.select();
+            if (!document.execCommand("copy")) {
+                throw new Error("Clipboard copy command was rejected.");
+            }
+        } finally {
+            input.remove();
+        }
     };
 
     if (navigator.clipboard?.writeText) {
-        return navigator.clipboard.writeText(value).catch(copyWithInput);
+        try {
+            await navigator.clipboard.writeText(value);
+            return;
+        } catch {
+            // Fallback below handles unavailable or denied Clipboard API access.
+        }
     }
 
     copyWithInput();
-    return Promise.resolve();
+}
+
+function showContactEmailToast(message, type = "success") {
+    if (!contactEmailToast) return;
+
+    window.clearTimeout(contactEmailToastTimer);
+    contactEmailToast.hidden = false;
+    contactEmailToast.classList.toggle("error", type === "error");
+    contactEmailToast.textContent = message;
+    contactEmailToastTimer = window.setTimeout(() => {
+        contactEmailToast.hidden = true;
+        contactEmailToast.textContent = "";
+    }, 1800);
 }
 
 const checkoutStorage = {
@@ -39595,7 +39625,18 @@ copyManagerPhoneBtn?.addEventListener("click", event => {
             copyManagerPhoneBtn.textContent = phone;
             managerPhoneAction?.classList.remove("is-phone-visible");
         }, 1200);
-    });
+    }).catch(() => {});
+});
+
+copyContactEmailBtn?.addEventListener("click", async () => {
+    const email = copyContactEmailBtn.textContent.trim();
+
+    try {
+        await copyTextToClipboard(email);
+        showContactEmailToast("Почта скопирована");
+    } catch {
+        showContactEmailToast("Не удалось скопировать почту", "error");
+    }
 });
 
 downloadPublicPriceBtn?.addEventListener("click", downloadPublicPrice);
