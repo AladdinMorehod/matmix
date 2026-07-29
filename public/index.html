@@ -136,8 +136,8 @@
                 <button id="openUploadRequest" class="open-upload-request" type="button">Загрузить заявку</button>
             </div>
             <div class="cart-body">
-                <div id="clearCartConfirm" class="clear-cart-confirm hidden">
-                    <p>Действительно очистить корзину полностью?</p>
+                <div id="clearCartConfirm" class="clear-cart-confirm hidden" role="dialog" aria-labelledby="clearCartConfirmText">
+                    <p id="clearCartConfirmText">Очистить полностью?</p>
                     <div>
                         <button id="confirmClearCart" type="button">Да</button>
                         <button id="cancelClearCart" type="button">Нет</button>
@@ -149,7 +149,7 @@
                 <div id="cartTotal">Итого: 0 ₽</div>
                 <div class="cart-actions">
                     <button id="closeCart" type="button">Закрыть</button>
-                    <button id="clearCartBtn" class="clear-cart-btn" type="button">Очистить</button>
+                    <button id="clearCartBtn" class="clear-cart-btn" type="button" aria-controls="clearCartConfirm" aria-expanded="false">Очистить</button>
                     <button id="openCheckout" type="button">Заказать</button>
                 </div>
             </div>
@@ -260,7 +260,9 @@
                     <label for="uploadRequestConsent"><input id="uploadRequestConsent" type="checkbox" name="uploadRequestConsent" required aria-describedby="uploadConsentError"> <span>Я ознакомился(ась) с <a href="/privacy" target="_blank" rel="noopener">политикой конфиденциальности</a>, соглашаюсь на обработку данных и ознакомился(ась) с <a href="/terms" target="_blank" rel="noopener">условиями продажи</a>.</span></label>
                     <p id="uploadConsentError" class="checkout-consent-error" role="alert"></p>
                 </div>
-                <p id="uploadRequestMessage" class="checkout-message" aria-live="polite"></p>
+                <div id="uploadRequestStatus" class="upload-request-status" aria-live="polite" aria-atomic="true">
+                    <p id="uploadRequestMessage" class="checkout-message"></p>
+                </div>
                 <div class="checkout-actions">
                     <button id="cancelUploadRequest" type="button">Отменить</button>
                     <button type="submit">Отправить заявку</button>

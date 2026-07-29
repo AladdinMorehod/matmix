@@ -37194,6 +37194,7 @@ const uploadCartOption = document.getElementById("uploadCartOption");
 const uploadIncludeCartInput = document.getElementById("uploadIncludeCart");
 const uploadConsentInput = document.getElementById("uploadRequestConsent");
 const uploadConsentError = document.getElementById("uploadConsentError");
+const uploadRequestStatus = document.getElementById("uploadRequestStatus");
 const uploadRequestMessage = document.getElementById("uploadRequestMessage");
 const uploadSubmitButton = uploadRequestForm?.querySelector("button[type='submit']");
 const cancelUploadRequestBtn = document.getElementById("cancelUploadRequest");
@@ -37886,9 +37887,42 @@ function clearUploadRequestMessage() {
     if (uploadRequestMessage) {
         uploadRequestMessage.classList.remove("success", "error");
         uploadRequestMessage.textContent = "";
+        uploadRequestMessage.removeAttribute("role");
     }
+    uploadRequestStatus?.classList.remove("has-message");
     if (uploadConsentError) uploadConsentError.textContent = "";
     uploadConsentInput?.removeAttribute("aria-invalid");
+}
+
+function revealUploadRequestMessage() {
+    if (!uploadRequestForm || !uploadRequestStatus) return;
+    window.requestAnimationFrame(() => {
+        const formRect = uploadRequestForm.getBoundingClientRect();
+        const statusRect = uploadRequestStatus.getBoundingClientRect();
+        const lowerOverflow = statusRect.bottom - formRect.bottom;
+        const upperOverflow = formRect.top - statusRect.top;
+        if (lowerOverflow > 0) {
+            uploadRequestForm.scrollBy({
+                top: lowerOverflow + 12,
+                behavior: "auto"
+            });
+        } else if (upperOverflow > 0) {
+            uploadRequestForm.scrollBy({
+                top: -(upperOverflow + 12),
+                behavior: "auto"
+            });
+        }
+    });
+}
+
+function setUploadRequestMessage(message, type) {
+    if (!uploadRequestMessage || !uploadRequestStatus) return;
+    uploadRequestMessage.classList.remove("success", "error");
+    uploadRequestMessage.classList.add(type);
+    uploadRequestMessage.setAttribute("role", type === "error" ? "alert" : "status");
+    uploadRequestMessage.textContent = message;
+    uploadRequestStatus.classList.add("has-message");
+    revealUploadRequestMessage();
 }
 
 function syncUploadFileInput() {
@@ -38747,10 +38781,54 @@ function setProductQty(id, nextQty, options = {}) {
     }
 }
 
+function isClearCartConfirmOpen() {
+    return Boolean(clearCartConfirm && !clearCartConfirm.classList.contains("hidden"));
+}
+
+function positionClearCartConfirm() {
+    if (!isClearCartConfirmOpen() || !clearCartBtn || !cartModal) return;
+
+    const viewportPadding = 8;
+    const popoverGap = 7;
+    const triggerRect = clearCartBtn.getBoundingClientRect();
+    const cartRect = cartModal.getBoundingClientRect();
+    const popoverRect = clearCartConfirm.getBoundingClientRect();
+    const minLeft = Math.max(viewportPadding, cartRect.left + viewportPadding);
+    const maxLeft = Math.min(
+        window.innerWidth - popoverRect.width - viewportPadding,
+        cartRect.right - popoverRect.width - viewportPadding
+    );
+    const centeredLeft = triggerRect.left + ((triggerRect.width - popoverRect.width) / 2);
+    const left = Math.max(minLeft, Math.min(centeredLeft, Math.max(minLeft, maxLeft)));
+    const minTop = Math.max(viewportPadding, cartRect.top + viewportPadding);
+    const top = Math.max(minTop, triggerRect.top - popoverRect.height - popoverGap);
+
+    clearCartConfirm.style.left = `${Math.round(left)}px`;
+    clearCartConfirm.style.top = `${Math.round(top)}px`;
+}
+
+function closeClearCartConfirm({ restoreFocus = true } = {}) {
+    if (!clearCartConfirm) return;
+    const wasOpen = isClearCartConfirmOpen();
+    clearCartConfirm.classList.add("hidden");
+    clearCartConfirm.style.removeProperty("left");
+    clearCartConfirm.style.removeProperty("top");
+    clearCartBtn?.setAttribute("aria-expanded", "false");
+    if (restoreFocus && wasOpen) clearCartBtn?.focus();
+}
+
+function openClearCartConfirm() {
+    if (!cart.length || !clearCartConfirm) return;
+    clearCartConfirm.classList.remove("hidden");
+    clearCartBtn?.setAttribute("aria-expanded", "true");
+    positionClearCartConfirm();
+    confirmClearCartBtn?.focus();
+}
+
 function showCartView() {
     cartView?.classList.remove("hidden");
     checkoutView?.classList.add("hidden");
-    clearCartConfirm?.classList.add("hidden");
+    closeClearCartConfirm({ restoreFocus: false });
     clearCheckoutMessage();
     clearUploadRequestMessage();
 }
@@ -39360,7 +39438,7 @@ function renderCart() {
     clearCartBtn?.toggleAttribute("disabled", !cart.length);
 
     if (!cart.length) {
-        clearCartConfirm?.classList.add("hidden");
+        closeClearCartConfirm({ restoreFocus: false });
         cartItemsEl.innerHTML = `<p class="empty-cart">Корзина пока пустая</p>`;
         updateCartSummary();
         return;
@@ -39538,22 +39616,20 @@ cartBtn.addEventListener("click", event => {
 });
 
 closeCartBtn.addEventListener("click", () => {
+    closeClearCartConfirm({ restoreFocus: false });
     setCartModalOpen(false);
 });
 
 clearCartBtn?.addEventListener("click", () => {
-    if (!cart.length) return;
-    clearCartConfirm?.classList.remove("hidden");
-    if (cartBody) cartBody.scrollTop = 0;
-    confirmClearCartBtn?.focus();
+    openClearCartConfirm();
 });
 
 cancelClearCartBtn?.addEventListener("click", () => {
-    clearCartConfirm?.classList.add("hidden");
-    clearCartBtn?.focus();
+    closeClearCartConfirm();
 });
 
 confirmClearCartBtn?.addEventListener("click", () => {
+    closeClearCartConfirm({ restoreFocus: false });
     cart = [];
     saveCart();
     updateCartSummary();
@@ -39565,6 +39641,26 @@ confirmClearCartBtn?.addEventListener("click", () => {
     }
     closeCartBtn?.focus();
 });
+
+document.addEventListener("click", event => {
+    if (
+        !isClearCartConfirmOpen()
+        || clearCartConfirm?.contains(event.target)
+        || clearCartBtn?.contains(event.target)
+    ) {
+        return;
+    }
+    closeClearCartConfirm();
+}, true);
+
+document.addEventListener("keydown", event => {
+    if (event.key !== "Escape" || !isClearCartConfirmOpen()) return;
+    event.preventDefault();
+    closeClearCartConfirm();
+});
+
+window.addEventListener("resize", positionClearCartConfirm);
+cartBody?.addEventListener("scroll", positionClearCartConfirm, { passive: true });
 
 openCheckoutBtn?.addEventListener("click", () => {
     showCheckoutForm("order");
@@ -39668,18 +39764,16 @@ uploadRequestForm?.addEventListener("submit", async event => {
         if (!response.ok || !result.success || !result.orderNumber) {
             throw new Error(result.message || "Не удалось отправить заявку. Попробуйте ещё раз.");
         }
-        if (uploadRequestMessage) {
-            uploadRequestMessage.classList.remove("error");
-            uploadRequestMessage.classList.add("success");
-            uploadRequestMessage.textContent = `Заявка №${result.orderNumber} принята. Менеджер свяжется с вами после обработки заявки.`;
-        }
         resetUploadRequestForm({ preserveMessage: true });
+        setUploadRequestMessage(
+            `Заявка №${result.orderNumber} принята. Менеджер свяжется с вами после обработки заявки.`,
+            "success"
+        );
     } catch (error) {
-        if (uploadRequestMessage) {
-            uploadRequestMessage.classList.remove("success");
-            uploadRequestMessage.classList.add("error");
-            uploadRequestMessage.textContent = error.message || "Не удалось отправить заявку. Попробуйте ещё раз.";
-        }
+        setUploadRequestMessage(
+            error.message || "Не удалось отправить заявку. Попробуйте ещё раз.",
+            "error"
+        );
     } finally {
         uploadRequestSubmitting = false;
         if (uploadSubmitButton) {
