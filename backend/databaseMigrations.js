@@ -2,8 +2,12 @@ const fs = require("fs");
 const path = require("path");
 const sqlite3 = require("sqlite3").verbose();
 const { configureBusinessConnection } = require("./sqlite");
+const {
+    NOTIFICATION_INDEXES,
+    ensureOrderNotificationSchema
+} = require("./services/orderNotifications");
 
-const CURRENT_SCHEMA_VERSION = 5;
+const CURRENT_SCHEMA_VERSION = 6;
 const CONSENT_COLUMNS = [
     ["consent_given", "INTEGER"], ["consent_at", "TEXT"], ["privacy_policy_version", "TEXT"],
     ["terms_version", "TEXT"], ["privacy_policy_url", "TEXT"], ["terms_url", "TEXT"]
@@ -11,7 +15,8 @@ const CONSENT_COLUMNS = [
 const REQUIRED_INDEXES = [
     "idx_clients_phone", "idx_orders_status_created_at", "idx_orders_client_created_at",
     "idx_order_events_order_created_at", "idx_products_public_order", "idx_products_catalog_order",
-    "idx_products_group_order", "idx_products_image_url", "idx_order_attachments_order_id"
+    "idx_products_group_order", "idx_products_image_url", "idx_order_attachments_order_id",
+    ...NOTIFICATION_INDEXES
 ];
 
 function helpers(db) {
@@ -82,6 +87,19 @@ async function ensureColumn(db, tableName, columnName, definition) {
 }
 
 async function migrateLegacyV0(db) {
+    const notificationReads = await db.get(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='order_notification_reads'"
+    );
+    if (notificationReads) {
+        const readCount = Number(
+            (await db.get("SELECT COUNT(*) AS count FROM order_notification_reads")).count
+        );
+        if (readCount) {
+            throw new Error("Migration blocked by notification reads in an unversioned database.");
+        }
+        await db.run("DROP TABLE order_notification_reads");
+    }
+
     for (const indexName of ["idx_orders_order_number", "idx_clients_phone", "idx_orders_status_created_at", "idx_orders_client_created_at", "idx_order_events_order_created_at"]) {
         await db.run(`DROP INDEX IF EXISTS ${quoteIdentifier(indexName)}`);
     }
@@ -213,6 +231,28 @@ async function migrateToV5(db) {
     await db.run("CREATE INDEX idx_order_attachments_order_id ON order_attachments(order_id)");
 }
 
+async function migrateToV6(db) {
+    const usersTable = await db.get(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='users'"
+    );
+    if (!usersTable) {
+        await db.run(`
+            CREATE TABLE users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                login TEXT UNIQUE NOT NULL,
+                password_hash TEXT NOT NULL,
+                role TEXT NOT NULL,
+                name TEXT NOT NULL,
+                created_at TEXT,
+                updated_at TEXT,
+                is_active INTEGER DEFAULT 1,
+                deleted_at TEXT
+            )
+        `);
+    }
+    await ensureOrderNotificationSchema(db);
+}
+
 async function migrateDatabase(dbPath, { dryRun = true, injectFailure = false } = {}) {
     const db = await openDatabase(dbPath);
     try {
@@ -220,7 +260,7 @@ async function migrateDatabase(dbPath, { dryRun = true, injectFailure = false } 
         if (fromVersion > CURRENT_SCHEMA_VERSION) throw new Error(`Unsupported newer schema version ${fromVersion}.`);
         const findings = await audit(db);
         if (dryRun || fromVersion === CURRENT_SCHEMA_VERSION) return { dryRun, fromVersion, toVersion: CURRENT_SCHEMA_VERSION, findings, changed: false };
-        if (![0, 1, 2, 3, 4].includes(fromVersion)) throw new Error(`Unsupported schema version ${fromVersion}.`);
+        if (![0, 1, 2, 3, 4, 5].includes(fromVersion)) throw new Error(`Unsupported schema version ${fromVersion}.`);
         if (findings.eventsWithoutOrder || findings.subcategoriesWithoutParent || findings.activeChildWithInactiveParent
             || findings.duplicateOrderNumbers || findings.duplicateProductCodes || findings.emptyProductCodes
             || findings.invalidRequestTypes || findings.attachmentsWithoutOrder) {
@@ -235,7 +275,8 @@ async function migrateDatabase(dbPath, { dryRun = true, injectFailure = false } 
             }
             if (fromVersion <= 2) await migrateToV3(db);
             if (fromVersion <= 3) await migrateToV4(db);
-            await migrateToV5(db);
+            if (fromVersion <= 4) await migrateToV5(db);
+            if (fromVersion <= 5) await migrateToV6(db);
             if (injectFailure) throw new Error("Injected migration failure");
             const fk = await db.all("PRAGMA foreign_key_check");
             const integrity = await db.get("PRAGMA integrity_check");

@@ -20,6 +20,8 @@ const {
     validateUploadedFiles
 } = require("../services/fileRequestUpload");
 const { createFileRequestRateLimiter } = require("../services/fileRequestRateLimit");
+const { activeOrderVisibility, canViewOrder } = require("../services/orderAccess");
+const { createOrderNotificationService } = require("../services/orderNotifications");
 const logger = require("../services/logger");
 
 const router = express.Router();
@@ -28,6 +30,7 @@ const MAX_ORDER_ITEMS = 100;
 const MAX_ITEM_QUANTITY = 10000;
 const attachmentStorage = createOrderAttachmentStorage();
 const fileRequestRateLimit = createFileRequestRateLimiter();
+const orderNotificationService = createOrderNotificationService({ get, withTransaction });
 
 class PublicOrderError extends Error {
     constructor(status, message, code) {
@@ -581,12 +584,6 @@ function canManageOrder(user, order) {
     return user.role === "admin" || Number(order.manager_id) === Number(user.id);
 }
 
-function canViewOrder(user, order) {
-    if (user.role === "admin") return true;
-    if (Number(order.manager_id) === Number(user.id)) return true;
-    return !order.deleted_at && order.status === "Новая" && !order.manager_id;
-}
-
 function ownsOrder(user, order) {
     return Number(order.manager_id) === Number(user.id);
 }
@@ -1068,17 +1065,20 @@ router.get("/", requireRole(["admin", "manager"]), async (req, res) => {
             where = "orders.deleted_at IS NULL AND orders.manager_id = ?";
             params.push(req.session.user.id);
         } else if (req.session.user.role === "admin") {
-            where = `orders.deleted_at IS ${showDeleted ? "NOT NULL" : "NULL"}`;
+            if (showDeleted) {
+                where = "orders.deleted_at IS NOT NULL";
+            } else {
+                const visibility = activeOrderVisibility(req.session.user);
+                where = visibility.sql;
+                params.push(...visibility.params);
+            }
         } else if (showDeleted) {
             where = "orders.deleted_at IS NOT NULL AND orders.manager_id = ?";
             params.push(req.session.user.id);
         } else {
-            where = `orders.deleted_at IS NULL
-                AND (
-                    (orders.status = ? AND orders.manager_id IS NULL)
-                    OR orders.manager_id = ?
-                )`;
-            params.push("Новая", req.session.user.id);
+            const visibility = activeOrderVisibility(req.session.user);
+            where = visibility.sql;
+            params.push(...visibility.params);
         }
         if (requestedStatus && !showDeleted) {
             where = `(${where}) AND orders.status = ?`;
@@ -1460,6 +1460,39 @@ router.get("/:id/export/excel", requireRole(["admin", "manager"]), async (req, r
     } catch (error) {
         console.error("Order export error:", error);
         res.status(500).json({ success: false, message: "Не удалось сформировать заказ Excel." });
+    }
+});
+
+router.post("/:id/read", requireRole(["admin", "manager"]), async (req, res) => {
+    const orderId = Number(req.params.id);
+    if (!Number.isSafeInteger(orderId) || orderId <= 0) {
+        res.status(400).json({
+            success: false,
+            message: "Некорректный идентификатор заявки."
+        });
+        return;
+    }
+
+    try {
+        const result = await orderNotificationService.markOrderRead(req.session.user, orderId);
+        if (!result) {
+            res.status(404).json({
+                success: false,
+                message: "Заявка не найдена."
+            });
+            return;
+        }
+        res.json({
+            success: true,
+            orderId: result.orderId,
+            unreadCount: result.unreadCount
+        });
+    } catch (error) {
+        console.error("Order notification read error:", error);
+        res.status(500).json({
+            success: false,
+            message: "Не удалось отметить уведомление прочитанным."
+        });
     }
 });
 
