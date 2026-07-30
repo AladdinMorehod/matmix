@@ -122,7 +122,7 @@ async function testEmptyDatabase(root) {
     const file = path.join(root, "empty.db");
     initializeEmptyDatabase(file);
     const result = await migrateDatabase(file, { dryRun: false });
-    assert.deepStrictEqual({ from: result.fromVersion, to: result.toVersion, changed: result.changed }, { from: 0, to: 5, changed: true });
+    assert.deepStrictEqual({ from: result.fromVersion, to: result.toVersion, changed: result.changed }, { from: 0, to: CURRENT_SCHEMA_VERSION, changed: true });
     const db = await openDatabase(file);
     try {
         await assertCurrentSchema(db);
@@ -135,7 +135,7 @@ async function testV2Migration(root) {
     const file = path.join(root, "existing-v2.db");
     await createLegacyFixture(file, 2);
     const result = await migrateDatabase(file, { dryRun: false });
-    assert.deepStrictEqual({ from: result.fromVersion, to: result.toVersion, changed: result.changed }, { from: 2, to: 5, changed: true });
+    assert.deepStrictEqual({ from: result.fromVersion, to: result.toVersion, changed: result.changed }, { from: 2, to: CURRENT_SCHEMA_VERSION, changed: true });
     const db = await openDatabase(file);
     try {
         await assertCurrentSchema(db);
@@ -225,7 +225,7 @@ async function testV2Migration(root) {
 
     const repeated = await migrateDatabase(file, { dryRun: false });
     assert.strictEqual(repeated.changed, false);
-    assert.strictEqual(repeated.fromVersion, 5);
+    assert.strictEqual(repeated.fromVersion, CURRENT_SCHEMA_VERSION);
 }
 
 async function testLegacyColumnCopy(root) {
@@ -303,13 +303,13 @@ async function createAttachmentFixture(file, { version = 3, includeTxt = false }
     }
 }
 
-async function testV3ToV5Migration(root) {
+async function testV3ToCurrentMigration(root) {
     const file = path.join(root, "existing-v3.db");
     await createAttachmentFixture(file);
     const result = await migrateDatabase(file, { dryRun: false });
     assert.deepStrictEqual(
         { from: result.fromVersion, to: result.toVersion, changed: result.changed },
-        { from: 3, to: 5, changed: true }
+        { from: 3, to: CURRENT_SCHEMA_VERSION, changed: true }
     );
     const db = await openDatabase(file);
     try {
@@ -365,10 +365,10 @@ async function testV3ToV5Migration(root) {
     }
     const repeated = await migrateDatabase(file, { dryRun: false });
     assert.strictEqual(repeated.changed, false);
-    assert.strictEqual(repeated.fromVersion, 5);
+    assert.strictEqual(repeated.fromVersion, CURRENT_SCHEMA_VERSION);
 }
 
-async function testV4ToV5Migration(root) {
+async function testV4ToCurrentMigration(root) {
     const file = path.join(root, "existing-v4.db");
     await createAttachmentFixture(file, { version: 4, includeTxt: true });
     const beforeDb = await openDatabase(file);
@@ -379,7 +379,7 @@ async function testV4ToV5Migration(root) {
     const result = await migrateDatabase(file, { dryRun: false });
     assert.deepStrictEqual(
         { from: result.fromVersion, to: result.toVersion, changed: result.changed },
-        { from: 4, to: 5, changed: true }
+        { from: 4, to: CURRENT_SCHEMA_VERSION, changed: true }
     );
     const db = await openDatabase(file);
     try {
@@ -415,21 +415,21 @@ async function testV4ToV5Migration(root) {
     }
     const repeated = await migrateDatabase(file, { dryRun: false });
     assert.strictEqual(repeated.changed, false);
-    assert.strictEqual(repeated.fromVersion, 5);
+    assert.strictEqual(repeated.fromVersion, CURRENT_SCHEMA_VERSION);
 }
 
 (async () => {
-    assert.strictEqual(CURRENT_SCHEMA_VERSION, 5);
+    assert.strictEqual(CURRENT_SCHEMA_VERSION, 6);
     const root = fs.mkdtempSync(path.join(os.tmpdir(), "matmix-file-request-migration-"));
     try {
         await testEmptyDatabase(root);
         await testV2Migration(root);
-        await testV3ToV5Migration(root);
-        await testV4ToV5Migration(root);
+        await testV3ToCurrentMigration(root);
+        await testV4ToCurrentMigration(root);
         await testLegacyColumnCopy(root);
         console.log(JSON.stringify({
             success: true,
-            schema: "3/4->5",
+            schema: "3/4->6",
             emptyDatabase: "ok",
             existingOrdersPreserved: "ok",
             explicitColumnOrderIndependent: "ok",

@@ -9,6 +9,7 @@ const seo = require("./services/seo");
 const legal = require("./services/legal");
 const authRoutes = require("./routes/auth");
 const ordersRouter = require("./routes/orders");
+const orderNotificationsRouter = require("./routes/orderNotifications");
 const clientsRouter = require("./routes/clients");
 const usersRoutes = require("./routes/users");
 const productsRoutes = require("./routes/products");
@@ -152,6 +153,7 @@ app.use("/uploads/products", express.static(productUploadsDir, {
 app.use("/api/public/products", productsRoutes.publicRouter);
 app.use("/api/auth", authRoutes);
 app.use("/api/orders", ordersRouter);
+app.use("/api/order-notifications", orderNotificationsRouter);
 app.use("/api/clients", clientsRouter);
 app.use("/api/users", usersRoutes);
 app.use("/api/products", productsRoutes);

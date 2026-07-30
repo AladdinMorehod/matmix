@@ -7,6 +7,7 @@ const {
     ensureCatalogStructureSchema,
     syncCatalogStructureFromProducts
 } = require("./services/catalogStructure");
+const { ensureOrderNotificationSchema } = require("./services/orderNotifications");
 
 const defaultDatabasePath = path.join(__dirname, "database", "matmix.db");
 const databasePath = process.env.MATMIX_DB_PATH || defaultDatabasePath;
@@ -194,6 +195,7 @@ async function initDatabase() {
     await ensureColumn("users", "is_active", "INTEGER DEFAULT 1");
     await ensureColumn("users", "updated_at", "TEXT");
     await ensureColumn("users", "deleted_at", "TEXT");
+    await ensureOrderNotificationSchema({ run });
 
     await initProductsTable();
     await initCatalogImportLogsTable();

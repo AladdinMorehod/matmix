@@ -11,7 +11,7 @@ const { createBackup, verifyBackup, verifyDatabase, sha256 } = require("../servi
 const { restore } = require("./restore-production-data");
 
 function dbRun(file, sql, params = []) { return new Promise((resolve, reject) => { const db = new sqlite3.Database(file); db.run(sql, params, function done(error) { const result = { lastID: this?.lastID, changes: this?.changes }; db.close(() => error ? reject(error) : resolve(result)); }); }); }
-function dbGet(file, sql) { return new Promise((resolve, reject) => { const db = new sqlite3.Database(file, sqlite3.OPEN_READONLY); db.get(sql, (error, row) => db.close(() => error ? reject(error) : resolve(row))); }); }
+function dbGet(file, sql, params = []) { return new Promise((resolve, reject) => { const db = new sqlite3.Database(file, sqlite3.OPEN_READONLY); db.get(sql, params, (error, row) => db.close(() => error ? reject(error) : resolve(row))); }); }
 async function expectFailure(work, pattern) { let error; try { await work(); } catch (caught) { error = caught; } assert(error && pattern.test(error.message), `Expected failure ${pattern}, got ${error?.message}`); }
 async function copyDir(source, target) { await fs.promises.mkdir(target, { recursive: true }); for (const entry of await fs.promises.readdir(source, { withFileTypes: true })) { const src = path.join(source, entry.name); const dst = path.join(target, entry.name); if (entry.isDirectory()) await copyDir(src, dst); else if (entry.isFile()) await fs.promises.copyFile(src, dst); } }
 async function waitForServer(url) { for (let attempt = 0; attempt < 120; attempt += 1) { try { if ((await fetch(url)).ok) return; } catch {} await new Promise(resolve => setTimeout(resolve, 100)); } throw new Error("Restored CRM test server did not start."); }
@@ -51,8 +51,9 @@ async function main() {
         "deterministic backup upload fixture"
     );
     const password = "BackupRestore!234";
-    await dbRun(paths.dbPath, "INSERT INTO users(login,password_hash,role,name,is_active,created_at,updated_at) VALUES(?,?,?,?,1,?,?)", ["backup_admin", await bcrypt.hash(password, 10), "admin", "Backup Admin", new Date().toISOString(), new Date().toISOString()]);
+    const backupUser = await dbRun(paths.dbPath, "INSERT INTO users(login,password_hash,role,name,is_active,created_at,updated_at) VALUES(?,?,?,?,1,?,?)", ["backup_admin", await bcrypt.hash(password, 10), "admin", "Backup Admin", new Date().toISOString(), new Date().toISOString()]);
     const order = await dbRun(paths.dbPath, "INSERT INTO orders(customer_name,phone,items_json,created_at,updated_at,request_type) VALUES(?,?,?,?,?,'file_request')", ["Backup fixture", "+70000000000", "[]", new Date().toISOString(), new Date().toISOString()]);
+    await dbRun(paths.dbPath, "INSERT INTO order_notification_reads(user_id,order_id,read_at) VALUES(?,?,?)", [backupUser.lastID, order.lastID, new Date().toISOString()]);
     const attachmentBody = Buffer.from("deterministic private attachment fixture");
     const storageKey = `${crypto.randomBytes(32).toString("hex")}.txt`;
     const attachmentSha = crypto.createHash("sha256").update(attachmentBody).digest("hex");
@@ -72,11 +73,13 @@ async function main() {
     const rehearsal = spawnSync(process.execPath, [path.join(__dirname, "rehearse-offsite-restore.js"), "--local-source", backup.backupPath], { cwd: path.resolve(__dirname, "..", ".."), encoding: "utf8" });
     assert.strictEqual(rehearsal.status, 0, String(rehearsal.stderr || rehearsal.stdout));
     await dbRun(paths.dbPath, "DELETE FROM products WHERE id=(SELECT MAX(id) FROM products)"); await fs.promises.writeFile(path.join(paths.uploadsPath, "unrelated-test.txt"), "changed");
+    await dbRun(paths.dbPath, "DELETE FROM order_notification_reads");
     await dbRun(paths.dbPath, "DELETE FROM order_attachments");
     await fs.promises.rm(path.join(paths.attachmentsPath, storageKey));
     for (const fixture of additionalAttachments) await fs.promises.rm(path.join(paths.attachmentsPath, fixture.key));
     const restored = await restore(backup.backupPath, { paths, apply: true, confirm: "RESTORE_MATMIX_DATA" }); assert(restored.success);
     assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM products")).count, baseline.products); assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM orders")).count, baseline.orders); assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM clients")).count, baseline.clients); assert(!fs.existsSync(path.join(paths.uploadsPath, "unrelated-test.txt"))); await verifyDatabase(paths.dbPath);
+    assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM order_notification_reads WHERE user_id=? AND order_id=?", [backupUser.lastID, order.lastID])).count, 1);
     assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM order_attachments")).count, 3); assert.strictEqual(await sha256(path.join(paths.attachmentsPath, storageKey)), attachmentSha);
 
     const corruptDb = path.join(root, "corrupt-db"); await copyDir(backup.backupPath, corruptDb); await fs.promises.appendFile(path.join(corruptDb, "database", "matmix.db"), "x"); await expectFailure(() => verifyBackup(corruptDb), /checksum/i);
