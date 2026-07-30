@@ -273,6 +273,7 @@ async function main() {
             new Set(managerOrders.payload.orders.map(order => order.id)),
             new Set([unassignedOrder, managerOneOrder, managerOneHighOrder])
         );
+        assert(managerOrders.payload.orders.every(order => order.isNotificationRead === false));
 
         const untouchedReads = await openDatabase(databasePath);
         assert.strictEqual(Number((await untouchedReads.get("SELECT COUNT(*) AS count FROM order_notification_reads")).count), 0);
@@ -282,6 +283,7 @@ async function main() {
             cookie: managerOneCookie
         });
         assert.strictEqual(orderDetails.response.status, 200);
+        assert.strictEqual(orderDetails.payload.order.isNotificationRead, false);
         await assertSummary(baseUrl, managerOneCookie, 3);
 
         const firstRead = await requestJson(baseUrl, `/api/orders/${unassignedOrder}/read`, {
@@ -324,6 +326,29 @@ async function main() {
         assert.strictEqual(sessionIdentityRead.response.status, 200);
         await assertSummary(baseUrl, managerOneCookie, 2, `?userId=${adminTwo.id}`);
         await assertSummary(baseUrl, adminTwoCookie, 5);
+        const managerOrdersAfterRead = await requestJson(baseUrl, "/api/orders", {
+            cookie: managerOneCookie
+        });
+        assert.strictEqual(managerOrdersAfterRead.response.status, 200);
+        assert.strictEqual(
+            managerOrdersAfterRead.payload.orders.find(order => order.id === unassignedOrder)?.isNotificationRead,
+            true
+        );
+        assert(
+            managerOrdersAfterRead.payload.orders
+                .filter(order => order.id !== unassignedOrder)
+                .every(order => order.isNotificationRead === false)
+        );
+        const managerOrderDetailsAfterRead = await requestJson(baseUrl, `/api/orders/${unassignedOrder}`, {
+            cookie: managerOneCookie
+        });
+        assert.strictEqual(managerOrderDetailsAfterRead.response.status, 200);
+        assert.strictEqual(managerOrderDetailsAfterRead.payload.order.isNotificationRead, true);
+        const adminTwoOrderDetails = await requestJson(baseUrl, `/api/orders/${unassignedOrder}`, {
+            cookie: adminTwoCookie
+        });
+        assert.strictEqual(adminTwoOrderDetails.response.status, 200);
+        assert.strictEqual(adminTwoOrderDetails.payload.order.isNotificationRead, false);
 
         const readAll = await requestJson(baseUrl, "/api/order-notifications/read-all", {
             method: "POST",
@@ -334,6 +359,11 @@ async function main() {
         assert.strictEqual(readAll.payload.unreadCount, 0);
         await assertSummary(baseUrl, managerOneCookie, 0);
         await assertSummary(baseUrl, managerTwoCookie, 3);
+        const managerOrdersAfterReadAll = await requestJson(baseUrl, "/api/orders", {
+            cookie: managerOneCookie
+        });
+        assert.strictEqual(managerOrdersAfterReadAll.response.status, 200);
+        assert(managerOrdersAfterReadAll.payload.orders.every(order => order.isNotificationRead === true));
 
         const hiddenStatusChange = await requestJson(
             baseUrl,
