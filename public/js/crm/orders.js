@@ -515,16 +515,18 @@ function renderDeletedOrder(order) {
 function renderActiveOrder(order) {
     const orderId = String(order.id);
     const isExpanded = expandedOrderIds.has(orderId);
+    const isNotificationUnread = order.isNotificationRead === false;
     const panelId = `order-details-${orderId}`;
     const attachmentCount = Number(order.attachmentCount) || 0;
     const customerName = String(order.customerName || "").trim() || "Не указан";
     const customerPhone = String(order.phone || "").trim() || "Не указан";
 
     return `
-        <article class="order-card ${isExpanded ? "expanded" : "collapsed"}" data-id="${order.id}">
+        <article class="order-card ${isExpanded ? "expanded" : "collapsed"}${isNotificationUnread ? " notification-unread" : ""}" data-id="${order.id}">
+            ${isNotificationUnread ? '<span class="order-unread-indicator" aria-hidden="true"></span>' : ""}
             <header class="order-card-header" data-order-toggle="${order.id}" role="button" tabindex="0"
                 aria-expanded="${isExpanded}" aria-controls="${escapeHtml(panelId)}"
-                aria-label="${isExpanded ? "Свернуть" : "Раскрыть"} ${escapeHtml(getOrderTitle(order))}">
+                aria-label="${isExpanded ? "Свернуть" : "Раскрыть"} ${escapeHtml(getOrderTitle(order))}${isNotificationUnread ? ", непрочитанный заказ" : ""}">
                 <div class="order-header-main">
                     <div class="order-title">
                         <strong>${escapeHtml(getOrderTitle(order))}</strong>
@@ -625,6 +627,27 @@ function renderOrders() {
         });
 }
 
+function setOrderNotificationRead(orderId) {
+    const normalizedOrderId = String(orderId || "");
+    let changed = false;
+    orders = orders.map(order => {
+        if (String(order.id) !== normalizedOrderId || order.isNotificationRead === true) return order;
+        changed = true;
+        return { ...order, isNotificationRead: true };
+    });
+    if (changed) renderOrders();
+}
+
+function setAllOrderNotificationsRead() {
+    let changed = false;
+    orders = orders.map(order => {
+        if (order.deletedAt || order.isNotificationRead === true) return order;
+        changed = true;
+        return { ...order, isNotificationRead: true };
+    });
+    if (changed) renderOrders();
+}
+
 function appendOrdersToList(nextOrders = []) {
     updateStats();
     renderStatusTabs();
@@ -712,7 +735,12 @@ ordersList.addEventListener("click", event => {
     const orderHeader = event.target.closest(".order-card-header[data-order-toggle]");
     if (orderHeader) {
         const orderId = String(orderHeader.dataset.orderToggle);
-        toggleOrderExpanded(orderId);
+        const isExpanded = toggleOrderExpanded(orderId);
+        if (isExpanded) {
+            window.CrmOrderNotifications?.onOrderOpened(orderId);
+        } else {
+            window.CrmOrderNotifications?.onOrderClosed(orderId);
+        }
         renderOrders();
         window.requestAnimationFrame(() => {
             ordersList.querySelector(`.order-card-header[data-order-toggle="${CSS.escape(orderId)}"]`)?.focus();
@@ -754,3 +782,8 @@ ordersList.addEventListener("keydown", event => {
     event.preventDefault();
     orderHeader.click();
 });
+
+window.CrmOrders = {
+    setNotificationRead: setOrderNotificationRead,
+    setAllNotificationsRead: setAllOrderNotificationsRead
+};

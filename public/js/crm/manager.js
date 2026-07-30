@@ -25,11 +25,17 @@ function renderCrmNavigation() {
     if (!crmNav) return;
 
     crmNav.innerHTML = crmNavigation.filter(item => !item.adminOnly || currentUser?.role === "admin").map(item => item.enabled
-        ? `<button class="${item.id === activeSection ? "active" : ""}" data-section="${escapeHtml(item.id)}" type="button">${escapeHtml(item.label)}</button>`
+        ? `<button class="${item.id === activeSection ? "active" : ""}" data-section="${escapeHtml(item.id)}" type="button">
+            ${escapeHtml(item.label)}
+            ${item.id === "orders"
+                ? '<output class="order-notification-badge" data-order-notification-badge aria-hidden="true" hidden>0</output>'
+                : ""}
+        </button>`
         : `<span>${escapeHtml(item.label)} <small>скоро</small></span>`
     ).join("");
 
     crmNavButtons = document.querySelectorAll(".crm-nav button[data-section]");
+    window.CrmOrderNotifications?.render();
 }
 
 function loadCrmSectionContent(section, options = {}) {
@@ -89,8 +95,9 @@ function navigateToCrmSection(section, options = {}) {
     setActiveSection(section);
     syncCrmSectionUrl(activeSection, options.historyMode);
     const activeButton = Array.from(crmNavButtons).find(button => button.dataset.section === activeSection);
-    if (crmMobileSection && activeButton) {
-        crmMobileSection.textContent = activeButton.textContent.trim();
+    const activeNavigationItem = crmNavigation.find(item => item.id === activeSection);
+    if (crmMobileSection && activeButton && activeNavigationItem) {
+        crmMobileSection.textContent = activeNavigationItem.label;
     }
     if (options.load !== false) {
         loadCrmSectionContent(activeSection, options);
@@ -169,6 +176,7 @@ clientsList?.addEventListener("click", event => {
 });
 
 logoutBtn.addEventListener("click", async () => {
+    window.CrmOrderNotifications?.stop({ broadcastLogout: true });
     try {
         await CrmApi.post("/api/auth/logout");
     } finally {
@@ -587,5 +595,6 @@ checkAccess().then(isAllowed => {
     if (isAllowed) {
         renderCrmNavigation();
         navigateToCrmSection(getCrmSectionFromUrl(), { historyMode: "replace" });
+        window.CrmOrderNotifications?.start();
     }
 });

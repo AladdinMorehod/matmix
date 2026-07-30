@@ -396,6 +396,7 @@ function normalizeOrder(row) {
         deletedByName: row.deleted_by_name || "",
         createdAt: row.created_at,
         updatedAt: row.updated_at,
+        isNotificationRead: Boolean(row.notification_read_at),
         consent: row.consent_given === 1 ? { given: true, at: row.consent_at, privacyVersion: row.privacy_policy_version, termsVersion: row.terms_version, privacyUrl: row.privacy_policy_url, termsUrl: row.terms_url } : null
     };
 }
@@ -1097,6 +1098,7 @@ router.get("/", requireRole(["admin", "manager"]), async (req, res) => {
                 clients.orders_count AS client_orders_count,
                 clients.total_spent AS client_total_spent,
                 clients.last_order_at AS client_last_order_at,
+                notification_read.read_at AS notification_read_at,
                 (
                     SELECT COUNT(*)
                     FROM order_attachments
@@ -1105,10 +1107,13 @@ router.get("/", requireRole(["admin", "manager"]), async (req, res) => {
             FROM orders
             LEFT JOIN users ON users.id = orders.manager_id
             LEFT JOIN clients ON clients.id = orders.client_id
+            LEFT JOIN order_notification_reads AS notification_read
+                ON notification_read.user_id = ?
+                AND notification_read.order_id = orders.id
             WHERE ${where}
             ORDER BY ${orderBy}
             LIMIT ? OFFSET ?
-        `, [...params, paginationParams.limit, paginationParams.offset]),
+        `, [req.session.user.id, ...params, paginationParams.limit, paginationParams.offset]),
             all(`
                 SELECT status, COUNT(*) AS count
                 FROM orders
@@ -1505,6 +1510,7 @@ router.get("/:id", requireRole(["admin", "manager"]), async (req, res) => {
                 clients.orders_count AS client_orders_count,
                 clients.total_spent AS client_total_spent,
                 clients.last_order_at AS client_last_order_at,
+                notification_read.read_at AS notification_read_at,
                 (
                     SELECT COUNT(*)
                     FROM order_attachments
@@ -1513,8 +1519,11 @@ router.get("/:id", requireRole(["admin", "manager"]), async (req, res) => {
             FROM orders
             LEFT JOIN users ON users.id = orders.manager_id
             LEFT JOIN clients ON clients.id = orders.client_id
+            LEFT JOIN order_notification_reads AS notification_read
+                ON notification_read.user_id = ?
+                AND notification_read.order_id = orders.id
             WHERE orders.id = ? AND orders.deleted_at IS NULL
-        `, [req.params.id]);
+        `, [req.session.user.id, req.params.id]);
 
         if (!row) {
             res.status(404).json({ success: false, message: "Заявка не найдена." });
