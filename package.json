@@ -17,6 +17,8 @@
     "database:health": "node backend/scripts/check-database-health.js",
     "test:database-integrity": "node backend/scripts/test-database-integrity.js",
     "test:order-email-outbox": "node backend/scripts/test-order-email-outbox.js",
+    "test:order-email-worker": "node backend/scripts/test-order-email-worker.js",
+    "email:orders:process": "node backend/scripts/process-order-email-outbox.js",
     "test:file-request": "node backend/scripts/test-file-request-api.js",
     "test:crm-attachments": "node backend/scripts/test-crm-order-attachments.js",
     "attachments:audit": "node backend/scripts/audit-order-attachments.js",
@@ -46,6 +48,7 @@
     "exceljs": "^4.4.0",
     "express": "^4.18.3",
     "express-session": "^1.18.0",
+    "nodemailer": "^9.0.5",
     "sharp": "^0.35.3",
     "sqlite3": "6.0.1",
     "yauzl": "^3.4.0"
