@@ -122,6 +122,7 @@ async function operationalReadiness(env = process.env, options = {}) {
     }
     checks.diskSpace = Object.values(disk).every(value => value !== null && value >= minDisk);
     let schemaVersion = null; let foreignKeys = null; let attachmentTable = false; let attachmentIndex = false;
+    let emailOutboxTable = false; let emailOutboxIndex = false;
     if (checks.databaseReadable) {
         const sqlite3 = require("sqlite3").verbose(); const db = new sqlite3.Database(paths.dbPath, sqlite3.OPEN_READONLY);
         try {
@@ -130,11 +131,14 @@ async function operationalReadiness(env = process.env, options = {}) {
             foreignKeys = await new Promise((resolve, reject) => db.get("PRAGMA foreign_keys", (e, row) => e ? reject(e) : resolve(Number(row.foreign_keys))));
             attachmentTable = Boolean(await new Promise((resolve, reject) => db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='order_attachments'", (e, row) => e ? reject(e) : resolve(row))));
             attachmentIndex = Boolean(await new Promise((resolve, reject) => db.get("SELECT name FROM sqlite_master WHERE type='index' AND tbl_name='order_attachments' AND name='idx_order_attachments_order_id'", (e, row) => e ? reject(e) : resolve(row))));
+            emailOutboxTable = Boolean(await new Promise((resolve, reject) => db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='order_email_outbox'", (e, row) => e ? reject(e) : resolve(row))));
+            emailOutboxIndex = Boolean(await new Promise((resolve, reject) => db.get("SELECT name FROM sqlite_master WHERE type='index' AND tbl_name='order_email_outbox' AND name='idx_order_email_outbox_status_next_attempt'", (e, row) => e ? reject(e) : resolve(row))));
         }
         finally { await new Promise(resolve => db.close(resolve)); }
     }
     checks.schemaVersion = schemaVersion === CURRENT_SCHEMA_VERSION; checks.databaseConnection = schemaVersion !== null; checks.foreignKeysEnabled = foreignKeys === 1;
     checks.attachmentTable = attachmentTable; checks.attachmentIndex = attachmentIndex;
+    checks.emailOutboxTable = emailOutboxTable; checks.emailOutboxIndex = emailOutboxIndex;
     const backup = await latestBackup(paths.backupRoot); let backupStatus = { exists: false, verified: false, ageHours: null, path: null, size: null };
     if (backup) {
         const ageHours = (Date.now() - backup.createdAt.getTime()) / 3600000; let verified = false;

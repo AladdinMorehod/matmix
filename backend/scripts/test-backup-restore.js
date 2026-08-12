@@ -53,6 +53,9 @@ async function main() {
     const password = "BackupRestore!234";
     const backupUser = await dbRun(paths.dbPath, "INSERT INTO users(login,password_hash,role,name,is_active,created_at,updated_at) VALUES(?,?,?,?,1,?,?)", ["backup_admin", await bcrypt.hash(password, 10), "admin", "Backup Admin", new Date().toISOString(), new Date().toISOString()]);
     const order = await dbRun(paths.dbPath, "INSERT INTO orders(customer_name,phone,items_json,created_at,updated_at,request_type) VALUES(?,?,?,?,?,'file_request')", ["Backup fixture", "+70000000000", "[]", new Date().toISOString(), new Date().toISOString()]);
+    const outboxCreatedAt = new Date().toISOString();
+    await dbRun(paths.dbPath, `INSERT INTO order_email_outbox(event_key,order_id,event_type,status,attempt_count,next_attempt_at,created_at,updated_at)
+        VALUES(?,?,'new_order','pending',0,?,?,?)`, [`new_order:${order.lastID}`, order.lastID, outboxCreatedAt, outboxCreatedAt, outboxCreatedAt]);
     await dbRun(paths.dbPath, "INSERT INTO order_notification_reads(user_id,order_id,read_at) VALUES(?,?,?)", [backupUser.lastID, order.lastID, new Date().toISOString()]);
     const attachmentBody = Buffer.from("deterministic private attachment fixture");
     const storageKey = `${crypto.randomBytes(32).toString("hex")}.txt`;
@@ -74,12 +77,14 @@ async function main() {
     assert.strictEqual(rehearsal.status, 0, String(rehearsal.stderr || rehearsal.stdout));
     await dbRun(paths.dbPath, "DELETE FROM products WHERE id=(SELECT MAX(id) FROM products)"); await fs.promises.writeFile(path.join(paths.uploadsPath, "unrelated-test.txt"), "changed");
     await dbRun(paths.dbPath, "DELETE FROM order_notification_reads");
+    await dbRun(paths.dbPath, "DELETE FROM order_email_outbox");
     await dbRun(paths.dbPath, "DELETE FROM order_attachments");
     await fs.promises.rm(path.join(paths.attachmentsPath, storageKey));
     for (const fixture of additionalAttachments) await fs.promises.rm(path.join(paths.attachmentsPath, fixture.key));
     const restored = await restore(backup.backupPath, { paths, apply: true, confirm: "RESTORE_MATMIX_DATA" }); assert(restored.success);
     assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM products")).count, baseline.products); assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM orders")).count, baseline.orders); assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM clients")).count, baseline.clients); assert(!fs.existsSync(path.join(paths.uploadsPath, "unrelated-test.txt"))); await verifyDatabase(paths.dbPath);
     assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM order_notification_reads WHERE user_id=? AND order_id=?", [backupUser.lastID, order.lastID])).count, 1);
+    assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM order_email_outbox WHERE event_key=? AND order_id=?", [`new_order:${order.lastID}`, order.lastID])).count, 1);
     assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM order_attachments")).count, 3); assert.strictEqual(await sha256(path.join(paths.attachmentsPath, storageKey)), attachmentSha);
 
     const corruptDb = path.join(root, "corrupt-db"); await copyDir(backup.backupPath, corruptDb); await fs.promises.appendFile(path.join(corruptDb, "database", "matmix.db"), "x"); await expectFailure(() => verifyBackup(corruptDb), /checksum/i);

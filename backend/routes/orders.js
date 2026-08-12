@@ -22,6 +22,7 @@ const {
 const { createFileRequestRateLimiter } = require("../services/fileRequestRateLimit");
 const { activeOrderVisibility, canViewOrder } = require("../services/orderAccess");
 const { createOrderNotificationService } = require("../services/orderNotifications");
+const { createOrderEmailOutboxRepository } = require("../services/orderEmailOutbox");
 const logger = require("../services/logger");
 
 const router = express.Router();
@@ -690,6 +691,7 @@ async function createOrderRecord({
         message: eventMessage,
         transaction
     });
+    await createOrderEmailOutboxRepository(transaction).enqueueNewOrder(result.id, now);
     return { id: result.id, orderNumber, clientId, ...serverOrder };
 }
 

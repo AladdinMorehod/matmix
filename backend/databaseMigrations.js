@@ -6,8 +6,12 @@ const {
     NOTIFICATION_INDEXES,
     ensureOrderNotificationSchema
 } = require("./services/orderNotifications");
+const {
+    OUTBOX_INDEXES,
+    ensureOrderEmailOutboxSchema
+} = require("./services/orderEmailOutbox");
 
-const CURRENT_SCHEMA_VERSION = 6;
+const CURRENT_SCHEMA_VERSION = 7;
 const CONSENT_COLUMNS = [
     ["consent_given", "INTEGER"], ["consent_at", "TEXT"], ["privacy_policy_version", "TEXT"],
     ["terms_version", "TEXT"], ["privacy_policy_url", "TEXT"], ["terms_url", "TEXT"]
@@ -16,7 +20,8 @@ const REQUIRED_INDEXES = [
     "idx_clients_phone", "idx_orders_status_created_at", "idx_orders_client_created_at",
     "idx_order_events_order_created_at", "idx_products_public_order", "idx_products_catalog_order",
     "idx_products_group_order", "idx_products_image_url", "idx_order_attachments_order_id",
-    ...NOTIFICATION_INDEXES
+    ...NOTIFICATION_INDEXES,
+    ...OUTBOX_INDEXES
 ];
 
 function helpers(db) {
@@ -55,6 +60,10 @@ async function audit(db) {
     result.attachmentsWithoutOrder = attachmentsTable
         ? Number((await db.get("SELECT COUNT(*) count FROM order_attachments a LEFT JOIN orders o ON o.id=a.order_id WHERE o.id IS NULL")).count)
         : 0;
+    const emailOutboxTable = await db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='order_email_outbox'");
+    result.emailOutboxWithoutOrder = emailOutboxTable
+        ? Number((await db.get("SELECT COUNT(*) count FROM order_email_outbox e LEFT JOIN orders o ON o.id=e.order_id WHERE o.id IS NULL")).count)
+        : 0;
     return result;
 }
 
@@ -87,6 +96,14 @@ async function ensureColumn(db, tableName, columnName, definition) {
 }
 
 async function migrateLegacyV0(db) {
+    const emailOutbox = await db.get(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='order_email_outbox'"
+    );
+    if (emailOutbox) {
+        const outboxCount = Number((await db.get("SELECT COUNT(*) AS count FROM order_email_outbox")).count);
+        if (outboxCount) throw new Error("Migration blocked by email outbox rows in an unversioned database.");
+        await db.run("DROP TABLE order_email_outbox");
+    }
     const notificationReads = await db.get(
         "SELECT name FROM sqlite_master WHERE type='table' AND name='order_notification_reads'"
     );
@@ -253,6 +270,10 @@ async function migrateToV6(db) {
     await ensureOrderNotificationSchema(db);
 }
 
+async function migrateToV7(db) {
+    await ensureOrderEmailOutboxSchema(db);
+}
+
 async function migrateDatabase(dbPath, { dryRun = true, injectFailure = false } = {}) {
     const db = await openDatabase(dbPath);
     try {
@@ -260,10 +281,10 @@ async function migrateDatabase(dbPath, { dryRun = true, injectFailure = false } 
         if (fromVersion > CURRENT_SCHEMA_VERSION) throw new Error(`Unsupported newer schema version ${fromVersion}.`);
         const findings = await audit(db);
         if (dryRun || fromVersion === CURRENT_SCHEMA_VERSION) return { dryRun, fromVersion, toVersion: CURRENT_SCHEMA_VERSION, findings, changed: false };
-        if (![0, 1, 2, 3, 4, 5].includes(fromVersion)) throw new Error(`Unsupported schema version ${fromVersion}.`);
+        if (![0, 1, 2, 3, 4, 5, 6].includes(fromVersion)) throw new Error(`Unsupported schema version ${fromVersion}.`);
         if (findings.eventsWithoutOrder || findings.subcategoriesWithoutParent || findings.activeChildWithInactiveParent
             || findings.duplicateOrderNumbers || findings.duplicateProductCodes || findings.emptyProductCodes
-            || findings.invalidRequestTypes || findings.attachmentsWithoutOrder) {
+            || findings.invalidRequestTypes || findings.attachmentsWithoutOrder || findings.emailOutboxWithoutOrder) {
             throw new Error("Migration blocked by critical integrity findings.");
         }
         const backupPath = await createDatabaseBackup(db, path.resolve(dbPath));
@@ -277,6 +298,7 @@ async function migrateDatabase(dbPath, { dryRun = true, injectFailure = false } 
             if (fromVersion <= 3) await migrateToV4(db);
             if (fromVersion <= 4) await migrateToV5(db);
             if (fromVersion <= 5) await migrateToV6(db);
+            if (fromVersion <= 6) await migrateToV7(db);
             if (injectFailure) throw new Error("Injected migration failure");
             const fk = await db.all("PRAGMA foreign_key_check");
             const integrity = await db.get("PRAGMA integrity_check");

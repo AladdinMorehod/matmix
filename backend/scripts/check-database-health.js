@@ -23,6 +23,7 @@ async function main() {
         const tables = new Set((await db.all("SELECT name FROM sqlite_master WHERE type='table'")).map(row => row.name));
         const orderColumns = new Set((await db.all("PRAGMA table_info(orders)")).map(row => row.name));
         const hasAttachments = tables.has("order_attachments");
+        const hasEmailOutbox = tables.has("order_email_outbox");
         const report = {
             healthy: true,
             schemaVersion: version,
@@ -37,18 +38,24 @@ async function main() {
                 ordersRequestType: orderColumns.has("request_type"),
                 ordersEmail: orderColumns.has("email"),
                 orderAttachments: hasAttachments,
-                orderAttachmentsOrderIndex: indexes.has("idx_order_attachments_order_id")
+                orderAttachmentsOrderIndex: indexes.has("idx_order_attachments_order_id"),
+                orderEmailOutbox: hasEmailOutbox,
+                orderEmailOutboxWorkerIndex: indexes.has("idx_order_email_outbox_status_next_attempt")
             },
             counts: {
                 products: await scalar("SELECT COUNT(*) FROM products"), clients: await scalar("SELECT COUNT(*) FROM clients"),
                 orders: await scalar("SELECT COUNT(*) FROM orders"), events: await scalar("SELECT COUNT(*) FROM order_events"),
-                attachments: hasAttachments ? await scalar("SELECT COUNT(*) FROM order_attachments") : null
+                attachments: hasAttachments ? await scalar("SELECT COUNT(*) FROM order_attachments") : null,
+                emailOutbox: hasEmailOutbox ? await scalar("SELECT COUNT(*) FROM order_email_outbox") : null
             },
             orphans: {
                 ordersWithoutClient: await scalar("SELECT COUNT(*) FROM orders o LEFT JOIN clients c ON c.id=o.client_id WHERE o.client_id IS NOT NULL AND c.id IS NULL"),
                 eventsWithoutOrder: await scalar("SELECT COUNT(*) FROM order_events e LEFT JOIN orders o ON o.id=e.order_id WHERE o.id IS NULL"),
                 attachmentsWithoutOrder: hasAttachments
                     ? await scalar("SELECT COUNT(*) FROM order_attachments a LEFT JOIN orders o ON o.id=a.order_id WHERE o.id IS NULL")
+                    : null,
+                emailOutboxWithoutOrder: hasEmailOutbox
+                    ? await scalar("SELECT COUNT(*) FROM order_email_outbox e LEFT JOIN orders o ON o.id=e.order_id WHERE o.id IS NULL")
                     : null
             },
             invalidRequestTypes: orderColumns.has("request_type")

@@ -222,7 +222,7 @@ function assertDeploymentContracts() {
     assert(rollback.includes('"$backup_path" == "$(readlink -f "$BACKUP_ROOT_PATH")/"*'));
     assert(!rollback.toLowerCase().includes("latest backup"));
     assert(envExample.includes("ORDER_ATTACHMENTS_PATH=/var/lib/matmix/order-attachments"));
-    assert(runbook.includes("schema version 4"));
+    assert(runbook.includes(`schema version ${CURRENT_SCHEMA_VERSION}`));
     assert(!runbook.includes("Schema version | not 2"));
 
     if (process.platform !== "win32") {
