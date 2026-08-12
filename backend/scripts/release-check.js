@@ -14,6 +14,7 @@ function run(label, args) { const result = spawnSync(process.execPath, args, { c
         run("seo", ["backend/scripts/test-seo.js"]),
         run("database-migration", ["backend/scripts/test-database-integrity.js"]),
         run("order-email-outbox", ["backend/scripts/test-order-email-outbox.js"]),
+        run("order-email-worker", ["backend/scripts/test-order-email-worker.js"]),
         run("attachment-audit", ["backend/scripts/test-order-attachment-audit.js"]),
         run("backup-restore", ["backend/scripts/test-backup-restore.js"]),
         run("production-readiness", ["backend/scripts/test-production-readiness.js"]),
