@@ -419,7 +419,7 @@ async function testV4ToCurrentMigration(root) {
 }
 
 (async () => {
-    assert.strictEqual(CURRENT_SCHEMA_VERSION, 6);
+    assert.strictEqual(CURRENT_SCHEMA_VERSION, 7);
     const root = fs.mkdtempSync(path.join(os.tmpdir(), "matmix-file-request-migration-"));
     try {
         await testEmptyDatabase(root);
@@ -429,7 +429,7 @@ async function testV4ToCurrentMigration(root) {
         await testLegacyColumnCopy(root);
         console.log(JSON.stringify({
             success: true,
-            schema: "3/4->6",
+            schema: "3/4->7",
             emptyDatabase: "ok",
             existingOrdersPreserved: "ok",
             explicitColumnOrderIndependent: "ok",
