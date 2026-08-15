@@ -209,7 +209,8 @@
                 <select name="paymentMethod" required></select>
             </label>
             <div class="checkout-consent">
-                <label for="orderConsent"><input id="orderConsent" type="checkbox" name="consent" required aria-describedby="orderConsentError"> <span>Я ознакомился(ась) с <a href="/privacy" target="_blank" rel="noopener">политикой конфиденциальности</a>, соглашаюсь на обработку данных для оформления и исполнения заказа и ознакомился(ась) с <a href="/terms" target="_blank" rel="noopener">условиями продажи</a>.</span></label>
+                <label for="orderConsent"><input id="orderConsent" type="checkbox" name="consent" required aria-describedby="orderConsentError"> <span>Я согласен(на) на <a href="/privacy" target="_blank" rel="noopener">обработку персональных данных</a></span></label>
+                <a href="/terms" target="_blank" rel="noopener">Условия продажи</a>
                 <p id="orderConsentError" class="checkout-consent-error" role="alert"></p>
             </div>
             <p id="checkoutMessage" class="checkout-message" aria-live="polite"></p>
@@ -261,7 +262,8 @@
                     <label for="uploadIncludeCart"><input id="uploadIncludeCart" type="checkbox" name="uploadIncludeCart" checked> <span>Добавить корзину к заявке</span></label>
                 </div>
                 <div class="checkout-consent">
-                    <label for="uploadRequestConsent"><input id="uploadRequestConsent" type="checkbox" name="uploadRequestConsent" required aria-describedby="uploadConsentError"> <span>Я ознакомился(ась) с <a href="/privacy" target="_blank" rel="noopener">политикой конфиденциальности</a>, соглашаюсь на обработку данных и ознакомился(ась) с <a href="/terms" target="_blank" rel="noopener">условиями продажи</a>.</span></label>
+                    <label for="uploadRequestConsent"><input id="uploadRequestConsent" type="checkbox" name="uploadRequestConsent" required aria-describedby="uploadConsentError"> <span>Я согласен(на) на <a href="/privacy" target="_blank" rel="noopener">обработку персональных данных</a></span></label>
+                    <a href="/terms" target="_blank" rel="noopener">Условия продажи</a>
                     <p id="uploadConsentError" class="checkout-consent-error" role="alert"></p>
                 </div>
                 <div id="uploadRequestStatus" class="upload-request-status" aria-live="polite" aria-atomic="true">
