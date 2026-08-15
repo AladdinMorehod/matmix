@@ -38170,6 +38170,15 @@ function getCartOrderItems() {
         .filter(Boolean);
 }
 
+function getCartOrderItemsSignature(items = getCartOrderItems()) {
+    return JSON.stringify(items
+        .map(item => ({
+            productId: Number(item.productId),
+            qty: Number(item.qty)
+        }))
+        .sort((left, right) => left.productId - right.productId));
+}
+
 function showCheckoutError(message) {
     if (!checkoutMessage) return;
 
@@ -39499,6 +39508,17 @@ function renderCart() {
     updateCartSummary();
 }
 
+function clearCart() {
+    cart = [];
+    saveCart();
+    renderCart();
+    renderProducts();
+    renderPopularProducts();
+    if (searchInput?.value.trim()) {
+        renderSearchDropdown();
+    }
+}
+
 function handleQtyClick(event) {
     const button = event.target.closest("button");
     if (!button) return;
@@ -39671,15 +39691,7 @@ cancelClearCartBtn?.addEventListener("click", () => {
 
 confirmClearCartBtn?.addEventListener("click", () => {
     closeClearCartConfirm({ restoreFocus: false });
-    cart = [];
-    saveCart();
-    updateCartSummary();
-    renderCart();
-    renderProducts();
-    renderPopularProducts();
-    if (searchInput?.value.trim()) {
-        renderSearchDropdown();
-    }
+    clearCart();
     closeCartBtn?.focus();
 });
 
@@ -39778,6 +39790,8 @@ uploadRequestForm?.addEventListener("submit", async event => {
         && uploadIncludeCartInput.checked
         && cart.length
     );
+    const submittedCartItems = includeCart ? getCartOrderItems() : [];
+    const submittedCartSignature = includeCart ? getCartOrderItemsSignature(submittedCartItems) : "";
     const formData = new FormData();
     formData.append("customerName", uploadNameInput?.value.trim() || "");
     formData.append("phone", uploadPhoneInput?.value.trim() || "");
@@ -39785,7 +39799,7 @@ uploadRequestForm?.addEventListener("submit", async event => {
     formData.append("comment", uploadCommentInput?.value.trim() || "");
     formData.append("paymentMethod", uploadPaymentMethodInput?.value || "");
     formData.append("includeCart", String(includeCart));
-    if (includeCart) formData.append("items", JSON.stringify(getCartOrderItems()));
+    if (includeCart) formData.append("items", JSON.stringify(submittedCartItems));
     formData.append("consent", "true");
     uploadRequestFiles.forEach(file => formData.append("files", file, file.name));
 
@@ -39805,6 +39819,7 @@ uploadRequestForm?.addEventListener("submit", async event => {
         if (!response.ok || !result.success || !result.orderNumber) {
             throw new Error(result.message || "Не удалось отправить заявку. Попробуйте ещё раз.");
         }
+        if (includeCart && getCartOrderItemsSignature() === submittedCartSignature) clearCart();
         resetUploadRequestForm({ preserveMessage: true });
         setUploadRequestMessage(
             `Заявка №${result.orderNumber} принята. Менеджер свяжется с вами после обработки заявки.`,
@@ -39911,9 +39926,7 @@ checkoutForm?.addEventListener("submit", async event => {
 
         showCheckoutSuccess();
 
-        cart = [];
-        saveCart();
-        updateCartSummary();
+        clearCart();
 
         window.setTimeout(() => {
             setCartModalOpen(false);

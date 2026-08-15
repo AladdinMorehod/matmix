@@ -1232,6 +1232,141 @@ test("upload request file rules and validation submit to the secure endpoint", a
     expect(paymentLabels).toEqual(["Наличные", "Перевод на карту", "Терминал", "Безнал — с НДС", "Безнал — без НДС"]);
 });
 
+test("upload request clears the cart only after a successful included submission", async ({ page }) => {
+    const requestBodies = [];
+    let responseStatus = 201;
+    let responseBody = null;
+    await page.route("**/api/orders/file-request", async route => {
+        requestBodies.push(route.request().postDataBuffer()?.toString("utf8") || "");
+        await route.fulfill({
+            status: responseStatus,
+            contentType: "application/json",
+            body: JSON.stringify(responseBody || {
+                success: true,
+                orderNumber: `MM-2026-${String(requestBodies.length).padStart(6, "0")}`
+            })
+        });
+    });
+
+    const readStoredCart = () => page.evaluate(() => JSON.parse(localStorage.getItem("matmix_cart") || "[]"));
+    const submitRequest = async includeCart => {
+        await openUploadRequestFromHeader(page);
+        await dropUploadFiles(page, [{
+            name: "request.pdf",
+            type: "application/pdf",
+            bytes: [...Buffer.from("%PDF-1.4\n%%EOF", "ascii")]
+        }]);
+        await page.locator("#uploadCustomerName").fill("Проверка корзины");
+        await page.locator("#uploadCustomerPhone").fill("9991234567");
+        await page.locator("#uploadRequestComment").fill("Проверка lifecycle корзины");
+        await page.locator("#uploadRequestConsent").check();
+        await page.locator("#uploadIncludeCart").setChecked(includeCart);
+        await page.locator("#uploadRequestForm button[type='submit']").click();
+    };
+
+    await page.goto("/");
+    await seedCartItems(page, 2);
+    await submitRequest(true);
+    await expect(page.locator("#uploadRequestMessage")).toHaveClass(/success/);
+    expect(requestBodies[0]).toMatch(/name="includeCart"\r?\n\r?\ntrue/);
+    expect(requestBodies[0]).toMatch(/name="items"[\s\S]*"productId":98000/);
+    expect(await readStoredCart()).toEqual([]);
+    await expect(page.locator("#cartCount")).toHaveText("0");
+    await expect(page.locator("#cartCount")).toHaveClass(/hidden/);
+    await expect(page.locator("#cartItems")).toContainText("Корзина пока пустая");
+    await expect(page.locator("#cartTotal")).toContainText("Итого: 0,00 ₽");
+    await expect(page.locator("#cartWeight")).toHaveText("Вес: 0,000 кг");
+    await page.reload();
+    expect(await readStoredCart()).toEqual([]);
+    await expect(page.locator("#cartCount")).toHaveClass(/hidden/);
+
+    await seedCartItems(page, 2);
+    const preservedCart = await readStoredCart();
+    await submitRequest(false);
+    await expect(page.locator("#uploadRequestMessage")).toHaveClass(/success/);
+    expect(requestBodies[1]).toMatch(/name="includeCart"\r?\n\r?\nfalse/);
+    expect(requestBodies[1]).not.toMatch(/name="items"/);
+    expect(await readStoredCart()).toEqual(preservedCart);
+    await expect(page.locator("#cartCount")).toHaveText("2");
+    await page.reload();
+    expect(await readStoredCart()).toEqual(preservedCart);
+    await expect(page.locator("#cartCount")).toHaveText("2");
+
+    const failedResponses = [
+        { status: 500, body: { success: false, message: "HTTP 500" } },
+        { status: 200, body: { success: false, message: "Заявка отклонена" } },
+        { status: 200, body: { success: true } }
+    ];
+    for (const failure of failedResponses) {
+        await seedCartItems(page, 2);
+        const cartBeforeFailure = await readStoredCart();
+        responseStatus = failure.status;
+        responseBody = failure.body;
+        await submitRequest(true);
+        await expect(page.locator("#uploadRequestMessage")).toHaveClass(/error/);
+        expect(requestBodies.at(-1)).toMatch(/name="includeCart"\r?\n\r?\ntrue/);
+        expect(await readStoredCart()).toEqual(cartBeforeFailure);
+        await expect(page.locator("#cartCount")).toHaveText("2");
+        await page.reload();
+        expect(await readStoredCart()).toEqual(cartBeforeFailure);
+        await expect(page.locator("#cartCount")).toHaveText("2");
+    }
+});
+
+test("upload request does not clear a cart changed while its response is pending", async ({ page }) => {
+    let releaseResponse;
+    let markRequestIntercepted;
+    let requestBody = "";
+    const requestIntercepted = new Promise(resolve => {
+        markRequestIntercepted = resolve;
+    });
+
+    await page.route("**/api/orders/file-request", async route => {
+        requestBody = route.request().postDataBuffer()?.toString("utf8") || "";
+        await new Promise(resolve => {
+            releaseResponse = async () => {
+                await route.fulfill({
+                    status: 201,
+                    contentType: "application/json",
+                    body: JSON.stringify({ success: true, orderNumber: "MM-2026-999999" })
+                });
+                resolve();
+            };
+            markRequestIntercepted();
+        });
+    });
+
+    await page.goto("/");
+    await seedCartItems(page, 2);
+    await openUploadRequestFromHeader(page);
+    await dropUploadFiles(page, [{
+        name: "request.pdf",
+        type: "application/pdf",
+        bytes: [...Buffer.from("%PDF-1.4\n%%EOF", "ascii")]
+    }]);
+    await page.locator("#uploadCustomerName").fill("Проверка race condition");
+    await page.locator("#uploadCustomerPhone").fill("9991234567");
+    await page.locator("#uploadRequestComment").fill("Корзина изменяется во время запроса");
+    await page.locator("#uploadRequestConsent").check();
+    await page.locator("#uploadIncludeCart").check();
+    await page.locator("#uploadRequestForm button[type='submit']").click();
+    await requestIntercepted;
+
+    expect(requestBody).toMatch(/name="items"[\s\S]*"productId":98000,"qty":1/);
+    await page.locator("#cancelUploadRequest").click();
+    await page.locator("#cartItems .cart-item .qty.plus").first().click();
+    const changedCart = await page.evaluate(() => JSON.parse(localStorage.getItem("matmix_cart") || "[]"));
+    expect(changedCart[0].quantity).toBe(2);
+
+    await releaseResponse();
+    await expect(page.locator("#uploadRequestMessage")).toHaveClass(/success/);
+    expect(await page.evaluate(() => JSON.parse(localStorage.getItem("matmix_cart") || "[]"))).toEqual(changedCart);
+    await expect(page.locator("#cartCount")).toHaveText("2");
+    await page.reload();
+    expect(await page.evaluate(() => JSON.parse(localStorage.getItem("matmix_cart") || "[]"))).toEqual(changedCart);
+    await expect(page.locator("#cartCount")).toHaveText("2");
+});
+
 test("TXT file request reaches CRM metadata and protected download", async ({ page, request }) => {
     const txtBytes = Buffer.from("Русский TXT\r\nEnglish line\n", "utf8");
     const unicodeTxtName = "ЗАПРОС.txt";
@@ -1506,7 +1641,7 @@ test("file request submission works with cart, without cart and on both public p
         await expect(page.locator("#uploadRequestMessage")).toHaveAttribute("role", "status");
         await expect(page.locator(".upload-file-item")).toHaveCount(0);
         const cartLength = await page.evaluate(() => JSON.parse(localStorage.getItem("matmix_cart") || "[]").length);
-        expect(cartLength).toBe(index === 0 ? 1 : 0);
+        expect(cartLength).toBe(0);
     }
 
     await page.setViewportSize({ width: 320, height: 800 });
