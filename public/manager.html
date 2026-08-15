@@ -32,7 +32,7 @@
             <nav class="crm-nav" id="crmNav">
                 <button class="active" data-section="dashboard" type="button">Главная</button>
                 <button data-section="orders" type="button">Заказы</button>
-                <button data-section="clients" type="button">Клиенты</button>
+                <button data-section="clients" data-admin-clients-only type="button" hidden>Клиенты</button>
                 <span>Каталог <small>скоро</small></span>
                 <span>Статистика <small>скоро</small></span>
                 <span>Настройки <small>скоро</small></span>
@@ -81,7 +81,7 @@
                         <span>Завершены сегодня</span>
                         <strong id="dashboardDoneToday">0</strong>
                     </article>
-                    <article class="dashboard-stat">
+                    <article class="dashboard-stat hidden" data-admin-clients-only hidden>
                         <span>Всего клиентов</span>
                         <strong id="dashboardClientsTotal">0</strong>
                     </article>
@@ -106,7 +106,7 @@
                         <div class="dashboard-actions">
                             <button class="dashboard-open-section" data-section-target="orders" type="button">Открыть заказы</button>
                             <button class="dashboard-open-section" data-section-target="myOrders" type="button">Мои заказы</button>
-                            <button class="dashboard-open-section" data-section-target="clients" type="button">Открыть клиентов</button>
+                            <button class="dashboard-open-section hidden" data-section-target="clients" data-admin-clients-only type="button" hidden>Открыть клиентов</button>
                             <button type="button" disabled>Каталог</button>
                             <button type="button" disabled>Статистика</button>
                             <button type="button" disabled>Настройки</button>

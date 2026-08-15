@@ -272,9 +272,9 @@ function renderOrderClientBlock(order) {
         <div class="client-mini">
             <div>
                 <span>Клиент в базе</span>
-                <strong>${escapeHtml(order.clientOrdersCount || 1)} заказ(ов) · ${formatMoney(order.clientTotalSpent || order.totalPrice)}</strong>
+                <strong>${escapeHtml(order.clientOrdersCount || 1)} заказ(ов) · ${formatMoney(order.clientTotalSpent ?? order.totalPrice)}</strong>
             </div>
-            <button class="open-client" data-client-id="${order.clientId}" type="button">История клиента</button>
+            ${currentUser?.role === "admin" ? `<button class="open-client" data-client-id="${order.clientId}" type="button">История клиента</button>` : ""}
         </div>
     `;
 }
@@ -440,9 +440,9 @@ function renderClientTab(order) {
                 <div class="client-mini">
                     <div>
                         <span>Клиент в базе</span>
-                        <strong>${escapeHtml(order.clientOrdersCount || 1)} заказ(ов) · ${formatMoney(order.clientTotalSpent || order.totalPrice)}</strong>
+                        <strong>${escapeHtml(order.clientOrdersCount || 1)} заказ(ов) · ${formatMoney(order.clientTotalSpent ?? order.totalPrice)}</strong>
                     </div>
-                    <button class="open-client" data-client-id="${order.clientId}" type="button">История клиента</button>
+                    ${currentUser?.role === "admin" ? `<button class="open-client" data-client-id="${order.clientId}" type="button">История клиента</button>` : ""}
                 </div>
             ` : ""}
         </section>

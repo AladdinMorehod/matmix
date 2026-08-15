@@ -178,6 +178,16 @@ const allowedStatuses = [
     "Отменена"
 ];
 
+const completedClientRevenueJoinSql = `
+    LEFT JOIN (
+        SELECT client_id, SUM(COALESCE(total_price, 0)) AS total_spent
+        FROM orders
+        WHERE status = 'Завершена'
+          AND deleted_at IS NULL
+        GROUP BY client_id
+    ) AS client_revenue ON client_revenue.client_id = orders.client_id
+`;
+
 function normalizeText(value) {
     return String(value || "").trim();
 }
@@ -377,7 +387,7 @@ function normalizeOrder(row) {
         preferredContactValue: row.preferred_contact_value || "",
         clientId: row.client_id || null,
         clientOrdersCount: row.client_orders_count || null,
-        clientTotalSpent: row.client_total_spent || null,
+        clientTotalSpent: row.client_total_spent == null ? null : Number(row.client_total_spent) || 0,
         clientLastOrderAt: row.client_last_order_at || null,
         address: row.address || "",
         unloading: row.unloading || "",
@@ -1098,7 +1108,7 @@ router.get("/", requireRole(["admin", "manager"]), async (req, res) => {
                 orders.*,
                 users.name AS manager_name,
                 clients.orders_count AS client_orders_count,
-                clients.total_spent AS client_total_spent,
+                COALESCE(client_revenue.total_spent, 0) AS client_total_spent,
                 clients.last_order_at AS client_last_order_at,
                 notification_read.read_at AS notification_read_at,
                 (
@@ -1109,6 +1119,7 @@ router.get("/", requireRole(["admin", "manager"]), async (req, res) => {
             FROM orders
             LEFT JOIN users ON users.id = orders.manager_id
             LEFT JOIN clients ON clients.id = orders.client_id
+            ${completedClientRevenueJoinSql}
             LEFT JOIN order_notification_reads AS notification_read
                 ON notification_read.user_id = ?
                 AND notification_read.order_id = orders.id
@@ -1323,11 +1334,12 @@ router.get("/:id/export/excel", requireRole(["admin", "manager"]), async (req, r
                 orders.*,
                 users.name AS manager_name,
                 clients.orders_count AS client_orders_count,
-                clients.total_spent AS client_total_spent,
+                COALESCE(client_revenue.total_spent, 0) AS client_total_spent,
                 clients.last_order_at AS client_last_order_at
             FROM orders
             LEFT JOIN users ON users.id = orders.manager_id
             LEFT JOIN clients ON clients.id = orders.client_id
+            ${completedClientRevenueJoinSql}
             WHERE orders.id = ?
         `, [req.params.id]);
 
@@ -1510,7 +1522,7 @@ router.get("/:id", requireRole(["admin", "manager"]), async (req, res) => {
                 orders.*,
                 users.name AS manager_name,
                 clients.orders_count AS client_orders_count,
-                clients.total_spent AS client_total_spent,
+                COALESCE(client_revenue.total_spent, 0) AS client_total_spent,
                 clients.last_order_at AS client_last_order_at,
                 notification_read.read_at AS notification_read_at,
                 (
@@ -1521,6 +1533,7 @@ router.get("/:id", requireRole(["admin", "manager"]), async (req, res) => {
             FROM orders
             LEFT JOIN users ON users.id = orders.manager_id
             LEFT JOIN clients ON clients.id = orders.client_id
+            ${completedClientRevenueJoinSql}
             LEFT JOIN order_notification_reads AS notification_read
                 ON notification_read.user_id = ?
                 AND notification_read.order_id = orders.id

@@ -114,6 +114,7 @@ async function prepare() {
     await run(db, "INSERT INTO users(login,password_hash,role,name,is_active,created_at,updated_at) VALUES(?,?,?,?,1,?,?)", ["e2e_manager", await bcrypt.hash("E2eManager!234", 10), "manager", "E2E Manager", now, now]);
     await run(db, "INSERT INTO users(login,password_hash,role,name,is_active,created_at,updated_at) VALUES(?,?,?,?,1,?,?)", ["admin", await bcrypt.hash("E2eChiefAdmin!234", 10), "admin", "E2E Chief Admin", now, now]);
     const admin = await get(db, "SELECT id FROM users WHERE login = ?", ["e2e_admin"]);
+    const manager = await get(db, "SELECT id FROM users WHERE login = ?", ["e2e_manager"]);
     const ordinaryOrder = await run(
         db,
         `INSERT INTO orders (
@@ -133,6 +134,53 @@ async function prepare() {
         ["E2E-FILES", "Клиент с файлами", "+7 900 100-00-02", "files@example.test",
             "Новая", admin.id, now, now]
     );
+    const mixedRevenueClient = await run(
+        db,
+        `INSERT INTO clients (
+            name, phone, email, telegram, preferred_contact_method, preferred_contact_value,
+            orders_count, total_spent, last_order_at, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        ["Revenue Mixed", "+7 900 200-00-01", "mixed@example.test", "@revenue_mixed", "Telegram", "@revenue_mixed", 7, 2800, now, now, now]
+    );
+    const multipleRevenueClient = await run(
+        db,
+        `INSERT INTO clients (
+            name, phone, email, orders_count, total_spent, last_order_at, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        ["Revenue Multiple", "+7 900 200-00-02", "multiple@example.test", 2, 0, now, now, now]
+    );
+    const mixedRevenueOrders = [
+        ["REVENUE-NEW", "Новая", 100, admin.id, null],
+        ["REVENUE-WORK", "В работе", 200, manager.id, null],
+        ["REVENUE-WAIT", "Ожидает клиента", 300, admin.id, null],
+        ["REVENUE-DELIVERY", "Доставка", 400, admin.id, null],
+        ["REVENUE-DONE", "Завершена", 500, admin.id, null],
+        ["REVENUE-CANCELLED", "Отменена", 600, admin.id, null],
+        ["REVENUE-DELETED-DONE", "Завершена", 700, admin.id, now]
+    ];
+    for (const [orderNumber, status, totalPrice, managerId, deletedAt] of mixedRevenueOrders) {
+        await run(
+            db,
+            `INSERT INTO orders (
+                order_number, client_id, customer_name, phone, email, telegram,
+                preferred_contact_method, preferred_contact_value, items_json,
+                total_price, total_weight, status, manager_id, created_at, updated_at, deleted_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, '[]', ?, 0, ?, ?, ?, ?, ?)`,
+            [orderNumber, mixedRevenueClient.id, "Revenue Mixed", "+7 900 200-00-01", "mixed@example.test", "@revenue_mixed",
+                "Telegram", "@revenue_mixed", totalPrice, status, managerId, now, now, deletedAt]
+        );
+    }
+    for (const [orderNumber, totalPrice] of [["REVENUE-MULTIPLE-1", 500], ["REVENUE-MULTIPLE-2", 300]]) {
+        await run(
+            db,
+            `INSERT INTO orders (
+                order_number, client_id, customer_name, phone, email, items_json,
+                total_price, total_weight, status, manager_id, created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, '[]', ?, 0, 'Завершена', ?, ?, ?)`,
+            [orderNumber, multipleRevenueClient.id, "Revenue Multiple", "+7 900 200-00-02", "multiple@example.test",
+                totalPrice, admin.id, now, now]
+        );
+    }
     fs.mkdirSync(orderAttachmentsPath, { recursive: true });
     const attachments = [
         { name: "Смета проекта.xlsx", key: "e2e-estimate.xlsx", type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", extension: "xlsx", content: Buffer.from("E2E estimate content") },

@@ -54,6 +54,7 @@ function loadCrmSectionContent(section, options = {}) {
     }
 
     if (section === "clients") {
+        if (currentUser?.role !== "admin") return;
         if (!clients.length) {
             clientsPagination = normalizePaginationMeta({ page: 1, limit: CRM_LIST_LIMIT });
             loadClients({ preserveMessage });
@@ -261,6 +262,7 @@ ordersList.addEventListener("click", event => {
 
     const openClientButton = event.target.closest(".open-client");
     if (openClientButton) {
+        if (currentUser?.role !== "admin") return;
         const clientId = String(openClientButton.dataset.clientId);
         navigateToCrmSection("clients", { load: false });
         expandedClientOrderIds.add(clientId);

@@ -2,7 +2,8 @@
 function setActiveSection(section) {
     const openCatalogStructure = section === "catalogStructure";
     if (openCatalogStructure) section = "catalog";
-    if (section === "catalogImport" && currentUser?.role !== "admin") {
+    const requestedSection = crmNavigation.find(item => item.id === section);
+    if (requestedSection?.adminOnly && currentUser?.role !== "admin") {
         section = "dashboard";
     }
     if (!["dashboard", "orders", "myOrders", "clients", "settings", "catalog", "catalogImport"].includes(section)) {

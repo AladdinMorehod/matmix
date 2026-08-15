@@ -103,7 +103,7 @@ const crmNavigation = [
     { id: "dashboard", label: "Главная", enabled: true },
     { id: "orders", label: "Заказы", enabled: true },
     { id: "myOrders", label: "Мои заказы", enabled: true },
-    { id: "clients", label: "Клиенты", enabled: true },
+    { id: "clients", label: "Клиенты", enabled: true, adminOnly: true },
     { id: "catalog", label: "Каталог", enabled: true },
     { id: "catalogImport", label: "Импорт каталога", enabled: true, adminOnly: true },
     { id: "statistics", label: "Статистика", enabled: false },

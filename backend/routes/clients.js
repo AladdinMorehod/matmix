@@ -5,6 +5,14 @@ const { getPaginationParams, buildPaginationMeta } = require("../utils/paginatio
 
 const router = express.Router();
 
+const completedClientRevenueSql = `
+    SELECT client_id, SUM(COALESCE(total_price, 0)) AS total_spent
+    FROM orders
+    WHERE status = 'Завершена'
+      AND deleted_at IS NULL
+    GROUP BY client_id
+`;
+
 function normalizeSearchText(value) {
     return String(value || "").replace(/\s+/g, " ").trim().toLowerCase();
 }
@@ -27,7 +35,7 @@ function normalizeClient(row) {
         maxContact: row.max_contact || "",
         whatsapp: row.whatsapp || "",
         ordersCount: row.orders_count || 0,
-        totalSpent: row.total_spent || 0,
+        totalSpent: Number(row.calculated_total_spent) || 0,
         lastOrderAt: row.last_order_at || null,
         createdAt: row.created_at,
         updatedAt: row.updated_at
@@ -47,7 +55,7 @@ function normalizeClientOrder(row) {
     };
 }
 
-router.get("/", requireRole(["admin", "manager"]), async (req, res) => {
+router.get("/", requireRole(["admin"]), async (req, res) => {
     try {
         const paginationParams = getPaginationParams(req.query);
         const params = [];
@@ -72,8 +80,12 @@ router.get("/", requireRole(["admin", "manager"]), async (req, res) => {
         const [countRow, rows, statsRow] = await Promise.all([
             get(`SELECT COUNT(*) AS total FROM clients ${whereSql}`, params),
             all(`
-            SELECT *
+            SELECT
+                clients.*,
+                COALESCE(client_revenue.total_spent, 0) AS calculated_total_spent
             FROM clients
+            LEFT JOIN (${completedClientRevenueSql}) AS client_revenue
+                ON client_revenue.client_id = clients.id
             ${whereSql}
             ORDER BY datetime(last_order_at) DESC, id DESC
             LIMIT ? OFFSET ?
@@ -82,8 +94,10 @@ router.get("/", requireRole(["admin", "manager"]), async (req, res) => {
                 SELECT
                     COUNT(*) AS total,
                     SUM(CASE WHEN orders_count > 1 THEN 1 ELSE 0 END) AS repeat_clients,
-                    SUM(COALESCE(total_spent, 0)) AS total_spent
+                    COALESCE(SUM(COALESCE(client_revenue.total_spent, 0)), 0) AS total_spent
                 FROM clients
+                LEFT JOIN (${completedClientRevenueSql}) AS client_revenue
+                    ON client_revenue.client_id = clients.id
                 ${whereSql}
             `, params)
         ]);
@@ -106,9 +120,17 @@ router.get("/", requireRole(["admin", "manager"]), async (req, res) => {
     }
 });
 
-router.get("/:id", requireRole(["admin", "manager"]), async (req, res) => {
+router.get("/:id", requireRole(["admin"]), async (req, res) => {
     try {
-        const row = await get("SELECT * FROM clients WHERE id = ?", [req.params.id]);
+        const row = await get(`
+            SELECT
+                clients.*,
+                COALESCE(client_revenue.total_spent, 0) AS calculated_total_spent
+            FROM clients
+            LEFT JOIN (${completedClientRevenueSql}) AS client_revenue
+                ON client_revenue.client_id = clients.id
+            WHERE clients.id = ?
+        `, [req.params.id]);
 
         if (!row) {
             res.status(404).json({ success: false, message: "Клиент не найден." });
@@ -122,7 +144,7 @@ router.get("/:id", requireRole(["admin", "manager"]), async (req, res) => {
     }
 });
 
-router.get("/:id/orders", requireRole(["admin", "manager"]), async (req, res) => {
+router.get("/:id/orders", requireRole(["admin"]), async (req, res) => {
     try {
         const paginationParams = getPaginationParams(req.query);
         const client = await get("SELECT id FROM clients WHERE id = ?", [req.params.id]);

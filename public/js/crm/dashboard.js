@@ -51,6 +51,11 @@ function renderDashboardRecentOrders(activeOrders) {
 function renderDashboard() {
     if (!dashboardView) return;
 
+    const canAccessClientBase = currentUser?.role === "admin";
+    document.querySelectorAll("[data-admin-clients-only]").forEach(element => {
+        element.hidden = !canAccessClientBase;
+        element.classList.toggle("hidden", !canAccessClientBase);
+    });
     const activeOrders = orders.filter(order => !order.deletedAt);
     const stats = getDashboardStats(activeOrders, clients);
 
@@ -75,10 +80,11 @@ async function loadDashboard(options = {}) {
     }
 
     try {
-        const [ordersResult, clientsResult] = await Promise.all([
-            CrmApi.get(`/api/orders?page=1&limit=${CRM_LIST_LIMIT}`),
-            CrmApi.get(`/api/clients?page=1&limit=${CRM_LIST_LIMIT}`)
-        ]);
+        const requests = [CrmApi.get(`/api/orders?page=1&limit=${CRM_LIST_LIMIT}`)];
+        if (currentUser?.role === "admin") {
+            requests.push(CrmApi.get(`/api/clients?page=1&limit=${CRM_LIST_LIMIT}`));
+        }
+        const [ordersResult, clientsResult = {}] = await Promise.all(requests);
 
         orders = ordersResult.orders || [];
         clients = clientsResult.clients || [];
@@ -101,6 +107,8 @@ async function loadDashboard(options = {}) {
                 repeat: Number(clientsResult.stats.repeat) || 0,
                 totalSpent: Number(clientsResult.stats.totalSpent) || 0
             };
+        } else {
+            clientsStats = { total: 0, repeat: 0, totalSpent: 0 };
         }
         renderDashboard();
         if (!preserveMessage) setMessage("");
