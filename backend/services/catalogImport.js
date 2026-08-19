@@ -1973,6 +1973,14 @@ function addStructureRename(changes, key, row, existing) {
     });
 }
 
+function getCategoryInputIdentityKey(code, name) {
+    return `${normalizeCategoryCode(code || "")}\u0000${normalizeCatalogStructureName(name)}`;
+}
+
+function getSubcategoryInputIdentityKey(parentId, code, name) {
+    return `${Number(parentId) || 0}\u0000${normalizeSubcategoryCode(code || "")}\u0000${normalizeCatalogStructureName(name)}`;
+}
+
 function buildStructurePreview(parsed, structureRows) {
     const categoryListsByName = new Map();
     const categoryListsByCode = new Map();
@@ -2004,7 +2012,9 @@ function buildStructurePreview(parsed, structureRows) {
         subcategoryCodesAssigned: [],
         categoryExcelCodesIgnored: [],
         subcategoryExcelCodesIgnored: [],
-        realStructureConflicts: []
+        realStructureConflicts: [],
+        resolvedCategories: [],
+        resolvedSubcategories: []
     };
     const pushList = (map, key, row) => {
         const list = map.get(key) || [];
@@ -2012,8 +2022,43 @@ function buildStructurePreview(parsed, structureRows) {
         map.set(key, list);
     };
     const getSingle = list => (list && list.length === 1 ? list[0] : null);
-    const categoryByNameOrFileCode = new Map();
-    const plannedCategoriesByName = new Map();
+    const resolvedCategoriesByName = new Map();
+    const resolvedCategoriesByCode = new Map();
+    const resolvedCategoriesByInputIdentity = new Map();
+    const blockedCategoryNames = new Set();
+    const blockedCategoryCodes = new Set();
+    const registerResolvedCategory = (row, category, requestedCode = "", matchStrategy = "code") => {
+        const nameKey = normalizeCatalogStructureName(row.name);
+        const existingCode = normalizeCategoryCode(category.externalCode || category.external_code || "");
+        if (nameKey) resolvedCategoriesByName.set(nameKey, category);
+        if (existingCode) resolvedCategoriesByCode.set(existingCode, category);
+        resolvedCategoriesByInputIdentity.set(getCategoryInputIdentityKey(requestedCode, row.name), category);
+        changes.resolvedCategories.push({
+            rowNumber: row.rowNumber,
+            structureId: category.id || null,
+            incomingName: row.name,
+            incomingExternalCode: requestedCode,
+            externalCode: existingCode,
+            matchStrategy
+        });
+    };
+    const blockCategoryResolution = (row, requestedCode = "") => {
+        const nameKey = normalizeCatalogStructureName(row.name);
+        if (nameKey) blockedCategoryNames.add(nameKey);
+        if (requestedCode) blockedCategoryCodes.add(requestedCode);
+    };
+    const registerResolvedSubcategory = (row, parentId, subcategory, requestedCode = "", matchStrategy = "code") => {
+        const existingCode = normalizeSubcategoryCode(subcategory.externalCode || subcategory.external_code || "");
+        changes.resolvedSubcategories.push({
+            rowNumber: row.rowNumber,
+            structureId: subcategory.id || null,
+            parentId: Number(parentId) || null,
+            incomingName: row.name,
+            incomingExternalCode: requestedCode,
+            externalCode: existingCode,
+            matchStrategy
+        });
+    };
 
     structureRows.filter(row => row.type === "category" && row.isActive && !row.isSystem).forEach(row => {
         const nameKey = normalizeCatalogStructureName(row.name);
@@ -2047,6 +2092,7 @@ function buildStructurePreview(parsed, structureRows) {
             };
             changes.structureCodeConflicts.push(conflict);
             changes.realStructureConflicts.push(conflict);
+            blockCategoryResolution(row, requestedCode);
             return;
         }
 
@@ -2060,28 +2106,14 @@ function buildStructurePreview(parsed, structureRows) {
             });
             changes.structureCodeConflicts.push(conflict);
             changes.realStructureConflicts.push(conflict);
+            blockCategoryResolution(row, requestedCode);
             return;
         }
 
-        if (existingByCode && existingByName && Number(existingByCode.id) !== Number(existingByName.id)) {
-            const conflict = createStructureBindingConflict({
-                type: "category",
-                conflictType: "CODE_NAME_MISMATCH",
-                row,
-                codeMatch: existingByCode,
-                nameMatch: existingByName
-            });
-            changes.structureCodeConflicts.push(conflict);
-            changes.realStructureConflicts.push(conflict);
-            return;
-        }
-
-        const existing = existingByCode || existingByName;
+        const legacyCodeMismatch = Boolean(existingByCode && existingByName && Number(existingByCode.id) !== Number(existingByName.id));
+        const existing = legacyCodeMismatch ? existingByName : (existingByCode || existingByName);
         if (existing) {
-            categoryByNameOrFileCode.set(nameKey, existing);
             const existingCode = normalizeCategoryCode(existing.externalCode || existing.external_code || "");
-            if (requestedCode) categoryByNameOrFileCode.set(requestedCode, existing);
-            if (existingCode) categoryByNameOrFileCode.set(existingCode, existing);
             if (existingByName) changes.existingCategoriesMatchedByName.push({
                 rowNumber: row.rowNumber,
                 name: row.name,
@@ -2090,6 +2122,7 @@ function buildStructurePreview(parsed, structureRows) {
             });
             addStructureRename(changes, "renamedCategories", row, existing);
 
+            let resolvedCode = existingCode;
             if (existingCode) {
                 changes.categoryCodesPreserved.push({
                     rowNumber: row.rowNumber,
@@ -2123,6 +2156,7 @@ function buildStructurePreview(parsed, structureRows) {
                     assignedBy: codeChoice.assignedBy
                 });
                 changes.categoryCodesAssigned.push(changes.assignedCategoryCodes[changes.assignedCategoryCodes.length - 1]);
+                resolvedCode = codeChoice.code;
                 if (codeChoice.ignoredCode) {
                     changes.categoryExcelCodesIgnored.push({
                         rowNumber: row.rowNumber,
@@ -2133,6 +2167,12 @@ function buildStructurePreview(parsed, structureRows) {
                     });
                 }
             }
+            registerResolvedCategory(
+                row,
+                { ...existing, externalCode: resolvedCode, external_code: resolvedCode },
+                requestedCode,
+                legacyCodeMismatch ? "legacy_name" : (existingByCode ? "code" : "name")
+            );
             return;
         }
 
@@ -2168,15 +2208,32 @@ function buildStructurePreview(parsed, structureRows) {
                 reason: "EXCEL_CODE_UNAVAILABLE"
             });
         }
-        plannedCategoriesByName.set(nameKey, plannedCategory);
-        categoryByNameOrFileCode.set(nameKey, plannedCategory);
-        if (requestedCode) categoryByNameOrFileCode.set(requestedCode, plannedCategory);
+        registerResolvedCategory(row, plannedCategory, requestedCode || codeChoice.code, "new");
     });
 
     parsed.subcategoryRows?.forEach(row => {
         const categoryNameKey = normalizeCatalogStructureName(row.category);
-        const parent = categoryByNameOrFileCode.get(categoryNameKey)
-            || (row.categoryExternalCode ? categoryByNameOrFileCode.get(normalizeCategoryCode(row.categoryExternalCode)) : null);
+        const categoryCodeKey = normalizeCategoryCode(row.categoryExternalCode || "");
+        const parentByInputIdentity = resolvedCategoriesByInputIdentity.get(getCategoryInputIdentityKey(categoryCodeKey, row.category)) || null;
+        const parentByCode = validateCategoryCode(categoryCodeKey) ? resolvedCategoriesByCode.get(categoryCodeKey) || null : null;
+        const parentByName = resolvedCategoriesByName.get(categoryNameKey) || null;
+        if ((categoryCodeKey && blockedCategoryCodes.has(categoryCodeKey)) || blockedCategoryNames.has(categoryNameKey)) {
+            return;
+        }
+        if (!parentByInputIdentity && parentByCode && parentByName && parentByCode !== parentByName) {
+            const conflict = createStructureBindingConflict({
+                type: "subcategory",
+                conflictType: "CATEGORY_CODE_NAME_MISMATCH",
+                row,
+                codeMatch: parentByCode,
+                nameMatch: parentByName,
+                parent: parentByCode
+            });
+            changes.structureCodeConflicts.push(conflict);
+            changes.realStructureConflicts.push(conflict);
+            return;
+        }
+        const parent = parentByInputIdentity || parentByCode || parentByName;
         const subNameKey = normalizeCatalogStructureName(row.name);
         const requestedCode = normalizeSubcategoryCode(row.externalCode || "");
         const parentId = parent?.id || null;
@@ -2230,7 +2287,10 @@ function buildStructurePreview(parsed, structureRows) {
             return;
         }
 
-        if (existingByCode && Number(existingByCode.parentId || existingByCode.parent_id) !== Number(parentId)) {
+        const codeParentMismatch = Boolean(existingByCode && Number(existingByCode.parentId || existingByCode.parent_id) !== Number(parentId));
+        const legacyCodeMismatch = Boolean(existingByCode && existingByName && Number(existingByCode.id) !== Number(existingByName.id));
+
+        if (codeParentMismatch && !existingByName) {
             const conflict = createStructureBindingConflict({
                 type: "subcategory",
                 conflictType: "CODE_PARENT_MISMATCH",
@@ -2244,21 +2304,7 @@ function buildStructurePreview(parsed, structureRows) {
             return;
         }
 
-        if (existingByCode && existingByName && Number(existingByCode.id) !== Number(existingByName.id)) {
-            const conflict = createStructureBindingConflict({
-                type: "subcategory",
-                conflictType: "CODE_NAME_MISMATCH",
-                row,
-                codeMatch: existingByCode,
-                nameMatch: existingByName,
-                parent
-            });
-            changes.structureCodeConflicts.push(conflict);
-            changes.realStructureConflicts.push(conflict);
-            return;
-        }
-
-        const existing = existingByCode || existingByName;
+        const existing = legacyCodeMismatch || codeParentMismatch ? existingByName : (existingByCode || existingByName);
         if (existing) {
             if (existingByName) changes.existingSubcategoriesMatchedByName.push({
                 rowNumber: row.rowNumber,
@@ -2270,6 +2316,7 @@ function buildStructurePreview(parsed, structureRows) {
             });
             addStructureRename(changes, "renamedSubcategories", row, existing);
             const existingCode = normalizeSubcategoryCode(existing.externalCode || existing.external_code || "");
+            let resolvedCode = existingCode;
             if (existingCode) {
                 changes.subcategoryCodesPreserved.push({
                     rowNumber: row.rowNumber,
@@ -2309,6 +2356,7 @@ function buildStructurePreview(parsed, structureRows) {
                     assignedBy: codeChoice.assignedBy
                 });
                 changes.subcategoryCodesAssigned.push(changes.assignedSubcategoryCodes[changes.assignedSubcategoryCodes.length - 1]);
+                resolvedCode = codeChoice.code;
                 if (codeChoice.ignoredCode) {
                     changes.subcategoryExcelCodesIgnored.push({
                         rowNumber: row.rowNumber,
@@ -2320,6 +2368,13 @@ function buildStructurePreview(parsed, structureRows) {
                     });
                 }
             }
+            registerResolvedSubcategory(
+                row,
+                parentId,
+                { ...existing, externalCode: resolvedCode, external_code: resolvedCode },
+                requestedCode,
+                legacyCodeMismatch || codeParentMismatch ? "legacy_name" : (existingByCode ? "code" : "name")
+            );
             return;
         }
 
@@ -2361,6 +2416,7 @@ function buildStructurePreview(parsed, structureRows) {
                 reason: "EXCEL_CODE_UNAVAILABLE"
             });
         }
+        registerResolvedSubcategory(row, parentId, plannedSubcategory, requestedCode || codeChoice.code, "new");
     });
 
     return changes;
@@ -2368,14 +2424,22 @@ function buildStructurePreview(parsed, structureRows) {
 
 function createStructureLookup(structureRows, structureChanges = {}) {
     const categoriesByName = new Map();
+    const categoriesByCode = new Map();
+    const categoriesByInputIdentity = new Map();
     const subcategoriesByParentAndName = new Map();
+    const subcategoriesByCode = new Map();
+    const subcategoriesByInputIdentity = new Map();
     const rowsById = new Map(structureRows.map(row => [Number(row.id), row]));
 
     structureRows.filter(row => row.type === "category" && row.isActive && !row.isSystem).forEach(row => {
         categoriesByName.set(normalizeCatalogStructureName(row.name), row);
+        const code = normalizeCategoryCode(row.externalCode || row.external_code || "");
+        if (validateCategoryCode(code)) categoriesByCode.set(code, row);
     });
     structureRows.filter(row => row.type === "subcategory" && row.isActive && !row.isSystem).forEach(row => {
         subcategoriesByParentAndName.set(`${row.parentId}:${normalizeCatalogStructureName(row.name)}`, row);
+        const code = normalizeSubcategoryCode(row.externalCode || row.external_code || "");
+        if (validateSubcategoryCode(code)) subcategoriesByCode.set(code, row);
     });
 
     (structureChanges.renamedCategories || []).forEach(rename => {
@@ -2390,11 +2454,50 @@ function createStructureLookup(structureRows, structureChanges = {}) {
         }
     });
 
-    return { categoriesByName, subcategoriesByParentAndName };
+    (structureChanges.resolvedCategories || []).forEach(resolution => {
+        const row = rowsById.get(Number(resolution.structureId));
+        if (!row) return;
+        categoriesByInputIdentity.set(
+            getCategoryInputIdentityKey(resolution.incomingExternalCode, resolution.incomingName),
+            row
+        );
+    });
+    (structureChanges.resolvedSubcategories || []).forEach(resolution => {
+        const row = rowsById.get(Number(resolution.structureId));
+        if (!row) return;
+        subcategoriesByInputIdentity.set(
+            getSubcategoryInputIdentityKey(resolution.parentId, resolution.incomingExternalCode, resolution.incomingName),
+            row
+        );
+    });
+
+    return {
+        categoriesByName,
+        categoriesByCode,
+        categoriesByInputIdentity,
+        subcategoriesByParentAndName,
+        subcategoriesByCode,
+        subcategoriesByInputIdentity
+    };
 }
 
 function getProductStructureConflict(row, structureLookup) {
-    const category = structureLookup.categoriesByName.get(normalizeCatalogStructureName(row.category));
+    const categoryCode = normalizeCategoryCode(row.categoryExternalCode || "");
+    const categoryByInputIdentity = structureLookup.categoriesByInputIdentity.get(
+        getCategoryInputIdentityKey(categoryCode, row.category)
+    ) || null;
+    const categoryByCode = validateCategoryCode(categoryCode) ? structureLookup.categoriesByCode.get(categoryCode) || null : null;
+    const categoryByName = structureLookup.categoriesByName.get(normalizeCatalogStructureName(row.category)) || null;
+    if (!categoryByInputIdentity && categoryByCode && categoryByName && Number(categoryByCode.id) !== Number(categoryByName.id)) {
+        return {
+            type: "category_identity_conflict",
+            message: "CAT-код и название относятся к разным категориям CRM",
+            category: row.category,
+            subcategory: row.subcategory,
+            categoryCode
+        };
+    }
+    const category = categoryByInputIdentity || categoryByCode || categoryByName;
     if (!category) {
         return {
             type: "missing_category",
@@ -2404,7 +2507,33 @@ function getProductStructureConflict(row, structureLookup) {
         };
     }
 
-    const subcategory = structureLookup.subcategoriesByParentAndName.get(`${category.id}:${normalizeCatalogStructureName(row.subcategory)}`);
+    const subcategoryCode = normalizeSubcategoryCode(row.subcategoryExternalCode || "");
+    const subcategoryByInputIdentity = structureLookup.subcategoriesByInputIdentity.get(
+        getSubcategoryInputIdentityKey(category.id, subcategoryCode, row.subcategory)
+    ) || null;
+    const subcategoryByCode = validateSubcategoryCode(subcategoryCode) ? structureLookup.subcategoriesByCode.get(subcategoryCode) || null : null;
+    const subcategoryByName = structureLookup.subcategoriesByParentAndName.get(`${category.id}:${normalizeCatalogStructureName(row.subcategory)}`) || null;
+    if (!subcategoryByInputIdentity && subcategoryByCode && Number(subcategoryByCode.parentId || subcategoryByCode.parent_id) !== Number(category.id)) {
+        return {
+            type: "subcategory_parent_conflict",
+            message: "SUB-код принадлежит другой категории CRM",
+            category: row.category,
+            subcategory: row.subcategory,
+            categoryId: category.id,
+            subcategoryCode
+        };
+    }
+    if (!subcategoryByInputIdentity && subcategoryByCode && subcategoryByName && Number(subcategoryByCode.id) !== Number(subcategoryByName.id)) {
+        return {
+            type: "subcategory_identity_conflict",
+            message: "SUB-код и название относятся к разным подкатегориям CRM",
+            category: row.category,
+            subcategory: row.subcategory,
+            categoryId: category.id,
+            subcategoryCode
+        };
+    }
+    const subcategory = subcategoryByInputIdentity || subcategoryByCode || subcategoryByName;
     if (row.subcategory && !subcategory) {
         return {
             type: "missing_subcategory",
@@ -3780,9 +3909,7 @@ async function findStructureCategory(db, row) {
     if (byNameRows.length > 1) {
         throw createImportError(409, `Найдено несколько категорий CRM с названием "${row.name}".`, "CAT_NAME_BINDING_CONFLICT");
     }
-    if (byCodeRows[0] && byNameRows[0] && Number(byCodeRows[0].id) !== Number(byNameRows[0].id)) {
-        throw createImportError(409, `CAT-код ${requestedCode} и название "${row.name}" указывают на разные категории CRM.`, "CAT_CODE_NAME_BINDING_CONFLICT");
-    }
+    if (byCodeRows[0] && byNameRows[0] && Number(byCodeRows[0].id) !== Number(byNameRows[0].id)) return byNameRows[0];
     return byCodeRows[0] || byNameRows[0] || null;
 }
 
@@ -3803,12 +3930,11 @@ async function findStructureSubcategory(db, row, parentId) {
     if (byNameRows.length > 1) {
         throw createImportError(409, `Найдено несколько подкатегорий CRM "${row.name}" внутри выбранной категории.`, "SUB_NAME_BINDING_CONFLICT");
     }
-    if (byCodeRows[0] && Number(byCodeRows[0].parent_id) !== Number(parentId)) {
+    if (byCodeRows[0] && Number(byCodeRows[0].parent_id) !== Number(parentId) && !byNameRows[0]) {
         throw createImportError(409, `SUB-код ${requestedCode} принадлежит другой категории CRM.`, "SUB_CODE_PARENT_BINDING_CONFLICT");
     }
-    if (byCodeRows[0] && byNameRows[0] && Number(byCodeRows[0].id) !== Number(byNameRows[0].id)) {
-        throw createImportError(409, `SUB-код ${requestedCode} и название "${row.name}" указывают на разные подкатегории CRM.`, "SUB_CODE_NAME_BINDING_CONFLICT");
-    }
+    if (byCodeRows[0] && byNameRows[0] && Number(byCodeRows[0].id) !== Number(byNameRows[0].id)) return byNameRows[0];
+    if (byCodeRows[0] && Number(byCodeRows[0].parent_id) !== Number(parentId)) return byNameRows[0] || null;
     return byCodeRows[0] || byNameRows[0] || null;
 }
 
@@ -3839,7 +3965,9 @@ async function syncProductsForStructureRename(db, memberships, { type, structure
 
 async function upsertCatalogStructureFromParsed(db, parsed, now) {
     const assignedRows = [];
-    const categoryByFileCodeOrName = new Map();
+    const categoryByFileName = new Map();
+    const categoryByFileCode = new Map();
+    const categoryByFileInputIdentity = new Map();
     const structureRows = await db.all("SELECT * FROM catalog_structure WHERE type IN ('category', 'subcategory')");
     const productRows = await db.all("SELECT id, category, subcategory FROM products WHERE deleted_at IS NULL");
     const productMemberships = captureProductStructureMemberships(structureRows, productRows);
@@ -3851,6 +3979,14 @@ async function upsertCatalogStructureFromParsed(db, parsed, now) {
         structureRows.filter(row => row.type === "subcategory"),
         normalizeSubcategoryCode
     );
+    const registerCategory = (row, category) => {
+        const nameKey = normalizeCatalogStructureName(row.name);
+        const incomingCode = normalizeCategoryCode(row.externalCode || row.external_code || "");
+        const storedCode = normalizeCategoryCode(category.externalCode || category.external_code || "");
+        if (nameKey) categoryByFileName.set(nameKey, category);
+        if (storedCode) categoryByFileCode.set(storedCode, category);
+        categoryByFileInputIdentity.set(getCategoryInputIdentityKey(incomingCode, row.name), category);
+    };
 
     for (const row of parsed.categoryRows || []) {
         const existing = await findStructureCategory(db, row);
@@ -3897,9 +4033,7 @@ async function upsertCatalogStructureFromParsed(db, parsed, now) {
                 external_code: externalCode,
                 externalCode
             };
-            categoryByFileCodeOrName.set(incomingNormalizedName, updatedExisting);
-            if (row.externalCode) categoryByFileCodeOrName.set(normalizeCategoryCode(row.externalCode), updatedExisting);
-            if (externalCode) categoryByFileCodeOrName.set(externalCode, updatedExisting);
+            registerCategory(row, updatedExisting);
         } else {
             const result = await db.run(
                 `INSERT INTO catalog_structure (
@@ -3907,8 +4041,7 @@ async function upsertCatalogStructureFromParsed(db, parsed, now) {
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 ["category", incomingName, incomingNormalizedName, externalCode, null, Number(row.sortOrder) || 0, 1, 0, now, now]
             );
-            categoryByFileCodeOrName.set(incomingNormalizedName, { id: result.id, name: incomingName, normalized_name: incomingNormalizedName, external_code: externalCode, externalCode });
-            if (row.externalCode) categoryByFileCodeOrName.set(normalizeCategoryCode(row.externalCode), { id: result.id, external_code: externalCode });
+            registerCategory(row, { id: result.id, name: incomingName, normalized_name: incomingNormalizedName, external_code: externalCode, externalCode });
             assignedNewCode = true;
         }
         if (assignedNewCode) assignedRows.push({ rowNumber: row.rowNumber, externalId: externalCode, entityType: "category", name: row.name });
@@ -3916,12 +4049,21 @@ async function upsertCatalogStructureFromParsed(db, parsed, now) {
 
     for (const row of parsed.subcategoryRows || []) {
         const categoryKey = normalizeCatalogStructureName(row.category);
-        let parent = categoryByFileCodeOrName.get(categoryKey);
-        if (!parent && row.categoryExternalCode) {
-            parent = categoryByFileCodeOrName.get(normalizeCategoryCode(row.categoryExternalCode));
+        const categoryCode = normalizeCategoryCode(row.categoryExternalCode || "");
+        const parentByInputIdentity = categoryByFileInputIdentity.get(
+            getCategoryInputIdentityKey(categoryCode, row.category)
+        ) || null;
+        const parentByCode = validateCategoryCode(categoryCode) ? categoryByFileCode.get(categoryCode) || null : null;
+        const parentByName = categoryByFileName.get(categoryKey) || null;
+        if (!parentByInputIdentity && parentByCode && parentByName && Number(parentByCode.id) !== Number(parentByName.id)) {
+            throw createImportError(409, `CAT-код ${categoryCode} и категория "${row.category}" указывают на разные записи CRM.`, "CAT_CODE_NAME_BINDING_CONFLICT");
         }
+        let parent = parentByInputIdentity || parentByCode || parentByName;
         if (!parent) {
-            parent = await db.get("SELECT * FROM catalog_structure WHERE type = 'category' AND normalized_name = ? AND is_active = 1 AND COALESCE(is_system, 0) = 0 LIMIT 1", [normalizeCatalogStructureName(row.category)]);
+            parent = await findStructureCategory(db, {
+                name: row.category,
+                externalCode: row.categoryExternalCode || ""
+            });
         }
         if (!parent) continue;
 
