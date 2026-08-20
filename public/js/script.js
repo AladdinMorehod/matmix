@@ -37247,6 +37247,8 @@ const UPLOAD_ALLOWED_EXTENSIONS = new Set([
     "pdf", "jpg", "jpeg", "png", "doc", "docx", "xls", "xlsx", "csv", "txt"
 ]);
 const MOBILE_SEARCH_MAX_WIDTH = 600;
+let catalogPickerPopover = null;
+let catalogPickerTrigger = null;
 const PAYMENT_METHODS = [
     { value: "cash", label: "Наличные" },
     { value: "card_transfer", label: "Перевод на карту" },
@@ -39279,45 +39281,167 @@ function createCategoryButton(label, path, className, isActive) {
     return button;
 }
 
-function createSubcategorySelect(activeGroup) {
-    const wrapper = document.createElement("label");
-    wrapper.className = "category-subcategory-select";
+function createMobileCatalogPicker(type, label, value) {
+    ensureCatalogPickerPopover();
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `catalog-mobile-picker category-${type}-select`;
+    button.dataset.catalogPicker = type;
+    button.setAttribute("aria-haspopup", "listbox");
+    button.setAttribute("aria-expanded", "false");
+    button.setAttribute("aria-controls", "catalogPickerPopover");
 
-    const select = document.createElement("select");
-    select.setAttribute("aria-label", "Выберите подкатегорию");
-    select.add(new Option("Все подкатегории", activeGroup.path));
+    const icon = document.createElement("span");
+    icon.className = "catalog-mobile-picker-icon";
+    icon.setAttribute("aria-hidden", "true");
+    icon.textContent = type === "subcategory" ? "▦" : "≡";
 
-    activeGroup.subcategories.forEach(subcategory => {
-        const option = document.createElement("option");
-        option.value = subcategory.path;
-        option.textContent = getSubcategoryDisplayLabel(subcategory, activeGroup);
-        option.selected = subcategory.path === activeCategoryPath
-            || getSubcategoryAllPath(subcategory.path) === activeCategoryPath;
-        select.appendChild(option);
-    });
+    const copy = document.createElement("span");
+    copy.className = "catalog-mobile-picker-copy";
+    const caption = document.createElement("span");
+    caption.className = "catalog-mobile-picker-label";
+    caption.textContent = label;
+    const selectedValue = document.createElement("span");
+    selectedValue.className = "catalog-mobile-picker-value";
+    selectedValue.textContent = value;
+    copy.append(caption, selectedValue);
 
-    wrapper.appendChild(select);
-    return wrapper;
+    const chevron = document.createElement("span");
+    chevron.className = "catalog-mobile-picker-chevron";
+    chevron.setAttribute("aria-hidden", "true");
+    chevron.textContent = "⌄";
+    button.append(icon, copy, chevron);
+    return button;
 }
 
-function createGroupSelect(activeSubcategory, allLabel = "Все товары подкатегории", allPath = getSubcategoryAllPath(activeSubcategory.path)) {
-    const wrapper = document.createElement("label");
-    wrapper.className = "category-group-select";
+function ensureCatalogPickerPopover() {
+    if (catalogPickerPopover) return catalogPickerPopover;
 
-    const select = document.createElement("select");
-    select.setAttribute("aria-label", "Выберите группу товаров");
-    select.add(new Option(allLabel, allPath));
+    const popover = document.createElement("div");
+    popover.className = "catalog-picker-popover hidden";
+    popover.id = "catalogPickerPopover";
+    popover.setAttribute("role", "listbox");
+    popover.innerHTML = '<div class="catalog-picker-options"></div>';
+    document.body.appendChild(popover);
+    catalogPickerPopover = popover;
+    return popover;
+}
 
-    activeSubcategory.groups.forEach(productGroup => {
-        const option = document.createElement("option");
-        option.value = productGroup.path;
-        option.textContent = productGroup.label;
-        option.selected = productGroup.path === activeCategoryPath;
-        select.appendChild(option);
+function closeCatalogPicker({ restoreFocus = true } = {}) {
+    if (!catalogPickerPopover || catalogPickerPopover.classList.contains("hidden")) return;
+    const trigger = catalogPickerTrigger;
+    catalogPickerPopover.classList.add("hidden");
+    catalogPickerPopover.removeAttribute("data-placement");
+    trigger?.setAttribute("aria-expanded", "false");
+    catalogPickerTrigger = null;
+    if (restoreFocus && trigger?.isConnected) trigger.focus();
+}
+
+function positionCatalogPicker() {
+    if (!catalogPickerPopover || catalogPickerPopover.classList.contains("hidden") || !catalogPickerTrigger?.isConnected) return;
+
+    const triggerRect = catalogPickerTrigger.getBoundingClientRect();
+    const viewportPadding = 8;
+    const triggerGap = 4;
+    const viewportMaxHeight = Math.floor(window.innerHeight * 0.58);
+    const width = Math.min(triggerRect.width, window.innerWidth - viewportPadding * 2);
+    const left = Math.max(
+        viewportPadding,
+        Math.min(triggerRect.left, window.innerWidth - viewportPadding - width)
+    );
+
+    catalogPickerPopover.style.width = `${width}px`;
+    catalogPickerPopover.style.left = `${left + window.scrollX}px`;
+    catalogPickerPopover.style.maxHeight = `${viewportMaxHeight}px`;
+
+    const desiredHeight = Math.min(catalogPickerPopover.scrollHeight, viewportMaxHeight);
+    const availableBelow = Math.max(0, window.innerHeight - triggerRect.bottom - triggerGap - viewportPadding);
+    const availableAbove = Math.max(0, triggerRect.top - triggerGap - viewportPadding);
+    const opensUp = availableBelow < desiredHeight && availableAbove > availableBelow;
+    const availableHeight = Math.max(48, Math.min(viewportMaxHeight, opensUp ? availableAbove : availableBelow));
+
+    catalogPickerPopover.style.maxHeight = `${availableHeight}px`;
+    const actualHeight = Math.min(catalogPickerPopover.scrollHeight, availableHeight);
+    const viewportTop = opensUp
+        ? triggerRect.top - triggerGap - actualHeight
+        : triggerRect.bottom + triggerGap;
+    catalogPickerPopover.style.top = `${viewportTop + window.scrollY}px`;
+    catalogPickerPopover.dataset.placement = opensUp ? "top" : "bottom";
+}
+
+function getCatalogPickerData(type) {
+    const groups = getCategoryFilterGroups();
+    const activeGroup = groups.find(group => group.path === getActiveMainCategoryPath(groups));
+    if (!activeGroup) return null;
+
+    if (type === "subcategory") {
+        return {
+            title: "Выберите подкатегорию",
+            selectedPath: getActiveSubcategoryPath(groups) || activeGroup.path,
+            options: [
+                { label: "Все подкатегории", path: activeGroup.path },
+                ...activeGroup.subcategories.map(subcategory => ({
+                    label: getSubcategoryDisplayLabel(subcategory, activeGroup),
+                    path: subcategory.path
+                }))
+            ]
+        };
+    }
+
+    const directGroupSubcategory = activeCategoryPath.startsWith("category:")
+        ? getDirectGroupSubcategory(activeGroup)
+        : null;
+    const activeSubcategoryPath = getActiveSubcategoryPath(groups);
+    const activeSubcategory = directGroupSubcategory
+        || activeGroup.subcategories.find(subcategory => subcategory.path === activeSubcategoryPath);
+    if (!activeSubcategory) return null;
+    const allPath = directGroupSubcategory ? activeGroup.path : getSubcategoryAllPath(activeSubcategory.path);
+    return {
+        title: "Выберите группу товаров",
+        selectedPath: activeCategoryPath.startsWith("group:") ? activeCategoryPath : allPath,
+        options: [
+            { label: "Все товары", path: allPath },
+            ...activeSubcategory.groups.map(productGroup => ({ label: productGroup.label, path: productGroup.path }))
+        ]
+    };
+}
+
+function openCatalogPicker(type, trigger) {
+    if (window.innerWidth > MOBILE_SEARCH_MAX_WIDTH) return;
+    if (catalogPickerTrigger === trigger && !catalogPickerPopover?.classList.contains("hidden")) {
+        closeCatalogPicker();
+        return;
+    }
+    const data = getCatalogPickerData(type);
+    if (!data) return;
+
+    const popover = ensureCatalogPickerPopover();
+    const optionsContainer = popover.querySelector(".catalog-picker-options");
+    popover.setAttribute("aria-label", data.title);
+    optionsContainer.innerHTML = "";
+
+    data.options.forEach(option => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "catalog-picker-option";
+        button.dataset.path = option.path;
+        button.dataset.pickerType = type;
+        button.setAttribute("role", "option");
+        button.setAttribute("aria-label", option.label);
+        button.setAttribute("aria-selected", String(option.path === data.selectedPath));
+        button.classList.toggle("is-selected", option.path === data.selectedPath);
+        button.textContent = option.label;
+        optionsContainer.appendChild(button);
     });
 
-    wrapper.appendChild(select);
-    return wrapper;
+    catalogPickerTrigger?.setAttribute("aria-expanded", "false");
+    catalogPickerTrigger = trigger;
+    trigger.setAttribute("aria-expanded", "true");
+    popover.classList.remove("hidden");
+    positionCatalogPicker();
+    requestAnimationFrame(() => {
+        (optionsContainer.querySelector(".is-selected") || optionsContainer.querySelector(".catalog-picker-option"))?.focus();
+    });
 }
 
 function renderCategoryControls() {
@@ -39365,7 +39489,12 @@ function renderCategoryControls() {
         : null;
 
     if (!directGroupSubcategory) {
-        categoryControls.appendChild(createSubcategorySelect(activeGroup));
+        const activeSubcategory = activeGroup.subcategories.find(subcategory => subcategory.path === activeSubcategoryPath);
+        categoryControls.appendChild(createMobileCatalogPicker(
+            "subcategory",
+            "ПОДКАТЕГОРИЯ",
+            activeSubcategory ? getSubcategoryDisplayLabel(activeSubcategory, activeGroup) : "Все подкатегории"
+        ));
 
         const subcategoryList = document.createElement("div");
         subcategoryList.className = "category-subcategory-list";
@@ -39409,7 +39538,12 @@ function renderCategoryControls() {
 
     const allGroupsLabel = directGroupSubcategory ? "Все товары категории" : "Все товары подкатегории";
     const allGroupsPath = directGroupSubcategory ? activeGroup.path : getSubcategoryAllPath(activeSubcategory.path);
-    categoryControls.appendChild(createGroupSelect(activeSubcategory, allGroupsLabel, allGroupsPath));
+    const activeProductGroup = activeSubcategory.groups.find(productGroup => productGroup.path === activeCategoryPath);
+    categoryControls.appendChild(createMobileCatalogPicker(
+        "group",
+        "ГРУППА ТОВАРОВ",
+        activeProductGroup?.label || "Все товары"
+    ));
 
     const groupList = document.createElement("div");
     groupList.className = "category-group-list";
@@ -39424,7 +39558,6 @@ function renderCategoryControls() {
     const visibleGroups = showAllGroups
         ? activeSubcategory.groups
         : activeSubcategory.groups.slice(0, 24);
-    const activeProductGroup = activeSubcategory.groups.find(productGroup => productGroup.path === activeCategoryPath);
     if (activeProductGroup && !visibleGroups.some(productGroup => productGroup.path === activeProductGroup.path)) {
         visibleGroups.push(activeProductGroup);
     }
@@ -40146,6 +40279,12 @@ searchDropdown.addEventListener("change", commitQtyInput);
 searchDropdown.addEventListener("blur", commitQtyInput, true);
 
 categoryControls?.addEventListener("click", async event => {
+    const picker = event.target.closest("[data-catalog-picker]");
+    if (picker) {
+        openCatalogPicker(picker.dataset.catalogPicker, picker);
+        return;
+    }
+
     const toggle = event.target.closest(".subcategory-toggle");
     if (toggle) {
         showAllSubcategories = !showAllSubcategories;
@@ -40177,17 +40316,50 @@ categoryControls?.addEventListener("click", async event => {
     await replacePublicProductsAndRender();
 });
 
-categoryControls?.addEventListener("change", async event => {
-    const select = event.target.closest(".category-subcategory-select select, .category-group-select select");
-    if (!select) return;
+document.addEventListener("click", async event => {
+    const option = event.target.closest(".catalog-picker-option");
+    if (!option || !catalogPickerPopover?.contains(option)) return;
     closeSearchSuggestions({ clearQuery: true, cancelRequest: true });
 
-    activeCategoryPath = select.value || "";
+    const pickerType = option.dataset.pickerType;
+    activeCategoryPath = option.dataset.path || "";
     showAllCatalogProducts = false;
-    if (activeCategoryPath.startsWith("subcategory:")) {
+    if (pickerType === "subcategory") {
         showAllGroups = false;
     }
+    closeCatalogPicker({ restoreFocus: false });
     await replacePublicProductsAndRender();
+    requestAnimationFrame(() => categoryControls?.querySelector(`[data-catalog-picker="${pickerType}"]`)?.focus());
+});
+
+document.addEventListener("pointerdown", event => {
+    if (!catalogPickerPopover || catalogPickerPopover.classList.contains("hidden")) return;
+    if (catalogPickerPopover.contains(event.target) || catalogPickerTrigger?.contains(event.target)) return;
+    closeCatalogPicker();
+});
+
+document.addEventListener("keydown", event => {
+    if (!catalogPickerPopover || catalogPickerPopover.classList.contains("hidden")) return;
+    if (event.key === "Escape") {
+        event.preventDefault();
+        closeCatalogPicker();
+        return;
+    }
+    if (event.key === "Tab") {
+        closeCatalogPicker({ restoreFocus: false });
+        return;
+    }
+
+    const options = [...catalogPickerPopover.querySelectorAll(".catalog-picker-option")];
+    const currentIndex = options.indexOf(document.activeElement);
+    let nextIndex = -1;
+    if (event.key === "ArrowDown") nextIndex = currentIndex < 0 ? 0 : (currentIndex + 1) % options.length;
+    if (event.key === "ArrowUp") nextIndex = currentIndex < 0 ? options.length - 1 : (currentIndex - 1 + options.length) % options.length;
+    if (event.key === "Home") nextIndex = 0;
+    if (event.key === "End") nextIndex = options.length - 1;
+    if (nextIndex < 0) return;
+    event.preventDefault();
+    options[nextIndex]?.focus();
 });
 
 searchInput?.form?.addEventListener("submit", event => {
@@ -40195,6 +40367,11 @@ searchInput?.form?.addEventListener("submit", event => {
 });
 
 window.addEventListener("resize", () => {
+    if (window.innerWidth > MOBILE_SEARCH_MAX_WIDTH) {
+        closeCatalogPicker({ restoreFocus: false });
+    } else {
+        positionCatalogPicker();
+    }
     if (window.innerWidth > MOBILE_SEARCH_MAX_WIDTH && siteHeader?.classList.contains("is-search-expanded")) {
         collapseMobileSearch({ blurInput: false, preserveQuery: true });
     }

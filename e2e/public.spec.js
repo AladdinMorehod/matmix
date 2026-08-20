@@ -217,17 +217,22 @@ test("catalog shows all subcategory products before optional group filtering", a
     const productGrid = page.locator("#productGrid");
     const cards = productGrid.locator(".card");
     const selectSubcategory = async name => {
-        const select = page.locator(".category-subcategory-select select");
-        if (await select.isVisible()) {
-            await select.selectOption({ label: name });
+        const picker = page.locator('[data-catalog-picker="subcategory"]');
+        if (await picker.isVisible()) {
+            await picker.click();
+            await page.locator(".catalog-picker-popover").getByRole("option", { name, exact: true }).click();
             return;
         }
         await page.locator("#categoryControls").getByRole("button", { name, exact: true }).click();
     };
     const selectGroup = async name => {
-        const select = page.locator(".category-group-select select");
-        if (await select.isVisible()) {
-            await select.selectOption({ label: name });
+        const picker = page.locator('[data-catalog-picker="group"]');
+        if (await picker.isVisible()) {
+            await picker.click();
+            await page.locator(".catalog-picker-popover").getByRole("option", {
+                name: name === "Все товары подкатегории" ? "Все товары" : name,
+                exact: true
+            }).click();
             return;
         }
         await page.locator("#categoryControls").getByRole("button", { name, exact: true }).click();
@@ -273,6 +278,198 @@ test("catalog shows all subcategory products before optional group filtering", a
         await expect(productGrid.locator(".empty-products")).toHaveText("Товары не найдены.");
         expect(pageErrors).toEqual([]);
     }
+});
+
+test("mobile catalog uses compact pickers and anchored popovers", async ({ page }) => {
+    const category = "Смеси";
+    const targetSubcategory = "Штукатурка";
+    const otherSubcategory = "Клеи";
+    const sharedGroup = "Общая группа";
+    const directGroupCategory = "Прочие материалы";
+    const fillerSubcategories = Array.from({ length: 30 }, (_, index) => ({
+        name: `Дополнительная подкатегория ${String(index + 1).padStart(2, "0")}`,
+        groups: [{ name: `Группа ${index + 1}` }]
+    }));
+    const products = [
+        { id: 9251, externalId: "mobile-plaster-shared", name: "Штукатурка общая", price: 100, weight: 1, unit: "шт", category, subcategory: targetSubcategory, productGroup: sharedGroup, image: "" },
+        { id: 9252, externalId: "mobile-plaster-gypsum", name: "Штукатурка гипсовая", price: 200, weight: 1, unit: "шт", category, subcategory: targetSubcategory, productGroup: "Гипсовая", image: "" },
+        { id: 9253, externalId: "mobile-adhesive-shared", name: "Клей общий", price: 300, weight: 1, unit: "шт", category, subcategory: otherSubcategory, productGroup: sharedGroup, image: "" },
+        { id: 9254, externalId: "mobile-direct-group", name: "Материал без подкатегории", price: 400, weight: 1, unit: "шт", category: directGroupCategory, subcategory: "Без подкатегории", productGroup: "Специальная группа", image: "" }
+    ];
+    const pageErrors = [];
+    page.on("pageerror", error => pageErrors.push(error.message));
+
+    await page.route("**/api/public/products/structure", route => route.fulfill({
+        contentType: "application/json",
+        body: JSON.stringify({
+            success: true,
+            categories: [
+                {
+                    name: category,
+                    subcategories: [
+                        { name: targetSubcategory, groups: [{ name: sharedGroup }, { name: "Гипсовая" }] },
+                        { name: otherSubcategory, groups: [{ name: sharedGroup }] },
+                        ...fillerSubcategories
+                    ]
+                },
+                {
+                    name: directGroupCategory,
+                    subcategories: [{ name: "Без подкатегории", groups: [{ name: "Специальная группа" }] }]
+                }
+            ]
+        })
+    }));
+    await page.route("**/api/public/products?*", async route => {
+        const params = new URL(route.request().url()).searchParams;
+        const filtered = products.filter(product => {
+            return (!params.get("category") || product.category === params.get("category"))
+                && (!params.get("subcategory") || product.subcategory === params.get("subcategory"))
+                && (!params.get("productGroup") || product.productGroup === params.get("productGroup"));
+        });
+        await route.fulfill({
+            contentType: "application/json",
+            body: JSON.stringify({
+                success: true,
+                products: filtered,
+                items: filtered,
+                pagination: { page: 1, limit: 50, total: filtered.length, totalPages: 1, hasNext: false }
+            })
+        });
+    });
+
+    await page.setViewportSize({ width: 375, height: 900 });
+    await page.goto("/catalog");
+    await page.locator("#categoryControls").getByRole("button", { name: category, exact: true }).click();
+
+    const subcategoryPicker = page.locator('[data-catalog-picker="subcategory"]');
+    const groupPicker = page.locator('[data-catalog-picker="group"]');
+    const popover = page.locator(".catalog-picker-popover");
+    await expect(subcategoryPicker).toBeVisible();
+    await expect(page.locator("#categoryControls select")).toHaveCount(0);
+    await expect(subcategoryPicker.locator(".catalog-mobile-picker-label")).toHaveText("ПОДКАТЕГОРИЯ");
+
+    await subcategoryPicker.click();
+    await expect(popover).toBeVisible();
+    await expect(popover).toHaveAttribute("aria-label", "Выберите подкатегорию");
+    await expect(popover.getByRole("option", { name: "Все подкатегории", exact: true })).toHaveAttribute("aria-selected", "true");
+    await expect(page.locator(".catalog-picker-overlay")).toHaveCount(0);
+    const openGeometry = await page.evaluate(() => {
+        const trigger = document.querySelector('[data-catalog-picker="subcategory"]').getBoundingClientRect();
+        const popoverElement = document.querySelector(".catalog-picker-popover");
+        const popoverRect = popoverElement.getBoundingClientRect();
+        const background = getComputedStyle(popoverElement).backgroundColor;
+        return {
+            background,
+            bodyOverflow: getComputedStyle(document.body).overflow,
+            placement: popoverElement.dataset.placement,
+            position: getComputedStyle(popoverElement).position,
+            trigger: trigger.toJSON(),
+            popover: popoverRect.toJSON(),
+            scrollable: popoverElement.scrollHeight > popoverElement.clientHeight,
+            viewportHeight: window.innerHeight
+        };
+    });
+    expect(openGeometry.background).toMatch(/^rgb\(/);
+    expect(openGeometry.position).toBe("absolute");
+    expect(openGeometry.placement).toBe("bottom");
+    expect(Math.abs(openGeometry.popover.top - openGeometry.trigger.bottom - 4)).toBeLessThanOrEqual(1);
+    expect(Math.abs(openGeometry.popover.width - openGeometry.trigger.width)).toBeLessThanOrEqual(1);
+    expect(openGeometry.popover.height).toBeLessThanOrEqual(openGeometry.viewportHeight * 0.58 + 1);
+    expect(openGeometry.scrollable).toBe(true);
+    expect(openGeometry.bodyOverflow).not.toBe("hidden");
+
+    await page.keyboard.press("ArrowDown");
+    await expect(popover.getByRole("option", { name: targetSubcategory, exact: true })).toBeFocused();
+    await page.keyboard.press("Escape");
+    await expect(popover).toBeHidden();
+    await expect(subcategoryPicker).toBeFocused();
+
+    await subcategoryPicker.click();
+    await subcategoryPicker.click();
+    await expect(popover).toBeHidden();
+    await expect(subcategoryPicker).toBeFocused();
+
+    await page.setViewportSize({ width: 375, height: 420 });
+    await subcategoryPicker.click();
+    const upwardGeometry = await page.evaluate(() => {
+        const trigger = document.querySelector('[data-catalog-picker="subcategory"]').getBoundingClientRect();
+        const popoverElement = document.querySelector(".catalog-picker-popover");
+        const popoverRect = popoverElement.getBoundingClientRect();
+        return { trigger: trigger.toJSON(), popover: popoverRect.toJSON(), placement: popoverElement.dataset.placement };
+    });
+    expect(upwardGeometry.placement).toBe("top");
+    expect(upwardGeometry.popover.bottom).toBeLessThanOrEqual(upwardGeometry.trigger.top - 3);
+    expect(await popover.evaluate(element => element.scrollHeight > element.clientHeight)).toBe(true);
+
+    await page.locator("#cartBtn").click();
+    await expect(popover).toBeHidden();
+    await page.locator("#closeCart").click();
+
+    await page.setViewportSize({ width: 375, height: 640 });
+    await subcategoryPicker.click();
+    await popover.getByRole("option", { name: targetSubcategory, exact: true }).click();
+    await expect(page.locator("#productGrid .card")).toHaveCount(2);
+    await expect(subcategoryPicker.locator(".catalog-mobile-picker-value")).toHaveText(targetSubcategory);
+    await expect(groupPicker).toBeVisible();
+    await expect(groupPicker.locator(".catalog-mobile-picker-label")).toHaveText("ГРУППА ТОВАРОВ");
+    await expect(groupPicker.locator(".catalog-mobile-picker-value")).toHaveText("Все товары");
+
+    const pickerGeometry = await page.evaluate(() => {
+        const subcategory = document.querySelector('[data-catalog-picker="subcategory"]').getBoundingClientRect();
+        const group = document.querySelector('[data-catalog-picker="group"]').getBoundingClientRect();
+        return {
+            subcategoryHeight: subcategory.height,
+            groupHeight: group.height,
+            gap: group.top - subcategory.bottom,
+            scrollWidth: document.documentElement.scrollWidth,
+            clientWidth: document.documentElement.clientWidth
+        };
+    });
+    expect(pickerGeometry.subcategoryHeight).toBeGreaterThanOrEqual(44);
+    expect(pickerGeometry.groupHeight).toBeGreaterThanOrEqual(44);
+    expect(pickerGeometry.gap).toBeLessThanOrEqual(6);
+    expect(pickerGeometry.scrollWidth).toBeLessThanOrEqual(pickerGeometry.clientWidth + 1);
+
+    await groupPicker.click();
+    await expect(popover).toHaveAttribute("aria-label", "Выберите группу товаров");
+    await popover.getByRole("option", { name: sharedGroup, exact: true }).click();
+    await expect(page.locator("#productGrid .card")).toHaveCount(1);
+    await expect(page.locator("#productGrid")).toContainText("Штукатурка общая");
+
+    await groupPicker.click();
+    await popover.getByRole("option", { name: "Все товары", exact: true }).click();
+    await expect(page.locator("#productGrid .card")).toHaveCount(2);
+
+    await subcategoryPicker.click();
+    await popover.getByRole("option", { name: otherSubcategory, exact: true }).click();
+    await expect(page.locator("#productGrid .card")).toHaveCount(1);
+    await expect(page.locator("#productGrid")).toContainText("Клей общий");
+    await expect(page.locator("#productGrid")).not.toContainText("Штукатурка общая");
+    await expect(groupPicker.locator(".catalog-mobile-picker-value")).toHaveText("Все товары");
+
+    await page.locator("#categoryControls").getByRole("button", { name: directGroupCategory, exact: true }).click();
+    await expect(page.locator('[data-catalog-picker="subcategory"]')).toHaveCount(0);
+    await expect(groupPicker).toBeVisible();
+    await groupPicker.click();
+    await expect(popover.getByRole("option", { name: "Специальная группа", exact: true })).toBeVisible();
+    await popover.getByRole("option", { name: "Специальная группа", exact: true }).click();
+    await expect(page.locator("#productGrid")).toContainText("Материал без подкатегории");
+
+    const helpPlacement = await page.evaluate(() => {
+        const grid = document.querySelector("#productGrid");
+        const help = document.querySelector(".catalog-help");
+        const lastCard = grid.querySelector(".card:last-child");
+        const helpStyle = getComputedStyle(help);
+        return {
+            followsGrid: Boolean(grid.compareDocumentPosition(help) & Node.DOCUMENT_POSITION_FOLLOWING),
+            followsLastCard: !lastCard || help.getBoundingClientRect().top >= lastCard.getBoundingClientRect().bottom,
+            position: helpStyle.position
+        };
+    });
+    expect(helpPlacement.followsGrid).toBe(true);
+    expect(helpPlacement.followsLastCard).toBe(true);
+    expect(["fixed", "sticky"]).not.toContain(helpPlacement.position);
+    expect(pageErrors).toEqual([]);
 });
 
 test("mobile header stays single-line and expands search without layout shift", async ({ page }) => {
