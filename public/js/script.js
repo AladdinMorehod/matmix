@@ -38954,10 +38954,6 @@ function getCatalogPromptMessage(state) {
         return "Выберите подкатегорию, чтобы увидеть товары.";
     }
 
-    if (state.isSubcategoryLevel && state.activeSubcategory?.groups.length) {
-        return "Выберите группу товаров или откройте все товары подкатегории.";
-    }
-
     return "";
 }
 
@@ -39248,6 +39244,7 @@ function getActiveMainCategoryPath(groups) {
 
     const group = groups.find(item => item.subcategories.some(subcategory => {
         return subcategory.path === activeCategoryPath
+            || getSubcategoryAllPath(subcategory.path) === activeCategoryPath
             || subcategory.groups.some(productGroup => productGroup.path === activeCategoryPath);
     }));
     return group?.path || "";
@@ -39294,7 +39291,8 @@ function createSubcategorySelect(activeGroup) {
         const option = document.createElement("option");
         option.value = subcategory.path;
         option.textContent = getSubcategoryDisplayLabel(subcategory, activeGroup);
-        option.selected = subcategory.path === activeCategoryPath;
+        option.selected = subcategory.path === activeCategoryPath
+            || getSubcategoryAllPath(subcategory.path) === activeCategoryPath;
         select.appendChild(option);
     });
 

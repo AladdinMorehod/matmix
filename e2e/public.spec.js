@@ -168,6 +168,113 @@ test("catalog, search, cart persistence and responsive smoke", async ({ page, re
     for (const viewport of [{ width: 320, height: 568 }, { width: 375, height: 812 }, { width: 768, height: 1024 }, { width: 1024, height: 768 }, { width: 1366, height: 768 }, { width: 1920, height: 1080 }]) { await page.setViewportSize(viewport); const dimensions = await page.evaluate(() => ({ scrollWidth: document.documentElement.scrollWidth, clientWidth: document.documentElement.clientWidth, offenders: [...document.querySelectorAll("*")].filter(element => element.getBoundingClientRect().right > document.documentElement.clientWidth + 1).slice(0, 5).map(element => `${element.tagName}.${element.className}:${Math.round(element.getBoundingClientRect().right)}`) })); expect(dimensions.scrollWidth, JSON.stringify({ viewport, dimensions })).toBeLessThanOrEqual(dimensions.clientWidth + 1); }
 });
 
+test("catalog shows all subcategory products before optional group filtering", async ({ page }) => {
+    const category = "Смеси";
+    const plaster = "Штукатурка";
+    const adhesives = "Клеи";
+    const emptySubcategory = "Пустая подкатегория";
+    const sharedGroup = "Общая группа";
+    const products = [
+        { id: 9201, externalId: "plaster-shared", name: "Штукатурка общая", price: 100, weight: 1, unit: "шт", category, subcategory: plaster, productGroup: sharedGroup, image: "" },
+        { id: 9202, externalId: "plaster-gypsum", name: "Штукатурка гипсовая", price: 200, weight: 1, unit: "шт", category, subcategory: plaster, productGroup: "Гипсовая", image: "" },
+        { id: 9203, externalId: "adhesive-shared", name: "Клей общий", price: 300, weight: 1, unit: "шт", category, subcategory: adhesives, productGroup: sharedGroup, image: "" }
+    ];
+    const pageErrors = [];
+    page.on("pageerror", error => pageErrors.push(error.message));
+
+    await page.route("**/api/public/products/structure", route => route.fulfill({
+        contentType: "application/json",
+        body: JSON.stringify({
+            success: true,
+            categories: [{
+                name: category,
+                subcategories: [
+                    { name: plaster, groups: [{ name: sharedGroup }, { name: "Гипсовая" }] },
+                    { name: adhesives, groups: [{ name: sharedGroup }] },
+                    { name: emptySubcategory, groups: [{ name: "Пустая группа" }] }
+                ]
+            }]
+        })
+    }));
+    await page.route("**/api/public/products?*", async route => {
+        const params = new URL(route.request().url()).searchParams;
+        const filtered = products.filter(product => {
+            return (!params.get("category") || product.category === params.get("category"))
+                && (!params.get("subcategory") || product.subcategory === params.get("subcategory"))
+                && (!params.get("productGroup") || product.productGroup === params.get("productGroup"));
+        });
+        await route.fulfill({
+            contentType: "application/json",
+            body: JSON.stringify({
+                success: true,
+                products: filtered,
+                items: filtered,
+                pagination: { page: 1, limit: 50, total: filtered.length, totalPages: 1, hasNext: false }
+            })
+        });
+    });
+
+    const productGrid = page.locator("#productGrid");
+    const cards = productGrid.locator(".card");
+    const selectSubcategory = async name => {
+        const select = page.locator(".category-subcategory-select select");
+        if (await select.isVisible()) {
+            await select.selectOption({ label: name });
+            return;
+        }
+        await page.locator("#categoryControls").getByRole("button", { name, exact: true }).click();
+    };
+    const selectGroup = async name => {
+        const select = page.locator(".category-group-select select");
+        if (await select.isVisible()) {
+            await select.selectOption({ label: name });
+            return;
+        }
+        await page.locator("#categoryControls").getByRole("button", { name, exact: true }).click();
+    };
+
+    for (const viewport of [{ width: 1280, height: 800 }, { width: 375, height: 812 }]) {
+        await page.setViewportSize(viewport);
+        await page.goto("/catalog");
+        await page.locator("#categoryControls").getByRole("button", { name: category, exact: true }).click();
+
+        await selectSubcategory(plaster);
+        await expect(cards).toHaveCount(2);
+        await expect(productGrid).toContainText("Штукатурка общая");
+        await expect(productGrid).toContainText("Штукатурка гипсовая");
+        await expect(productGrid).not.toContainText("Клей общий");
+        await expect(productGrid).not.toContainText("Выберите группу товаров");
+
+        await selectGroup(sharedGroup);
+        await expect(cards).toHaveCount(1);
+        await expect(productGrid).toContainText("Штукатурка общая");
+        await expect(productGrid).not.toContainText("Клей общий");
+
+        await selectGroup("Все товары подкатегории");
+        await expect(cards).toHaveCount(2);
+
+        await selectGroup("Гипсовая");
+        await expect(cards).toHaveCount(1);
+        await selectSubcategory(adhesives);
+        await expect(cards).toHaveCount(1);
+        await expect(productGrid).toContainText("Клей общий");
+        await expect(productGrid).not.toContainText("Штукатурка общая");
+
+        await selectGroup(sharedGroup);
+        await expect(cards).toHaveCount(1);
+        await expect(productGrid).toContainText("Клей общий");
+        await expect(productGrid).not.toContainText("Штукатурка общая");
+
+        await selectSubcategory(plaster);
+        await expect(cards).toHaveCount(2);
+
+        await selectSubcategory(emptySubcategory);
+        await expect(cards).toHaveCount(0);
+        await expect(productGrid.locator(".empty-products")).toHaveText("Товары не найдены.");
+        expect(pageErrors).toEqual([]);
+    }
+});
+
 test("mobile header stays single-line and expands search without layout shift", async ({ page }) => {
     const viewports = [
         { width: 320, height: 568 },
