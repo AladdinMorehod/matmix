@@ -1,0 +1,11 @@
+[Unit]
+Description=Run the MatMix production data backup daily
+
+[Timer]
+OnCalendar=*-*-* 02:15:00
+Persistent=true
+RandomizedDelaySec=10m
+Unit=matmix-backup.service
+
+[Install]
+WantedBy=timers.target

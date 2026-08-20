@@ -6,7 +6,9 @@ const ExcelJS = require("exceljs");
 
 const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "matmix-catalog-rename-test-"));
 const databasePath = path.join(tempDir, "matmix.db");
+const importedExcelDir = path.join(tempDir, "catalog-imports");
 process.env.MATMIX_DB_PATH = databasePath;
+process.env.CATALOG_IMPORT_ARCHIVE_PATH = importedExcelDir;
 
 const database = require("../database");
 const {
@@ -15,7 +17,6 @@ const {
     applyCatalogImport
 } = require("../services/catalogImport");
 
-const importedExcelDir = path.join(__dirname, "..", "imported-excel");
 const initialExcelArtifacts = new Set(fs.existsSync(importedExcelDir) ? fs.readdirSync(importedExcelDir) : []);
 const user = { id: 1, name: "Catalog rename regression" };
 const CASCADE_SUBCATEGORY_COUNT = 158;
@@ -623,7 +624,7 @@ main().catch(error => {
     await new Promise(resolve => database.db.close(() => resolve()));
     if (fs.existsSync(importedExcelDir)) {
         fs.readdirSync(importedExcelDir).forEach(name => {
-            if (!initialExcelArtifacts.has(name) && /catalog-.*-updated-/i.test(name)) {
+            if (!initialExcelArtifacts.has(name)) {
                 fs.rmSync(path.join(importedExcelDir, name), { force: true });
             }
         });

@@ -83,16 +83,20 @@ validate_runtime_configuration() {
   [[ -n "${PRODUCT_UPLOADS_PATH:-}" && -d "$PRODUCT_UPLOADS_PATH" ]] \
     || fail "PRODUCT_UPLOADS_PATH must identify the existing product upload directory."
   [[ -n "${ORDER_ATTACHMENTS_PATH:-}" ]] || fail "ORDER_ATTACHMENTS_PATH is required."
+  [[ -n "${CATALOG_IMPORT_ARCHIVE_PATH:-}" ]] || fail "CATALOG_IMPORT_ARCHIVE_PATH is required."
   [[ -n "${BACKUP_ROOT_PATH:-}" && -d "$BACKUP_ROOT_PATH" ]] \
     || fail "BACKUP_ROOT_PATH must identify the existing backup directory."
   [[ -n "${APP_RUNTIME_LOCK_PATH:-}" ]] || fail "APP_RUNTIME_LOCK_PATH is required."
 
   install -d -o "$RUNTIME_USER" -g "$RUNTIME_GROUP" -m 0750 "$ORDER_ATTACHMENTS_PATH"
+  install -d -o "$RUNTIME_USER" -g "$RUNTIME_GROUP" -m 0750 "$CATALOG_IMPORT_ARCHIVE_PATH"
   runuser -u "$RUNTIME_USER" -- test -r "$MATMIX_DB_PATH"
   runuser -u "$RUNTIME_USER" -- test -r "$PRODUCT_UPLOADS_PATH"
   runuser -u "$RUNTIME_USER" -- test -w "$PRODUCT_UPLOADS_PATH"
   runuser -u "$RUNTIME_USER" -- test -r "$ORDER_ATTACHMENTS_PATH"
   runuser -u "$RUNTIME_USER" -- test -w "$ORDER_ATTACHMENTS_PATH"
+  runuser -u "$RUNTIME_USER" -- test -r "$CATALOG_IMPORT_ARCHIVE_PATH"
+  runuser -u "$RUNTIME_USER" -- test -w "$CATALOG_IMPORT_ARCHIVE_PATH"
   runuser -u "$RUNTIME_USER" -- test -w "$BACKUP_ROOT_PATH"
 }
 

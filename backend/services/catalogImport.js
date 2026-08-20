@@ -12,6 +12,12 @@ const {
     buildCatalogStructureIndex,
     resolveProductStructureMembership
 } = require("./catalogStructureMembership");
+const {
+    ensureCatalogImportArchiveRoot,
+    writeCatalogImportArchive,
+    removeCatalogImportArchive,
+    validateCatalogImportArchiveFile
+} = require("./catalogImportArchive");
 
 const IMPORT_SHEET_NAME = "ШАБЛОН";
 const MAT_CODE_PATTERN = /^MAT-(\d+)$/i;
@@ -4215,10 +4221,7 @@ async function applyCatalogOrderFromParsed(db, parsed, assignedRows, now) {
     }
 }
 
-async function createExcelCopy(tokenData, assignedRows) {
-    const copiesDir = path.join(__dirname, "..", "imported-excel");
-    fs.mkdirSync(copiesDir, { recursive: true });
-
+async function createExcelCopy(tokenData, assignedRows, archiveOptions = {}) {
     const workbook = new ExcelJS.Workbook();
     await workbook.xlsx.load(tokenData.buffer);
     const sheet = workbook.getWorksheet(IMPORT_SHEET_NAME) || workbook.worksheets[0];
@@ -4228,15 +4231,12 @@ async function createExcelCopy(tokenData, assignedRows) {
         }
     });
 
-    const baseName = sanitizeUploadFileName(tokenData.file.name || "catalog.xlsx").replace(/\.xlsx$/i, "");
-    const copyPath = path.join(copiesDir, `${baseName}-updated-${timestampForFile()}.xlsx`);
-    await workbook.xlsx.writeFile(copyPath);
-    return copyPath;
+    return writeCatalogImportArchive(await workbook.xlsx.writeBuffer(), process.env, archiveOptions);
 }
 
 let importApplyActive = false;
 
-async function applyCatalogImport(db, token, options = {}, user = {}) {
+async function applyCatalogImport(db, token, options = {}, user = {}, runtime = {}) {
     if (importApplyActive) throw createImportError(409, "Другой импорт уже применяется.", "IMPORT_ALREADY_RUNNING");
     importApplyActive = true;
     try {
@@ -4248,6 +4248,7 @@ async function applyCatalogImport(db, token, options = {}, user = {}) {
         throw createImportError(409, "Файл больше не проходит проверку. Сделайте Preview заново.", "PREVIEW_NOT_IMPORTABLE");
     }
 
+    await ensureCatalogImportArchiveRoot();
     const backupPath = createDatabaseBackup();
     const now = new Date().toISOString();
     const result = {
@@ -4275,6 +4276,7 @@ async function applyCatalogImport(db, token, options = {}, user = {}) {
     );
     const structureParsed = effectiveParsed;
 
+    let preparedArchivePath = "";
     await db.run("BEGIN IMMEDIATE TRANSACTION");
     try {
         const dbProducts = await db.all("SELECT * FROM products ORDER BY id ASC");
@@ -4342,53 +4344,58 @@ async function applyCatalogImport(db, token, options = {}, user = {}) {
 
         await syncCatalogStructureFromProducts(db);
         await applyCatalogOrderFromParsed(db, effectiveParsed, assignedRows, now);
+        result.assignedCodes = assignedRows.map(item => ({
+            entityType: item.entityType || "structure",
+            name: item.name || "",
+            externalId: item.externalId
+        }));
+        preparedArchivePath = await createExcelCopy(tokenData, assignedRows, runtime.archiveOptions || {});
+        result.excelCopyPath = preparedArchivePath;
+        if (typeof runtime.afterArchivePrepared === "function") {
+            await runtime.afterArchivePrepared({ archivePath: preparedArchivePath, result });
+        }
+        const integrity = await db.get("PRAGMA integrity_check");
+        result.integrityCheck = integrity?.integrity_check || Object.values(integrity || {})[0] || "";
+        result.foreignKeyCheck = await db.all("PRAGMA foreign_key_check");
+
+        const logResult = await db.run(
+            `INSERT INTO catalog_import_logs (
+                user_id, user_name, file_name, file_hash, backup_path, excel_copy_path,
+                created_count, updated_count, assigned_mat_count, assigned_structure_count, hidden_count, requires_review_count,
+                error_count, summary_json, created_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+                user?.id || null,
+                user?.name || "",
+                tokenData.file.name || "",
+                tokenData.fileHash,
+                result.backupPath,
+                result.excelCopyPath,
+                result.created,
+                result.updated,
+                result.assignedMat,
+                result.assignedStructureCodes,
+                result.hidden,
+                result.requiresReview,
+                0,
+                JSON.stringify({
+                    previewSummary: latestPreview.summary,
+                    applyOptions: options,
+                    skippedRequiresReview: result.skippedRequiresReview.slice(0, 500)
+                }),
+                now
+            ]
+        );
+
+        result.importLogId = logResult.id;
+        result.excelCopyUrl = `/api/products/import/excel-copy/${logResult.id}`;
         await db.run("COMMIT");
     } catch (error) {
         await db.run("ROLLBACK").catch(() => {});
+        await removeCatalogImportArchive(preparedArchivePath).catch(() => {});
         throw error;
     }
 
-    result.assignedCodes = assignedRows.map(item => ({
-        entityType: item.entityType || "structure",
-        name: item.name || "",
-        externalId: item.externalId
-    }));
-    result.excelCopyPath = await createExcelCopy(tokenData, assignedRows);
-    const integrity = await db.get("PRAGMA integrity_check");
-    result.integrityCheck = integrity?.integrity_check || Object.values(integrity || {})[0] || "";
-    result.foreignKeyCheck = await db.all("PRAGMA foreign_key_check");
-
-    const logResult = await db.run(
-        `INSERT INTO catalog_import_logs (
-            user_id, user_name, file_name, file_hash, backup_path, excel_copy_path,
-            created_count, updated_count, assigned_mat_count, assigned_structure_count, hidden_count, requires_review_count,
-            error_count, summary_json, created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [
-            user?.id || null,
-            user?.name || "",
-            tokenData.file.name || "",
-            tokenData.fileHash,
-            result.backupPath,
-            result.excelCopyPath,
-            result.created,
-            result.updated,
-            result.assignedMat,
-            result.assignedStructureCodes,
-            result.hidden,
-            result.requiresReview,
-            0,
-            JSON.stringify({
-                previewSummary: latestPreview.summary,
-                applyOptions: options,
-                skippedRequiresReview: result.skippedRequiresReview.slice(0, 500)
-            }),
-            now
-        ]
-    );
-
-    result.importLogId = logResult.id;
-    result.excelCopyUrl = `/api/products/import/excel-copy/${logResult.id}`;
     previewTokens.delete(tokenData.token);
     return result;
     } finally {
@@ -4398,13 +4405,20 @@ async function applyCatalogImport(db, token, options = {}, user = {}) {
 
 async function getCatalogImportExcelCopy(db, id) {
     const row = await db.get("SELECT excel_copy_path FROM catalog_import_logs WHERE id = ?", [Number(id) || 0]);
-    if (!row || !row.excel_copy_path || !fs.existsSync(row.excel_copy_path)) {
+    if (!row || !row.excel_copy_path) {
+        throw createImportError(404, "Копия Excel не найдена.", "EXCEL_COPY_NOT_FOUND");
+    }
+
+    let archivePath;
+    try {
+        archivePath = await validateCatalogImportArchiveFile(row.excel_copy_path);
+    } catch {
         throw createImportError(404, "Копия Excel не найдена.", "EXCEL_COPY_NOT_FOUND");
     }
 
     return {
-        path: row.excel_copy_path,
-        filename: path.basename(row.excel_copy_path)
+        path: archivePath,
+        filename: path.basename(archivePath)
     };
 }
 

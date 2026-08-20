@@ -7,13 +7,10 @@ const ExcelJS = require("exceljs");
 const sourceDatabasePath = path.join(__dirname, "..", "database", "matmix.db");
 const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "matmix-order-test-"));
 const testDatabasePath = path.join(tempDir, "matmix.db");
-const importedExcelDir = path.join(__dirname, "..", "imported-excel");
-const testArtifactPrefixes = ["catalog-order-", "catalog-new-structure"];
-const existingTestArtifacts = new Set(fs.existsSync(importedExcelDir)
-    ? fs.readdirSync(importedExcelDir).filter(name => testArtifactPrefixes.some(prefix => name.startsWith(prefix)))
-    : []);
+const importedExcelDir = path.join(tempDir, "catalog-imports");
 fs.copyFileSync(sourceDatabasePath, testDatabasePath);
 process.env.MATMIX_DB_PATH = testDatabasePath;
+process.env.CATALOG_IMPORT_ARCHIVE_PATH = importedExcelDir;
 
 const databaseModule = require("../database");
 const {
@@ -207,11 +204,6 @@ async function main() {
     } finally {
         await db.close();
         await new Promise(resolve => databaseModule.db.close(() => resolve()));
-        if (fs.existsSync(importedExcelDir)) {
-            fs.readdirSync(importedExcelDir)
-                .filter(name => testArtifactPrefixes.some(prefix => name.startsWith(prefix)) && !existingTestArtifacts.has(name))
-                .forEach(name => fs.rmSync(path.join(importedExcelDir, name), { force: true }));
-        }
         fs.rmSync(tempDir, { recursive: true, force: true });
     }
 }

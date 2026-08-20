@@ -66,6 +66,24 @@ async function copyTree(source, target) {
     }
 }
 
+async function snapshotTree(root) {
+    const files = [];
+    async function walk(current, prefix = "") {
+        for (const entry of await fs.promises.readdir(current, { withFileTypes: true })) {
+            const relative = prefix ? `${prefix}/${entry.name}` : entry.name;
+            const target = path.join(current, entry.name);
+            if (entry.isSymbolicLink()) throw new Error(`Symbolic link refused: ${target}`);
+            if (entry.isDirectory()) await walk(target, relative);
+            else if (entry.isFile()) {
+                const stat = await fs.promises.stat(target);
+                files.push({ relativePath: relative, size: stat.size, sha256: await sha256(target) });
+            }
+        }
+    }
+    await walk(root);
+    return files.sort((left, right) => left.relativePath.localeCompare(right.relativePath));
+}
+
 function findLatestBackup() {
     const output = run(
         "sudo",
@@ -116,6 +134,7 @@ async function main() {
         dbPath: path.join(runtimeRoot, "matmix.db"),
         uploadsPath: path.join(runtimeRoot, "uploads"),
         attachmentsPath: path.join(runtimeRoot, "attachments"),
+        catalogImportsPath: path.join(runtimeRoot, "catalog-imports"),
         backupRoot: path.join(rehearsalRoot, "restore-backups"),
         lockPath: path.join(runtimeRoot, "app.lock"),
         retentionCount: 2
@@ -164,7 +183,7 @@ async function main() {
             path.join(sourcePath, "uploads", "products"),
             paths.uploadsPath
         );
-        if (verified.manifest.formatVersion === 2) {
+        if (verified.manifest.formatVersion >= 2) {
             await copyTree(
                 path.join(sourcePath, "attachments", "orders"),
                 paths.attachmentsPath
@@ -172,7 +191,18 @@ async function main() {
         } else {
             await fs.promises.mkdir(paths.attachmentsPath, { recursive: true });
         }
+        if (verified.manifest.formatVersion >= 3) {
+            await copyTree(
+                path.join(sourcePath, "catalog-imports"),
+                paths.catalogImportsPath
+            );
+        } else {
+            await fs.promises.mkdir(paths.catalogImportsPath, { recursive: true });
+        }
 
+        const sourceArchiveSnapshot = verified.manifest.formatVersion >= 3
+            ? await snapshotTree(path.join(sourcePath, "catalog-imports"))
+            : null;
         const sourceDbHash = await sha256(
             path.join(sourcePath, "database", "matmix.db")
         );
@@ -191,6 +221,12 @@ async function main() {
             markerPath,
             "This file must disappear after restore.\n"
         );
+        if (verified.manifest.formatVersion >= 3) {
+            await fs.promises.writeFile(
+                path.join(paths.catalogImportsPath, `.catalog-import-${crypto.randomBytes(8).toString("hex")}.tmp`),
+                "This archive marker must disappear after restore.\n"
+            );
+        }
 
         if (await sha256(paths.dbPath) === sourceDbHash) {
             throw new Error("Database mutation was not applied.");
@@ -213,15 +249,23 @@ async function main() {
         if (fs.existsSync(markerPath)) {
             throw new Error("Uploads directory was not replaced.");
         }
+        const restoredArchiveSnapshot = verified.manifest.formatVersion >= 3
+            ? await snapshotTree(paths.catalogImportsPath)
+            : null;
+        if (sourceArchiveSnapshot && JSON.stringify(restoredArchiveSnapshot) !== JSON.stringify(sourceArchiveSnapshot)) {
+            throw new Error("Restored catalog import archive differs from backup source.");
+        }
 
         console.log(JSON.stringify({
             success: true,
             backupName,
             backupCreatedAt: verified.manifest.createdAt,
             databaseRestoredExactly: true,
+            catalogImportsRestoredExactly: verified.manifest.formatVersion >= 3,
             uploadsReplaced: true,
             uploadCount: verified.manifest.uploads.count,
             attachmentCount: verified.manifest.attachments?.fileCount || 0,
+            catalogImportCount: verified.manifest.catalogImports?.fileCount || 0,
             references: restored.references,
             emergencyBackup: restored.emergencyBackup,
             temporaryPath: keepTemporary ? rehearsalRoot : null

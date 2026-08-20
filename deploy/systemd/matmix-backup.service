@@ -1,0 +1,22 @@
+[Unit]
+Description=MatMix production data backup
+After=local-fs.target
+RequiresMountsFor=/var/lib/matmix /var/backups/matmix
+
+[Service]
+Type=oneshot
+User=matmix
+Group=matmix
+WorkingDirectory=/opt/matmix/app
+EnvironmentFile=/etc/matmix/matmix.env
+ExecStart=/usr/bin/node backend/scripts/backup-production-data.js
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadOnlyPaths=/var/lib/matmix
+ReadWritePaths=/var/backups/matmix
+UMask=0027
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=matmix-backup

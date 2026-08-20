@@ -6,19 +6,26 @@ const { pipeline } = require("stream/promises");
 const sqlite3 = require("sqlite3").verbose();
 const { auditOrderAttachments, listAttachmentMetadata } = require("./orderAttachmentAudit");
 const { createOrderAttachmentStorage, validateStorageKey } = require("./orderAttachmentStorage");
+const { ARCHIVE_FILE_PATTERN, ARCHIVE_TEMP_FILE_PATTERN, resolveCatalogImportArchivePath } = require("./catalogImportArchive");
 
-const FORMAT_VERSION = 2;
+const FORMAT_VERSION = 3;
+const ATTACHMENT_FORMAT_VERSION = 2;
 const LEGACY_FORMAT_VERSION = 1;
-const TOOL_VERSION = "2.0.0";
+const TOOL_VERSION = "3.0.0";
 const REQUIRED_TABLES = ["products", "catalog_structure", "clients", "orders", "users"];
 
-function runtimePaths(env = process.env) {
+function runtimePaths(env = process.env, options = {}) {
     const projectRoot = path.resolve(__dirname, "..", "..");
     const dbPath = path.resolve(env.MATMIX_DB_PATH || path.join(projectRoot, "backend", "database", "matmix.db"));
     return {
         dbPath,
         uploadsPath: path.resolve(env.PRODUCT_UPLOADS_PATH || path.join(projectRoot, "public", "uploads", "products")),
         attachmentsPath: path.resolve(env.ORDER_ATTACHMENTS_PATH || path.join(projectRoot, "backend", "private", "order-attachments")),
+        catalogImportsPath: resolveCatalogImportArchivePath(env, {
+            projectRoot,
+            allowMissingProduction: options.allowMissingProduction === true,
+            allowUnsafePath: options.allowUnsafePath === true
+        }),
         backupRoot: path.resolve(env.BACKUP_ROOT_PATH || path.join(path.dirname(dbPath), "production-backups")),
         lockPath: path.resolve(env.APP_RUNTIME_LOCK_PATH || path.join(path.dirname(dbPath), "matmix-runtime.lock")),
         retentionCount: Math.max(1, Number(env.BACKUP_RETENTION_COUNT) || 14)
@@ -96,8 +103,8 @@ async function walkUploads(root) {
     await walk(root); return result.sort((a, b) => a.relative.localeCompare(b.relative));
 }
 
-async function copyUploads(sourceRoot, targetRoot) {
-    const files = await walkUploads(sourceRoot); const manifestFiles = []; let totalSize = 0;
+async function copyUploads(sourceRoot, targetRoot, options = {}) {
+    const files = (await walkUploads(sourceRoot)).filter(file => !options.ignore?.(file.relative)); const manifestFiles = []; let totalSize = 0;
     for (const file of files) {
         const target = path.join(targetRoot, ...file.relative.split("/"));
         await fs.promises.mkdir(path.dirname(target), { recursive: true });
@@ -149,6 +156,46 @@ async function copyAttachments(dbPath, sourceRoot, targetRoot) {
     return { root: "attachments/orders", fileCount: files.length, totalBytes, files };
 }
 
+async function verifyCatalogImportArea(archiveRoot, catalogImportsManifest) {
+    if (!catalogImportsManifest || catalogImportsManifest.root !== "catalog-imports" || !Array.isArray(catalogImportsManifest.files)) {
+        throw new Error("Backup catalog import manifest is invalid.");
+    }
+    const archiveRootStat = await fs.promises.lstat(archiveRoot);
+    if (archiveRootStat.isSymbolicLink() || !archiveRootStat.isDirectory()) {
+        throw new Error("Backup catalog import archive root is unsafe or missing.");
+    }
+    const archiveListed = new Set();
+    let totalBytes = 0;
+    for (const file of catalogImportsManifest.files) {
+        const relative = safeRelative(file.relativePath);
+        if (relative !== path.basename(relative)
+            || ARCHIVE_TEMP_FILE_PATTERN.test(relative)
+            || !ARCHIVE_FILE_PATTERN.test(relative)) {
+            throw new Error("Backup catalog import archive filename is not a finalized archive.");
+        }
+        if (archiveListed.has(relative)) throw new Error("Duplicate catalog import archive in manifest.");
+        archiveListed.add(relative);
+        const target = path.join(archiveRoot, relative);
+        if (!isInside(archiveRoot, target)) throw new Error("Unsafe catalog import archive path.");
+        const size = manifestSize(file.size, "catalogImports.files[].size");
+        const digest = manifestSha256(file.sha256, "catalogImports.files[].sha256");
+        const stat = await fs.promises.lstat(target);
+        if (stat.isSymbolicLink() || !stat.isFile() || stat.size !== size || await sha256(target) !== digest) {
+            throw new Error(`Catalog import archive checksum mismatch: ${relative}`);
+        }
+        totalBytes += stat.size;
+    }
+    const actualArchives = await walkUploads(archiveRoot);
+    if (actualArchives.length !== archiveListed.size || actualArchives.some(file => !archiveListed.has(file.relative))) {
+        throw new Error("Backup contains unlisted catalog import archive files.");
+    }
+    if (manifestSize(catalogImportsManifest.fileCount, "catalogImports.fileCount") !== archiveListed.size
+        || manifestSize(catalogImportsManifest.totalBytes, "catalogImports.totalBytes") !== totalBytes) {
+        throw new Error("Backup catalog import archive totals do not match.");
+    }
+    return { legacy: false, fileCount: archiveListed.size, totalBytes };
+}
+
 async function gitCommit(projectRoot) {
     try { return require("child_process").execFileSync("git", ["rev-parse", "HEAD"], { cwd: projectRoot, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim(); } catch { return null; }
 }
@@ -169,7 +216,7 @@ async function verifyReferences(dbPath, uploadsPath) {
 async function verifyBackup(backupPath) {
     const root = path.resolve(backupPath); const rootStat = await fs.promises.lstat(root); if (rootStat.isSymbolicLink() || !rootStat.isDirectory()) throw new Error("Backup path must be a real directory.");
     const manifest = JSON.parse(await fs.promises.readFile(path.join(root, "manifest.json"), "utf8"));
-    if (![LEGACY_FORMAT_VERSION, FORMAT_VERSION].includes(manifest.formatVersion) || manifest.application !== "MatMix") throw new Error("Unsupported backup manifest.");
+    if (![LEGACY_FORMAT_VERSION, ATTACHMENT_FORMAT_VERSION, FORMAT_VERSION].includes(manifest.formatVersion) || manifest.application !== "MatMix") throw new Error("Unsupported backup manifest.");
     const dbRelative = safeRelative(manifest.database.filename); const dbPath = path.join(root, ...dbRelative.split("/"));
     if (!isInside(root, dbPath) || (await fs.promises.lstat(dbPath)).isSymbolicLink()) throw new Error("Unsafe backup database path.");
     const dbSize = manifestSize(manifest.database.size, "database.size"); const dbSha256 = manifestSha256(manifest.database.sha256, "database.sha256");
@@ -220,7 +267,14 @@ async function verifyBackup(backupPath) {
         attachments = await auditOrderAttachments({ dbPath, attachmentsPath: attachmentRoot });
         if (!attachments.healthy) throw new Error("Backup attachment audit failed.");
     }
-    return { success: true, backupPath: root, manifest, database: dbCheck, attachments, references: await verifyReferences(dbPath, path.join(root, "uploads", "products")) };
+    let catalogImports;
+    if (manifest.formatVersion < FORMAT_VERSION) {
+        catalogImports = { legacy: true, fileCount: 0, totalBytes: 0 };
+    } else {
+        const archiveRoot = path.join(root, "catalog-imports");
+        catalogImports = await verifyCatalogImportArea(archiveRoot, manifest.catalogImports);
+    }
+    return { success: true, backupPath: root, manifest, database: dbCheck, attachments, catalogImports, references: await verifyReferences(dbPath, path.join(root, "uploads", "products")) };
 }
 
 function backupName(prefix = "matmix-backup") {
@@ -234,15 +288,22 @@ async function createBackup(options = {}) {
     if (isInside(paths.uploadsPath, paths.backupRoot)) throw new Error("Backup root cannot be inside uploads.");
     if (isInside(paths.attachmentsPath, paths.uploadsPath) || isInside(paths.uploadsPath, paths.attachmentsPath)) throw new Error("Attachment and upload roots must not contain each other.");
     if (isInside(paths.attachmentsPath, paths.backupRoot) || isInside(paths.backupRoot, paths.attachmentsPath)) throw new Error("Backup and attachment roots must not contain each other.");
+    if (isInside(paths.catalogImportsPath, paths.uploadsPath) || isInside(paths.uploadsPath, paths.catalogImportsPath)) throw new Error("Catalog import archive and upload roots must not contain each other.");
+    if (isInside(paths.catalogImportsPath, paths.attachmentsPath) || isInside(paths.attachmentsPath, paths.catalogImportsPath)) throw new Error("Catalog import archive and attachment roots must not contain each other.");
+    if (isInside(paths.catalogImportsPath, paths.backupRoot) || isInside(paths.backupRoot, paths.catalogImportsPath)) throw new Error("Backup and catalog import archive roots must not contain each other.");
     await fs.promises.mkdir(paths.backupRoot, { recursive: true }); const name = backupName(options.prefix); const finalPath = path.join(paths.backupRoot, name); const tempPath = `${finalPath}.tmp-${crypto.randomBytes(4).toString("hex")}`;
     if (fs.existsSync(finalPath)) throw new Error("Backup destination already exists.");
     try {
-        await fs.promises.mkdir(path.join(tempPath, "database"), { recursive: true }); await fs.promises.mkdir(path.join(tempPath, "uploads", "products"), { recursive: true }); await fs.promises.mkdir(path.join(tempPath, "attachments", "orders"), { recursive: true });
+        await fs.promises.mkdir(path.join(tempPath, "database"), { recursive: true }); await fs.promises.mkdir(path.join(tempPath, "uploads", "products"), { recursive: true }); await fs.promises.mkdir(path.join(tempPath, "attachments", "orders"), { recursive: true }); await fs.promises.mkdir(path.join(tempPath, "catalog-imports"), { recursive: true });
         const dbTarget = path.join(tempPath, "database", "matmix.db"); await vacuumInto(paths.dbPath, dbTarget); const dbCheck = await verifyDatabase(dbTarget);
         const uploads = await copyUploads(paths.uploadsPath, path.join(tempPath, "uploads", "products"));
         const attachments = await copyAttachments(dbTarget, paths.attachmentsPath, path.join(tempPath, "attachments", "orders"));
+        const catalogImportFiles = await copyUploads(paths.catalogImportsPath, path.join(tempPath, "catalog-imports"), {
+            ignore: relative => ARCHIVE_TEMP_FILE_PATTERN.test(relative)
+        });
+        const catalogImports = { root: "catalog-imports", fileCount: catalogImportFiles.count, totalBytes: catalogImportFiles.totalSize, files: catalogImportFiles.files };
         const dbStat = await fs.promises.stat(dbTarget);
-        const manifest = { formatVersion: FORMAT_VERSION, application: "MatMix", createdAt: new Date().toISOString(), database: { filename: "database/matmix.db", size: dbStat.size, sha256: await sha256(dbTarget), integrity: dbCheck.integrity, foreignKeys: dbCheck.foreignKeys }, uploads, attachments, schemaVersion: dbCheck.schemaVersion, applicationCommit: await gitCommit(path.resolve(__dirname, "..", "..")), nodeVersion: process.version, platform: `${process.platform}-${process.arch}`, backupToolVersion: TOOL_VERSION };
+        const manifest = { formatVersion: FORMAT_VERSION, application: "MatMix", createdAt: new Date().toISOString(), database: { filename: "database/matmix.db", size: dbStat.size, sha256: await sha256(dbTarget), integrity: dbCheck.integrity, foreignKeys: dbCheck.foreignKeys }, uploads, attachments, catalogImports, schemaVersion: dbCheck.schemaVersion, applicationCommit: await gitCommit(path.resolve(__dirname, "..", "..")), nodeVersion: process.version, platform: `${process.platform}-${process.arch}`, backupToolVersion: TOOL_VERSION };
         await fs.promises.writeFile(path.join(tempPath, "manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`, { flag: "wx" }); await verifyBackup(tempPath); await fs.promises.rename(tempPath, finalPath);
         if (!options.skipRetention) await applyRetention(paths.backupRoot, paths.retentionCount, finalPath);
         return { success: true, backupPath: finalPath, manifest, references: await verifyReferences(path.join(finalPath, "database", "matmix.db"), path.join(finalPath, "uploads", "products")) };
@@ -254,4 +315,4 @@ async function applyRetention(root, keep, current) {
     for (const item of entries.slice(keep)) if (path.resolve(item) !== path.resolve(current)) await fs.promises.rm(item, { recursive: true, force: true }).catch(error => console.warn("Retention delete failed:", error.message));
 }
 
-module.exports = { FORMAT_VERSION, LEGACY_FORMAT_VERSION, runtimePaths, createBackup, verifyBackup, verifyDatabase, verifyReferences, safeRelative, isInside, sha256, applyRetention };
+module.exports = { FORMAT_VERSION, LEGACY_FORMAT_VERSION, runtimePaths, createBackup, verifyBackup, verifyDatabase, verifyReferences, verifyCatalogImportArea, safeRelative, isInside, sha256, applyRetention };

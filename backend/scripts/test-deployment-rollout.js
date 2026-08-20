@@ -127,6 +127,7 @@ function productionEnvironment(root, paths) {
         MATMIX_DB_PATH: paths.dbPath,
         PRODUCT_UPLOADS_PATH: paths.uploadsPath,
         ORDER_ATTACHMENTS_PATH: paths.attachmentsPath,
+        CATALOG_IMPORT_ARCHIVE_PATH: paths.catalogImportsPath,
         BACKUP_ROOT_PATH: paths.backupRoot,
         BACKUP_RETENTION_COUNT: "3",
         BACKUP_MAX_AGE_HOURS: "36",
@@ -190,6 +191,9 @@ function assertDeploymentContracts() {
     const deploy = fs.readFileSync(path.join(projectRoot, "deploy", "scripts", "deploy-release.sh"), "utf8");
     const rollback = fs.readFileSync(path.join(projectRoot, "deploy", "scripts", "rollback-release.sh"), "utf8");
     const envExample = fs.readFileSync(path.join(projectRoot, "deploy", "matmix.env.example"), "utf8");
+    const systemd = fs.readFileSync(path.join(projectRoot, "deploy", "systemd", "matmix.service.example"), "utf8");
+    const backupService = fs.readFileSync(path.join(projectRoot, "deploy", "systemd", "matmix-backup.service"), "utf8");
+    const backupTimer = fs.readFileSync(path.join(projectRoot, "deploy", "systemd", "matmix-backup.timer"), "utf8");
     const runbook = fs.readFileSync(path.join(projectRoot, "docs", "final-launch-runbook.md"), "utf8");
     const deploymentFlow = deploy.slice(deploy.indexOf('echo "Stopping $SERVICE before backup and migration..."'));
 
@@ -197,6 +201,7 @@ function assertDeploymentContracts() {
     assert(!deploy.includes("env |"));
     assert(!deploy.includes("printenv"));
     assert(deploy.includes('install -d -o "$RUNTIME_USER" -g "$RUNTIME_GROUP" -m 0750 "$ORDER_ATTACHMENTS_PATH"'));
+    assert(deploy.includes('install -d -o "$RUNTIME_USER" -g "$RUNTIME_GROUP" -m 0750 "$CATALOG_IMPORT_ARCHIVE_PATH"'));
     assert(deploy.includes("--apply --confirm MIGRATE_MATMIX_DATABASE"));
     assert(deploy.includes('--verify-only "$backup_path"'));
     assert(deploy.includes('restore_exact_backup "$release_dir" "$backup_path"'));
@@ -222,6 +227,20 @@ function assertDeploymentContracts() {
     assert(rollback.includes('"$backup_path" == "$(readlink -f "$BACKUP_ROOT_PATH")/"*'));
     assert(!rollback.toLowerCase().includes("latest backup"));
     assert(envExample.includes("ORDER_ATTACHMENTS_PATH=/var/lib/matmix/order-attachments"));
+    assert(envExample.includes("CATALOG_IMPORT_ARCHIVE_PATH=/var/lib/matmix/catalog-imports"));
+    assert(systemd.includes("ProtectSystem=strict"));
+    assert(systemd.includes("ReadWritePaths=/var/lib/matmix /var/backups/matmix /var/log/matmix"));
+    assert(!/^ReadWritePaths=.*\/opt\/matmix/m.test(systemd));
+    assert(backupService.includes("User=matmix"));
+    assert(backupService.includes("Group=matmix"));
+    assert(backupService.includes("EnvironmentFile=/etc/matmix/matmix.env"));
+    assert(backupService.includes("ExecStart=/usr/bin/node backend/scripts/backup-production-data.js"));
+    assert(backupService.includes("ProtectSystem=strict"));
+    assert(backupService.includes("ReadOnlyPaths=/var/lib/matmix"));
+    assert(backupService.includes("ReadWritePaths=/var/backups/matmix"));
+    assert(!/^ReadWritePaths=.*\/opt\/matmix/m.test(backupService));
+    assert(backupTimer.includes("Unit=matmix-backup.service"));
+    assert(backupTimer.includes("Persistent=true"));
     assert(runbook.includes(`schema version ${CURRENT_SCHEMA_VERSION}`));
     assert(!runbook.includes("Schema version | not 2"));
 
@@ -244,6 +263,7 @@ async function main() {
             dbPath: path.join(runtimeRoot, "matmix.db"),
             uploadsPath: path.join(runtimeRoot, "uploads", "products"),
             attachmentsPath: path.join(runtimeRoot, "order-attachments"),
+            catalogImportsPath: path.join(runtimeRoot, "catalog-imports"),
             backupRoot: path.join(root, "backups"),
             lockPath: path.join(runtimeRoot, "matmix-runtime.lock"),
             retentionCount: 3
@@ -254,6 +274,7 @@ async function main() {
         await Promise.all([
             fs.promises.mkdir(paths.uploadsPath, { recursive: true }),
             fs.promises.mkdir(paths.attachmentsPath, { recursive: true }),
+            fs.promises.mkdir(paths.catalogImportsPath, { recursive: true }),
             fs.promises.mkdir(paths.backupRoot, { recursive: true }),
             fs.promises.mkdir(oldRelease, { recursive: true }),
             fs.promises.mkdir(newRelease, { recursive: true })
@@ -261,6 +282,8 @@ async function main() {
         await createProductionLikeV2Database(paths.dbPath);
         const productBytes = Buffer.from("product-upload-before-deploy");
         await fs.promises.writeFile(path.join(paths.uploadsPath, "existing.bin"), productBytes);
+        const catalogImportBytes = Buffer.from("catalog-import-before-deploy");
+        await fs.promises.writeFile(path.join(paths.catalogImportsPath, "catalog-import-20260101T000000-0123456789abcdef.xlsx"), catalogImportBytes);
         await switchDirectoryLink(appLink, oldRelease);
 
         const preDeployBackup = await createBackup({
@@ -271,6 +294,7 @@ async function main() {
         assert.strictEqual(verified.manifest.formatVersion, FORMAT_VERSION);
         assert.strictEqual(verified.database.schemaVersion, 2);
         assert.strictEqual(verified.attachments.metadataCount, 0);
+        assert.strictEqual(verified.catalogImports.fileCount, 1);
 
         const migration = await migrateDatabase(paths.dbPath, { dryRun: false });
         assert.strictEqual(migration.fromVersion, 2);
@@ -292,6 +316,7 @@ async function main() {
         assert.strictEqual(serviceStarted, true);
 
         await fs.promises.writeFile(path.join(paths.uploadsPath, "existing.bin"), "changed-after-switch");
+        await fs.promises.writeFile(path.join(paths.catalogImportsPath, "catalog-import-20260102T000000-fedcba9876543210.xlsx"), "failed release import");
         const failedAttachmentKey = "failed-release.txt";
         const failedAttachmentPath = path.join(paths.attachmentsPath, failedAttachmentKey);
         await fs.promises.writeFile(failedAttachmentPath, "failed release attachment");
@@ -319,6 +344,8 @@ async function main() {
             await sha256(path.join(preDeployBackup.backupPath, "uploads", "products", "existing.bin"))
         );
         assert.deepStrictEqual(await fs.promises.readdir(paths.attachmentsPath), []);
+        assert.deepStrictEqual(await fs.promises.readdir(paths.catalogImportsPath), ["catalog-import-20260101T000000-0123456789abcdef.xlsx"]);
+        assert.deepStrictEqual(await fs.promises.readFile(path.join(paths.catalogImportsPath, "catalog-import-20260101T000000-0123456789abcdef.xlsx")), catalogImportBytes);
         assert.strictEqual(serviceStarted, true);
 
         const failureDb = path.join(runtimeRoot, "migration-failure.db");

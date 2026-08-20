@@ -8,7 +8,7 @@ const { CURRENT_SCHEMA_VERSION } = require("../databaseMigrations");
 
 const REQUIRED_PRODUCTION_ENV = [
     "NODE_ENV", "PORT", "SESSION_SECRET", "SESSION_DB_PATH", "MATMIX_DB_PATH", "PRODUCT_UPLOADS_PATH",
-    "ORDER_ATTACHMENTS_PATH", "BACKUP_ROOT_PATH", "BACKUP_RETENTION_COUNT", "BACKUP_MAX_AGE_HOURS", "APP_RUNTIME_LOCK_PATH",
+    "ORDER_ATTACHMENTS_PATH", "CATALOG_IMPORT_ARCHIVE_PATH", "BACKUP_ROOT_PATH", "BACKUP_RETENTION_COUNT", "BACKUP_MAX_AGE_HOURS", "APP_RUNTIME_LOCK_PATH",
     "PUBLIC_BASE_URL", "SEO_ALLOW_INDEXING", "SITE_NAME", "DEFAULT_OG_IMAGE", "CORS_ALLOWED_ORIGINS",
     "TRUST_PROXY", "LOGIN_RATE_WINDOW_MS", "LOGIN_RATE_MAX", "MIN_FREE_DISK_MB"
 ];
@@ -43,22 +43,27 @@ function validateProductionEnvironment(env = process.env, options = {}) {
     const origins = splitOrigins(env.CORS_ALLOWED_ORIGINS);
     if (!origins.length || origins.some(origin => !isOrigin(origin, true))) errors.push("CORS_ALLOWED_ORIGINS must contain HTTPS origins only.");
     if (env.PUBLIC_BASE_URL && !origins.includes(String(env.PUBLIC_BASE_URL).replace(/\/$/, ""))) errors.push("CORS_ALLOWED_ORIGINS must include PUBLIC_BASE_URL.");
-    for (const name of ["SESSION_DB_PATH", "MATMIX_DB_PATH", "PRODUCT_UPLOADS_PATH", "ORDER_ATTACHMENTS_PATH", "BACKUP_ROOT_PATH", "APP_RUNTIME_LOCK_PATH"]) {
+    for (const name of ["SESSION_DB_PATH", "MATMIX_DB_PATH", "PRODUCT_UPLOADS_PATH", "ORDER_ATTACHMENTS_PATH", "CATALOG_IMPORT_ARCHIVE_PATH", "BACKUP_ROOT_PATH", "APP_RUNTIME_LOCK_PATH"]) {
         if (!isAbsoluteSafeRuntimePath(env[name], projectRoot, publicRoot)) errors.push(`${name} must be an absolute path outside public and .git.`);
     }
     if (env.ORDER_ATTACHMENTS_PATH && isInside(projectRoot, path.resolve(env.ORDER_ATTACHMENTS_PATH))) errors.push("ORDER_ATTACHMENTS_PATH must be outside the deployed application directory.");
+    if (env.CATALOG_IMPORT_ARCHIVE_PATH && isInside(projectRoot, path.resolve(env.CATALOG_IMPORT_ARCHIVE_PATH))) errors.push("CATALOG_IMPORT_ARCHIVE_PATH must be outside the deployed application directory.");
     if (!options.allowTemporaryPaths && env.ORDER_ATTACHMENTS_PATH && isInside(os.tmpdir(), path.resolve(env.ORDER_ATTACHMENTS_PATH))) errors.push("ORDER_ATTACHMENTS_PATH must not use the operating-system temporary directory.");
-    const resolved = runtimePaths(env);
+    if (!options.allowTemporaryPaths && env.CATALOG_IMPORT_ARCHIVE_PATH && isInside(os.tmpdir(), path.resolve(env.CATALOG_IMPORT_ARCHIVE_PATH))) errors.push("CATALOG_IMPORT_ARCHIVE_PATH must not use the operating-system temporary directory.");
+    const resolved = runtimePaths(env, { allowMissingProduction: true, allowUnsafePath: true });
     if (isInside(resolved.uploadsPath, resolved.backupRoot) || isInside(resolved.backupRoot, resolved.uploadsPath)) errors.push("Uploads and backup paths must not contain each other.");
     for (const [leftName, left, rightName, right] of [
         ["attachments", resolved.attachmentsPath, "uploads", resolved.uploadsPath],
-        ["attachments", resolved.attachmentsPath, "backups", resolved.backupRoot]
+        ["attachments", resolved.attachmentsPath, "backups", resolved.backupRoot],
+        ["catalog imports", resolved.catalogImportsPath, "uploads", resolved.uploadsPath],
+        ["catalog imports", resolved.catalogImportsPath, "attachments", resolved.attachmentsPath],
+        ["catalog imports", resolved.catalogImportsPath, "backups", resolved.backupRoot]
     ]) {
         if (isInside(left, right) || isInside(right, left)) errors.push(`${leftName} and ${rightName} paths must not contain each other.`);
     }
     const legal = legalReadiness(env); if (!legal.ready) errors.push("Legal configuration is incomplete; run npm run legal:check.");
     if (String(env.SEO_ALLOW_INDEXING) === "false") warnings.push("SEO indexing is disabled (appropriate only for intentional soft launch/staging).");
-    return { ready: errors.length === 0, errors, warnings, publicBaseUrl: env.PUBLIC_BASE_URL || "", paths: { db: env.MATMIX_DB_PATH, sessions: env.SESSION_DB_PATH, uploads: env.PRODUCT_UPLOADS_PATH, attachments: env.ORDER_ATTACHMENTS_PATH, backups: env.BACKUP_ROOT_PATH, lock: env.APP_RUNTIME_LOCK_PATH }, legalVersions: { privacy: legalConfig(env).privacyVersion, terms: legalConfig(env).termsVersion } };
+    return { ready: errors.length === 0, errors, warnings, publicBaseUrl: env.PUBLIC_BASE_URL || "", paths: { db: env.MATMIX_DB_PATH, sessions: env.SESSION_DB_PATH, uploads: env.PRODUCT_UPLOADS_PATH, attachments: env.ORDER_ATTACHMENTS_PATH, catalogImports: env.CATALOG_IMPORT_ARCHIVE_PATH, backups: env.BACKUP_ROOT_PATH, lock: env.APP_RUNTIME_LOCK_PATH }, legalVersions: { privacy: legalConfig(env).privacyVersion, terms: legalConfig(env).termsVersion } };
 }
 
 function assertProductionEnvironment(env = process.env) {
@@ -92,6 +97,24 @@ async function attachmentPathCheck(paths, options = {}) {
         return false;
     }
 }
+async function catalogImportArchivePathCheck(paths, options = {}) {
+    try {
+        const projectRoot = path.resolve(options.projectRoot || path.join(__dirname, "..", ".."));
+        const [catalogImports, uploads, attachments, backups] = await Promise.all([
+            fs.promises.realpath(paths.catalogImportsPath),
+            fs.promises.realpath(paths.uploadsPath),
+            fs.promises.realpath(paths.attachmentsPath),
+            fs.promises.realpath(paths.backupRoot)
+        ]);
+        if (isInside(projectRoot, catalogImports) || isInside(path.join(projectRoot, "public"), catalogImports) || isInside(path.join(projectRoot, ".git"), catalogImports)) return false;
+        if (!options.allowTemporaryPaths && isInside(os.tmpdir(), catalogImports)) return false;
+        return !isInside(catalogImports, uploads) && !isInside(uploads, catalogImports)
+            && !isInside(catalogImports, attachments) && !isInside(attachments, catalogImports)
+            && !isInside(catalogImports, backups) && !isInside(backups, catalogImports);
+    } catch {
+        return false;
+    }
+}
 async function diskFreeMb(target) {
     const stat = await fs.promises.statfs(path.dirname(target));
     return Math.floor(Number(stat.bavail) * Number(stat.bsize) / 1024 / 1024);
@@ -106,7 +129,7 @@ async function latestBackup(root) {
     return candidates.filter(item => Number.isFinite(item.createdAt.getTime())).sort((a, b) => b.createdAt - a.createdAt)[0] || null;
 }
 async function operationalReadiness(env = process.env, options = {}) {
-    const config = validateProductionEnvironment(env, options); const checks = {}; const paths = runtimePaths(env);
+    const config = validateProductionEnvironment(env, options); const checks = {}; const paths = runtimePaths(env, { allowMissingProduction: true, allowUnsafePath: true });
     checks.databaseReadable = await accessCheck(paths.dbPath, fs.constants.R_OK);
     checks.databaseDirectoryWritable = await accessCheck(path.dirname(paths.dbPath), fs.constants.W_OK);
     checks.sessionDirectoryWritable = await accessCheck(path.dirname(path.resolve(env.SESSION_DB_PATH || "")), fs.constants.W_OK);
@@ -114,10 +137,13 @@ async function operationalReadiness(env = process.env, options = {}) {
     checks.attachmentsReadableWritable = await accessCheck(paths.attachmentsPath, fs.constants.R_OK | fs.constants.W_OK);
     checks.attachmentsRealDirectory = await realDirectoryCheck(paths.attachmentsPath);
     checks.attachmentsPathSafe = await attachmentPathCheck(paths, options);
+    checks.catalogImportsReadableWritable = await accessCheck(paths.catalogImportsPath, fs.constants.R_OK | fs.constants.W_OK);
+    checks.catalogImportsRealDirectory = await realDirectoryCheck(paths.catalogImportsPath);
+    checks.catalogImportsPathSafe = await catalogImportArchivePathCheck(paths, options);
     checks.backupReadableWritable = await accessCheck(paths.backupRoot, fs.constants.R_OK | fs.constants.W_OK);
     checks.lockDirectoryWritable = await accessCheck(path.dirname(paths.lockPath), fs.constants.W_OK);
     const minDisk = Number(env.MIN_FREE_DISK_MB) || 1024; const disk = {};
-    for (const [name, target] of Object.entries({ database: paths.dbPath, uploads: path.join(paths.uploadsPath, ".probe"), attachments: path.join(paths.attachmentsPath, ".probe"), backups: path.join(paths.backupRoot, ".probe") })) {
+    for (const [name, target] of Object.entries({ database: paths.dbPath, uploads: path.join(paths.uploadsPath, ".probe"), attachments: path.join(paths.attachmentsPath, ".probe"), catalogImports: path.join(paths.catalogImportsPath, ".probe"), backups: path.join(paths.backupRoot, ".probe") })) {
         try { disk[name] = await diskFreeMb(target); } catch { disk[name] = null; }
     }
     checks.diskSpace = Object.values(disk).every(value => value !== null && value >= minDisk);
