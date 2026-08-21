@@ -38240,6 +38240,14 @@ function showCheckoutSuccess() {
     `;
 }
 
+function scheduleCheckoutSuccessClose() {
+    window.setTimeout(() => {
+        setCartModalOpen(false);
+        showCartView();
+        setCheckoutSubmitDisabled(false);
+    }, 1800);
+}
+
 function normalizeSearchText(value) {
     return cleanDisplayText(value)
         .toLowerCase()
@@ -39999,6 +40007,7 @@ uploadRequestForm?.addEventListener("submit", async event => {
             `Заявка №${result.orderNumber} принята. Менеджер свяжется с вами после обработки заявки.`,
             "success"
         );
+        scheduleCheckoutSuccessClose();
     } catch (error) {
         setUploadRequestMessage(
             error.message || "Не удалось отправить заявку. Попробуйте ещё раз.",
@@ -40102,11 +40111,7 @@ checkoutForm?.addEventListener("submit", async event => {
 
         clearCart();
 
-        window.setTimeout(() => {
-            setCartModalOpen(false);
-            showCartView();
-            setCheckoutSubmitDisabled(false);
-        }, 1800);
+        scheduleCheckoutSuccessClose();
 
         try {
             renderProducts();

@@ -1564,6 +1564,33 @@ test("cart keeps fixed sections and one-row actions across responsive viewports"
         expect(checkoutGeometry.modalOverflowY).toBe("hidden");
         expect(checkoutGeometry.formOverflowY).toBe("auto");
         expect(checkoutGeometry.formBottom).toBeLessThanOrEqual(checkoutGeometry.viewportHeight + 1);
+
+        const consentLayout = await page.locator("#checkoutForm .checkout-consent").evaluate(consent => {
+            const label = consent.querySelector(".checkout-consent-label");
+            const lines = [...consent.querySelectorAll(".checkout-consent-line")];
+            const links = [...consent.querySelectorAll("a")];
+            const actions = document.querySelector("#checkoutForm .checkout-actions");
+            const consentRect = consent.getBoundingClientRect();
+            const actionsRect = actions.getBoundingClientRect();
+            return {
+                lineTexts: lines.map(line => line.textContent.trim()),
+                linkHrefs: links.map(link => link.getAttribute("href")),
+                lineOneTop: lines[0].getBoundingClientRect().top,
+                lineTwoTop: lines[1].getBoundingClientRect().top,
+                actionsGap: actionsRect.top - consentRect.bottom,
+                labelScrollWidth: label.scrollWidth,
+                labelClientWidth: label.clientWidth,
+                documentScrollWidth: document.documentElement.scrollWidth,
+                documentClientWidth: document.documentElement.clientWidth
+            };
+        });
+        expect(consentLayout.lineTexts).toEqual(["Я согласен(на) на:", "Обработку персональных данных и Условия продажи"]);
+        expect(consentLayout.linkHrefs).toEqual(["/privacy", "/terms"]);
+        expect(consentLayout.lineTwoTop).toBeGreaterThan(consentLayout.lineOneTop);
+        expect(consentLayout.actionsGap).toBeGreaterThanOrEqual(0);
+        expect(consentLayout.actionsGap).toBeLessThanOrEqual(20);
+        expect(consentLayout.labelScrollWidth).toBeLessThanOrEqual(consentLayout.labelClientWidth + 1);
+        expect(consentLayout.documentScrollWidth).toBeLessThanOrEqual(consentLayout.documentClientWidth + 1);
         await page.locator("#cancelCheckout").click();
     }
 });
@@ -1738,6 +1765,7 @@ test("upload request file rules and validation submit to the secure endpoint", a
     await expect(page.locator("#uploadRequestForm button[type='submit']")).toBeDisabled();
     await expect(page.locator("#uploadRequestMessage")).toContainText(/Заявка №MM-\d{4}-\d{6} принята/);
     await expect(page.locator("#uploadRequestMessage")).toHaveClass(/success/);
+    await expect(page.locator("#cartModal")).toHaveClass(/hidden/);
     expect(orderPostCount).toBe(0);
     expect(fileRequestPostCount).toBe(1);
     await expect(page.locator(".upload-file-item")).toHaveCount(0);
@@ -1820,6 +1848,7 @@ test("upload request clears the cart only after a successful included submission
         responseBody = failure.body;
         await submitRequest(true);
         await expect(page.locator("#uploadRequestMessage")).toHaveClass(/error/);
+        await expect(page.locator("#cartModal")).not.toHaveClass(/hidden/);
         expect(requestBodies.at(-1)).toMatch(/name="includeCart"\r?\n\r?\ntrue/);
         expect(await readStoredCart()).toEqual(cartBeforeFailure);
         await expect(page.locator("#cartCount")).toHaveText("2");
