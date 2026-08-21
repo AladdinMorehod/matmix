@@ -37221,6 +37221,7 @@ let productsById = new Map();
 let catalogLoadError = "";
 let publicCatalogStructure = [];
 let popularProducts = [];
+let featuredProducts = [];
 let publicProductsPagination = { page: 1, limit: 50, total: 0, totalPages: 1, hasNext: false, hasPrevious: false };
 let publicProductsLoadingMore = false;
 let publicProductsRequestId = 0;
@@ -37369,6 +37370,7 @@ function getProductById(id) {
     return productsById.get(numericId)
         || searchSuggestions.find(product => Number(product.id) === numericId)
         || popularProducts.find(product => Number(product.id) === numericId)
+        || featuredProducts.find(product => Number(product.id) === numericId)
         || null;
 }
 
@@ -37645,32 +37647,55 @@ async function loadPublicProducts(options = {}) {
     }
 }
 
-async function loadPopularProducts() {
-    if (!popularGrid || !popularProductNames.length) return [];
-
-    const loadedProducts = [];
-    for (const name of popularProductNames) {
+async function loadNamedProducts(names, { fallbackFirst = true } = {}) {
+    const matches = await Promise.all(names.map(async name => {
         try {
             const params = new URLSearchParams();
             params.set("search", name);
             params.set("limit", 10);
             const response = await fetch(`/api/public/products?${params.toString()}`);
             const result = await response.json().catch(() => ({}));
-            if (!response.ok || !result.success || !Array.isArray(result.products)) continue;
+            if (!response.ok || !result.success || !Array.isArray(result.products)) return null;
 
             const normalizedProducts = result.products.map(normalizeProductForSite);
             const exactProduct = normalizedProducts.find(product => cleanDisplayText(product.name) === cleanDisplayText(name));
-            const product = exactProduct || normalizedProducts[0] || null;
-            if (product && !loadedProducts.some(item => Number(item.id) === Number(product.id))) {
-                loadedProducts.push(product);
-            }
+            const product = exactProduct || (fallbackFirst ? normalizedProducts[0] : null);
+            return product;
         } catch (error) {
-            console.warn("Popular product load error:", error);
+            console.warn("Named product load error:", error);
+            return null;
         }
-    }
+    }));
 
-    popularProducts = loadedProducts;
+    const loadedProducts = [];
+    matches.forEach(product => {
+        if (product && !loadedProducts.some(item => Number(item.id) === Number(product.id))) {
+            loadedProducts.push(product);
+        }
+    });
+    return loadedProducts;
+}
+
+async function loadPopularProducts() {
+    if (!popularGrid || !popularProductNames.length) return [];
+
+    popularProducts = await loadNamedProducts(popularProductNames);
     return popularProducts;
+}
+
+async function loadFeaturedProducts() {
+    if (!featuredCatalog || !featuredCatalogProductNames.length) return [];
+
+    const localMatches = getProductsByNames(featuredCatalogProductNames);
+    const localNames = new Set(localMatches.map(({ product }) => cleanDisplayText(product.name)));
+    const missingNames = featuredCatalogProductNames.filter(name => !localNames.has(cleanDisplayText(name)));
+    const fetchedProducts = await loadNamedProducts(missingNames, { fallbackFirst: false });
+    const candidates = [...localMatches.map(({ product }) => product), ...fetchedProducts];
+
+    featuredProducts = featuredCatalogProductNames
+        .map(name => candidates.find(product => cleanDisplayText(product.name) === cleanDisplayText(name)))
+        .filter(Boolean);
+    return featuredProducts;
 }
 
 async function replacePublicProductsAndRender() {
@@ -38910,7 +38935,11 @@ function renderFeaturedCatalogProducts() {
 
     if (!shouldShowFeatured) return;
 
-    getProductsByNames(featuredCatalogProductNames).forEach(({ product, id }) => {
+    const productList = featuredProducts.length
+        ? featuredProducts.map(product => ({ product, id: product.id }))
+        : getProductsByNames(featuredCatalogProductNames);
+
+    productList.forEach(({ product, id }) => {
         featuredCatalogGrid.appendChild(createProductCard(product, id));
     });
 }
@@ -39442,6 +39471,16 @@ function openCatalogPicker(type, trigger) {
     requestAnimationFrame(() => {
         (optionsContainer.querySelector(".is-selected") || optionsContainer.querySelector(".catalog-picker-option"))?.focus();
     });
+}
+
+function autoOpenMobileSubcategoryPicker() {
+    if (window.innerWidth > MOBILE_SEARCH_MAX_WIDTH) return;
+
+    const trigger = categoryControls?.querySelector('[data-catalog-picker="subcategory"]');
+    const data = trigger ? getCatalogPickerData("subcategory") : null;
+    if (!trigger || !data || data.options.length <= 1) return;
+
+    openCatalogPicker("subcategory", trigger);
 }
 
 function renderCategoryControls() {
@@ -40304,6 +40343,7 @@ categoryControls?.addEventListener("click", async event => {
     closeSearchSuggestions({ clearQuery: true, cancelRequest: true });
 
     const nextPath = button.dataset.path || "";
+    const categoryChanged = nextPath !== activeCategoryPath;
     if (!nextPath || nextPath.startsWith("category:")) {
         showAllSubcategories = false;
         showAllGroups = false;
@@ -40312,8 +40352,11 @@ categoryControls?.addEventListener("click", async event => {
     }
 
     activeCategoryPath = nextPath;
-    showAllCatalogProducts = !activeCategoryPath;
+    showAllCatalogProducts = false;
     await replacePublicProductsAndRender();
+    if (categoryChanged && nextPath.startsWith("category:")) {
+        requestAnimationFrame(autoOpenMobileSubcategoryPicker);
+    }
 });
 
 document.addEventListener("click", async event => {
@@ -40398,6 +40441,7 @@ async function initializeSite() {
     await loadPublicCatalogStructure();
     await loadPublicProducts();
     await loadPopularProducts();
+    await loadFeaturedProducts();
     renderCategoryControls();
     renderProducts();
     renderPopularProducts();

@@ -219,8 +219,9 @@ test("catalog shows all subcategory products before optional group filtering", a
     const selectSubcategory = async name => {
         const picker = page.locator('[data-catalog-picker="subcategory"]');
         if (await picker.isVisible()) {
-            await picker.click();
-            await page.locator(".catalog-picker-popover").getByRole("option", { name, exact: true }).click();
+            const popover = page.locator(".catalog-picker-popover");
+            if (await popover.isHidden()) await picker.click();
+            await popover.getByRole("option", { name, exact: true }).click();
             return;
         }
         await page.locator("#categoryControls").getByRole("button", { name, exact: true }).click();
@@ -278,6 +279,90 @@ test("catalog shows all subcategory products before optional group filtering", a
         await expect(productGrid.locator(".empty-products")).toHaveText("Товары не найдены.");
         expect(pageErrors).toEqual([]);
     }
+});
+
+test("catalog restores featured products and auto-opens mobile subcategories", async ({ page }) => {
+    const featured = [
+        { id: 9311, externalId: "featured-rotband", title: "Штукатурка гипсовая Knauf Ротбанд 30 кг", price: 100, weight: 30, unit: "шт", category: "Смеси", subcategory: "Штукатурка", productGroup: "Гипсовая" },
+        { id: 9312, externalId: "featured-volma", title: "Штукатурка гипсовая ВОЛМА Холст Сер. 30 кг", price: 120, weight: 30, unit: "шт", category: "Смеси", subcategory: "Штукатурка", productGroup: "Гипсовая" }
+    ];
+    const categoryProducts = [
+        ...featured,
+        { id: 9313, externalId: "other-category", title: "Материал без подкатегории", price: 80, weight: 10, unit: "шт", category: "Без подкатегорий", subcategory: "", productGroup: "" }
+    ];
+
+    await page.route("**/api/public/products/structure", route => route.fulfill({
+        contentType: "application/json",
+        body: JSON.stringify({
+            success: true,
+            categories: [
+                { name: "Смеси", subcategories: [{ name: "Штукатурка", groups: [{ name: "Гипсовая" }] }] },
+                { name: "Без подкатегорий", subcategories: [] }
+            ]
+        })
+    }));
+    await page.route("**/api/public/products?*", route => {
+        const params = new URL(route.request().url()).searchParams;
+        const search = params.get("search");
+        const source = search
+            ? categoryProducts.filter(product => product.title === search)
+            : categoryProducts.filter(product => (
+                (!params.get("category") || product.category === params.get("category"))
+                && (!params.get("subcategory") || product.subcategory === params.get("subcategory"))
+                && (!params.get("productGroup") || product.productGroup === params.get("productGroup"))
+            ));
+        return route.fulfill({
+            contentType: "application/json",
+            body: JSON.stringify({
+                success: true,
+                products: source,
+                items: source,
+                pagination: { page: 1, limit: 50, total: source.length, totalPages: 1, hasNext: false }
+            })
+        });
+    });
+
+    const pageErrors = [];
+    page.on("pageerror", error => pageErrors.push(error.message));
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto("/catalog");
+    await expect(page.locator("#featuredCatalog")).toBeVisible();
+    await expect(page.locator("#featuredCatalogGrid .card")).toHaveCount(2);
+
+    await page.locator("#categoryControls").getByRole("button", { name: "Смеси", exact: true }).click();
+    await expect(page.locator(".catalog-picker-popover")).toBeHidden();
+
+    await page.setViewportSize({ width: 375, height: 812 });
+    await page.goto("/catalog");
+    await expect(page.locator("#featuredCatalog")).toBeVisible();
+    await expect(page.locator("#featuredCatalogGrid .card")).toHaveCount(2);
+
+    await page.locator("#categoryControls").getByRole("button", { name: "Смеси", exact: true }).click();
+    const subcategoryPicker = page.locator('[data-catalog-picker="subcategory"]');
+    const popover = page.locator(".catalog-picker-popover");
+    await expect(subcategoryPicker).toHaveAttribute("aria-expanded", "true");
+    await expect(popover).toBeVisible();
+    await expect(popover).toHaveAttribute("aria-label", "Выберите подкатегорию");
+    const geometry = await page.evaluate(() => {
+        const trigger = document.querySelector('[data-catalog-picker="subcategory"]').getBoundingClientRect();
+        const panel = document.querySelector(".catalog-picker-popover").getBoundingClientRect();
+        return { triggerBottom: trigger.bottom, panelTop: panel.top, placement: document.querySelector(".catalog-picker-popover").dataset.placement };
+    });
+    expect(geometry.placement).toBe("bottom");
+    expect(Math.abs(geometry.panelTop - geometry.triggerBottom - 4)).toBeLessThanOrEqual(1);
+
+    await popover.getByRole("option", { name: "Штукатурка", exact: true }).click();
+    await expect(page.locator("#productGrid .card")).toHaveCount(2);
+    await expect(popover).toBeHidden();
+
+    await page.locator("#categoryControls").getByRole("button", { name: "Без подкатегорий", exact: true }).click();
+    await expect(page.locator('[data-catalog-picker="subcategory"]')).toHaveCount(0);
+    await expect(popover).toBeHidden();
+
+    await page.locator("#categoryControls").getByRole("button", { name: "Все товары", exact: true }).click();
+    await expect(page.locator("#featuredCatalog")).toBeVisible();
+    await expect(page.locator("#featuredCatalogGrid .card")).toHaveCount(2);
+    expect(pageErrors).toEqual([]);
 });
 
 test("mobile catalog uses compact pickers and anchored popovers", async ({ page }) => {
@@ -348,7 +433,7 @@ test("mobile catalog uses compact pickers and anchored popovers", async ({ page 
     await expect(page.locator("#categoryControls select")).toHaveCount(0);
     await expect(subcategoryPicker.locator(".catalog-mobile-picker-label")).toHaveText("ПОДКАТЕГОРИЯ");
 
-    await subcategoryPicker.click();
+    if (await popover.isHidden()) await subcategoryPicker.click();
     await expect(popover).toBeVisible();
     await expect(popover).toHaveAttribute("aria-label", "Выберите подкатегорию");
     await expect(popover.getByRole("option", { name: "Все подкатегории", exact: true })).toHaveAttribute("aria-selected", "true");
@@ -1068,9 +1153,10 @@ test("cart quantity works when the product is outside the current catalog page",
     }));
     await page.route("**/api/public/products?*", async route => {
         const url = new URL(route.request().url());
-        const products = url.searchParams.has("search") || url.searchParams.get("subcategory") === subcategory
+        const search = url.searchParams.get("search");
+        const products = search
             ? [targetProduct]
-            : [rootProduct];
+            : (url.searchParams.get("subcategory") === subcategory ? [targetProduct] : [rootProduct]);
         await route.fulfill({ contentType: "application/json", body: JSON.stringify(productResponse(products)) });
     });
 
@@ -1114,9 +1200,11 @@ test("cart quantity works when the product is outside the current catalog page",
     }, targetProduct);
     await page.reload();
     await page.getByRole("button", { name: category, exact: true }).click();
-    const subcategorySelect = page.locator(".category-subcategory-select select");
-    if (await subcategorySelect.isVisible()) {
-        await subcategorySelect.selectOption({ label: subcategory });
+    const subcategoryPicker = page.locator('[data-catalog-picker="subcategory"]');
+    if (await subcategoryPicker.isVisible()) {
+        const popover = page.locator(".catalog-picker-popover");
+        if (await popover.isHidden()) await subcategoryPicker.click();
+        await popover.getByRole("option", { name: subcategory, exact: true }).click();
     } else {
         await page.getByRole("button", { name: subcategory, exact: true }).click();
     }
