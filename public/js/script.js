@@ -39322,6 +39322,12 @@ function createCategoryButton(label, path, className, isActive) {
     return button;
 }
 
+function createCatalogLevel(level) {
+    const section = document.createElement("section");
+    section.className = `catalog-level catalog-level-${level}`;
+    return section;
+}
+
 function createMobileCatalogPicker(type, label, value) {
     ensureCatalogPickerPopover();
     const button = document.createElement("button");
@@ -39504,6 +39510,7 @@ function renderCategoryControls() {
 
     updateCatalogBreadcrumbs(groups);
 
+    const mainLevel = createCatalogLevel(1);
     const mainList = document.createElement("div");
     mainList.className = "category-main-list";
     mainList.appendChild(createCategoryButton(
@@ -39522,7 +39529,8 @@ function renderCategoryControls() {
         ));
     });
 
-    categoryControls.appendChild(mainList);
+    mainLevel.appendChild(mainList);
+    categoryControls.appendChild(mainLevel);
 
     const activeGroup = groups.find(group => group.path === activeMainPath);
     if (!activeGroup?.subcategories.length) {
@@ -39530,7 +39538,7 @@ function renderCategoryControls() {
             const hint = document.createElement("p");
             hint.className = "category-subcategory-hint";
             hint.textContent = "Выберите категорию, чтобы увидеть подкатегории.";
-            categoryControls.appendChild(hint);
+            mainLevel.appendChild(hint);
         }
         return;
     }
@@ -39541,7 +39549,8 @@ function renderCategoryControls() {
 
     if (!directGroupSubcategory) {
         const activeSubcategory = activeGroup.subcategories.find(subcategory => subcategory.path === activeSubcategoryPath);
-        categoryControls.appendChild(createMobileCatalogPicker(
+        const subcategoryLevel = createCatalogLevel(2);
+        subcategoryLevel.appendChild(createMobileCatalogPicker(
             "subcategory",
             "ПОДКАТЕГОРИЯ",
             activeSubcategory ? getSubcategoryDisplayLabel(activeSubcategory, activeGroup) : "Все подкатегории"
@@ -39571,7 +39580,7 @@ function renderCategoryControls() {
             ));
         });
 
-        categoryControls.appendChild(subcategoryList);
+        subcategoryLevel.appendChild(subcategoryList);
 
         if (activeGroup.subcategories.length > visibleSubcategories.length || showAllSubcategories) {
             const toggle = document.createElement("button");
@@ -39581,6 +39590,8 @@ function renderCategoryControls() {
             toggle.setAttribute("aria-expanded", String(showAllSubcategories));
             subcategoryList.appendChild(toggle);
         }
+
+        categoryControls.appendChild(subcategoryLevel);
     }
 
     const activeSubcategory = directGroupSubcategory
@@ -39590,7 +39601,8 @@ function renderCategoryControls() {
     const allGroupsLabel = directGroupSubcategory ? "Все товары категории" : "Все товары подкатегории";
     const allGroupsPath = directGroupSubcategory ? activeGroup.path : getSubcategoryAllPath(activeSubcategory.path);
     const activeProductGroup = activeSubcategory.groups.find(productGroup => productGroup.path === activeCategoryPath);
-    categoryControls.appendChild(createMobileCatalogPicker(
+    const groupLevel = createCatalogLevel(3);
+    groupLevel.appendChild(createMobileCatalogPicker(
         "group",
         "ГРУППА ТОВАРОВ",
         activeProductGroup?.label || "Все товары"
@@ -39622,7 +39634,7 @@ function renderCategoryControls() {
         ));
     });
 
-    categoryControls.appendChild(groupList);
+    groupLevel.appendChild(groupList);
 
     if (activeSubcategory.groups.length > visibleGroups.length || showAllGroups) {
         const toggle = document.createElement("button");
@@ -39632,6 +39644,8 @@ function renderCategoryControls() {
         toggle.setAttribute("aria-expanded", String(showAllGroups));
         groupList.appendChild(toggle);
     }
+
+    categoryControls.appendChild(groupLevel);
 }
 
 function getQtyControls(id, qty) {
