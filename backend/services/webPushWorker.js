@@ -56,7 +56,11 @@ async function processWebPushOutbox({ databasePath, config, limit = BATCH_LIMIT,
             summary.claimed += 1;
             try {
                 const unread = await getUnreadCount(db, { id: row.user_id, role: row.role });
-                await push.sendNotification({ endpoint: row.endpoint, keys: { p256dh: row.p256dh, auth: row.auth } }, createPushPayload({ ...row, unreadCount: Number(unread) || 0 }));
+                await push.sendNotification({ endpoint: row.endpoint, keys: { p256dh: row.p256dh, auth: row.auth } }, createPushPayload({
+                    ...row,
+                    totalPrice: row.total_price,
+                    unreadCount: Number(unread) || 0
+                }));
                 await db.run("UPDATE web_push_outbox SET status='sent', sent_at=?, updated_at=? WHERE id=? AND status='processing'", [new Date().toISOString(), new Date().toISOString(), row.id]);
                 summary.sent += 1;
             } catch (error) {

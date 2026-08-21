@@ -36,6 +36,25 @@
         return Number.isFinite(count) && count > 0 ? Math.floor(count) : 0;
     }
 
+    function syncApplicationBadge(count) {
+        const badgeNavigator = navigator;
+        if (!badgeNavigator) return Promise.resolve();
+        try {
+            if (count > 0 && typeof badgeNavigator.setAppBadge === "function") {
+                return Promise.resolve(badgeNavigator.setAppBadge(count)).catch(() => {});
+            }
+            if (count <= 0 && typeof badgeNavigator.clearAppBadge === "function") {
+                return Promise.resolve(badgeNavigator.clearAppBadge()).catch(() => {});
+            }
+            if (count <= 0 && typeof badgeNavigator.setAppBadge === "function") {
+                return Promise.resolve(badgeNavigator.setAppBadge(0)).catch(() => {});
+            }
+        } catch {
+            return Promise.resolve();
+        }
+        return Promise.resolve();
+    }
+
     function formatCount(value) {
         return value > 99 ? "99+" : String(value);
     }
@@ -321,12 +340,7 @@
         const canSignal = Boolean(options.allowSignal && continuity && wasBaseline);
 
         unreadCount = nextCount;
-        if (navigator.serviceWorker?.ready) {
-            void navigator.serviceWorker.ready.then(registration => {
-                if (registration.setAppBadge) return nextCount > 0 ? registration.setAppBadge(nextCount) : registration.clearAppBadge?.();
-                return undefined;
-            }).catch(() => {});
-        }
+        void syncApplicationBadge(nextCount);
         hasBaseline = true;
         continuity = true;
         render();

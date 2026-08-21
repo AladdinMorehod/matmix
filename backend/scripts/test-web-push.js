@@ -47,6 +47,7 @@ async function main() {
         assert.strictEqual(summary.sent, 2); assert(sent.every(item => !JSON.stringify(item.payload).includes("phone")));
         assert.strictEqual(sent.find(item => item.subscription.endpoint.endsWith("/a")).payload.unreadCount, 2);
         assert.strictEqual(sent.find(item => item.subscription.endpoint.endsWith("/b")).payload.unreadCount, 1);
+        assert.strictEqual(sent.find(item => item.subscription.endpoint.endsWith("/a")).payload.body, "Новый заказ на 18450 ₽");
         const checkDb = new sqlite3.Database(databasePath); await configureBusinessConnection(checkDb); const check = helpers(checkDb);
         await check.run("INSERT INTO orders VALUES (14,'MM-14',100,'Новая',NULL,NULL),(15,'MM-15',100,'Новая',NULL,NULL),(16,'MM-16',100,'Новая',NULL,NULL)");
         for (const [eventKey, orderId, subscriptionId] of [["invalid:14:3", 14, 3], ["invalid:15:4", 15, 4], ["invalid:16:5", 16, 5]]) {

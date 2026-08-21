@@ -73,7 +73,7 @@
                 await window.CrmApi.delete("/api/order-notifications/push/subscriptions", { endpoint: subscription.endpoint });
                 await subscription.unsubscribe();
             }
-            if (registration.clearAppBadge) await registration.clearAppBadge().catch(() => {});
+            if (typeof navigator.clearAppBadge === "function") await navigator.clearAppBadge().catch(() => {});
             setState(root, "Уведомления выключены.");
         } catch (error) {
             setState(root, "Не удалось отключить уведомления. Повторите позже.");

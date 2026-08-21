@@ -26,6 +26,24 @@ self.hasExistingPushNotification = async function hasExistingPushNotification(ta
     }
 };
 
+self.syncPushBadge = async function syncPushBadge(value) {
+    const badgeNavigator = self.navigator;
+    if (!badgeNavigator) return;
+    const unreadCount = Number(value);
+    if (!Number.isFinite(unreadCount)) return;
+    try {
+        if (unreadCount > 0 && typeof badgeNavigator.setAppBadge === "function") {
+            await badgeNavigator.setAppBadge(Math.floor(unreadCount));
+        } else if (typeof badgeNavigator.clearAppBadge === "function") {
+            await badgeNavigator.clearAppBadge();
+        } else if (typeof badgeNavigator.setAppBadge === "function") {
+            await badgeNavigator.setAppBadge(0);
+        }
+    } catch {
+        // Badge support is optional and must never abort notification delivery.
+    }
+};
+
 self.addEventListener("push", event => {
     let payload = {};
     try { payload = event.data ? event.data.json() : {}; } catch { payload = {}; }
@@ -58,9 +76,7 @@ self.addEventListener("push", event => {
                 await self.registration.showNotification(typeof payload.title === "string" ? payload.title : "Новый заказ", options);
             }
         }
-        if (Number.isFinite(Number(payload.unreadCount)) && self.registration.setAppBadge) {
-            await self.registration.setAppBadge(Math.max(0, Number(payload.unreadCount))).catch(() => {});
-        }
+        await self.syncPushBadge(payload.unreadCount);
     })());
 });
 
