@@ -5,6 +5,7 @@ const { legalConfig, readiness: legalReadiness } = require("./legal");
 const { runtimePaths, verifyBackup, verifyReferences, isInside } = require("./productionBackup");
 const { auditOrderAttachments } = require("./orderAttachmentAudit");
 const { CURRENT_SCHEMA_VERSION } = require("../databaseMigrations");
+const { loadWebPushConfig } = require("./webPush");
 
 const REQUIRED_PRODUCTION_ENV = [
     "NODE_ENV", "PORT", "SESSION_SECRET", "SESSION_DB_PATH", "MATMIX_DB_PATH", "PRODUCT_UPLOADS_PATH",
@@ -31,6 +32,7 @@ function validateProductionEnvironment(env = process.env, options = {}) {
     const projectRoot = path.resolve(options.projectRoot || path.join(__dirname, "..", ".."));
     const publicRoot = path.join(projectRoot, "public");
     const errors = []; const warnings = [];
+    try { loadWebPushConfig(env); } catch (error) { errors.push(error.message); }
     for (const name of REQUIRED_PRODUCTION_ENV) if (!String(env[name] || "").trim()) errors.push(`${name} is required.`);
     if (env.NODE_ENV !== "production") errors.push("NODE_ENV must be production.");
     if (String(env.SESSION_SECRET || "").length < 48) errors.push("SESSION_SECRET must contain at least 48 characters.");
@@ -148,7 +150,7 @@ async function operationalReadiness(env = process.env, options = {}) {
     }
     checks.diskSpace = Object.values(disk).every(value => value !== null && value >= minDisk);
     let schemaVersion = null; let foreignKeys = null; let attachmentTable = false; let attachmentIndex = false;
-    let emailOutboxTable = false; let emailOutboxIndex = false;
+    let emailOutboxTable = false; let emailOutboxIndex = false; let pushTables = false; let pushIndexes = false;
     if (checks.databaseReadable) {
         const sqlite3 = require("sqlite3").verbose(); const db = new sqlite3.Database(paths.dbPath, sqlite3.OPEN_READONLY);
         try {
@@ -159,12 +161,15 @@ async function operationalReadiness(env = process.env, options = {}) {
             attachmentIndex = Boolean(await new Promise((resolve, reject) => db.get("SELECT name FROM sqlite_master WHERE type='index' AND tbl_name='order_attachments' AND name='idx_order_attachments_order_id'", (e, row) => e ? reject(e) : resolve(row))));
             emailOutboxTable = Boolean(await new Promise((resolve, reject) => db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='order_email_outbox'", (e, row) => e ? reject(e) : resolve(row))));
             emailOutboxIndex = Boolean(await new Promise((resolve, reject) => db.get("SELECT name FROM sqlite_master WHERE type='index' AND tbl_name='order_email_outbox' AND name='idx_order_email_outbox_status_next_attempt'", (e, row) => e ? reject(e) : resolve(row))));
+            pushTables = Boolean(await new Promise((resolve, reject) => db.get("SELECT COUNT(*) AS count FROM sqlite_master WHERE type='table' AND name IN ('web_push_subscriptions','web_push_outbox')", (e, row) => e ? reject(e) : resolve(Number(row?.count) === 2))));
+            pushIndexes = Boolean(await new Promise((resolve, reject) => db.get("SELECT COUNT(*) AS count FROM sqlite_master WHERE type='index' AND name IN ('idx_web_push_subscriptions_user_active','idx_web_push_outbox_status_next_attempt','idx_web_push_outbox_order_subscription')", (e, row) => e ? reject(e) : resolve(Number(row?.count) === 3))));
         }
         finally { await new Promise(resolve => db.close(resolve)); }
     }
     checks.schemaVersion = schemaVersion === CURRENT_SCHEMA_VERSION; checks.databaseConnection = schemaVersion !== null; checks.foreignKeysEnabled = foreignKeys === 1;
     checks.attachmentTable = attachmentTable; checks.attachmentIndex = attachmentIndex;
     checks.emailOutboxTable = emailOutboxTable; checks.emailOutboxIndex = emailOutboxIndex;
+    checks.webPushTables = pushTables; checks.webPushIndexes = pushIndexes;
     const backup = await latestBackup(paths.backupRoot); let backupStatus = { exists: false, verified: false, ageHours: null, path: null, size: null };
     if (backup) {
         const ageHours = (Date.now() - backup.createdAt.getTime()) / 3600000; let verified = false;

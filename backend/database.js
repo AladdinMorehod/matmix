@@ -9,6 +9,7 @@ const {
 } = require("./services/catalogStructure");
 const { ensureOrderNotificationSchema } = require("./services/orderNotifications");
 const { ensureOrderEmailOutboxSchema } = require("./services/orderEmailOutbox");
+const { ensureWebPushSchema } = require("./services/webPush");
 
 const defaultDatabasePath = path.join(__dirname, "database", "matmix.db");
 const databasePath = process.env.MATMIX_DB_PATH || defaultDatabasePath;
@@ -198,6 +199,7 @@ async function initDatabase() {
     await ensureColumn("users", "deleted_at", "TEXT");
     await ensureOrderNotificationSchema({ run });
     await ensureOrderEmailOutboxSchema({ run });
+    await ensureWebPushSchema({ run });
 
     await initProductsTable();
     await initCatalogImportLogsTable();

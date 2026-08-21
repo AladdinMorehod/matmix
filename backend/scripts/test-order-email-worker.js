@@ -95,13 +95,13 @@ async function row(db, orderId) {
 }
 
 async function main() {
-    assert.strictEqual(CURRENT_SCHEMA_VERSION, 7);
+    assert.strictEqual(CURRENT_SCHEMA_VERSION, 8);
     const root = await fs.promises.mkdtemp(path.join(os.tmpdir(), "matmix-order-email-worker-"));
     const databasePath = await setupDatabase(root);
     const db = await openDatabase(databasePath);
     try {
         const version = Number((await db.get("PRAGMA user_version")).user_version);
-        assert.strictEqual(version, 7);
+        assert.strictEqual(version, 8);
 
         const config = loadOrderEmailConfig({
             MATMIX_ORDER_EMAIL_SMTP_HOST: "smtp.example.test",
@@ -109,7 +109,7 @@ async function main() {
             MATMIX_ORDER_EMAIL_SMTP_USER: "site@example.test",
             MATMIX_ORDER_EMAIL_SMTP_PASSWORD: "test-only-secret",
             MATMIX_ORDER_EMAIL_FROM: "site@example.test",
-            MATMIX_ORDER_EMAIL_TO: "orders@example.test"
+            MATMIX_ORDER_EMAIL_TO: " orders@example.test, admin@example.test, ORDERS@example.test "
         });
         let transportOptions;
         createOrderEmailTransport(config, { createTransport(options) { transportOptions = options; return fakeTransport(); } });
@@ -117,6 +117,7 @@ async function main() {
         assert.strictEqual(transportOptions.requireTLS, true);
         assert.strictEqual(transportOptions.tls.minVersion, "TLSv1.2");
         assert(!Object.prototype.hasOwnProperty.call(transportOptions.tls, "rejectUnauthorized"));
+        assert.deepStrictEqual(config.to, ["orders@example.test", "admin@example.test"]);
         assert.deepStrictEqual(
             [transportOptions.connectionTimeout, transportOptions.greetingTimeout, transportOptions.socketTimeout],
             [SMTP_TIMEOUTS_MS.connection, SMTP_TIMEOUTS_MS.greeting, SMTP_TIMEOUTS_MS.socket]
@@ -362,7 +363,7 @@ async function main() {
 
         console.log(JSON.stringify({
             success: true,
-            schemaVersion: 7,
+            schemaVersion: 8,
             successSend: true,
             retryAndMaxAttempts: true,
             concurrentClaim: true,

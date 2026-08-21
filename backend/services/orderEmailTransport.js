@@ -29,6 +29,23 @@ function emailAddress(value, name) {
     return normalized;
 }
 
+function emailRecipients(value, name) {
+    const raw = required({ [name]: value }, name);
+    const recipients = raw.split(",").map(item => item.trim()).filter(Boolean);
+    if (!recipients.length) throw new Error(`${name} must contain at least one email address.`);
+    const unique = [];
+    const seen = new Set();
+    for (const recipient of recipients) {
+        const normalized = emailAddress(recipient, name);
+        const key = normalized.toLowerCase();
+        if (!seen.has(key)) {
+            seen.add(key);
+            unique.push(normalized);
+        }
+    }
+    return unique;
+}
+
 function loadOrderEmailConfig(env = process.env) {
     const host = required(env, ORDER_EMAIL_ENV.host);
     const portText = required(env, ORDER_EMAIL_ENV.port);
@@ -47,7 +64,7 @@ function loadOrderEmailConfig(env = process.env) {
         user,
         password,
         from: emailAddress(from, ORDER_EMAIL_ENV.from),
-        to: emailAddress(to, ORDER_EMAIL_ENV.to)
+        to: emailRecipients(to, ORDER_EMAIL_ENV.to)
     };
 }
 

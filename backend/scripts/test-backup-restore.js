@@ -63,6 +63,8 @@ async function main() {
     const outboxCreatedAt = new Date().toISOString();
     await dbRun(paths.dbPath, `INSERT INTO order_email_outbox(event_key,order_id,event_type,status,attempt_count,next_attempt_at,created_at,updated_at)
         VALUES(?,?,'new_order','pending',0,?,?,?)`, [`new_order:${order.lastID}`, order.lastID, outboxCreatedAt, outboxCreatedAt, outboxCreatedAt]);
+    const pushSubscription = await dbRun(paths.dbPath, "INSERT INTO web_push_subscriptions(user_id,endpoint,p256dh,auth,is_active,created_at,updated_at) VALUES(?,?,?,?,1,?,?)", [backupUser.lastID, "https://push.test/backup", "backup-key", "backup-auth", outboxCreatedAt, outboxCreatedAt]);
+    await dbRun(paths.dbPath, "INSERT INTO web_push_outbox(event_key,order_id,subscription_id,status,attempt_count,next_attempt_at,created_at,updated_at) VALUES(?,?,?,'pending',0,?,?,?)", [`new_order:${order.lastID}:${pushSubscription.lastID}`, order.lastID, pushSubscription.lastID, outboxCreatedAt, outboxCreatedAt, outboxCreatedAt]);
     await dbRun(paths.dbPath, "INSERT INTO order_notification_reads(user_id,order_id,read_at) VALUES(?,?,?)", [backupUser.lastID, order.lastID, new Date().toISOString()]);
     const attachmentBody = Buffer.from("deterministic private attachment fixture");
     const storageKey = `${crypto.randomBytes(32).toString("hex")}.txt`;
@@ -85,6 +87,8 @@ async function main() {
     await dbRun(paths.dbPath, "DELETE FROM products WHERE id=(SELECT MAX(id) FROM products)"); await fs.promises.writeFile(path.join(paths.uploadsPath, "unrelated-test.txt"), "changed");
     await dbRun(paths.dbPath, "DELETE FROM order_notification_reads");
     await dbRun(paths.dbPath, "DELETE FROM order_email_outbox");
+    await dbRun(paths.dbPath, "DELETE FROM web_push_outbox");
+    await dbRun(paths.dbPath, "DELETE FROM web_push_subscriptions");
     await dbRun(paths.dbPath, "DELETE FROM order_attachments");
     await fs.promises.rm(path.join(paths.attachmentsPath, storageKey));
     for (const fixture of additionalAttachments) await fs.promises.rm(path.join(paths.attachmentsPath, fixture.key));
@@ -94,6 +98,8 @@ async function main() {
     assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM products")).count, baseline.products); assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM orders")).count, baseline.orders); assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM clients")).count, baseline.clients); assert(!fs.existsSync(path.join(paths.uploadsPath, "unrelated-test.txt"))); await verifyDatabase(paths.dbPath);
     assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM order_notification_reads WHERE user_id=? AND order_id=?", [backupUser.lastID, order.lastID])).count, 1);
     assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM order_email_outbox WHERE event_key=? AND order_id=?", [`new_order:${order.lastID}`, order.lastID])).count, 1);
+    assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM web_push_subscriptions WHERE endpoint=?", ["https://push.test/backup"])).count, 1);
+    assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM web_push_outbox WHERE event_key=?", [`new_order:${order.lastID}:${pushSubscription.lastID}`])).count, 1);
     assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM order_attachments")).count, 3); assert.strictEqual(await sha256(path.join(paths.attachmentsPath, storageKey)), attachmentSha);
     assert.deepStrictEqual(await fs.promises.readdir(paths.catalogImportsPath), [catalogImportName]); assert.deepStrictEqual(await fs.promises.readFile(path.join(paths.catalogImportsPath, catalogImportName)), catalogImportBody);
 

@@ -71,6 +71,12 @@ function renderProfileSettings() {
                 ${renderPasswordField({ label: "Повтор нового пароля", name: "confirmPassword", minlength: "6", required: true })}
                 <button type="submit">Сменить пароль</button>
             </form>
+            <section class="settings-notification-settings" aria-labelledby="crmPushTitle">
+                <h3 id="crmPushTitle">Уведомления</h3>
+                <p id="crmPushStatus" class="settings-muted">Проверка поддержки уведомлений...</p>
+                <button id="crmEnablePush" type="button">Включить уведомления</button>
+                <button id="crmDisablePush" type="button" hidden>Отключить уведомления</button>
+            </section>
         </section>
     `;
 }
@@ -232,6 +238,7 @@ function renderSettings() {
     `;
 
     window.CrmDrafts?.bindForm(settingsView.querySelector("#createUserForm"), "settings:create-user");
+    window.CrmWebPush?.bind(settingsView);
 }
 
 async function loadSettings() {

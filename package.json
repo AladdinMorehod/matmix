@@ -18,7 +18,11 @@
     "test:database-integrity": "node backend/scripts/test-database-integrity.js",
     "test:order-email-outbox": "node backend/scripts/test-order-email-outbox.js",
     "test:order-email-worker": "node backend/scripts/test-order-email-worker.js",
+    "test:web-push": "node backend/scripts/test-web-push.js",
+    "test:web-push-routes": "node backend/scripts/test-web-push-routes.js",
+    "test:service-worker": "node backend/scripts/test-service-worker.js",
     "email:orders:process": "node backend/scripts/process-order-email-outbox.js",
+    "push:orders:process": "node backend/scripts/process-web-push-outbox.js",
     "test:file-request": "node backend/scripts/test-file-request-api.js",
     "test:crm-attachments": "node backend/scripts/test-crm-order-attachments.js",
     "attachments:audit": "node backend/scripts/audit-order-attachments.js",
@@ -51,6 +55,7 @@
     "nodemailer": "^9.0.5",
     "sharp": "^0.35.3",
     "sqlite3": "6.0.1",
+    "web-push": "^3.6.7",
     "yauzl": "^3.4.0"
   },
   "devDependencies": {

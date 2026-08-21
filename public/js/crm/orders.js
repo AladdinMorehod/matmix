@@ -731,6 +731,26 @@ async function loadOrders(options = {}) {
     }
 }
 
+async function openOrderById(orderId) {
+    const normalizedOrderId = String(orderId || "");
+    if (!/^[1-9]\d*$/.test(normalizedOrderId)) throw new Error("Некорректный идентификатор заявки.");
+    ordersRequestId += 1;
+    let order = orders.find(item => String(item.id) === normalizedOrderId);
+    if (!order) {
+        const result = await CrmApi.get(`/api/orders/${encodeURIComponent(normalizedOrderId)}`);
+        order = result.order;
+        if (!order) throw new Error("Заявка не найдена.");
+        orders = [order, ...orders.filter(item => String(item.id) !== normalizedOrderId)];
+    }
+    expandedOrderIds.add(normalizedOrderId);
+    renderOrders();
+    window.CrmOrderNotifications?.onOrderOpened(normalizedOrderId);
+    window.requestAnimationFrame(() => {
+        ordersList.querySelector(`.order-card-header[data-order-toggle="${CSS.escape(normalizedOrderId)}"]`)?.focus();
+    });
+    return order;
+}
+
 ordersList.addEventListener("click", event => {
     const orderHeader = event.target.closest(".order-card-header[data-order-toggle]");
     if (orderHeader) {
@@ -785,5 +805,6 @@ ordersList.addEventListener("keydown", event => {
 
 window.CrmOrders = {
     setNotificationRead: setOrderNotificationRead,
-    setAllNotificationsRead: setAllOrderNotificationsRead
+    setAllNotificationsRead: setAllOrderNotificationsRead,
+    openOrderById
 };

@@ -10,8 +10,9 @@ const {
     OUTBOX_INDEXES,
     ensureOrderEmailOutboxSchema
 } = require("./services/orderEmailOutbox");
+const { ensureWebPushSchema } = require("./services/webPush");
 
-const CURRENT_SCHEMA_VERSION = 7;
+const CURRENT_SCHEMA_VERSION = 8;
 const CONSENT_COLUMNS = [
     ["consent_given", "INTEGER"], ["consent_at", "TEXT"], ["privacy_policy_version", "TEXT"],
     ["terms_version", "TEXT"], ["privacy_policy_url", "TEXT"], ["terms_url", "TEXT"]
@@ -21,7 +22,10 @@ const REQUIRED_INDEXES = [
     "idx_order_events_order_created_at", "idx_products_public_order", "idx_products_catalog_order",
     "idx_products_group_order", "idx_products_image_url", "idx_order_attachments_order_id",
     ...NOTIFICATION_INDEXES,
-    ...OUTBOX_INDEXES
+    ...OUTBOX_INDEXES,
+    "idx_web_push_subscriptions_user_active",
+    "idx_web_push_outbox_status_next_attempt",
+    "idx_web_push_outbox_order_subscription"
 ];
 
 function helpers(db) {
@@ -115,6 +119,13 @@ async function migrateLegacyV0(db) {
             throw new Error("Migration blocked by notification reads in an unversioned database.");
         }
         await db.run("DROP TABLE order_notification_reads");
+    }
+    for (const tableName of ["web_push_outbox", "web_push_subscriptions"]) {
+        const table = await db.get("SELECT name FROM sqlite_master WHERE type='table' AND name=?", [tableName]);
+        if (!table) continue;
+        const count = Number((await db.get(`SELECT COUNT(*) AS count FROM ${quoteIdentifier(tableName)}`)).count);
+        if (count) throw new Error(`Migration blocked by ${tableName} rows in an unversioned database.`);
+        await db.run(`DROP TABLE ${quoteIdentifier(tableName)}`);
     }
 
     for (const indexName of ["idx_orders_order_number", "idx_clients_phone", "idx_orders_status_created_at", "idx_orders_client_created_at", "idx_order_events_order_created_at"]) {
@@ -274,6 +285,10 @@ async function migrateToV7(db) {
     await ensureOrderEmailOutboxSchema(db);
 }
 
+async function migrateToV8(db) {
+    await ensureWebPushSchema(db);
+}
+
 async function migrateDatabase(dbPath, { dryRun = true, injectFailure = false } = {}) {
     const db = await openDatabase(dbPath);
     try {
@@ -281,7 +296,7 @@ async function migrateDatabase(dbPath, { dryRun = true, injectFailure = false } 
         if (fromVersion > CURRENT_SCHEMA_VERSION) throw new Error(`Unsupported newer schema version ${fromVersion}.`);
         const findings = await audit(db);
         if (dryRun || fromVersion === CURRENT_SCHEMA_VERSION) return { dryRun, fromVersion, toVersion: CURRENT_SCHEMA_VERSION, findings, changed: false };
-        if (![0, 1, 2, 3, 4, 5, 6].includes(fromVersion)) throw new Error(`Unsupported schema version ${fromVersion}.`);
+        if (![0, 1, 2, 3, 4, 5, 6, 7].includes(fromVersion)) throw new Error(`Unsupported schema version ${fromVersion}.`);
         if (findings.eventsWithoutOrder || findings.subcategoriesWithoutParent || findings.activeChildWithInactiveParent
             || findings.duplicateOrderNumbers || findings.duplicateProductCodes || findings.emptyProductCodes
             || findings.invalidRequestTypes || findings.attachmentsWithoutOrder || findings.emailOutboxWithoutOrder) {
@@ -299,6 +314,7 @@ async function migrateDatabase(dbPath, { dryRun = true, injectFailure = false } 
             if (fromVersion <= 4) await migrateToV5(db);
             if (fromVersion <= 5) await migrateToV6(db);
             if (fromVersion <= 6) await migrateToV7(db);
+            if (fromVersion <= 7) await migrateToV8(db);
             if (injectFailure) throw new Error("Injected migration failure");
             const fk = await db.all("PRAGMA foreign_key_check");
             const integrity = await db.get("PRAGMA integrity_check");

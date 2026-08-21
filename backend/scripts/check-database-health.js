@@ -24,6 +24,8 @@ async function main() {
         const orderColumns = new Set((await db.all("PRAGMA table_info(orders)")).map(row => row.name));
         const hasAttachments = tables.has("order_attachments");
         const hasEmailOutbox = tables.has("order_email_outbox");
+        const hasPushSubscriptions = tables.has("web_push_subscriptions");
+        const hasPushOutbox = tables.has("web_push_outbox");
         const report = {
             healthy: true,
             schemaVersion: version,
@@ -40,7 +42,12 @@ async function main() {
                 orderAttachments: hasAttachments,
                 orderAttachmentsOrderIndex: indexes.has("idx_order_attachments_order_id"),
                 orderEmailOutbox: hasEmailOutbox,
-                orderEmailOutboxWorkerIndex: indexes.has("idx_order_email_outbox_status_next_attempt")
+                orderEmailOutboxWorkerIndex: indexes.has("idx_order_email_outbox_status_next_attempt"),
+                webPushSubscriptions: hasPushSubscriptions,
+                webPushOutbox: hasPushOutbox,
+                webPushSubscriptionIndex: indexes.has("idx_web_push_subscriptions_user_active"),
+                webPushOutboxIndex: indexes.has("idx_web_push_outbox_status_next_attempt"),
+                webPushOutboxUniqueIndex: indexes.has("idx_web_push_outbox_order_subscription")
             },
             counts: {
                 products: await scalar("SELECT COUNT(*) FROM products"), clients: await scalar("SELECT COUNT(*) FROM clients"),
@@ -56,6 +63,12 @@ async function main() {
                     : null,
                 emailOutboxWithoutOrder: hasEmailOutbox
                     ? await scalar("SELECT COUNT(*) FROM order_email_outbox e LEFT JOIN orders o ON o.id=e.order_id WHERE o.id IS NULL")
+                    : null,
+                pushOutboxWithoutOrder: hasPushOutbox
+                    ? await scalar("SELECT COUNT(*) FROM web_push_outbox e LEFT JOIN orders o ON o.id=e.order_id WHERE o.id IS NULL")
+                    : null,
+                pushOutboxWithoutSubscription: hasPushOutbox
+                    ? await scalar("SELECT COUNT(*) FROM web_push_outbox e LEFT JOIN web_push_subscriptions s ON s.id=e.subscription_id WHERE s.id IS NULL")
                     : null
             },
             invalidRequestTypes: orderColumns.has("request_type")

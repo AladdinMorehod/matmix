@@ -321,6 +321,12 @@
         const canSignal = Boolean(options.allowSignal && continuity && wasBaseline);
 
         unreadCount = nextCount;
+        if (navigator.serviceWorker?.ready) {
+            void navigator.serviceWorker.ready.then(registration => {
+                if (registration.setAppBadge) return nextCount > 0 ? registration.setAppBadge(nextCount) : registration.clearAppBadge?.();
+                return undefined;
+            }).catch(() => {});
+        }
         hasBaseline = true;
         continuity = true;
         render();

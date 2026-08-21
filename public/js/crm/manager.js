@@ -82,6 +82,23 @@ function getCrmSectionFromUrl() {
     return new URL(window.location.href).searchParams.get("section") || "dashboard";
 }
 
+function getOrderDeepLinkId() {
+    const match = /^#order-([1-9]\d*)$/.exec(window.location.hash);
+    if (!match) return null;
+    const id = Number(match[1]);
+    return Number.isSafeInteger(id) ? String(id) : null;
+}
+
+async function openOrderDeepLink() {
+    const orderId = getOrderDeepLinkId();
+    if (!orderId || !window.CrmOrders?.openOrderById) return;
+    try {
+        await window.CrmOrders.openOrderById(orderId);
+    } catch (error) {
+        setMessage(window.CrmErrorHandler?.getMessage(error, "Не удалось открыть заявку."));
+    }
+}
+
 function syncCrmSectionUrl(section, historyMode = "push") {
     if (historyMode === "none") return;
 
@@ -597,6 +614,7 @@ checkAccess().then(isAllowed => {
     if (isAllowed) {
         renderCrmNavigation();
         navigateToCrmSection(getCrmSectionFromUrl(), { historyMode: "replace" });
+        void openOrderDeepLink();
         window.CrmOrderNotifications?.start();
     }
 });
