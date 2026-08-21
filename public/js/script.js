@@ -37231,6 +37231,10 @@ let searchSuggestions = [];
 let searchSuggestionsLoading = false;
 let searchSuggestionsRequestId = 0;
 let activeSearchSuggestionIndex = -1;
+let searchInputSelectAllOnFocus = false;
+let searchInputSelectionActive = false;
+let searchResultsTouchStartY = null;
+let searchResultsTouchMoved = false;
 let documentPointerDownStartedInsideInteractive = false;
 let pointerDownStartedInsideSearch = false;
 let uploadRequestFiles = [];
@@ -40244,11 +40248,29 @@ document.querySelector(".logo")?.addEventListener("click", event => {
 
 searchInput?.addEventListener("input", () => {
     searchQuery = searchInput.value;
+    searchInputSelectAllOnFocus = false;
+    searchInputSelectionActive = false;
     scheduleSearchSuggestionsLoad();
+});
+
+searchInput?.addEventListener("blur", () => {
+    const hasVisibleResults = !searchDropdown.classList.contains("hidden") || searchSuggestions.length > 0;
+    searchInputSelectAllOnFocus = Boolean(searchInput.value.trim() && hasVisibleResults);
+    searchInputSelectionActive = false;
 });
 
 searchInput?.addEventListener("focus", () => {
     expandMobileSearch();
+    const shouldSelectAll = searchInputSelectAllOnFocus && searchInput.value.trim();
+    searchInputSelectAllOnFocus = false;
+    if (shouldSelectAll) {
+        window.requestAnimationFrame(() => {
+            if (document.activeElement !== searchInput || !searchInput.value) return;
+            searchInput.select();
+            searchInputSelectionActive = true;
+        });
+    }
+
     if (getPublicSearchQuery().length >= SEARCH_SUGGESTION_MIN_LENGTH && !searchSuggestions.length) {
         scheduleSearchSuggestionsLoad();
         return;
@@ -40297,7 +40319,39 @@ headerSearch?.addEventListener("click", event => {
     event.stopPropagation();
 });
 
-searchInput?.addEventListener("pointerdown", expandMobileSearch);
+searchInput?.addEventListener("pointerdown", () => {
+    expandMobileSearch();
+    if (document.activeElement === searchInput && searchInputSelectionActive) {
+        searchInputSelectionActive = false;
+    }
+});
+
+searchDropdown.addEventListener("touchstart", event => {
+    if (event.touches.length !== 1) return;
+    searchResultsTouchStartY = event.touches[0].clientY;
+    searchResultsTouchMoved = false;
+}, { passive: true });
+
+searchDropdown.addEventListener("touchmove", event => {
+    if (searchResultsTouchStartY === null || searchResultsTouchMoved || event.touches.length !== 1) return;
+    const deltaY = Math.abs(event.touches[0].clientY - searchResultsTouchStartY);
+    if (deltaY < 10 || searchDropdown.scrollHeight <= searchDropdown.clientHeight) return;
+
+    searchResultsTouchMoved = true;
+    if (isMobileSearchLayout() && document.activeElement === searchInput) {
+        searchInput.blur();
+    }
+}, { passive: true });
+
+searchDropdown.addEventListener("touchend", () => {
+    searchResultsTouchStartY = null;
+    searchResultsTouchMoved = false;
+}, { passive: true });
+
+searchDropdown.addEventListener("touchcancel", () => {
+    searchResultsTouchStartY = null;
+    searchResultsTouchMoved = false;
+}, { passive: true });
 
 searchDropdown.addEventListener("click", event => {
     event.stopPropagation();
@@ -40358,6 +40412,21 @@ categoryControls?.addEventListener("click", async event => {
         requestAnimationFrame(autoOpenMobileSubcategoryPicker);
     }
 });
+
+categoryControls?.addEventListener("wheel", event => {
+    const scroller = event.target.closest(".category-main-list");
+    if (!scroller || scroller.scrollWidth <= scroller.clientWidth) return;
+
+    const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+    if (!delta) return;
+
+    const maxScrollLeft = scroller.scrollWidth - scroller.clientWidth;
+    const nextScrollLeft = Math.max(0, Math.min(maxScrollLeft, scroller.scrollLeft + delta));
+    if (nextScrollLeft === scroller.scrollLeft) return;
+
+    scroller.scrollLeft = nextScrollLeft;
+    event.preventDefault();
+}, { passive: false });
 
 document.addEventListener("click", async event => {
     const option = event.target.closest(".catalog-picker-option");

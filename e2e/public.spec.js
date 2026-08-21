@@ -168,6 +168,130 @@ test("catalog, search, cart persistence and responsive smoke", async ({ page, re
     for (const viewport of [{ width: 320, height: 568 }, { width: 375, height: 812 }, { width: 768, height: 1024 }, { width: 1024, height: 768 }, { width: 1366, height: 768 }, { width: 1920, height: 1080 }]) { await page.setViewportSize(viewport); const dimensions = await page.evaluate(() => ({ scrollWidth: document.documentElement.scrollWidth, clientWidth: document.documentElement.clientWidth, offenders: [...document.querySelectorAll("*")].filter(element => element.getBoundingClientRect().right > document.documentElement.clientWidth + 1).slice(0, 5).map(element => `${element.tagName}.${element.className}:${Math.round(element.getBoundingClientRect().right)}`) })); expect(dimensions.scrollWidth, JSON.stringify({ viewport, dimensions })).toBeLessThanOrEqual(dimensions.clientWidth + 1); }
 });
 
+test("catalog categories use one two-row horizontal scroller", async ({ page }) => {
+    const categories = Array.from({ length: 18 }, (_, index) => ({
+        name: `Категория ${index + 1} с длинным названием`,
+        subcategories: []
+    }));
+
+    await page.route("**/api/public/products/structure", route => route.fulfill({
+        contentType: "application/json",
+        body: JSON.stringify({ success: true, categories })
+    }));
+    await page.route("**/api/public/products?*", route => route.fulfill({
+        contentType: "application/json",
+        body: JSON.stringify({ success: true, products: [], items: [], pagination: { page: 1, limit: 50, total: 0, totalPages: 1 } })
+    }));
+
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto("/catalog");
+    const desktopGeometry = await page.locator(".category-main-list").evaluate(element => ({
+        display: getComputedStyle(element).display,
+        flexWrap: getComputedStyle(element).flexWrap,
+        overflowX: getComputedStyle(element).overflowX
+    }));
+    expect(desktopGeometry.display).toBe("flex");
+    expect(desktopGeometry.flexWrap).toBe("wrap");
+    expect(desktopGeometry.overflowX).toBe("visible");
+    await page.locator("#categoryControls .category-control.level-0").first().click();
+
+    await page.setViewportSize({ width: 375, height: 812 });
+    await page.goto("/catalog");
+    const scroller = page.locator(".category-main-list");
+    await expect(scroller).toBeVisible();
+    const mobileGeometry = await scroller.evaluate(element => ({
+        display: getComputedStyle(element).display,
+        rows: getComputedStyle(element).gridTemplateRows.split(" ").length,
+        scrollWidth: element.scrollWidth,
+        clientWidth: element.clientWidth,
+        buttonParents: [...element.querySelectorAll("button")].every(button => button.parentElement === element)
+    }));
+    expect(mobileGeometry.display).toBe("grid");
+    expect(mobileGeometry.rows).toBe(2);
+    expect(mobileGeometry.scrollWidth).toBeGreaterThan(mobileGeometry.clientWidth);
+    expect(mobileGeometry.buttonParents).toBeTruthy();
+
+    await scroller.evaluate(element => { element.scrollLeft = 0; });
+    await scroller.dispatchEvent("wheel", { deltaY: 240, deltaMode: 0 });
+    await expect.poll(() => scroller.evaluate(element => element.scrollLeft)).toBeGreaterThan(0);
+
+    const activeCategory = page.locator("#categoryControls .category-control.level-0").first();
+    await activeCategory.click();
+    await expect(activeCategory).toHaveClass(/active/);
+});
+
+test("search selects query on re-entry and keeps results after mobile scroll blur", async ({ page }) => {
+    const products = Array.from({ length: 14 }, (_, index) => ({
+        id: 9700 + index,
+        name: `Ротбанд тестовый товар ${index + 1}`,
+        price: 100 + index,
+        weight: 1,
+        unit: "шт",
+        category: "Смеси",
+        subcategory: "Штукатурка",
+        image: ""
+    }));
+
+    await page.route("**/api/public/products/structure", route => route.fulfill({
+        contentType: "application/json",
+        body: JSON.stringify({ success: true, categories: [] })
+    }));
+    await page.route("**/api/public/products?*", async route => {
+        const search = new URL(route.request().url()).searchParams.get("search");
+        const result = search ? products : [];
+        await route.fulfill({
+            contentType: "application/json",
+            body: JSON.stringify({ success: true, products: result, items: result, pagination: { page: 1, limit: 50, total: result.length, totalPages: 1 } })
+        });
+    });
+
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto("/");
+    const input = page.locator("#searchInput");
+    await input.fill("ротб");
+    await expect(page.locator(".search-result")).toHaveCount(products.length);
+    await page.locator(".search-result .add").first().click();
+    await input.click();
+    const selection = await input.evaluate(element => ({ start: element.selectionStart, end: element.selectionEnd, length: element.value.length }));
+    expect(selection.start).toBe(0);
+    expect(selection.end).toBe(selection.length);
+    await page.keyboard.type("цеме");
+    await expect(input).toHaveValue("цеме");
+    await input.click({ position: { x: 12, y: 16 } });
+    const caret = await input.evaluate(element => ({ start: element.selectionStart, end: element.selectionEnd }));
+    expect(caret.start).toBe(caret.end);
+
+    await page.setViewportSize({ width: 375, height: 812 });
+    await page.reload();
+    await input.fill("ротб");
+    await expect(page.locator(".search-result")).toHaveCount(products.length);
+    const dropdown = page.locator(".search-dropdown");
+    await expect.poll(() => dropdown.evaluate(element => element.scrollHeight > element.clientHeight)).toBe(true);
+    await input.focus();
+    await dropdown.evaluate(element => {
+        const touch = (type, y) => {
+            const event = new Event(type, { bubbles: true });
+            Object.defineProperty(event, "touches", { value: [{ clientY: y }] });
+            element.dispatchEvent(event);
+        };
+        touch("touchstart", 200);
+        touch("touchmove", 206);
+    });
+    await expect(input).toBeFocused();
+    await dropdown.evaluate(element => {
+        const event = new Event("touchmove", { bubbles: true });
+        Object.defineProperty(event, "touches", { value: [{ clientY: 220 }] });
+        element.dispatchEvent(event);
+    });
+    await expect(input).not.toBeFocused();
+    await expect(dropdown).toBeVisible();
+    await expect(input).toHaveValue("ротб");
+    await input.click();
+    const mobileSelection = await input.evaluate(element => ({ start: element.selectionStart, end: element.selectionEnd, length: element.value.length }));
+    expect(mobileSelection.start).toBe(0);
+    expect(mobileSelection.end).toBe(mobileSelection.length);
+});
+
 test("catalog shows all subcategory products before optional group filtering", async ({ page }) => {
     const category = "Смеси";
     const plaster = "Штукатурка";
