@@ -174,7 +174,21 @@ test("public product cards link to canonical product pages without hijacking car
     const body = await response.json();
     const product = (body.products || body.items || body.data || [])[0];
     expect(product).toBeTruthy();
+    await page.route("**/api/public/products?*", route => route.fulfill({
+        contentType: "application/json",
+        body: JSON.stringify({
+            success: true,
+            products: [product],
+            items: [product],
+            pagination: { page: 1, limit: 50, total: 1, totalPages: 1 }
+        })
+    }));
+    const productsRenderResponse = page.waitForResponse(response => {
+        const url = new URL(response.url());
+        return url.pathname === "/api/public/products" && response.status() === 200;
+    });
     await page.goto("/catalog");
+    await productsRenderResponse;
     await page.evaluate(item => {
         const grid = document.querySelector("#productGrid");
         grid.innerHTML = "";
@@ -1124,6 +1138,8 @@ test("mobile header stays single-line and expands search without layout shift", 
     await expect(page.locator(".search-result")).toHaveCount(1);
     await searchInput.press("ArrowDown");
     await searchInput.press("Enter");
+    await expect(page).toHaveURL(/\/product\/responsive-search-product$/i);
+    await page.goBack();
     await expect(page.locator(".header")).not.toHaveClass(/is-search-expanded/);
     await expect(searchInput).toHaveValue("товар");
 

@@ -182,6 +182,7 @@ test("ordinary admin keeps scoped image actions but cannot start global replacem
         .getByRole("button", { name: "Редактировать" })
         .click();
     const productModal = page.locator(".crm-modal");
+    await productModal.getByRole("button", { name: "Изображения", exact: true }).click();
     await expect(productModal.locator("[data-product-image-input]")).toBeVisible();
     await expect(productModal.locator("[data-product-image-upload]")).toBeVisible();
     await productModal.getByRole("button", { name: "Закрыть окно" }).click();
