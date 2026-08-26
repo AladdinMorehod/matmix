@@ -1,6 +1,6 @@
 const sqlite3 = require("sqlite3").verbose();
 const { runtimePaths } = require("../services/productionBackup");
-const { CURRENT_SCHEMA_VERSION, REQUIRED_INDEXES } = require("../databaseMigrations");
+const { CURRENT_SCHEMA_VERSION, REQUIRED_INDEXES, PRODUCT_PAGE_TABLES } = require("../databaseMigrations");
 const { BUSY_TIMEOUT_MS } = require("../sqlite");
 
 function open(file) {
@@ -26,6 +26,9 @@ async function main() {
         const hasEmailOutbox = tables.has("order_email_outbox");
         const hasPushSubscriptions = tables.has("web_push_subscriptions");
         const hasPushOutbox = tables.has("web_push_outbox");
+        const hasProductAttributes = tables.has("product_attribute_definitions")
+            && tables.has("product_attribute_templates") && tables.has("product_attribute_values");
+        const hasProductImages = tables.has("product_images");
         const report = {
             healthy: true,
             schemaVersion: version,
@@ -47,7 +50,9 @@ async function main() {
                 webPushOutbox: hasPushOutbox,
                 webPushSubscriptionIndex: indexes.has("idx_web_push_subscriptions_user_active"),
                 webPushOutboxIndex: indexes.has("idx_web_push_outbox_status_next_attempt"),
-                webPushOutboxUniqueIndex: indexes.has("idx_web_push_outbox_order_subscription")
+                webPushOutboxUniqueIndex: indexes.has("idx_web_push_outbox_order_subscription"),
+                productPageTables: PRODUCT_PAGE_TABLES.every(name => tables.has(name)),
+                productPageIndexes: REQUIRED_INDEXES.filter(name => name.startsWith("idx_product_attribute_") || name.startsWith("idx_product_images_")).every(name => indexes.has(name))
             },
             counts: {
                 products: await scalar("SELECT COUNT(*) FROM products"), clients: await scalar("SELECT COUNT(*) FROM clients"),
@@ -69,8 +74,20 @@ async function main() {
                     : null,
                 pushOutboxWithoutSubscription: hasPushOutbox
                     ? await scalar("SELECT COUNT(*) FROM web_push_outbox e LEFT JOIN web_push_subscriptions s ON s.id=e.subscription_id WHERE s.id IS NULL")
-                    : null
+                    : null,
+                attributeValuesWithoutProduct: hasProductAttributes
+                    ? await scalar("SELECT COUNT(*) FROM product_attribute_values v LEFT JOIN products p ON p.id=v.product_id WHERE p.id IS NULL") : null,
+                attributeValuesWithoutDefinition: hasProductAttributes
+                    ? await scalar("SELECT COUNT(*) FROM product_attribute_values v LEFT JOIN product_attribute_definitions d ON d.id=v.attribute_definition_id WHERE d.id IS NULL") : null,
+                templatesWithoutStructure: hasProductAttributes
+                    ? await scalar("SELECT COUNT(*) FROM product_attribute_templates t LEFT JOIN catalog_structure s ON s.id=t.structure_id WHERE s.id IS NULL") : null,
+                templatesWithoutDefinition: hasProductAttributes
+                    ? await scalar("SELECT COUNT(*) FROM product_attribute_templates t LEFT JOIN product_attribute_definitions d ON d.id=t.attribute_definition_id WHERE d.id IS NULL") : null,
+                productImagesWithoutProduct: hasProductImages
+                    ? await scalar("SELECT COUNT(*) FROM product_images i LEFT JOIN products p ON p.id=i.product_id WHERE p.id IS NULL") : null
             },
+            productsWithMultiplePrimaryImages: hasProductImages
+                ? await scalar("SELECT COUNT(*) FROM (SELECT product_id FROM product_images WHERE is_primary=1 GROUP BY product_id HAVING COUNT(*)>1)") : null,
             invalidRequestTypes: orderColumns.has("request_type")
                 ? await scalar("SELECT COUNT(*) FROM orders WHERE request_type NOT IN ('order','file_request') OR request_type IS NULL")
                 : null,
@@ -97,6 +114,7 @@ async function main() {
             && report.journalMode === "wal" && report.integrity === "ok" && !report.foreignKeyViolations
             && !report.missingIndexes.length && Object.values(report.schema).every(Boolean)
             && !Object.values(report.orphans).some(Number) && !Object.values(report.duplicateBusinessKeys).some(Number)
+            && report.productsWithMultiplePrimaryImages === 0
             && report.invalidRequestTypes === 0 && report.invalidAttachmentMetadata === 0;
         console.log(process.argv.includes("--json") ? JSON.stringify(report) : JSON.stringify(report, null, 2));
         if (!report.healthy) process.exitCode = 2;

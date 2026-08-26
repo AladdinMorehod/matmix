@@ -16,6 +16,7 @@
     "database:migrate": "node backend/scripts/migrate-database.js",
     "database:health": "node backend/scripts/check-database-health.js",
     "test:database-integrity": "node backend/scripts/test-database-integrity.js",
+    "test:product-page-foundation": "node backend/scripts/test-product-page-foundation.js",
     "test:order-email-outbox": "node backend/scripts/test-order-email-outbox.js",
     "test:order-email-worker": "node backend/scripts/test-order-email-worker.js",
     "test:web-push": "node backend/scripts/test-web-push.js",

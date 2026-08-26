@@ -103,13 +103,13 @@ async function assertMigration(root, sourceDatabase) {
     const dryRun = await migrateDatabase(v5Path, { dryRun: true });
     assert.deepStrictEqual(
         { from: dryRun.fromVersion, to: dryRun.toVersion, changed: dryRun.changed },
-        { from: 5, to: 8, changed: false }
+        { from: 5, to: 9, changed: false }
     );
 
     const result = await migrateDatabase(v5Path, { dryRun: false });
     assert.deepStrictEqual(
         { from: result.fromVersion, to: result.toVersion, changed: result.changed },
-        { from: 5, to: 8, changed: true }
+        { from: 5, to: 9, changed: true }
     );
     assert(fs.existsSync(result.backupPath));
     const migrated = await openDatabase(v5Path);
@@ -123,7 +123,7 @@ async function assertMigration(root, sourceDatabase) {
 
     const repeated = await migrateDatabase(v5Path, { dryRun: false });
     assert.strictEqual(repeated.changed, false);
-    assert.strictEqual(repeated.fromVersion, 8);
+    assert.strictEqual(repeated.fromVersion, 9);
 
     const rollbackPath = path.join(root, "schema-v5-rollback.db");
     await fs.promises.copyFile(sourceDatabase, rollbackPath);
@@ -168,7 +168,7 @@ async function assertForeignKeyCascades(db) {
 }
 
 async function main() {
-    assert.strictEqual(CURRENT_SCHEMA_VERSION, 8);
+    assert.strictEqual(CURRENT_SCHEMA_VERSION, 9);
     const root = await fs.promises.mkdtemp(path.join(os.tmpdir(), "matmix-order-notifications-"));
     const databasePath = path.join(root, "matmix.db");
     const lockPath = path.join(root, "runtime.lock");
@@ -455,7 +455,7 @@ async function main() {
 
     console.log(JSON.stringify({
         success: true,
-        schema: "5->8",
+        schema: "5->9",
         personalizedReadState: "ok",
         exactReadSet: "ok",
         olderOrderFirstAssignmentUnread: "ok",

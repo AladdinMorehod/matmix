@@ -33,19 +33,26 @@ async function main() {
     await new Promise((resolve, reject) => initializationDb.close(error => error ? reject(error) : resolve()));
     await migrateDatabase(paths.dbPath, { dryRun: false });
 
-    await dbRun(
+    const product = await dbRun(
         paths.dbPath,
         `INSERT INTO products (
-            external_id, title, category, price, unit,
-            description, is_active, sort_order, created_at, updated_at
-        ) VALUES (?, ?, ?, ?, ?, ?, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)`,
+            external_id, title, category, price, unit, image_url, description,
+            brand, short_description, full_description, seo_title, seo_description,
+            is_active, sort_order, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)`,
         [
             "MAT-BACKUP-001",
             "Тестовый товар резервного копирования",
             "Тестовая категория",
             1000,
             "шт",
-            "Тестовая запись для проверки backup/restore"
+            "/uploads/products/test-product-image.txt",
+            "Legacy backup description",
+            "Backup Brand",
+            "Короткое описание",
+            "Полное описание",
+            "SEO заголовок",
+            "SEO описание"
         ]
     );
 
@@ -53,6 +60,21 @@ async function main() {
         path.join(paths.uploadsPath, "test-product-image.txt"),
         "deterministic backup upload fixture"
     );
+    const structure = await dbRun(paths.dbPath, `INSERT INTO catalog_structure
+        (type,name,normalized_name,external_code,parent_id,sort_order,is_active,is_system,created_at,updated_at)
+        VALUES('category','Backup category','backup category','CAT-BACKUP',NULL,999,1,0,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)`);
+    const definition = await dbRun(paths.dbPath, `INSERT INTO product_attribute_definitions
+        (code,label,data_type,default_unit,default_section,sort_order,is_active,created_at,updated_at)
+        VALUES('backup_value','Backup value','text','шт','Backup section',1,1,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)`);
+    await dbRun(paths.dbPath, `INSERT INTO product_attribute_templates
+        (structure_id,attribute_definition_id,sort_order,is_required,created_at,updated_at)
+        VALUES(?,?,1,1,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)`, [structure.lastID, definition.lastID]);
+    await dbRun(paths.dbPath, `INSERT INTO product_attribute_values
+        (product_id,attribute_definition_id,value_text,sort_order,created_at,updated_at)
+        VALUES(?,?,?,1,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)`, [product.lastID, definition.lastID, "Preserved value"]);
+    await dbRun(paths.dbPath, `INSERT INTO product_images
+        (product_id,image_url,alt_text,sort_order,is_primary,created_at,updated_at)
+        VALUES(?,?,?,0,1,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)`, [product.lastID, "/uploads/products/test-product-image.txt", "Backup image"]);
     const catalogImportName = "catalog-import-20260101T000000-0123456789abcdef.xlsx";
     const catalogImportBody = Buffer.from("deterministic catalog import archive fixture");
     await fs.promises.writeFile(path.join(paths.catalogImportsPath, catalogImportName), catalogImportBody);
@@ -84,7 +106,9 @@ async function main() {
     const backup = await createBackup({ paths }); const verified = await verifyBackup(backup.backupPath); assert(verified.success); assert.strictEqual(verified.catalogImports.fileCount, 1);
     const rehearsal = spawnSync(process.execPath, [path.join(__dirname, "rehearse-offsite-restore.js"), "--local-source", backup.backupPath], { cwd: path.resolve(__dirname, "..", ".."), encoding: "utf8" });
     assert.strictEqual(rehearsal.status, 0, String(rehearsal.stderr || rehearsal.stdout));
-    await dbRun(paths.dbPath, "DELETE FROM products WHERE id=(SELECT MAX(id) FROM products)"); await fs.promises.writeFile(path.join(paths.uploadsPath, "unrelated-test.txt"), "changed");
+    await dbRun(paths.dbPath, "DELETE FROM product_attribute_values WHERE product_id=?", [product.lastID]);
+    await dbRun(paths.dbPath, "DELETE FROM product_images WHERE product_id=?", [product.lastID]);
+    await dbRun(paths.dbPath, "DELETE FROM products WHERE id=?", [product.lastID]); await fs.promises.writeFile(path.join(paths.uploadsPath, "unrelated-test.txt"), "changed");
     await dbRun(paths.dbPath, "DELETE FROM order_notification_reads");
     await dbRun(paths.dbPath, "DELETE FROM order_email_outbox");
     await dbRun(paths.dbPath, "DELETE FROM web_push_outbox");
@@ -96,6 +120,15 @@ async function main() {
     await fs.promises.writeFile(path.join(paths.catalogImportsPath, "catalog-import-20260102T000000-fedcba9876543210.xlsx"), "not in backup");
     const restored = await restore(backup.backupPath, { paths, apply: true, confirm: "RESTORE_MATMIX_DATA" }); assert(restored.success); assert.strictEqual(restored.catalogImportsRestored, true);
     assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM products")).count, baseline.products); assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM orders")).count, baseline.orders); assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM clients")).count, baseline.clients); assert(!fs.existsSync(path.join(paths.uploadsPath, "unrelated-test.txt"))); await verifyDatabase(paths.dbPath);
+    assert.deepStrictEqual(await dbGet(paths.dbPath, `SELECT brand,short_description,full_description,seo_title,seo_description
+        FROM products WHERE id=?`, [product.lastID]), {
+        brand: "Backup Brand", short_description: "Короткое описание", full_description: "Полное описание",
+        seo_title: "SEO заголовок", seo_description: "SEO описание"
+    });
+    assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM product_attribute_definitions WHERE id=?", [definition.lastID])).count, 1);
+    assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM product_attribute_templates WHERE attribute_definition_id=? AND structure_id=?", [definition.lastID, structure.lastID])).count, 1);
+    assert.strictEqual((await dbGet(paths.dbPath, "SELECT value_text FROM product_attribute_values WHERE product_id=?", [product.lastID])).value_text, "Preserved value");
+    assert.deepStrictEqual(await dbGet(paths.dbPath, "SELECT image_url,is_primary FROM product_images WHERE product_id=?", [product.lastID]), { image_url: "/uploads/products/test-product-image.txt", is_primary: 1 });
     assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM order_notification_reads WHERE user_id=? AND order_id=?", [backupUser.lastID, order.lastID])).count, 1);
     assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM order_email_outbox WHERE event_key=? AND order_id=?", [`new_order:${order.lastID}`, order.lastID])).count, 1);
     assert.strictEqual((await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM web_push_subscriptions WHERE endpoint=?", ["https://push.test/backup"])).count, 1);

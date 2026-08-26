@@ -10,6 +10,7 @@ const {
 const { ensureOrderNotificationSchema } = require("./services/orderNotifications");
 const { ensureOrderEmailOutboxSchema } = require("./services/orderEmailOutbox");
 const { ensureWebPushSchema } = require("./services/webPush");
+const { ensureProductPageSchema } = require("./services/productPageSchema");
 
 const defaultDatabasePath = path.join(__dirname, "database", "matmix.db");
 const databasePath = process.env.MATMIX_DB_PATH || defaultDatabasePath;
@@ -204,6 +205,7 @@ async function initDatabase() {
     await initProductsTable();
     await initCatalogImportLogsTable();
     await ensureCatalogStructureSchema({ run, all });
+    await ensureProductPageSchema({ run, ensureColumn });
 
     const admin = await get("SELECT id FROM users WHERE login = ?", ["admin"]);
     if (!admin) {

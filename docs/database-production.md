@@ -1,6 +1,6 @@
 # SQLite in production
 
-MatMix uses schema version `8` (`PRAGMA user_version`). Version 7 adds the transactional `order_email_outbox` for new-order email events; version 8 adds Web Push subscriptions and the transactional push outbox. Production startup refuses any other version, and migrations are deliberately separate from startup. Migration 7 → 8 creates the empty push tables and does not enqueue historical orders.
+MatMix uses schema version `9` (`PRAGMA user_version`). Version 7 adds the transactional `order_email_outbox`, version 8 adds Web Push subscriptions and the transactional push outbox, and version 9 adds the product-page content fields, normalized dynamic attributes and product image gallery metadata. Production startup refuses any other version, and migrations are deliberately separate from startup. Migration 8 → 9 is additive, backfills each non-empty `products.image_url` as the product's primary `product_images` row, preserves the compatibility field and never mutates physical uploads.
 
 Before deployment, stop the application and run `npm run database:migrate -- --dry-run`. Review the orphan report, then run `npm run database:migrate -- --apply --confirm MIGRATE_MATMIX_DATABASE`. Apply refuses to run while the runtime lock exists and creates a consistent `VACUUM INTO` database backup before `BEGIN IMMEDIATE`. A failed migration rolls back; keep the application stopped, inspect the error and restore the generated backup if required.
 

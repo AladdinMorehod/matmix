@@ -11,8 +11,14 @@ const {
     ensureOrderEmailOutboxSchema
 } = require("./services/orderEmailOutbox");
 const { ensureWebPushSchema } = require("./services/webPush");
+const {
+    PRODUCT_PAGE_INDEXES,
+    PRODUCT_PAGE_TABLES,
+    ensureProductPageSchema,
+    backfillPrimaryProductImages
+} = require("./services/productPageSchema");
 
-const CURRENT_SCHEMA_VERSION = 8;
+const CURRENT_SCHEMA_VERSION = 9;
 const CONSENT_COLUMNS = [
     ["consent_given", "INTEGER"], ["consent_at", "TEXT"], ["privacy_policy_version", "TEXT"],
     ["terms_version", "TEXT"], ["privacy_policy_url", "TEXT"], ["terms_url", "TEXT"]
@@ -25,7 +31,8 @@ const REQUIRED_INDEXES = [
     ...OUTBOX_INDEXES,
     "idx_web_push_subscriptions_user_active",
     "idx_web_push_outbox_status_next_attempt",
-    "idx_web_push_outbox_order_subscription"
+    "idx_web_push_outbox_order_subscription",
+    ...PRODUCT_PAGE_INDEXES
 ];
 
 function helpers(db) {
@@ -68,6 +75,29 @@ async function audit(db) {
     result.emailOutboxWithoutOrder = emailOutboxTable
         ? Number((await db.get("SELECT COUNT(*) count FROM order_email_outbox e LEFT JOIN orders o ON o.id=e.order_id WHERE o.id IS NULL")).count)
         : 0;
+    const productPageTables = new Set((await db.all(
+        `SELECT name FROM sqlite_master WHERE type='table' AND name IN (${PRODUCT_PAGE_TABLES.map(() => "?").join(",")})`,
+        PRODUCT_PAGE_TABLES
+    )).map(row => row.name));
+    result.missingProductPageTables = PRODUCT_PAGE_TABLES.filter(name => !productPageTables.has(name));
+    result.attributeValuesWithoutProduct = productPageTables.has("product_attribute_values")
+        ? Number((await db.get("SELECT COUNT(*) count FROM product_attribute_values value LEFT JOIN products product ON product.id=value.product_id WHERE product.id IS NULL")).count)
+        : 0;
+    result.attributeValuesWithoutDefinition = productPageTables.has("product_attribute_values") && productPageTables.has("product_attribute_definitions")
+        ? Number((await db.get("SELECT COUNT(*) count FROM product_attribute_values value LEFT JOIN product_attribute_definitions definition ON definition.id=value.attribute_definition_id WHERE definition.id IS NULL")).count)
+        : 0;
+    result.attributeTemplatesWithoutStructure = productPageTables.has("product_attribute_templates")
+        ? Number((await db.get("SELECT COUNT(*) count FROM product_attribute_templates template LEFT JOIN catalog_structure structure ON structure.id=template.structure_id WHERE structure.id IS NULL")).count)
+        : 0;
+    result.attributeTemplatesWithoutDefinition = productPageTables.has("product_attribute_templates") && productPageTables.has("product_attribute_definitions")
+        ? Number((await db.get("SELECT COUNT(*) count FROM product_attribute_templates template LEFT JOIN product_attribute_definitions definition ON definition.id=template.attribute_definition_id WHERE definition.id IS NULL")).count)
+        : 0;
+    result.productImagesWithoutProduct = productPageTables.has("product_images")
+        ? Number((await db.get("SELECT COUNT(*) count FROM product_images image LEFT JOIN products product ON product.id=image.product_id WHERE product.id IS NULL")).count)
+        : 0;
+    result.productsWithMultiplePrimaryImages = productPageTables.has("product_images")
+        ? Number((await db.get("SELECT COUNT(*) count FROM (SELECT product_id FROM product_images WHERE is_primary=1 GROUP BY product_id HAVING COUNT(*)>1)")).count)
+        : 0;
     return result;
 }
 
@@ -97,6 +127,10 @@ async function copyNamedColumns(db, sourceTable, targetTable, allowedColumns = n
 async function ensureColumn(db, tableName, columnName, definition) {
     const columns = new Set((await db.all(`PRAGMA table_info(${quoteIdentifier(tableName)})`)).map(column => column.name));
     if (!columns.has(columnName)) await db.run(`ALTER TABLE ${quoteIdentifier(tableName)} ADD COLUMN ${quoteIdentifier(columnName)} ${definition}`);
+}
+
+function productPageSchemaExecutor(db) {
+    return { run: db.run, ensureColumn: (table, column, definition) => ensureColumn(db, table, column, definition) };
 }
 
 async function migrateLegacyV0(db) {
@@ -289,6 +323,12 @@ async function migrateToV8(db) {
     await ensureWebPushSchema(db);
 }
 
+async function migrateToV9(db) {
+    const executor = productPageSchemaExecutor(db);
+    await ensureProductPageSchema(executor);
+    await backfillPrimaryProductImages(executor);
+}
+
 async function migrateDatabase(dbPath, { dryRun = true, injectFailure = false } = {}) {
     const db = await openDatabase(dbPath);
     try {
@@ -296,7 +336,7 @@ async function migrateDatabase(dbPath, { dryRun = true, injectFailure = false } 
         if (fromVersion > CURRENT_SCHEMA_VERSION) throw new Error(`Unsupported newer schema version ${fromVersion}.`);
         const findings = await audit(db);
         if (dryRun || fromVersion === CURRENT_SCHEMA_VERSION) return { dryRun, fromVersion, toVersion: CURRENT_SCHEMA_VERSION, findings, changed: false };
-        if (![0, 1, 2, 3, 4, 5, 6, 7].includes(fromVersion)) throw new Error(`Unsupported schema version ${fromVersion}.`);
+        if (![0, 1, 2, 3, 4, 5, 6, 7, 8].includes(fromVersion)) throw new Error(`Unsupported schema version ${fromVersion}.`);
         if (findings.eventsWithoutOrder || findings.subcategoriesWithoutParent || findings.activeChildWithInactiveParent
             || findings.duplicateOrderNumbers || findings.duplicateProductCodes || findings.emptyProductCodes
             || findings.invalidRequestTypes || findings.attachmentsWithoutOrder || findings.emailOutboxWithoutOrder) {
@@ -315,6 +355,7 @@ async function migrateDatabase(dbPath, { dryRun = true, injectFailure = false } 
             if (fromVersion <= 5) await migrateToV6(db);
             if (fromVersion <= 6) await migrateToV7(db);
             if (fromVersion <= 7) await migrateToV8(db);
+            if (fromVersion <= 8) await migrateToV9(db);
             if (injectFailure) throw new Error("Injected migration failure");
             const fk = await db.all("PRAGMA foreign_key_check");
             const integrity = await db.get("PRAGMA integrity_check");
@@ -332,4 +373,4 @@ async function assertSupportedSchema(get, { production = false } = {}) {
     return version;
 }
 
-module.exports = { CURRENT_SCHEMA_VERSION, REQUIRED_INDEXES, audit, migrateDatabase, assertSupportedSchema, openDatabase };
+module.exports = { CURRENT_SCHEMA_VERSION, REQUIRED_INDEXES, PRODUCT_PAGE_TABLES, audit, migrateDatabase, assertSupportedSchema, openDatabase };

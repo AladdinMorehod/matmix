@@ -151,6 +151,7 @@ async function operationalReadiness(env = process.env, options = {}) {
     checks.diskSpace = Object.values(disk).every(value => value !== null && value >= minDisk);
     let schemaVersion = null; let foreignKeys = null; let attachmentTable = false; let attachmentIndex = false;
     let emailOutboxTable = false; let emailOutboxIndex = false; let pushTables = false; let pushIndexes = false;
+    let productPageTables = false; let productPageIndexes = false;
     if (checks.databaseReadable) {
         const sqlite3 = require("sqlite3").verbose(); const db = new sqlite3.Database(paths.dbPath, sqlite3.OPEN_READONLY);
         try {
@@ -163,6 +164,8 @@ async function operationalReadiness(env = process.env, options = {}) {
             emailOutboxIndex = Boolean(await new Promise((resolve, reject) => db.get("SELECT name FROM sqlite_master WHERE type='index' AND tbl_name='order_email_outbox' AND name='idx_order_email_outbox_status_next_attempt'", (e, row) => e ? reject(e) : resolve(row))));
             pushTables = Boolean(await new Promise((resolve, reject) => db.get("SELECT COUNT(*) AS count FROM sqlite_master WHERE type='table' AND name IN ('web_push_subscriptions','web_push_outbox')", (e, row) => e ? reject(e) : resolve(Number(row?.count) === 2))));
             pushIndexes = Boolean(await new Promise((resolve, reject) => db.get("SELECT COUNT(*) AS count FROM sqlite_master WHERE type='index' AND name IN ('idx_web_push_subscriptions_user_active','idx_web_push_outbox_status_next_attempt','idx_web_push_outbox_order_subscription')", (e, row) => e ? reject(e) : resolve(Number(row?.count) === 3))));
+            productPageTables = Boolean(await new Promise((resolve, reject) => db.get("SELECT COUNT(*) AS count FROM sqlite_master WHERE type='table' AND name IN ('product_attribute_definitions','product_attribute_templates','product_attribute_values','product_images')", (e, row) => e ? reject(e) : resolve(Number(row?.count) === 4))));
+            productPageIndexes = Boolean(await new Promise((resolve, reject) => db.get("SELECT COUNT(*) AS count FROM sqlite_master WHERE type='index' AND name IN ('idx_product_attribute_values_product_id','idx_product_attribute_templates_structure_order','idx_product_images_product_order','idx_product_images_product_primary','idx_product_images_one_primary')", (e, row) => e ? reject(e) : resolve(Number(row?.count) === 5))));
         }
         finally { await new Promise(resolve => db.close(resolve)); }
     }
@@ -170,6 +173,7 @@ async function operationalReadiness(env = process.env, options = {}) {
     checks.attachmentTable = attachmentTable; checks.attachmentIndex = attachmentIndex;
     checks.emailOutboxTable = emailOutboxTable; checks.emailOutboxIndex = emailOutboxIndex;
     checks.webPushTables = pushTables; checks.webPushIndexes = pushIndexes;
+    checks.productPageTables = productPageTables; checks.productPageIndexes = productPageIndexes;
     const backup = await latestBackup(paths.backupRoot); let backupStatus = { exists: false, verified: false, ageHours: null, path: null, size: null };
     if (backup) {
         const ageHours = (Date.now() - backup.createdAt.getTime()) / 3600000; let verified = false;
