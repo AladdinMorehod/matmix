@@ -27,7 +27,7 @@ async function getProductPageDataByExternalId(externalId, executor = null) {
             value.sort_order, definition.sort_order AS definition_sort_order
             FROM product_attribute_values value
             JOIN product_attribute_definitions definition ON definition.id=value.attribute_definition_id
-            WHERE value.product_id=?
+            WHERE value.product_id=? AND definition.is_active=1
             ORDER BY value.sort_order, definition.sort_order, definition.id`, [product.id]),
         database.all(`SELECT id, image_url, alt_text, sort_order, is_primary, created_at, updated_at
             FROM product_images

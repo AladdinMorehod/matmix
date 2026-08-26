@@ -1,4 +1,5 @@
 const { test, expect } = require("@playwright/test");
+const sharp = require("sharp");
 const { createDocFixture, createDocxFixture } = require("../backend/scripts/word-file-fixtures");
 
 const WORD_UPLOAD_ACCEPT = ".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx,.csv,.txt,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document";
@@ -164,8 +165,201 @@ test("catalog, search, cart persistence and responsive smoke", async ({ page, re
     await expect(page.locator("#categoryControls button").nth(1)).toBeVisible();
     const search = page.locator('input[type="search"], input[placeholder*="Поиск"]').first(); if (await search.count()) { await search.fill("Ротбанд"); await page.waitForTimeout(500); await search.press("Escape"); await search.fill("<img src=x onerror=alert(1)>"); await page.waitForTimeout(300); }
     const productsResponse = await request.get("/api/public/products?limit=1"); const productsBody = await productsResponse.json(); const product = (productsBody.items || productsBody.products || productsBody.data || [])[0];
-    await page.goto(`/product/${product.externalId || product.external_id}`); const add = page.locator("[data-add-product]"); await expect(add).toBeVisible(); await add.click(); await page.reload(); expect(await page.evaluate(() => Object.keys(localStorage).some(key => key.toLowerCase().includes("cart") && localStorage.getItem(key)?.includes("productId")))).toBeTruthy();
+    await page.goto(`/product/${product.externalId || product.external_id}`); const add = page.locator(".product-page-summary [data-add-product]"); await expect(add).toBeVisible(); await add.click(); await page.reload(); expect(await page.evaluate(() => Object.keys(localStorage).some(key => key.toLowerCase().includes("cart") && localStorage.getItem(key)?.includes("productId")))).toBeTruthy();
     for (const viewport of [{ width: 320, height: 568 }, { width: 375, height: 812 }, { width: 768, height: 1024 }, { width: 1024, height: 768 }, { width: 1366, height: 768 }, { width: 1920, height: 1080 }]) { await page.setViewportSize(viewport); const dimensions = await page.evaluate(() => ({ scrollWidth: document.documentElement.scrollWidth, clientWidth: document.documentElement.clientWidth, offenders: [...document.querySelectorAll("*")].filter(element => element.getBoundingClientRect().right > document.documentElement.clientWidth + 1).slice(0, 5).map(element => `${element.tagName}.${element.className}:${Math.round(element.getBoundingClientRect().right)}`) })); expect(dimensions.scrollWidth, JSON.stringify({ viewport, dimensions })).toBeLessThanOrEqual(dimensions.clientWidth + 1); }
+});
+
+test("SSR product page supports gallery, quantity, cart and responsive layouts", async ({ page, request }, testInfo) => {
+    const sourceResponse = await request.get("/api/public/products?limit=1");
+    const sourceBody = await sourceResponse.json();
+    const source = (sourceBody.items || sourceBody.products || sourceBody.data || [])[0];
+    expect(source).toBeTruthy();
+
+    await page.goto("/login.html");
+    await page.locator('input[name="login"], input[type="text"]').first().fill("e2e_admin");
+    await page.locator('input[name="password"], input[type="password"]').fill("E2eAdmin!234");
+    await page.locator('button[type="submit"]').click();
+    await page.waitForURL(/manager/);
+
+    const suffix = `${testInfo.project.name.replace(/\W+/g, "_")}_${Date.now()}`;
+    const create = await page.request.post("/api/products", { data: {
+        title: `SSR товар ${suffix}`,
+        category: source.category,
+        subcategory: source.subcategory,
+        productGroup: source.productGroup || source.product_group || "SSR группа",
+        price: 720,
+        weight: 3,
+        unit: "шт",
+        description: "Старое описание",
+        isActive: true
+    } });
+    expect(create.status()).toBe(201);
+    const product = (await create.json()).product;
+    const definitionResponse = await page.request.post("/api/products/attribute-definitions", { data: {
+        code: `e2e_ssr_${product.id}`,
+        label: "Расход смеси",
+        dataType: "number",
+        defaultUnit: "кг/м²",
+        defaultSection: "Применение",
+        sortOrder: 1,
+        isActive: true
+    } });
+    expect(definitionResponse.status()).toBe(201);
+    const definition = (await definitionResponse.json()).definition;
+    const contentResponse = await page.request.patch(`/api/products/${product.id}/content`, { data: {
+        brand: "MatMix Test",
+        shortDescription: "Короткое описание товара",
+        fullDescription: "Первая строка\n<script>не исполнять</script>",
+        seoTitle: "SSR SEO title",
+        seoDescription: "SSR SEO description",
+        attributes: [{ definitionId: definition.id, value: 2.5, unitOverride: "кг/м²", sortOrder: 1 }]
+    } });
+    expect(contentResponse.ok()).toBeTruthy();
+
+    const images = await Promise.all(["#4f8f5f", "#7a2632"].map(background => sharp({ create: { width: 32, height: 32, channels: 3, background } }).png().toBuffer()));
+    for (const [index, name] of ["primary.png", "secondary.png"].entries()) {
+        const upload = await page.request.post(`/api/products/${product.id}/gallery`, { multipart: { image: { name, mimeType: "image/png", buffer: images[index] } } });
+        expect(upload.status()).toBe(201);
+    }
+
+    const fallbackCreate = await page.request.post("/api/products", { data: {
+        title: `SSR товар без фото ${suffix}`,
+        category: source.category,
+        subcategory: source.subcategory,
+        productGroup: source.productGroup || source.product_group || "SSR группа",
+        price: 0,
+        weight: 0,
+        unit: "шт",
+        description: "",
+        isActive: true
+    } });
+    expect(fallbackCreate.status()).toBe(201);
+    const fallbackProduct = (await fallbackCreate.json()).product;
+    const descriptionOnlyCreate = await page.request.post("/api/products", { data: {
+        title: `SSR товар с описанием ${suffix}`,
+        category: source.category,
+        subcategory: source.subcategory,
+        productGroup: source.productGroup || source.product_group || "SSR группа",
+        price: 150,
+        weight: 1,
+        unit: "шт",
+        description: "Описание без характеристик",
+        isActive: true
+    } });
+    expect(descriptionOnlyCreate.status()).toBe(201);
+    const descriptionOnlyProduct = (await descriptionOnlyCreate.json()).product;
+
+    const code = product.externalId || product.external_id;
+    const noJsResponse = await request.get(`/product/${code}`);
+    const noJsHtml = await noJsResponse.text();
+    expect(noJsResponse.status()).toBe(200);
+    expect(noJsHtml).toContain("Расход смеси");
+    expect(noJsHtml).toContain("2.5 кг/м²");
+    expect(noJsHtml).toContain("&lt;script&gt;не исполнять&lt;/script&gt;");
+    expect(noJsHtml).not.toContain("<script>не исполнять</script>");
+
+    await page.goto(`/product/${code}`);
+    await expect(page.getByRole("heading", { level: 1, name: product.title })).toBeVisible();
+    await expect(page.locator("header.header #searchInput")).toBeVisible();
+    await expect(page.locator("header.header #cartBtn")).toBeVisible();
+    await expect(page.locator("header.header #mainNav")).toContainText("Загрузить заявку");
+    await expect(page.locator("footer.footer .footer-inner")).toContainText("Все права защищены");
+    await expect(page.locator(".product-page-summary .product-page-benefits")).toHaveCount(1);
+    await expect(page.locator(".product-page > .product-page-benefits")).toHaveCount(0);
+    await expect(page.locator(".product-page-supply")).toHaveText("Подтвердим наличие, цену и срок доставки после оформления заявки.");
+    await expect(page.locator(".product-page-content-nav a")).toHaveText(["Характеристики", "Описание", "Доставка и оплата"]);
+    await expect(page.getByText("Корзина пуста", { exact: true })).toHaveCount(0);
+    await expect(page.locator("[data-gallery-thumbnail]")).toHaveCount(2);
+    const mainImage = page.locator("[data-gallery-main]");
+    const initialImage = await mainImage.getAttribute("src");
+    await page.locator("[data-gallery-thumbnail]").nth(1).click();
+    await expect(mainImage).not.toHaveAttribute("src", initialImage);
+
+    await page.evaluate(() => localStorage.setItem("matmix_cart", "[]"));
+    await page.reload();
+    await page.locator("[data-quantity-plus]").click();
+    await page.locator("[data-quantity-plus]").click();
+    await page.locator(".product-page-summary [data-add-product]").click();
+    await expect(page.locator("[data-cart-count]")).toHaveText("Товар добавлен в корзину");
+    await expect(page.locator("#cartCount")).toHaveText("1");
+    await page.locator("#cartBtn").click();
+    await expect(page.locator(`#cartItems .cart-item:has(.qty-input[data-id="${product.id}"])`)).toBeVisible();
+    await page.locator("#closeCart").click();
+    const cartItem = await page.evaluate(id => JSON.parse(localStorage.getItem("matmix_cart") || "[]").find(item => Number(item.productId) === Number(id)), product.id);
+    expect(cartItem.quantity).toBe(3);
+
+    await page.locator("[data-one-click]").click();
+    await expect(page.locator("[data-one-click-dialog]")).toBeVisible();
+    await page.locator("[data-one-click-dialog] button[value=cancel]").last().click();
+
+    for (const viewport of [
+        { width: 320, height: 800 }, { width: 360, height: 800 }, { width: 375, height: 812 },
+        { width: 390, height: 844 }, { width: 430, height: 900 }, { width: 1024, height: 768 },
+        { width: 1280, height: 900 }, { width: 1366, height: 768 }, { width: 1440, height: 900 },
+        { width: 1920, height: 1080 }
+    ]) {
+        await page.setViewportSize(viewport);
+        const layout = await page.evaluate(() => ({
+            innerWidth: window.innerWidth,
+            mobileMedia: matchMedia("(max-width: 800px)").matches,
+            scrollWidth: document.documentElement.scrollWidth,
+            clientWidth: document.documentElement.clientWidth,
+            imageRight: document.querySelector("[data-gallery-main]").getBoundingClientRect().right,
+            imageHeight: document.querySelector("[data-gallery-main]").getBoundingClientRect().height,
+            heroColumns: getComputedStyle(document.querySelector(".product-page-hero")).gridTemplateColumns,
+            offenders: [...document.querySelectorAll("body *")].filter(element => element.getBoundingClientRect().right > document.documentElement.clientWidth + 1).slice(0, 8).map(element => ({ selector: `${element.tagName}.${element.className}`, right: Math.round(element.getBoundingClientRect().right), width: Math.round(element.getBoundingClientRect().width) }))
+        }));
+        expect(layout.scrollWidth, JSON.stringify({ viewport, layout })).toBeLessThanOrEqual(layout.clientWidth + 1);
+        expect(layout.imageRight).toBeLessThanOrEqual(layout.clientWidth + 1);
+        expect(layout.imageHeight).toBeLessThanOrEqual(480);
+        await expect(page.locator(".product-page-summary [data-add-product]")).toBeVisible();
+        const benefitsLayout = await page.locator(".product-page-benefits").evaluate(element => ({ scrollWidth: element.scrollWidth, clientWidth: element.clientWidth }));
+        expect(benefitsLayout.scrollWidth).toBeLessThanOrEqual(benefitsLayout.clientWidth + 1);
+        if (viewport.width <= 430) {
+            const relatedScroll = await page.locator(".product-page-related-grid").evaluate(element => ({
+                scrollWidth: element.scrollWidth,
+                clientWidth: element.clientWidth,
+                overflowX: getComputedStyle(element).overflowX,
+                scrollbarWidth: getComputedStyle(element).scrollbarWidth,
+                scrollSnapType: getComputedStyle(element).scrollSnapType,
+                cardSnap: getComputedStyle(element.querySelector(".card")).scrollSnapAlign
+            }));
+            expect(relatedScroll.scrollWidth).toBeGreaterThan(relatedScroll.clientWidth);
+            expect(relatedScroll.overflowX).toBe("auto");
+            expect(relatedScroll.scrollbarWidth).toBe("none");
+            expect(relatedScroll.scrollSnapType).toContain("x");
+            expect(relatedScroll.cardSnap).toBe("start");
+        }
+    }
+
+
+    const fallbackCode = fallbackProduct.externalId || fallbackProduct.external_id;
+    await page.setViewportSize({ width: 375, height: 812 });
+    await page.goto(`/product/${fallbackCode}`);
+    await expect(page.locator(".product-page-image-empty")).toContainText("Фото скоро появятся");
+    await expect(page.locator(".product-page-price")).toContainText("Цена по запросу");
+    await expect(page.locator("#productCharacteristics")).toHaveCount(0);
+    await expect(page.locator("#productDescription")).toHaveCount(0);
+    await expect(page.locator(".product-page-content-nav")).toHaveCount(0);
+    await expect(page.locator("#productDelivery")).toBeVisible();
+    await expect(page.locator(".product-page-related .card").first()).toBeVisible();
+    const fallbackLayout = await page.evaluate(() => {
+        const placeholder = document.querySelector(".product-page-image-empty").getBoundingClientRect();
+        return {
+            placeholderHeight: placeholder.height,
+            scrollWidth: document.documentElement.scrollWidth,
+            clientWidth: document.documentElement.clientWidth
+        };
+    });
+    expect(fallbackLayout.placeholderHeight).toBeLessThanOrEqual(350);
+    expect(fallbackLayout.scrollWidth).toBeLessThanOrEqual(fallbackLayout.clientWidth + 1);
+
+    const descriptionOnlyCode = descriptionOnlyProduct.externalId || descriptionOnlyProduct.external_id;
+    await page.goto(`/product/${descriptionOnlyCode}`);
+    await expect(page.locator("#productCharacteristics")).toHaveCount(0);
+    await expect(page.locator("#productDescription")).toBeVisible();
+    await expect(page.locator("#productDelivery")).toBeVisible();
+    await expect(page.locator(".product-page-content-nav a")).toHaveText(["Описание", "Доставка и оплата"]);
 });
 
 test("catalog categories use one two-row horizontal scroller", async ({ page }) => {

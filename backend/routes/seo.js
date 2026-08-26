@@ -3,6 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const seo = require("../services/seo");
 const legal = require("../services/legal");
+const { getProductPageDataByExternalId } = require("../services/productPageData");
 
 module.exports = function createSeoRouter({ publicDir, get, all, config }) {
     const router = express.Router();
@@ -14,6 +15,22 @@ module.exports = function createSeoRouter({ publicDir, get, all, config }) {
         const head = rendered.html.match(/<head>([\s\S]*?)<\/head>/i)?.[1] || "";
         const additions = head.replace(/<meta charset[^>]*>|<meta name="viewport"[^>]*>|<title>[\s\S]*?<\/title>|<link rel="stylesheet"[^>]*>/gi, "");
         return { nonce: rendered.nonce, html: source.replace("</head>", `${additions}</head>`) };
+    }
+    function publicShellPage(rendered) {
+        const shell = fs.readFileSync(path.join(publicDir, "catalog.html"), "utf8")
+            .replace(/\b(href|src)="(css|img|js)\//g, '$1="/$2/')
+            .replace(/href="index\.html"/g, 'href="/"')
+            .replace(/href="catalog\.html"/g, 'href="/catalog"')
+            .replace(/href="#top"/g, 'href="/catalog"');
+        const head = rendered.html.match(/<head>[\s\S]*?<\/head>/i)?.[0];
+        const main = rendered.html.match(/<main[\s\S]*?<\/main>/i)?.[0];
+        if (!head || !main) throw new Error("Unable to render product page in public shell.");
+        return {
+            nonce: rendered.nonce,
+            html: shell
+                .replace(/<head>[\s\S]*?<\/head>/i, head)
+                .replace(/<section class="products catalog-page" id="catalog">[\s\S]*?(?=<div id="cartModal")/i, main)
+        };
     }
     const structure = (code, type) => get("SELECT * FROM catalog_structure WHERE type=? AND is_active=1 AND id<>3670 AND UPPER(external_code)=UPPER(?)", [type, code]);
     router.get("/index.html", (req, res) => res.redirect(301, "/"));
@@ -33,8 +50,21 @@ module.exports = function createSeoRouter({ publicDir, get, all, config }) {
         send(res, seo.page({ config, title: `${document.title} | ${config.siteName}`, description: document.description, pathname: legalPath, h1: document.title, body }));
     });
     router.get("/product/:code", async (req, res, next) => { try {
-        const product = await get(`SELECT p.*,c.external_code category_code,sc.external_code subcategory_code FROM products p LEFT JOIN catalog_structure c ON c.type='category' AND c.is_active=1 AND c.name=p.category LEFT JOIN catalog_structure sc ON sc.type='subcategory' AND sc.is_active=1 AND sc.parent_id=c.id AND sc.name=p.subcategory WHERE p.id<>3670 AND p.is_active=1 AND p.deleted_at IS NULL AND UPPER(p.external_id)=UPPER(?)`, [req.params.code]);
-        if (!product) return send(res, seo.notFoundPage(config), 404); const canonical = seo.productPath(product); if (req.path !== canonical) return res.redirect(301, canonical); send(res, seo.productPage(config, product));
+        const pageData = await getProductPageDataByExternalId(req.params.code, { get, all });
+        if (!pageData || Number(pageData.product.id) === 3670) return send(res, seo.notFoundPage(config), 404);
+        const product = pageData.product;
+        const category = product.category ? await get("SELECT id,name,external_code FROM catalog_structure WHERE type='category' AND is_active=1 AND id<>3670 AND name=? ORDER BY id LIMIT 1", [product.category]) : null;
+        const subcategory = category && product.subcategory ? await get("SELECT id,name,external_code FROM catalog_structure WHERE type='subcategory' AND is_active=1 AND id<>3670 AND parent_id=? AND name=? ORDER BY id LIMIT 1", [category.id, product.subcategory]) : null;
+        const group = String(product.product_group || "").trim();
+        const related = await all(`SELECT id,external_id,title,price,weight,unit,image_url,product_group,subcategory
+            FROM products
+            WHERE id<>? AND id<>3670 AND is_active=1 AND deleted_at IS NULL
+              AND ((?<>'' AND product_group=?) OR (?<>'' AND subcategory=?))
+            ORDER BY CASE WHEN ?<>'' AND product_group=? THEN 0 ELSE 1 END, sort_order, id
+            LIMIT 4`, [product.id, group, group, product.subcategory || "", product.subcategory || "", group, group]);
+        const canonical = seo.productPath(product);
+        if (req.path !== canonical) return res.redirect(301, canonical);
+        send(res, publicShellPage(seo.productPage(config, { ...pageData, category, subcategory, related })));
     } catch (error) { next(error); } });
     async function categoryRequest(req, res, next, subCode = "") { try {
         const category = await structure(req.params.categoryCode, "category"); if (!category) return send(res, seo.notFoundPage(config), 404);

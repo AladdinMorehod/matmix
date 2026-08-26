@@ -29,6 +29,10 @@ async function stop(child) { child.kill("SIGTERM"); await new Promise(resolve =>
 
     const fixtureDb = new sqlite3.Database(dbPath);
     await new Promise((resolve, reject) => fixtureDb.exec(`
+        DELETE FROM product_images;
+        DELETE FROM product_attribute_values;
+        DELETE FROM product_attribute_templates;
+        DELETE FROM product_attribute_definitions;
         DELETE FROM products;
         DELETE FROM catalog_structure;
 
@@ -38,6 +42,8 @@ async function stop(child) { child.kill("SIGTERM"); await new Promise(resolve =>
         ) VALUES
             (1, 'category', 'Тестовая категория', 'тестовая категория',
              'CAT-TEST', NULL, 1, 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+            (2, 'subcategory', 'Тестовая подкатегория', 'тестовая подкатегория',
+             'SUB-TEST', 1, 1, 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
             (3670, 'category', 'Служебная категория', 'служебная категория',
              'PSEUDO-3670', NULL, 3670, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
@@ -69,6 +75,30 @@ async function stop(child) { child.kill("SIGTERM"); await new Promise(resolve =>
             CURRENT_TIMESTAMP,
             NULL
         FROM sequence;
+
+        UPDATE products SET
+            brand='Тестовый бренд', short_description='Короткое описание',
+            full_description='Полное описание\n<script>alert(1)</script>',
+            seo_title='SEO товар MatMix', seo_description='SEO описание товара',
+            image_url='/uploads/products/primary.webp'
+        WHERE id=1;
+        UPDATE products SET price=NULL, brand=NULL, short_description=NULL,
+            full_description=NULL, seo_title=NULL, seo_description=NULL,
+            image_url='/uploads/products/legacy.webp'
+        WHERE id=2;
+        UPDATE products SET deleted_at=CURRENT_TIMESTAMP WHERE id=3;
+
+        INSERT INTO product_attribute_definitions
+            (id,code,label,data_type,default_unit,default_section,sort_order,is_active)
+        VALUES (1,'layer_thickness','Толщина слоя','number','мм','Применение',1,1);
+        INSERT INTO product_attribute_values
+            (product_id,attribute_definition_id,value_number,sort_order)
+        VALUES (1,1,25,1);
+        INSERT INTO product_images
+            (product_id,image_url,alt_text,sort_order,is_primary)
+        VALUES
+            (1,'/uploads/products/primary.webp','Главное изображение',0,1),
+            (1,'/uploads/products/secondary.webp','Дополнительное изображение',1,0);
     `, error => error ? reject(error) : resolve()));
 
     await new Promise((resolve, reject) => fixtureDb.close(error => error ? reject(error) : resolve()));
@@ -85,10 +115,11 @@ async function stop(child) { child.kill("SIGTERM"); await new Promise(resolve =>
         for (const legacy of legacyProducts.filter(item => [469, 470].includes(item.id) && item.is_active === 1 && !item.deleted_at)) assert(locations.includes(`${production.base}/product/${encodeURIComponent(legacy.external_id.toUpperCase())}`));
         const pseudoProduct = legacyProducts.find(item => item.id === 3670); if (pseudoProduct) assert(!locations.includes(`${production.base}/product/${encodeURIComponent(pseudoProduct.external_id.toUpperCase())}`));
         if (pseudoStructure?.external_code) assert(!locations.some(url => url.endsWith(`/${encodeURIComponent(pseudoStructure.external_code.toUpperCase())}`)));
-        const productUrl = `${production.base}/product/${encodeURIComponent(product.external_id.toUpperCase())}`; const productResponse = await fetch(productUrl); assert.strictEqual(productResponse.status, 200); const productHtml = await productResponse.text(); assert(productHtml.includes(product.title)); assert(productHtml.includes(product.external_id)); assert(productHtml.includes(Number(product.price) > 0 ? "₽" : "Цена по запросу")); assert.strictEqual(canonical(productHtml), productUrl); assert(meta(productHtml, "description")); assert(meta(productHtml, "og:type", true) === "product"); assert.strictEqual((productHtml.match(/<h1[ >]/gi) || []).length, 1); const productSchemas = jsonLd(productHtml); assert(productSchemas.some(item => item["@type"] === "Product")); assert(productSchemas.some(item => item["@type"] === "BreadcrumbList")); if (!(Number(product.price) > 0)) assert(!productSchemas.find(item => item["@type"] === "Product").offers);
+        const productUrl = `${production.base}/product/${encodeURIComponent(product.external_id.toUpperCase())}`; const productResponse = await fetch(productUrl); assert.strictEqual(productResponse.status, 200); const productHtml = await productResponse.text(); assert(productHtml.includes(product.title)); assert(productHtml.includes(product.external_id)); assert(productHtml.includes(Number(product.price) > 0 ? "₽" : "Цена по запросу")); assert.strictEqual(canonical(productHtml), productUrl); assert.strictEqual(meta(productHtml, "description"), "SEO описание товара"); assert(meta(productHtml, "og:type", true) === "product"); assert.strictEqual((productHtml.match(/<h1[ >]/gi) || []).length, 1); assert(productHtml.includes("Толщина слоя")); assert(productHtml.includes("25 мм")); assert(productHtml.includes("secondary.webp")); assert(productHtml.includes("Тестовая подкатегория")); assert(productHtml.includes("&lt;script&gt;alert(1)&lt;/script&gt;")); assert(!productHtml.includes("<script>alert(1)</script>")); assert(productHtml.includes("Подтвердим наличие, цену и срок доставки")); const relatedHtml = productHtml.match(/<section class="product-page-related"[\s\S]*?<\/section>/)?.[0] || ""; assert(relatedHtml.includes("MAT-000002")); assert(!relatedHtml.includes("MAT-000001")); assert(!relatedHtml.includes("MAT-000003")); const productSchemas = jsonLd(productHtml); const productSchema = productSchemas.find(item => item["@type"] === "Product"); assert(productSchema); assert(productSchemas.some(item => item["@type"] === "BreadcrumbList")); assert.strictEqual(productSchema.brand.name, "Тестовый бренд"); assert.strictEqual(productSchema.image.length, 2); assert(productSchema.offers); assert(!("availability" in productSchema.offers)); assert(!("aggregateRating" in productSchema)); assert(!("review" in productSchema));
+        const fallbackProduct = (await query(dbPath, "SELECT * FROM products WHERE id=2"))[0]; const fallbackHtml = await (await fetch(`${production.base}/product/${encodeURIComponent(fallbackProduct.external_id)}`)).text(); assert(fallbackHtml.includes("Цена по запросу")); assert(fallbackHtml.includes("legacy.webp")); assert(!fallbackHtml.includes("product-page-brand")); assert(!fallbackHtml.includes('id="productCharacteristics"')); assert(fallbackHtml.includes('id="productDelivery"')); assert(fallbackHtml.includes('id="searchInput"')); assert(fallbackHtml.includes('id="cartBtn"')); assert(fallbackHtml.includes('class="footer"')); assert(fallbackHtml.includes('/js/script.js')); const fallbackSchema = jsonLd(fallbackHtml).find(item => item["@type"] === "Product"); assert(!fallbackSchema.brand); assert(!fallbackSchema.offers); assert.strictEqual(meta(fallbackHtml, "description"), fallbackProduct.description);
         const categoryUrl = `${production.base}/catalog/category/${category.external_code.toUpperCase()}`; const categoryResponse = await fetch(categoryUrl); assert.strictEqual(categoryResponse.status, 200); const categoryHtml = await categoryResponse.text(); assert(categoryHtml.includes(category.name)); assert(/href="\/product\//.test(categoryHtml)); assert.strictEqual(canonical(categoryHtml), categoryUrl); assert(jsonLd(categoryHtml).some(item => item["@type"] === "BreadcrumbList"));
         const homeHtml = await (await fetch(`${production.base}/`)).text(); const catalogHtml = await (await fetch(`${production.base}/catalog`)).text(); assert(meta(homeHtml, "description")); assert(meta(catalogHtml, "description")); assert.strictEqual((catalogHtml.match(/<h1[ >]/gi) || []).length, 1); assert.strictEqual(meta(await (await fetch(`${production.base}/catalog?search=test`)).text(), "robots"), "noindex,follow");
-        assert.strictEqual((await fetch(`${production.base}/index.html`, { redirect: "manual" })).status, 301); assert.strictEqual((await fetch(`${production.base}/catalog.html`, { redirect: "manual" })).status, 301); assert.strictEqual((await fetch(`${production.base}/product/UNKNOWN`)).status, 404); assert.strictEqual((await fetch(`${production.base}/catalog/category/UNKNOWN`)).status, 404); assert.strictEqual((await fetch(`${production.base}/unknown-page`)).status, 404); assert.strictEqual((await fetch(`${production.base}/api/unknown`)).headers.get("content-type").includes("application/json"), true); if (inactive) assert.strictEqual((await fetch(`${production.base}/product/${encodeURIComponent(inactive.external_id)}`)).status, 404);
+        assert.strictEqual((await fetch(`${production.base}/index.html`, { redirect: "manual" })).status, 301); assert.strictEqual((await fetch(`${production.base}/catalog.html`, { redirect: "manual" })).status, 301); assert.strictEqual((await fetch(`${production.base}/product/UNKNOWN`)).status, 404); assert.strictEqual((await fetch(`${production.base}/product/MAT-000003`)).status, 404); assert.strictEqual((await fetch(`${production.base}/catalog/category/UNKNOWN`)).status, 404); assert.strictEqual((await fetch(`${production.base}/unknown-page`)).status, 404); assert.strictEqual((await fetch(`${production.base}/api/unknown`)).headers.get("content-type").includes("application/json"), true); if (inactive) assert.strictEqual((await fetch(`${production.base}/product/${encodeURIComponent(inactive.external_id)}`)).status, 404);
         assert.strictEqual(new Set([canonical(homeHtml), canonical(catalogHtml), canonical(productHtml), canonical(categoryHtml)]).size, 4);
         console.log(JSON.stringify({ production: true, sitemapUrls: locations.length, productNoJs: true, categoryNoJs: true, jsonLd: true, canonical: true, redirects: true, notFound: true }));
     } finally { await stop(production.child); }

@@ -37510,6 +37510,11 @@ function saveCart() {
     }
 }
 
+window.addEventListener("matmix:cart-updated", () => {
+    cart = loadCart();
+    renderCart();
+});
+
 function getCartItem(productId) {
     return cart.find(item => Number(item.productId) === Number(productId));
 }
