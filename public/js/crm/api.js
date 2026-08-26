@@ -50,6 +50,9 @@
         patch(url, body) {
             return request("PATCH", url, body);
         },
+        put(url, body) {
+            return request("PUT", url, body);
+        },
         delete(url, body) {
             return request("DELETE", url, body);
         },

@@ -48,6 +48,23 @@ const {
     getStructureFilterNode,
     matchesStructureFilter
 } = require("../services/catalogStructureMembership");
+const {
+    listDefinitions,
+    createDefinition,
+    updateDefinition,
+    getTemplates,
+    replaceTemplates,
+    getProductContent,
+    updateProductContent,
+    addGalleryImage,
+    replacePrimaryImage,
+    replacePrimaryImages,
+    clearPrimaryImage,
+    updateGalleryImage,
+    reorderGallery,
+    removeGalleryImage,
+    imageReferenceCount
+} = require("../services/productContent");
 
 const router = express.Router();
 const publicRouter = express.Router();
@@ -224,8 +241,7 @@ async function deleteUnusedProductImage(imageUrl) {
     const normalizedUrl = normalizeProductImageUrl(imageUrl);
     if (!normalizedUrl) return false;
 
-    const usage = await get("SELECT COUNT(*) AS count FROM products WHERE image_url = ?", [normalizedUrl]);
-    if (Number(usage?.count) > 0) return false;
+    if (await imageReferenceCount(normalizedUrl) > 0) return false;
 
     const filePath = getProductImagePath(normalizedUrl);
     if (!filePath) return false;
@@ -406,6 +422,11 @@ function normalizeProduct(row) {
         imageUrl,
         image_url: imageUrl,
         description: row.description || "",
+        brand: row.brand || "",
+        shortDescription: row.short_description || "",
+        fullDescription: row.full_description || "",
+        seoTitle: row.seo_title || "",
+        seoDescription: row.seo_description || "",
         isActive: Boolean(row.is_active),
         sortOrder: Number(row.sort_order) || 0,
         source: row.source || "",
@@ -453,6 +474,15 @@ function getProductPayload(body, existing = {}) {
         unit: normalizeText(body.unit) || "шт",
         image: body.image === undefined ? (existing.image || "") : normalizeText(body.image),
         description: normalizeText(body.description),
+        brand: body.brand === undefined ? (existing.brand || "") : String(body.brand || "").trim(),
+        shortDescription: body.shortDescription === undefined && body.short_description === undefined
+            ? (existing.short_description || "") : String(body.shortDescription || body.short_description || "").trim(),
+        fullDescription: body.fullDescription === undefined && body.full_description === undefined
+            ? (existing.full_description || "") : String(body.fullDescription || body.full_description || "").trim(),
+        seoTitle: body.seoTitle === undefined && body.seo_title === undefined
+            ? (existing.seo_title || "") : String(body.seoTitle || body.seo_title || "").trim(),
+        seoDescription: body.seoDescription === undefined && body.seo_description === undefined
+            ? (existing.seo_description || "") : String(body.seoDescription || body.seo_description || "").trim(),
         isActive: body.isActive === undefined ? (existing.is_active ?? 1) : (body.isActive ? 1 : 0),
         sortOrder: normalizeNumber(body.sortOrder ?? body.sort_order, existing.sort_order || 0)
     };
@@ -479,6 +509,13 @@ function validateProductPayload(payload, existing = null) {
             return "Выберите корректную единицу измерения.";
         }
     }
+    for (const [value, limit, label] of [
+        [payload.brand, 160, "Бренд"],
+        [payload.shortDescription, 500, "Короткое описание"],
+        [payload.fullDescription, 12000, "Полное описание"],
+        [payload.seoTitle, 160, "SEO title"],
+        [payload.seoDescription, 320, "SEO description"]
+    ]) if (String(value || "").length > limit) return `${label}: максимум ${limit} символов.`;
     return "";
 }
 
@@ -1107,8 +1144,9 @@ async function createManualProductWithMatCodeLocked(payload) {
             const result = await run(
                 `INSERT INTO products (
                     external_id, title, slug, category, subcategory, product_group, price, weight, unit,
-                    image, description, is_active, sort_order, source, created_at, updated_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                    image, description, brand, short_description, full_description, seo_title, seo_description,
+                    is_active, sort_order, source, created_at, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
                     externalId,
                     payload.title,
@@ -1121,6 +1159,11 @@ async function createManualProductWithMatCodeLocked(payload) {
                     payload.unit,
                     payload.image,
                     payload.description,
+                    payload.brand,
+                    payload.shortDescription,
+                    payload.fullDescription,
+                    payload.seoTitle,
+                    payload.seoDescription,
                     payload.isActive,
                     payload.sortOrder,
                     "manual",
@@ -1976,6 +2019,106 @@ router.post("/structure/subcategories", requireRole(["admin"]), async (req, res)
     }
 });
 
+router.get("/attribute-definitions", requireRole(["admin"]), async (req, res) => {
+    try {
+        res.json({ success: true, definitions: await listDefinitions() });
+    } catch (error) {
+        sendApiError(res, error, "Не удалось загрузить definitions.", "ATTRIBUTE_DEFINITIONS_LOAD_FAILED");
+    }
+});
+
+router.post("/attribute-definitions", requireRole(["admin"]), async (req, res) => {
+    try {
+        const definition = await createDefinition(req.body);
+        res.status(201).json({ success: true, definition });
+    } catch (error) {
+        sendApiError(res, error, "Не удалось создать definition.", "ATTRIBUTE_DEFINITION_CREATE_FAILED");
+    }
+});
+
+router.patch("/attribute-definitions/:definitionId", requireRole(["admin"]), async (req, res) => {
+    try {
+        const definition = await updateDefinition(req.params.definitionId, req.body);
+        res.json({ success: true, definition });
+    } catch (error) {
+        sendApiError(res, error, "Не удалось изменить definition.", "ATTRIBUTE_DEFINITION_UPDATE_FAILED");
+    }
+});
+
+router.get("/attribute-templates/:structureId", requireRole(["admin"]), async (req, res) => {
+    try {
+        res.json({ success: true, templates: await getTemplates(req.params.structureId) });
+    } catch (error) {
+        sendApiError(res, error, "Не удалось загрузить templates.", "ATTRIBUTE_TEMPLATES_LOAD_FAILED");
+    }
+});
+
+router.put("/attribute-templates/:structureId", requireRole(["admin"]), async (req, res) => {
+    try {
+        const templates = await replaceTemplates(req.params.structureId, req.body?.templates);
+        res.json({ success: true, templates });
+    } catch (error) {
+        sendApiError(res, error, "Не удалось сохранить templates.", "ATTRIBUTE_TEMPLATES_UPDATE_FAILED");
+    }
+});
+
+router.get("/:id/content", requireRole(["admin"]), async (req, res) => {
+    try {
+        res.json({ success: true, content: await getProductContent(req.params.id) });
+    } catch (error) {
+        sendApiError(res, error, "Не удалось загрузить контент товара.", "PRODUCT_CONTENT_LOAD_FAILED");
+    }
+});
+
+router.patch("/:id/content", requireRole(["admin"]), async (req, res) => {
+    try {
+        res.json({ success: true, content: await updateProductContent(req.params.id, req.body) });
+    } catch (error) {
+        sendApiError(res, error, "Не удалось сохранить контент товара.", "PRODUCT_CONTENT_UPDATE_FAILED");
+    }
+});
+
+router.post("/:id/gallery", requireRole(["admin"]), async (req, res) => {
+    let savedImageUrl = "";
+    try {
+        const { image, fields } = await readMultipartProductImageUpload(req);
+        const product = await get("SELECT id,external_id,title,deleted_at FROM products WHERE id=?", [Number(req.params.id)]);
+        if (!product || product.deleted_at) throw createHttpError(404, "Товар не найден.", "PRODUCT_NOT_FOUND");
+        savedImageUrl = await saveProductImageFile(product, image);
+        const galleryImage = await addGalleryImage(product.id, savedImageUrl, fields.altText || "");
+        res.status(201).json({ success: true, image: galleryImage });
+    } catch (error) {
+        if (savedImageUrl) await deleteUnusedProductImage(savedImageUrl).catch(cleanupError => console.error("Gallery upload cleanup error:", cleanupError));
+        sendApiError(res, error, "Не удалось загрузить изображение галереи.", "PRODUCT_GALLERY_UPLOAD_FAILED");
+    }
+});
+
+router.patch("/:id/gallery/:imageId", requireRole(["admin"]), async (req, res) => {
+    try {
+        res.json({ success: true, image: await updateGalleryImage(req.params.id, req.params.imageId, req.body) });
+    } catch (error) {
+        sendApiError(res, error, "Не удалось изменить изображение.", "PRODUCT_GALLERY_UPDATE_FAILED");
+    }
+});
+
+router.put("/:id/gallery-order", requireRole(["admin"]), async (req, res) => {
+    try {
+        res.json({ success: true, images: await reorderGallery(req.params.id, req.body?.imageIds) });
+    } catch (error) {
+        sendApiError(res, error, "Не удалось изменить порядок изображений.", "PRODUCT_GALLERY_REORDER_FAILED");
+    }
+});
+
+router.delete("/:id/gallery/:imageId", requireRole(["admin"]), async (req, res) => {
+    try {
+        const result = await removeGalleryImage(req.params.id, req.params.imageId);
+        await deleteUnusedProductImage(result.removedImageUrl);
+        res.json({ success: true, primaryImageUrl: result.primaryImageUrl });
+    } catch (error) {
+        sendApiError(res, error, "Не удалось удалить изображение.", "PRODUCT_GALLERY_DELETE_FAILED");
+    }
+});
+
 router.post("/images/batch", requireRole(["admin"]), async (req, res) => {
     let savedImageUrl = "";
     try {
@@ -1995,22 +2138,8 @@ router.post("/images/batch", requireRole(["admin"]), async (req, res) => {
         }
 
         savedImageUrl = await saveProductImageFile(existingProducts[0], image);
-        const previousUrls = [...new Set(existingProducts.map(product => getProductImageUrl(product)).filter(Boolean))];
-        const now = new Date().toISOString();
-        await run("BEGIN IMMEDIATE TRANSACTION");
-        try {
-            await run(
-                `UPDATE products SET image_url = ?, updated_at = ?
-                 WHERE id IN (${placeholders}) AND deleted_at IS NULL`,
-                [savedImageUrl, now, ...productIds]
-            );
-            await run("COMMIT");
-        } catch (error) {
-            await run("ROLLBACK").catch(() => {});
-            throw error;
-        }
-
-        for (const previousUrl of previousUrls) {
+        const replacement = await replacePrimaryImages(existingProducts.map(product => product.id), savedImageUrl);
+        for (const previousUrl of replacement.previousImageUrls) {
             await deleteUnusedProductImage(previousUrl);
         }
 
@@ -2071,32 +2200,12 @@ router.post("/images/by-filter", requireRole(["admin"]), async (req, res) => {
         }
 
         savedImageUrl = await saveProductImageFile(productsToUpdate[0], image);
-        const previousUrls = [...new Set(productsToUpdate.map(product => getProductImageUrl(product)).filter(Boolean))];
-        const now = new Date().toISOString();
-        let updateResult;
-
-        await run("BEGIN IMMEDIATE TRANSACTION");
-        try {
-            updateResult = await run(
-                `UPDATE products
-                 SET image_url = ?,
-                     updated_at = ?
-                 ${whereSql}`,
-                [savedImageUrl, now, ...params]
-            );
-            await run("COMMIT");
-        } catch (error) {
-            await run("ROLLBACK").catch(rollbackError => {
-                console.error("Product image by-filter rollback error:", rollbackError);
-            });
-            throw error;
-        }
-
-        for (const previousUrl of previousUrls) {
+        const replacement = await replacePrimaryImages(productsToUpdate.map(product => product.id), savedImageUrl);
+        for (const previousUrl of replacement.previousImageUrls) {
             await deleteUnusedProductImage(previousUrl);
         }
 
-        const updated = Number(updateResult?.changes) || productsToUpdate.length;
+        const updated = replacement.updated;
         logger.info("product_image_by_filter_replace", {
             actorId: req.session.user.id,
             scope,
@@ -2135,13 +2244,9 @@ router.post("/:id/image", requireRole(["admin"]), async (req, res) => {
         if (product.deleted_at) throw createHttpError(400, "Товар удалён.", "PRODUCT_DELETED");
 
         const { image } = await readMultipartProductImageUpload(req);
-        const previousUrl = getProductImageUrl(product);
         savedImageUrl = await saveProductImageFile(product, image);
-        await run(
-            "UPDATE products SET image_url = ?, updated_at = ? WHERE id = ?",
-            [savedImageUrl, new Date().toISOString(), id]
-        );
-        await deleteUnusedProductImage(previousUrl);
+        const replacement = await replacePrimaryImage(id, savedImageUrl);
+        await deleteUnusedProductImage(replacement.previousImageUrl);
 
         const updatedProduct = await get("SELECT * FROM products WHERE id = ?", [id]);
         res.json({
@@ -2169,18 +2274,14 @@ router.delete("/:id/image", requireRole(["admin"]), async (req, res) => {
         const product = await get("SELECT * FROM products WHERE id = ?", [id]);
         if (!product) throw createHttpError(404, "Товар не найден.", "PRODUCT_NOT_FOUND");
 
-        const previousUrl = getProductImageUrl(product);
-        await run(
-            "UPDATE products SET image_url = NULL, updated_at = ? WHERE id = ?",
-            [new Date().toISOString(), id]
-        );
-        await deleteUnusedProductImage(previousUrl);
+        const cleared = await clearPrimaryImage(id);
+        await deleteUnusedProductImage(cleared.removedImageUrl);
 
         const updatedProduct = await get("SELECT * FROM products WHERE id = ?", [id]);
         res.json({
             success: true,
-            imageUrl: null,
-            image_url: null,
+            imageUrl: cleared.primaryImageUrl,
+            image_url: cleared.primaryImageUrl,
             product: normalizeProduct(updatedProduct)
         });
     } catch (error) {
@@ -2292,6 +2393,11 @@ router.patch("/:id", requireRole(["admin"]), async (req, res) => {
                  unit = ?,
                  image = ?,
                  description = ?,
+                 brand = ?,
+                 short_description = ?,
+                 full_description = ?,
+                 seo_title = ?,
+                 seo_description = ?,
                  is_active = ?,
                  sort_order = ?,
                  updated_at = ?
@@ -2307,6 +2413,11 @@ router.patch("/:id", requireRole(["admin"]), async (req, res) => {
                 payload.unit,
                 payload.image,
                 payload.description,
+                payload.brand,
+                payload.shortDescription,
+                payload.fullDescription,
+                payload.seoTitle,
+                payload.seoDescription,
                 payload.isActive,
                 payload.sortOrder,
                 now,

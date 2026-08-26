@@ -70,6 +70,11 @@ assert.deepStrictEqual(JSON.parse(JSON.stringify(payload)), {
     weight: "2",
     unit: "шт",
     description: "Описание",
+    brand: "",
+    shortDescription: "",
+    fullDescription: "",
+    seoTitle: "",
+    seoDescription: "",
     isActive: true
 });
 

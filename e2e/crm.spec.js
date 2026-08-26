@@ -115,6 +115,121 @@ test("admin edits a product group and export uses the current value", async ({ p
     expect((await emptyGroup.json()).product.productGroup).toBe("");
 });
 
+test("admin edits product content in readable tabs without mobile overflow", async ({ page }, testInfo) => {
+    await loginAsAdmin(page);
+    const productsResponse = await page.request.get("/api/products?limit=1");
+    const sourceProduct = (await productsResponse.json()).products[0];
+    expect(sourceProduct).toBeTruthy();
+    const projectSuffix = testInfo.project.name.replace(/[^a-z0-9]+/g, "_");
+    const createResponse = await page.request.post("/api/products", { data: {
+        title: `E2E content ${projectSuffix}`, category: sourceProduct.category, subcategory: sourceProduct.subcategory,
+        productGroup: sourceProduct.productGroup, price: 100, weight: 1, unit: "шт", description: "Старое описание E2E", isActive: true
+    } });
+    expect(createResponse.status()).toBe(201);
+    const product = (await createResponse.json()).product;
+
+    const code = `e2e_content_${product.id}_${projectSuffix}`;
+    let definitionsResponse = await page.request.get("/api/products/attribute-definitions");
+    let definition = (await definitionsResponse.json()).definitions.find(item => item.code === code);
+    if (!definition) {
+        const created = await page.request.post("/api/products/attribute-definitions", {
+            data: { code, label: "E2E характеристика", dataType: "number", defaultUnit: "мм", defaultSection: "Проверка", sortOrder: 5, isActive: true }
+        });
+        expect(created.status()).toBe(201);
+        definition = (await created.json()).definition;
+    }
+
+    await openCrmSection(page, "catalog");
+    await page.locator("#productSearchInput").fill(product.title);
+    await page.waitForResponse(response => response.url().includes("/api/products?") && response.ok());
+    const productRow = page.locator(".products-row", { hasText: product.title });
+    await productRow.getByRole("button", { name: "Редактировать" }).click();
+    const modal = page.locator(".crm-modal");
+    await expect(modal.getByRole("button", { name: "Основное" })).toBeVisible();
+    await expect(modal.getByRole("button", { name: "Характеристики" })).toBeVisible();
+    await expect(modal.getByRole("button", { name: "Описание" })).toBeVisible();
+    await expect(modal.getByRole("button", { name: "SEO" })).toBeVisible();
+    await expect(modal.getByRole("button", { name: "Изображения" })).toBeVisible();
+    for (const tabName of ["Основное", "Характеристики", "Описание", "SEO", "Изображения"]) {
+        const tab = modal.getByRole("button", { name: tabName, exact: true });
+        await tab.click();
+        expect((await tab.boundingBox()).height).toBeGreaterThan(20);
+    }
+    await modal.getByRole("button", { name: "Основное", exact: true }).click();
+    await expect(modal).toContainText("Обычный текст, до 500 символов.");
+    await expect(modal).toContainText("Обычный текст, до 12 000 символов.");
+    await expect(modal).toContainText("Описание (старое поле)");
+    await expect(modal).toContainText("Старое поле сохранено для совместимости.");
+    await expect(modal).toContainText("По умолчанию: короткое описание, либо старое описание.");
+    await expect(modal).not.toContainText(/Plain text|Legacy description|Compatibility field|Fallback|Definitions|Выберите definition|SEO title|SEO description/);
+    await expect(modal.locator('input[readonly][value^="MAT-"]')).toHaveCount(1);
+    await modal.locator('input[name="brand"]').fill("E2E Brand");
+
+    await modal.getByRole("button", { name: "Описание" }).click();
+    await modal.locator('textarea[name="shortDescription"]').fill("Короткое E2E описание");
+    await modal.locator('textarea[name="fullDescription"]').fill("Полное E2E описание без HTML-разметки");
+    const modalScroll = modal.locator(".crm-modal-content");
+    const tabsStyles = await modal.locator(".product-editor-tabs").evaluate(element => {
+        const styles = getComputedStyle(element);
+        return { position: styles.position, top: styles.top, minHeight: styles.minHeight, zIndex: styles.zIndex };
+    });
+    expect(tabsStyles).toEqual({ position: "sticky", top: "0px", minHeight: "39px", zIndex: "2" });
+    await modalScroll.evaluate(element => { element.scrollTop = element.scrollHeight; });
+    const tabLayout = await modal.locator(".product-editor-tabs button").evaluateAll(buttons => buttons.map(button => {
+        const box = button.getBoundingClientRect();
+        return { height: box.height, top: box.top, bottom: box.bottom };
+    }));
+    const scrollBox = await modalScroll.boundingBox();
+    expect(tabLayout).toHaveLength(5);
+    for (const tab of tabLayout) {
+        expect(tab.height).toBeGreaterThan(20);
+        expect(tab.bottom).toBeGreaterThan(scrollBox.y);
+        expect(tab.top).toBeLessThan(scrollBox.y + scrollBox.height);
+    }
+    const lastDescriptionField = await modal.locator('textarea[name="description"]').locator("xpath=ancestor::label[1]").boundingBox();
+    const actionsBox = await modal.locator(".crm-modal-actions").boundingBox();
+    expect(actionsBox.y - (lastDescriptionField.y + lastDescriptionField.height)).toBeGreaterThanOrEqual(24);
+    await expect(modal.getByRole("button", { name: "Отмена" })).toBeVisible();
+    await expect(modal.getByRole("button", { name: "Сохранить" })).toBeVisible();
+    const modalBox = await modal.boundingBox();
+    expect(modalBox.y).toBeGreaterThanOrEqual(0);
+    expect(modalBox.y + modalBox.height).toBeLessThanOrEqual(page.viewportSize().height);
+    await modalScroll.evaluate(element => { element.scrollTop = 0; });
+    await modal.getByRole("button", { name: "SEO" }).click();
+    await modal.locator('input[name="seoTitle"]').fill("E2E SEO-заголовок");
+    await expect(modal.locator("[data-seo-description-preview]")).toContainText("По умолчанию");
+
+    await modal.getByRole("button", { name: "Характеристики" }).click();
+    await expect(modal.getByRole("button", { name: "Справочник характеристик" })).toBeVisible();
+    await expect(modal.locator("[data-add-attribute]")).toContainText("Выберите характеристику");
+    await modal.getByRole("button", { name: "Справочник характеристик" }).click();
+    const definitionsModal = page.locator(".crm-modal").last();
+    await expect(definitionsModal.getByRole("heading", { name: "Справочник характеристик" })).toBeVisible();
+    await expect(definitionsModal).toContainText("Характеристика");
+    await expect(definitionsModal).toContainText("Тип данных");
+    await expect(definitionsModal).toContainText("Единица по умолчанию");
+    await expect(definitionsModal).toContainText("Раздел");
+    await expect(definitionsModal).toContainText("Порядок");
+    await expect(definitionsModal).not.toContainText(/Definitions|Definition|Data type|Default unit|Section|Sort/);
+    await definitionsModal.getByRole("button", { name: "Отмена" }).click();
+    await modal.locator("[data-add-attribute]").selectOption(String(definition.id));
+    await modal.locator("[data-add-attribute-button]").click();
+    await expect(modal).toContainText("Число");
+    await modal.locator(`[name="attribute_${definition.id}"]`).fill("42.5");
+
+    await page.setViewportSize({ width: 360, height: 800 });
+    const overflow = await modal.evaluate(element => element.scrollWidth - element.clientWidth);
+    expect(overflow).toBeLessThanOrEqual(1);
+    await modal.locator(".crm-modal-primary").click();
+    await expect(modal).toHaveCount(0);
+
+    const contentResponse = await page.request.get(`/api/products/${product.id}/content`);
+    expect(contentResponse.ok()).toBeTruthy();
+    const content = (await contentResponse.json()).content;
+    expect(content.product).toMatchObject({ brand: "E2E Brand", shortDescription: "Короткое E2E описание", fullDescription: "Полное E2E описание без HTML-разметки", seoTitle: "E2E SEO-заголовок" });
+    expect(content.values.find(item => item.definitionId === definition.id)?.value).toBe(42.5);
+});
+
 test("CRM shows and securely downloads file request attachments", async ({ page }) => {
     await loginAsAdmin(page);
     await openCrmSection(page, "orders");

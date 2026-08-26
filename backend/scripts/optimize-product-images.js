@@ -4,19 +4,22 @@ const sharp = require("sharp");
 const { runtimePaths, createBackup } = require("../services/productionBackup");
 const { openDatabase } = require("../databaseMigrations");
 const { optimizeProductImage, MAX_INPUT_PIXELS, MAX_INPUT_SIDE } = require("../services/productImages");
-
-const URL_PREFIX = "/uploads/products/";
+const {
+    PRODUCT_IMAGE_URL_PREFIX: URL_PREFIX,
+    normalizeProductImageReference,
+    hasProductImagesTable,
+    collectProductImageReferences,
+    hasProductImageReference
+} = require("../services/productImageReferences");
 
 function safeFilename(url) {
-    if (typeof url !== "string" || !url.startsWith(URL_PREFIX) || url.includes("\\") || url.includes("..")) return "";
-    const name = path.posix.basename(url);
-    return name === url.slice(URL_PREFIX.length) ? name : "";
+    return normalizeProductImageReference(url)?.filename || "";
 }
 
 async function scan(paths, db) {
-    const references = await db.all("SELECT id, external_id, image_url FROM products WHERE image_url IS NOT NULL AND image_url<>''");
+    const references = await collectProductImageReferences(db);
     const referenceCounts = new Map();
-    for (const row of references) referenceCounts.set(row.image_url, (referenceCounts.get(row.image_url) || 0) + 1);
+    for (const row of references) referenceCounts.set(row.imageUrl, (referenceCounts.get(row.imageUrl) || 0) + 1);
     const entries = await fs.promises.readdir(paths.uploadsPath, { withFileTypes: true });
     const files = entries.filter(entry => entry.isFile());
     const result = { files: files.length, totalBytes: 0, formats: {}, corrupt: [], oversized: [], orphan: [], missing: [], symlinks: entries.filter(entry => entry.isSymbolicLink()).map(entry => entry.name), sharedReferences: 0, maxBytes: 0, candidates: [] };
@@ -42,9 +45,10 @@ async function scan(paths, db) {
 async function apply(paths, db) {
     if (fs.existsSync(paths.lockPath)) throw new Error("Application runtime lock exists. Stop MatMix before image migration.");
     const backup = await createBackup({ paths });
-    const rows = await db.all("SELECT id, external_id, image_url FROM products WHERE image_url IS NOT NULL AND image_url<>'' ORDER BY id");
+    const rows = await collectProductImageReferences(db);
     const groups = new Map();
-    for (const row of rows) { if (!groups.has(row.image_url)) groups.set(row.image_url, []); groups.get(row.image_url).push(row); }
+    for (const row of rows) { if (!groups.has(row.imageUrl)) groups.set(row.imageUrl, []); groups.get(row.imageUrl).push(row); }
+    const galleryAvailable = await hasProductImagesTable(db);
     const report = { backupPath: backup.backupPath, converted: 0, skipped: 0, failures: [] };
     for (const [oldUrl, products] of groups) {
         const filename = safeFilename(oldUrl);
@@ -53,14 +57,15 @@ async function apply(paths, db) {
         if (!fs.existsSync(source)) { report.failures.push({ filename, code: "MISSING" }); continue; }
         try {
             if ((await fs.promises.lstat(source)).isSymbolicLink()) throw Object.assign(new Error("Symlink rejected"), { code: "SYMLINK_REJECTED" });
-            const optimized = await optimizeProductImage({ buffer: await fs.promises.readFile(source), product: products[0], uploadsRoot: paths.uploadsPath });
+            const optimized = await optimizeProductImage({ buffer: await fs.promises.readFile(source), product: { id: products[0].productId, external_id: products[0].externalId }, uploadsRoot: paths.uploadsPath });
             const newUrl = `${URL_PREFIX}${optimized.filename}`;
             await db.run("BEGIN IMMEDIATE");
             try {
                 await db.run("UPDATE products SET image_url=?, updated_at=? WHERE image_url=?", [newUrl, new Date().toISOString(), oldUrl]);
+                if (galleryAvailable) await db.run("UPDATE product_images SET image_url=?, updated_at=? WHERE image_url=?", [newUrl, new Date().toISOString(), oldUrl]);
                 await db.run("COMMIT");
             } catch (error) { await db.run("ROLLBACK").catch(() => {}); throw error; }
-            if (newUrl !== oldUrl && Number((await db.get("SELECT COUNT(*) n FROM products WHERE image_url=?", [oldUrl])).n) === 0) await fs.promises.unlink(source);
+            if (newUrl !== oldUrl && !await hasProductImageReference(db, oldUrl)) await fs.promises.unlink(source);
             report.converted += 1;
         } catch (error) { report.failures.push({ filename, code: error.code || "FAILED" }); }
     }

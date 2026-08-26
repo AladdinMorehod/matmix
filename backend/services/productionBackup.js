@@ -7,6 +7,7 @@ const sqlite3 = require("sqlite3").verbose();
 const { auditOrderAttachments, listAttachmentMetadata } = require("./orderAttachmentAudit");
 const { createOrderAttachmentStorage, validateStorageKey } = require("./orderAttachmentStorage");
 const { ARCHIVE_FILE_PATTERN, ARCHIVE_TEMP_FILE_PATTERN, resolveCatalogImportArchivePath } = require("./catalogImportArchive");
+const { collectProductImageReferences, normalizeProductImageReference } = require("./productImageReferences");
 
 const FORMAT_VERSION = 3;
 const ATTACHMENT_FORMAT_VERSION = 2;
@@ -201,13 +202,14 @@ async function gitCommit(projectRoot) {
 }
 
 async function verifyReferences(dbPath, uploadsPath) {
-    const db = openDb(dbPath); const rows = await db.all("SELECT id,image_url,is_active FROM products WHERE deleted_at IS NULL AND image_url IS NOT NULL AND trim(image_url)<>''"); await db.close();
+    const db = openDb(dbPath); let rows;
+    try { rows = await collectProductImageReferences(db); } finally { await db.close(); }
     const counts = new Map(); const unsafe = []; const missing = [];
     for (const row of rows) {
-        const match = /^\/uploads\/products\/([A-Za-z0-9][A-Za-z0-9._-]*)$/.exec(String(row.image_url));
-        if (!match) { unsafe.push({ productId: row.id, imageUrl: row.image_url }); continue; }
-        counts.set(match[1], (counts.get(match[1]) || 0) + 1);
-        if (!fs.existsSync(path.join(uploadsPath, match[1]))) missing.push({ productId: row.id, filename: match[1], active: Number(row.is_active) === 1 });
+        const normalized = normalizeProductImageReference(row.imageUrl);
+        if (!normalized) { unsafe.push({ productId: row.productId, imageUrl: row.imageUrl }); continue; }
+        counts.set(normalized.filename, (counts.get(normalized.filename) || 0) + 1);
+        if (!fs.existsSync(path.join(uploadsPath, normalized.filename))) missing.push({ productId: row.productId, filename: normalized.filename, active: row.isActive });
     }
     const disk = await walkUploads(uploadsPath); const referenced = new Set(counts.keys());
     return { missing, unsafe, orphanFiles: disk.map(x => x.relative).filter(name => !referenced.has(name)), sharedReferences: [...counts].filter(([, count]) => count > 1).map(([filename, count]) => ({ filename, count })) };

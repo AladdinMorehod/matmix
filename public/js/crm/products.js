@@ -13,6 +13,7 @@ const productImageAllowedTypes = ["image/jpeg", "image/png", "image/webp"];
 const productImageMaxSize = 10 * 1024 * 1024;
 const productUnitOptions = ["шт", "кг", "м", "м2"];
 const productGroupMaxLength = 200;
+let productContentEditor = { definitions: [], content: null };
 
 function normalizeProductStructureName(value) {
     return String(value || "")
@@ -100,8 +101,92 @@ function getProductPayloadFromForm(formData) {
         weight: String(formData.get("weight") || "").trim(),
         unit: String(formData.get("unit") || "шт").trim(),
         description: String(formData.get("description") || "").trim(),
+        brand: String(formData.get("brand") || "").trim(),
+        shortDescription: String(formData.get("shortDescription") || "").trim(),
+        fullDescription: String(formData.get("fullDescription") || "").trim(),
+        seoTitle: String(formData.get("seoTitle") || "").trim(),
+        seoDescription: String(formData.get("seoDescription") || "").trim(),
         isActive: formData.get("isActive") === "on"
     };
+}
+
+function getProductContentPayloadFromForm(formData) {
+    const attributes = [];
+    for (const definition of productContentEditor.definitions) {
+        const field = `attribute_${definition.id}`;
+        if (!formData.has(field)) continue;
+        const raw = formData.get(field);
+        const value = definition.dataType === "boolean" ? raw === "true" : String(raw || "").trim();
+        if (definition.dataType !== "boolean" && value === "") continue;
+        attributes.push({
+            definitionId: definition.id,
+            value,
+            unitOverride: String(formData.get(`attribute_unit_${definition.id}`) || "").trim(),
+            sortOrder: Number(formData.get(`attribute_sort_${definition.id}`)) || 0
+        });
+    }
+    return {
+        brand: String(formData.get("brand") || "").trim(),
+        shortDescription: String(formData.get("shortDescription") || "").trim(),
+        fullDescription: String(formData.get("fullDescription") || "").trim(),
+        seoTitle: String(formData.get("seoTitle") || "").trim(),
+        seoDescription: String(formData.get("seoDescription") || "").trim(),
+        attributes
+    };
+}
+
+function getEditorAttributeRows() {
+    const content = productContentEditor.content || {};
+    const templates = content.templates || [];
+    const values = content.values || [];
+    const ids = new Set([...templates.map(item => item.definitionId), ...values.map(item => item.definitionId)]);
+    return [...ids].map(id => {
+        const definition = productContentEditor.definitions.find(item => item.id === id) || {};
+        const template = templates.find(item => item.definitionId === id) || {};
+        const value = values.find(item => item.definitionId === id) || {};
+        return { ...definition, ...template, ...value, id, definitionId: id, value: value.value ?? "" };
+    }).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0) || String(a.label).localeCompare(String(b.label), "ru"));
+}
+
+function renderAttributeInput(item) {
+    const name = `attribute_${item.definitionId}`;
+    if (item.dataType === "boolean") return `<select name="${name}"><option value="">Не задано</option><option value="true"${item.value === true ? " selected" : ""}>Да</option><option value="false"${item.value === false ? " selected" : ""}>Нет</option></select>`;
+    return `<input name="${name}" type="${item.dataType === "number" ? "number" : "text"}" ${item.dataType === "number" ? "step=\"any\"" : "maxlength=\"2000\""} value="${escapeHtml(item.value ?? "")}">`;
+}
+
+function getAttributeDataTypeLabel(dataType) {
+    return ({ text: "Текст", number: "Число", boolean: "Логическое значение" })[dataType] || dataType || "";
+}
+
+function renderProductAttributes() {
+    const rows = getEditorAttributeRows();
+    const unused = productContentEditor.definitions.filter(item => item.isActive && !rows.some(row => row.definitionId === item.id));
+    return `<div data-product-attributes>
+        <div class="product-content-toolbar">
+            <label><span>Дополнительная характеристика</span><select data-add-attribute><option value="">Выберите характеристику</option>${unused.map(item => `<option value="${item.id}">${escapeHtml(item.label)} (${escapeHtml(item.code)})</option>`).join("")}</select></label>
+            <button type="button" data-add-attribute-button>Добавить</button>
+            <button type="button" data-manage-definitions>Справочник характеристик</button>
+        </div>
+        ${rows.length ? `<div class="product-attribute-list">${rows.map(item => `<div class="product-attribute-row" data-definition-id="${item.definitionId}">
+            <label><strong>${escapeHtml(item.label || item.code)}</strong><small>${escapeHtml(item.code)} · ${escapeHtml(getAttributeDataTypeLabel(item.dataType))}${item.isRequired ? " · обязательно" : ""}</small>${renderAttributeInput(item)}</label>
+            <label><span>Единица</span><input name="attribute_unit_${item.definitionId}" maxlength="40" value="${escapeHtml(item.unit || item.defaultUnit || "")}"></label>
+            <input name="attribute_sort_${item.definitionId}" type="hidden" value="${Number(item.sortOrder) || 0}">
+            <button type="button" data-remove-attribute="${item.definitionId}" aria-label="Убрать характеристику">×</button>
+        </div>`).join("")}</div>` : `<p class="product-content-empty">Для товара пока нет характеристик.</p>`}
+        ${productContentEditor.content?.structureId ? `<div class="product-template-editor"><strong>Шаблон выбранной подкатегории</strong>${productContentEditor.definitions.filter(item => item.isActive).map(item => { const template = (productContentEditor.content.templates || []).find(row => row.definitionId === item.id); return `<label><input type="checkbox" name="templateDefinition" value="${item.id}"${template ? " checked" : ""}> ${escapeHtml(item.label)} <input name="templateSort_${item.id}" type="number" value="${template?.sortOrder ?? item.sortOrder ?? 0}" aria-label="Порядок"><input name="templateUnit_${item.id}" maxlength="40" value="${escapeHtml(template?.unit || "")}" placeholder="Другая единица"><input name="templateRequired_${item.id}" type="checkbox"${template?.isRequired ? " checked" : ""}> обязательно</label>`; }).join("")}</div>` : ""}
+    </div>`;
+}
+
+function renderProductGallery(product = {}) {
+    const images = productContentEditor.content?.images || [];
+    return `<div data-product-gallery>
+        ${renderProductImageManager(product)}
+        ${product.id ? `<label class="product-gallery-upload"><span>Добавить изображения</span><input data-gallery-files type="file" multiple accept="image/jpeg,image/png,image/webp"><button data-gallery-upload type="button">Загрузить выбранные</button></label>` : ""}
+        <div class="product-gallery-list">${images.map((image, index) => `<article class="product-gallery-item" data-image-id="${image.id}">
+            <img src="${escapeHtml(image.imageUrl)}" alt="${escapeHtml(image.altText || "")}">
+            <div><strong>${image.isPrimary ? "Главное изображение" : `Изображение ${index + 1}`}</strong><input data-gallery-alt maxlength="500" value="${escapeHtml(image.altText || "")}" placeholder="Альтернативный текст"><div class="product-gallery-actions"><button type="button" data-gallery-alt-save>Сохранить описание</button>${image.isPrimary ? "" : `<button type="button" data-gallery-primary>Сделать главным</button>`}<button type="button" data-gallery-up${index === 0 ? " disabled" : ""}>↑</button><button type="button" data-gallery-down${index === images.length - 1 ? " disabled" : ""}>↓</button><button type="button" data-gallery-delete>Удалить</button></div></div>
+        </article>`).join("")}</div>
+    </div>`;
 }
 
 function getProductGroupValue(product = {}) {
@@ -230,12 +315,18 @@ function renderProductForm(product = {}) {
     const hasKnownCategory = Boolean(getStructureCategoryByName(selectedCategory));
     const canAddStructure = canEditProducts();
 
+    const content = productContentEditor.content?.product || product;
     return `
-        <div class="product-form-grid">
+        <nav class="product-editor-tabs" aria-label="Разделы товара">
+            ${[["main", "Основное"], ["attributes", "Характеристики"], ["description", "Описание"], ["seo", "SEO"], ["images", "Изображения"]].map(([id, label], index) => `<button type="button" data-product-tab="${id}" class="${index ? "" : "active"}">${label}</button>`).join("")}
+        </nav>
+        <section class="product-editor-panel active" data-product-panel="main"><div class="product-form-grid">
             <label>
                 <span>Название</span>
-                <input name="title" type="text" value="${escapeHtml(product.title || "")}" required>
+                <input name="title" type="text" maxlength="300" value="${escapeHtml(product.title || "")}" required>
             </label>
+            <label><span>MAT-код</span><input type="text" value="${escapeHtml(product.externalId || "Будет назначен автоматически")}" readonly></label>
+            <label><span>Бренд</span><input name="brand" maxlength="160" value="${escapeHtml(content.brand || product.brand || "")}"></label>
             <label>
                 <span>Категория</span>
                 <span class="product-field-with-action">
@@ -284,16 +375,22 @@ function renderProductForm(product = {}) {
                 <span>Изображение</span>
                 <input name="image" type="text" value="${escapeHtml(product.image || "")}" placeholder="img/product.png или символ">
             </label>
-            <label class="product-form-wide">
-                <span>Описание</span>
-                ${renderProductImageManager(product)}
-                <textarea name="description" rows="4">${escapeHtml(product.description || "")}</textarea>
-            </label>
             <label class="product-checkbox">
                 <input name="isActive" type="checkbox"${product.isActive !== false ? " checked" : ""}>
                 <span>Активен</span>
             </label>
-        </div>
+        </div></section>
+        <section class="product-editor-panel" data-product-panel="attributes">${product.id ? renderProductAttributes() : `<p class="product-content-empty">Сначала создайте товар, затем настройте характеристики.</p>`}</section>
+        <section class="product-editor-panel" data-product-panel="description"><div class="product-form-grid">
+            <label class="product-form-wide"><span>Короткое описание</span><textarea name="shortDescription" rows="4" maxlength="500">${escapeHtml(content.shortDescription || product.shortDescription || "")}</textarea><small>Обычный текст, до 500 символов.</small></label>
+            <label class="product-form-wide"><span>Полное описание</span><textarea name="fullDescription" rows="12" maxlength="12000">${escapeHtml(content.fullDescription || product.fullDescription || "")}</textarea><small>Обычный текст, до 12 000 символов.</small></label>
+            <label class="product-form-wide"><span>Описание (старое поле)</span><textarea name="description" rows="4">${escapeHtml(product.description || content.legacyDescription || "")}</textarea><small>Старое поле сохранено для совместимости.</small></label>
+        </div></section>
+        <section class="product-editor-panel" data-product-panel="seo"><div class="product-form-grid">
+            <label class="product-form-wide"><span>SEO-заголовок</span><input name="seoTitle" maxlength="160" value="${escapeHtml(content.seoTitle || product.seoTitle || "")}"><small data-seo-title-preview>${content.seoTitle ? "Будет использовано заданное значение." : `По умолчанию: ${escapeHtml(product.title || "название товара")}`}</small></label>
+            <label class="product-form-wide"><span>SEO-описание</span><textarea name="seoDescription" rows="4" maxlength="320">${escapeHtml(content.seoDescription || product.seoDescription || "")}</textarea><small data-seo-description-preview>${content.seoDescription ? "Будет использовано заданное значение." : "По умолчанию: короткое описание, либо старое описание."}</small></label>
+        </div></section>
+        <section class="product-editor-panel" data-product-panel="images">${renderProductGallery(product)}</section>
     `;
 }
 
@@ -1260,11 +1357,152 @@ function setupProductImageControls(formElement, product) {
     manager?.querySelector("[data-product-image-delete]")?.addEventListener("click", () => deleteProductImage(product, formElement));
 }
 
+function setupProductTabs(formElement) {
+    formElement.querySelectorAll("[data-product-tab]").forEach(button => button.addEventListener("click", () => {
+        const tab = button.dataset.productTab;
+        formElement.querySelectorAll("[data-product-tab]").forEach(item => item.classList.toggle("active", item === button));
+        formElement.querySelectorAll("[data-product-panel]").forEach(panel => panel.classList.toggle("active", panel.dataset.productPanel === tab));
+    }));
+}
+
+function refreshAttributeEditor(formElement) {
+    const current = formElement.querySelector("[data-product-attributes]");
+    if (!current) return;
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = renderProductAttributes();
+    current.replaceWith(wrapper.firstElementChild);
+    setupProductAttributeControls(formElement);
+}
+
+async function openAttributeDefinitionManager(formElement) {
+    const definitions = productContentEditor.definitions;
+    const formData = await CrmModal.form({
+        title: "Справочник характеристик",
+        submitText: "Сохранить",
+        content: `<div class="product-form-grid">
+            <label class="product-form-wide"><span>Характеристика</span><select name="definitionId"><option value="">Новая характеристика</option>${definitions.map(item => `<option value="${item.id}">${escapeHtml(item.label)} (${escapeHtml(item.code)})</option>`).join("")}</select></label>
+            <label><span>Код</span><input name="code" maxlength="80" pattern="[a-z][a-z0-9_]*" placeholder="layer_thickness"></label>
+            <label><span>Тип данных</span><select name="dataType"><option value="text">Текст</option><option value="number">Число</option><option value="boolean">Логическое значение</option></select></label>
+            <label class="product-form-wide"><span>Название</span><input name="label" maxlength="160" required></label>
+            <label><span>Единица по умолчанию</span><input name="defaultUnit" maxlength="40"></label>
+            <label><span>Раздел</span><input name="defaultSection" maxlength="120"></label>
+            <label><span>Порядок</span><input name="sortOrder" type="number" value="0"></label>
+            <label class="product-checkbox"><input name="isActive" type="checkbox" checked><span>Активна</span></label>
+        </div>`,
+        onReady: ({ formElement: definitionForm }) => {
+            const select = definitionForm.querySelector("[name=definitionId]");
+            const fill = () => {
+                const selected = definitions.find(item => item.id === Number(select.value));
+                for (const name of ["code", "dataType"]) definitionForm.elements[name].disabled = Boolean(selected);
+                definitionForm.elements.code.value = selected?.code || "";
+                definitionForm.elements.dataType.value = selected?.dataType || "text";
+                definitionForm.elements.label.value = selected?.label || "";
+                definitionForm.elements.defaultUnit.value = selected?.defaultUnit || "";
+                definitionForm.elements.defaultSection.value = selected?.defaultSection || "";
+                definitionForm.elements.sortOrder.value = selected?.sortOrder || 0;
+                definitionForm.elements.isActive.checked = selected ? selected.isActive : true;
+            };
+            select.addEventListener("change", fill);
+            fill();
+        }
+    });
+    if (!formData) return;
+    const id = Number(formData.get("definitionId"));
+    const payload = {
+        code: String(formData.get("code") || "").trim(), dataType: String(formData.get("dataType") || "text"),
+        label: String(formData.get("label") || "").trim(), defaultUnit: String(formData.get("defaultUnit") || "").trim(),
+        defaultSection: String(formData.get("defaultSection") || "").trim(), sortOrder: Number(formData.get("sortOrder")) || 0,
+        isActive: formData.get("isActive") === "on"
+    };
+    if (id) { delete payload.code; delete payload.dataType; }
+    try {
+        if (id) await CrmApi.patch(`/api/products/attribute-definitions/${id}`, payload);
+        else await CrmApi.post("/api/products/attribute-definitions", payload);
+        productContentEditor.definitions = (await CrmApi.get("/api/products/attribute-definitions")).definitions || [];
+        refreshAttributeEditor(formElement);
+        notifySuccess("Характеристика сохранена.");
+    } catch (error) {
+        notifyError(error, "Не удалось сохранить характеристику.");
+    }
+}
+
+function setupProductAttributeControls(formElement) {
+    formElement.querySelector("[data-add-attribute-button]")?.addEventListener("click", () => {
+        const id = Number(formElement.querySelector("[data-add-attribute]")?.value);
+        if (!id) return;
+        const definition = productContentEditor.definitions.find(item => item.id === id);
+        productContentEditor.content.values = [...(productContentEditor.content.values || []), { ...definition, definitionId: id, value: "" }];
+        refreshAttributeEditor(formElement);
+    });
+    formElement.querySelectorAll("[data-remove-attribute]").forEach(button => button.addEventListener("click", () => {
+        const id = Number(button.dataset.removeAttribute);
+        productContentEditor.content.values = (productContentEditor.content.values || []).filter(item => item.definitionId !== id);
+        productContentEditor.content.templates = (productContentEditor.content.templates || []).filter(item => item.definitionId !== id);
+        refreshAttributeEditor(formElement);
+    }));
+    formElement.querySelector("[data-manage-definitions]")?.addEventListener("click", () => openAttributeDefinitionManager(formElement));
+}
+
+async function refreshGalleryEditor(formElement, product) {
+    productContentEditor.content = (await CrmApi.get(`/api/products/${product.id}/content`)).content;
+    const current = formElement.querySelector("[data-product-gallery]");
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = renderProductGallery(product);
+    current.replaceWith(wrapper.firstElementChild);
+    setupProductImageControls(formElement, product);
+    setupProductGalleryControls(formElement, product);
+}
+
+function setupProductGalleryControls(formElement, product) {
+    formElement.querySelector("[data-gallery-upload]")?.addEventListener("click", async () => {
+        const files = [...(formElement.querySelector("[data-gallery-files]")?.files || [])];
+        const invalid = files.map(validateProductImageFile).find(Boolean);
+        if (!files.length || invalid) return notifyWarning(invalid || "Выберите изображения.");
+        try {
+            for (const file of files) {
+                const body = new FormData(); body.append("image", file);
+                await CrmApi.post(`/api/products/${product.id}/gallery`, body);
+            }
+            await refreshGalleryEditor(formElement, product);
+            notifySuccess(`Загружено изображений: ${files.length}.`);
+        } catch (error) { notifyError(error, "Не удалось загрузить галерею."); }
+    });
+    formElement.querySelectorAll("[data-image-id]").forEach(card => {
+        const imageId = Number(card.dataset.imageId);
+        const mutate = async payload => { await CrmApi.patch(`/api/products/${product.id}/gallery/${imageId}`, payload); await refreshGalleryEditor(formElement, product); };
+        card.querySelector("[data-gallery-alt-save]")?.addEventListener("click", () => mutate({ altText: card.querySelector("[data-gallery-alt]").value }).catch(error => notifyError(error, "Не удалось сохранить описание изображения.")));
+        card.querySelector("[data-gallery-primary]")?.addEventListener("click", () => mutate({ isPrimary: true }).catch(error => notifyError(error, "Не удалось назначить главное изображение.")));
+        card.querySelector("[data-gallery-delete]")?.addEventListener("click", async () => { try { await CrmApi.delete(`/api/products/${product.id}/gallery/${imageId}`); await refreshGalleryEditor(formElement, product); } catch (error) { notifyError(error, "Не удалось удалить изображение."); } });
+        for (const [selector, offset] of [["[data-gallery-up]", -1], ["[data-gallery-down]", 1]]) card.querySelector(selector)?.addEventListener("click", async () => {
+            const ids = (productContentEditor.content.images || []).map(item => item.id); const index = ids.indexOf(imageId); const target = index + offset;
+            if (target < 0 || target >= ids.length) return; [ids[index], ids[target]] = [ids[target], ids[index]];
+            try { await CrmApi.put(`/api/products/${product.id}/gallery-order`, { imageIds: ids }); await refreshGalleryEditor(formElement, product); } catch (error) { notifyError(error, "Не удалось изменить порядок."); }
+        });
+    });
+}
+
 function setupProductFormControls(formElement, product = {}) {
     setupProductImageControls(formElement, product);
+    setupProductTabs(formElement);
+    setupProductAttributeControls(formElement);
+    setupProductGalleryControls(formElement, product);
 
     formElement.querySelector("select[name='category']")?.addEventListener("change", () => {
         refreshSubcategorySelect(formElement, "");
+    });
+    formElement.querySelector("select[name='subcategory']")?.addEventListener("change", async event => {
+        const category = getStructureCategoryByName(formElement.querySelector("select[name='category']")?.value);
+        const subcategory = getStructureSubcategoryByName(category, event.target.value);
+        try {
+            productContentEditor.content.structureId = subcategory?.id || null;
+            productContentEditor.content.templates = subcategory?.id
+                ? (await CrmApi.get(`/api/products/attribute-templates/${subcategory.id}`)).templates.map(item => ({
+                    definitionId: item.attribute_definition_id, code: item.code, label: item.label, dataType: item.data_type,
+                    unit: item.unit_override || item.default_unit || "", section: item.default_section || "",
+                    sortOrder: Number(item.sort_order) || 0, isRequired: Boolean(item.is_required), isActive: Boolean(item.is_active)
+                })) : [];
+            refreshAttributeEditor(formElement);
+        } catch (error) { notifyError(error, "Не удалось загрузить шаблон подкатегории."); }
     });
 
     formElement.querySelector("[data-structure-action='category']")?.addEventListener("click", async () => {
@@ -1289,8 +1527,13 @@ async function openProductForm(product = null) {
 
     try {
         await loadProductStructure();
+        const definitionsResponse = await CrmApi.get("/api/products/attribute-definitions");
+        productContentEditor.definitions = definitionsResponse.definitions || [];
+        productContentEditor.content = product?.id
+            ? (await CrmApi.get(`/api/products/${product.id}/content`)).content
+            : { product: {}, structureId: null, templates: [], values: [], images: [] };
     } catch (error) {
-        notifyError(error, "Не удалось загрузить структуру каталога.");
+        notifyError(error, "Не удалось загрузить данные редактора товара.");
         return;
     }
 
@@ -1305,20 +1548,39 @@ async function openProductForm(product = null) {
     if (!formData) return;
 
     const payload = getProductPayloadFromForm(formData);
+    const contentPayload = getProductContentPayloadFromForm(formData);
     if (!payload.title) {
         notifyWarning("Укажите название товара.");
         return;
     }
 
     try {
+        let savedProduct = product;
         if (product) {
-            await CrmApi.patch(`/api/products/${product.id}`, payload);
+            savedProduct = (await CrmApi.patch(`/api/products/${product.id}`, payload)).product;
             invalidateCatalogStructureReadonlyCache();
             notifySuccess(CRM_MESSAGES.SUCCESS_PRODUCT_UPDATED);
         } else {
-            await CrmApi.post("/api/products", payload);
+            savedProduct = (await CrmApi.post("/api/products", payload)).product;
             invalidateCatalogStructureReadonlyCache();
             notifySuccess(CRM_MESSAGES.SUCCESS_PRODUCT_CREATED);
+        }
+        if (savedProduct?.id) {
+            await CrmApi.patch(`/api/products/${savedProduct.id}/content`, contentPayload);
+            const category = getStructureCategoryByName(payload.category);
+            const subcategory = getStructureSubcategoryByName(category, payload.subcategory);
+            if (subcategory?.id) {
+                const templates = formData.getAll("templateDefinition").map(value => {
+                    const definitionId = Number(value);
+                    return {
+                        definitionId,
+                        sortOrder: Number(formData.get(`templateSort_${definitionId}`)) || 0,
+                        unitOverride: String(formData.get(`templateUnit_${definitionId}`) || "").trim(),
+                        isRequired: formData.get(`templateRequired_${definitionId}`) === "on"
+                    };
+                });
+                await CrmApi.put(`/api/products/attribute-templates/${subcategory.id}`, { templates });
+            }
         }
         await loadProducts();
     } catch (error) {
