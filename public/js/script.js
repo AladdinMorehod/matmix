@@ -37305,6 +37305,11 @@ function getProductImageUrl(product = {}) {
     return window.MatMixSafe?.productImageUrl(product.imageUrl || product.image_url) || "";
 }
 
+function getProductPageHref(product = {}) {
+    const externalId = String(product.externalId || product.external_id || "").trim();
+    return externalId ? `/product/${encodeURIComponent(externalId.toUpperCase())}` : "";
+}
+
 function renderProductThumb(product = {}) {
     const imageUrl = getProductImageUrl(product);
     if (imageUrl) return `<img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(product.name || product.title || "Товар")}" loading="lazy" decoding="async" width="600" height="600">`;
@@ -39103,15 +39108,18 @@ function appendPublicCatalogCards() {
 
 function createProductCard(product, id) {
     const qty = getCartItemQty(id);
+    const href = getProductPageHref(product);
+    const thumb = renderProductThumb(product);
+    const title = escapeHtml(cleanDisplayText(product.name));
     const card = document.createElement("article");
     card.className = "card";
     card.dataset.productId = String(id);
 
     card.innerHTML = `
         <div class="card-main">
-            <div class="thumb" aria-hidden="true">${renderProductThumb(product)}</div>
+            ${href ? `<a class="thumb" href="${href}" aria-label="Открыть ${title}">${thumb}</a>` : `<div class="thumb" aria-hidden="true">${thumb}</div>`}
             <div class="card-info">
-                <h3>${escapeHtml(cleanDisplayText(product.name))}</h3>
+                <h3>${href ? `<a href="${href}">${title}</a>` : title}</h3>
                 <p>${escapeHtml(formatPrice(product.price))} / ${escapeHtml(product.unit)}</p>
             </div>
         </div>
@@ -39201,6 +39209,13 @@ function selectSearchSuggestion(productId) {
     const id = Number(productId);
     if (!Number.isInteger(id)) return;
 
+    const product = getProductById(id) || searchSuggestions.find(item => Number(item.id) === id);
+    const href = getProductPageHref(product);
+    if (href) {
+        window.location.assign(href);
+        return;
+    }
+
     const visibleCard = grid?.querySelector(`.card[data-product-id="${id}"]`);
     if (visibleCard) {
         visibleCard.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -39248,15 +39263,16 @@ function renderSearchDropdown() {
         item.dataset.searchIndex = String(index);
         item.setAttribute("role", "option");
         item.setAttribute("aria-selected", "false");
+        const href = getProductPageHref(product);
         item.innerHTML = `
-            <button class="search-result-main" type="button" data-search-product="${id}">
+            ${href ? `<a class="search-result-main" href="${href}" data-search-product="${id}">` : `<div class="search-result-main" data-search-product="${id}">`}
                 <span class="search-result-thumb" aria-hidden="true">${renderProductThumb(product)}</span>
                 <span class="search-result-info">
                     <strong>${escapeHtml(cleanDisplayText(product.name))}</strong>
                     <span>${formatPrice(product.price)} / ${escapeHtml(product.unit)}</span>
                     ${categoryText ? `<small>${escapeHtml(categoryText)}</small>` : ""}
                 </span>
-            </button>
+            ${href ? "</a>" : "</div>"}
             <div class="search-result-actions">
                 ${qty ? getQtyControls(id, qty, true) : `<button class="add" data-id="${id}" type="button">В корзину</button>`}
             </div>

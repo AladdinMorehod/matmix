@@ -169,6 +169,68 @@ test("catalog, search, cart persistence and responsive smoke", async ({ page, re
     for (const viewport of [{ width: 320, height: 568 }, { width: 375, height: 812 }, { width: 768, height: 1024 }, { width: 1024, height: 768 }, { width: 1366, height: 768 }, { width: 1920, height: 1080 }]) { await page.setViewportSize(viewport); const dimensions = await page.evaluate(() => ({ scrollWidth: document.documentElement.scrollWidth, clientWidth: document.documentElement.clientWidth, offenders: [...document.querySelectorAll("*")].filter(element => element.getBoundingClientRect().right > document.documentElement.clientWidth + 1).slice(0, 5).map(element => `${element.tagName}.${element.className}:${Math.round(element.getBoundingClientRect().right)}`) })); expect(dimensions.scrollWidth, JSON.stringify({ viewport, dimensions })).toBeLessThanOrEqual(dimensions.clientWidth + 1); }
 });
 
+test("public product cards link to canonical product pages without hijacking cart actions", async ({ page, request }) => {
+    const response = await request.get("/api/public/products?limit=1");
+    const body = await response.json();
+    const product = (body.products || body.items || body.data || [])[0];
+    expect(product).toBeTruthy();
+    await page.goto("/catalog");
+    await page.evaluate(item => {
+        const grid = document.querySelector("#productGrid");
+        grid.innerHTML = "";
+        grid.hidden = false;
+        grid.style.display = "grid";
+        grid.appendChild(createProductCard(item, item.id));
+    }, product);
+    const card = page.locator("#productGrid .card").first();
+    await expect(card).toBeVisible();
+    const expectedHref = await card.locator(".card-info h3 a").getAttribute("href");
+    expect(expectedHref).toMatch(/^\/product\/.+/);
+    const code = decodeURIComponent(expectedHref.split("/").at(-1));
+    await expect(card.locator("a.thumb")).toHaveAttribute("href", expectedHref);
+    await expect(card.locator(".card-info h3 a")).toHaveAttribute("href", expectedHref);
+    expect(await card.locator("a").evaluateAll(anchors => anchors.some(anchor => anchor.querySelector("button")))).toBeFalsy();
+    await card.locator(".card-info h3 a").press("Enter");
+    await expect(page).toHaveURL(new RegExp(`/product/${code.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`));
+    await page.goto("/catalog");
+    await page.waitForTimeout(750);
+    await page.evaluate(item => {
+        const grid = document.querySelector("#productGrid");
+        grid.innerHTML = "";
+        grid.hidden = false;
+        grid.style.display = "grid";
+        grid.appendChild(createProductCard(item, item.id));
+    }, product);
+    await expect(page.locator("#productGrid .card").first()).toBeVisible();
+    await page.evaluate(() => localStorage.setItem("matmix_cart", "[]"));
+    const catalogPath = new URL(page.url()).pathname;
+    await card.locator(".add").click();
+    await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem("matmix_cart") || "[]").length)).toBe(1);
+    expect(new URL(page.url()).pathname).toBe(catalogPath);
+
+    const searchHref = await page.evaluate(item => getProductPageHref(item), product);
+    expect(searchHref).toBe(expectedHref);
+    const missingExternalId = await page.evaluate(() => {
+        const fixture = createProductCard({ name: "Без кода", price: 1, unit: "шт" }, 999999);
+        return { anchorCount: fixture.querySelectorAll("a").length, buttonCount: fixture.querySelectorAll("button").length };
+    });
+    expect(missingExternalId.anchorCount).toBe(0);
+    expect(missingExternalId.buttonCount).toBe(1);
+
+    await page.goto(`/product/${code}`);
+    const related = page.locator(".product-page-related .card").first();
+    if (await related.count()) {
+        await expect(related.locator("a.thumb")).toHaveAttribute("href", /\/product\//);
+        await expect(related.locator(".card-info h3 a")).toHaveAttribute("href", /\/product\//);
+        expect(await related.locator("a").evaluateAll(anchors => anchors.some(anchor => anchor.querySelector("button")))).toBeFalsy();
+        await page.setViewportSize({ width: 375, height: 812 });
+        const relatedGrid = page.locator(".product-page-related-grid");
+        const beforeUrl = page.url();
+        await relatedGrid.evaluate(element => { element.scrollLeft = element.scrollWidth; });
+        expect(page.url()).toBe(beforeUrl);
+    }
+});
+
 test("SSR product page supports gallery, quantity, cart and responsive layouts", async ({ page, request }, testInfo) => {
     const sourceResponse = await request.get("/api/public/products?limit=1");
     const sourceBody = await sourceResponse.json();

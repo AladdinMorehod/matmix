@@ -162,6 +162,9 @@ body {
     color: inherit;
     text-align: left;
     cursor: pointer;
+    width: 100%;
+    font: inherit;
+    text-decoration: none;
 }
 
 .search-result-thumb {
@@ -3230,6 +3233,17 @@ body {
     .header:not(.is-search-expanded) .header-search input::placeholder {
         color: transparent;
     }
+}
+
+.card-info h3 a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.card-info h3 a:hover,
+.card-info h3 a:focus-visible {
+    text-decoration: underline;
+    text-underline-offset: 3px;
 }
 
 /* Server-rendered product page */
