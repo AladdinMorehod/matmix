@@ -23,6 +23,13 @@ function codePath(code) { return encodeURIComponent(String(code || "").trim().to
 function productPath(product) { return `/product/${codePath(product.external_id)}`; }
 function categoryPath(category) { return `/catalog/category/${codePath(category.external_code)}`; }
 function subcategoryPath(category, subcategory) { return `${categoryPath(category)}/${codePath(subcategory.external_code)}`; }
+function catalogFilterPath(category, subcategory) {
+    const params = new URLSearchParams();
+    if (category?.external_code) params.set("category", category.external_code);
+    if (subcategory?.external_code) params.set("subcategory", subcategory.external_code);
+    const query = params.toString();
+    return query ? `/catalog?${query}` : "/catalog";
+}
 function imageUrl(config, value) { const safe = /^\/uploads\/products\/[A-Za-z0-9._-]+$/.test(String(value || "")) ? value : config.defaultOgImage; return absolute(config, safe); }
 function jsonLd(value) { return JSON.stringify(value).replace(/</g, "\\u003c").replace(/>/g, "\\u003e").replace(/&/g, "\\u0026"); }
 function nonce() { return crypto.randomBytes(16).toString("base64"); }
@@ -51,8 +58,8 @@ function productPage(config, pageData) {
     const gallery = images.filter(item => String(item.image_url || "").trim());
     const primaryImage = gallery[0]?.image_url || product.image_url || "";
     const crumbs = [{ name: "Каталог", path: "/catalog" }];
-    if (category?.external_code) crumbs.push({ name: category.name, path: categoryPath(category) });
-    if (category?.external_code && subcategory?.external_code) crumbs.push({ name: subcategory.name, path: subcategoryPath(category, subcategory) });
+    if (category?.external_code) crumbs.push({ name: category.name, path: catalogFilterPath(category) });
+    if (category?.external_code && subcategory?.external_code) crumbs.push({ name: subcategory.name, path: catalogFilterPath(category, subcategory) });
     crumbs.push({ name: product.title, path });
     const productSchema = { "@context": "https://schema.org", "@type": "Product", name: product.title, sku: product.external_id, mpn: product.external_id, url: absolute(config, path), category: [product.category, product.subcategory, product.product_group].filter(Boolean).join(" / ") };
     if (product.brand) productSchema.brand = { "@type": "Brand", name: product.brand };

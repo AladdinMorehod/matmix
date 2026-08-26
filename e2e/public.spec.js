@@ -981,6 +981,39 @@ test("mobile catalog uses compact pickers and anchored popovers", async ({ page 
     expect(pageErrors).toEqual([]);
 });
 
+test("product breadcrumbs use deterministic catalog deep links", async ({ page }) => {
+    const product = { id: 1, externalId: "MAT-TEST", title: "Тестовая штукатурка", category: "Смеси", subcategory: "Штукатурка", price: 100, unit: "шт" };
+    const structure = { success: true, categories: [{ id: 10, name: "Смеси", externalCode: "MIXES", subcategories: [{ id: 11, name: "Штукатурка", externalCode: "PLASTER", groups: [] }] }] };
+    await page.route("**/api/public/products/structure", route => route.fulfill({ contentType: "application/json", body: JSON.stringify(structure) }));
+    await page.route("**/api/public/products?*", route => route.fulfill({ contentType: "application/json", body: JSON.stringify({ success: true, products: [product], items: [product], pagination: { page: 1, limit: 50, total: 1, totalPages: 1 } }) }));
+    await page.route("**/product/MAT-TEST", route => route.fulfill({ contentType: "text/html", body: `<!doctype html><html lang="ru"><body><nav class="product-page-breadcrumbs"><a href="/catalog">Каталог</a><span>/</span><a href="/catalog?category=MIXES">Смеси</a><span>/</span><a href="/catalog?category=MIXES&subcategory=PLASTER">Штукатурка</a><span>Тестовая штукатурка</span></nav></body></html>` }));
+
+    await page.goto("/product/MAT-TEST");
+    const breadcrumbs = page.locator(".product-page-breadcrumbs");
+    await expect(breadcrumbs.locator("a").nth(0)).toHaveAttribute("href", "/catalog");
+    await expect(breadcrumbs.locator("a").nth(1)).toHaveAttribute("href", "/catalog?category=MIXES");
+    await expect(breadcrumbs.locator("a").nth(2)).toHaveAttribute("href", "/catalog?category=MIXES&subcategory=PLASTER");
+
+    await breadcrumbs.locator("a").nth(2).click();
+    await expect(page).toHaveURL(/\/catalog\?category=MIXES&subcategory=PLASTER$/);
+    await expect(page.locator(".category-control.level-0.active")).toHaveText("Смеси");
+    await expect(page.locator(".category-control.level-1.active")).toHaveText("Штукатурка");
+    await expect(page.locator("#productGrid .card")).toHaveCount(1);
+    await page.reload();
+    await expect(page.locator(".category-control.level-0.active")).toHaveText("Смеси");
+    await expect(page.locator(".category-control.level-1.active")).toHaveText("Штукатурка");
+    await page.goBack();
+    await expect(page).toHaveURL(/\/product\/MAT-TEST$/);
+    await page.goForward();
+    await expect(page).toHaveURL(/\/catalog\?category=MIXES&subcategory=PLASTER$/);
+    await expect(page.locator(".category-control.level-1.active")).toHaveText("Штукатурка");
+
+    await page.goto("/catalog?category=UNKNOWN&subcategory=UNKNOWN");
+    await expect(page.locator(".category-control.category-all.active")).toHaveText("Все товары");
+    await page.goto("/catalog");
+    await expect(page.locator(".category-control.category-all.active")).toHaveText("Все товары");
+});
+
 test("mobile header stays single-line and expands search without layout shift", async ({ page }) => {
     const viewports = [
         { width: 320, height: 568 },

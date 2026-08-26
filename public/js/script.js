@@ -38430,9 +38430,11 @@ function serializeCategoryFilterGroup(category, subcategories = Array.from(categ
     return {
         label: category.label,
         path: category.path,
+        code: category.code,
         subcategories: subcategories.map(subcategory => ({
             label: subcategory.label,
             path: subcategory.path,
+            code: subcategory.code,
             groups: Array.from(subcategory.groups.values())
         }))
     };
@@ -38483,6 +38485,7 @@ function getCategoryFilterGroups() {
         categories.set(normalizedMain, {
             label: main,
             path: `category:${normalizedMain}`,
+            code: structureCategory.code || "",
             subcategories: new Map()
         });
 
@@ -38495,6 +38498,7 @@ function getCategoryFilterGroups() {
             category.subcategories.set(normalizedSubcategory, {
                 label: subcategory,
                 path: `subcategory:${normalizedMain}:${normalizedSubcategory}`,
+                code: structureSubcategory.code || "",
                 groups: new Map()
             });
 
@@ -38598,6 +38602,27 @@ function getCategoryFilterGroups() {
     });
 
     return groups;
+}
+
+function restoreCatalogDeepLinkSelection() {
+    const params = new URLSearchParams(window.location.search);
+    const categoryParam = normalizeSearchText(params.get("category"));
+    const subcategoryParam = normalizeSearchText(params.get("subcategory"));
+    if (!categoryParam) return;
+
+    const groups = getCategoryFilterGroups();
+    const group = groups.find(item => normalizeSearchText(item.code) === categoryParam
+        || normalizeSearchText(item.label) === categoryParam);
+    if (!group) return;
+
+    if (!subcategoryParam) {
+        activeCategoryPath = group.path;
+        return;
+    }
+
+    const subcategory = group.subcategories.find(item => normalizeSearchText(item.code) === subcategoryParam
+        || normalizeSearchText(item.label) === subcategoryParam);
+    activeCategoryPath = subcategory?.path || group.path;
 }
 
 function getActiveCategoryTrail(groups = getCategoryFilterGroups()) {
@@ -40548,6 +40573,7 @@ async function initializeSite() {
     rebuildProductsIndex();
     cart = loadCart();
     await loadPublicCatalogStructure();
+    restoreCatalogDeepLinkSelection();
     await loadPublicProducts();
     await loadPopularProducts();
     await loadFeaturedProducts();
