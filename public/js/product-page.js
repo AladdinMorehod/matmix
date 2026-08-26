@@ -64,8 +64,55 @@ document.querySelector("[data-quantity-plus]")?.addEventListener("click", () => 
 quantityInput?.addEventListener("change", () => { quantityInput.value = normalizedQuantity(quantityInput.value); });
 
 const oneClickDialog = document.querySelector("[data-one-click-dialog]");
+const oneClickForm = document.querySelector("[data-one-click-form]");
+const oneClickMessage = document.querySelector("[data-one-click-message]");
+let oneClickSubmitting = false;
+const oneClickStartedAt = () => Date.now() - 1000;
+function closeOneClick() {
+    if (oneClickDialog?.open) oneClickDialog.close();
+}
 document.querySelector("[data-one-click]")?.addEventListener("click", () => {
-    if (typeof oneClickDialog?.showModal === "function") oneClickDialog.showModal();
+    if (!oneClickDialog || typeof oneClickDialog.showModal !== "function") return;
+    oneClickForm?.reset();
+    const quantity = document.querySelector("[data-quantity]")?.value || "1";
+    const quantityField = oneClickForm?.querySelector("[name=quantity]");
+    if (quantityField) quantityField.value = normalizedQuantity(quantity);
+    if (oneClickMessage) oneClickMessage.textContent = "";
+    if (oneClickForm) oneClickForm.dataset.startedAt = String(oneClickStartedAt());
+    oneClickDialog.showModal();
+});
+document.querySelector("[data-one-click-close]")?.addEventListener("click", closeOneClick);
+document.querySelector("[data-one-click-cancel]")?.addEventListener("click", closeOneClick);
+oneClickForm?.addEventListener("submit", async event => {
+    event.preventDefault();
+    if (oneClickSubmitting || !oneClickForm.checkValidity()) { oneClickForm.reportValidity(); return; }
+    oneClickSubmitting = true;
+    const submit = oneClickForm.querySelector("[type=submit]");
+    if (submit) { submit.disabled = true; submit.dataset.initialText = submit.textContent; submit.textContent = "Отправляем…"; }
+    const formData = new FormData(oneClickForm);
+    const payload = {
+        productId: Number(document.querySelector(".product-page")?.dataset.productId),
+        customerName: String(formData.get("customerName") || "").trim(),
+        phone: String(formData.get("phone") || "").trim(),
+        quantity: Number(formData.get("quantity")),
+        comment: String(formData.get("comment") || "").trim(),
+        consent: formData.get("consent") === "on",
+        website: String(formData.get("website") || ""),
+        formStartedAt: Number(oneClickForm.dataset.startedAt),
+        landingPath: window.location.pathname
+    };
+    try {
+        const response = await fetch("/api/orders/one-click", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.success || !result.orderNumber) throw new Error(result.message || (response.status === 429 ? "Слишком много заявок. Попробуйте позже." : "Не удалось отправить заявку. Попробуйте ещё раз."));
+        if (oneClickMessage) { oneClickMessage.className = "product-page-one-click-message success"; oneClickMessage.textContent = `Заявка принята. Менеджер свяжется с вами для подтверждения цены, наличия и срока поставки. Номер заявки: ${result.orderNumber}.`; }
+        window.setTimeout(closeOneClick, 2000);
+    } catch (error) {
+        if (oneClickMessage) { oneClickMessage.className = "product-page-one-click-message error"; oneClickMessage.textContent = error.message || "Не удалось отправить заявку. Попробуйте ещё раз."; }
+    } finally {
+        oneClickSubmitting = false;
+        if (submit) { submit.disabled = false; submit.textContent = submit.dataset.initialText || "Отправить заявку"; }
+    }
 });
 
 updateCartBadge();

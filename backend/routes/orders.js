@@ -20,6 +20,7 @@ const {
     validateUploadedFiles
 } = require("../services/fileRequestUpload");
 const { createFileRequestRateLimiter } = require("../services/fileRequestRateLimit");
+const { createPublicOrderRateLimiter } = require("../services/publicOrderRateLimit");
 const { activeOrderVisibility, canViewOrder } = require("../services/orderAccess");
 const { createOrderNotificationService } = require("../services/orderNotifications");
 const { createOrderEmailOutboxRepository } = require("../services/orderEmailOutbox");
@@ -32,6 +33,7 @@ const MAX_ORDER_ITEMS = 100;
 const MAX_ITEM_QUANTITY = 10000;
 const attachmentStorage = createOrderAttachmentStorage();
 const fileRequestRateLimit = createFileRequestRateLimiter();
+const publicOrderRateLimit = createPublicOrderRateLimiter();
 const orderNotificationService = createOrderNotificationService({ get, withTransaction });
 
 class PublicOrderError extends Error {
@@ -1002,7 +1004,7 @@ router.post("/file-request", fileRequestRateLimit, async (req, res) => {
     }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", publicOrderRateLimit, async (req, res) => {
     try {
         if (req.body?.consent !== true) throw new PublicOrderError(400, "Необходимо подтвердить согласие с политикой и условиями.", "CONSENT_REQUIRED");
         const documents = legalConfig();
@@ -1066,6 +1068,55 @@ router.post("/", async (req, res) => {
         }
         console.error("Order create error:", error);
         res.status(500).json({ success: false, message: "Не удалось сохранить заказ." });
+    }
+});
+
+router.post("/one-click", publicOrderRateLimit, async (req, res) => {
+    try {
+        if (String(req.body?.website || "").trim()) throw new PublicOrderError(400, "Не удалось отправить заявку.", "HONEYPOT_REJECTED");
+        const formStartedAt = Number(req.body?.formStartedAt);
+        if (!Number.isFinite(formStartedAt) || Date.now() - formStartedAt < 800 || Date.now() - formStartedAt > 24 * 60 * 60 * 1000) {
+            throw new PublicOrderError(400, "Подождите немного и попробуйте ещё раз.", "FORM_TOO_FAST");
+        }
+        if (req.body?.consent !== true) throw new PublicOrderError(400, "Необходимо подтвердить согласие с политикой и условиями.", "CONSENT_REQUIRED");
+        const customerName = readOrderText(req.body, "customerName", 160, true);
+        const phone = readFileRequestPhone(req.body);
+        const quantity = Number(req.body?.quantity);
+        if (!Number.isSafeInteger(quantity) || quantity < 1 || quantity > 999) throw new PublicOrderError(400, "Количество должно быть целым числом от 1 до 999.", "INVALID_QUANTITY");
+        const productId = Number(req.body?.productId);
+        const requestedItems = normalizeRequestedItems([{ productId, qty: quantity }]);
+        const comment = readOrderText(req.body, "comment", 2000);
+        const documents = legalConfig();
+        const seoSettings = seoConfig();
+        const now = new Date().toISOString();
+        const consentAt = now;
+        const createdOrder = await withTransaction(async transaction => {
+            const serverOrder = await buildServerOrderItems(transaction, requestedItems);
+            const item = serverOrder.items[0];
+            const eventMessage = `Заявка в 1 клик создана со страницы товара /product/${encodeURIComponent(String(item.externalId || "").trim().toUpperCase())}`;
+            return createOrderRecord({
+                transaction,
+                customerName,
+                phone,
+                preferredContact: { method: "", value: "" },
+                paymentMethod: "",
+                comment,
+                serverOrder,
+                requestType: "order",
+                eventMessage,
+                now,
+                consentAt,
+                documents,
+                seoSettings
+            });
+        });
+        logger.info("one_click_order_created", { requestId: req.requestId, orderId: createdOrder.id });
+        res.status(201).json({ success: true, id: createdOrder.id, orderNumber: createdOrder.orderNumber, totalPrice: createdOrder.totalPrice, totalWeight: createdOrder.totalWeight, hasPriceOnRequest: createdOrder.hasPriceOnRequest, itemCount: createdOrder.items.length });
+    } catch (error) {
+        if (error instanceof PublicOrderError) return res.status(error.status).json({ success: false, code: error.code, message: error.message });
+        if (String(error?.code || "").startsWith("SQLITE_")) { const response = sqliteApiError(error); return res.status(response.status).json({ success: false, code: response.code, message: response.message }); }
+        logger.error("one_click_order_create_error", error, { requestId: req.requestId });
+        return res.status(500).json({ success: false, message: "Не удалось отправить заявку. Попробуйте ещё раз." });
     }
 });
 

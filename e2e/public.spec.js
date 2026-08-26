@@ -290,7 +290,16 @@ test("SSR product page supports gallery, quantity, cart and responsive layouts",
 
     await page.locator("[data-one-click]").click();
     await expect(page.locator("[data-one-click-dialog]")).toBeVisible();
-    await page.locator("[data-one-click-dialog] button[value=cancel]").last().click();
+    await expect(page.locator("[data-one-click-form] [name=customerName]")).toBeVisible();
+    await page.locator("[data-one-click-form] [name=customerName]").fill("Однокликовый клиент");
+    await page.locator("[data-one-click-form] [name=phone]").fill("+7 (999) 555-12-34");
+    await page.locator("[data-one-click-form] [name=quantity]").fill("2");
+    await page.locator("[data-one-click-form] [name=comment]").fill("Комментарий заявки");
+    await page.locator("[data-one-click-form] [name=consent]").check();
+    await page.locator("[data-one-click-form] [type=submit]").click();
+    await expect(page.locator("[data-one-click-message]")).toContainText("Заявка принята. Менеджер свяжется с вами для подтверждения цены, наличия и срока поставки.");
+    await expect(page.locator("[data-one-click-message]")).toContainText("Номер заявки:");
+    await expect(page.locator("[data-one-click-dialog]")).toBeHidden({ timeout: 5000 });
 
     for (const viewport of [
         { width: 320, height: 800 }, { width: 360, height: 800 }, { width: 375, height: 812 },
@@ -360,6 +369,27 @@ test("SSR product page supports gallery, quantity, cart and responsive layouts",
     await expect(page.locator("#productDescription")).toBeVisible();
     await expect(page.locator("#productDelivery")).toBeVisible();
     await expect(page.locator(".product-page-content-nav a")).toHaveText(["Описание", "Доставка и оплата"]);
+});
+
+test("one-click validation error keeps modal and entered fields", async ({ page, request }) => {
+    const response = await request.get("/api/public/products?limit=1");
+    const body = await response.json();
+    const product = (body.items || body.products || body.data || [])[0];
+    expect(product).toBeTruthy();
+    await page.goto(`/product/${product.externalId || product.external_id}`);
+    await page.locator("[data-one-click]").click();
+    await page.locator("[data-one-click-form] [name=customerName]").fill("Проверка ошибки");
+    await page.locator("[data-one-click-form] [name=phone]").fill("123");
+    await page.locator("[data-one-click-form] [name=quantity]").fill("4");
+    await page.locator("[data-one-click-form] [name=comment]").fill("Комментарий не теряется");
+    await page.locator("[data-one-click-form] [name=consent]").check();
+    await page.locator("[data-one-click-form] [type=submit]").click();
+    await expect(page.locator("[data-one-click-dialog]")).toBeVisible();
+    await expect(page.locator("[data-one-click-message]")).toContainText("корректный российский номер");
+    await expect(page.locator("[data-one-click-form] [name=customerName]")).toHaveValue("Проверка ошибки");
+    await expect(page.locator("[data-one-click-form] [name=phone]")).toHaveValue("123");
+    await expect(page.locator("[data-one-click-form] [name=quantity]")).toHaveValue("4");
+    await expect(page.locator("[data-one-click-form] [name=comment]")).toHaveValue("Комментарий не теряется");
 });
 
 test("catalog categories use one two-row horizontal scroller", async ({ page }) => {

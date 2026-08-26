@@ -3598,6 +3598,102 @@ body {
     padding: 26px;
 }
 
+.product-page-one-click-dialog form > label {
+    display: grid;
+    gap: 5px;
+    margin-top: 12px;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.product-page-one-click-dialog form input:not([name="website"]),
+.product-page-one-click-dialog form textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 11px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--text);
+    font: inherit;
+}
+
+.product-page-one-click-dialog [name="website"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.product-page-one-click-product {
+    margin: 0 0 12px;
+    color: var(--primary-dark);
+    font-weight: 700;
+}
+
+.product-page-one-click-consent {
+    display: flex !important;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    align-items: start;
+    column-gap: 8px;
+    font-weight: 400 !important;
+}
+
+.product-page-one-click-consent > input {
+    width: auto !important;
+    margin-top: 3px;
+}
+
+.product-page-one-click-consent > span {
+    display: grid;
+    gap: 3px;
+}
+
+.product-page-one-click-consent a {
+    color: var(--primary-dark);
+}
+
+.product-page-one-click-message {
+    min-height: 0;
+    margin: 12px 0 0;
+    line-height: 1.4;
+}
+
+.product-page-one-click-message.success {
+    color: var(--primary-dark);
+}
+
+.product-page-one-click-message.error {
+    color: var(--brand-burgundy);
+}
+
+.product-page-one-click-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.product-page-one-click-actions button {
+    min-height: 44px;
+    padding: 0 16px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: var(--surface);
+    color: var(--primary-dark);
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+}
+
+.product-page-one-click-actions .add-btn {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: white;
+}
+
 .product-page-one-click-dialog h2 {
     margin-top: 0;
     color: var(--primary-dark);
@@ -3671,5 +3767,14 @@ body {
     .product-page-attribute-group dl > div {
         grid-template-columns: 1fr;
         gap: 4px;
+    }
+    .product-page-one-click-dialog form {
+        padding: 22px 16px;
+    }
+    .product-page-one-click-actions {
+        display: grid;
+    }
+    .product-page-one-click-actions button {
+        width: 100%;
     }
 }
