@@ -31,6 +31,7 @@ function addProduct(button) {
     else cart.push({ productId, title: button.dataset.title || "", price: Number(button.dataset.price) || 0, weight: Number(button.dataset.weight) || 0, unit: button.dataset.unit || "шт", quantity });
     try {
         localStorage.setItem(CART_KEY, JSON.stringify(cart));
+        window.matmixAnalytics?.addToCart({ external_id: document.querySelector(".product-page")?.dataset.externalId, title: button.dataset.title, quantity, price: Number(button.dataset.price) || 0, unit: button.dataset.unit || "шт", source: "product_page" });
         button.textContent = "Добавлено";
         const badge = document.querySelector("[data-cart-count]");
         if (badge) {
@@ -79,6 +80,7 @@ document.querySelector("[data-one-click]")?.addEventListener("click", () => {
     if (quantityField) quantityField.value = normalizedQuantity(quantity);
     if (oneClickMessage) oneClickMessage.textContent = "";
     if (oneClickForm) oneClickForm.dataset.startedAt = String(oneClickStartedAt());
+    window.matmixAnalytics?.oneClickOpen({ external_id: document.querySelector(".product-page")?.dataset.externalId, quantity: normalizedQuantity(quantity), source: "product_page" });
     oneClickDialog.showModal();
 });
 document.querySelector("[data-one-click-close]")?.addEventListener("click", closeOneClick);
@@ -90,6 +92,7 @@ oneClickForm?.addEventListener("submit", async event => {
     const submit = oneClickForm.querySelector("[type=submit]");
     if (submit) { submit.disabled = true; submit.dataset.initialText = submit.textContent; submit.textContent = "Отправляем…"; }
     const formData = new FormData(oneClickForm);
+    window.matmixAnalytics?.oneClickSubmit({ external_id: document.querySelector(".product-page")?.dataset.externalId, quantity: Number(formData.get("quantity")) || 1, source: "product_page" });
     const payload = {
         productId: Number(document.querySelector(".product-page")?.dataset.productId),
         customerName: String(formData.get("customerName") || "").trim(),
@@ -105,9 +108,11 @@ oneClickForm?.addEventListener("submit", async event => {
         const response = await fetch("/api/orders/one-click", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
         const result = await response.json().catch(() => ({}));
         if (!response.ok || !result.success || !result.orderNumber) throw new Error(result.message || (response.status === 429 ? "Слишком много заявок. Попробуйте позже." : "Не удалось отправить заявку. Попробуйте ещё раз."));
+        window.matmixAnalytics?.oneClickSuccess({ external_id: document.querySelector(".product-page")?.dataset.externalId, quantity: Number(formData.get("quantity")) || 1, source: "product_page" });
         if (oneClickMessage) { oneClickMessage.className = "product-page-one-click-message success"; oneClickMessage.textContent = `Заявка принята. Менеджер свяжется с вами для подтверждения цены, наличия и срока поставки. Номер заявки: ${result.orderNumber}.`; }
         window.setTimeout(closeOneClick, 2000);
     } catch (error) {
+        window.matmixAnalytics?.track("one_click_error", { external_id: document.querySelector(".product-page")?.dataset.externalId, quantity: Number(formData.get("quantity")) || 1, source: "product_page" });
         if (oneClickMessage) { oneClickMessage.className = "product-page-one-click-message error"; oneClickMessage.textContent = error.message || "Не удалось отправить заявку. Попробуйте ещё раз."; }
     } finally {
         oneClickSubmitting = false;

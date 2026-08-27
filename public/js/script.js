@@ -38853,6 +38853,7 @@ function setProductQty(id, nextQty, options = {}) {
     const product = getProductById(id);
     const item = getCartItem(id);
     const safeQty = clampProductQty(nextQty);
+    const wasAdded = !item && safeQty > 0;
 
     if (safeQty <= 0) {
         if (!item) return;
@@ -38878,6 +38879,7 @@ function setProductQty(id, nextQty, options = {}) {
     }
 
     saveCart();
+    if (wasAdded && product) window.matmixAnalytics?.addToCart({ external_id: product.externalId, title: product.title, quantity: safeQty, price: product.price, unit: product.unit, source: "catalog" });
     updateCartSummary();
     if (renderProductViews && grid) {
         renderProducts();
@@ -39186,6 +39188,7 @@ async function loadSearchSuggestions(query) {
         searchSuggestions = response.ok && result.success && Array.isArray(result.products)
             ? result.products.map(normalizeProductForSite)
             : [];
+        window.matmixAnalytics?.track("search", { query_length: normalizedQuery.length, results_count: searchSuggestions.length, source: "search" });
     } catch (error) {
         if (requestId !== searchSuggestionsRequestId) return;
         console.warn("Public search suggestions load error:", error);
@@ -39916,6 +39919,7 @@ cartBtn.addEventListener("click", event => {
     setCartModalOpen(!isCartModalOpen());
     showCartView();
     renderCart();
+    window.matmixAnalytics?.track("cart_open", { source: "header" });
 });
 
 closeCartBtn.addEventListener("click", () => {
@@ -39958,6 +39962,7 @@ window.addEventListener("resize", positionClearCartConfirm);
 cartBody?.addEventListener("scroll", positionClearCartConfirm, { passive: true });
 
 openCheckoutBtn?.addEventListener("click", () => {
+    window.matmixAnalytics?.track("begin_checkout", { source: "cart" });
     showCheckoutForm("order");
 });
 
@@ -40168,6 +40173,7 @@ checkoutForm?.addEventListener("submit", async event => {
         }
 
         showCheckoutSuccess();
+        window.matmixAnalytics?.track("checkout_success", { quantity: orderItems.reduce((sum, item) => sum + Number(item.quantity || 0), 0), source: "cart" });
 
         clearCart();
 
@@ -40188,6 +40194,7 @@ checkoutForm?.addEventListener("submit", async event => {
             console.error("Checkout success UI update error:", uiError);
         }
     } catch (error) {
+        window.matmixAnalytics?.track("checkout_error", { source: "cart" });
         showCheckoutError(getCheckoutErrorMessage(error));
         setCheckoutSubmitDisabled(false);
     }
