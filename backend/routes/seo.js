@@ -4,11 +4,12 @@ const path = require("path");
 const seo = require("../services/seo");
 const legal = require("../services/legal");
 const { getProductPageDataByExternalId } = require("../services/productPageData");
+const { buildContentSecurityPolicy } = require("../services/csp");
 
 module.exports = function createSeoRouter({ publicDir, get, all, config }) {
     const router = express.Router();
     router.use((req, res, next) => { if (req.path.endsWith("/") && req.path !== "/") return res.redirect(301, req.originalUrl.replace(/\/(\?|$)/, "$1")); next(); });
-    const csp = (res, nonce) => res.setHeader("Content-Security-Policy", `default-src 'self'; script-src 'self' 'nonce-${nonce}'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; worker-src 'self' blob:`);
+    const csp = (res, nonce) => res.setHeader("Content-Security-Policy", buildContentSecurityPolicy({ nonce, yandexMetrikaId: process.env.MATMIX_YANDEX_METRIKA_ID }));
     const send = (res, rendered, status = 200) => { csp(res, rendered.nonce); res.status(status).set("Cache-Control", "no-cache").type("html").send(rendered.html); };
     function staticPage(fileName, metadata) {
         const source = fs.readFileSync(path.join(publicDir, fileName), "utf8").replace(/<title>[\s\S]*?<\/title>/i, `<title>${seo.escapeHtml(metadata.title)}</title>`); const rendered = seo.page({ config, ...metadata, body: "" });

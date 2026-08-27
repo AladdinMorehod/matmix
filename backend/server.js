@@ -19,6 +19,7 @@ const createHealthRouter = require("./routes/health");
 const logger = require("./services/logger");
 const { assertProductionEnvironment, operationalReadiness, latestBackup } = require("./services/productionReadiness");
 const { runtimePaths } = require("./services/productionBackup");
+const { buildContentSecurityPolicy } = require("./services/csp");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -56,9 +57,7 @@ app.use((req, res, next) => {
     res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
     res.setHeader("X-Frame-Options", "DENY");
     res.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=()");
-    const analyticsEnabled = /^\d+$/.test(String(process.env.MATMIX_YANDEX_METRIKA_ID || "").trim());
-    const yandexSources = analyticsEnabled ? " https://mc.yandex.ru" : "";
-    res.setHeader("Content-Security-Policy", `default-src 'self'; script-src 'self'${yandexSources}; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:${yandexSources}; font-src 'self' data:; connect-src 'self'${yandexSources}; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; worker-src 'self' blob:`);
+    res.setHeader("Content-Security-Policy", buildContentSecurityPolicy({ yandexMetrikaId: process.env.MATMIX_YANDEX_METRIKA_ID }));
     if (isProduction && req.secure) res.setHeader("Strict-Transport-Security", "max-age=31536000");
     next();
 });
