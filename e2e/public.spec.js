@@ -1827,6 +1827,50 @@ test("cart opens only by activation and keeps accessible controls", async ({ pag
     }
 });
 
+test("first outside cart tap only closes cart before product navigation", async ({ page }) => {
+    await page.setViewportSize({ width: 600, height: 800 });
+    const product = { id: 9911, externalId: "CART-OUTSIDE-TAP", name: "Штукатурка гипсовая Knauf Ротбанд 30 кг", title: "Штукатурка гипсовая Knauf Ротбанд 30 кг", price: 125, weight: 2, unit: "шт", category: "Тестовая категория", subcategory: "Тестовая подкатегория", image: "" };
+    await page.route("**/api/public/products/structure", route => route.fulfill({
+        contentType: "application/json",
+        body: JSON.stringify({ success: true, categories: [{ name: product.category, subcategories: [{ name: product.subcategory, groups: [] }] }] })
+    }));
+    await page.route("**/api/public/products?*", route => route.fulfill({
+        contentType: "application/json",
+        body: JSON.stringify({ success: true, products: [product], items: [product], total: 1, page: 1, limit: 50, totalPages: 1, pagination: { page: 1, limit: 50, total: 1, totalPages: 1, hasNext: false, hasPrevious: false } })
+    }));
+    await page.goto("/catalog");
+
+    const card = page.locator("#featuredCatalogGrid .card").first();
+    await expect(card).toBeVisible();
+    const productLink = card.locator(".card-info a").first();
+    await expect(productLink).toBeVisible();
+    const expectedProductPath = await productLink.getAttribute("href");
+    const initialUrl = page.url();
+
+    await page.locator("#cartBtn").click();
+    await expect(page.locator("#cartModal")).toBeVisible();
+
+    const tapPoint = await page.evaluate(() => {
+        const link = document.querySelector("#featuredCatalogGrid .card .card-info a");
+        const modal = document.querySelector("#cartModal").getBoundingClientRect();
+        const box = link.getBoundingClientRect();
+        for (let x = box.left + 4; x <= box.right - 4; x += 4) {
+            for (let y = box.top + 4; y <= box.bottom - 4; y += 4) {
+                if (x < modal.left || x > modal.right || y < modal.top || y > modal.bottom) return { x, y };
+            }
+        }
+        return null;
+    });
+    expect(tapPoint).not.toBeNull();
+
+    await page.mouse.click(tapPoint.x, tapPoint.y);
+    await expect(page.locator("#cartModal")).toHaveClass(/hidden/);
+    expect(page.url()).toBe(initialUrl);
+
+    await page.mouse.click(tapPoint.x, tapPoint.y);
+    await expect.poll(() => new URL(page.url()).pathname).toBe(expectedProductPath);
+});
+
 test("clear cart popover stays floating and contained on mobile", async ({ page }) => {
     for (const path of ["/", "/catalog.html"]) {
         for (const width of [390, 360, 320]) {

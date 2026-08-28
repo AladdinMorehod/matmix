@@ -37255,6 +37255,8 @@ const MOBILE_SEARCH_MAX_WIDTH = 600;
 let catalogPickerPopover = null;
 let catalogPickerTrigger = null;
 let catalogPickerSuppressedPointerId = null;
+let cartSuppressedPointerId = null;
+let cartSuppressedPointerActive = false;
 const PAYMENT_METHODS = [
     { value: "cash", label: "Наличные" },
     { value: "card_transfer", label: "Перевод на карту" },
@@ -40224,6 +40226,45 @@ checkoutForm?.addEventListener("submit", async event => {
 cartModal.addEventListener("click", event => {
     event.stopPropagation();
 });
+
+document.addEventListener("pointerdown", event => {
+    if (!isCartModalOpen() || cartView?.classList.contains("hidden") || cartModal.contains(event.target) || cartBtn?.contains(event.target) || menuToggle?.contains(event.target) || uploadRequestNav?.contains(event.target)) return;
+    event.preventDefault();
+    event.stopPropagation();
+    cartSuppressedPointerId = event.pointerId;
+    cartSuppressedPointerActive = true;
+    setCartModalOpen(false);
+    showCartView();
+    collapseMobileSearch({ blurInput: true, preserveQuery: true });
+    closeMenu();
+}, { capture: true });
+
+document.addEventListener("click", event => {
+    if (cartSuppressedPointerId === null) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    cartSuppressedPointerId = null;
+    cartSuppressedPointerActive = false;
+}, { capture: true });
+
+document.addEventListener("pointerdown", event => {
+    if (cartSuppressedPointerId === null) return;
+    if (!cartSuppressedPointerActive || event.pointerId !== cartSuppressedPointerId) {
+        cartSuppressedPointerId = null;
+        cartSuppressedPointerActive = false;
+    }
+}, { capture: true });
+
+document.addEventListener("pointerup", event => {
+    if (event.pointerId === cartSuppressedPointerId) cartSuppressedPointerActive = false;
+}, { capture: true });
+
+document.addEventListener("pointercancel", event => {
+    if (event.pointerId === cartSuppressedPointerId) {
+        cartSuppressedPointerId = null;
+        cartSuppressedPointerActive = false;
+    }
+}, { capture: true });
 
 document.addEventListener("pointerdown", event => {
     documentPointerDownStartedInsideInteractive = Boolean(event.target.closest("#cartModal, #cartBtn, .cart, .header-search, .search-dropdown"));
