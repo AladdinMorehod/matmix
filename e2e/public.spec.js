@@ -1918,11 +1918,19 @@ test("cart removes only the selected item with accessible delete action", async 
     await expect(page.locator("#cartCount")).toHaveText("1");
 });
 
-test("mobile cart swipe reveals delete without deleting", async ({ page }) => {
-    await page.goto("/");
-    await seedCartItems(page, 2);
-    await page.locator("#cartBtn").click();
-    const row = page.locator(".cart-item").first();
+test("cart swipe/delete lifecycle works across public surfaces", async ({ page, request }) => {
+    const response = await request.get("/api/public/products?limit=1");
+    const body = await response.json();
+    const product = (body.products || body.items || body.data || [])[0];
+    expect(product).toBeTruthy();
+    const productCode = product.externalId || product.external_id;
+    const surfaces = ["/", "/catalog", "/catalog?category=MIXES", "/catalog?category=MIXES&subcategory=PLASTER", `/product/${encodeURIComponent(productCode)}`];
+
+    for (const surface of surfaces) {
+        await page.goto(surface);
+        await seedCartItems(page, 2);
+        await page.locator("#cartBtn").click();
+        const row = page.locator(".cart-item").first();
     await expect(row).not.toHaveClass(/is-delete-revealed/);
     if ((await page.viewportSize()).width <= 600) {
         await expect(row.locator(".cart-item-delete")).toHaveCSS("pointer-events", "none");
@@ -1957,6 +1965,7 @@ test("mobile cart swipe reveals delete without deleting", async ({ page }) => {
     await expect(row).toHaveClass(/is-delete-revealed/);
     await row.locator(".cart-item-delete").click();
     await expect(page.locator(".cart-item")).toHaveCount(1);
+    }
 });
 
 test("clear cart popover stays floating and contained on mobile", async ({ page }) => {
