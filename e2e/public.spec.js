@@ -1925,9 +1925,12 @@ test("cart swipe/delete lifecycle works across public surfaces", async ({ page, 
     expect(product).toBeTruthy();
     const productCode = product.externalId || product.external_id;
     const surfaces = ["/", "/catalog", "/catalog?category=MIXES", "/catalog?category=MIXES&subcategory=PLASTER", `/product/${encodeURIComponent(productCode)}`];
+    const scriptSources = new Set();
 
     for (const surface of surfaces) {
         await page.goto(surface);
+        const scriptSrc = await page.locator('script[src*="script.js"]').getAttribute("src");
+        scriptSources.add(new URL(scriptSrc, page.url()).pathname + new URL(scriptSrc, page.url()).search);
         await seedCartItems(page, 2);
         await page.locator("#cartBtn").click();
         const row = page.locator(".cart-item").first();
@@ -1964,8 +1967,9 @@ test("cart swipe/delete lifecycle works across public surfaces", async ({ page, 
     });
     await expect(row).toHaveClass(/is-delete-revealed/);
     await row.locator(".cart-item-delete").click();
-    await expect(page.locator(".cart-item")).toHaveCount(1);
+        await expect(page.locator(".cart-item")).toHaveCount(1);
     }
+    expect(scriptSources.size).toBe(1);
 });
 
 test("real touch cart swipe/delete works across public surfaces", async ({ page, request }, testInfo) => {
