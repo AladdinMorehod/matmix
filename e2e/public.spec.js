@@ -1895,6 +1895,38 @@ test("cart quantity input keeps focus while typing multi-digit values", async ({
     await expect(page.locator(".cart-item .qty-input")).toHaveValue("100");
 });
 
+test("cart removes only the selected item with accessible delete action", async ({ page }) => {
+    await page.goto("/");
+    await seedCartItems(page, 2);
+    await page.locator("#cartBtn").click();
+    const rows = page.locator(".cart-item");
+    await expect(rows).toHaveCount(2);
+    await rows.nth(0).locator(".cart-item-delete").click();
+    await expect(rows).toHaveCount(1);
+    await expect(page.locator("#cartCount")).toHaveText("1");
+});
+
+test("mobile cart swipe reveals delete without deleting", async ({ page }) => {
+    await page.goto("/");
+    await seedCartItems(page, 2);
+    await page.locator("#cartBtn").click();
+    const row = page.locator(".cart-item").first();
+    const details = row.locator(".cart-item-content > div").first();
+    const box = await details.boundingBox();
+    expect(box).not.toBeNull();
+    await row.evaluate((element, start) => {
+        const point = (type, x) => element.dispatchEvent(new PointerEvent(type, { bubbles: true, cancelable: true, pointerId: 91, clientX: x, clientY: start.y }));
+        point("pointerdown", start.x);
+        point("pointermove", start.x - 60);
+        point("pointerup", start.x - 60);
+    }, { x: box.x + 20, y: box.y + box.height / 2 });
+    await expect(row).toHaveClass(/is-delete-revealed/);
+    await expect(row.locator(".cart-item-delete")).toBeVisible();
+    await expect(page.locator(".cart-item")).toHaveCount(2);
+    await row.locator(".cart-item-delete").click();
+    await expect(page.locator(".cart-item")).toHaveCount(1);
+});
+
 test("clear cart popover stays floating and contained on mobile", async ({ page }) => {
     for (const path of ["/", "/catalog.html"]) {
         for (const width of [390, 360, 320]) {

@@ -39760,12 +39760,16 @@ function renderCart() {
         const qty = Number(item.quantity) || 0;
         const row = document.createElement("div");
         row.className = "cart-item";
+        row.dataset.cartItemId = String(item.productId);
         row.innerHTML = `
-            <div>
-                <b>${escapeHtml(cleanDisplayText(title))}</b>
-                <span>${escapeHtml(formatPrice(price))} / ${escapeHtml(unit)}</span>
+            <div class="cart-item-content">
+                <div>
+                    <b>${escapeHtml(cleanDisplayText(title))}</b>
+                    <span>${escapeHtml(formatPrice(price))} / ${escapeHtml(unit)}</span>
+                </div>
+                ${getQtyControls(item.productId, qty, true)}
             </div>
-            ${getQtyControls(item.productId, qty, true)}
+            <button class="cart-item-delete" data-id="${item.productId}" type="button" aria-label="Удалить товар из корзины">×</button>
         `;
         fragment.appendChild(row);
     });
@@ -39789,6 +39793,12 @@ function clearCart() {
 function handleQtyClick(event) {
     const button = event.target.closest("button");
     if (!button) return;
+
+    if (button.classList.contains("cart-item-delete")) {
+        const id = Number(button.dataset.id);
+        if (Number.isInteger(id)) setProductQty(id, 0);
+        return;
+    }
 
     const id = Number(button.dataset.id);
     if (!Number.isInteger(id)) return;
@@ -39824,6 +39834,55 @@ function handleQtyInput(event) {
         resizeQtyInput(input);
     }
 }
+
+let cartSwipeState = null;
+const CART_SWIPE_THRESHOLD = 32;
+
+function closeRevealedCartRows(except = null) {
+    cartItemsEl.querySelectorAll(".cart-item.is-delete-revealed").forEach(row => {
+        if (row !== except) row.classList.remove("is-delete-revealed");
+    });
+}
+
+cartItemsEl.addEventListener("pointerdown", event => {
+    const row = event.target.closest(".cart-item");
+    if (!row || event.target.closest("input, button")) return;
+    if (event.isTrusted) row.setPointerCapture?.(event.pointerId);
+    cartSwipeState = { row, pointerId: event.pointerId, startX: event.clientX, startY: event.clientY, horizontal: false };
+});
+
+cartItemsEl.addEventListener("pointermove", event => {
+    const state = cartSwipeState;
+    if (!state || state.pointerId !== event.pointerId) return;
+    const dx = event.clientX - state.startX;
+    const dy = event.clientY - state.startY;
+    if (!state.horizontal && Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+    if (Math.abs(dx) <= Math.abs(dy)) {
+        cartSwipeState = null;
+        return;
+    }
+    state.horizontal = true;
+    if (dx < -CART_SWIPE_THRESHOLD) {
+        closeRevealedCartRows(state.row);
+        state.row.classList.add("is-delete-revealed");
+    } else if (dx > CART_SWIPE_THRESHOLD) {
+        state.row.classList.remove("is-delete-revealed");
+    }
+});
+
+cartItemsEl.addEventListener("pointerup", event => {
+    if (cartSwipeState?.pointerId === event.pointerId) cartSwipeState = null;
+});
+
+cartItemsEl.addEventListener("pointercancel", () => {
+    cartSwipeState = null;
+});
+
+cartItemsEl.addEventListener("click", event => {
+    const row = event.target.closest(".cart-item");
+    if (!row || event.target.closest("button, input")) return;
+    closeRevealedCartRows();
+});
 
 function commitQtyInput(event) {
     const input = event.target.closest(".qty-input");
