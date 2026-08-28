@@ -39763,11 +39763,13 @@ function renderCart() {
         row.dataset.cartItemId = String(item.productId);
         row.innerHTML = `
             <div class="cart-item-content">
-                <div>
+                <div class="cart-item-title">
                     <b>${escapeHtml(cleanDisplayText(title))}</b>
-                    <span>${escapeHtml(formatPrice(price))} / ${escapeHtml(unit)}</span>
                 </div>
-                ${getQtyControls(item.productId, qty, true)}
+                <div class="cart-item-bottom">
+                    <span class="cart-item-price">${escapeHtml(formatPrice(price))} / ${escapeHtml(unit)}</span>
+                    <div class="cart-item-qty">${getQtyControls(item.productId, qty, true)}</div>
+                </div>
             </div>
             <button class="cart-item-delete" data-id="${item.productId}" type="button" aria-label="Удалить товар из корзины">×</button>
         `;

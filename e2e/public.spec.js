@@ -187,15 +187,9 @@ test("public product cards link to canonical product pages without hijacking car
         const url = new URL(response.url());
         return url.pathname === "/api/public/products" && response.status() === 200;
     });
-    await page.goto("/catalog");
+    const catalogPath = `/catalog?category=${encodeURIComponent(product.category || "Смеси")}&subcategory=${encodeURIComponent(product.subcategory || "Штукатурка")}`;
+    await page.goto(catalogPath);
     await productsRenderResponse;
-    await page.evaluate(item => {
-        const grid = document.querySelector("#productGrid");
-        grid.innerHTML = "";
-        grid.hidden = false;
-        grid.style.display = "grid";
-        grid.appendChild(createProductCard(item, item.id));
-    }, product);
     const card = page.locator("#productGrid .card").first();
     await expect(card).toBeVisible();
     const expectedHref = await card.locator(".card-info h3 a").getAttribute("href");
@@ -209,21 +203,12 @@ test("public product cards link to canonical product pages without hijacking car
     await card.locator(".card-info h3 a").press("Enter");
     await expect(page).toHaveURL(new RegExp(`/product/${code.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`));
     expect(new URL(page.url()).origin).toBe(catalogOrigin);
-    await page.goto("/catalog");
-    await page.waitForTimeout(750);
-    await page.evaluate(item => {
-        const grid = document.querySelector("#productGrid");
-        grid.innerHTML = "";
-        grid.hidden = false;
-        grid.style.display = "grid";
-        grid.appendChild(createProductCard(item, item.id));
-    }, product);
+    await page.goto(catalogPath);
     await expect(page.locator("#productGrid .card").first()).toBeVisible();
     await page.evaluate(() => localStorage.setItem("matmix_cart", "[]"));
-    const catalogPath = new URL(page.url()).pathname;
     await card.locator(".add").click();
     await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem("matmix_cart") || "[]").length)).toBe(1);
-    expect(new URL(page.url()).pathname).toBe(catalogPath);
+    expect(new URL(page.url()).pathname).toBe("/catalog");
 
     const searchHref = await page.evaluate(item => getProductPageHref(item), product);
     expect(searchHref).toBe(expectedHref);
