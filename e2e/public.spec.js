@@ -1871,6 +1871,30 @@ test("first outside cart tap only closes cart before product navigation", async 
     await expect.poll(() => new URL(page.url()).pathname).toBe(expectedProductPath);
 });
 
+test("cart quantity input keeps focus while typing multi-digit values", async ({ page }) => {
+    await page.goto("/");
+    await seedCartItems(page, 1);
+    await page.locator("#cartBtn").click();
+
+    const cartItem = page.locator(".cart-item").first();
+    const quantityInput = cartItem.locator(".qty-input");
+    await expect(quantityInput).toHaveValue("1");
+    await quantityInput.focus();
+    await quantityInput.press("End");
+    await quantityInput.press("0");
+    await expect(quantityInput).toHaveValue("10");
+    await expect(quantityInput).toBeFocused();
+    await quantityInput.press("0");
+    await expect(quantityInput).toHaveValue("100");
+    await expect(quantityInput).toBeFocused();
+    await quantityInput.press("Enter");
+    await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem("matmix_cart") || "[]")[0]?.quantity)).toBe(100);
+    await expect(page.locator("#cartTotal")).toContainText("10 000");
+    await page.reload();
+    await page.locator("#cartBtn").click();
+    await expect(page.locator(".cart-item .qty-input")).toHaveValue("100");
+});
+
 test("clear cart popover stays floating and contained on mobile", async ({ page }) => {
     for (const path of ["/", "/catalog.html"]) {
         for (const width of [390, 360, 320]) {

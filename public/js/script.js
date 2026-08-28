@@ -39823,12 +39823,6 @@ function handleQtyInput(event) {
         input.value = String(nextQty);
         resizeQtyInput(input);
     }
-
-    setProductQty(id, nextQty, {
-        renderCartView: false,
-        renderSearchView: false,
-        renderProductViews: false
-    });
 }
 
 function commitQtyInput(event) {
