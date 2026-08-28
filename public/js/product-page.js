@@ -15,34 +15,84 @@ function normalizedQuantity(value) {
     return Math.max(1, Math.min(999, Math.floor(Number(value) || 1)));
 }
 
+const currentProduct = (() => {
+    const element = document.querySelector(".product-page");
+    if (!element) return null;
+    return Object.freeze({
+        productId: Number(element.dataset.productId),
+        title: element.dataset.title || "Товар",
+        externalId: element.dataset.externalId || "",
+        price: Number(element.dataset.price) || 0,
+        weight: Number(element.dataset.weight) || 0,
+        unit: element.dataset.unit || "шт"
+    });
+})();
+
 function updateCartBadge() {
     const badge = document.querySelector("[data-cart-count]");
     if (badge && !badge.dataset.feedback) badge.textContent = "";
 }
 
+function productPageCartQuantity() {
+    const id = currentProduct?.productId;
+    if (!Number.isInteger(id) || id <= 0) return 0;
+    return window.matmixCart?.getQuantity(id) ?? (Number(readCart().find(item => Number(item.productId ?? item.id) === id)?.quantity) || 0);
+}
+
+function setProductPageQuantity(nextQuantity, source = "product_page") {
+    const product = document.querySelector(".product-page");
+    const id = currentProduct?.productId;
+    if (!Number.isInteger(id) || id <= 0) return;
+    const before = productPageCartQuantity();
+    const next = Math.max(0, Math.min(999, Math.floor(Number(nextQuantity) || 0)));
+    const options = {
+        analyticsSource: source,
+        analyticsQuantity: Math.max(0, next - before),
+        productData: { id, name: currentProduct.title, ...currentProduct }
+    };
+    if (window.matmixCart?.setQuantity) {
+        window.matmixCart.setQuantity(id, next, options);
+    } else {
+        const cart = readCart();
+        const index = cart.findIndex(item => Number(item.productId ?? item.id) === id);
+        if (next <= 0) {
+            if (index >= 0) cart.splice(index, 1);
+        } else if (index >= 0) cart[index].quantity = next;
+        else cart.push({ productId: id, title: product.dataset.title || "", price: Number(product.dataset.price) || 0, weight: Number(product.dataset.weight) || 0, unit: product.dataset.unit || "шт", quantity: next });
+        localStorage.setItem(CART_KEY, JSON.stringify(cart));
+    }
+    return productPageCartQuantity();
+}
+
 function addProduct(button) {
     const productId = Number(button.dataset.productId);
     if (!Number.isInteger(productId) || productId <= 0) return;
-    const quantityInput = button.closest(".product-page-summary")?.querySelector("[data-quantity]");
-    const quantity = normalizedQuantity(quantityInput?.value || 1);
-    const cart = readCart();
-    const existing = cart.find(item => Number(item.productId ?? item.id) === productId);
-    if (existing) existing.quantity = Math.max(0, Number(existing.quantity ?? existing.qty) || 0) + quantity;
-    else cart.push({ productId, title: button.dataset.title || "", price: Number(button.dataset.price) || 0, weight: Number(button.dataset.weight) || 0, unit: button.dataset.unit || "шт", quantity });
     try {
-        localStorage.setItem(CART_KEY, JSON.stringify(cart));
-        window.matmixAnalytics?.addToCart({ external_id: document.querySelector(".product-page")?.dataset.externalId, title: button.dataset.title, quantity, price: Number(button.dataset.price) || 0, unit: button.dataset.unit || "шт", source: "product_page" });
-        button.textContent = "Добавлено";
+        const actualQuantity = setProductPageQuantity(1, "product_page");
+        if (actualQuantity !== 1) throw new Error("Не удалось добавить товар в корзину.");
         const badge = document.querySelector("[data-cart-count]");
         if (badge) {
             badge.dataset.feedback = "true";
             badge.textContent = "Товар добавлен в корзину";
         }
         updateCartBadge();
-        window.dispatchEvent(new CustomEvent("matmix:cart-updated"));
     } catch {
         button.textContent = "Не удалось добавить";
     }
+}
+
+function syncProductQuantity() {
+    const product = document.querySelector(".product-page");
+    const input = document.querySelector("[data-quantity]");
+    const addButton = document.querySelector("[data-add-product]");
+    const controls = document.querySelector(".product-page-quantity");
+    if (!product || !input || !addButton || !controls) return;
+    const quantity = productPageCartQuantity();
+    input.value = String(quantity || 1);
+    const inCart = quantity > 0;
+    controls.hidden = !inCart;
+    addButton.hidden = inCart;
+    addButton.textContent = "В корзину";
 }
 
 document.querySelectorAll("[data-gallery-thumbnail]").forEach(button => button.addEventListener("click", () => {
@@ -57,12 +107,40 @@ document.querySelectorAll("[data-gallery-thumbnail]").forEach(button => button.a
     });
 }));
 
-document.querySelectorAll("[data-add-product]").forEach(button => button.addEventListener("click", () => addProduct(button)));
+document.querySelectorAll(".product-page [data-add-product]").forEach(button => button.addEventListener("click", event => { event.stopPropagation(); addProduct(button); }));
 
 const quantityInput = document.querySelector("[data-quantity]");
-document.querySelector("[data-quantity-minus]")?.addEventListener("click", () => { quantityInput.value = normalizedQuantity(Number(quantityInput.value) - 1); });
-document.querySelector("[data-quantity-plus]")?.addEventListener("click", () => { quantityInput.value = normalizedQuantity(Number(quantityInput.value) + 1); });
-quantityInput?.addEventListener("change", () => { quantityInput.value = normalizedQuantity(quantityInput.value); });
+document.querySelector("[data-quantity-minus]")?.addEventListener("click", () => setProductPageQuantity(productPageCartQuantity() - 1, "product_page"));
+document.querySelector("[data-quantity-plus]")?.addEventListener("click", () => setProductPageQuantity(productPageCartQuantity() + 1, "product_page"));
+function commitProductQuantityInput() {
+    if (!quantityInput) return;
+    const raw = quantityInput.value.trim();
+    if (!raw || !/^\d+$/.test(raw)) {
+        syncProductQuantity();
+        return;
+    }
+    setProductPageQuantity(Number(raw), "product_page");
+}
+let skipQuantityBlur = false;
+quantityInput?.addEventListener("keydown", event => {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        skipQuantityBlur = true;
+        commitProductQuantityInput();
+    }
+});
+quantityInput?.addEventListener("change", () => {
+    skipQuantityBlur = true;
+    commitProductQuantityInput();
+});
+quantityInput?.addEventListener("blur", () => {
+    if (skipQuantityBlur) {
+        skipQuantityBlur = false;
+        return;
+    }
+    commitProductQuantityInput();
+});
+window.addEventListener("matmix:cart-updated", syncProductQuantity);
 
 const oneClickDialog = document.querySelector("[data-one-click-dialog]");
 const oneClickForm = document.querySelector("[data-one-click-form]");
@@ -121,3 +199,4 @@ oneClickForm?.addEventListener("submit", async event => {
 });
 
 updateCartBadge();
+syncProductQuantity();

@@ -230,6 +230,50 @@ test("admin edits product content in readable tabs without mobile overflow", asy
     expect(content.values.find(item => item.definitionId === definition.id)?.value).toBe(42.5);
 });
 
+test("CRM product edit cancel discards draft without writes", async ({ page, request }, testInfo) => {
+    await loginAsAdmin(page);
+    const productsResponse = await page.request.get("/api/products?limit=1");
+    const source = (await productsResponse.json()).products[0];
+    const suffix = `${testInfo.project.name.replace(/\W+/g, "_")}_${Date.now()}`;
+    const created = await page.request.post("/api/products", { data: {
+        title: `Cancel draft ${suffix}`, category: source.category, subcategory: source.subcategory,
+        productGroup: source.productGroup, price: 111, weight: 2, unit: "шт", description: "Исходное", isActive: true
+    } });
+    expect(created.status()).toBe(201);
+    const product = (await created.json()).product;
+    await openCrmSection(page, "catalog");
+    await page.locator("#productSearchInput").fill(product.title);
+    await page.waitForResponse(response => response.url().includes("/api/products?") && response.ok());
+    const row = page.locator(".products-row", { hasText: product.title });
+    await row.getByRole("button", { name: "Редактировать" }).click();
+    const modal = page.locator(".crm-modal");
+    const mutations = [];
+    const onRequest = requestEvent => {
+        if (["POST", "PUT", "PATCH", "DELETE"].includes(requestEvent.method()) && /\/api\/products\//.test(requestEvent.url())) mutations.push(requestEvent.url());
+    };
+    page.on("request", onRequest);
+    await modal.locator("input[name='title']").fill("Не должно сохраниться");
+    await modal.locator("input[name='price']").fill("999");
+    await modal.getByRole("button", { name: "Описание" }).click();
+    await modal.locator("textarea[name='shortDescription']").fill("Черновик");
+    await modal.getByRole("button", { name: "Отмена" }).click();
+    page.off("request", onRequest);
+    expect(mutations).toEqual([]);
+    await row.getByRole("button", { name: "Редактировать" }).click();
+    const reopened = page.locator(".crm-modal");
+    await expect(reopened.locator("input[name='title']")).toHaveValue(product.title);
+    await expect(reopened.locator("input[name='price']")).toHaveValue("111");
+    await reopened.getByRole("button", { name: "Описание" }).click();
+    await expect(reopened.locator("textarea[name='shortDescription']")).toHaveValue("");
+    await reopened.getByRole("button", { name: "Отмена" }).click();
+    await page.reload();
+    await openCrmSection(page, "catalog");
+    await page.locator("#productSearchInput").fill(product.title);
+    await page.waitForResponse(response => response.url().includes("/api/products?") && response.ok());
+    const persistedRow = page.locator(".products-row", { hasText: product.title });
+    await expect(persistedRow).toContainText("111");
+});
+
 test("CRM shows and securely downloads file request attachments", async ({ page }) => {
     await loginAsAdmin(page);
     await openCrmSection(page, "orders");

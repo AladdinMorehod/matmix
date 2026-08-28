@@ -1162,42 +1162,35 @@ async function uploadProductImage(product, formElement) {
         return;
     }
 
-    const formData = new FormData();
-    formData.append("image", file);
-    if (uploadButton) uploadButton.disabled = true;
-
-    try {
-        const result = await CrmApi.post(`/api/products/${product.id}/image`, formData);
-        Object.assign(product, result.product || {}, {
-            imageUrl: result.imageUrl || result.image_url || result.product?.imageUrl || "",
-            image_url: result.image_url || result.imageUrl || result.product?.image_url || ""
-        });
-        if (input) input.value = "";
-        updateProductImageManager(manager, product);
-        notifySuccess("Изображение товара загружено.");
-        await loadProducts({ preserveControls: true });
-    } catch (error) {
-        notifyError(error, "Не удалось загрузить изображение товара.");
-    } finally {
-        if (uploadButton) uploadButton.disabled = false;
-    }
+    formElement.__productImageDraft = { action: "upload", file };
+    if (uploadButton) uploadButton.dataset.staged = "true";
+    notifySuccess("Изображение будет сохранено после нажатия «Сохранить».");
 }
 
 async function deleteProductImage(product, formElement) {
     const manager = formElement.querySelector("[data-product-image-manager]");
     const deleteButton = manager?.querySelector("[data-product-image-delete]");
-    if (deleteButton) deleteButton.disabled = true;
+    formElement.__productImageDraft = { action: "delete" };
+    if (deleteButton) deleteButton.dataset.staged = "true";
+    notifySuccess("Удаление изображения будет применено после нажатия «Сохранить».");
+}
 
-    try {
+async function applyProductImageDraft(product, formElement) {
+    const draft = formElement?.__productImageDraft;
+    if (!draft || !product?.id) return;
+    if (draft.action === "delete") {
         const result = await CrmApi.delete(`/api/products/${product.id}/image`);
         Object.assign(product, result.product || {}, { imageUrl: "", image_url: "" });
-        updateProductImageManager(manager, product);
-        notifySuccess("Изображение товара удалено.");
-        await loadProducts({ preserveControls: true });
-    } catch (error) {
-        notifyError(error, "Не удалось удалить изображение товара.");
-    } finally {
-        if (deleteButton) deleteButton.disabled = !getProductImageUrl(product);
+        return;
+    }
+    if (draft.action === "upload" && draft.file) {
+        const body = new FormData();
+        body.append("image", draft.file);
+        const result = await CrmApi.post(`/api/products/${product.id}/image`, body);
+        Object.assign(product, result.product || {}, {
+            imageUrl: result.imageUrl || result.image_url || result.product?.imageUrl || "",
+            image_url: result.image_url || result.imageUrl || result.product?.image_url || ""
+        });
     }
 }
 
@@ -1345,6 +1338,8 @@ function setupProductImageControls(formElement, product) {
             return;
         }
 
+        formElement.__productImageDraft = { action: "upload", file };
+
         const objectUrl = URL.createObjectURL(file);
         if (preview) {
             preview.innerHTML = `<img src="${escapeHtml(objectUrl)}" alt="">`;
@@ -1454,31 +1449,43 @@ async function refreshGalleryEditor(formElement, product) {
 }
 
 function setupProductGalleryControls(formElement, product) {
-    formElement.querySelector("[data-gallery-upload]")?.addEventListener("click", async () => {
+    const stage = operation => {
+        formElement.__productGalleryDraft = formElement.__productGalleryDraft || [];
+        formElement.__productGalleryDraft.push(operation);
+        notifySuccess("Изменение галереи будет применено после нажатия «Сохранить».");
+    };
+    formElement.querySelector("[data-gallery-upload]")?.addEventListener("click", () => {
         const files = [...(formElement.querySelector("[data-gallery-files]")?.files || [])];
         const invalid = files.map(validateProductImageFile).find(Boolean);
         if (!files.length || invalid) return notifyWarning(invalid || "Выберите изображения.");
-        try {
-            for (const file of files) {
-                const body = new FormData(); body.append("image", file);
-                await CrmApi.post(`/api/products/${product.id}/gallery`, body);
-            }
-            await refreshGalleryEditor(formElement, product);
-            notifySuccess(`Загружено изображений: ${files.length}.`);
-        } catch (error) { notifyError(error, "Не удалось загрузить галерею."); }
+        files.forEach(file => stage({ type: "upload", file }));
     });
     formElement.querySelectorAll("[data-image-id]").forEach(card => {
         const imageId = Number(card.dataset.imageId);
-        const mutate = async payload => { await CrmApi.patch(`/api/products/${product.id}/gallery/${imageId}`, payload); await refreshGalleryEditor(formElement, product); };
-        card.querySelector("[data-gallery-alt-save]")?.addEventListener("click", () => mutate({ altText: card.querySelector("[data-gallery-alt]").value }).catch(error => notifyError(error, "Не удалось сохранить описание изображения.")));
-        card.querySelector("[data-gallery-primary]")?.addEventListener("click", () => mutate({ isPrimary: true }).catch(error => notifyError(error, "Не удалось назначить главное изображение.")));
-        card.querySelector("[data-gallery-delete]")?.addEventListener("click", async () => { try { await CrmApi.delete(`/api/products/${product.id}/gallery/${imageId}`); await refreshGalleryEditor(formElement, product); } catch (error) { notifyError(error, "Не удалось удалить изображение."); } });
-        for (const [selector, offset] of [["[data-gallery-up]", -1], ["[data-gallery-down]", 1]]) card.querySelector(selector)?.addEventListener("click", async () => {
+        card.querySelector("[data-gallery-alt-save]")?.addEventListener("click", () => stage({ type: "patch", imageId, payload: { altText: card.querySelector("[data-gallery-alt]").value } }));
+        card.querySelector("[data-gallery-primary]")?.addEventListener("click", () => stage({ type: "patch", imageId, payload: { isPrimary: true } }));
+        card.querySelector("[data-gallery-delete]")?.addEventListener("click", () => stage({ type: "delete", imageId }));
+        for (const [selector, offset] of [["[data-gallery-up]", -1], ["[data-gallery-down]", 1]]) card.querySelector(selector)?.addEventListener("click", () => {
             const ids = (productContentEditor.content.images || []).map(item => item.id); const index = ids.indexOf(imageId); const target = index + offset;
             if (target < 0 || target >= ids.length) return; [ids[index], ids[target]] = [ids[target], ids[index]];
-            try { await CrmApi.put(`/api/products/${product.id}/gallery-order`, { imageIds: ids }); await refreshGalleryEditor(formElement, product); } catch (error) { notifyError(error, "Не удалось изменить порядок."); }
+            stage({ type: "order", imageIds: ids });
         });
     });
+}
+
+async function applyProductGalleryDraft(product, formElement) {
+    for (const operation of formElement?.__productGalleryDraft || []) {
+        if (operation.type === "upload") {
+            const body = new FormData(); body.append("image", operation.file);
+            await CrmApi.post(`/api/products/${product.id}/gallery`, body);
+        } else if (operation.type === "patch") {
+            await CrmApi.patch(`/api/products/${product.id}/gallery/${operation.imageId}`, operation.payload);
+        } else if (operation.type === "delete") {
+            await CrmApi.delete(`/api/products/${product.id}/gallery/${operation.imageId}`);
+        } else if (operation.type === "order") {
+            await CrmApi.put(`/api/products/${product.id}/gallery-order`, { imageIds: operation.imageIds });
+        }
+    }
 }
 
 function setupProductFormControls(formElement, product = {}) {
@@ -1542,6 +1549,8 @@ async function openProductForm(product = null) {
         content: renderProductForm(product || { isActive: true }),
         submitText: product ? "Сохранить" : "Создать",
         draftKey: product ? `product:${product.id}` : "product:new",
+        clearDraftOnCancel: true,
+        onDiscard: () => { productContentEditor.content = null; },
         onReady: ({ formElement }) => setupProductFormControls(formElement, product || {})
     });
 
@@ -1567,6 +1576,8 @@ async function openProductForm(product = null) {
         }
         if (savedProduct?.id) {
             await CrmApi.patch(`/api/products/${savedProduct.id}/content`, contentPayload);
+            await applyProductImageDraft(savedProduct, formData.crmFormElement);
+            await applyProductGalleryDraft(savedProduct, formData.crmFormElement);
             const category = getStructureCategoryByName(payload.category);
             const subcategory = getStructureSubcategoryByName(category, payload.subcategory);
             if (subcategory?.id) {

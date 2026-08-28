@@ -200,12 +200,15 @@ test("public product cards link to canonical product pages without hijacking car
     await expect(card).toBeVisible();
     const expectedHref = await card.locator(".card-info h3 a").getAttribute("href");
     expect(expectedHref).toMatch(/^\/product\/.+/);
+    expect(expectedHref).not.toMatch(/^https?:\/\//);
+    const catalogOrigin = new URL(page.url()).origin;
     const code = decodeURIComponent(expectedHref.split("/").at(-1));
     await expect(card.locator("a.thumb")).toHaveAttribute("href", expectedHref);
     await expect(card.locator(".card-info h3 a")).toHaveAttribute("href", expectedHref);
     expect(await card.locator("a").evaluateAll(anchors => anchors.some(anchor => anchor.querySelector("button")))).toBeFalsy();
     await card.locator(".card-info h3 a").press("Enter");
     await expect(page).toHaveURL(new RegExp(`/product/${code.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`));
+    expect(new URL(page.url()).origin).toBe(catalogOrigin);
     await page.goto("/catalog");
     await page.waitForTimeout(750);
     await page.evaluate(item => {
@@ -353,9 +356,29 @@ test("SSR product page supports gallery, quantity, cart and responsive layouts",
 
     await page.evaluate(() => localStorage.setItem("matmix_cart", "[]"));
     await page.reload();
-    await page.locator("[data-quantity-plus]").click();
-    await page.locator("[data-quantity-plus]").click();
+    await page.evaluate(() => { window.__productCartEvents = []; window.matmixAnalytics = { addToCart: payload => window.__productCartEvents.push(payload) }; });
+    await expect(page.locator(".product-page-summary [data-add-product]")).toBeVisible();
+    await expect(page.locator(".product-page-summary .product-page-quantity")).toBeHidden();
     await page.locator(".product-page-summary [data-add-product]").click();
+    await expect(page.locator(".product-page-summary .product-page-quantity")).toBeVisible();
+    await expect(page.locator("[data-quantity]")).toHaveValue("1");
+    expect(await page.evaluate(id => JSON.parse(localStorage.getItem("matmix_cart") || "[]").find(item => Number(item.productId) === Number(id)).quantity, product.id)).toBe(1);
+    await page.locator("[data-quantity-plus]").click();
+    await page.locator("[data-quantity-plus]").click();
+    await expect(page.locator("[data-quantity]")).toHaveValue("3");
+    expect(await page.evaluate(id => JSON.parse(localStorage.getItem("matmix_cart") || "[]").find(item => Number(item.productId) === Number(id)).quantity, product.id)).toBe(3);
+    await page.locator("[data-quantity-minus]").click();
+    await expect(page.locator("[data-quantity]")).toHaveValue("2");
+    await page.locator("[data-quantity-minus]").click();
+    await page.locator("[data-quantity-minus]").click();
+    await expect(page.locator(".product-page-summary [data-add-product]")).toBeVisible();
+    await expect(page.locator(".product-page-summary .product-page-quantity")).toBeHidden();
+    expect(await page.evaluate(id => JSON.parse(localStorage.getItem("matmix_cart") || "[]").some(item => Number(item.productId) === Number(id)), product.id)).toBe(false);
+    await page.locator(".product-page-summary [data-add-product]").click();
+    await page.locator("[data-quantity-plus]").click();
+    await page.locator("[data-quantity-plus]").click();
+    await expect(page.locator("[data-quantity]")).toHaveValue("3");
+    expect(await page.evaluate(() => window.__productCartEvents.map(item => item.quantity))).toEqual([1, 1, 1, 1, 1, 1]);
     await expect(page.locator("[data-cart-count]")).toHaveText("Товар добавлен в корзину");
     await expect(page.locator("#cartCount")).toHaveText("1");
     await page.locator("#cartBtn").click();
@@ -363,6 +386,11 @@ test("SSR product page supports gallery, quantity, cart and responsive layouts",
     await page.locator("#closeCart").click();
     const cartItem = await page.evaluate(id => JSON.parse(localStorage.getItem("matmix_cart") || "[]").find(item => Number(item.productId) === Number(id)), product.id);
     expect(cartItem.quantity).toBe(3);
+    expect(await page.locator("[data-quantity]").inputValue()).toBe("3");
+    await page.reload();
+    await expect(page.locator(".product-page-summary .product-page-quantity")).toBeVisible();
+    await expect(page.locator(".product-page-summary [data-add-product]")).toBeHidden();
+    expect(await page.locator("[data-quantity]").inputValue()).toBe("3");
 
     await page.locator("[data-one-click]").click();
     await expect(page.locator("[data-one-click-dialog]")).toBeVisible();
@@ -397,7 +425,8 @@ test("SSR product page supports gallery, quantity, cart and responsive layouts",
         expect(layout.scrollWidth, JSON.stringify({ viewport, layout })).toBeLessThanOrEqual(layout.clientWidth + 1);
         expect(layout.imageRight).toBeLessThanOrEqual(layout.clientWidth + 1);
         expect(layout.imageHeight).toBeLessThanOrEqual(480);
-        await expect(page.locator(".product-page-summary [data-add-product]")).toBeVisible();
+        await expect(page.locator(".product-page-summary .product-page-quantity")).toBeVisible();
+        await expect(page.locator(".product-page-summary [data-add-product]")).toBeHidden();
         const benefitsLayout = await page.locator(".product-page-benefits").evaluate(element => ({ scrollWidth: element.scrollWidth, clientWidth: element.clientWidth }));
         expect(benefitsLayout.scrollWidth).toBeLessThanOrEqual(benefitsLayout.clientWidth + 1);
         if (viewport.width <= 430) {
@@ -445,6 +474,48 @@ test("SSR product page supports gallery, quantity, cart and responsive layouts",
     await expect(page.locator("#productDescription")).toBeVisible();
     await expect(page.locator("#productDelivery")).toBeVisible();
     await expect(page.locator(".product-page-content-nav a")).toHaveText(["Описание", "Доставка и оплата"]);
+});
+
+test("product can be re-added after quantity reaches zero", async ({ page, request }) => {
+    const response = await request.get("/api/public/products?limit=1");
+    const body = await response.json();
+    const product = (body.products || body.items || body.data || [])[0];
+    expect(product).toBeTruthy();
+    const code = product.externalId || product.external_id;
+    await page.goto(`/product/${code}`);
+    await page.evaluate(() => localStorage.setItem("matmix_cart", "[]"));
+    await page.reload();
+    await page.locator(".product-page-summary [data-add-product]").click();
+    await page.locator("[data-quantity-plus]").click();
+    await expect(page.locator("[data-quantity]")).toHaveValue("2");
+    await page.locator("[data-quantity-minus]").click();
+    await page.locator("[data-quantity-minus]").click();
+    await expect(page.locator(".product-page-summary [data-add-product]")).toBeVisible();
+    expect(await page.evaluate(id => JSON.parse(localStorage.getItem("matmix_cart") || "[]").some(item => Number(item.productId) === Number(id)), product.id)).toBe(false);
+    await page.locator(".product-page-summary [data-add-product]").click();
+    await expect(page.locator("[data-quantity]")).toHaveValue("1");
+    await expect(page.locator(".product-page-summary [data-add-product]")).toBeHidden();
+    expect(await page.evaluate(id => JSON.parse(localStorage.getItem("matmix_cart") || "[]").find(item => Number(item.productId) === Number(id))?.quantity, product.id)).toBe(1);
+    await page.locator("[data-quantity]").fill("5");
+    await page.locator("[data-quantity]").press("Enter");
+    await expect(page.locator("[data-quantity]")).toHaveValue("5");
+    await page.locator("[data-quantity]").fill("2");
+    await page.locator("[data-quantity]").blur();
+    await expect(page.locator("[data-quantity]")).toHaveValue("2");
+    await page.locator("#cartBtn").click();
+    await expect(page.locator(`#cartItems .cart-item:has(.qty-input[data-id="${product.id}"])`)).toBeVisible();
+    await page.locator(`#cartItems .cart-item:has(.qty-input[data-id="${product.id}"]) .qty.minus`).click();
+    await expect(page.locator("[data-quantity]")).toHaveValue("1");
+    await page.locator(`#cartItems .cart-item:has(.qty-input[data-id="${product.id}"]) .qty.minus`).click();
+    await expect(page.locator(".product-page-summary [data-add-product]")).toBeVisible();
+    await page.locator("#closeCart").click();
+    await page.locator(".product-page-summary [data-add-product]").click();
+    await page.locator("[data-quantity]").fill("0");
+    await page.locator("[data-quantity]").press("Enter");
+    await expect(page.locator(".product-page-summary [data-add-product]")).toBeVisible();
+    expect(await page.evaluate(id => JSON.parse(localStorage.getItem("matmix_cart") || "[]").some(item => Number(item.productId) === Number(id)), product.id)).toBe(false);
+    await page.locator("#cartBtn").click();
+    await expect(page.locator(`#cartItems .cart-item:has(.qty-input[data-id="${product.id}"])`)).toHaveCount(0);
 });
 
 test("one-click validation error keeps modal and entered fields", async ({ page, request }) => {
@@ -887,6 +958,7 @@ test("mobile catalog uses compact pickers and anchored popovers", async ({ page 
     expect(openGeometry.scrollable).toBe(true);
     expect(openGeometry.bodyOverflow).not.toBe("hidden");
 
+    if (await popover.isHidden()) await subcategoryPicker.click();
     await page.keyboard.press("ArrowDown");
     await expect(popover.getByRole("option", { name: targetSubcategory, exact: true })).toBeFocused();
     await page.keyboard.press("Escape");
@@ -912,6 +984,9 @@ test("mobile catalog uses compact pickers and anchored popovers", async ({ page 
 
     await page.locator("#cartBtn").click();
     await expect(popover).toBeHidden();
+    await expect(page.locator("#cartModal")).toBeHidden();
+    await page.locator("#cartBtn").click();
+    await expect(page.locator("#cartModal")).toBeVisible();
     await page.locator("#closeCart").click();
 
     await page.setViewportSize({ width: 375, height: 640 });

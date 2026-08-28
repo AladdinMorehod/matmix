@@ -37254,6 +37254,7 @@ const UPLOAD_ALLOWED_EXTENSIONS = new Set([
 const MOBILE_SEARCH_MAX_WIDTH = 600;
 let catalogPickerPopover = null;
 let catalogPickerTrigger = null;
+let catalogPickerSuppressedPointerId = null;
 const PAYMENT_METHODS = [
     { value: "cash", label: "Наличные" },
     { value: "card_transfer", label: "Перевод на карту" },
@@ -37307,7 +37308,14 @@ function getProductImageUrl(product = {}) {
 
 function getProductPageHref(product = {}) {
     const externalId = String(product.externalId || product.external_id || "").trim();
-    return externalId ? `/product/${encodeURIComponent(externalId.toUpperCase())}` : "";
+    if (!externalId) return "";
+    const pathname = `/product/${encodeURIComponent(externalId.toUpperCase())}`;
+    try {
+        const url = new URL(pathname, window.location.href);
+        return `${url.pathname}${url.search}${url.hash}`;
+    } catch {
+        return pathname;
+    }
 }
 
 function renderProductThumb(product = {}) {
@@ -38849,8 +38857,8 @@ function sanitizeQtyInputValue(value) {
 }
 
 function setProductQty(id, nextQty, options = {}) {
-    const { renderCartView = true, renderSearchView = true, renderProductViews = true } = options;
-    const product = getProductById(id);
+    const { renderCartView = true, renderSearchView = true, renderProductViews = true, analyticsSource = "catalog", analyticsQuantity = null, productData = null } = options;
+    const product = getProductById(id) || productData;
     const item = getCartItem(id);
     const safeQty = clampProductQty(nextQty);
     const wasAdded = !item && safeQty > 0;
@@ -38879,7 +38887,9 @@ function setProductQty(id, nextQty, options = {}) {
     }
 
     saveCart();
-    if (wasAdded && product) window.matmixAnalytics?.addToCart({ external_id: product.externalId, title: product.title, quantity: safeQty, price: product.price, unit: product.unit, source: "catalog" });
+    window.dispatchEvent(new CustomEvent("matmix:cart-updated"));
+    const trackedQuantity = analyticsQuantity === null ? (wasAdded ? safeQty : 0) : Math.max(0, Number(analyticsQuantity) || 0);
+    if (product && trackedQuantity > 0) window.matmixAnalytics?.addToCart({ external_id: product.externalId, title: product.title, quantity: trackedQuantity, price: product.price, unit: product.unit, source: analyticsSource });
     updateCartSummary();
     if (renderProductViews && grid) {
         renderProducts();
@@ -38895,6 +38905,16 @@ function setProductQty(id, nextQty, options = {}) {
         renderCart();
     }
 }
+
+window.matmixCart = {
+    getQuantity: getCartItemQty,
+    setQuantity(id, quantity, options = {}) {
+        const before = getCartItemQty(id);
+        const next = clampProductQty(quantity);
+        setProductQty(id, next, options);
+        return { before, after: next, delta: Math.max(0, next - before) };
+    }
+};
 
 function isClearCartConfirmOpen() {
     return Boolean(clearCartConfirm && !clearCartConfirm.classList.contains("hidden"));
@@ -39819,6 +39839,7 @@ function commitQtyInput(event) {
     const nextQty = clampProductQty(sanitizeQtyInputValue(input.value));
     input.value = nextQty ? String(nextQty) : "";
     resizeQtyInput(input);
+    if (nextQty === getCartItemQty(id)) return;
     setProductQty(id, nextQty);
 }
 
@@ -40519,8 +40540,27 @@ document.addEventListener("click", async event => {
 document.addEventListener("pointerdown", event => {
     if (!catalogPickerPopover || catalogPickerPopover.classList.contains("hidden")) return;
     if (catalogPickerPopover.contains(event.target) || catalogPickerTrigger?.contains(event.target)) return;
+    event.preventDefault();
+    event.stopPropagation();
+    catalogPickerSuppressedPointerId = event.pointerId;
     closeCatalogPicker();
-});
+}, { capture: true });
+
+document.addEventListener("click", event => {
+    if (catalogPickerSuppressedPointerId === null) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    catalogPickerSuppressedPointerId = null;
+}, { capture: true });
+
+document.addEventListener("pointerdown", event => {
+    if (catalogPickerSuppressedPointerId === null || event.pointerId === catalogPickerSuppressedPointerId) return;
+    catalogPickerSuppressedPointerId = null;
+}, { capture: true });
+
+document.addEventListener("pointercancel", event => {
+    if (event.pointerId === catalogPickerSuppressedPointerId) catalogPickerSuppressedPointerId = null;
+}, { capture: true });
 
 document.addEventListener("keydown", event => {
     if (!catalogPickerPopover || catalogPickerPopover.classList.contains("hidden")) return;

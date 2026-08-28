@@ -26,7 +26,7 @@
 
     document.addEventListener("keydown", onKeydown);
 
-    function bindOverlayClose(overlay, result) {
+    function bindOverlayClose(overlay, result, onOutsideClose = null) {
         overlay.addEventListener("pointerdown", event => {
             const modal = getActiveModal();
             if (!modal || modal.overlay !== overlay) return;
@@ -40,6 +40,7 @@
             modal.overlayPointerStarted = false;
 
             if (shouldClose) {
+                onOutsideClose?.();
                 closeModal(result);
             }
         });
@@ -128,9 +129,14 @@
                 window.CrmDrafts?.bindForm(formElement, draftKey);
             }
 
-            bindOverlayClose(overlay, null);
-            closeButton.addEventListener("click", () => closeModal(null));
-            cancelButton.addEventListener("click", () => closeModal(null));
+            const discardDraft = () => {
+                if (!draftKey || options.clearDraftOnCancel !== true) return;
+                window.CrmDrafts?.clear(draftKey);
+                options.onDiscard?.({ reason: "cancel" });
+            };
+            bindOverlayClose(overlay, null, discardDraft);
+            closeButton.addEventListener("click", () => { discardDraft(); closeModal(null); });
+            cancelButton.addEventListener("click", () => { discardDraft(); closeModal(null); });
             const setBusy = (isBusy, busyText = "Сохранение...") => {
                 modal.locked = Boolean(isBusy);
                 closeButton.disabled = modal.locked;
@@ -159,6 +165,7 @@
                 if (draftKey) {
                     window.CrmDrafts?.clear(draftKey);
                 }
+                formData.crmFormElement = formElement;
                 closeModal(formData);
             });
             options.onReady?.({ overlay, dialog, formElement, close: closeModal, setBusy });
