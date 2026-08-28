@@ -1901,7 +1901,19 @@ test("cart removes only the selected item with accessible delete action", async 
     await page.locator("#cartBtn").click();
     const rows = page.locator(".cart-item");
     await expect(rows).toHaveCount(2);
-    await rows.nth(0).locator(".cart-item-delete").click();
+    const deleteButton = rows.nth(0).locator(".cart-item-delete");
+    await expect(deleteButton).toBeVisible();
+    if ((await page.viewportSize()).width > 600) {
+        const deleteBox = await deleteButton.boundingBox();
+        const rowBox = await rows.nth(0).boundingBox();
+        expect(deleteBox.width).toBeLessThanOrEqual(40);
+        expect(deleteBox.height).toBeLessThanOrEqual(40);
+        expect(deleteBox.height).toBeLessThan(rowBox.height);
+    } else {
+        await expect(deleteButton).toHaveCSS("pointer-events", "none");
+        return;
+    }
+    await deleteButton.click();
     await expect(rows).toHaveCount(1);
     await expect(page.locator("#cartCount")).toHaveText("1");
 });
@@ -1911,6 +1923,10 @@ test("mobile cart swipe reveals delete without deleting", async ({ page }) => {
     await seedCartItems(page, 2);
     await page.locator("#cartBtn").click();
     const row = page.locator(".cart-item").first();
+    await expect(row).not.toHaveClass(/is-delete-revealed/);
+    if ((await page.viewportSize()).width <= 600) {
+        await expect(row.locator(".cart-item-delete")).toHaveCSS("pointer-events", "none");
+    }
     const details = row.locator(".cart-item-content > div").first();
     const box = await details.boundingBox();
     expect(box).not.toBeNull();
@@ -1923,6 +1939,22 @@ test("mobile cart swipe reveals delete without deleting", async ({ page }) => {
     await expect(row).toHaveClass(/is-delete-revealed/);
     await expect(row.locator(".cart-item-delete")).toBeVisible();
     await expect(page.locator(".cart-item")).toHaveCount(2);
+    await row.locator(".cart-item-content").evaluate(element => element.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, pointerId: 92, clientX: 120, clientY: 20 })));
+    await row.locator(".cart-item-content").evaluate(element => {
+        element.dispatchEvent(new PointerEvent("pointermove", { bubbles: true, pointerId: 92, clientX: 180, clientY: 20 }));
+        element.dispatchEvent(new PointerEvent("pointerup", { bubbles: true, pointerId: 92, clientX: 180, clientY: 20 }));
+    });
+    await expect(row).not.toHaveClass(/is-delete-revealed/);
+    if ((await page.viewportSize()).width <= 600) {
+        await expect(row.locator(".cart-item-delete")).toHaveCSS("pointer-events", "none");
+    }
+    await row.locator(".cart-item-content").evaluate(element => {
+        const point = (type, x) => element.dispatchEvent(new PointerEvent(type, { bubbles: true, cancelable: true, pointerId: 93, clientX: x, clientY: 20 }));
+        point("pointerdown", 180);
+        point("pointermove", 100);
+        point("pointerup", 100);
+    });
+    await expect(row).toHaveClass(/is-delete-revealed/);
     await row.locator(".cart-item-delete").click();
     await expect(page.locator(".cart-item")).toHaveCount(1);
 });
