@@ -1968,6 +1968,43 @@ test("cart swipe/delete lifecycle works across public surfaces", async ({ page, 
     }
 });
 
+test("real touch cart swipe/delete works across public surfaces", async ({ page, request }, testInfo) => {
+    test.skip(testInfo.project.name !== "mobile-chromium", "Real touch pipeline is covered by Mobile Chromium");
+    const response = await request.get("/api/public/products?limit=1");
+    const body = await response.json();
+    const product = (body.products || body.items || body.data || [])[0];
+    expect(product).toBeTruthy();
+    const productCode = product.externalId || product.external_id;
+    const surfaces = ["/", "/catalog", "/catalog?category=MIXES", "/catalog?category=MIXES&subcategory=PLASTER", `/product/${encodeURIComponent(productCode)}`];
+    const client = await page.context().newCDPSession(page);
+
+    for (const surface of surfaces) {
+        await page.goto(surface);
+        await seedCartItems(page, 2);
+        await page.locator("#cartBtn").click();
+        const row = page.locator(".cart-item").first();
+        const box = await row.boundingBox();
+        expect(box).not.toBeNull();
+        const x = box.x + Math.min(80, box.width / 2);
+        const y = box.y + box.height / 2;
+        await expect(row).not.toHaveClass(/is-delete-revealed/);
+        await client.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x, y, id: 1 }] });
+        for (const offset of [20, 40, 60]) {
+            await client.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x: x - offset, y, id: 1 }] });
+        }
+        await client.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+        await expect(row).toHaveClass(/is-delete-revealed/);
+        await expect(page.locator(".cart-item")).toHaveCount(2);
+
+        await client.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: x - 60, y, id: 2 }] });
+        for (const offset of [40, 20, 0]) {
+            await client.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x: x - offset, y, id: 2 }] });
+        }
+        await client.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+        await expect(row).not.toHaveClass(/is-delete-revealed/);
+    }
+});
+
 test("clear cart popover stays floating and contained on mobile", async ({ page }) => {
     for (const path of ["/", "/catalog.html"]) {
         for (const width of [390, 360, 320]) {

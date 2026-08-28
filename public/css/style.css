@@ -1519,7 +1519,7 @@ body {
     position: fixed;
     right: 20px;
     top: 80px;
-    width: 320px;
+    width: min(360px, calc(100vw - 40px));
     max-height: var(--cart-modal-max-height);
     overflow: hidden;
     background: var(--surface);
@@ -1707,6 +1707,7 @@ body {
     border: 1px solid var(--border);
     border-radius: 8px;
     background: var(--surface-soft);
+    touch-action: pan-y;
 }
 
 .cart-item-content {

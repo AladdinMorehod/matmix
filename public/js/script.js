@@ -39862,6 +39862,10 @@ cartItemsEl.addEventListener("pointermove", event => {
         return;
     }
     state.horizontal = true;
+    if (event.isTrusted) {
+        event.preventDefault();
+        state.row.setPointerCapture?.(event.pointerId);
+    }
     if (dx < -CART_SWIPE_THRESHOLD) {
         closeRevealedCartRows(state.row);
         state.row.classList.add("is-delete-revealed");
