@@ -1703,7 +1703,7 @@ body {
     overflow: hidden;
     isolation: isolate;
     display: block;
-    padding: 0 30px 0 0;
+    padding: 0 18px 0 0;
     border: 0;
     border-radius: 8px;
     background: var(--surface-soft);
@@ -1931,6 +1931,29 @@ body {
 .cart-modal .qty-input:focus {
     border-color: var(--primary);
     outline: none;
+}
+
+@media (min-width: 601px) {
+    .cart-item-content {
+        gap: 5px;
+        padding: 6px;
+    }
+
+    .cart-item-title b {
+        display: -webkit-box;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        font-size: 0.76rem;
+        line-height: 1.15;
+        overflow-wrap: anywhere;
+    }
+
+    .cart-item-bottom { gap: 4px; }
+    .cart-item-price { font-size: 0.7rem; line-height: 1.1; }
+    .cart-modal .qty-row { gap: 4px; }
+    .cart-modal .qty { width: 32px; height: 26px; min-width: 32px; font-size: 0.82rem; }
+    .cart-modal .qty-input { width: 42px; min-width: 42px; height: 26px; padding: 2px 4px; font-size: 0.78rem; }
 }
 
 .checkout-view {
@@ -3485,6 +3508,42 @@ body {
     border: 1px solid var(--border);
     border-radius: 7px;
     overflow: hidden;
+}
+
+@media (min-width: 601px) {
+    .cart-item-content { gap: 5px; padding: 6px; }
+    .cart-item-bottom { gap: 4px; }
+    .cart-item-delete {
+        top: 1px;
+        right: 0;
+        width: 16px;
+        height: 16px;
+        min-width: 16px;
+        padding: 0;
+        border-radius: 2px;
+        font-size: 13px;
+        line-height: 1;
+    }
+    .cart-modal .qty-row { gap: 4px; }
+    .cart-modal .qty { width: 35px; height: 28px; min-width: 35px; }
+    .cart-modal .qty-input { width: 45px; min-width: 45px; height: 28px; }
+}
+
+@media (min-width: 601px) {
+    .cart-item-content { gap: 5px; padding: 6px; }
+    .cart-item-bottom { gap: 6px; }
+    .cart-item-delete {
+        top: 1px;
+        right: 0;
+        width: 18px;
+        height: 18px;
+        min-width: 18px;
+        border-radius: 3px;
+        font-size: 1rem;
+    }
+    .cart-modal .qty-row { gap: 4px; }
+    .cart-item-qty .qty { width: 28px; height: 24px; min-width: 28px; flex: 0 0 28px; padding: 0; font-size: 12px; line-height: 1; border-radius: 4px; }
+    .cart-item-qty .qty-input { width: 36px; min-width: 0; max-width: 36px; height: 24px; padding: 0 3px; font-size: 12px; line-height: 1; box-sizing: border-box; }
 }
 
 .product-page-quantity[hidden],
