@@ -37888,7 +37888,7 @@ function setupCheckoutFormFields() {
 }
 
 function formatPrice(value) {
-    if (value === null || value === undefined) return "Цена по запросу";
+    if (value === null || value === undefined || Number(value) <= 0) return "Цена по запросу";
     return `${formatMoneyValue(value)} ₽`;
 }
 

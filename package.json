@@ -36,6 +36,7 @@
     "test:product-seed:launch-products": "node backend/scripts/test-seed-launch-products.js",
     "test:product-images": "node backend/scripts/test-product-images.js && node backend/scripts/test-product-image-api.js",
     "test:seo": "node backend/scripts/test-seo.js",
+    "test:structured-data-money": "node backend/scripts/test-structured-data-money.js",
     "legal:check": "node backend/scripts/check-legal-readiness.js",
     "retention:check": "node backend/scripts/check-data-retention.js",
     "test:legal": "node backend/scripts/test-legal.js",
