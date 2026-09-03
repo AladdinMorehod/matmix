@@ -29,6 +29,8 @@
     "attachments:audit": "node backend/scripts/audit-order-attachments.js",
     "test:attachment-audit": "node backend/scripts/test-order-attachment-audit.js",
     "images:optimize": "node backend/scripts/optimize-product-images.js",
+    "product:seed:volma-holst": "node backend/scripts/seed-volma-holst.js",
+    "test:product-seed:volma-holst": "node backend/scripts/test-seed-volma-holst.js",
     "test:product-images": "node backend/scripts/test-product-images.js && node backend/scripts/test-product-image-api.js",
     "test:seo": "node backend/scripts/test-seo.js",
     "legal:check": "node backend/scripts/check-legal-readiness.js",
