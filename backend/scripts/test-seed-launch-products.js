@@ -1,0 +1,22 @@
+const assert = require("assert");
+const fs = require("fs");
+const os = require("os");
+const path = require("path");
+const sqlite3 = require("sqlite3").verbose();
+const { configureBusinessConnection } = require("../sqlite");
+const { PRODUCTS, runSeed } = require("./seed-launch-products");
+
+function open(file) { const raw = new sqlite3.Database(file); const ready = configureBusinessConnection(raw); return { run(sql, params = []) { return ready.then(() => new Promise((resolve, reject) => raw.run(sql, params, function done(e) { e ? reject(e) : resolve({ id: this.lastID }); }))); }, get(sql, params = []) { return ready.then(() => new Promise((resolve, reject) => raw.get(sql, params, (e, row) => e ? reject(e) : resolve(row)))); }, all(sql, params = []) { return ready.then(() => new Promise((resolve, reject) => raw.all(sql, params, (e, rows) => e ? reject(e) : resolve(rows)))); }, close() { return new Promise(resolve => raw.close(resolve)); } }; }
+
+(async () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "matmix-launch-seed-")); const db = open(path.join(root, "db.sqlite"));
+    try {
+        await db.run("CREATE TABLE products(id INTEGER PRIMARY KEY,external_id TEXT,title TEXT,slug TEXT,brand TEXT,short_description TEXT,full_description TEXT,seo_title TEXT,seo_description TEXT,price REAL,weight REAL,unit TEXT,category TEXT,subcategory TEXT,product_group TEXT,image_url TEXT,is_active INTEGER,sort_order INTEGER,source TEXT,last_imported_at TEXT,deleted_at TEXT,updated_at TEXT)");
+        await db.run("CREATE TABLE product_attribute_definitions(id INTEGER PRIMARY KEY,code TEXT,label TEXT,data_type TEXT,default_unit TEXT,sort_order INTEGER,is_active INTEGER)"); await db.run("CREATE TABLE product_attribute_values(id INTEGER PRIMARY KEY,product_id INTEGER,attribute_definition_id INTEGER,value_text TEXT,value_number REAL,value_boolean INTEGER,unit_override TEXT,sort_order INTEGER,created_at TEXT,updated_at TEXT)"); await db.run("CREATE TABLE product_images(id INTEGER PRIMARY KEY,product_id INTEGER,image_url TEXT,alt_text TEXT,is_primary INTEGER,sort_order INTEGER,updated_at TEXT)");
+        const codes = ["brand", "product_type", "base", "purpose", "package_weight", "consumption_10mm", "coverage_30kg_10mm", "wall_layer_thickness", "ceiling_layer_thickness", "application_temperature", "shelf_life"]; for (const [i, code] of codes.entries()) await db.run("INSERT INTO product_attribute_definitions VALUES(?,?,?,?,?,?,1)", [i + 1, code, code, ["package_weight", "consumption_10mm", "coverage_30kg_10mm", "shelf_life"].includes(code) ? "number" : "text", null, i]);
+        for (const [index, [sku, config]] of Object.entries(PRODUCTS).entries()) { await db.run("INSERT INTO products(id,external_id,title,price,weight,unit,category,subcategory,product_group,image_url,is_active,sort_order,source,last_imported_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [config.id, sku, config.title, 100 + index, 10, "шт", "Категория", "Подкатегория", "Группа", config.image, 1, index, "excel", "stamp"]); await db.run("INSERT INTO product_images(product_id,image_url,is_primary,sort_order) VALUES(?,?,1,0)", [config.id, config.image]); }
+        for (const [sku, config] of Object.entries(PRODUCTS)) { let result = await runSeed({ database: db, externalId: sku }); assert.strictEqual(result.changed, false); result = await runSeed({ database: db, externalId: sku, apply: true, confirm: config.token }); assert.strictEqual(result.changed, true); result = await runSeed({ database: db, externalId: sku, apply: true, confirm: config.token }); assert.strictEqual(result.changed, false); result = await runSeed({ database: db, externalId: sku }); assert(result.changes.attributes.every(item => item.action === "unchanged")); }
+        assert.strictEqual((await db.get("SELECT brand FROM products WHERE id=?", [PRODUCTS["MAT-000335"].id])).brand, null); await assert.rejects(() => runSeed({ database: db, externalId: "MAT-000228", apply: true, confirm: "wrong" }), /SEED_MAT_000228/);
+        console.log(JSON.stringify({ success: true, threeProducts: true, dryRun: true, apply: true, idempotent: true, unchangedReport: true, brandNullPreserved: true, confirmGuard: true }));
+    } finally { await db.close(); fs.rmSync(root, { recursive: true, force: true }); }
+})().catch(error => { console.error(error); process.exitCode = 1; });

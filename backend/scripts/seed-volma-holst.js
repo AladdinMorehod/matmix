@@ -68,7 +68,14 @@ async function inspect(database) {
 
 function changesFor(state) {
     const fields = Object.keys(CONTENT).filter(field => (state.product[field] ?? null) !== CONTENT[field]);
-    const attributes = Object.entries(ATTRIBUTES).map(([code, expected]) => ({ code, action: state.valueByCode.has(code) ? "update" : "insert", value: expected.value, unit: expected.unit || null }));
+    const attributes = Object.entries(ATTRIBUTES).map(([code, expected]) => {
+        const current = state.valueByCode.get(code);
+        if (!current) return { code, action: "insert", value: expected.value, unit: expected.unit || null };
+        const expectedNumber = expected.type === "number" ? expected.value : null;
+        const currentNumber = current.value_number === null || current.value_number === undefined ? null : Number(current.value_number);
+        const unchanged = current.value_text === (expected.type === "text" ? expected.value : null) && currentNumber === expectedNumber && (current.unit_override || null) === (expected.unit || null);
+        return { code, action: unchanged ? "unchanged" : "update", value: expected.value, unit: expected.unit || null };
+    });
     return { fields, definitions: Object.keys(ATTRIBUTES).map(code => ({ code, action: "reused" })), attributes, skipped: SKIPPED, image: state.imageMatches ? (state.primary.alt_text === IMAGE_ALT ? "unchanged" : "update alt_text") : "warning: image URL mismatch; alt_text unchanged" };
 }
 
