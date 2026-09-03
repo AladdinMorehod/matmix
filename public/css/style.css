@@ -1710,6 +1710,15 @@ body {
     touch-action: pan-y;
 }
 
+.category-main-scroller {
+    position: relative;
+    min-width: 0;
+}
+
+.category-scroll-indicator {
+    display: none;
+}
+
 .cart-item-content {
     display: grid;
     gap: 8px;
@@ -3182,6 +3191,44 @@ body {
         overflow-y: hidden;
         padding-bottom: 2px;
         scrollbar-width: none;
+    }
+
+    .category-scroll-indicator {
+        position: absolute;
+        top: 50%;
+        z-index: 2;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 42px;
+        padding: 0;
+        border: 1px solid rgba(32, 87, 66, 0.2);
+        border-radius: 6px;
+        background: linear-gradient(90deg, var(--surface) 45%, rgba(255, 255, 255, 0));
+        color: var(--primary);
+        cursor: pointer;
+        font: inherit;
+        font-size: 1.7rem;
+        line-height: 1;
+        transform: translateY(-50%);
+    }
+
+    .category-main-scroller.has-overflow .category-scroll-indicator:not(.hidden) {
+        display: inline-flex;
+    }
+
+    .category-scroll-indicator-prev {
+        left: 0;
+    }
+
+    .category-scroll-indicator-next {
+        right: 0;
+        background: linear-gradient(270deg, var(--surface) 45%, rgba(255, 255, 255, 0));
+    }
+
+    .category-scroll-indicator:focus-visible {
+        outline: 2px solid var(--primary);
+        outline-offset: 2px;
     }
     .category-main-list::-webkit-scrollbar {
         display: none;

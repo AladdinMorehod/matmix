@@ -576,6 +576,62 @@ test("catalog categories use one two-row horizontal scroller", async ({ page }) 
     await expect(activeCategory).toHaveClass(/active/);
 });
 
+test("category-only ventilation remains selectable and visible from deep link", async ({ page }) => {
+    const categories = Array.from({ length: 18 }, (_, index) => ({
+        id: index + 1,
+        code: `CAT-${String(index + 1).padStart(6, "0")}`,
+        name: `Категория ${index + 1}`,
+        subcategories: []
+    }));
+    categories.push({ id: 222, code: "CAT-000019", name: "Вентиляция", subcategories: [] });
+    const products = Array.from({ length: 50 }, (_, index) => ({
+        id: 3744 + index,
+        external_id: `MAT-${String(3965 + index).padStart(6, "0")}`,
+        title: index === 0 ? "Вентилятор электрический вытяжной d100" : `Вентиляция: товар ${index + 1}`,
+        category: "Вентиляция",
+        subcategory: "",
+        productGroup: "Вент Держатель",
+        price: 1365 + index,
+        weight: 0.5,
+        unit: "шт"
+    }));
+
+    await page.route("**/api/public/products/structure", route => route.fulfill({
+        contentType: "application/json",
+        body: JSON.stringify({ success: true, categories })
+    }));
+    await page.route("**/api/public/products?*", async route => {
+        const params = new URL(route.request().url()).searchParams;
+        const result = params.get("category") === "Вентиляция" || !params.get("category") ? products : [];
+        const isVentilation = params.get("category") === "Вентиляция" || !params.get("category");
+        await route.fulfill({
+            contentType: "application/json",
+            body: JSON.stringify({ success: true, products: result, items: result, pagination: { page: 1, limit: 50, total: isVentilation ? 103 : 0, totalPages: isVentilation ? 3 : 1, hasNext: isVentilation, hasPrevious: false } })
+        });
+    });
+
+    for (const viewport of [{ width: 1280, height: 800 }, { width: 375, height: 812 }]) {
+        await page.setViewportSize(viewport);
+        await page.goto("/catalog");
+        await page.locator("#categoryControls .category-control", { hasText: "Вентиляция" }).click();
+        const active = page.locator("#categoryControls .category-control.level-0.active");
+        await expect(active).toHaveText("Вентиляция");
+        await expect(page.locator("#productGrid")).not.toHaveClass(/hidden/);
+        await expect(page.locator("#productGrid .card")).toHaveCount(50);
+        await expect(page.locator("#productGrid .card").first()).toContainText("Вентилятор электрический");
+        await expect(page.locator(".catalog-load-more")).toContainText("Показать ещё 50");
+
+        await page.goto("/catalog?category=CAT-000019");
+        await expect(page.locator("#categoryControls .category-control.level-0.active")).toHaveText("Вентиляция");
+        await expect(page.locator("#productGrid .card")).toHaveCount(50);
+        if (viewport.width < 601) {
+            await expect(page.locator(".category-main-scroller")).toHaveClass(/has-overflow/);
+            await expect(active).toBeInViewport();
+            await expect(page.locator(".category-scroll-indicator-prev")).toBeVisible();
+        }
+    }
+});
+
 test("search selects query on re-entry and keeps results after mobile scroll blur", async ({ page }) => {
     const products = Array.from({ length: 14 }, (_, index) => ({
         id: 9700 + index,

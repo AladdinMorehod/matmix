@@ -38430,10 +38430,10 @@ function getSearchDropdownLimit(query) {
 
 function getProductCatalogCategory(product) {
     return [
-        product.category?.main,
-        product.category?.section,
-        product.category?.type
-    ].filter(Boolean);
+        product.category?.main || "",
+        product.category?.section || "",
+        product.category?.type || ""
+    ];
 }
 
 function serializeCategoryFilterGroup(category, subcategories = Array.from(category.subcategories.values())) {
@@ -39052,7 +39052,7 @@ function getCatalogPromptMessage(state) {
 
     if (state.directGroupSubcategory) return "";
 
-    if (state.isCategoryLevel && state.activeGroup?.subcategories.length) {
+    if (state.isCategoryLevel && getRealSubcategories(state.activeGroup).length) {
         return "Выберите подкатегорию, чтобы увидеть товары.";
     }
 
@@ -39399,6 +39399,41 @@ function createCatalogLevel(level) {
     return section;
 }
 
+function updateCategoryScrollerAffordance(scroller) {
+    if (!scroller) return;
+    const wrapper = scroller.closest(".category-main-scroller");
+    const previous = wrapper?.querySelector("[data-category-scroll='prev']");
+    const next = wrapper?.querySelector("[data-category-scroll='next']");
+    const hasOverflow = scroller.scrollWidth > scroller.clientWidth + 1;
+    const atStart = scroller.scrollLeft <= 1;
+    const atEnd = scroller.scrollLeft + scroller.clientWidth >= scroller.scrollWidth - 1;
+    wrapper?.classList.toggle("has-overflow", hasOverflow);
+    previous?.classList.toggle("hidden", !hasOverflow || atStart);
+    next?.classList.toggle("hidden", !hasOverflow || atEnd);
+    if (previous) previous.disabled = !hasOverflow || atStart;
+    if (next) next.disabled = !hasOverflow || atEnd;
+}
+
+function ensureActiveCategoryVisible(scroller) {
+    if (!scroller || !activeCategoryPath) return;
+    const activeButton = Array.from(scroller.querySelectorAll(".category-control")).find(button => button.dataset.path === activeCategoryPath);
+    if (!activeButton) return;
+    const scrollerRect = scroller.getBoundingClientRect();
+    const buttonRect = activeButton.getBoundingClientRect();
+    if (buttonRect.left < scrollerRect.left || buttonRect.right > scrollerRect.right) {
+        activeButton.scrollIntoView({
+            behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+            block: "nearest",
+            inline: "nearest"
+        });
+    }
+}
+
+function refreshCategoryScrollerAffordance() {
+    const scroller = categoryControls?.querySelector(".category-main-list");
+    if (scroller) updateCategoryScrollerAffordance(scroller);
+}
+
 function createMobileCatalogPicker(type, label, value) {
     ensureCatalogPickerPopover();
     const button = document.createElement("button");
@@ -39582,6 +39617,20 @@ function renderCategoryControls() {
     updateCatalogBreadcrumbs(groups);
 
     const mainLevel = createCatalogLevel(1);
+    const mainScroller = document.createElement("div");
+    mainScroller.className = "category-main-scroller";
+    const previousButton = document.createElement("button");
+    previousButton.type = "button";
+    previousButton.className = "category-scroll-indicator category-scroll-indicator-prev hidden";
+    previousButton.dataset.categoryScroll = "prev";
+    previousButton.setAttribute("aria-label", "Предыдущие категории");
+    previousButton.textContent = "‹";
+    const nextButton = document.createElement("button");
+    nextButton.type = "button";
+    nextButton.className = "category-scroll-indicator category-scroll-indicator-next hidden";
+    nextButton.dataset.categoryScroll = "next";
+    nextButton.setAttribute("aria-label", "Следующие категории");
+    nextButton.textContent = "›";
     const mainList = document.createElement("div");
     mainList.className = "category-main-list";
     mainList.appendChild(createCategoryButton(
@@ -39600,11 +39649,23 @@ function renderCategoryControls() {
         ));
     });
 
-    mainLevel.appendChild(mainList);
+    mainScroller.append(previousButton, mainList, nextButton);
+    mainLevel.appendChild(mainScroller);
     categoryControls.appendChild(mainLevel);
+    mainList.addEventListener("scroll", () => updateCategoryScrollerAffordance(mainList), { passive: true });
+    const scrollBehavior = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+    previousButton.addEventListener("click", () => mainList.scrollBy({ left: -Math.max(mainList.clientWidth * 0.8, 180), behavior: scrollBehavior() }));
+    nextButton.addEventListener("click", () => mainList.scrollBy({ left: Math.max(mainList.clientWidth * 0.8, 180), behavior: scrollBehavior() }));
+    requestAnimationFrame(() => {
+        ensureActiveCategoryVisible(mainList);
+        updateCategoryScrollerAffordance(mainList);
+    });
 
     const activeGroup = groups.find(group => group.path === activeMainPath);
-    if (!activeGroup?.subcategories.length) {
+    const directGroupSubcategory = activeCategoryPath?.startsWith("category:")
+        ? getDirectGroupSubcategory(activeGroup)
+        : null;
+    if (!activeGroup || (!getRealSubcategories(activeGroup).length && !directGroupSubcategory)) {
         if (!activeCategoryPath) {
             const hint = document.createElement("p");
             hint.className = "category-subcategory-hint";
@@ -39613,10 +39674,6 @@ function renderCategoryControls() {
         }
         return;
     }
-
-    const directGroupSubcategory = activeCategoryPath?.startsWith("category:")
-        ? getDirectGroupSubcategory(activeGroup)
-        : null;
 
     if (!directGroupSubcategory) {
         const activeSubcategory = activeGroup.subcategories.find(subcategory => subcategory.path === activeSubcategoryPath);
@@ -40691,6 +40748,7 @@ searchInput?.form?.addEventListener("submit", event => {
 });
 
 window.addEventListener("resize", () => {
+    refreshCategoryScrollerAffordance();
     if (window.innerWidth > MOBILE_SEARCH_MAX_WIDTH) {
         closeCatalogPicker({ restoreFocus: false });
     } else {
@@ -40702,6 +40760,10 @@ window.addEventListener("resize", () => {
     if (window.innerWidth > 980) {
         closeMenu();
     }
+});
+
+window.addEventListener("orientationchange", () => {
+    requestAnimationFrame(refreshCategoryScrollerAffordance);
 });
 
 window.addEventListener("scroll", scheduleHeaderScrollState, { passive: true });
