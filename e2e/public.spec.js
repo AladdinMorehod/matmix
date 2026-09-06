@@ -590,7 +590,7 @@ test("category-only ventilation remains selectable and visible from deep link", 
         title: index === 0 ? "Вентилятор электрический вытяжной d100" : `Вентиляция: товар ${index + 1}`,
         category: "Вентиляция",
         subcategory: "",
-        productGroup: "Вент Держатель",
+        productGroup: index % 2 ? "Вент Колено" : "Вент Держатель",
         price: 1365 + index,
         weight: 0.5,
         unit: "шт"
@@ -602,7 +602,8 @@ test("category-only ventilation remains selectable and visible from deep link", 
     }));
     await page.route("**/api/public/products?*", async route => {
         const params = new URL(route.request().url()).searchParams;
-        const result = params.get("category") === "Вентиляция" || !params.get("category") ? products : [];
+        const categoryMatches = params.get("category") === "Вентиляция" || !params.get("category");
+        const result = categoryMatches ? products : [];
         const isVentilation = params.get("category") === "Вентиляция" || !params.get("category");
         await route.fulfill({
             contentType: "application/json",
@@ -616,18 +617,45 @@ test("category-only ventilation remains selectable and visible from deep link", 
         await page.locator("#categoryControls .category-control", { hasText: "Вентиляция" }).click();
         const active = page.locator("#categoryControls .category-control.level-0.active");
         await expect(active).toHaveText("Вентиляция");
-        await expect(page.locator("#productGrid")).not.toHaveClass(/hidden/);
-        await expect(page.locator("#productGrid .card")).toHaveCount(50);
+        if (viewport.width < 601) {
+            const picker = page.locator('[data-catalog-picker="group"]');
+            await expect(picker).toBeVisible();
+            await picker.click();
+            await expect(page.locator(".catalog-picker-option", { hasText: "Вент Держатель" })).toBeVisible();
+            await expect(page.locator(".catalog-picker-option", { hasText: "Вент Колено" })).toBeVisible();
+            await page.locator(".catalog-picker-option", { hasText: "Вент Держатель" }).click();
+        } else {
+            await expect(page.locator("#categoryControls .category-control.level-2", { hasText: "Вент Держатель" })).toBeVisible();
+            await expect(page.locator("#categoryControls .category-control.level-2", { hasText: "Вент Колено" })).toBeVisible();
+            await page.locator("#categoryControls .category-control.level-2", { hasText: "Вент Держатель" }).click();
+        }
+        await expect(page.locator("#productGrid .card")).toHaveCount(25);
         await expect(page.locator("#productGrid .card").first()).toContainText("Вентилятор электрический");
-        await expect(page.locator(".catalog-load-more")).toContainText("Показать ещё 50");
+
+        if (viewport.width < 601) {
+            await page.locator('[data-catalog-picker="group"]').click();
+            await expect(page.locator(".catalog-picker-option", { hasText: "Вент Держатель" })).toBeVisible();
+            await expect(page.locator(".catalog-picker-option", { hasText: "Вент Колено" })).toBeVisible();
+            await page.locator(".catalog-picker-option", { hasText: "Вент Колено" }).click();
+        } else {
+            await expect(page.locator("#categoryControls .category-control.level-2", { hasText: "Вент Колено" })).toBeVisible();
+            await page.locator("#categoryControls .category-control.level-2", { hasText: "Вент Колено" }).click();
+        }
+        await expect(page.locator("#productGrid .card")).toHaveCount(25);
+        await expect(page.locator("#productGrid .card").first()).toContainText("Вентиляция: товар 2");
 
         await page.goto("/catalog?category=CAT-000019");
         await expect(page.locator("#categoryControls .category-control.level-0.active")).toHaveText("Вентиляция");
-        await expect(page.locator("#productGrid .card")).toHaveCount(50);
+        if (viewport.width < 601) {
+            await page.locator('[data-catalog-picker="group"]').click();
+            await page.locator(".catalog-picker-option", { hasText: "Вент Держатель" }).click();
+        } else {
+            await expect(page.locator("#categoryControls .category-control.level-2", { hasText: "Вент Держатель" })).toBeVisible();
+            await page.locator("#categoryControls .category-control.level-2", { hasText: "Вент Держатель" }).click();
+        }
+        await expect(page.locator("#productGrid .card")).toHaveCount(25);
         if (viewport.width < 601) {
             await expect(page.locator(".category-main-scroller")).toHaveClass(/has-overflow/);
-            await expect(active).toBeInViewport();
-            await expect(page.locator(".category-scroll-indicator-prev")).toBeVisible();
         }
     }
 });

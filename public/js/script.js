@@ -37220,6 +37220,7 @@ let showAllGroups = false;
 let productsById = new Map();
 let catalogLoadError = "";
 let publicCatalogStructure = [];
+const catalogDirectGroups = new Map();
 let popularProducts = [];
 let featuredProducts = [];
 let publicProductsPagination = { page: 1, limit: 50, total: 0, totalPages: 1, hasNext: false, hasPrevious: false };
@@ -37649,6 +37650,7 @@ async function loadPublicProducts(options = {}) {
         }
 
         const nextProducts = result.products.map(normalizeProductForSite);
+        rememberCatalogDirectGroups(nextProducts);
         products = append
             ? [...products, ...nextProducts.filter(product => !products.some(existing => Number(existing.id) === Number(product.id)))].slice(-200)
             : nextProducts;
@@ -38436,11 +38438,27 @@ function getProductCatalogCategory(product) {
     ];
 }
 
+function rememberCatalogDirectGroups(productList) {
+    productList.forEach(product => {
+        const [main, subcategory, productGroup] = getProductCatalogCategory(product);
+        const normalizedMain = normalizeSearchText(main);
+        const normalizedGroup = normalizeSearchText(productGroup);
+        if (!normalizedMain || subcategory || !normalizedGroup) return;
+        if (!catalogDirectGroups.has(normalizedMain)) catalogDirectGroups.set(normalizedMain, new Map());
+        const groups = catalogDirectGroups.get(normalizedMain);
+        if (!groups.has(normalizedGroup)) groups.set(normalizedGroup, {
+            label: productGroup,
+            path: `group:${normalizedMain}::${normalizedGroup}`
+        });
+    });
+}
+
 function serializeCategoryFilterGroup(category, subcategories = Array.from(category.subcategories.values())) {
     return {
         label: category.label,
         path: category.path,
         code: category.code,
+        directGroups: Array.from(category.directGroups?.values() || []),
         subcategories: subcategories.map(subcategory => ({
             label: subcategory.label,
             path: subcategory.path,
@@ -38472,6 +38490,10 @@ function getUncategorizedSubcategory(group) {
 }
 
 function getDirectGroupSubcategory(group) {
+    if (group?.directGroups?.length && getRealSubcategories(group).length === 0) {
+        return { label: "", path: "", groups: group.directGroups };
+    }
+
     const uncategorized = getUncategorizedSubcategory(group);
     return getRealSubcategories(group).length === 0 && uncategorized?.groups?.length
         ? uncategorized
@@ -38496,6 +38518,7 @@ function getCategoryFilterGroups() {
             label: main,
             path: `category:${normalizedMain}`,
             code: structureCategory.code || "",
+            directGroups: new Map(),
             subcategories: new Map()
         });
 
@@ -38503,7 +38526,19 @@ function getCategoryFilterGroups() {
         structureCategory.subcategories.forEach(structureSubcategory => {
             const subcategory = cleanDisplayText(structureSubcategory.name);
             const normalizedSubcategory = normalizeSearchText(subcategory);
-            if (!normalizedSubcategory || category.subcategories.has(normalizedSubcategory)) return;
+            if (!normalizedSubcategory) {
+                structureSubcategory.groups?.forEach(structureGroup => {
+                    const productGroup = cleanDisplayText(structureGroup.name);
+                    const normalizedGroup = normalizeSearchText(productGroup);
+                    if (!normalizedGroup || category.directGroups.has(normalizedGroup)) return;
+                    category.directGroups.set(normalizedGroup, {
+                        label: productGroup,
+                        path: `group:${normalizedMain}::${normalizedGroup}`
+                    });
+                });
+                return;
+            }
+            if (category.subcategories.has(normalizedSubcategory)) return;
 
             category.subcategories.set(normalizedSubcategory, {
                 label: subcategory,
@@ -38535,14 +38570,25 @@ function getCategoryFilterGroups() {
             categories.set(normalizedMain, {
                 label: main,
                 path: `category:${normalizedMain}`,
+                directGroups: new Map(),
                 subcategories: new Map()
             });
         }
 
-        if (!subcategory || normalizeSearchText(subcategory) === normalizedMain) return;
+        const category = categories.get(normalizedMain);
+        const normalizedGroup = normalizeSearchText(productGroup);
+        if (!subcategory) {
+            if (normalizedGroup && !category.directGroups.has(normalizedGroup)) {
+                category.directGroups.set(normalizedGroup, {
+                    label: productGroup,
+                    path: `group:${normalizedMain}::${normalizedGroup}`
+                });
+            }
+            return;
+        }
+        if (normalizeSearchText(subcategory) === normalizedMain) return;
         if (/^подкатегория\s*-/i.test(subcategory)) return;
 
-        const category = categories.get(normalizedMain);
         const normalizedSubcategory = normalizeSearchText(subcategory);
         if (!normalizedSubcategory) return;
 
@@ -38555,7 +38601,6 @@ function getCategoryFilterGroups() {
         }
 
         const subcategoryItem = category.subcategories.get(normalizedSubcategory);
-        const normalizedGroup = normalizeSearchText(productGroup);
         if (!productGroup || !normalizedGroup || normalizedGroup === normalizedSubcategory) return;
 
         if (!subcategoryItem.groups.has(normalizedGroup)) {
@@ -38564,6 +38609,14 @@ function getCategoryFilterGroups() {
                 path: `group:${normalizedMain}:${normalizedSubcategory}:${normalizedGroup}`
             });
         }
+    });
+
+    catalogDirectGroups.forEach((directGroups, normalizedMain) => {
+        const category = categories.get(normalizedMain);
+        if (!category) return;
+        directGroups.forEach((productGroup, normalizedGroup) => {
+            if (!category.directGroups.has(normalizedGroup)) category.directGroups.set(normalizedGroup, productGroup);
+        });
     });
 
     if (publicCatalogStructure.length) {
@@ -38694,6 +38747,17 @@ function getActiveCategoryTrail(groups = getCategoryFilterGroups()) {
                     group: productGroup.label
                 };
             }
+        }
+
+        const directProductGroup = group.directGroups?.find(item => item.path === activeCategoryPath);
+        if (directProductGroup) {
+            return {
+                category: group.label,
+                categoryPath: group.path,
+                subcategory: "",
+                subcategoryPath: "",
+                group: directProductGroup.label
+            };
         }
     }
 
@@ -39028,9 +39092,7 @@ function getCatalogSelectionState(groups = getCategoryFilterGroups()) {
     const activeMainPath = getActiveMainCategoryPath(groups);
     const activeSubcategoryPath = getActiveSubcategoryPath(groups);
     const activeGroup = groups.find(group => group.path === activeMainPath) || null;
-    const directGroupSubcategory = activeCategoryPath?.startsWith("category:")
-        ? getDirectGroupSubcategory(activeGroup)
-        : null;
+    const directGroupSubcategory = getDirectGroupSubcategory(activeGroup);
     const activeSubcategory = directGroupSubcategory
         || activeGroup?.subcategories.find(subcategory => subcategory.path === activeSubcategoryPath)
         || null;
@@ -39360,7 +39422,7 @@ function getActiveMainCategoryPath(groups) {
         return subcategory.path === activeCategoryPath
             || getSubcategoryAllPath(subcategory.path) === activeCategoryPath
             || subcategory.groups.some(productGroup => productGroup.path === activeCategoryPath);
-    }));
+    }) || item.directGroups?.some(productGroup => productGroup.path === activeCategoryPath));
     return group?.path || "";
 }
 
@@ -39541,9 +39603,7 @@ function getCatalogPickerData(type) {
         };
     }
 
-    const directGroupSubcategory = activeCategoryPath.startsWith("category:")
-        ? getDirectGroupSubcategory(activeGroup)
-        : null;
+    const directGroupSubcategory = getDirectGroupSubcategory(activeGroup);
     const activeSubcategoryPath = getActiveSubcategoryPath(groups);
     const activeSubcategory = directGroupSubcategory
         || activeGroup.subcategories.find(subcategory => subcategory.path === activeSubcategoryPath);
@@ -39662,9 +39722,7 @@ function renderCategoryControls() {
     });
 
     const activeGroup = groups.find(group => group.path === activeMainPath);
-    const directGroupSubcategory = activeCategoryPath?.startsWith("category:")
-        ? getDirectGroupSubcategory(activeGroup)
-        : null;
+    const directGroupSubcategory = getDirectGroupSubcategory(activeGroup);
     if (!activeGroup || (!getRealSubcategories(activeGroup).length && !directGroupSubcategory)) {
         if (!activeCategoryPath) {
             const hint = document.createElement("p");
