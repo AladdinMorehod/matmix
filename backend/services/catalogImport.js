@@ -24,6 +24,7 @@ const {
     normalizeMatCode,
     validateMatCode
 } = require("./catalogCodeNormalization");
+const { planMatReassignments } = require("./catalogImportMatPlan");
 
 const IMPORT_SHEET_NAME = "ШАБЛОН";
 const CAT_CODE_PATTERN = /^CAT-(\d+)$/i;
@@ -1212,21 +1213,21 @@ function buildPriceItem({ row, product = null, status, oldPriceCents = null, new
 
 function buildPriceChangesPreview(dbProducts, productRows) {
     const summary = createEmptyPriceChanges();
-    const { productsByMatCode } = buildProductsByMatCode(dbProducts);
-    const rowsByExternalId = new Map();
+    const productsById = new Map(dbProducts.map(product => [Number(product.id), product]));
+    const rowsByIdentity = new Map();
     const percentValues = [];
 
     productRows.forEach(row => {
-        if (!row.externalId) {
-            return;
-        }
-        const key = normalizeMatCode(row.externalId);
-        if (!rowsByExternalId.has(key)) rowsByExternalId.set(key, []);
-        rowsByExternalId.get(key).push(row);
+        const productId = Number(row.productId || 0);
+        if (!productId) return;
+        const key = `product:${productId}`;
+        if (!rowsByIdentity.has(key)) rowsByIdentity.set(key, []);
+        rowsByIdentity.get(key).push(row);
     });
 
-    rowsByExternalId.forEach((rows, externalId) => {
-        const product = productsByMatCode.get(externalId);
+    rowsByIdentity.forEach(rows => {
+        const firstRowProductId = Number(rows[0].productId || 0);
+        const product = productsById.get(firstRowProductId);
         const prices = rows.map(row => ({
             row,
             cents: row.priceText ? normalizePriceToCents(row.rawPrice ?? row.price) : null,
@@ -1629,7 +1630,82 @@ function getMatConflictGroup(item, candidate, candidates, blockReasons) {
     return "other";
 }
 
+function buildPlannerMatConflictAudit(preview, dbProducts) {
+    const plan = preview.matPlan;
+    const productsById = new Map(dbProducts.map(product => [Number(product.id), product]));
+    const previewItems = new Map([
+        ...(preview.changes?.updated || []),
+        ...(preview.changes?.unchanged || []),
+        ...(preview.changes?.new || []),
+        ...(preview.changes?.requiresReview || []),
+        ...(preview.changes?.missingCodes || []),
+        ...(preview.changes?.excluded || [])
+    ].map(item => [String(item.rowId || item.rowNumber), item]));
+    const groups = {
+        singleExactInvalidMat: 0,
+        singleExactEmptyMat: 0,
+        singleExactDifferentValidMat: 0,
+        multipleCandidates: 0,
+        possibleMatTypo: 0,
+        structureConflict: 0,
+        excelMatAlreadyTaken: 0,
+        duplicateCandidateProduct: 0,
+        other: 0
+    };
+    const blocked = plan.conflicts.map(conflictItem => {
+        const sourceRowId = String(conflictItem.sourceRowId || "");
+        const source = previewItems.get(sourceRowId) || {};
+        const code = conflictItem.code || "MAT_PLAN_CONFLICT";
+        const group = code === "TARGET_MAT_HELD_BY_UNAFFECTED_PRODUCT" ? "excelMatAlreadyTaken"
+            : code === "AMBIGUOUS_IDENTITY" ? "multipleCandidates" : "other";
+        groups[group] += 1;
+        return {
+            rowId: sourceRowId,
+            rowNumber: source.rowNumber,
+            candidateProductId: conflictItem.requestingProductId || null,
+            titleExcel: source.title || "",
+            excelMat: conflictItem.mat || normalizeMatCode(source.externalId || ""),
+            canAcceptExcelMat: false,
+            blockReasons: [code],
+            blockReasonLabels: [getMatConflictBlockReasonLabel(code)],
+            plannerConflict: conflictItem,
+            group
+        };
+    });
+    const eligible = plan.reassignments.map(item => ({
+        rowId: item.sourceRowId,
+        rowNumber: previewItems.get(String(item.sourceRowId))?.rowNumber,
+        candidateProductId: item.productId,
+        titleExcel: previewItems.get(String(item.sourceRowId))?.title || productsById.get(Number(item.productId))?.title || "",
+        excelMat: item.targetMat,
+        crmMat: item.oldMat,
+        canAcceptExcelMat: true,
+        blockReasons: [],
+        blockReasonLabels: [],
+        plannerReassignment: item,
+        group: "planner"
+    }));
+    return {
+        totalConflicts: plan.conflicts.length,
+        groups,
+        eligibleRows: eligible.length,
+        blockedRows: blocked.length,
+        uniqueProducts: new Set(eligible.map(item => item.candidateProductId).filter(Boolean)).size,
+        matChangesPlanned: plan.reassignments.length,
+        duplicateProductConflicts: plan.conflicts.filter(item => item.code === "DUPLICATE_PRODUCT_TARGET").length,
+        duplicateMatConflicts: plan.conflicts.filter(item => item.code === "DUPLICATE_TARGET_MAT").length,
+        invalidMatRows: plan.conflicts.filter(item => item.code === "INVALID_TARGET_MAT").length,
+        multipleCandidateRows: plan.conflicts.filter(item => item.code === "AMBIGUOUS_IDENTITY").length,
+        eligible,
+        blocked,
+        items: [...eligible, ...blocked],
+        matPlan: plan,
+        plannerConflicts: plan.conflicts
+    };
+}
+
 function buildMatConflictAudit(preview, dbProducts) {
+    if (preview?.matPlan) return buildPlannerMatConflictAudit(preview, dbProducts);
     const productsById = new Map(dbProducts.map(product => [Number(product.id), product]));
     const { productsByMatCode } = buildProductsByMatCode(dbProducts);
     const conflicts = (preview?.changes?.requiresReview || []).filter(item => !item.resolved);
@@ -1741,7 +1817,9 @@ function buildMatConflictAudit(preview, dbProducts) {
         multipleCandidateRows: items.filter(item => item.blockReasons.includes("MULTIPLE_CANDIDATES")).length,
         eligible,
         blocked,
-        items
+        items,
+        matPlan: preview?.matPlan || null,
+        plannerConflicts: preview?.matPlan?.conflicts || []
     };
 }
 
@@ -2822,11 +2900,19 @@ async function buildCatalogImportPreview(db, parsed, file = {}, options = {}) {
     const resolutions = normalizePreviewResolutions(options.resolutions);
     const structureChanges = buildStructurePreview(parsed, structureRows);
     const structureLookup = createStructureLookup(structureRows, structureChanges);
-    const priceChanges = buildPriceChangesPreview(dbProducts, parsed.productRows);
+    let priceChanges = buildPriceChangesPreview(dbProducts, parsed.productRows);
     const matIndex = buildProductsByMatCode(dbProducts);
     const productsByExternalId = matIndex.productsByMatCode;
     const productsById = new Map(dbProducts.map(product => [Number(product.id), product]));
+    const candidatesByTitle = new Map();
+    dbProducts.filter(product => !product.deletedAt).forEach(product => {
+        const titleKey = normalizeMatchText(product.title);
+        const matches = candidatesByTitle.get(titleKey) || [];
+        matches.push(product);
+        candidatesByTitle.set(titleKey, matches);
+    });
     const fileCodes = new Set();
+    const matchedProductIds = new Set();
     const importDiagnostics = {
         ...matIndex.diagnostics,
         excelRows: parsed.productRows.length,
@@ -2876,7 +2962,18 @@ async function buildCatalogImportPreview(db, parsed, file = {}, options = {}) {
         const normalizedRowCode = normalizeMatCode(row.externalId);
         const currentProductById = row.productId ? productsById.get(Number(row.productId)) : null;
         const currentProductByCode = productsByExternalId.get(normalizedRowCode);
-        if (!normalizedRowCode && !currentProductById) {
+        const storedResolution = getStoredResolution(row, resolutions);
+        const storedProduct = ["map_existing", "accept_excel_mat"].includes(storedResolution?.action)
+            ? productsById.get(Number(storedResolution.productId || 0))
+            : null;
+        const confirmedTitleProduct = !currentProductById && !storedProduct
+            ? findConfirmedIdentityCandidate(row, dbProducts, candidatesByTitle)
+            : null;
+        const confirmedMatOwner = !currentProductById && !storedProduct && !confirmedTitleProduct && currentProductByCode
+            && hasSupportingMatOwnerEvidence(row, currentProductByCode)
+            ? currentProductByCode
+            : null;
+        if (!normalizedRowCode && !currentProductById && !confirmedTitleProduct && !confirmedMatOwner) {
             const suggestedExternalId = formatMatCode(nextCodeNumber);
             changes.new.push({
                 ...row,
@@ -2890,7 +2987,7 @@ async function buildCatalogImportPreview(db, parsed, file = {}, options = {}) {
             nextCodeNumber += 1;
             return;
         }
-        if (!validateMatCode(normalizedRowCode) && !currentProductByCode && !currentProductById) {
+        if (!validateMatCode(normalizedRowCode) && !currentProductByCode && !currentProductById && !confirmedTitleProduct && !confirmedMatOwner) {
             changes.missingCodes.push({
                 rowNumber: row.rowNumber,
                 title: row.title,
@@ -2904,22 +3001,9 @@ async function buildCatalogImportPreview(db, parsed, file = {}, options = {}) {
 
         if (validateMatCode(normalizedRowCode)) importDiagnostics.excelRowsWithMatCode += 1;
         if (normalizedRowCode) fileCodes.add(normalizedRowCode);
-        if (currentProductById && currentProductByCode && Number(currentProductById.id) !== Number(currentProductByCode.id)) {
-            changes.requiresReview.push(buildReviewItem(row, "ID_MAT_CONFLICT", {
-                importStatus: "ID_MAT_CONFLICT",
-                reasonLabel: "ID товара и MAT-код относятся к разным товарам CRM.",
-                candidate: currentProductById,
-                candidates: [currentProductById, currentProductByCode]
-            }));
-            return;
-        }
-        let currentProduct = currentProductById || currentProductByCode;
+        let currentProduct = currentProductById || storedProduct || confirmedTitleProduct || confirmedMatOwner;
         const structureConflict = getProductStructureConflict(row, structureLookup);
-        const storedResolution = getStoredResolution(row, resolutions);
-        const mappedExistingProduct = !currentProduct && ["map_existing", "accept_excel_mat"].includes(storedResolution?.action)
-            ? productsById.get(Number(storedResolution.productId || 0))
-            : null;
-        if (mappedExistingProduct) currentProduct = mappedExistingProduct;
+        const mappedExistingProduct = storedProduct;
 
         if (currentProduct && structureConflict && !hasStructureResolutionApplied(storedResolution)) {
             changes.structureWarnings.push(createStructureWarning(row, structureConflict, currentProduct));
@@ -3008,6 +3092,7 @@ async function buildCatalogImportPreview(db, parsed, file = {}, options = {}) {
         }
 
         importDiagnostics.matchedMatCodes += 1;
+        matchedProductIds.add(Number(currentProduct.id));
         fileCodes.add(normalizeMatCode(currentProduct.externalId));
         if (currentProduct.deletedAt) {
             changes.deleted.push({
@@ -3091,7 +3176,7 @@ async function buildCatalogImportPreview(db, parsed, file = {}, options = {}) {
     dbProducts.forEach(product => {
         const normalizedCode = normalizeMatCode(product.externalId);
         const isMatProduct = validateMatCode(normalizedCode);
-        if (!isMatProduct || fileCodes.has(normalizedCode) || product.deletedAt) return;
+        if (!isMatProduct || matchedProductIds.has(Number(product.id)) || product.deletedAt) return;
 
         const item = {
             productId: product.id,
@@ -3184,6 +3269,9 @@ async function buildCatalogImportPreview(db, parsed, file = {}, options = {}) {
     changes.subcategoryExcelCodesIgnored = structureChanges.subcategoryExcelCodesIgnored || [];
     changes.realStructureConflicts = structureChanges.realStructureConflicts || changes.structureCodeConflicts;
     changes.newGroups = collectNewValues(parsed.productRows, dbProducts.map(product => product.productGroup), "productGroup");
+    const matPlanInput = buildMatPlanInputFromPreview({ parsed, changes, dbProducts, resolutions });
+    const matPlan = buildMatPlanPreview({ parsed, changes, dbProducts, resolutions, planInput: matPlanInput });
+    priceChanges = buildPriceChangesPreview(dbProducts, matPlanInput.rows);
 
     const unresolvedStructureConflicts = changes.requiresReview.filter(item => item.reviewReason === "STRUCTURE_CONFLICT" && !item.resolved);
     const unresolvedReviewConflicts = changes.requiresReview.filter(item => !item.resolved);
@@ -3196,7 +3284,7 @@ async function buildCatalogImportPreview(db, parsed, file = {}, options = {}) {
             "map_subcategory"
         ].includes(resolution?.action)
     );
-    const matChangesPlanned = changes.updated.filter(item => item.acceptExcelMat).length;
+    const matChangesPlanned = matPlan.reassignments.length;
     const preservedMatRows = changes.updated.filter(item => item.preserveCrmStructure && !item.acceptExcelMat).length
         + changes.unchanged.filter(item => item.preserveCrmStructure && !item.acceptExcelMat).length;
     const titleMatchMatDiffers = changes.requiresReview.filter(item => item.reviewReason === "TITLE_MATCH_MAT_DIFFERS").length;
@@ -3283,6 +3371,9 @@ async function buildCatalogImportPreview(db, parsed, file = {}, options = {}) {
         resolvedReviewConflicts: resolvedReviewConflicts.length,
         blockingConflicts: unresolvedReviewConflicts.length,
         matChangesPlanned,
+        matPlanValid: matPlan.valid,
+        matPlanReassignments: matPlan.reassignments.length,
+        matPlanConflicts: matPlan.conflicts.length,
         preservedMatRows,
         matConflicts: changes.matConflicts.length,
         titleMatchMatDiffers,
@@ -3343,6 +3434,7 @@ async function buildCatalogImportPreview(db, parsed, file = {}, options = {}) {
         previewVersion: PREVIEW_SCHEMA_VERSION,
         canImport: errors.length === 0
             && unresolvedReviewConflicts.length === 0
+            && matPlan.valid
             && !priceChanges.hasBlockingErrors
             && applicableRows > 0,
         file: {
@@ -3353,12 +3445,122 @@ async function buildCatalogImportPreview(db, parsed, file = {}, options = {}) {
         },
         summary,
         changes,
+        matPlan,
         structureOptions,
         priceChanges,
         debug: process.env.NODE_ENV === "production" ? undefined : importDiagnostics,
         errors,
         warnings
     };
+}
+
+function buildMatPlanInputFromPreview({ parsed, changes, dbProducts, resolutions }) {
+    const resolutionMap = normalizePreviewResolutions(resolutions);
+    const itemByRowKey = new Map();
+    [
+        ...(changes.updated || []),
+        ...(changes.unchanged || []),
+        ...(changes.new || []),
+        ...(changes.requiresReview || []),
+        ...(changes.missingCodes || []),
+        ...(changes.excluded || [])
+    ].forEach(item => itemByRowKey.set(String(item.rowId || item.rowNumber), item));
+
+    const rows = (parsed.productRows || []).map(row => {
+        const rowKey = getResolutionKey(row);
+        const resolution = resolutionMap.get(rowKey) || resolutionMap.get(String(row.rowNumber)) || null;
+        const previewItem = itemByRowKey.get(rowKey) || itemByRowKey.get(String(row.rowNumber)) || null;
+        const action = resolution?.action || previewItem?.resolution?.action || "";
+        const productId = action === "create_new" ? null : (Number(resolution?.productId || previewItem?.productId || 0) || null);
+        const candidates = (previewItem?.candidates || (previewItem?.candidate ? [previewItem.candidate] : [])).map(candidate => ({ id: candidate.id }));
+        const isExcluded = action === "exclude" || previewItem?.importStatus === "EXCLUDED";
+        const isNew = action === "create_new" || previewItem?.classification === "TRUE_NEW";
+        const targetMat = normalizeMatCode(
+            resolution?.externalId
+            || previewItem?.incomingExternalId
+            || previewItem?.externalId
+            || row.externalId
+            || ""
+        );
+        const existingProduct = productId ? dbProducts.find(product => Number(product.id) === productId) : null;
+        const currentMat = normalizeMatCode(existingProduct?.externalId ?? existingProduct?.external_id ?? "");
+        const effectiveTargetMat = validateMatCode(targetMat) ? targetMat : currentMat;
+        const matRelevant = validateMatCode(effectiveTargetMat);
+        if (!isExcluded && !matRelevant) return null;
+        const planRow = {
+            ...row,
+            sourceRowId: String(row.rowNumber || ""),
+            productId,
+            isNew,
+            targetMat: effectiveTargetMat,
+            action: isExcluded ? "exclude" : action
+        };
+        if (candidates.length) planRow.candidates = candidates;
+        return planRow;
+    }).filter(Boolean);
+
+    return { products: dbProducts, rows };
+}
+
+function findConfirmedIdentityCandidate(row, candidateProducts, candidatesByTitle = null) {
+    const titleKey = normalizeMatchText(row.title);
+    if (!titleKey) return null;
+    let matches = candidatesByTitle?.get(titleKey)
+        || candidateProducts.filter(product => !product.deletedAt
+            && normalizeMatchText(product.title) === titleKey);
+    const exactField = (field, normalize = value => normalizeMatchText(value)) => {
+        const value = row[field];
+        if (value === null || value === undefined || value === "") return;
+        const filtered = matches.filter(product => normalize(product[field]) === normalize(value));
+        if (filtered.length) matches = filtered;
+    };
+    exactField("category");
+    exactField("subcategory");
+    exactField("productGroup", value => normalizeMatchText(value));
+    exactField("unit", value => normalizeUnit(value));
+    exactField("weight", value => String(Number(value) || 0));
+    exactField("price", value => String(value === null || value === undefined || value === "" ? "" : Number(value)));
+    exactField("sortOrder", value => String(Number(value) || 0));
+    return matches.length === 1 ? matches[0] : null;
+}
+
+function hasSupportingMatOwnerEvidence(row, product) {
+    const checks = [
+        ["productGroup", row.productGroup, product.productGroup ?? product.product_group, value => normalizeMatchText(value)],
+        ["unit", row.unit, product.unit, value => normalizeUnit(value)],
+        ["weight", row.weight, product.weight, value => String(Number(value) || 0)],
+        ["price", row.price, product.price, value => String(value === null || value === undefined || value === "" ? "" : Number(value))]
+    ].filter(([, incoming]) => incoming !== null && incoming !== undefined && incoming !== "");
+    return checks.length >= 2 && checks.every(([, incoming, existing, normalize]) => normalize(incoming) === normalize(existing));
+}
+
+function buildMatPlanPreview({ parsed, changes, dbProducts, resolutions, planInput = null }) {
+    const plan = planMatReassignments(planInput || buildMatPlanInputFromPreview({ parsed, changes, dbProducts, resolutions }));
+    const productsById = new Map(dbProducts.map(product => [Number(product.id), product]));
+    const groupByIdentity = new Map();
+    plan.dependencyGroups.forEach((group, index) => {
+        group.identities.forEach(identity => groupByIdentity.set(identity, index));
+    });
+    return {
+        valid: plan.valid,
+        summary: plan.summary,
+        reassignments: plan.reassignments.map(item => ({
+            sourceRowId: item.sourceRowId,
+            productId: item.productId,
+            productTitle: productsById.get(Number(item.productId))?.title || "",
+            oldMat: item.oldMat,
+            targetMat: item.targetMat,
+            dependencyGroupId: groupByIdentity.get(`product:${item.productId}`) ?? null
+        })),
+        conflicts: plan.conflicts,
+        dependencyGroups: plan.dependencyGroups,
+        finalOwnerByMat: plan.finalOwnerByMat
+    };
+}
+
+function getUnsupportedMatBatchReassignments(matPlan = {}) {
+    return (matPlan.reassignments || [])
+        .filter(item => validateMatCode(item.oldMat) && validateMatCode(item.targetMat));
 }
 
 function sanitizeUploadFileName(filename) {
@@ -3423,6 +3625,11 @@ async function createCatalogImportPreviewToken(db, parsed, file, user, buffer) {
     return preview;
 }
 
+function getCatalogImportPreviewTokenResolutions(token) {
+    const stored = previewTokens.get(String(token || ""));
+    return stored ? new Map(stored.resolutions) : null;
+}
+
 async function validateImportResolution(db, resolution) {
     const action = String(resolution?.action || "");
     if (!["exclude", "keep_current_structure", "create_category", "map_category", "create_subcategory", "map_subcategory", "map_existing", "accept_excel_mat", "create_new"].includes(action)) {
@@ -3478,6 +3685,7 @@ async function updateCatalogImportResolutions(db, token, resolutions = [], user 
     if (!Array.isArray(resolutions)) {
         throw createImportError(400, "Передайте список решений.", "INVALID_IMPORT_RESOLUTION");
     }
+    const workingResolutions = new Map(tokenData.resolutions);
 
     const structureRows = await db.all("SELECT * FROM catalog_structure WHERE type IN ('category', 'subcategory') ORDER BY id ASC");
     const dbProducts = (await db.all("SELECT * FROM products ORDER BY id ASC")).map(normalizeDbProduct);
@@ -3487,7 +3695,7 @@ async function updateCatalogImportResolutions(db, token, resolutions = [], user 
     const productReviewActions = new Set(["exclude", "map_existing", "accept_excel_mat", "create_new"]);
     const existingMappedProductIdsByRow = new Map();
     const existingAcceptedMatByRow = new Map();
-    tokenData.resolutions.forEach((resolution, rowId) => {
+    workingResolutions.forEach((resolution, rowId) => {
         if (["map_existing", "accept_excel_mat"].includes(resolution?.action) && resolution.productId) {
             existingMappedProductIdsByRow.set(rowId, Number(resolution.productId));
         }
@@ -3525,59 +3733,25 @@ async function updateCatalogImportResolutions(db, token, resolutions = [], user 
             if (!candidateIds.has(Number(normalized.productId))) {
                 throw createImportError(400, "Выбранный товар CRM не входит в подтверждённые кандидаты этой строки.", "INVALID_IMPORT_PRODUCT_CANDIDATE");
             }
-            if (normalized.action === "accept_excel_mat") {
-                const candidate = candidates.find(item => Number(item.id) === Number(normalized.productId)) || classification.candidate || candidates[0] || null;
-                const decision = getAcceptExcelMatDecision({
-                    item: {
-                        ...row,
-                        reviewReason: classification.reason,
-                        conflictCode: classification.conflictCode || classification.reason,
-                        resolved: false,
-                        resolution: null
-                    },
-                    candidate,
-                    candidates,
-                    dbCandidate: dbProducts.find(product => Number(product.id) === Number(normalized.productId)),
-                    productsByMatCode: buildProductsByMatCode(dbProducts).productsByMatCode,
-                    productUse: new Map([[Number(normalized.productId), 1]]),
-                    excelMatUse: new Map([[normalizeMatCode(row.externalId), 1]])
-                });
-                if (!decision.canAcceptExcelMat) {
-                    throw createImportError(400, `MAT from Excel cannot be accepted automatically: ${decision.blockReasonLabels.join("; ")}`, "IMPORT_ACCEPT_EXCEL_MAT_BLOCKED");
-                }
-            }
             if (mappedProductIds.has(normalized.productId)) {
                 throw createImportError(400, "Один товар CRM нельзя связать с несколькими строками Preview.", "IMPORT_PRODUCT_ALREADY_MAPPED");
             }
             mappedProductIds.add(normalized.productId);
         }
-        if (normalized.action === "accept_excel_mat") {
-            const normalizedExcelMat = normalizeMatCode(row.externalId);
-            if (!validateMatCode(normalizedExcelMat)) {
-                throw createImportError(400, "MAT из Excel недоступен для принятия.", "INVALID_IMPORT_MAT");
-            }
-            const existingProduct = dbProducts.find(product =>
-                normalizeMatCode(product.externalId) === normalizedExcelMat
-                && Number(product.id) !== Number(normalized.productId)
-                && !product.deletedAt
-            );
-            if (existingProduct) {
-                throw createImportError(409, "MAT из Excel уже назначен другому товару CRM.", "IMPORT_MAT_ALREADY_EXISTS");
-            }
-            if (acceptedMatCodes.has(normalizedExcelMat)) {
-                throw createImportError(400, "Один MAT из Excel нельзя назначить нескольким товарам в Preview.", "IMPORT_MAT_ALREADY_ACCEPTED");
-            }
-            acceptedMatCodes.add(normalizedExcelMat);
-            normalized.externalId = normalizedExcelMat;
-        }
-        tokenData.resolutions.set(rowKey, normalized);
+        workingResolutions.set(rowKey, normalized);
     }
 
     const preview = await buildCatalogImportPreview(db, tokenData.parsed, tokenData.file, {
-        resolutions: tokenData.resolutions
+        resolutions: workingResolutions
     });
+    if (!preview.matPlan?.valid) {
+        const error = createImportError(409, "Решения создают невалидный итоговый MAT-план.", "IMPORT_MAT_PLAN_INVALID");
+        error.details = { matPlan: preview.matPlan };
+        throw error;
+    }
     preview.token = tokenData.token;
     preview.tokenExpiresAt = new Date(tokenData.createdAtMs + PREVIEW_TOKEN_TTL_MS).toISOString();
+    tokenData.resolutions = workingResolutions;
     tokenData.preview = preview;
 
     const unresolved = Number(preview.summary?.unresolvedReviewConflicts || preview.summary?.structureConflicts || 0);
@@ -3616,12 +3790,19 @@ async function getCatalogImportGroupResolutionDryRun(db, token, options = {}, us
 
     const auditResult = await getCatalogImportMatConflictAudit(db, token, user);
     const audit = auditResult.data;
-    const resolutions = audit.eligible.map(item => ({
-        rowId: item.rowId,
-        action: "accept_excel_mat",
-        productId: item.candidateProductId,
-        externalId: item.excelMat
-    }));
+    const resolutions = audit.matPlan?.valid
+        ? audit.matPlan.reassignments.map(item => ({
+            rowId: item.sourceRowId,
+            action: "accept_excel_mat",
+            productId: item.productId,
+            externalId: item.targetMat
+        }))
+        : audit.eligible.map(item => ({
+            rowId: item.rowId,
+            action: "accept_excel_mat",
+            productId: item.candidateProductId,
+            externalId: item.excelMat
+        }));
     const blockedReasonCounts = {};
     audit.blocked.forEach(item => {
         (item.blockReasons || ["OTHER"]).forEach(reason => {
@@ -3748,7 +3929,7 @@ async function insertImportedProduct(db, row, now) {
     const product = normalizeIncomingProduct(row);
     const slug = await generateUniqueSlug(db, product.title, product.externalId);
 
-    await db.run(
+    return db.run(
         `INSERT INTO products (
             external_id, title, slug, category, subcategory, product_group, price, weight, unit,
             image, description, is_active, sort_order, source, last_imported_at, created_at, updated_at
@@ -4105,7 +4286,7 @@ async function upsertCatalogStructureFromParsed(db, parsed, now) {
     return assignedRows;
 }
 
-async function applyCatalogOrderFromParsed(db, parsed, assignedRows, now) {
+async function applyCatalogOrderFromParsed(db, parsed, assignedRows, now, identityByRow = new Map()) {
     const structureRows = await db.all(`
         SELECT id, type, name, normalized_name, parent_id, sort_order, is_system
         FROM catalog_structure
@@ -4180,8 +4361,11 @@ async function applyCatalogOrderFromParsed(db, parsed, assignedRows, now) {
 
     for (const parsedProduct of parsed.productRows || []) {
         const assignedCode = assignedProductCodeByRow.get(Number(parsedProduct.rowNumber));
+        const mappedProductId = identityByRow.get(Number(parsedProduct.rowNumber));
+        const sameMatCode = assignedCode || normalizeMatCode(parsedProduct.externalId);
         const product = productById.get(Number(parsedProduct.productId))
-            || productByExternalId.get(assignedCode || normalizeMatCode(parsedProduct.externalId));
+            || productById.get(Number(mappedProductId))
+            || (sameMatCode ? productByExternalId.get(sameMatCode) : null);
         if (!product || importedProductIds.has(Number(product.id))) continue;
         const sectionKey = `${normalizeCatalogStructureName(product.category)}\u0000${normalizeCatalogStructureName(product.subcategory)}`;
         const nextOrder = (nextProductOrderBySection.get(sectionKey) || 0) + 1;
@@ -4228,7 +4412,14 @@ async function applyCatalogImport(db, token, options = {}, user = {}, runtime = 
     if (!latestPreview.canImport) {
         throw createImportError(409, "Файл больше не проходит проверку. Сделайте Preview заново.", "PREVIEW_NOT_IMPORTABLE");
     }
+    const unsupportedMatReassignments = getUnsupportedMatBatchReassignments(latestPreview.matPlan);
+    if (unsupportedMatReassignments.length) {
+        throw createImportError(409, "Preview и resolutions валидны, но batch MAT reassignment пока не поддерживается на apply.", "IMPORT_MAT_BATCH_APPLY_NOT_SUPPORTED");
+    }
 
+    if (typeof runtime.beforeImportSideEffects === "function") {
+        await runtime.beforeImportSideEffects({ preview: latestPreview });
+    }
     await ensureCatalogImportArchiveRoot();
     const backupPath = createDatabaseBackup();
     const now = new Date().toISOString();
@@ -4250,6 +4441,9 @@ async function applyCatalogImport(db, token, options = {}, user = {}, runtime = 
     };
     const hideMissingFromFile = options.missingFromFileAction === "hide";
     const assignedRows = [];
+    const identityByRow = new Map((latestPreview.matPlan?.items || [])
+        .filter(item => item.productId && item.action !== "excluded")
+        .map(item => [Number(item.sourceRowId), Number(item.productId)]));
     const effectiveParsed = applyImportResolutionsToParsed(
         tokenData.parsed,
         tokenData.resolutions,
@@ -4304,7 +4498,8 @@ async function applyCatalogImport(db, token, options = {}, user = {}, runtime = 
                 });
                 result.assignedMat += 1;
             }
-            await insertImportedProduct(db, incomingRow, now);
+            const inserted = await insertImportedProduct(db, incomingRow, now);
+            if (inserted?.id) identityByRow.set(Number(row.rowNumber), Number(inserted.id));
             result.created += 1;
         }
 
@@ -4324,7 +4519,7 @@ async function applyCatalogImport(db, token, options = {}, user = {}, runtime = 
         }
 
         await syncCatalogStructureFromProducts(db);
-        await applyCatalogOrderFromParsed(db, effectiveParsed, assignedRows, now);
+        await applyCatalogOrderFromParsed(db, effectiveParsed, assignedRows, now, identityByRow);
         result.assignedCodes = assignedRows.map(item => ({
             entityType: item.entityType || "structure",
             name: item.name || "",
@@ -4412,6 +4607,10 @@ module.exports = {
     validateCatalogRows: parseCatalogExcelV2,
     buildCatalogImportPreview,
     createCatalogImportPreviewToken,
+    getCatalogImportPreviewTokenResolutions,
+    buildMatPlanInputFromPreview,
+    buildMatPlanPreview,
+    getUnsupportedMatBatchReassignments,
     updateCatalogImportResolutions,
     getCatalogImportMatConflictAudit,
     getCatalogImportGroupResolutionDryRun,

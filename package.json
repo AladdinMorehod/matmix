@@ -17,6 +17,7 @@
     "database:health": "node backend/scripts/check-database-health.js",
     "test:database-integrity": "node backend/scripts/test-database-integrity.js",
     "test:catalog-import-mat-plan": "node backend/scripts/test-catalog-import-mat-plan.js",
+    "test:catalog-import-mat-integration": "node backend/scripts/test-catalog-import-mat-integration.js",
     "test:product-content": "node backend/scripts/test-product-content.js",
     "test:product-page-foundation": "node backend/scripts/test-product-page-foundation.js",
     "test:order-email-outbox": "node backend/scripts/test-order-email-outbox.js",

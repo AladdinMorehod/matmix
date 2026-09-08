@@ -97,11 +97,25 @@ function sendApiError(res, error, fallbackMessage, fallbackCode = "REQUEST_FAILE
     const message = error?.status && error?.message
         ? error.message
         : (fallbackMessage || safeErrorMessages[status] || safeErrorMessages[500]);
-    res.status(status).json({
+    const response = {
         success: false,
         code: error?.code || fallbackCode,
         message
-    });
+    };
+    if (isSafePublicDetails(error?.details)) response.details = error.details;
+    res.status(status).json(response);
+}
+
+function isSafePublicDetails(value, seen = new Set()) {
+    if (value === null || typeof value === "string" || typeof value === "number" || typeof value === "boolean") return true;
+    if (typeof value !== "object" || seen.has(value)) return false;
+    if (Array.isArray(value)) {
+        seen.add(value);
+        return value.every(item => isSafePublicDetails(item, seen));
+    }
+    if (Object.getPrototypeOf(value) !== Object.prototype && Object.getPrototypeOf(value) !== null) return false;
+    seen.add(value);
+    return Object.values(value).every(item => isSafePublicDetails(item, seen));
 }
 
 function normalizeText(value) {
