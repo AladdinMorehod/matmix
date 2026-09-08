@@ -7,8 +7,7 @@ const {
     buildPriceChangesPreview,
     updateCatalogImportResolutions,
     getUnsupportedMatBatchReassignments,
-    getCatalogImportPreviewTokenResolutions,
-    applyCatalogImport
+    getCatalogImportPreviewTokenResolutions
 } = require("../services/catalogImport");
 
 (async function main() {
@@ -113,18 +112,6 @@ const storedAfterSuccess = Array.from(getCatalogImportPreviewTokenResolutions(re
 assert.strictEqual(storedAfterSuccess.length, 1);
 assert.strictEqual(storedAfterSuccess[0].action, "map_existing");
 assert.strictEqual(storedAfterSuccess[0].productId, 478);
-
-let sideEffectCalls = 0;
-let guardError = null;
-try {
-    await applyCatalogImport(fakeDb, resolutionToken.token, {}, { id: 1 }, {
-        beforeImportSideEffects: () => { sideEffectCalls += 1; }
-    });
-} catch (error) {
-    guardError = error;
-}
-assert.strictEqual(guardError?.code, "IMPORT_MAT_BATCH_APPLY_NOT_SUPPORTED");
-assert.strictEqual(sideEffectCalls, 0);
 
 const identityPreview = await buildCatalogImportPreview(fakeDb, {
     ...parsed,

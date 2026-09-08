@@ -2,7 +2,8 @@ const path = require("path");
 const fs = require("fs");
 const crypto = require("crypto");
 const ExcelJS = require("exceljs");
-const { databasePath } = require("../database");
+const databaseModule = require("../database");
+const { databasePath, withTransaction } = databaseModule;
 const { sanitizeExcelText } = require("../utils/excelText");
 const {
     normalizeCatalogStructureName,
@@ -4033,8 +4034,15 @@ function createDatabaseBackup() {
 
     const backupDir = path.join(path.dirname(databasePath), "backups");
     fs.mkdirSync(backupDir, { recursive: true });
-    const backupPath = path.join(backupDir, `matmix-before-catalog-import-${timestampForFile()}.db`);
-    fs.copyFileSync(databasePath, backupPath, fs.constants.COPYFILE_EXCL);
+    const baseName = `matmix-before-catalog-import-${timestampForFile()}`;
+    let backupPath = path.join(backupDir, `${baseName}.db`);
+    try {
+        fs.copyFileSync(databasePath, backupPath, fs.constants.COPYFILE_EXCL);
+    } catch (error) {
+        if (error?.code !== "EEXIST") throw error;
+        backupPath = path.join(backupDir, `${baseName}-${crypto.randomUUID()}.db`);
+        fs.copyFileSync(databasePath, backupPath, fs.constants.COPYFILE_EXCL);
+    }
     return backupPath;
 }
 
@@ -4386,6 +4394,65 @@ async function applyCatalogOrderFromParsed(db, parsed, assignedRows, now, identi
     }
 }
 
+function getMatPlanSignature(plan = {}) {
+    return JSON.stringify({
+        valid: Boolean(plan.valid),
+        conflicts: plan.conflicts || [],
+        reassignments: (plan.reassignments || []).map(item => ({
+            productId: Number(item.productId),
+            oldMat: normalizeMatCode(item.oldMat),
+            targetMat: normalizeMatCode(item.targetMat)
+        })).sort((left, right) => left.productId - right.productId),
+        finalOwnerByMat: plan.finalOwnerByMat || {}
+    });
+}
+
+async function applyMatReassignmentPlan(tx, plan, runtime = {}) {
+    const assignments = (plan?.reassignments || [])
+        .filter(item => validateMatCode(item.oldMat) && validateMatCode(item.targetMat));
+    if (!assignments.length) return { temporaryCount: 0, reassignedCount: 0 };
+
+    const transactionId = crypto.randomUUID();
+    const temporaryAssignments = assignments.map(item => ({
+        ...item,
+        productId: Number(item.productId),
+        oldMat: normalizeMatCode(item.oldMat),
+        targetMat: normalizeMatCode(item.targetMat),
+        temporaryMat: `__MAT_IMPORT_TMP__:${transactionId}:${Number(item.productId)}`
+    }));
+
+    for (const item of temporaryAssignments) {
+        const current = await tx.get("SELECT external_id FROM products WHERE id = ? AND deleted_at IS NULL", [item.productId]);
+        if (!current || normalizeMatCode(current.external_id) !== item.oldMat) {
+            throw createImportError(409, "Текущее MAT-состояние товара изменилось до применения импорта.", "IMPORT_MAT_PLAN_STALE");
+        }
+        const result = await tx.run(
+            "UPDATE products SET external_id = ?, updated_at = ? WHERE id = ? AND external_id = ? AND deleted_at IS NULL",
+            [item.temporaryMat, new Date().toISOString(), item.productId, item.oldMat]
+        );
+        if (Number(result?.changes) !== 1) {
+            throw createImportError(409, "Не удалось временно освободить MAT-код для атомарного переназначения.", "IMPORT_MAT_TEMPORARY_ASSIGNMENT_FAILED");
+        }
+    }
+    if (typeof runtime.afterMatTemporaryPhase === "function") {
+        await runtime.afterMatTemporaryPhase({ assignments: temporaryAssignments });
+    }
+
+    for (const item of temporaryAssignments) {
+        const result = await tx.run(
+            "UPDATE products SET external_id = ?, updated_at = ? WHERE id = ? AND external_id = ? AND deleted_at IS NULL",
+            [item.targetMat, new Date().toISOString(), item.productId, item.temporaryMat]
+        );
+        if (Number(result?.changes) !== 1) {
+            throw createImportError(409, "Не удалось завершить атомарное MAT-переназначение.", "IMPORT_MAT_REASSIGNMENT_FAILED");
+        }
+    }
+    if (typeof runtime.afterMatFinalPhase === "function") {
+        await runtime.afterMatFinalPhase({ assignments: temporaryAssignments });
+    }
+    return { temporaryCount: temporaryAssignments.length, reassignedCount: temporaryAssignments.length };
+}
+
 async function createExcelCopy(tokenData, assignedRows, archiveOptions = {}) {
     const workbook = new ExcelJS.Workbook();
     await workbook.xlsx.load(tokenData.buffer);
@@ -4401,26 +4468,38 @@ async function createExcelCopy(tokenData, assignedRows, archiveOptions = {}) {
 
 let importApplyActive = false;
 
+async function withCatalogImportTransaction(db, work) {
+    if (db === databaseModule) return withTransaction(work);
+    await db.run("BEGIN IMMEDIATE");
+    try {
+        const result = await work(db);
+        await db.run("COMMIT");
+        return result;
+    } catch (error) {
+        await db.run("ROLLBACK").catch(() => {});
+        throw error;
+    }
+}
+
 async function applyCatalogImport(db, token, options = {}, user = {}, runtime = {}) {
     if (importApplyActive) throw createImportError(409, "Другой импорт уже применяется.", "IMPORT_ALREADY_RUNNING");
     importApplyActive = true;
     try {
-    const tokenData = await getValidPreviewToken(db, token, user);
-    const latestPreview = await buildCatalogImportPreview(db, tokenData.parsed, tokenData.file, {
+    let tokenData;
+    try {
+        tokenData = await getValidPreviewToken(db, token, user);
+    } catch (error) {
+        if (error?.code === "CATALOG_CHANGED") {
+            throw createImportError(409, "Каталог изменился после Preview до применения MAT-плана.", "IMPORT_MAT_PLAN_STALE");
+        }
+        throw error;
+    }
+    let latestPreview = await buildCatalogImportPreview(db, tokenData.parsed, tokenData.file, {
         resolutions: tokenData.resolutions
     });
     if (!latestPreview.canImport) {
         throw createImportError(409, "Файл больше не проходит проверку. Сделайте Preview заново.", "PREVIEW_NOT_IMPORTABLE");
     }
-    const unsupportedMatReassignments = getUnsupportedMatBatchReassignments(latestPreview.matPlan);
-    if (unsupportedMatReassignments.length) {
-        throw createImportError(409, "Preview и resolutions валидны, но batch MAT reassignment пока не поддерживается на apply.", "IMPORT_MAT_BATCH_APPLY_NOT_SUPPORTED");
-    }
-
-    if (typeof runtime.beforeImportSideEffects === "function") {
-        await runtime.beforeImportSideEffects({ preview: latestPreview });
-    }
-    await ensureCatalogImportArchiveRoot();
     const backupPath = createDatabaseBackup();
     const now = new Date().toISOString();
     const result = {
@@ -4444,6 +4523,7 @@ async function applyCatalogImport(db, token, options = {}, user = {}, runtime = 
     const identityByRow = new Map((latestPreview.matPlan?.items || [])
         .filter(item => item.productId && item.action !== "excluded")
         .map(item => [Number(item.sourceRowId), Number(item.productId)]));
+    const reassignedProductIds = new Set((latestPreview.matPlan?.reassignments || []).map(item => Number(item.productId)));
     const effectiveParsed = applyImportResolutionsToParsed(
         tokenData.parsed,
         tokenData.resolutions,
@@ -4452,10 +4532,34 @@ async function applyCatalogImport(db, token, options = {}, user = {}, runtime = 
     const structureParsed = effectiveParsed;
 
     let preparedArchivePath = "";
-    await db.run("BEGIN IMMEDIATE TRANSACTION");
+    const initialMatPlanSignature = getMatPlanSignature(latestPreview.matPlan);
     try {
+    await withCatalogImportTransaction(db, async tx => {
+        const db = tx;
+        try {
+            tokenData = await getValidPreviewToken(db, token, user);
+        } catch (error) {
+            if (error?.code === "CATALOG_CHANGED") {
+                throw createImportError(409, "Каталог изменился после Preview до применения MAT-плана.", "IMPORT_MAT_PLAN_STALE");
+            }
+            throw error;
+        }
+        latestPreview = await buildCatalogImportPreview(db, tokenData.parsed, tokenData.file, {
+            resolutions: tokenData.resolutions
+        });
+        if (!latestPreview.canImport || getMatPlanSignature(latestPreview.matPlan) !== initialMatPlanSignature) {
+            throw createImportError(409, "MAT-план устарел или больше не проходит проверку.", "IMPORT_MAT_PLAN_STALE");
+        }
+        if (typeof runtime.beforeImportSideEffects === "function") {
+            await runtime.beforeImportSideEffects({ preview: latestPreview });
+        }
+        await ensureCatalogImportArchiveRoot();
         const dbProducts = await db.all("SELECT * FROM products ORDER BY id ASC");
         let nextMatNumber = getMaxMatNumberFromProducts(dbProducts) + 1;
+        await applyMatReassignmentPlan(db, latestPreview.matPlan, runtime);
+        if (typeof runtime.beforeStructureApply === "function") {
+            await runtime.beforeStructureApply({ preview: latestPreview });
+        }
         const assignedStructureRows = await upsertCatalogStructureFromParsed(db, structureParsed, now);
         result.assignedStructureCodes = assignedStructureRows.length;
         assignedRows.push(...assignedStructureRows);
@@ -4478,7 +4582,9 @@ async function applyCatalogImport(db, token, options = {}, user = {}, runtime = 
                 : parsedRow;
             if (!row) continue;
             await updateImportedProduct(db, row, now, item.productId, {
-                externalId: item.acceptExcelMat ? (item.incomingExternalId || item.externalId) : null
+                externalId: item.acceptExcelMat && !reassignedProductIds.has(Number(item.productId))
+                    ? (item.incomingExternalId || item.externalId)
+                    : null
             });
             result.updated += 1;
         }
@@ -4500,6 +4606,9 @@ async function applyCatalogImport(db, token, options = {}, user = {}, runtime = 
             }
             const inserted = await insertImportedProduct(db, incomingRow, now);
             if (inserted?.id) identityByRow.set(Number(row.rowNumber), Number(inserted.id));
+            if (typeof runtime.afterNewProductInsert === "function") {
+                await runtime.afterNewProductInsert({ row, inserted });
+            }
             result.created += 1;
         }
 
@@ -4565,9 +4674,8 @@ async function applyCatalogImport(db, token, options = {}, user = {}, runtime = 
 
         result.importLogId = logResult.id;
         result.excelCopyUrl = `/api/products/import/excel-copy/${logResult.id}`;
-        await db.run("COMMIT");
+    });
     } catch (error) {
-        await db.run("ROLLBACK").catch(() => {});
         await removeCatalogImportArchive(preparedArchivePath).catch(() => {});
         throw error;
     }
@@ -4611,6 +4719,7 @@ module.exports = {
     buildMatPlanInputFromPreview,
     buildMatPlanPreview,
     getUnsupportedMatBatchReassignments,
+    applyMatReassignmentPlan,
     updateCatalogImportResolutions,
     getCatalogImportMatConflictAudit,
     getCatalogImportGroupResolutionDryRun,
