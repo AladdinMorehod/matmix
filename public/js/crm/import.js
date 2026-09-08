@@ -5,16 +5,193 @@ let importLoading = false;
 let importApplying = false;
 let importExporting = false;
 let importApplyResult = null;
+let importPreviewStale = false;
 let importActiveTab = "new";
 let importSearchQuery = "";
 let importSearchTimer = null;
 let importPriceFilter = "changed";
 let importVisibleCount = 50;
 let importShowAllSummary = false;
+let importApplyMatSummary = null;
+let importMatErrorPlan = null;
 
 const IMPORT_MAX_FILE_SIZE = 30 * 1024 * 1024;
 const IMPORT_RESULT_PAGE_SIZE = 50;
 const IMPORT_DOM_ACCUMULATION_LIMIT = 200;
+
+const importMatConflictMessages = Object.freeze({
+    TARGET_MAT_HELD_BY_UNAFFECTED_PRODUCT: "Этот MAT занят товаром, который не участвует в текущем переназначении.",
+    DUPLICATE_TARGET_MAT: "Один MAT назначен нескольким товарам.",
+    UNRESOLVED_IDENTITY: "Не определено, к какому товару CRM относится строка Excel.",
+    AMBIGUOUS_IDENTITY: "Найдено несколько возможных товаров CRM.",
+    MISSING_SOURCE_IDENTITY: "Строка не имеет стабильного идентификатора для безопасного импорта.",
+    UNKNOWN_PRODUCT: "Выбранный товар CRM больше не найден.",
+    UNKNOWN_PRODUCT_ID: "Выбранный товар CRM больше не найден.",
+    INVALID_MAT: "MAT имеет недопустимый формат.",
+    INVALID_TARGET_MAT: "MAT имеет недопустимый формат.",
+    DUPLICATE_PRODUCT_TARGET: "Один товар CRM выбран для нескольких строк Excel.",
+    DUPLICATE_CURRENT_MAT: "В CRM уже есть несколько товаров с одним MAT."
+});
+
+function getImportMatPlan(preview = importPreview) {
+    return preview?.matPlan || null;
+}
+
+function getImportCanApply(preview = importPreview) {
+    return Boolean(preview?.token && preview.canImport && !importPreviewStale);
+}
+
+function replaceImportPreviewFromResponse(result) {
+    if (!result?.data?.preview) return false;
+    importPreview = result.data.preview;
+    importPreviewStale = false;
+    importMatErrorPlan = null;
+    return true;
+}
+
+function buildImportApplyConfirmation(preview = importPreview) {
+    const summary = preview?.summary || {};
+    const matPlan = preview?.matPlan || {};
+    return `
+        <div class="import-apply-confirm">
+            <dl>
+                <div><dt>Создать</dt><dd>${Number(summary.new || 0)}</dd></div>
+                <div><dt>Обновить</dt><dd>${Number(summary.updated || 0)}</dd></div>
+                <div><dt>Создать MAT-кодов</dt><dd>${Number(summary.generatedMatCodes || 0)}</dd></div>
+                <div><dt>Скрыть</dt><dd>${Number(summary.missingFromFile || 0)}</dd></div>
+                <div><dt>Новые категории</dt><dd>${Number(summary.newCategories || 0)}</dd></div>
+                <div><dt>Переименовать CAT/SUB</dt><dd>${Number(summary.renamedCategories || 0) + Number(summary.renamedSubcategories || 0)}</dd></div>
+                <div><dt>Создать CAT/SUB-кодов</dt><dd>${Number(summary.generatedCategoryCodes || 0) + Number(summary.generatedSubcategoryCodes || 0)}</dd></div>
+                <div><dt>Требуют решения</dt><dd>${Number(summary.requiresReview || 0)}</dd></div>
+            </dl>
+            ${matPlan.reassignments?.length ? `
+                <section class="import-apply-mat-summary">
+                    <strong>Будет изменено MAT: ${matPlan.reassignments.length}</strong>
+                    ${matPlan.dependencyGroups?.length ? `<span>Связанных переназначений: ${matPlan.dependencyGroups.length}</span>` : ""}
+                    <p>Изменение MAT может изменить публичные URL товаров.</p>
+                </section>
+            ` : ""}
+            <label>
+                <span>Отсутствующие в Excel</span>
+                <select name="missingFromFileAction">
+                    <option value="keep" selected>Оставить без изменений</option>
+                    <option value="hide">Скрыть excel-товары</option>
+                </select>
+            </label>
+        </div>
+    `;
+}
+
+function buildImportSuccessSummary(summary = importApplyMatSummary) {
+    if (!summary?.reassignmentCount) return "";
+    return `<p class="import-mat-success-summary"><strong>MAT переназначено: ${summary.reassignmentCount}</strong>${summary.dependencyGroupCount ? ` · связанных групп: ${summary.dependencyGroupCount}` : ""}</p>`;
+}
+
+function getImportMatConflictCode(conflict = {}) {
+    return String(conflict.code || conflict.conflictCode || "UNKNOWN_MAT_CONFLICT").trim() || "UNKNOWN_MAT_CONFLICT";
+}
+
+function getImportMatConflictMessage(conflict = {}) {
+    return importMatConflictMessages[getImportMatConflictCode(conflict)] || "Конфликт MAT требует проверки.";
+}
+
+function getImportMatDependencyLabel(kind) {
+    if (kind === "cycle_or_swap") return "swap / cycle";
+    if (kind === "chain") return "цепочка";
+    return "связанная группа";
+}
+
+function getImportMatDependencyGroups(plan) {
+    const groups = new Map();
+    (plan?.dependencyGroups || []).forEach((group, index) => groups.set(String(index), group));
+    return groups;
+}
+
+function renderImportMatPair(oldMat, targetMat) {
+    return `
+        <span class="import-mat-code old">${escapeHtml(oldMat || "—")}</span>
+        <span class="import-mat-arrow" aria-hidden="true">→</span>
+        <span class="import-mat-code target">${escapeHtml(targetMat || "—")}</span>
+    `;
+}
+
+function renderImportMatAssignment(item, group = null) {
+    const title = item.productTitle || (item.productId ? `Товар CRM #${item.productId}` : "Новый товар");
+    return `
+        <li class="import-mat-assignment">
+            <div class="import-mat-assignment-main">
+                <strong>${escapeHtml(title)}</strong>
+                <span class="import-row-meta">productId: ${escapeHtml(item.productId || "новый")}</span>
+            </div>
+            <div class="import-mat-pair" aria-label="Изменение MAT">
+                ${renderImportMatPair(item.oldMat, item.targetMat)}
+            </div>
+            <span class="import-mat-status-label">${group ? `Связано: ${escapeHtml(getImportMatDependencyLabel(group.kind))}` : "Самостоятельное переназначение"}</span>
+        </li>
+    `;
+}
+
+function renderImportMatConflict(conflict) {
+    const code = getImportMatConflictCode(conflict);
+    const details = [
+        conflict.mat ? `MAT: ${conflict.mat}` : "",
+        conflict.sourceRowId ? `строка ${conflict.sourceRowId}` : "",
+        conflict.ownerProductId ? `владелец CRM #${conflict.ownerProductId}` : ""
+    ].filter(Boolean).join(" · ");
+    return `
+        <li class="import-mat-conflict" role="alert">
+            <div><span class="import-mat-state-icon" aria-hidden="true">!</span><strong>${escapeHtml(getImportMatConflictMessage(conflict))}</strong></div>
+            <code>${escapeHtml(code)}</code>
+            ${details ? `<span class="import-row-meta">${escapeHtml(details)}</span>` : ""}
+        </li>
+    `;
+}
+
+function renderImportMatPlanPanel(plan = getImportMatPlan()) {
+    const reassignments = Array.isArray(plan?.reassignments) ? plan.reassignments : [];
+    const conflicts = Array.isArray(plan?.conflicts) ? plan.conflicts : [];
+    if (!reassignments.length && !conflicts.length) return "";
+
+    const groups = getImportMatDependencyGroups(plan);
+    const reassignmentsByGroupId = new Map();
+    const independent = [];
+    reassignments.forEach(item => {
+        const groupId = item.dependencyGroupId === null || item.dependencyGroupId === undefined
+            ? null
+            : String(item.dependencyGroupId);
+        if (groupId !== null && groups.has(groupId)) {
+            const items = reassignmentsByGroupId.get(groupId) || [];
+            items.push(item);
+            reassignmentsByGroupId.set(groupId, items);
+        } else {
+            independent.push(item);
+        }
+    });
+    const groupedSections = Array.from(groups.entries()).map(([groupId, group]) => {
+        const items = reassignmentsByGroupId.get(groupId) || [];
+        if (!items.length) return "";
+        return `
+            <section class="import-mat-group" aria-label="Связанное переназначение MAT">
+                <header><strong>Связанное переназначение MAT</strong><span>${escapeHtml(getImportMatDependencyLabel(group.kind))}</span></header>
+                <ul>${items.map(item => renderImportMatAssignment(item, group)).join("")}</ul>
+                <p class="import-mat-group-status"><span aria-hidden="true">✓</span> Будет применено атомарно одной транзакцией.</p>
+            </section>
+        `;
+    }).filter(Boolean).join("");
+    const status = conflicts.length ? "Блокирующие конфликты" : "Готово к атомарному применению";
+    return `
+        <section class="import-mat-plan-panel${conflicts.length ? " has-conflicts" : " is-valid"}" aria-labelledby="importMatPlanTitle">
+            <header class="import-mat-plan-header">
+                <div><h2 id="importMatPlanTitle">Изменения MAT</h2><p>Backend-план является источником истины для итогового распределения MAT.</p></div>
+                <span class="import-mat-state-label"><span class="import-mat-state-icon" aria-hidden="true">${conflicts.length ? "!" : "✓"}</span>${escapeHtml(status)}</span>
+            </header>
+            ${groupedSections}
+            ${independent.length ? `<section class="import-mat-group import-mat-independent"><header><strong>Независимые переназначения</strong></header><ul>${independent.map(item => renderImportMatAssignment(item)).join("")}</ul></section>` : ""}
+            ${reassignments.length ? `<p class="import-mat-url-note"><span aria-hidden="true">i</span> MAT используется в публичном адресе товара. После импорта URL товара изменится. Для swap/chain старые MAT-коды могут перейти к другим товарам; автоматический redirect не предполагается.</p>` : ""}
+            ${conflicts.length ? `<section class="import-mat-conflicts"><h3>Конфликты MAT</h3><ul>${conflicts.map(renderImportMatConflict).join("")}</ul></section>` : ""}
+        </section>
+    `;
+}
 
 const importTabs = [
     { id: "new", label: "Новые" },
@@ -350,7 +527,10 @@ function setImportFile(file) {
     const error = validateImportFile(file);
     importSelectedFile = error ? null : file;
     importPreview = null;
+    importPreviewStale = false;
     importApplyResult = null;
+    importApplyMatSummary = null;
+    importMatErrorPlan = null;
     importSearchQuery = "";
     importPriceFilter = "changed";
     importVisibleCount = IMPORT_RESULT_PAGE_SIZE;
@@ -360,7 +540,10 @@ function setImportFile(file) {
 function resetImportPreview({ clearFile = false } = {}) {
     if (clearFile) importSelectedFile = null;
     importPreview = null;
+    importPreviewStale = false;
     importApplyResult = null;
+    importApplyMatSummary = null;
+    importMatErrorPlan = null;
     importLoading = false;
     importApplying = false;
     importActiveTab = "new";
@@ -400,7 +583,10 @@ async function submitImportPreview() {
         const formData = new FormData();
         formData.append("file", importSelectedFile);
         importPreview = await CrmApi.post("/api/products/import/preview", formData);
+        importPreviewStale = false;
         importApplyResult = null;
+        importApplyMatSummary = null;
+        importMatErrorPlan = null;
         importActiveTab = getInitialImportSummaryKey();
         importSearchQuery = "";
         importVisibleCount = IMPORT_RESULT_PAGE_SIZE;
@@ -416,40 +602,29 @@ async function submitImportPreview() {
 
 async function submitImportApply() {
     if (!importPreview?.token || importApplying) return;
+    if (importPreviewStale) {
+        notifyWarning("Каталог CRM изменился после предварительного просмотра. Обновите предварительный просмотр перед импортом.");
+        return;
+    }
     if (!importPreview.canImport) {
         notifyWarning("Сначала решите или исключите конфликтные строки.");
         return;
     }
 
-    const summary = importPreview.summary || {};
+    const matPlan = getImportMatPlan();
     const formData = await CrmModal.form({
         title: "Применить импорт",
         description: "Импорт выполнится в одной транзакции. Перед изменениями будет создан backup базы.",
         submitText: "Применить импорт",
-        content: `
-            <div class="import-apply-confirm">
-                <dl>
-                    <div><dt>Создать</dt><dd>${Number(summary.new || 0)}</dd></div>
-                    <div><dt>Обновить</dt><dd>${Number(summary.updated || 0)}</dd></div>
-                    <div><dt>Создать MAT-кодов</dt><dd>${Number(summary.generatedMatCodes || 0)}</dd></div>
-                    <div><dt>Скрыть</dt><dd>${Number(summary.missingFromFile || 0)}</dd></div>
-                    <div><dt>Новые категории</dt><dd>${Number(summary.newCategories || 0)}</dd></div>
-                    <div><dt>Переименовать CAT/SUB</dt><dd>${Number(summary.renamedCategories || 0) + Number(summary.renamedSubcategories || 0)}</dd></div>
-                    <div><dt>Создать CAT/SUB-кодов</dt><dd>${Number(summary.generatedCategoryCodes || 0) + Number(summary.generatedSubcategoryCodes || 0)}</dd></div>
-                    <div><dt>Требуют решения</dt><dd>${Number(summary.requiresReview || 0)}</dd></div>
-                </dl>
-                <label>
-                    <span>Отсутствующие в Excel</span>
-                    <select name="missingFromFileAction">
-                        <option value="keep" selected>Оставить без изменений</option>
-                        <option value="hide">Скрыть excel-товары</option>
-                    </select>
-                </label>
-            </div>
-        `
+        content: buildImportApplyConfirmation(importPreview)
     });
     if (!formData) return;
 
+    importApplyMatSummary = {
+        reassignmentCount: Number(matPlan?.reassignments?.length || 0),
+        dependencyGroupCount: Number(matPlan?.dependencyGroups?.length || 0)
+    };
+    importApplyResult = null;
     importApplying = true;
     renderImportView();
 
@@ -462,13 +637,47 @@ async function submitImportApply() {
         });
         importPreview = null;
         importSelectedFile = null;
+        importMatErrorPlan = null;
         notifySuccess("Импорт каталога применен.");
     } catch (error) {
-        notifyError(error, "Не удалось применить импорт каталога.");
+        handleImportApplyError(error);
+        notifyImportMatError(error, "Не удалось применить импорт каталога.");
     } finally {
         importApplying = false;
         renderImportView();
     }
+}
+
+function getImportErrorCode(error) {
+    return String(error?.code || error?.data?.code || error?.data?.error?.code || "").trim();
+}
+
+function setImportMatErrorPlan(error) {
+    const plan = error?.data?.details?.matPlan || error?.data?.error?.details?.matPlan;
+    if (plan) importMatErrorPlan = plan;
+}
+
+function handleImportApplyError(error) {
+    importApplyMatSummary = null;
+    importApplyResult = null;
+    const code = getImportErrorCode(error);
+    if (code === "IMPORT_MAT_PLAN_STALE") importPreviewStale = true;
+    setImportMatErrorPlan(error);
+    return code;
+}
+
+function getImportMatErrorMessage(error, fallback) {
+    const messages = {
+        IMPORT_MAT_PLAN_INVALID: "Решения создают невалидное итоговое распределение MAT. Проверьте конфликты MAT.",
+        IMPORT_MAT_PLAN_STALE: "Каталог CRM изменился после предварительного просмотра. Обновите предварительный просмотр перед импортом.",
+        IMPORT_MAT_TEMPORARY_ASSIGNMENT_FAILED: "Не удалось безопасно подготовить переназначение MAT. Импорт отменён.",
+        IMPORT_MAT_REASSIGNMENT_FAILED: "Не удалось завершить переназначение MAT. Импорт отменён."
+    };
+    return messages[getImportErrorCode(error)] || fallback;
+}
+
+function notifyImportMatError(error, fallback) {
+    return notifyError({ ...error, message: getImportMatErrorMessage(error, fallback) }, fallback);
 }
 
 function renderImportInfoList() {
@@ -523,6 +732,17 @@ function renderImportUpload(error = "") {
 
 function renderApplyActions() {
     if (!importPreview) return "";
+    if (importPreviewStale) {
+        return `
+            <section class="import-apply-panel blocked">
+                <div>
+                    <strong>Предварительный просмотр устарел</strong>
+                    <span>Каталог CRM изменился после предварительного просмотра. Обновите предварительный просмотр перед импортом.</span>
+                </div>
+                <button class="import-apply-submit" type="button" disabled aria-disabled="true" title="Обновите предварительный просмотр.">Применить импорт</button>
+            </section>
+        `;
+    }
     if (!importPreview.canImport) {
         return `
             <section class="import-apply-panel blocked">
@@ -557,6 +777,7 @@ function renderApplyResult() {
                 <div><dt>Скрыто</dt><dd>${Number(importApplyResult.hidden || 0)}</dd></div>
                 <div><dt>Требуют решения</dt><dd>${Number(importApplyResult.requiresReview || 0)}</dd></div>
             </dl>
+            ${buildImportSuccessSummary()}
             ${Array.isArray(importApplyResult.assignedCodes) && importApplyResult.assignedCodes.length ? `
                 <details>
                     <summary>Назначенные коды (${importApplyResult.assignedCodes.length})</summary>
@@ -781,9 +1002,16 @@ function renderProductCandidateOptions(item, selectedId) {
     }).join("");
 }
 
-function getProductResolutionNote(action) {
+function getProductResolutionNote(action, item = null, candidateId = "") {
     if (action === "accept_excel_mat") {
-        return "Товар будет обновлён по ID CRM. MAT, цена и наименование будут взяты из Excel. Перед применением будет проверена уникальность MAT.";
+        const candidate = (item?.candidates?.length ? item.candidates : [item?.candidate]).filter(Boolean)
+            .find(candidateItem => Number(candidateItem.id) === Number(candidateId)) || item?.candidate;
+        const oldMat = candidate?.hasValidMat ? candidate.matCode : candidate?.externalIdRaw;
+        const targetMat = item?.externalId || item?.incomingExternalId;
+        const change = oldMat && targetMat && String(oldMat).toUpperCase() !== String(targetMat).toUpperCase()
+            ? ` MAT изменится: ${oldMat} → ${targetMat}.`
+            : "";
+        return `Товар будет обновлён по ID CRM.${change} Итоговая уникальность MAT проверяется backend-планом всей партии.`;
     }
     if (action === "create_new") {
         return "Будет создан новый товар с MAT из Excel. Перед Apply повторно проверяется уникальность MAT.";
@@ -883,7 +1111,7 @@ function renderProductResolutionControls(item) {
                 </label>
             </div>
             ${renderCandidateDetails(item, candidateId)}
-            <p class="import-resolution-note" data-import-resolution-note>${escapeHtml(getProductResolutionNote(selectedAction))}</p>
+            <p class="import-resolution-note" data-import-resolution-note>${escapeHtml(getProductResolutionNote(selectedAction, item, candidateId))}</p>
             <div class="import-resolution-actions">
                 <button type="button" data-import-resolution-save data-row-id="${escapeHtml(item.rowId || item.rowNumber)}">
                     ${item.resolved ? "Изменить решение" : "Сохранить решение"}
@@ -1347,6 +1575,7 @@ function renderImportView(error = "") {
                 ${importLoading ? renderCrmLoader("Анализируем файл и сравниваем каталог...") : ""}
                 ${importApplying ? renderCrmLoader("Применяем импорт, создаем backup и Excel-копию...") : ""}
                 ${renderImportStatus()}
+                ${renderImportMatPlanPanel(importMatErrorPlan || getImportMatPlan())}
                 ${renderApplyActions()}
                 ${renderApplyResult()}
                 ${renderImportSummary()}
@@ -1457,15 +1686,14 @@ async function saveImportStructureResolution(button, forcedAction = "") {
         const result = await CrmApi.patch(`/api/products/import/preview/${importPreview.token}/resolutions`, {
             resolutions: [payload]
         });
-        if (result?.data?.preview) {
-            importPreview = result.data.preview;
-        }
+        replaceImportPreviewFromResponse(result);
         importActiveTab = "requiresReview";
         importVisibleCount = Math.max(importVisibleCount, IMPORT_RESULT_PAGE_SIZE);
         window.CrmToast?.success("Решение сохранено.");
         renderImportView();
     } catch (error) {
-        notifyError(error, "Не удалось сохранить решение импорта.");
+        setImportMatErrorPlan(error);
+        notifyImportMatError(error, "Не удалось сохранить решение импорта.");
         button.disabled = false;
     }
 }
@@ -1542,14 +1770,13 @@ async function linkUnambiguousImportMatches(button) {
         const result = await CrmApi.patch(`/api/products/import/preview/${importPreview.token}/resolutions`, {
             resolutions
         });
-        if (result?.data?.preview) {
-            importPreview = result.data.preview;
-        }
+        replaceImportPreviewFromResponse(result);
         importActiveTab = "requiresReview";
         window.CrmToast?.success(`Связано строк: ${resolutions.length}.`);
         renderImportView();
     } catch (error) {
-        notifyError(error, "Не удалось связать совпадения.");
+        setImportMatErrorPlan(error);
+        notifyImportMatError(error, "Не удалось связать совпадения.");
         button.disabled = false;
     }
 }
@@ -1668,14 +1895,13 @@ async function linkUnambiguousImportMatches(button) {
         const result = await CrmApi.patch(`/api/products/import/preview/${importPreview.token}/resolutions`, {
             resolutions
         });
-        if (result?.data?.preview) {
-            importPreview = result.data.preview;
-        }
+        replaceImportPreviewFromResponse(result);
         importActiveTab = "requiresReview";
         window.CrmToast?.success(`Сохранено решений: ${resolutions.length}. Рабочая БД не изменена.`);
         renderImportView();
     } catch (error) {
-        notifyError(error, "Не удалось сохранить групповые решения.");
+        setImportMatErrorPlan(error);
+        notifyImportMatError(error, "Не удалось сохранить групповые решения.");
         button.disabled = false;
     }
 }
@@ -1685,7 +1911,9 @@ importView?.addEventListener("change", event => {
     if (resolutionAction) {
         const row = resolutionAction.closest(".import-preview-row");
         const note = row?.querySelector("[data-import-resolution-note]");
-        if (note) note.textContent = getProductResolutionNote(resolutionAction.value);
+        const item = importPreview?.changes?.requiresReview?.find(candidate => String(candidate.rowId || candidate.rowNumber) === String(row?.querySelector("[data-import-resolution-save]")?.dataset.rowId || ""));
+        const candidateId = row?.querySelector("[data-import-resolution-product]")?.value || "";
+        if (note) note.textContent = getProductResolutionNote(resolutionAction.value, item, candidateId);
         return;
     }
 
@@ -1825,4 +2053,32 @@ importView?.addEventListener("input", event => {
     importVisibleCount = IMPORT_RESULT_PAGE_SIZE;
     window.clearTimeout(importSearchTimer);
     importSearchTimer = window.setTimeout(updateImportPreviewPanel, 200);
+});
+
+// Small pure surface used by the CRM regression harness; production UI uses the same render helpers.
+window.CrmImportUi = Object.freeze({
+    getImportMatConflictMessage,
+    getImportMatErrorMessage,
+    renderImportMatPlanPanel,
+    buildImportApplyConfirmation,
+    buildImportSuccessSummary,
+    getImportCanApply,
+    replaceImportPreviewFromResponse,
+    handleImportApplyError,
+    getState() {
+        return {
+            importPreview,
+            importPreviewStale,
+            importApplyMatSummary,
+            importApplyResult,
+            importMatErrorPlan
+        };
+    },
+    resetStateForTest() {
+        importPreview = null;
+        importPreviewStale = false;
+        importApplyMatSummary = null;
+        importApplyResult = null;
+        importMatErrorPlan = null;
+    }
 });
