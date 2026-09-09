@@ -2,6 +2,7 @@ const assert = require("assert");
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
+const { spawnSync } = require("child_process");
 const { openDatabase } = require("../databaseMigrations");
 const { buildReport, purge, removeAttachmentFiles, retryOrphanAttachmentFiles, CONFIRM } = require("./purge-test-crm-data");
 
@@ -11,6 +12,10 @@ async function main() {
     const attachments = path.join(dir, "attachments");
     fs.copyFileSync(path.join(__dirname, "..", "database", "matmix.db"), dbPath);
     fs.mkdirSync(attachments, { recursive: true });
+    const exact = spawnSync(process.execPath, [path.join(__dirname, "purge-test-crm-data.js"), "--apply", "--confirm", CONFIRM], {
+        env: { ...process.env, MATMIX_DB_PATH: dbPath, ORDER_ATTACHMENTS_PATH: attachments }, encoding: "utf8"
+    });
+    assert.strictEqual(exact.status, 0, exact.stderr);
     const db = await openDatabase(dbPath);
     try {
         const now = new Date().toISOString();

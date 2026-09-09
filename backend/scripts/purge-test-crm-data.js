@@ -6,6 +6,12 @@ const { runtimePaths } = require("../services/productionBackup");
 const { createOrderAttachmentStorage } = require("../services/orderAttachmentStorage");
 
 const CONFIRM = "PURGE_TEST_CRM_DATA";
+function getArgValue(argv, name) {
+    const index = argv.indexOf(name);
+    if (index < 0) return null;
+    const value = argv[index + 1];
+    return value && !String(value).startsWith("--") ? String(value) : null;
+}
 const TABLES = [
     ["orders", "SELECT COUNT(*) count FROM orders"],
     ["clients", "SELECT COUNT(*) count FROM clients"],
@@ -90,11 +96,10 @@ async function retryOrphanAttachmentFiles(db, attachmentsPath) {
 
 async function main(argv = process.argv.slice(2)) {
     const apply = argv.includes("--apply");
-    const confirmIndex = argv.indexOf("--confirm");
-    const confirm = confirmIndex >= 0 ? argv[confirmIndex + 1] : "";
+    const confirm = getArgValue(argv, "--confirm") || "";
     if (apply && confirm !== CONFIRM) throw new Error(`Apply requires --confirm ${CONFIRM}`);
-    const dbArg = argv[argv.indexOf("--db") + 1];
-    const attachmentsArg = argv[argv.indexOf("--attachments") + 1];
+    const dbArg = getArgValue(argv, "--db");
+    const attachmentsArg = getArgValue(argv, "--attachments");
     const paths = runtimePaths({ ...process.env, ...(dbArg ? { MATMIX_DB_PATH: dbArg } : {}), ...(attachmentsArg ? { ORDER_ATTACHMENTS_PATH: attachmentsArg } : {}) }, { allowMissingProduction: true });
     const db = await openDatabase(paths.dbPath);
     try {
@@ -103,7 +108,7 @@ async function main(argv = process.argv.slice(2)) {
             console.log(JSON.stringify({ dryRun: true, ...report }, null, 2));
             return report;
         }
-        const deleted = await purge(db, { failAfter: argv[argv.indexOf("--fail-after") + 1] || "" });
+        const deleted = await purge(db, { failAfter: getArgValue(argv, "--fail-after") || "" });
         const removedFiles = await removeAttachmentFiles(report.attachmentKeys, paths.attachmentsPath);
         const after = await buildReport(db, paths.attachmentsPath);
         console.log(JSON.stringify({ dryRun: false, ...report, deleted, removedFiles, after }, null, 2));
@@ -112,4 +117,4 @@ async function main(argv = process.argv.slice(2)) {
 }
 
 if (require.main === module) main().catch(error => { console.error(JSON.stringify({ success: false, error: error.message })); process.exitCode = 2; });
-module.exports = { CONFIRM, buildReport, purge, removeAttachmentFiles, retryOrphanAttachmentFiles, main };
+module.exports = { CONFIRM, getArgValue, buildReport, purge, removeAttachmentFiles, retryOrphanAttachmentFiles, main };
