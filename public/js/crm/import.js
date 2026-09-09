@@ -14,6 +14,7 @@ let importVisibleCount = 50;
 let importShowAllSummary = false;
 let importApplyMatSummary = null;
 let importMatErrorPlan = null;
+const importManualProductSearches = new Map();
 
 const IMPORT_MAX_FILE_SIZE = 30 * 1024 * 1024;
 const IMPORT_RESULT_PAGE_SIZE = 50;
@@ -1081,6 +1082,106 @@ function renderCandidateDetails(item, selectedId) {
     }).join("");
 }
 
+function getManualProductSearchState(item) {
+    const key = String(item?.rowId || item?.rowNumber || "");
+    if (!importManualProductSearches.has(key)) {
+        importManualProductSearches.set(key, {
+            query: "",
+            results: [],
+            selected: null,
+            loading: false,
+            error: "",
+            requestId: 0,
+            timer: null
+        });
+    }
+    return importManualProductSearches.get(key);
+}
+
+function renderManualProductSearch(item) {
+    const state = getManualProductSearchState(item);
+    const selected = state.selected;
+    return `
+        <div class="import-manual-product-search" data-import-manual-search="${escapeHtml(item.rowId || item.rowNumber)}">
+            <label>
+                <span>Найти другой товар CRM</span>
+                <input type="search" data-import-manual-product-query value="${escapeHtml(state.query)}" placeholder="Название или MAT-код" minlength="2" autocomplete="off" aria-label="Поиск товара CRM">
+            </label>
+            <div class="import-manual-product-status" aria-live="polite">
+                ${state.loading ? "Ищем товары CRM..." : state.error ? escapeHtml(state.error) : !state.query ? "Введите минимум 2 символа или MAT-код." : !state.results.length ? "Товары не найдены." : ""}
+            </div>
+            ${state.results.length ? `
+                <div class="import-manual-product-results" role="listbox" aria-label="Результаты поиска CRM">
+                    ${state.results.map(product => `
+                        <button type="button" class="import-manual-product-result ${selected?.id === product.id ? "is-selected" : ""}" data-import-manual-product-id="${escapeHtml(product.id)}">
+                            <strong>${escapeHtml(product.title || "Без названия")}</strong>
+                            <span>${escapeHtml(product.externalId || "MAT отсутствует")} · ID ${escapeHtml(product.id)}</span>
+                            <small>${escapeHtml([product.category, product.subcategory].filter(Boolean).join(" / ") || "Без структуры")}</small>
+                        </button>
+                    `).join("")}
+                </div>
+            ` : ""}
+            ${selected ? `
+                <div class="import-manual-product-selected" aria-live="polite">
+                    <span>Связать строку Excel с:</span>
+                    <strong>${escapeHtml(selected.title || "Без названия")}</strong>
+                    <span>${escapeHtml(selected.externalId || "MAT отсутствует")} · productId: ${escapeHtml(selected.id)}</span>
+                    <button type="button" data-import-manual-product-confirm>Связать с товаром</button>
+                </div>
+            ` : ""}
+        </div>
+    `;
+}
+
+function searchManualProducts(input) {
+    const search = input.closest("[data-import-manual-search]");
+    const row = input.closest(".import-preview-row");
+    if (!search || !row) return;
+    const rowId = search.dataset.importManualSearch;
+    const state = getManualProductSearchState({ rowId });
+    state.query = input.value.trim();
+    state.results = [];
+    state.error = "";
+    window.clearTimeout(state.timer);
+    const query = state.query;
+    if (query.length < 2 && !/^MAT-?\d+$/i.test(query)) {
+        state.loading = false;
+        return;
+    }
+    state.loading = true;
+    const requestId = ++state.requestId;
+    state.timer = window.setTimeout(async () => {
+        try {
+            const result = await CrmApi.get(`/api/products?search=${encodeURIComponent(query)}&status=active&deleted=false&limit=20`);
+            if (requestId !== state.requestId) return;
+            state.results = (result.products || result.items || []).map(product => ({
+                id: Number(product.id),
+                title: product.title || "",
+                externalId: product.externalId || product.external_id || "",
+                category: product.category || "",
+                subcategory: product.subcategory || ""
+            })).filter(product => product.id);
+            state.loading = false;
+            renderImportView();
+        } catch (error) {
+            if (requestId !== state.requestId) return;
+            state.loading = false;
+            state.error = error?.message || "Не удалось выполнить поиск товаров CRM.";
+            renderImportView();
+        }
+    }, 300);
+}
+
+async function confirmManualProductSelection(button) {
+    const search = button.closest("[data-import-manual-search]");
+    if (!search) return;
+    const row = button.closest(".import-preview-row");
+    const state = getManualProductSearchState({ rowId: search.dataset.importManualSearch });
+    if (!state.selected || !row) return;
+    const saveButton = row.querySelector("[data-import-resolution-save]");
+    await saveImportStructureResolution(saveButton, "map_existing", state.selected.id);
+}
+
 function renderProductResolutionControls(item) {
     if (item.reviewReason === "STRUCTURE_CONFLICT") return "";
     const resolution = item.resolution || {};
@@ -1111,6 +1212,7 @@ function renderProductResolutionControls(item) {
                 </label>
             </div>
             ${renderCandidateDetails(item, candidateId)}
+            ${renderManualProductSearch(item)}
             <p class="import-resolution-note" data-import-resolution-note>${escapeHtml(getProductResolutionNote(selectedAction, item, candidateId))}</p>
             <div class="import-resolution-actions">
                 <button type="button" data-import-resolution-save data-row-id="${escapeHtml(item.rowId || item.rowNumber)}">
@@ -1223,6 +1325,10 @@ function renderNewProductsTab() {
                 <div><dt>Вес</dt><dd>${escapeHtml(item.weight)}</dd></div>
                 <div><dt>Ед.</dt><dd>${escapeHtml(item.unit)}</dd></div>
             </dl>
+            ${item.reason === "MAT_CODE_NOT_FOUND" && /^MAT-?\d+$/i.test(String(item.externalId || "")) ? `
+                <button type="button" class="visually-hidden" data-import-resolution-save data-row-id="${escapeHtml(item.rowId || item.rowNumber)}">Сохранить ручное сопоставление</button>
+                ${renderManualProductSearch(item)}
+            ` : ""}
         </article>
         `).join("")}
         ${renderImportLoadMore(items.length)}
@@ -1653,7 +1759,7 @@ function updateImportPreviewPanel(options = {}) {
     panel.innerHTML = renderImportTabPanel();
 }
 
-async function saveImportStructureResolution(button, forcedAction = "") {
+async function saveImportStructureResolution(button, forcedAction = "", forcedProductId = null) {
     if (!importPreview?.token || !button) return;
     const row = button.closest(".import-preview-row");
     if (!row) return;
@@ -1664,7 +1770,7 @@ async function saveImportStructureResolution(button, forcedAction = "") {
         action,
         categoryId: Number(row.querySelector("[data-import-resolution-category]")?.value || 0) || null,
         subcategoryId: Number(row.querySelector("[data-import-resolution-subcategory]")?.value || 0) || null,
-        productId: Number(row.querySelector("[data-import-resolution-product]")?.value || 0) || null,
+        productId: Number(forcedProductId || row.querySelector("[data-import-resolution-product]")?.value || 0) || null,
         externalId: row.querySelector("code")?.textContent || ""
     };
 
@@ -2027,6 +2133,22 @@ importView?.addEventListener("click", event => {
         return;
     }
 
+    const manualProductConfirm = event.target.closest("button[data-import-manual-product-confirm]");
+    if (manualProductConfirm) {
+        confirmManualProductSelection(manualProductConfirm);
+        return;
+    }
+
+    const manualProductResult = event.target.closest("button[data-import-manual-product-id]");
+    if (manualProductResult) {
+        const search = manualProductResult.closest("[data-import-manual-search]");
+        const state = getManualProductSearchState({ rowId: search?.dataset.importManualSearch });
+        const selectedId = Number(manualProductResult.dataset.importManualProductId);
+        state.selected = state.results.find(product => product.id === selectedId) || null;
+        renderImportView();
+        return;
+    }
+
     const linkUnambiguousButton = event.target.closest("button[data-import-link-unambiguous]");
     if (linkUnambiguousButton) {
         linkUnambiguousImportMatches(linkUnambiguousButton);
@@ -2047,6 +2169,11 @@ importView?.addEventListener("click", event => {
 });
 
 importView?.addEventListener("input", event => {
+    const manualSearchInput = event.target.closest("[data-import-manual-product-query]");
+    if (manualSearchInput) {
+        searchManualProducts(manualSearchInput);
+        return;
+    }
     const searchInput = event.target.closest("#importPreviewSearch");
     if (!searchInput) return;
     importSearchQuery = searchInput.value;
@@ -2060,6 +2187,7 @@ window.CrmImportUi = Object.freeze({
     getImportMatConflictMessage,
     getImportMatErrorMessage,
     renderImportMatPlanPanel,
+    renderManualProductSearch,
     buildImportApplyConfirmation,
     buildImportSuccessSummary,
     getImportCanApply,

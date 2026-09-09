@@ -27,6 +27,14 @@ vm.runInContext(importSource, context, { filename: "public/js/crm/import.js" });
 const ui = context.window.CrmImportUi;
 assert(ui, "CRM import UI test surface is available");
 
+const manualSearchHtml = ui.renderManualProductSearch({ rowId: "264:MAT-000256:cat:sub" });
+assert(manualSearchHtml.includes("Найти другой товар CRM"), "A: manual search control is rendered");
+assert(manualSearchHtml.includes("data-import-manual-product-query"), "B: search input is available");
+assert(manualSearchHtml.includes("Название или MAT-код"), "C: title/MAT search contract is visible");
+assert(!manualSearchHtml.includes("data-import-manual-product-id=\"224\""), "K: search does not auto-map a product");
+const unresolvedMatSearchHtml = ui.renderManualProductSearch({ rowNumber: 264, externalId: "MAT-000256", reason: "MAT_CODE_NOT_FOUND" });
+assert(unresolvedMatSearchHtml.includes("data-import-manual-product-query"), "H: unresolved MAT rows expose manual search");
+
 const emptyPlan = { reassignments: [], conflicts: [], dependencyGroups: [] };
 assert.strictEqual(ui.renderImportMatPlanPanel(emptyPlan), "", "A/N: no MAT changes keeps ordinary import UI clean");
 
