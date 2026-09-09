@@ -5,7 +5,7 @@ const fs = require("fs");
 const os = require("os");
 const path = require("path");
 
-const scenarios = ["existing", "new", "conflicts", "rollback-temp", "rollback-final", "rollback-insert", "rollback-structure", "stale", "ordinary"];
+const scenarios = ["existing", "legacy", "legacy-stale", "legacy-rollback-temp", "legacy-rollback-final", "new", "conflicts", "rollback-temp", "rollback-final", "rollback-insert", "rollback-structure", "stale", "ordinary"];
 
 function runChild(scenario) {
     const result = childProcess.spawnSync(process.execPath, [__filename, scenario], {
@@ -171,6 +171,96 @@ async function main() {
         assert.strictEqual((await database.get("SELECT external_id FROM products WHERE id = ?", [a.id])).external_id, freeMat);
         await assertNoTemporaryMat();
         console.log(JSON.stringify({ scenario: "new", freedMatToNew: true, temporaryMat: 0 }));
+        return;
+    }
+
+    if (process.argv[2] === "legacy") {
+        const originalB = b.external_id;
+        const originalC = c.external_id;
+
+        await database.run("UPDATE products SET external_id = ? WHERE id = ?", [`EXCEL-free-${a.id}`, a.id]);
+        await previewApply([
+            existingRow(a, "MAT-990012", 53),
+        ], {}, "legacy-free.xlsx");
+        assert.strictEqual((await database.get("SELECT external_id FROM products WHERE id = ?", [a.id])).external_id, "MAT-990012");
+
+        await database.run("UPDATE products SET external_id = ? WHERE id = ?", [`EXCEL-chain-${a.id}`, a.id]);
+        await previewApply([
+            existingRow(a, originalB, 54),
+            existingRow(b, "MAT-990013", 55)
+        ], {}, "legacy-chain.xlsx");
+        const after = await mats([a.id, b.id]);
+        assert.strictEqual(after.find(row => row.id === a.id).external_id, originalB);
+        assert.strictEqual(after.find(row => row.id === b.id).external_id, "MAT-990013");
+
+        await database.run("UPDATE products SET external_id = ? WHERE id = ?", [`EXCEL-free-a-${a.id}`, a.id]);
+        await database.run("UPDATE products SET external_id = ? WHERE id = ?", [`EXCEL-free-b-${b.id}`, b.id]);
+        await previewApply([
+            existingRow(a, "MAT-990014", 56),
+            existingRow(b, "MAT-990015", 57)
+        ], {}, "legacy-two-free.xlsx");
+        const twoFree = await mats([a.id, b.id]);
+        assert.strictEqual(twoFree.find(row => row.id === a.id).external_id, "MAT-990014");
+        assert.strictEqual(twoFree.find(row => row.id === b.id).external_id, "MAT-990015");
+
+        await database.run("UPDATE products SET external_id = ? WHERE id = ?", [`EXCEL-mixed-${a.id}`, a.id]);
+        await database.run("UPDATE products SET external_id = ? WHERE id = ?", ["MAT-990016", b.id]);
+        await database.run("UPDATE products SET external_id = ? WHERE id = ?", ["MAT-990017", c.id]);
+        const mixedRows = [
+            existingRow(a, "MAT-990016", 58),
+            existingRow(b, "MAT-990017", 59),
+            existingRow(c, "MAT-990018", 60)
+        ];
+        await previewApply(mixedRows, {}, "legacy-mixed-chain.xlsx");
+        const mixed = await mats([a.id, b.id, c.id]);
+        assert.strictEqual(mixed.find(row => row.id === a.id).external_id, "MAT-990016");
+        assert.strictEqual(mixed.find(row => row.id === b.id).external_id, "MAT-990017");
+        assert.strictEqual(mixed.find(row => row.id === c.id).external_id, "MAT-990018");
+
+        const repeated = await createCatalogImportPreviewToken(database, parsedRows(mixedRows), { name: "legacy-repeat.xlsx" }, user, await importBuffer());
+        assert.strictEqual(repeated.matPlan.reassignments.length, 0);
+        await assertNoTemporaryMat();
+        console.log(JSON.stringify({ scenario: "legacy", free: true, freedMatChain: true, twoFree: true, mixedChain: true, idempotent: true, temporaryMat: 0 }));
+        return;
+    }
+
+    if (process.argv[2] === "legacy-stale") {
+        const legacyMat = `EXCEL-stale-${a.id}`;
+        await database.run("UPDATE products SET external_id = ? WHERE id = ?", [legacyMat, a.id]);
+        const parsed = parsedRows([existingRow(a, "MAT-990019", 61)]);
+        const preview = await createCatalogImportPreviewToken(database, parsed, { name: "legacy-stale.xlsx" }, user, await importBuffer());
+        await database.run("UPDATE products SET external_id = ? WHERE id = ?", ["EXCEL-stale-changed", a.id]);
+        let staleError = null;
+        try { await applyCatalogImport(database, preview.token, {}, user); } catch (caught) { staleError = caught; }
+        assert.strictEqual(staleError?.code, "IMPORT_MAT_PLAN_STALE");
+        assert.strictEqual((await database.get("SELECT external_id FROM products WHERE id = ?", [a.id])).external_id, "EXCEL-stale-changed");
+        await assertNoTemporaryMat();
+        console.log(JSON.stringify({ scenario: "legacy-stale", blocked: true, code: staleError.code, temporaryMat: 0 }));
+        return;
+    }
+
+    if (process.argv[2] === "legacy-rollback-temp" || process.argv[2] === "legacy-rollback-final") {
+        const legacyMat = `EXCEL-rollback-${a.id}`;
+        const validMat = b.external_id;
+        await database.run("UPDATE products SET external_id = ? WHERE id = ?", [legacyMat, a.id]);
+        const originalA = legacyMat;
+        const originalB = validMat;
+        const runtime = process.argv[2] === "legacy-rollback-temp"
+            ? { afterMatTemporaryPhase: () => { throw new Error("controlled legacy temp failure"); } }
+            : { afterMatFinalPhase: () => { throw new Error("controlled legacy final failure"); } };
+        let error = null;
+        try {
+            await previewApply([
+                existingRow(a, validMat, 62),
+                existingRow(b, "MAT-990020", 63)
+            ], runtime, `${process.argv[2]}.xlsx`);
+        } catch (caught) { error = caught; }
+        assert(error, "controlled legacy failure expected");
+        const restored = await mats([a.id, b.id]);
+        assert.strictEqual(restored.find(row => row.id === a.id).external_id, originalA);
+        assert.strictEqual(restored.find(row => row.id === b.id).external_id, originalB);
+        await assertNoTemporaryMat();
+        console.log(JSON.stringify({ scenario: process.argv[2], rolledBack: true, legacyRestored: true, temporaryMat: 0 }));
         return;
     }
 

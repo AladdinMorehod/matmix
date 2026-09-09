@@ -4407,27 +4407,43 @@ function getMatPlanSignature(plan = {}) {
 }
 
 async function applyMatReassignmentPlan(tx, plan, runtime = {}) {
-    const assignments = (plan?.reassignments || [])
-        .filter(item => validateMatCode(item.oldMat) && validateMatCode(item.targetMat));
-    if (!assignments.length) return { temporaryCount: 0, reassignedCount: 0 };
-
-    const transactionId = crypto.randomUUID();
-    const temporaryAssignments = assignments.map(item => ({
+    const plannedAssignments = plan?.reassignments || [];
+    const invalidTarget = plannedAssignments.find(item => !validateMatCode(item.targetMat));
+    if (invalidTarget) {
+        throw createImportError(409, "MAT-план содержит невалидный целевой MAT-код.", "IMPORT_MAT_INVALID_TARGET");
+    }
+    const assignments = plannedAssignments.map(item => ({
         ...item,
         productId: Number(item.productId),
         oldMat: normalizeMatCode(item.oldMat),
-        targetMat: normalizeMatCode(item.targetMat),
-        temporaryMat: `__MAT_IMPORT_TMP__:${transactionId}:${Number(item.productId)}`
+        targetMat: normalizeMatCode(item.targetMat)
     }));
+    if (!assignments.length) return { temporaryCount: 0, reassignedCount: 0 };
 
-    for (const item of temporaryAssignments) {
+    const transactionId = crypto.randomUUID();
+
+    // Validate every planned participant before mutating any row. Legacy external_id
+    // values are valid old state for this purpose even though they are not MAT codes.
+    for (const item of assignments) {
         const current = await tx.get("SELECT external_id FROM products WHERE id = ? AND deleted_at IS NULL", [item.productId]);
         if (!current || normalizeMatCode(current.external_id) !== item.oldMat) {
             throw createImportError(409, "Текущее MAT-состояние товара изменилось до применения импорта.", "IMPORT_MAT_PLAN_STALE");
         }
+        item.currentExternalId = current.external_id;
+    }
+
+    const temporaryAssignments = assignments.filter(item => (
+        validateMatCode(item.oldMat) && item.oldMat !== item.targetMat
+    )).map(item => ({
+        ...item,
+        temporaryMat: `__MAT_IMPORT_TMP__:${transactionId}:${Number(item.productId)}`
+    }));
+    const temporaryByProductId = new Map(temporaryAssignments.map(item => [item.productId, item]));
+
+    for (const item of temporaryAssignments) {
         const result = await tx.run(
             "UPDATE products SET external_id = ?, updated_at = ? WHERE id = ? AND external_id = ? AND deleted_at IS NULL",
-            [item.temporaryMat, new Date().toISOString(), item.productId, item.oldMat]
+            [item.temporaryMat, new Date().toISOString(), item.productId, item.currentExternalId]
         );
         if (Number(result?.changes) !== 1) {
             throw createImportError(409, "Не удалось временно освободить MAT-код для атомарного переназначения.", "IMPORT_MAT_TEMPORARY_ASSIGNMENT_FAILED");
@@ -4437,19 +4453,21 @@ async function applyMatReassignmentPlan(tx, plan, runtime = {}) {
         await runtime.afterMatTemporaryPhase({ assignments: temporaryAssignments });
     }
 
-    for (const item of temporaryAssignments) {
+    for (const item of assignments) {
+        const temporary = temporaryByProductId.get(item.productId);
+        const expectedCurrent = temporary?.temporaryMat || item.currentExternalId;
         const result = await tx.run(
             "UPDATE products SET external_id = ?, updated_at = ? WHERE id = ? AND external_id = ? AND deleted_at IS NULL",
-            [item.targetMat, new Date().toISOString(), item.productId, item.temporaryMat]
+            [item.targetMat, new Date().toISOString(), item.productId, expectedCurrent]
         );
         if (Number(result?.changes) !== 1) {
-            throw createImportError(409, "Не удалось завершить атомарное MAT-переназначение.", "IMPORT_MAT_REASSIGNMENT_FAILED");
+            throw createImportError(409, `Не удалось завершить атомарное MAT-переназначение для товара ${item.productId}.`, "IMPORT_MAT_REASSIGNMENT_FAILED");
         }
     }
     if (typeof runtime.afterMatFinalPhase === "function") {
         await runtime.afterMatFinalPhase({ assignments: temporaryAssignments });
     }
-    return { temporaryCount: temporaryAssignments.length, reassignedCount: temporaryAssignments.length };
+    return { temporaryCount: temporaryAssignments.length, reassignedCount: assignments.length };
 }
 
 async function createExcelCopy(tokenData, assignedRows, archiveOptions = {}) {
