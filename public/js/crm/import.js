@@ -59,7 +59,7 @@ function buildImportApplyConfirmation(preview = importPreview) {
                 <div><dt>Создать</dt><dd>${Number(summary.new || 0)}</dd></div>
                 <div><dt>Обновить</dt><dd>${Number(summary.updated || 0)}</dd></div>
                 <div><dt>Создать MAT-кодов</dt><dd>${Number(summary.generatedMatCodes || 0)}</dd></div>
-                <div><dt>Скрыть</dt><dd>${Number(summary.missingFromFile || 0)}</dd></div>
+                <div><dt>Удалить из каталога</dt><dd>${Number(summary.missingFromFile || 0)}</dd></div>
                 <div><dt>Новые категории</dt><dd>${Number(summary.newCategories || 0)}</dd></div>
                 <div><dt>Переименовать CAT/SUB</dt><dd>${Number(summary.renamedCategories || 0) + Number(summary.renamedSubcategories || 0)}</dd></div>
                 <div><dt>Создать CAT/SUB-кодов</dt><dd>${Number(summary.generatedCategoryCodes || 0) + Number(summary.generatedSubcategoryCodes || 0)}</dd></div>
@@ -76,8 +76,10 @@ function buildImportApplyConfirmation(preview = importPreview) {
                 <span>Отсутствующие в Excel</span>
                 <select name="missingFromFileAction">
                     <option value="keep" selected>Оставить без изменений</option>
-                    <option value="hide">Скрыть excel-товары</option>
+                    <option value="delete">Удалить из каталога</option>
+                    <option value="hide">Скрыть (отдельный режим)</option>
                 </select>
+                <small class="import-destructive-warning">При удалении товар исчезнет из актуального каталога CRM, сайта и выгружаемого Excel. Действие необратимо.</small>
             </label>
         </div>
     `;
@@ -620,6 +622,8 @@ async function submitImportApply() {
         content: buildImportApplyConfirmation(importPreview)
     });
     if (!formData) return;
+    if (String(formData.get("missingFromFileAction") || "keep") === "delete"
+        && !window.confirm("Товар будет удалён из актуального каталога CRM и исчезнет с сайта и из выгружаемого Excel. Продолжить?")) return;
 
     importApplyMatSummary = {
         reassignmentCount: Number(matPlan?.reassignments?.length || 0),
@@ -1478,7 +1482,7 @@ function renderMissingFromFileTab() {
     const visibleItems = getVisibleImportItems(items);
     if (!items.length) return renderEmptyImportState("Отсутствующих в файле товаров нет.");
     return `
-        <p class="import-tab-note">На следующем этапе можно будет выбрать: скрыть, оставить без изменений или обработать вручную.</p>
+        <p class="import-tab-note">Для Excel-managed товаров выберите в подтверждении: удалить из каталога, оставить без изменений или использовать отдельный режим скрытия.</p>
         ${visibleItems.map(item => `
             <article class="import-preview-row">
                 <div>

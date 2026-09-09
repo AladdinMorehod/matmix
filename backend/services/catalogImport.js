@@ -10,6 +10,10 @@ const {
     syncCatalogStructureFromProducts
 } = require("./catalogStructure");
 const {
+    hasProductImageReference,
+    normalizeProductImageReference
+} = require("./productImageReferences");
+const {
     buildCatalogStructureIndex,
     resolveProductStructureMembership
 } = require("./catalogStructureMembership");
@@ -375,7 +379,9 @@ async function buildReferenceCatalogExportWorkbook(db) {
         const match = range.match(/^[A-Z]+(\d+):[A-Z]+(\d+)$/);
         if (match && Number(match[1]) >= 7) sheet.unMergeCells(range);
     }
-    if (sheet.rowCount > 6) sheet.spliceRows(7, sheet.rowCount - 6);
+    if (sheet.rowCount > 6) {
+        for (let rowNumber = sheet.rowCount; rowNumber >= 7; rowNumber -= 1) sheet.spliceRows(rowNumber, 1);
+    }
     if (sheet.columnCount > 12) sheet.spliceColumns(13, sheet.columnCount - 12);
     sheet.removeConditionalFormatting();
     sheet.autoFilter = undefined;
@@ -3270,7 +3276,7 @@ async function buildCatalogImportPreview(db, parsed, file = {}, options = {}) {
     changes.subcategoryExcelCodesIgnored = structureChanges.subcategoryExcelCodesIgnored || [];
     changes.realStructureConflicts = structureChanges.realStructureConflicts || changes.structureCodeConflicts;
     changes.newGroups = collectNewValues(parsed.productRows, dbProducts.map(product => product.productGroup), "productGroup");
-    const matPlanInput = buildMatPlanInputFromPreview({ parsed, changes, dbProducts, resolutions });
+    const matPlanInput = buildMatPlanInputFromPreview({ parsed, changes, dbProducts, resolutions, deletedProductIds: options.missingFromFileAction === "delete" ? changes.missingFromFile.map(item => item.productId) : [] });
     const matPlan = buildMatPlanPreview({ parsed, changes, dbProducts, resolutions, planInput: matPlanInput });
     priceChanges = buildPriceChangesPreview(dbProducts, matPlanInput.rows);
 
@@ -3455,7 +3461,7 @@ async function buildCatalogImportPreview(db, parsed, file = {}, options = {}) {
     };
 }
 
-function buildMatPlanInputFromPreview({ parsed, changes, dbProducts, resolutions }) {
+function buildMatPlanInputFromPreview({ parsed, changes, dbProducts, resolutions, deletedProductIds = [] }) {
     const resolutionMap = normalizePreviewResolutions(resolutions);
     const itemByRowKey = new Map();
     [
@@ -3500,7 +3506,8 @@ function buildMatPlanInputFromPreview({ parsed, changes, dbProducts, resolutions
         return planRow;
     }).filter(Boolean);
 
-    return { products: dbProducts, rows };
+    const deleted = new Set(deletedProductIds.map(Number));
+    return { products: dbProducts.filter(product => !deleted.has(Number(product.id))), rows };
 }
 
 function findConfirmedIdentityCandidate(row, candidateProducts, candidatesByTitle = null) {
@@ -4485,6 +4492,116 @@ async function createExcelCopy(tokenData, assignedRows, archiveOptions = {}) {
 
 let importApplyActive = false;
 
+async function collectAuthoritativeDeleteImpact(db, items = []) {
+    const ids = [...new Set(items.map(item => Number(item?.productId)).filter(Number.isSafeInteger))];
+    if (!ids.length) return { productIds: [], products: [], imageUrls: [], structureIds: [] };
+    const placeholders = ids.map(() => "?").join(",");
+    const products = await db.all(
+        `SELECT id, external_id, image, image_url, category, subcategory, source, deleted_at
+         FROM products WHERE id IN (${placeholders}) AND source = 'excel' AND deleted_at IS NULL`,
+        ids
+    );
+    const structureNames = new Set();
+    const subcategoryPairs = new Set();
+    products.forEach(product => {
+        if (product.category) structureNames.add(`category\u0000${normalizeCatalogStructureName(product.category)}`);
+        if (product.subcategory) {
+            structureNames.add(`subcategory\u0000${normalizeCatalogStructureName(product.subcategory)}`);
+            subcategoryPairs.add(`${normalizeCatalogStructureName(product.category)}\u0000${normalizeCatalogStructureName(product.subcategory)}`);
+        }
+    });
+    const structurePairs = [...structureNames].map(value => {
+        const split = value.indexOf("\u0000");
+        return { type: value.slice(0, split), normalizedName: value.slice(split + 1) };
+    });
+    const categoryRows = structurePairs.filter(pair => pair.type === "category");
+    const subPairs = [...subcategoryPairs].map(value => { const split = value.indexOf("\u0000"); return [value.slice(0, split), value.slice(split + 1)]; });
+    const structureRows = categoryRows.length || subPairs.length
+        ? await db.all(
+            `SELECT id, type, normalized_name, parent_id, is_system
+             FROM catalog_structure
+             WHERE is_active = 1 AND COALESCE(is_system, 0) = 0
+               AND ( ${categoryRows.map(() => "(type = 'category' AND normalized_name = ?)").concat(subPairs.map(() => "(type = 'subcategory' AND normalized_name = ? AND parent_id IN (SELECT id FROM catalog_structure WHERE type='category' AND normalized_name = ?))")).join(" OR ")} )`,
+            [...categoryRows.map(pair => pair.normalizedName), ...subPairs.flatMap(pair => [pair[1], pair[0]])]
+        )
+        : [];
+    const imageUrls = products.flatMap(product => [product.image, product.image_url])
+        .map(value => String(value || "").trim())
+        .filter(value => normalizeProductImageReference(value));
+    if (await db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='product_images'")) {
+        const gallery = await db.all(
+            `SELECT image_url FROM product_images WHERE product_id IN (${placeholders})`,
+            ids
+        );
+        imageUrls.push(...gallery.map(row => String(row.image_url || "").trim()).filter(value => normalizeProductImageReference(value)));
+    }
+    return {
+        productIds: products.map(product => Number(product.id)),
+        products,
+        imageUrls: [...new Set(imageUrls)],
+        structureIds: structureRows.map(row => Number(row.id))
+    };
+}
+
+async function pruneAuthoritativeDeleteStructures(db, structureIds = [], now = new Date().toISOString()) {
+    const ids = [...new Set(structureIds.map(Number).filter(Number.isSafeInteger).filter(id => id !== 251))];
+    if (!ids.length) return [];
+    const removed = [];
+    const candidates = await db.all(
+        `SELECT id, type, parent_id, is_system FROM catalog_structure
+         WHERE id IN (${ids.map(() => "?").join(",")}) AND is_active = 1 AND COALESCE(is_system, 0) = 0`, ids
+    );
+    for (const type of ["subcategory", "category"]) {
+        for (const row of candidates.filter(item => item.type === type)) {
+            if (type === "subcategory") {
+                const productRef = await db.get("SELECT 1 FROM products WHERE deleted_at IS NULL AND subcategory = (SELECT name FROM catalog_structure WHERE id = ?) LIMIT 1", [row.id]);
+                const childRef = await db.get("SELECT 1 FROM catalog_structure WHERE parent_id = ? AND is_active = 1 LIMIT 1", [row.id]);
+                const templateRef = await db.get("SELECT 1 FROM product_attribute_templates WHERE structure_id = ? LIMIT 1", [row.id]).catch(() => null);
+                if (productRef || childRef || templateRef) continue;
+            } else {
+                const productRef = await db.get("SELECT 1 FROM products WHERE deleted_at IS NULL AND category = (SELECT name FROM catalog_structure WHERE id = ?) LIMIT 1", [row.id]);
+                const childRef = await db.get("SELECT 1 FROM catalog_structure WHERE parent_id = ? AND is_active = 1 LIMIT 1", [row.id]);
+                const templateRef = await db.get("SELECT 1 FROM product_attribute_templates WHERE structure_id = ? LIMIT 1", [row.id]).catch(() => null);
+                if (productRef || childRef || templateRef) continue;
+            }
+            await db.run("DELETE FROM catalog_structure WHERE id = ? AND is_system = 0 AND id != 251", [row.id]);
+            removed.push(Number(row.id));
+        }
+    }
+    return removed;
+}
+
+async function cleanupDeletedProductImages(imageUrls, db, runtime = {}) {
+    const urls = [...new Set((imageUrls || []).map(value => String(value || "").trim()).filter(Boolean))];
+    const unlink = runtime.unlinkProductImage || (async imageUrl => {
+        const normalized = normalizeProductImageReference(imageUrl);
+        if (!normalized) return false;
+        const uploadsRoot = path.resolve(process.env.PRODUCT_UPLOADS_PATH || path.join(__dirname, "..", "..", "public", "uploads", "products"));
+        const target = path.resolve(uploadsRoot, normalized.filename);
+        if (path.dirname(target) !== uploadsRoot) return false;
+        try { await fs.promises.unlink(target); return true; } catch (error) { if (error.code === "ENOENT") return false; throw error; }
+    });
+    const removed = [];
+    const pending = [];
+    for (const imageUrl of urls) {
+        if (await hasProductImageReference(db, imageUrl)) continue;
+        try { if (await unlink(imageUrl)) removed.push(imageUrl); } catch { pending.push(imageUrl); }
+    }
+    return { removed, pending };
+}
+
+async function retryPendingDeletedProductImages(db, runtime = {}) {
+    const rows = await db.all("SELECT id, summary_json FROM catalog_import_logs WHERE summary_json IS NOT NULL ORDER BY id ASC");
+    const pending = [];
+    rows.forEach(row => {
+        try {
+            const summary = JSON.parse(row.summary_json || "{}");
+            (summary.deletedImageUrls || []).forEach(url => pending.push(url));
+        } catch { /* ignore legacy log payloads */ }
+    });
+    return cleanupDeletedProductImages([...new Set(pending)], db, runtime);
+}
+
 async function withCatalogImportTransaction(db, work) {
     if (db === databaseModule) return withTransaction(work);
     await db.run("BEGIN IMMEDIATE");
@@ -4512,7 +4629,8 @@ async function applyCatalogImport(db, token, options = {}, user = {}, runtime = 
         throw error;
     }
     let latestPreview = await buildCatalogImportPreview(db, tokenData.parsed, tokenData.file, {
-        resolutions: tokenData.resolutions
+        resolutions: tokenData.resolutions,
+        missingFromFileAction: options.missingFromFileAction
     });
     if (!latestPreview.canImport) {
         throw createImportError(409, "Файл больше не проходит проверку. Сделайте Preview заново.", "PREVIEW_NOT_IMPORTABLE");
@@ -4526,6 +4644,9 @@ async function applyCatalogImport(db, token, options = {}, user = {}, runtime = 
         assignedMat: 0,
         assignedStructureCodes: 0,
         hidden: 0,
+        deleted: 0,
+        deletedProductIds: [],
+        deletedImageCleanup: { removed: [], pending: [] },
         requiresReview: Number(latestPreview.summary?.requiresReview || 0),
         skippedRequiresReview: latestPreview.changes?.requiresReview || [],
         backupPath,
@@ -4536,6 +4657,9 @@ async function applyCatalogImport(db, token, options = {}, user = {}, runtime = 
         foreignKeyCheck: []
     };
     const hideMissingFromFile = options.missingFromFileAction === "hide";
+    const deleteMissingFromFile = options.missingFromFileAction === "delete";
+    let deleteImpact = { productIds: [], products: [], imageUrls: [], structureIds: [] };
+    let deletedStructureIds = [];
     const assignedRows = [];
     const identityByRow = new Map((latestPreview.matPlan?.items || [])
         .filter(item => item.productId && item.action !== "excluded")
@@ -4562,7 +4686,8 @@ async function applyCatalogImport(db, token, options = {}, user = {}, runtime = 
             throw error;
         }
         latestPreview = await buildCatalogImportPreview(db, tokenData.parsed, tokenData.file, {
-            resolutions: tokenData.resolutions
+            resolutions: tokenData.resolutions,
+            missingFromFileAction: options.missingFromFileAction
         });
         if (!latestPreview.canImport || getMatPlanSignature(latestPreview.matPlan) !== initialMatPlanSignature) {
             throw createImportError(409, "MAT-план устарел или больше не проходит проверку.", "IMPORT_MAT_PLAN_STALE");
@@ -4573,6 +4698,14 @@ async function applyCatalogImport(db, token, options = {}, user = {}, runtime = 
         await ensureCatalogImportArchiveRoot();
         const dbProducts = await db.all("SELECT * FROM products ORDER BY id ASC");
         let nextMatNumber = getMaxMatNumberFromProducts(dbProducts) + 1;
+        if (deleteMissingFromFile) {
+            deleteImpact = await collectAuthoritativeDeleteImpact(db, latestPreview.changes?.missingFromFile || []);
+            for (const productId of deleteImpact.productIds) {
+                await db.run("DELETE FROM products WHERE id = ? AND source = 'excel' AND deleted_at IS NULL", [productId]);
+            }
+            result.deleted = deleteImpact.productIds.length;
+            result.deletedProductIds = deleteImpact.productIds.slice();
+        }
         await applyMatReassignmentPlan(db, latestPreview.matPlan, runtime);
         if (typeof runtime.beforeStructureApply === "function") {
             await runtime.beforeStructureApply({ preview: latestPreview });
@@ -4645,6 +4778,9 @@ async function applyCatalogImport(db, token, options = {}, user = {}, runtime = 
         }
 
         await syncCatalogStructureFromProducts(db);
+        if (deleteMissingFromFile) {
+            deletedStructureIds = await pruneAuthoritativeDeleteStructures(db, deleteImpact.structureIds, now);
+        }
         await applyCatalogOrderFromParsed(db, effectiveParsed, assignedRows, now, identityByRow);
         result.assignedCodes = assignedRows.map(item => ({
             entityType: item.entityType || "structure",
@@ -4683,6 +4819,9 @@ async function applyCatalogImport(db, token, options = {}, user = {}, runtime = 
                 JSON.stringify({
                     previewSummary: latestPreview.summary,
                     applyOptions: options,
+                    deletedProductIds: result.deletedProductIds,
+                    deletedStructureIds,
+                    deletedImageUrls: deleteImpact.imageUrls,
                     skippedRequiresReview: result.skippedRequiresReview.slice(0, 500)
                 }),
                 now
@@ -4695,6 +4834,17 @@ async function applyCatalogImport(db, token, options = {}, user = {}, runtime = 
     } catch (error) {
         await removeCatalogImportArchive(preparedArchivePath).catch(() => {});
         throw error;
+    }
+
+    if (deleteMissingFromFile && deleteImpact.imageUrls.length) {
+        result.deletedImageCleanup = await cleanupDeletedProductImages(deleteImpact.imageUrls, db, runtime);
+        const logRow = await db.get("SELECT summary_json FROM catalog_import_logs WHERE id = ?", [result.importLogId]).catch(() => null);
+        if (logRow) {
+            let payload = {};
+            try { payload = JSON.parse(logRow.summary_json || "{}"); } catch { payload = {}; }
+            payload.deletedImageCleanup = result.deletedImageCleanup;
+            await db.run("UPDATE catalog_import_logs SET summary_json = ? WHERE id = ?", [JSON.stringify(payload), result.importLogId]).catch(() => {});
+        }
     }
 
     previewTokens.delete(tokenData.token);
@@ -4756,5 +4906,9 @@ module.exports = {
     classifyCatalogStructureRecord,
     classifyCatalogRecord,
     sanitizeUploadFileName,
-    buildCatalogExportWorkbook: buildReferenceCatalogExportWorkbook
+    buildCatalogExportWorkbook: buildReferenceCatalogExportWorkbook,
+    collectAuthoritativeDeleteImpact,
+    pruneAuthoritativeDeleteStructures,
+    cleanupDeletedProductImages,
+    retryPendingDeletedProductImages
 };
