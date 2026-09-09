@@ -213,5 +213,73 @@ const unresolvedPlan = buildMatPlanPreview({
 assert.strictEqual(unresolvedPlan.valid, false);
 assert(unresolvedPlan.conflicts.some(conflict => conflict.code === "UNRESOLVED_IDENTITY"));
 
+// Explicit operator mapping may intentionally select an existing product when
+// the automatic candidate list is empty (for example, a package-size change).
+const packageChangeProduct = {
+    id: 224,
+    title: "Очиститель эпоксидной затирки Litokol Litonet Gel Evo 0,75л",
+    externalId: "MAT-000256",
+    deletedAt: null,
+    source: "excel",
+    isActive: 1
+};
+const packageChangeParsed = {
+    ...parsed,
+    productRows: [{
+        rowNumber: 264,
+        title: "Очиститель эпоксидной затирки Litokol Litonet Gel Evo 1л",
+        externalId: "MAT-000256",
+        category: "Cat",
+        subcategory: "Sub",
+        price: 2700,
+        weight: 1,
+        unit: "шт",
+        sortOrder: 5
+    }]
+};
+const packageChangeDb = {
+    get: async (sql, params = []) => {
+        if (sql.includes("FROM products")) return Number(params[0]) === 224 ? { id: 224 } : null;
+        return null;
+    },
+    all: async sql => sql.includes("catalog_structure") ? [
+        { id: 1, type: "category", name: "Cat", normalized_name: "cat", external_code: "CAT-000001", parent_id: null, sort_order: 1, is_active: 1, is_system: 0 },
+        { id: 2, type: "subcategory", name: "Sub", normalized_name: "sub", external_code: "SUB-000001", parent_id: 1, sort_order: 1, is_active: 1, is_system: 0 }
+    ] : [packageChangeProduct].map(product => ({
+        id: product.id,
+        external_id: product.externalId,
+        title: product.title,
+        category: "Cat",
+        subcategory: "Sub",
+        product_group: "",
+        price: 1732.5,
+        weight: 0.8,
+        unit: "шт",
+        sort_order: 5,
+        source: product.source,
+        is_active: product.isActive,
+        deleted_at: product.deletedAt
+    }))
+};
+const packageChangeToken = await createCatalogImportPreviewToken(packageChangeDb, packageChangeParsed, { name: "package-change.xlsx" }, { id: 1 }, Buffer.from("package-change"));
+const packageChangeResolution = await updateCatalogImportResolutions(packageChangeDb, packageChangeToken.token, [
+    { rowNumber: 264, action: "map_existing", productId: 224 }
+], { id: 1 });
+assert.strictEqual(packageChangeResolution.data.canImport, true);
+assert.strictEqual(packageChangeResolution.data.preview.matPlan.valid, true);
+assert.strictEqual(packageChangeResolution.data.preview.matPlan.finalOwnerByMat["MAT-000256"], 224);
+assert.strictEqual(packageChangeResolution.data.preview.matPlan.reassignments.some(item => item.productId === 224), false);
+assert.strictEqual(packageChangeResolution.data.preview.changes.missingFromFile.some(item => Number(item.productId) === 224), false);
+
+let unknownProductError = null;
+try {
+    await updateCatalogImportResolutions(packageChangeDb, packageChangeToken.token, [
+        { rowNumber: 264, action: "map_existing", productId: 9999 }
+    ], { id: 1 });
+} catch (error) {
+    unknownProductError = error;
+}
+assert.strictEqual(unknownProductError?.code, "INVALID_IMPORT_PRODUCT");
+
 console.log(JSON.stringify({ success: true, cases: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P"] }));
 })();

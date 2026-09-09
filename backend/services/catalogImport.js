@@ -3728,12 +3728,11 @@ async function updateCatalogImportResolutions(db, token, resolutions = [], user 
         const existingAcceptedMat = existingAcceptedMatByRow.get(rowKey);
         if (existingAcceptedMat) acceptedMatCodes.delete(existingAcceptedMat);
         if (["map_existing", "accept_excel_mat"].includes(normalized.action)) {
-            const classification = classifyNewProduct(row, dbProducts);
-            const candidates = (classification.candidates || [classification.candidate]).filter(Boolean);
-            const candidateIds = new Set(candidates.map(candidate => Number(candidate.id)));
-            if (!candidateIds.has(Number(normalized.productId))) {
-                throw createImportError(400, "Выбранный товар CRM не входит в подтверждённые кандидаты этой строки.", "INVALID_IMPORT_PRODUCT_CANDIDATE");
-            }
+            // Candidate matches are recommendations for automatic resolution. An
+            // explicit operator-selected productId is validated above for
+            // existence/availability and below for uniqueness and full-plan
+            // validity, so title/MAT candidate membership must not be an
+            // unconditional blocker (for example, a changed package size).
             if (mappedProductIds.has(normalized.productId)) {
                 throw createImportError(400, "Один товар CRM нельзя связать с несколькими строками Preview.", "IMPORT_PRODUCT_ALREADY_MAPPED");
             }
