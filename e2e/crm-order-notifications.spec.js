@@ -13,6 +13,15 @@ async function waitForLeader(page) {
     await expect.poll(() => page.evaluate(() => window.CrmOrderNotifications?.isLeader())).toBe(true);
 }
 
+async function trustedInteraction(page) {
+    const menuToggle = page.locator("#crmMenuToggle");
+    if (await menuToggle.isVisible()) {
+        await page.locator(".crm-mobile-bar strong").click();
+        return;
+    }
+    await page.locator(".crm-brand").click();
+}
+
 async function openSection(page, section) {
     const button = page.locator(`.crm-nav [data-section="${section}"]`);
     const menuToggle = page.locator("#crmMenuToggle");
@@ -452,7 +461,7 @@ test("baseline is silent, real growth signals once, reconnect growth is silent",
     await expect(page.locator(".crm-toast-info")).toHaveCount(0);
     expect(await page.evaluate(() => window.__notificationSoundStarts)).toBe(0);
 
-    await page.locator(".crm-brand").click();
+    await trustedInteraction(page);
     unreadCount = 3;
     await page.evaluate(() => window.CrmOrderNotifications.refresh());
     await expect(page.locator(".crm-toast-info")).toHaveCount(1);
@@ -488,7 +497,7 @@ test("the first trusted interaction primes audio before asynchronous notificatio
     await login(page);
     await waitForLeader(page);
     await expect(page.locator("[data-order-notification-badge]")).toHaveText("1");
-    await page.locator(".crm-brand").click();
+    await trustedInteraction(page);
     expect(await page.evaluate(() => ({
         constructed: window.__notificationAudioConstructedInGesture,
         resumed: window.__notificationAudioResumedInGesture
@@ -529,8 +538,8 @@ test("Web Locks elect one polling leader and follower takes over", async ({ cont
     await expect(secondPage.locator("[data-order-notification-badge]")).toHaveText("4");
 
     const countBeforeRefresh = requestCount;
-    await firstPage.locator(".crm-brand").click();
-    await secondPage.locator(".crm-brand").click();
+    await trustedInteraction(firstPage);
+    await trustedInteraction(secondPage);
     unreadCount = 5;
     await Promise.all([
         firstPage.evaluate(() => window.CrmOrderNotifications.refresh()),
@@ -1122,7 +1131,7 @@ test("parallel read-one mutations coalesce into one silent exact reconciliation"
 
     await login(page);
     await waitForLeader(page);
-    await page.locator(".crm-brand").click();
+    await trustedInteraction(page);
     await page.evaluate(() => {
         window.__notificationBroadcasts = [];
         const observer = new BroadcastChannel("matmix-order-notifications");
@@ -1230,7 +1239,7 @@ test("reconciliation invalidates an older poll response without stale signals or
     await login(page);
     await waitForLeader(page);
     await expect(page.locator("[data-order-notification-badge]")).toHaveText("5");
-    await page.locator(".crm-brand").click();
+    await trustedInteraction(page);
     await page.evaluate(() => {
         window.__notificationBroadcasts = [];
         const observer = new BroadcastChannel("matmix-order-notifications");
@@ -1354,7 +1363,7 @@ test("a broadcast during reconciliation causes one exact replacement without a l
 
     await login(page);
     await waitForLeader(page);
-    await page.locator(".crm-brand").click();
+    await trustedInteraction(page);
     await page.evaluate(() => {
         window.__notificationBroadcasts = [];
         const observer = new BroadcastChannel("matmix-order-notifications");
@@ -1663,7 +1672,7 @@ test("a pending sound helper from an old lifecycle cannot use the replacement Au
 
     await login(page);
     await expect(page.locator("[data-order-notification-badge]")).toHaveText("1");
-    await page.locator(".crm-brand").click();
+    await trustedInteraction(page);
     unreadCount = 2;
     await page.evaluate(() => window.CrmOrderNotifications.refresh());
     await expect.poll(() => page.evaluate(() => window.__notificationAudioContexts.length)).toBe(1);
@@ -1673,7 +1682,7 @@ test("a pending sound helper from an old lifecycle cannot use the replacement Au
         window.CrmOrderNotifications.start();
     });
     await expect(page.locator("[data-order-notification-badge]")).toHaveText("2");
-    await page.locator(".crm-brand").click();
+    await trustedInteraction(page);
     unreadCount = 3;
     await page.evaluate(() => window.CrmOrderNotifications.refresh());
     await expect.poll(() => page.evaluate(() => window.__notificationAudioContexts.length)).toBe(2);
@@ -1723,7 +1732,7 @@ test("fallback polls visible tabs and treats return from hidden as a silent base
 
     await login(page);
     await expect(page.locator("[data-order-notification-badge]")).toHaveText("1");
-    await page.locator(".crm-brand").click();
+    await trustedInteraction(page);
     await page.evaluate(() => window.__setNotificationVisibility("hidden"));
     unreadCount = 5;
     await page.evaluate(() => window.CrmOrderNotifications.refresh());

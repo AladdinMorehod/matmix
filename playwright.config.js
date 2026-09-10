@@ -6,6 +6,9 @@ module.exports = defineConfig({
     timeout: 45000,
     expect: { timeout: 10000 },
     fullyParallel: false,
+    // The Windows E2E server intentionally exposes one shared SQLite database.
+    // Serial workers keep stateful mutation specs isolated and deterministic.
+    workers: 1,
     retries: process.env.CI ? 1 : 0,
     reporter: process.env.CI ? [["line"], ["html", { open: "never" }]] : "line",
     outputDir: process.env.PLAYWRIGHT_OUTPUT_DIR || "test-results",

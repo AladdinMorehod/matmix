@@ -9,13 +9,19 @@ async function login(page, username = "e2e_admin", password = "E2eAdmin!234") {
     await page.waitForFunction(() => typeof currentUser !== "undefined" && Boolean(currentUser));
 }
 
+async function openSection(page, section) {
+    const menuToggle = page.locator("#crmMenuToggle");
+    if (await menuToggle.isVisible()) await menuToggle.click();
+    await page.locator(`.crm-nav [data-section="${section}"]`).click();
+}
+
 test("standalone navigation and DOM are removed while embedded admin workflows remain", async ({ page }) => {
     await login(page);
     await expect(page.locator('.crm-nav [data-section="catalogStructure"]')).toHaveCount(0);
     await expect(page.locator('.crm-nav [data-section="catalog"]')).toBeVisible();
     await expect(page.locator("#catalogStructureView")).toHaveCount(0);
 
-    await page.locator('.crm-nav [data-section="catalog"]').click();
+    await openSection(page, "catalog");
     await expect(page.locator('[data-catalog-mode="products"]')).toBeVisible();
     await expect(page.locator('[data-catalog-mode="structure"]')).toBeVisible();
     await page.locator('[data-catalog-mode="structure"]').click();

@@ -9,6 +9,12 @@ async function login(page) {
     await page.waitForURL(/manager/);
 }
 
+async function openSection(page, section) {
+    const menuToggle = page.locator("#crmMenuToggle");
+    if (await menuToggle.isVisible()) await menuToggle.click();
+    await page.locator(`.crm-nav [data-section="${section}"]`).click();
+}
+
 async function createImportableCatalog() {
     const workbook = new ExcelJS.Workbook();
     const sheet = workbook.addWorksheet("ШАБЛОН");
@@ -63,7 +69,7 @@ test("catalog import apply returns success, archives Excel and consumes its toke
 
 test("catalog import UI shows a successful apply and offers the archived workbook", async ({ page }) => {
     await login(page);
-    await page.locator('.crm-nav [data-section="catalogImport"]').click();
+    await openSection(page, "catalogImport");
     await expect(page.locator("#importView h1")).toHaveText("Импорт каталога");
 
     await page.locator("#catalogImportFile").setInputFiles({

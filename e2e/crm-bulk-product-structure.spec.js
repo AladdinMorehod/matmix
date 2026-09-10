@@ -1,4 +1,10 @@
 const { test, expect } = require("@playwright/test");
+
+async function openSection(page, section) {
+    const menuToggle = page.locator("#crmMenuToggle");
+    if (await menuToggle.isVisible()) await menuToggle.click();
+    await page.locator(`.crm-nav [data-section="${section}"]`).click();
+}
 const ExcelJS = require("exceljs");
 
 async function login(page, loginName, password) {
@@ -186,13 +192,13 @@ test("bulk structure endpoint is atomic, partial and reflected in XLSX", async (
 test("bulk structure controls preserve selection on error and clear it on success", async ({ page, browser }) => {
     const managerPage = await browser.newPage();
     await login(managerPage, "e2e_manager", "E2eManager!234");
-    await managerPage.locator('.crm-nav [data-section="catalog"]').click();
+    await openSection(managerPage, "catalog");
     await expect(managerPage.locator(".product-select")).toHaveCount(0);
     await expect(managerPage.locator(".products-bulk-structure-edit")).toHaveCount(0);
     await managerPage.close();
 
     await login(page, "e2e_admin", "E2eAdmin!234");
-    await page.locator('.crm-nav [data-section="catalog"]').click();
+    await openSection(page, "catalog");
     const firstCheckbox = page.locator(".product-select").first();
     await expect(firstCheckbox).toBeVisible();
     await expect(page.locator(".products-bulk-structure-edit")).toBeHidden();
