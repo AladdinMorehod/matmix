@@ -19,6 +19,38 @@ function seoConfig(env = process.env) {
 function escapeHtml(value) { return String(value ?? "").replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char])); }
 function escapeXml(value) { return escapeHtml(value); }
 function truncate(value, length) { return Array.from(String(value || "").replace(/\s+/g, " ").trim()).slice(0, length).join(""); }
+function trimDanglingTitlePunctuation(value) { return String(value || "").replace(/[\s|—–-]+$/u, "").trim(); }
+function truncateTitle(value, length = 65) {
+    const normalized = String(value || "").replace(/\s+/g, " ").trim();
+    if (Array.from(normalized).length <= length) return normalized;
+    const characters = Array.from(normalized).slice(0, Math.max(1, length));
+    const boundary = characters.join("").lastIndexOf(" ");
+    const candidate = boundary >= Math.floor(length * 0.6) ? characters.slice(0, boundary).join("") : characters.join("");
+    return trimDanglingTitlePunctuation(candidate);
+}
+function titleWithSuffix(title, suffix, length = 65) {
+    const normalizedSuffix = String(suffix || "").replace(/\s+/g, " ").trim();
+    const normalizedTitle = String(title || "").replace(/\s+/g, " ").trim();
+    const full = normalizedSuffix ? `${normalizedTitle} | ${normalizedSuffix}` : normalizedTitle;
+    if (Array.from(full).length <= length) return full;
+    if (!normalizedSuffix) return truncateTitle(normalizedTitle, length);
+    const suffixPart = ` | ${normalizedSuffix}`;
+    const suffixLength = Array.from(suffixPart).length;
+    if (suffixLength >= length) return truncateTitle(normalizedSuffix, length);
+    const titleLimit = length - suffixLength;
+    const safeTitle = truncateTitle(normalizedTitle, titleLimit);
+    return `${safeTitle}${suffixPart}`;
+}
+function textWithSuffix(value, suffix, length = 170) {
+    const normalizedSuffix = String(suffix || "").replace(/\s+/g, " ").trim();
+    const normalizedValue = String(value || "").replace(/\s+/g, " ").trim();
+    const full = normalizedSuffix ? `${normalizedValue} ${normalizedSuffix}` : normalizedValue;
+    if (Array.from(full).length <= length) return full;
+    if (!normalizedSuffix) return truncateTitle(normalizedValue, length);
+    const suffixLength = Array.from(` ${normalizedSuffix}`).length;
+    if (suffixLength >= length) return normalizedSuffix;
+    return `${truncateTitle(normalizedValue, length - suffixLength)} ${normalizedSuffix}`;
+}
 function absolute(config, pathname) { return config.baseUrl ? new URL(pathname, `${config.baseUrl}/`).href : pathname; }
 function codePath(code) { return encodeURIComponent(String(code || "").trim().toUpperCase()); }
 function productPath(product) { return `/product/${codePath(product.external_id)}`; }
@@ -42,7 +74,7 @@ function breadcrumb(config, items) {
 function page({ config, title, description, pathname, h1, body, type = "website", image = "", schemas = [], robots = "" }) {
     const pageNonce = nonce();
     const canonical = absolute(config, pathname);
-    const safeTitle = truncate(title, 65); const safeDescription = truncate(description, 170);
+    const safeTitle = truncateTitle(title, 65); const safeDescription = truncate(description, 170);
     const robotsValue = robots || (config.indexing ? "index,follow" : "noindex,nofollow");
     const schemaHtml = schemas.map(schema => `<script nonce="${pageNonce}" type="application/ld+json">${jsonLd(schema)}</script>`).join("\n");
     return { nonce: pageNonce, html: `<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(safeTitle)}</title><meta name="description" content="${escapeHtml(safeDescription)}"><meta name="robots" content="${robotsValue}"><link rel="canonical" href="${escapeHtml(canonical)}"><meta property="og:type" content="${type}"><meta property="og:title" content="${escapeHtml(safeTitle)}"><meta property="og:description" content="${escapeHtml(safeDescription)}"><meta property="og:url" content="${escapeHtml(canonical)}"><meta property="og:image" content="${escapeHtml(imageUrl(config, image))}"><meta property="og:site_name" content="${escapeHtml(config.siteName)}"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${escapeHtml(safeTitle)}"><meta name="twitter:description" content="${escapeHtml(safeDescription)}"><meta name="twitter:image" content="${escapeHtml(imageUrl(config, image))}"><link rel="stylesheet" href="/css/style.css">${schemaHtml}</head><body><header class="header"><a class="logo" href="/" aria-label="На главную"><img src="/img/logo-burgundy.png" alt="MatMix"></a><nav class="nav" aria-label="Основная навигация"><a href="/">Главная</a><a href="/catalog">Каталог</a></nav></header><main class="products catalog-page">${h1 ? `<h1>${escapeHtml(h1)}</h1>` : ""}${body}</main><footer><a href="/">MatMix</a> · <a href="/catalog">Каталог</a><nav class="legal-links" aria-label="Юридическая информация"><a href="/privacy">Политика конфиденциальности</a><a href="/terms">Условия</a><a href="/delivery">Доставка</a><a href="/payment">Оплата</a><a href="/returns">Возврат</a><a href="/contacts">Контакты и реквизиты</a></nav></footer><script src="/js/analytics.js" defer></script></body></html>` };
@@ -54,8 +86,12 @@ function productPage(config, pageData) {
     const hasPrice = Number(product.price) > 0;
     const fullDescription = String(product.full_description || product.description || "").trim();
     const lead = String(product.short_description || "").trim();
-    const description = String(product.seo_description || lead || product.description || `${product.title}. Код ${product.external_id}. Каталог MatMix.`).trim();
-    const title = String(product.seo_title || `${product.title} — ${product.external_id} | ${config.siteName}`).trim();
+    const description = product.seo_description || lead || product.description
+        ? String(product.seo_description || lead || product.description).trim()
+        : textWithSuffix(product.title, `Код ${product.external_id}. Каталог ${config.siteName}.`, 170);
+    const title = product.seo_title
+        ? String(product.seo_title).trim()
+        : titleWithSuffix(product.title, config.siteName, 65);
     const gallery = images.filter(item => String(item.image_url || "").trim());
     const primaryImage = gallery[0]?.image_url || product.image_url || "";
     const crumbs = [{ name: "Каталог", path: "/catalog" }];
@@ -117,4 +153,4 @@ function categoryPage(config, node, parent, children, products, pageNumber, tota
 
 function notFoundPage(config) { return page({ config, title: `Страница не найдена | ${config.siteName}`, description: "Запрошенная страница не найдена.", pathname: "/404", h1: "Страница не найдена", body: '<p>Проверьте адрес или перейдите на <a href="/">главную</a> либо в <a href="/catalog">каталог</a>.</p>', robots: "noindex,follow" }); }
 
-module.exports = { seoConfig, escapeHtml, escapeXml, absolute, codePath, productPath, categoryPath, subcategoryPath, breadcrumb, jsonLd, page, productPage, categoryPage, notFoundPage };
+module.exports = { seoConfig, escapeHtml, escapeXml, absolute, codePath, productPath, categoryPath, subcategoryPath, breadcrumb, jsonLd, page, productPage, categoryPage, notFoundPage, truncateTitle, titleWithSuffix, textWithSuffix };
