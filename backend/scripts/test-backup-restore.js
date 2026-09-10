@@ -104,6 +104,20 @@ async function main() {
     }
     const baseline = { products: (await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM products")).count, orders: (await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM orders")).count, clients: (await dbGet(paths.dbPath, "SELECT COUNT(*) count FROM clients")).count, dbHash: await sha256(paths.dbPath) };
     const backup = await createBackup({ paths }); const verified = await verifyBackup(backup.backupPath); assert(verified.success); assert.strictEqual(verified.catalogImports.fileCount, 1);
+    const zeroOptional = path.join(root, "matmix-backup-zero-optional"); await copyDir(backup.backupPath, zeroOptional);
+    await dbRun(path.join(zeroOptional, "database", "matmix.db"), "DELETE FROM order_attachments");
+    await fs.promises.rm(path.join(zeroOptional, "attachments"), { recursive: true });
+    await fs.promises.rm(path.join(zeroOptional, "catalog-imports"), { recursive: true });
+    const zeroManifestPath = path.join(zeroOptional, "manifest.json"); const zeroManifest = JSON.parse(await fs.promises.readFile(zeroManifestPath, "utf8"));
+    zeroManifest.database.size = (await fs.promises.stat(path.join(zeroOptional, "database", "matmix.db"))).size; zeroManifest.database.sha256 = await sha256(path.join(zeroOptional, "database", "matmix.db"));
+    zeroManifest.attachments = { root: "attachments/orders", fileCount: 0, totalBytes: 0, files: [] }; zeroManifest.catalogImports = { root: "catalog-imports", fileCount: 0, totalBytes: 0, files: [] };
+    await fs.promises.writeFile(zeroManifestPath, JSON.stringify(zeroManifest));
+    assert((await verifyBackup(zeroOptional)).success);
+    const zeroRehearsal = spawnSync(process.execPath, [path.join(__dirname, "rehearse-offsite-restore.js"), "--local-source", zeroOptional], { cwd: path.resolve(__dirname, "..", ".."), encoding: "utf8" });
+    assert.strictEqual(zeroRehearsal.status, 0, String(zeroRehearsal.stderr || zeroRehearsal.stdout));
+    const nonEmptyMissing = path.join(root, "non-empty-missing-attachments"); await copyDir(backup.backupPath, nonEmptyMissing); await fs.promises.rm(path.join(nonEmptyMissing, "attachments"), { recursive: true }); await expectFailure(() => verifyBackup(nonEmptyMissing), /ENOENT|no such file/i);
+    const nonEmptyCatalogMissing = path.join(root, "non-empty-missing-catalog-imports"); await copyDir(backup.backupPath, nonEmptyCatalogMissing); await fs.promises.rm(path.join(nonEmptyCatalogMissing, "catalog-imports"), { recursive: true }); await expectFailure(() => verifyBackup(nonEmptyCatalogMissing), /ENOENT|no such file/i);
+    const zeroV2 = path.join(root, "matmix-backup-zero-v2"); await copyDir(zeroOptional, zeroV2); const zeroV2ManifestPath = path.join(zeroV2, "manifest.json"); const zeroV2Manifest = JSON.parse(await fs.promises.readFile(zeroV2ManifestPath, "utf8")); zeroV2Manifest.formatVersion = 2; delete zeroV2Manifest.catalogImports; await fs.promises.writeFile(zeroV2ManifestPath, JSON.stringify(zeroV2Manifest)); assert((await verifyBackup(zeroV2)).success); const zeroV2Rehearsal = spawnSync(process.execPath, [path.join(__dirname, "rehearse-offsite-restore.js"), "--local-source", zeroV2], { cwd: path.resolve(__dirname, "..", ".."), encoding: "utf8" }); assert.strictEqual(zeroV2Rehearsal.status, 0, String(zeroV2Rehearsal.stderr || zeroV2Rehearsal.stdout));
     const rehearsal = spawnSync(process.execPath, [path.join(__dirname, "rehearse-offsite-restore.js"), "--local-source", backup.backupPath], { cwd: path.resolve(__dirname, "..", ".."), encoding: "utf8" });
     assert.strictEqual(rehearsal.status, 0, String(rehearsal.stderr || rehearsal.stdout));
     await dbRun(paths.dbPath, "DELETE FROM product_attribute_values WHERE product_id=?", [product.lastID]);

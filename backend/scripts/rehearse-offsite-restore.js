@@ -45,12 +45,18 @@ function runSql(dbPath, sql) {
     });
 }
 
-async function copyTree(source, target) {
+async function copyTree(source, target, { allowMissing = false } = {}) {
     await fs.promises.mkdir(target, { recursive: true });
 
-    for (const entry of await fs.promises.readdir(source, {
-        withFileTypes: true
-    })) {
+    let entries;
+    try {
+        entries = await fs.promises.readdir(source, { withFileTypes: true });
+    } catch (error) {
+        if (allowMissing && error.code === "ENOENT") return;
+        throw error;
+    }
+
+    for (const entry of entries) {
         const src = path.join(source, entry.name);
         const dst = path.join(target, entry.name);
 
@@ -181,12 +187,14 @@ async function main() {
 
         await copyTree(
             path.join(sourcePath, "uploads", "products"),
-            paths.uploadsPath
+            paths.uploadsPath,
+            { allowMissing: verified.manifest.uploads.count === 0 }
         );
         if (verified.manifest.formatVersion >= 2) {
             await copyTree(
                 path.join(sourcePath, "attachments", "orders"),
-                paths.attachmentsPath
+                paths.attachmentsPath,
+                { allowMissing: verified.manifest.attachments.fileCount === 0 }
             );
         } else {
             await fs.promises.mkdir(paths.attachmentsPath, { recursive: true });
@@ -194,14 +202,15 @@ async function main() {
         if (verified.manifest.formatVersion >= 3) {
             await copyTree(
                 path.join(sourcePath, "catalog-imports"),
-                paths.catalogImportsPath
+                paths.catalogImportsPath,
+                { allowMissing: verified.manifest.catalogImports.fileCount === 0 }
             );
         } else {
             await fs.promises.mkdir(paths.catalogImportsPath, { recursive: true });
         }
 
         const sourceArchiveSnapshot = verified.manifest.formatVersion >= 3
-            ? await snapshotTree(path.join(sourcePath, "catalog-imports"))
+            ? verified.manifest.catalogImports.fileCount === 0 ? [] : await snapshotTree(path.join(sourcePath, "catalog-imports"))
             : null;
         const sourceDbHash = await sha256(
             path.join(sourcePath, "database", "matmix.db")

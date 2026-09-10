@@ -161,7 +161,16 @@ async function verifyCatalogImportArea(archiveRoot, catalogImportsManifest) {
     if (!catalogImportsManifest || catalogImportsManifest.root !== "catalog-imports" || !Array.isArray(catalogImportsManifest.files)) {
         throw new Error("Backup catalog import manifest is invalid.");
     }
-    const archiveRootStat = await fs.promises.lstat(archiveRoot);
+    const expectedFileCount = manifestSize(catalogImportsManifest.fileCount, "catalogImports.fileCount");
+    let archiveRootStat;
+    try {
+        archiveRootStat = await fs.promises.lstat(archiveRoot);
+    } catch (error) {
+        if (error.code === "ENOENT" && expectedFileCount === 0 && manifestSize(catalogImportsManifest.totalBytes, "catalogImports.totalBytes") === 0) {
+            return { legacy: false, fileCount: 0, totalBytes: 0 };
+        }
+        throw error;
+    }
     if (archiveRootStat.isSymbolicLink() || !archiveRootStat.isDirectory()) {
         throw new Error("Backup catalog import archive root is unsafe or missing.");
     }
@@ -190,7 +199,7 @@ async function verifyCatalogImportArea(archiveRoot, catalogImportsManifest) {
     if (actualArchives.length !== archiveListed.size || actualArchives.some(file => !archiveListed.has(file.relative))) {
         throw new Error("Backup contains unlisted catalog import archive files.");
     }
-    if (manifestSize(catalogImportsManifest.fileCount, "catalogImports.fileCount") !== archiveListed.size
+    if (expectedFileCount !== archiveListed.size
         || manifestSize(catalogImportsManifest.totalBytes, "catalogImports.totalBytes") !== totalBytes) {
         throw new Error("Backup catalog import archive totals do not match.");
     }

@@ -4,9 +4,16 @@ const path = require("path");
 const { createBackup, verifyBackup, verifyDatabase, verifyReferences, verifyCatalogImportArea, runtimePaths, isInside } = require("../services/productionBackup");
 const { auditOrderAttachments } = require("../services/orderAttachmentAudit");
 
-async function copyTree(source, target) {
+async function copyTree(source, target, { allowMissing = false } = {}) {
     await fs.promises.mkdir(target, { recursive: true });
-    for (const entry of await fs.promises.readdir(source, { withFileTypes: true })) {
+    let entries;
+    try {
+        entries = await fs.promises.readdir(source, { withFileTypes: true });
+    } catch (error) {
+        if (allowMissing && error.code === "ENOENT") return;
+        throw error;
+    }
+    for (const entry of entries) {
         const src = path.join(source, entry.name); const dst = path.join(target, entry.name); const stat = await fs.promises.lstat(src);
         if (stat.isSymbolicLink()) throw new Error("Restore refuses symbolic links.");
         if (stat.isDirectory()) await copyTree(src, dst); else if (stat.isFile()) await fs.promises.copyFile(src, dst, fs.constants.COPYFILE_EXCL);
@@ -68,12 +75,12 @@ async function restore(backupPath, options = {}) {
         await fs.promises.mkdir(path.dirname(paths.attachmentsPath), { recursive: true });
         if (restoreCatalogImports) await fs.promises.mkdir(path.dirname(paths.catalogImportsPath), { recursive: true });
         await fs.promises.copyFile(path.join(source, "database", "matmix.db"), stageDb, fs.constants.COPYFILE_EXCL);
-        await copyTree(path.join(source, "uploads", "products"), stageUploads);
-        if (verified.manifest.formatVersion === 2) await copyTree(path.join(source, "attachments", "orders"), stageAttachments);
-        else if (verified.manifest.formatVersion >= 3) await copyTree(path.join(source, "attachments", "orders"), stageAttachments);
+        await copyTree(path.join(source, "uploads", "products"), stageUploads, { allowMissing: verified.manifest.uploads.count === 0 });
+        if (verified.manifest.formatVersion === 2) await copyTree(path.join(source, "attachments", "orders"), stageAttachments, { allowMissing: verified.manifest.attachments.fileCount === 0 });
+        else if (verified.manifest.formatVersion >= 3) await copyTree(path.join(source, "attachments", "orders"), stageAttachments, { allowMissing: verified.manifest.attachments.fileCount === 0 });
         else await fs.promises.mkdir(stageAttachments, { recursive: true, mode: 0o700 });
         if (restoreCatalogImports) {
-            await copyTree(path.join(source, "catalog-imports"), stageCatalogImports);
+            await copyTree(path.join(source, "catalog-imports"), stageCatalogImports, { allowMissing: verified.manifest.catalogImports.fileCount === 0 });
             if (typeof options.afterCatalogImportsStaged === "function") {
                 await options.afterCatalogImportsStaged({ stageCatalogImports, manifest: verified.manifest.catalogImports });
             }
