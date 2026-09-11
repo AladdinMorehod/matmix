@@ -105,7 +105,11 @@ function productPage(config, pageData) {
     if (fullDescription || lead) productSchema.description = truncate(fullDescription || lead, 500);
     const packageWeight = attributes.find(item => item.code === "package_weight" && String(item.unit || "").trim().toLowerCase() === "кг" && Number(item.value) > 0);
     if (packageWeight) productSchema.weight = { "@type": "QuantitativeValue", value: Number(packageWeight.value), unitText: "kg" };
-    if (hasPrice) productSchema.offers = { "@type": "Offer", priceCurrency: "RUB", price: Number(product.price).toFixed(2), url: absolute(config, path) };
+    if (hasPrice) {
+        productSchema.offers = { "@type": "Offer", priceCurrency: "RUB", price: Number(product.price).toFixed(2), url: absolute(config, path) };
+        const availability = { in_stock: "https://schema.org/InStock", out_of_stock: "https://schema.org/OutOfStock" }[String(product.stock_status || "unknown").trim().toLowerCase()];
+        if (availability) productSchema.offers.availability = availability;
+    }
     const imageMarkup = primaryImage
         ? `<img class="product-page-main-image" data-gallery-main src="${escapeHtml(primaryImage)}" alt="${escapeHtml(gallery[0]?.alt_text || product.title)}" width="900" height="900" decoding="async" fetchpriority="high">`
         : `<div class="product-page-image-empty" role="img" aria-label="Изображение отсутствует"><span>Фото скоро появятся</span></div>`;

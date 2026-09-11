@@ -436,6 +436,7 @@ function normalizeProduct(row) {
         imageUrl,
         image_url: imageUrl,
         description: row.description || "",
+        stockStatus: normalizeStockStatus(row.stock_status),
         brand: row.brand || "",
         shortDescription: row.short_description || "",
         fullDescription: row.full_description || "",
@@ -469,8 +470,15 @@ function normalizePublicProduct(row) {
         image: row.image || "",
         imageUrl,
         image_url: imageUrl,
-        description: row.description || ""
+        description: row.description || "",
+        stockStatus: normalizeStockStatus(row.stock_status)
     };
+}
+
+const STOCK_STATUSES = new Set(["unknown", "in_stock", "out_of_stock"]);
+function normalizeStockStatus(value) {
+    const normalized = String(value || "unknown").trim().toLowerCase();
+    return STOCK_STATUSES.has(normalized) ? normalized : "unknown";
 }
 
 function getProductPayload(body, existing = {}) {
@@ -488,6 +496,8 @@ function getProductPayload(body, existing = {}) {
         unit: normalizeText(body.unit) || "шт",
         image: body.image === undefined ? (existing.image || "") : normalizeText(body.image),
         description: normalizeText(body.description),
+        stockStatus: body.stockStatus === undefined && body.stock_status === undefined
+            ? normalizeStockStatus(existing.stock_status) : normalizeStockStatus(body.stockStatus ?? body.stock_status),
         brand: body.brand === undefined ? (existing.brand || "") : String(body.brand || "").trim(),
         shortDescription: body.shortDescription === undefined && body.short_description === undefined
             ? (existing.short_description || "") : String(body.shortDescription || body.short_description || "").trim(),
@@ -523,6 +533,7 @@ function validateProductPayload(payload, existing = null) {
             return "Выберите корректную единицу измерения.";
         }
     }
+    if (!STOCK_STATUSES.has(payload.stockStatus)) return "Выберите корректный статус наличия.";
     for (const [value, limit, label] of [
         [payload.brand, 160, "Бренд"],
         [payload.shortDescription, 500, "Короткое описание"],
@@ -1158,9 +1169,9 @@ async function createManualProductWithMatCodeLocked(payload) {
             const result = await run(
                 `INSERT INTO products (
                     external_id, title, slug, category, subcategory, product_group, price, weight, unit,
-                    image, description, brand, short_description, full_description, seo_title, seo_description,
+                    image, description, brand, short_description, full_description, seo_title, seo_description, stock_status,
                     is_active, sort_order, source, created_at, updated_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
                     externalId,
                     payload.title,
@@ -1178,6 +1189,7 @@ async function createManualProductWithMatCodeLocked(payload) {
                     payload.fullDescription,
                     payload.seoTitle,
                     payload.seoDescription,
+                    payload.stockStatus,
                     payload.isActive,
                     payload.sortOrder,
                     "manual",
@@ -2412,6 +2424,7 @@ router.patch("/:id", requireRole(["admin"]), async (req, res) => {
                  full_description = ?,
                  seo_title = ?,
                  seo_description = ?,
+                 stock_status = ?,
                  is_active = ?,
                  sort_order = ?,
                  updated_at = ?
@@ -2432,6 +2445,7 @@ router.patch("/:id", requireRole(["admin"]), async (req, res) => {
                 payload.fullDescription,
                 payload.seoTitle,
                 payload.seoDescription,
+                payload.stockStatus,
                 payload.isActive,
                 payload.sortOrder,
                 now,

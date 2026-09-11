@@ -168,7 +168,7 @@ async function assertForeignKeyCascades(db) {
 }
 
 async function main() {
-    assert.strictEqual(CURRENT_SCHEMA_VERSION, 9);
+    assert.strictEqual(CURRENT_SCHEMA_VERSION, 10);
     const root = await fs.promises.mkdtemp(path.join(os.tmpdir(), "matmix-order-notifications-"));
     const databasePath = path.join(root, "matmix.db");
     const lockPath = path.join(root, "runtime.lock");
@@ -455,7 +455,7 @@ async function main() {
 
     console.log(JSON.stringify({
         success: true,
-        schema: "5->9",
+        schema: "5->10",
         personalizedReadState: "ok",
         exactReadSet: "ok",
         olderOrderFirstAssignmentUnread: "ok",

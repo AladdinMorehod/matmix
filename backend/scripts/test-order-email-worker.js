@@ -95,7 +95,7 @@ async function row(db, orderId) {
 }
 
 async function main() {
-    assert.strictEqual(CURRENT_SCHEMA_VERSION, 9);
+    assert.strictEqual(CURRENT_SCHEMA_VERSION, 10);
     const root = await fs.promises.mkdtemp(path.join(os.tmpdir(), "matmix-order-email-worker-"));
     const databasePath = await setupDatabase(root);
     const db = await openDatabase(databasePath);
@@ -363,7 +363,7 @@ async function main() {
 
         console.log(JSON.stringify({
             success: true,
-            schemaVersion: 9,
+            schemaVersion: 10,
             successSend: true,
             retryAndMaxAttempts: true,
             concurrentClaim: true,

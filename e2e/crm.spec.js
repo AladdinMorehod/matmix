@@ -44,6 +44,7 @@ test("admin edits a product group and export uses the current value", async ({ p
     expect(productsResponse.ok()).toBeTruthy();
     const product = (await productsResponse.json()).products[0];
     expect(product).toBeTruthy();
+    expect(["unknown", "in_stock", "out_of_stock"]).toContain(product.stockStatus);
 
     await openCrmSection(page, "catalog");
     const productRow = page.locator(".products-row", { hasText: product.title });
@@ -52,6 +53,7 @@ test("admin edits a product group and export uses the current value", async ({ p
     const modal = page.locator(".crm-modal");
     const groupInput = modal.locator('input[name="productGroup"]');
     await expect(groupInput).toHaveValue(product.productGroup);
+    await expect(modal.locator('select[name="stockStatus"]')).toHaveValue(product.stockStatus);
     await expect(modal.locator("#product-group-options")).toHaveCount(1);
     await page.setViewportSize({ width: 320, height: 800 });
     const mobileLayout = await modal.evaluate(element => ({
@@ -80,6 +82,21 @@ test("admin edits a product group and export uses the current value", async ({ p
     expect(updatedProduct.productGroup).toBe("Сухая смесь");
     expect(updatedProduct.category).toBe(product.category);
     expect(updatedProduct.subcategory).toBe(product.subcategory);
+    expect(updatedProduct.stockStatus).toBe(product.stockStatus);
+
+    const stockUpdate = await page.request.patch(`/api/products/${product.id}`, {
+        data: { ...updatePayload, stockStatus: "in_stock" }
+    });
+    expect(stockUpdate.ok()).toBeTruthy();
+    expect((await stockUpdate.json()).product.stockStatus).toBe("in_stock");
+    const stockReload = await page.request.get(`/api/products?search=${encodeURIComponent(product.title)}&limit=10`);
+    expect(stockReload.ok()).toBeTruthy();
+    expect((await stockReload.json()).products.find(item => Number(item.id) === Number(product.id)).stockStatus).toBe("in_stock");
+    const invalidStock = await page.request.patch(`/api/products/${product.id}`, {
+        data: { ...updatePayload, stockStatus: "warehouse_available" }
+    });
+    expect(invalidStock.ok()).toBeTruthy();
+    expect((await invalidStock.json()).product.stockStatus).toBe("unknown");
 
     const invalidType = await page.request.patch(`/api/products/${product.id}`, {
         data: { ...updatePayload, productGroup: { value: "invalid" } }
@@ -127,6 +144,7 @@ test("admin edits product content in readable tabs without mobile overflow", asy
     } });
     expect(createResponse.status()).toBe(201);
     const product = (await createResponse.json()).product;
+    expect(product.stockStatus).toBe("unknown");
 
     const code = `e2e_content_${product.id}_${projectSuffix}`;
     let definitionsResponse = await page.request.get("/api/products/attribute-definitions");

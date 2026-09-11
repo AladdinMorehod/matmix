@@ -288,6 +288,7 @@ async function initProductsTable() {
     await ensureColumn("products", "image", "TEXT");
     await ensureColumnWithBackup("products", "image_url", "TEXT", "image-url");
     await ensureColumn("products", "description", "TEXT");
+    await ensureColumn("products", "stock_status", "TEXT NOT NULL DEFAULT 'unknown'");
     await ensureColumn("products", "is_active", "INTEGER DEFAULT 1");
     await ensureColumn("products", "sort_order", "INTEGER DEFAULT 0");
     await ensureColumn("products", "source", "TEXT");

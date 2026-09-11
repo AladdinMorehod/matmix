@@ -18,7 +18,7 @@ const {
     backfillPrimaryProductImages
 } = require("./services/productPageSchema");
 
-const CURRENT_SCHEMA_VERSION = 9;
+const CURRENT_SCHEMA_VERSION = 10;
 const CONSENT_COLUMNS = [
     ["consent_given", "INTEGER"], ["consent_at", "TEXT"], ["privacy_policy_version", "TEXT"],
     ["terms_version", "TEXT"], ["privacy_policy_url", "TEXT"], ["terms_url", "TEXT"]
@@ -329,6 +329,11 @@ async function migrateToV9(db) {
     await backfillPrimaryProductImages(executor);
 }
 
+async function migrateToV10(db) {
+    await ensureColumn(db, "products", "stock_status", "TEXT NOT NULL DEFAULT 'unknown'");
+    await db.run("UPDATE products SET stock_status = 'unknown' WHERE stock_status IS NULL OR stock_status NOT IN ('unknown', 'in_stock', 'out_of_stock')");
+}
+
 async function migrateDatabase(dbPath, { dryRun = true, injectFailure = false } = {}) {
     const db = await openDatabase(dbPath);
     try {
@@ -336,7 +341,7 @@ async function migrateDatabase(dbPath, { dryRun = true, injectFailure = false } 
         if (fromVersion > CURRENT_SCHEMA_VERSION) throw new Error(`Unsupported newer schema version ${fromVersion}.`);
         const findings = await audit(db);
         if (dryRun || fromVersion === CURRENT_SCHEMA_VERSION) return { dryRun, fromVersion, toVersion: CURRENT_SCHEMA_VERSION, findings, changed: false };
-        if (![0, 1, 2, 3, 4, 5, 6, 7, 8].includes(fromVersion)) throw new Error(`Unsupported schema version ${fromVersion}.`);
+        if (![0, 1, 2, 3, 4, 5, 6, 7, 8, 9].includes(fromVersion)) throw new Error(`Unsupported schema version ${fromVersion}.`);
         if (findings.eventsWithoutOrder || findings.subcategoriesWithoutParent || findings.activeChildWithInactiveParent
             || findings.duplicateOrderNumbers || findings.duplicateProductCodes || findings.emptyProductCodes
             || findings.invalidRequestTypes || findings.attachmentsWithoutOrder || findings.emailOutboxWithoutOrder) {
@@ -356,6 +361,7 @@ async function migrateDatabase(dbPath, { dryRun = true, injectFailure = false } 
             if (fromVersion <= 6) await migrateToV7(db);
             if (fromVersion <= 7) await migrateToV8(db);
             if (fromVersion <= 8) await migrateToV9(db);
+            if (fromVersion <= 9) await migrateToV10(db);
             if (injectFailure) throw new Error("Injected migration failure");
             const fk = await db.all("PRAGMA foreign_key_check");
             const integrity = await db.get("PRAGMA integrity_check");

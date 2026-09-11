@@ -72,7 +72,7 @@ async function login(baseUrl) {
 }
 
 async function assertSchema(db) {
-    assert.strictEqual(Number((await db.get("PRAGMA user_version")).user_version), 9);
+    assert.strictEqual(Number((await db.get("PRAGMA user_version")).user_version), 10);
     const columns = await db.all("PRAGMA table_info(order_email_outbox)");
     assert.deepStrictEqual(columns.map(column => column.name), [
         "id", "event_key", "order_id", "event_type", "status", "attempt_count",
@@ -133,7 +133,7 @@ async function outboxRows(db) {
 }
 
 async function main() {
-    assert.strictEqual(CURRENT_SCHEMA_VERSION, 9);
+    assert.strictEqual(CURRENT_SCHEMA_VERSION, 10);
     const root = await fs.promises.mkdtemp(path.join(os.tmpdir(), "matmix-order-email-outbox-"));
     const databasePath = path.join(root, "matmix.db");
     const sessionPath = path.join(root, "sessions.db");
@@ -151,7 +151,7 @@ async function main() {
     await new Promise((resolve, reject) => database.db.close(error => error ? reject(error) : resolve()));
     const freshMigration = await migrateDatabase(databasePath, { dryRun: false });
     assert.strictEqual(freshMigration.fromVersion, 0);
-    assert.strictEqual(freshMigration.toVersion, 9);
+    assert.strictEqual(freshMigration.toVersion, 10);
 
     const setup = await openDatabase(databasePath);
     await assertSchema(setup);
@@ -320,7 +320,7 @@ async function main() {
 
         console.log(JSON.stringify({
             success: true,
-            schemaMigration: "0 -> 9 and 6 -> 9",
+            schemaMigration: "0 -> 10 and 6 -> 10",
             productionCreationPaths: ["POST /api/orders", "POST /api/orders/file-request"],
             atomicRollback: true,
             uniqueEventKey: true,

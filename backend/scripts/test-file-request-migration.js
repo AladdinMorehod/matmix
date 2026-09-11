@@ -419,7 +419,7 @@ async function testV4ToCurrentMigration(root) {
 }
 
 (async () => {
-    assert.strictEqual(CURRENT_SCHEMA_VERSION, 9);
+    assert.strictEqual(CURRENT_SCHEMA_VERSION, 10);
     const root = fs.mkdtempSync(path.join(os.tmpdir(), "matmix-file-request-migration-"));
     try {
         await testEmptyDatabase(root);

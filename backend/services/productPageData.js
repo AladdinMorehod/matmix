@@ -12,7 +12,7 @@ async function getProductPageDataByExternalId(externalId, executor = null) {
     const product = await database.get(`SELECT
         id, external_id, title, slug, category, subcategory, product_group,
         price, weight, unit, image, image_url, description, brand,
-        short_description, full_description, seo_title, seo_description,
+        short_description, full_description, seo_title, seo_description, stock_status,
         is_active, sort_order, created_at, updated_at
         FROM products
         WHERE is_active=1 AND deleted_at IS NULL AND UPPER(external_id)=UPPER(?)`, [code]);

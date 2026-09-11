@@ -5,6 +5,7 @@ const path = require("path");
 const { CURRENT_SCHEMA_VERSION, PRODUCT_PAGE_TABLES, REQUIRED_INDEXES, audit, migrateDatabase, openDatabase } = require("../databaseMigrations");
 const { getProductPageDataByExternalId } = require("../services/productPageData");
 const { backfillPrimaryProductImages } = require("../services/productPageSchema");
+const { productPage, seoConfig } = require("../services/seo");
 
 async function createV8Fixture(file, { imageUrl = "/uploads/products/MAT-FOUNDATION.webp" } = {}) {
     const db = await openDatabase(file);
@@ -41,18 +42,19 @@ async function rejectsConstraint(work) {
 }
 
 async function main() {
-    assert.strictEqual(CURRENT_SCHEMA_VERSION, 9);
+    assert.strictEqual(CURRENT_SCHEMA_VERSION, 10);
     const root = fs.mkdtempSync(path.join(os.tmpdir(), "matmix-product-page-foundation-"));
     try {
         const file = path.join(root, "v8.db");
         await createV8Fixture(file);
         const migration = await migrateDatabase(file, { dryRun: false });
-        assert.deepStrictEqual({ from: migration.fromVersion, to: migration.toVersion, changed: migration.changed }, { from: 8, to: 9, changed: true });
+        assert.deepStrictEqual({ from: migration.fromVersion, to: migration.toVersion, changed: migration.changed }, { from: 8, to: 10, changed: true });
 
         const db = await openDatabase(file);
         try {
             const columns = new Set((await db.all("PRAGMA table_info(products)")).map(row => row.name));
             for (const name of ["brand", "short_description", "full_description", "seo_title", "seo_description"]) assert(columns.has(name));
+            assert.strictEqual((await db.get("SELECT stock_status FROM products WHERE id=1")).stock_status, "unknown");
             assert(!columns.has("public_slug"));
             for (const table of PRODUCT_PAGE_TABLES) assert(await db.get("SELECT name FROM sqlite_master WHERE type='table' AND name=?", [table]));
             const indexes = new Set((await db.all("SELECT name FROM sqlite_master WHERE type='index'")).map(row => row.name));
@@ -86,6 +88,13 @@ async function main() {
 
             const page = await getProductPageDataByExternalId("mat-foundation", db);
             assert(page);
+            const schemaFrom = status => [...productPage(seoConfig({ SEO_ALLOW_INDEXING: "false" }), {
+                product: { ...page.product, price: 750, stock_status: status }, attributes: page.attributes, images: page.images
+            }).html.matchAll(/<script[^>]*application\/ld\+json[^>]*>([\s\S]*?)<\/script>/g)].map(item => JSON.parse(item[1])).find(item => item["@type"] === "Product");
+            assert.strictEqual(schemaFrom("unknown").offers.availability, undefined);
+            assert.strictEqual(schemaFrom("in_stock").offers.availability, "https://schema.org/InStock");
+            assert.strictEqual(schemaFrom("out_of_stock").offers.availability, "https://schema.org/OutOfStock");
+            assert.strictEqual(schemaFrom("invalid").offers.availability, undefined);
             assert.strictEqual(page.product.brand, "Foundation Brand");
             assert.strictEqual(page.product.full_description, "Full");
             assert.deepStrictEqual(page.attributes[0], {
@@ -122,10 +131,11 @@ async function main() {
             assert.strictEqual(await rollbackDb.get("SELECT name FROM sqlite_master WHERE type='table' AND name='product_images'"), undefined);
             const columns = new Set((await rollbackDb.all("PRAGMA table_info(products)")).map(row => row.name));
             assert(!columns.has("brand"));
+            assert(!columns.has("stock_status"));
             assert.strictEqual((await rollbackDb.get("SELECT image_url FROM products WHERE id=1")).image_url, "/uploads/products/MAT-FOUNDATION.webp");
         } finally { await rollbackDb.close(); }
 
-        console.log(JSON.stringify({ success: true, migration: "8->9", backfill: "ok", retry: "ok", constraints: "ok", cascade: "ok", rollback: "ok", repository: "ok" }));
+        console.log(JSON.stringify({ success: true, migration: "8->10", backfill: "ok", retry: "ok", constraints: "ok", cascade: "ok", rollback: "ok", repository: "ok" }));
     } finally { fs.rmSync(root, { recursive: true, force: true }); }
 }
 

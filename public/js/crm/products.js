@@ -106,6 +106,7 @@ function getProductPayloadFromForm(formData) {
         fullDescription: String(formData.get("fullDescription") || "").trim(),
         seoTitle: String(formData.get("seoTitle") || "").trim(),
         seoDescription: String(formData.get("seoDescription") || "").trim(),
+        stockStatus: String(formData.get("stockStatus") || "unknown").trim(),
         isActive: formData.get("isActive") === "on"
     };
 }
@@ -369,6 +370,14 @@ function renderProductForm(product = {}) {
                 <span>Единица</span>
                 <select name="unit">
                     ${renderUnitOptions(product.unit || "шт")}
+                </select>
+            </label>
+            <label>
+                <span>Наличие</span>
+                <select name="stockStatus">
+                    <option value="unknown"${product.stockStatus === "unknown" || !product.stockStatus ? " selected" : ""}>Не подтверждено</option>
+                    <option value="in_stock"${product.stockStatus === "in_stock" ? " selected" : ""}>В наличии</option>
+                    <option value="out_of_stock"${product.stockStatus === "out_of_stock" ? " selected" : ""}>Нет в наличии</option>
                 </select>
             </label>
             <label>
