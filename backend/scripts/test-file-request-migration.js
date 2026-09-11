@@ -429,7 +429,7 @@ async function testV4ToCurrentMigration(root) {
         await testLegacyColumnCopy(root);
         console.log(JSON.stringify({
             success: true,
-            schema: "3/4->9",
+            schema: "3/4->10",
             emptyDatabase: "ok",
             existingOrdersPreserved: "ok",
             explicitColumnOrderIndependent: "ok",

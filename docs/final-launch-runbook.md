@@ -106,7 +106,7 @@ sudo -u matmix npm run attachments:audit -- --check --json
 sudo -u matmix npm run production:check
 ```
 
-Require schema version 9, expected schema version 9, `integrity=ok`, zero foreign-key violations, `order_attachments`, `idx_order_attachments_order_id`, `order_email_outbox`, `idx_order_email_outbox_status_next_attempt`, `web_push_subscriptions`, `web_push_outbox`, all product-page tables and required product attribute/image indexes, a healthy attachment audit, expected counts and no runtime lock. These checks must pass before switching `/opt/matmix/app` or starting the new service. Stop on any discrepancy. Never rerun apply blindly after a partial operational failure; inspect its JSON and generated pre-migration backup first.
+Require schema version 10, expected schema version 10, `integrity=ok`, zero foreign-key violations, `order_attachments`, `idx_order_attachments_order_id`, `order_email_outbox`, `idx_order_email_outbox_status_next_attempt`, `web_push_subscriptions`, `web_push_outbox`, all product-page tables and required product attribute/image indexes, a healthy attachment audit, expected counts and no runtime lock. These checks must pass before switching `/opt/matmix/app` or starting the new service. Stop on any discrepancy. Never rerun apply blindly after a partial operational failure; inspect its JSON and generated pre-migration backup first.
 
 For the repository deployment script, the enforced sequence is: acquire the deploy lock; build and test the new release; validate protected env and persistent paths; stop `matmix.service`; create and verify an exact format-v2 backup with the new release; run migration dry-run and confirmed apply with the new release; run database health, attachment audit and production readiness; switch the symlink; start the service; run HTTP and post-start operational checks. The script prints both `ROLLBACK_RELEASE` and `ROLLBACK_BACKUP`; record them together.
 
@@ -227,7 +227,7 @@ The healthy production result is HTTP 200, `Cache-Control: no-store` and `{"stat
 | Free disk | below `MIN_FREE_DISK_MB` or <15% | Stop imports/uploads/backups; expand/clean by approved policy |
 | Upload/image failure | 3 in 15 min | Pause image changes; inspect size/type/disk |
 | Image queue | no explicit queue metric exists | Monitor active upload duration/errors; do not claim queue telemetry |
-| Schema version | not 4 | Readiness failure; stop deployment |
+| Schema version | not 10 | Readiness failure; stop deployment |
 | TLS expiry | <21 days warning, <7 days critical | Renew and verify chain/redirect |
 
 ## Manual launch gates
