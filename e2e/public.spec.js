@@ -2320,6 +2320,41 @@ test("upload request entry points and tabs use the existing modal accessibly", a
     await expect(page.locator("#uploadDropZone")).toBeFocused();
 });
 
+test("checkout tabs keep agreement and actions compact across responsive viewports", async ({ page }) => {
+    for (const viewport of [
+        { width: 1366, height: 768 },
+        { width: 390, height: 844 },
+        { width: 360, height: 800 }
+    ]) {
+        await page.setViewportSize(viewport);
+        await page.goto("/");
+        await seedCartItems(page, 1);
+        await page.locator("#cartBtn").click();
+        await page.locator("#openCheckout").click();
+
+        for (const formSelector of ["#checkoutForm", "#uploadRequestForm"]) {
+            if (formSelector === "#uploadRequestForm") await page.locator("#uploadRequestTab").click();
+            const layout = await page.locator(formSelector).evaluate(form => {
+                const consent = form.querySelector(".checkout-consent").getBoundingClientRect();
+                const actions = form.querySelector(".checkout-actions").getBoundingClientRect();
+                return {
+                    gap: actions.top - consent.bottom,
+                    horizontalOverflow: form.scrollWidth > form.clientWidth + 1,
+                    actionsBottom: actions.bottom,
+                    viewportHeight: innerHeight
+                };
+            });
+            expect(layout.gap, JSON.stringify({ viewport, formSelector, layout })).toBeGreaterThanOrEqual(0);
+            expect(layout.gap, JSON.stringify({ viewport, formSelector, layout })).toBeLessThanOrEqual(16);
+            expect(layout.horizontalOverflow, JSON.stringify({ viewport, formSelector, layout })).toBe(false);
+            if (formSelector === "#checkoutForm" && viewport.width === 1366) {
+                expect(layout.actionsBottom, JSON.stringify({ viewport, formSelector, layout })).toBeLessThanOrEqual(layout.viewportHeight + 1);
+            }
+        }
+        await page.locator("#cancelUploadRequest").click();
+    }
+});
+
 test("upload request file rules and validation submit to the secure endpoint", async ({ page }) => {
     let orderPostCount = 0;
     let fileRequestPostCount = 0;

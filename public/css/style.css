@@ -2405,9 +2405,11 @@ body {
 .checkout-consent input { width: 18px; height: 18px; flex: 0 0 auto; margin: 1px 0 0; }
 .checkout-consent-text { display: grid; gap: 2px; min-width: 0; color: var(--text-muted); }
 .checkout-consent-line { display: block; min-width: 0; }
-.checkout-consent-links { white-space: nowrap; }
+.checkout-consent-links { overflow-wrap: anywhere; }
 .checkout-consent-links a { color: inherit; }
 .checkout-consent-error { min-height: 1.25em; margin: 4px 0 0; color: #8a1f2d; font-weight: 700; }
+.checkout-consent-error:empty,
+.checkout-message:empty { display: none; }
 .legal-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 16px; }
 .legal-links a { color: inherit; }
 
