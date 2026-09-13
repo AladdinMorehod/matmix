@@ -262,19 +262,48 @@ async function addGalleryImage(productIdValue, imageUrl, altTextValue = "", data
 async function replacePrimaryImage(productIdValue, imageUrl, database = { withTransaction }) {
     const productId = positiveId(productIdValue, "productId");
     const url = text(imageUrl, 2048, "Image URL", { nullable: false });
+
     return database.withTransaction(async transaction => {
-        const product = await transaction.get("SELECT id,image_url FROM products WHERE id=? AND deleted_at IS NULL", [productId]);
-        if (!product) throw contentError(404, "Товар не найден.", "PRODUCT_NOT_FOUND");
-        const primary = await transaction.get("SELECT id,image_url FROM product_images WHERE product_id=? AND is_primary=1", [productId]);
-        const now = new Date().toISOString();
-        if (primary) {
-            await transaction.run("UPDATE product_images SET image_url=?,updated_at=? WHERE id=?", [url, now, primary.id]);
-        } else {
-            await transaction.run(`INSERT INTO product_images(product_id,image_url,sort_order,is_primary,created_at,updated_at)
-                VALUES(?,?,0,1,?,?)`, [productId, url, now, now]);
+        const product = await transaction.get(
+            "SELECT id,image_url,title FROM products WHERE id=? AND deleted_at IS NULL",
+            [productId]
+        );
+
+        if (!product) {
+            throw contentError(404, "Товар не найден.", "PRODUCT_NOT_FOUND");
         }
-        await transaction.run("UPDATE products SET image_url=?,updated_at=? WHERE id=?", [url, now, productId]);
-        return { previousImageUrl: primary?.image_url || product.image_url || null, imageUrl: url };
+
+        const altText = text(product.title, LIMITS.altText, "Alt text");
+        const primary = await transaction.get(
+            "SELECT id,image_url FROM product_images WHERE product_id=? AND is_primary=1",
+            [productId]
+        );
+
+        const now = new Date().toISOString();
+
+        if (primary) {
+            await transaction.run(
+                "UPDATE product_images SET image_url=?,alt_text=?,updated_at=? WHERE id=?",
+                [url, altText, now, primary.id]
+            );
+        } else {
+            await transaction.run(
+                `INSERT INTO product_images(product_id,image_url,alt_text,sort_order,is_primary,created_at,updated_at)
+                 VALUES(?,?,?,0,1,?,?)`,
+                [productId, url, altText, now, now]
+            );
+        }
+
+        await transaction.run(
+            "UPDATE products SET image_url=?,updated_at=? WHERE id=?",
+            [url, now, productId]
+        );
+
+        return {
+            previousImageUrl: primary?.image_url || product.image_url || null,
+            imageUrl: url,
+            altText
+        };
     });
 }
 

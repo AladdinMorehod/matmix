@@ -106,6 +106,34 @@ async function upload(base, endpoint, buffer, auth, name) { const body = new For
         assert(optimizerReport.orphan.includes(unusedName));
         result = await json(base, `/api/products/${sharedProduct.id}/gallery/${sharedImage.id}`, "DELETE", undefined, admin); assert.strictEqual(result.response.status, 200);
         assert(!fs.existsSync(path.join(uploads, path.basename(first.image_url))), "last reference removal must allow physical deletion");
+        checkDb = open(dbPath);
+        const crmImageProduct = await run(checkDb, `INSERT INTO products(external_id,title,category,price,unit,is_active,created_at,updated_at)
+            VALUES('MAT-CONTENT-CRM-IMAGE','CRM SEO image product','Материалы',100,'шт',1,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)`);
+        await new Promise(resolve => checkDb.close(resolve));
+
+        response = await upload(
+            base,
+            `/api/products/${crmImageProduct.id}/image`,
+            firstBuffer,
+            admin,
+            "crm-primary.png"
+        );
+        assert.strictEqual(response.status, 200);
+
+        checkDb = open(dbPath);
+        const crmPrimary = await get(
+            checkDb,
+            `SELECT p.title,p.image_url product_image_url,i.image_url,i.alt_text
+             FROM products p
+             JOIN product_images i ON i.product_id=p.id AND i.is_primary=1
+             WHERE p.id=?`,
+            [crmImageProduct.id]
+        );
+
+        assert.strictEqual(crmPrimary.product_image_url, crmPrimary.image_url);
+        assert.strictEqual(crmPrimary.alt_text, crmPrimary.title);
+        assert.strictEqual(crmPrimary.alt_text, "CRM SEO image product");
+        await new Promise(resolve => checkDb.close(resolve));
 
         result = await json(base, `/api/products/${product.id}/content`, "GET", undefined, manager); assert.strictEqual(result.response.status, 403);
         result = await json(base, "/api/products/attribute-definitions", "POST", { code: "denied", label: "Denied", dataType: "text" }, manager); assert.strictEqual(result.response.status, 403);
