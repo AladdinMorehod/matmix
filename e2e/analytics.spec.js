@@ -231,6 +231,8 @@ test("enabled runtime config, CSP, loader and product view", async ({ page }) =>
     const csp = response.headers()["content-security-policy"];
     expect(csp).toContain("script-src 'self' 'nonce-");
     expect(csp).toContain("https://mc.yandex.ru");
+    expect(csp).toContain("connect-src 'self' https://mc.yandex.ru wss://mc.yandex.ru");
+    expect(csp).toContain("frame-src 'self' https://mc.yandex.ru");
     await expect.poll(() => loaderRequests).toBe(1);
     const calls = await page.evaluate(() => window.ym?.a || []);
     expect(calls.filter(call => call[1] === "init")).toHaveLength(1);
