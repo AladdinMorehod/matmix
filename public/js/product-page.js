@@ -60,6 +60,8 @@ function setProductPageQuantity(nextQuantity, source = "product_page") {
         } else if (index >= 0) cart[index].quantity = next;
         else cart.push({ productId: id, title: product.dataset.title || "", price: Number(product.dataset.price) || 0, weight: Number(product.dataset.weight) || 0, unit: product.dataset.unit || "шт", quantity: next });
         localStorage.setItem(CART_KEY, JSON.stringify(cart));
+        const addedQuantity = Math.max(0, next - before);
+        if (addedQuantity > 0) window.matmixAnalytics?.addToCart({ external_id: currentProduct.externalId, title: currentProduct.title, quantity: addedQuantity, price: currentProduct.price, unit: currentProduct.unit, source });
     }
     return productPageCartQuantity();
 }
