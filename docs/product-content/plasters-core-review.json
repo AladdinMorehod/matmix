@@ -1,0 +1,5042 @@
+{
+  "mode": "dry-run",
+  "rows": [
+    {
+      "externalId": "MAT-000001",
+      "title": "Штукатурка гипсовая Knauf Ротбанд 5 кг",
+      "productId": 1,
+      "statuses": {},
+      "current": {
+        "brand": null,
+        "description": null,
+        "specsCount": 0
+      },
+      "sourceKeys": [
+        "rotband"
+      ],
+      "contentSources": {
+        "short_description": [
+          "rotband"
+        ],
+        "full_description": [
+          "request",
+          "rotband"
+        ],
+        "seo_title": [
+          "request",
+          "rotband"
+        ],
+        "seo_description": [
+          "request",
+          "rotband"
+        ]
+      },
+      "identityStatus": "CONFIRMED",
+      "notes": [],
+      "brand": {
+        "status": "WILL_ADD",
+        "value": "KNAUF",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "definitionId": 1
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "value": "Гипсовая штукатурка",
+          "displayValue": "Гипсовая штукатурка",
+          "sourceStatus": "READY",
+          "sources": [
+            "rotband"
+          ],
+          "derived": false,
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "value": "Гипсовая",
+          "displayValue": "Гипсовая",
+          "sourceStatus": "READY",
+          "sources": [
+            "rotband"
+          ],
+          "derived": false,
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "value": "Ручное выравнивание стен и потолков внутри помещений",
+          "displayValue": "Ручное выравнивание стен и потолков внутри помещений",
+          "sourceStatus": "READY",
+          "sources": [
+            "rotband"
+          ],
+          "derived": false,
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "value": 5,
+          "displayValue": 5,
+          "sourceStatus": "READY",
+          "sources": [
+            "request"
+          ],
+          "formula": "Фасовка из exact title задания; при apply title проверяется.",
+          "derived": false,
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption_10mm",
+          "value": "около 8,5",
+          "displayValue": "около 8,5",
+          "sourceStatus": "READY",
+          "sources": [
+            "rotband"
+          ],
+          "formula": "Источник указывает значение при слое 10 мм; сохранены диапазон и qualifier без усреднения.",
+          "qualifier": "approx",
+          "rawSourceValue": "Около 8,5 кг/м² при слое 10 мм",
+          "derived": false,
+          "definitionId": 6,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "wall_layer_thickness",
+          "value": "5–50 мм; локально до 100 мм",
+          "displayValue": "5–50 мм; локально до 100 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "rotband"
+          ],
+          "derived": false,
+          "definitionId": 8,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "ceiling_layer_thickness",
+          "value": "5–15 мм",
+          "displayValue": "5–15 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "rotband"
+          ],
+          "derived": false,
+          "definitionId": 9,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "value": "+5…+30 °C",
+          "displayValue": "+5…+30 °C",
+          "sourceStatus": "READY",
+          "sources": [
+            "rotband"
+          ],
+          "derived": false,
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "content": {
+        "full_description": {
+          "status": "WILL_ADD",
+          "value": "KNAUF Ротбанд 5 кг — гипсовая смесь для ручного выравнивания стен и потолков внутри помещений. Её используют для подготовки поверхности к окраске, обоям или плитке.\n\nЭта фасовка выпускается в полиэтиленовой упаковке. Для кухни и ванной производитель предусматривает покрытие, защищающее штукатурный слой от увлажнения.",
+          "currentValue": null
+        }
+      },
+      "status": "READY",
+      "summary": {
+        "ready": 8,
+        "willAdd": 8,
+        "willFix": 0,
+        "needsSource": 0,
+        "absentByDesign": 0
+      }
+    },
+    {
+      "externalId": "MAT-000002",
+      "title": "Штукатурка гипсовая Knauf Ротбанд 30 кг",
+      "productId": 2,
+      "statuses": {},
+      "current": {
+        "brand": "KNAUF",
+        "description": "Что это\n\nСухая штукатурная смесь на основе гипсового вяжущего с модифицирующими добавками.\n\nОбласть применения\n\nРучное оштукатуривание стен и потолков внутри помещений с сухим и нормальным влажностными режимами. В кухнях и ванных применяется при наличии покрытия, защищающего штукатурный слой от увлажнения.\n\nОсновные преимущества\n\n- широкий диапазон толщины слоя;\n- высокая адгезия к подготовленному основанию;\n- возможность получения поверхности качества Q3 при соблюдении технологии;\n- подходит для дальнейшей окраски, оклейки обоями и облицовки плиткой.\n\nПодходящие основания\n\nКирпичная кладка, бетон, гипсовые и бетонные блоки, старые цементные и гипсовые штукатурки, газобетон, пенобетон, ЦСП, ПГП, ГКЛ/ГСП и щепоцементные плиты и блоки.\n\nПрименение\n\nПеред нанесением основание должно быть сухим, прочным, очищенным и обеспыленным. Сильно впитывающие основания грунтуются соответствующим составом КНАУФ; плотные и слабовпитывающие — грунтовкой для улучшения сцепления.\n\nУпаковка\n\nБумажный мешок 30 кг.",
+        "specsCount": 11
+      },
+      "sourceKeys": [
+        "rotband"
+      ],
+      "contentSources": {
+        "short_description": [
+          "rotband"
+        ],
+        "full_description": [
+          "rotband"
+        ],
+        "seo_title": [
+          "rotband"
+        ],
+        "seo_description": [
+          "rotband"
+        ]
+      },
+      "identityStatus": "CONFIRMED",
+      "notes": [],
+      "brand": {
+        "status": "EXISTING_OK",
+        "value": "KNAUF",
+        "currentValue": "KNAUF",
+        "currentProductBrand": "KNAUF",
+        "currentCode": "brand",
+        "currentId": 23
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "value": "Универсальная гипсовая штукатурка",
+          "displayValue": "Универсальная гипсовая штукатурка",
+          "sourceStatus": "READY",
+          "sources": [
+            "rotband"
+          ],
+          "derived": false,
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": "Универсальная гипсовая штукатурка",
+          "currentCode": "product_type",
+          "currentId": 24,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "base",
+          "value": "Гипсовое вяжущее с модифицирующими добавками",
+          "displayValue": "Гипсовое вяжущее с модифицирующими добавками",
+          "sourceStatus": "READY",
+          "sources": [
+            "rotband"
+          ],
+          "derived": false,
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": "Гипсовое вяжущее с модифицирующими добавками",
+          "currentCode": "base",
+          "currentId": 25,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "purpose",
+          "value": "Ручное выравнивание стен и потолков внутри помещений",
+          "displayValue": "Ручное выравнивание стен и потолков внутри помещений",
+          "sourceStatus": "READY",
+          "sources": [
+            "rotband"
+          ],
+          "derived": false,
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": "Ручное выравнивание стен и потолков внутри помещений",
+          "currentCode": "purpose",
+          "currentId": 26,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "package_weight",
+          "value": 30,
+          "displayValue": 30,
+          "sourceStatus": "READY",
+          "sources": [
+            "request"
+          ],
+          "derived": false,
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": 30,
+          "currentCode": "package_weight",
+          "currentId": 27,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "consumption_10mm",
+          "value": "8,5",
+          "displayValue": "8,5",
+          "sourceStatus": "READY",
+          "sources": [
+            "rotband"
+          ],
+          "formula": "Источник указывает 8,5 кг/м² при слое 10 мм; text storage preserves display value.",
+          "rawSourceValue": 8.5,
+          "derived": false,
+          "definitionId": 6,
+          "definitionType": "number",
+          "currentValue": 8.5,
+          "currentCode": "consumption_10mm",
+          "currentId": 28,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "wall_layer_thickness",
+          "value": "5–50 мм; локально до 100 мм",
+          "displayValue": "5–50 мм; локально до 100 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "rotband"
+          ],
+          "derived": false,
+          "definitionId": 8,
+          "definitionType": "text",
+          "currentValue": "5–50 мм; локально до 100 мм",
+          "currentCode": "wall_layer_thickness",
+          "currentId": 30,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "ceiling_layer_thickness",
+          "value": "5–15 мм",
+          "displayValue": "5–15 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "rotband"
+          ],
+          "derived": false,
+          "definitionId": 9,
+          "definitionType": "text",
+          "currentValue": "5–15 мм",
+          "currentCode": "ceiling_layer_thickness",
+          "currentId": 31,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "application_temperature",
+          "value": "+5…+30 °C",
+          "displayValue": "+5…+30 °C",
+          "sourceStatus": "READY",
+          "sources": [
+            "rotband"
+          ],
+          "derived": false,
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": "+5…+30 °C",
+          "currentCode": "application_temperature",
+          "currentId": 32,
+          "status": "EXISTING_OK"
+        }
+      ],
+      "content": {
+        "full_description": {
+          "status": "EXISTING_OK",
+          "value": "Что это\n\nСухая штукатурная смесь на основе гипсового вяжущего с модифицирующими добавками.\n\nОбласть применения\n\nРучное оштукатуривание стен и потолков внутри помещений с сухим и нормальным влажностными режимами. В кухнях и ванных применяется при наличии покрытия, защищающего штукатурный слой от увлажнения.\n\nОсновные преимущества\n\n- широкий диапазон толщины слоя;\n- высокая адгезия к подготовленному основанию;\n- возможность получения поверхности качества Q3 при соблюдении технологии;\n- подходит для дальнейшей окраски, оклейки обоями и облицовки плиткой.\n\nПодходящие основания\n\nКирпичная кладка, бетон, гипсовые и бетонные блоки, старые цементные и гипсовые штукатурки, газобетон, пенобетон, ЦСП, ПГП, ГКЛ/ГСП и щепоцементные плиты и блоки.\n\nПрименение\n\nПеред нанесением основание должно быть сухим, прочным, очищенным и обеспыленным. Сильно впитывающие основания грунтуются соответствующим составом КНАУФ; плотные и слабовпитывающие — грунтовкой для улучшения сцепления.\n\nУпаковка\n\nБумажный мешок 30 кг."
+        }
+      },
+      "status": "READY",
+      "summary": {
+        "ready": 8,
+        "willAdd": 0,
+        "willFix": 0,
+        "needsSource": 0,
+        "absentByDesign": 0
+      }
+    },
+    {
+      "externalId": "MAT-000003",
+      "title": "Штукатурка гипсовая Knauf Гольдбанд 30 кг",
+      "productId": 3,
+      "statuses": {},
+      "current": {
+        "brand": null,
+        "description": null,
+        "specsCount": 0
+      },
+      "sourceKeys": [
+        "goldband"
+      ],
+      "contentSources": {
+        "short_description": [
+          "goldband"
+        ],
+        "full_description": [
+          "request",
+          "goldband"
+        ],
+        "seo_title": [
+          "request",
+          "goldband"
+        ],
+        "seo_description": [
+          "request",
+          "goldband"
+        ]
+      },
+      "identityStatus": "CONFIRMED",
+      "notes": [],
+      "brand": {
+        "status": "WILL_ADD",
+        "value": "KNAUF",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "definitionId": 1
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "value": "Гипсовая штукатурка",
+          "displayValue": "Гипсовая штукатурка",
+          "sourceStatus": "READY",
+          "sources": [
+            "goldband"
+          ],
+          "derived": false,
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "value": "Гипсовая",
+          "displayValue": "Гипсовая",
+          "sourceStatus": "READY",
+          "sources": [
+            "goldband"
+          ],
+          "derived": false,
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "value": "Ручное выравнивание стен внутри помещений",
+          "displayValue": "Ручное выравнивание стен внутри помещений",
+          "sourceStatus": "READY",
+          "sources": [
+            "goldband"
+          ],
+          "derived": false,
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "value": 30,
+          "displayValue": 30,
+          "sourceStatus": "READY",
+          "sources": [
+            "request"
+          ],
+          "formula": "Фасовка из exact title задания; при apply title проверяется.",
+          "derived": false,
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption_10mm",
+          "value": "около 8,5",
+          "displayValue": "около 8,5",
+          "sourceStatus": "READY",
+          "sources": [
+            "goldband"
+          ],
+          "formula": "Источник указывает значение при слое 10 мм; сохранены диапазон и qualifier без усреднения.",
+          "qualifier": "approx",
+          "rawSourceValue": "Около 8,5 кг/м² при слое 10 мм",
+          "derived": false,
+          "definitionId": 6,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "wall_layer_thickness",
+          "value": "8–50 мм",
+          "displayValue": "8–50 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "goldband"
+          ],
+          "derived": false,
+          "definitionId": 8,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "ceiling_layer_thickness",
+          "value": null,
+          "displayValue": null,
+          "sourceStatus": "ABSENT_BY_DESIGN",
+          "sources": [],
+          "reason": "В проверенном официальном позиционировании нанесение на потолок не заявлено.",
+          "derived": false,
+          "definitionId": 9,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "ABSENT_BY_DESIGN"
+        },
+        {
+          "code": "application_temperature",
+          "value": "+5…+30 °C",
+          "displayValue": "+5…+30 °C",
+          "sourceStatus": "READY",
+          "sources": [
+            "goldband"
+          ],
+          "derived": false,
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "content": {
+        "full_description": {
+          "status": "WILL_ADD",
+          "value": "KNAUF Гольдбанд 30 кг — гипсовая штукатурка для стен. Смесь наносят вручную при внутренней отделке помещений с нормальной влажностью.\n\nМатериал подходит для подготовки стен под краску, обои и керамическую плитку. В кухнях и ванных штукатурку применяют с покрытием, которое защищает её от увлажнения.",
+          "currentValue": null
+        }
+      },
+      "status": "READY",
+      "summary": {
+        "ready": 7,
+        "willAdd": 7,
+        "willFix": 0,
+        "needsSource": 0,
+        "absentByDesign": 1
+      }
+    },
+    {
+      "externalId": "MAT-000004",
+      "title": "Штукатурка гипсовая Knauf МП-75 маш. 30 кг",
+      "productId": 4,
+      "statuses": {},
+      "current": {
+        "brand": null,
+        "description": null,
+        "specsCount": 0
+      },
+      "sourceKeys": [
+        "mp75"
+      ],
+      "contentSources": {
+        "short_description": [
+          "mp75"
+        ],
+        "full_description": [
+          "request",
+          "mp75"
+        ],
+        "seo_title": [
+          "request",
+          "mp75"
+        ],
+        "seo_description": [
+          "request",
+          "mp75"
+        ]
+      },
+      "identityStatus": "CONFIRMED",
+      "notes": [],
+      "brand": {
+        "status": "WILL_ADD",
+        "value": "KNAUF",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "definitionId": 1
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "value": "Гипсовая штукатурка машинного нанесения",
+          "displayValue": "Гипсовая штукатурка машинного нанесения",
+          "sourceStatus": "READY",
+          "sources": [
+            "mp75"
+          ],
+          "derived": false,
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "value": "Гипсовая",
+          "displayValue": "Гипсовая",
+          "sourceStatus": "READY",
+          "sources": [
+            "mp75"
+          ],
+          "derived": false,
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "value": "Механизированное выравнивание стен и потолков внутри помещений",
+          "displayValue": "Механизированное выравнивание стен и потолков внутри помещений",
+          "sourceStatus": "READY",
+          "sources": [
+            "mp75"
+          ],
+          "derived": false,
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "value": 30,
+          "displayValue": 30,
+          "sourceStatus": "READY",
+          "sources": [
+            "request"
+          ],
+          "formula": "Фасовка из exact title задания; при apply title проверяется.",
+          "derived": false,
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption_10mm",
+          "value": "около 8–9",
+          "displayValue": "около 8–9",
+          "sourceStatus": "READY",
+          "sources": [
+            "mp75"
+          ],
+          "formula": "Источник указывает значение при слое 10 мм; сохранены диапазон и qualifier без усреднения.",
+          "qualifier": "approx",
+          "rawSourceValue": "Около 8–9 кг/м² при слое 10 мм",
+          "derived": false,
+          "definitionId": 6,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "wall_layer_thickness",
+          "value": "8–50 мм",
+          "displayValue": "8–50 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "mp75"
+          ],
+          "derived": false,
+          "definitionId": 8,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "ceiling_layer_thickness",
+          "value": "8–15 мм",
+          "displayValue": "8–15 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "mp75"
+          ],
+          "derived": false,
+          "definitionId": 9,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "value": "+5…+30 °C",
+          "displayValue": "+5…+30 °C",
+          "sourceStatus": "READY",
+          "sources": [
+            "mp75"
+          ],
+          "derived": false,
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "content": {
+        "full_description": {
+          "status": "WILL_ADD",
+          "value": "KNAUF МП-75 30 кг — гипсовая штукатурная смесь для механизированного нанесения. Предназначена для выравнивания стен и потолков внутри помещений с нормальной влажностью.\n\nОштукатуренную поверхность готовят под обои, окраску или плитку. Применение в кухнях и ванных требует покрытия, защищающего слой от увлажнения; режим работы оборудования выбирают по инструкции производителя.",
+          "currentValue": null
+        }
+      },
+      "status": "READY",
+      "summary": {
+        "ready": 8,
+        "willAdd": 8,
+        "willFix": 0,
+        "needsSource": 0,
+        "absentByDesign": 0
+      }
+    },
+    {
+      "externalId": "MAT-000005",
+      "title": "Штукатурка гипсовая ВОЛМА Холст Сер. 30 кг",
+      "productId": 5,
+      "statuses": {},
+      "current": {
+        "brand": null,
+        "description": null,
+        "specsCount": 0
+      },
+      "sourceKeys": [
+        "volmaHolst"
+      ],
+      "contentSources": [
+        "volmaHolst"
+      ],
+      "identityStatus": "CONFIRMED",
+      "notes": [],
+      "brand": {
+        "status": "WILL_ADD",
+        "value": "ВОЛМА",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "definitionId": 1
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "value": "Лёгкая гипсовая штукатурка ручного нанесения",
+          "displayValue": "Лёгкая гипсовая штукатурка ручного нанесения",
+          "sourceStatus": "READY",
+          "sources": [
+            "volmaHolst"
+          ],
+          "derived": false,
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "value": "Гипсовое вяжущее",
+          "displayValue": "Гипсовое вяжущее",
+          "sourceStatus": "READY",
+          "sources": [
+            "volmaHolst"
+          ],
+          "derived": false,
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "value": "Выравнивание стен и потолков внутри помещений",
+          "displayValue": "Выравнивание стен и потолков внутри помещений",
+          "sourceStatus": "READY",
+          "sources": [
+            "volmaHolst"
+          ],
+          "derived": false,
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "value": 30,
+          "displayValue": 30,
+          "sourceStatus": "READY",
+          "sources": [
+            "request"
+          ],
+          "formula": "Фасовка из exact title задания; при apply title проверяется.",
+          "derived": false,
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption_10mm",
+          "value": "9–10",
+          "displayValue": "9–10",
+          "sourceStatus": "READY",
+          "sources": [
+            "volmaHolst"
+          ],
+          "formula": "Official source range at 10 mm preserved verbatim; midpoint is not calculated.",
+          "rawSourceValue": "9–10 кг на 1 кв.м при толщине 10 мм",
+          "derived": false,
+          "definitionId": 6,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "wall_layer_thickness",
+          "value": "5–30 мм; максимум 50 мм",
+          "displayValue": "5–30 мм; максимум 50 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "volmaHolst"
+          ],
+          "derived": false,
+          "definitionId": 8,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "ceiling_layer_thickness",
+          "value": "5–30 мм; максимум 50 мм",
+          "displayValue": "5–30 мм; максимум 50 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "volmaHolst"
+          ],
+          "derived": false,
+          "definitionId": 9,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "value": "+5…+30 °C",
+          "displayValue": "+5…+30 °C",
+          "sourceStatus": "READY",
+          "sources": [
+            "volmaHolst"
+          ],
+          "derived": false,
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "content": {
+        "full_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Protected product: content is reference-only; this task may add only allowlisted core fields."
+        }
+      },
+      "status": "READY",
+      "summary": {
+        "ready": 8,
+        "willAdd": 8,
+        "willFix": 0,
+        "needsSource": 0,
+        "absentByDesign": 0
+      }
+    },
+    {
+      "externalId": "MAT-000006",
+      "title": "Штукатурка гипсовая ВОЛМА Слой Бел. 30 кг",
+      "productId": 6,
+      "statuses": {},
+      "current": {
+        "brand": null,
+        "description": null,
+        "specsCount": 0
+      },
+      "sourceKeys": [
+        "sloy"
+      ],
+      "contentSources": {
+        "short_description": [
+          "sloy"
+        ],
+        "full_description": [
+          "request",
+          "sloy"
+        ],
+        "seo_title": [
+          "request",
+          "sloy"
+        ],
+        "seo_description": [
+          "request",
+          "sloy"
+        ]
+      },
+      "identityStatus": "CONFIRMED",
+      "notes": [],
+      "brand": {
+        "status": "WILL_ADD",
+        "value": "ВОЛМА",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "definitionId": 1
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "value": "Гипсовая штукатурка",
+          "displayValue": "Гипсовая штукатурка",
+          "sourceStatus": "READY",
+          "sources": [
+            "sloy"
+          ],
+          "derived": false,
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "value": "Гипсовое вяжущее и лёгкий заполнитель с минеральными и химическими добавками",
+          "displayValue": "Гипсовое вяжущее и лёгкий заполнитель с минеральными и химическими добавками",
+          "sourceStatus": "READY",
+          "sources": [
+            "sloy"
+          ],
+          "derived": false,
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "value": "Ручная внутренняя отделка стен и потолков",
+          "displayValue": "Ручная внутренняя отделка стен и потолков",
+          "sourceStatus": "READY",
+          "sources": [
+            "sloy"
+          ],
+          "derived": false,
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "value": 30,
+          "displayValue": 30,
+          "sourceStatus": "READY",
+          "sources": [
+            "request"
+          ],
+          "formula": "Фасовка из exact title задания; при apply title проверяется.",
+          "derived": false,
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption_10mm",
+          "value": "8–9",
+          "displayValue": "8–9",
+          "sourceStatus": "READY",
+          "sources": [
+            "sloy"
+          ],
+          "formula": "Official source range at 10 mm preserved verbatim; midpoint is not calculated.",
+          "rawSourceValue": "8–9 кг на 1 кв.м при толщине слоя 10 мм",
+          "derived": false,
+          "definitionId": 6,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "wall_layer_thickness",
+          "value": "5–30 мм; максимум 60 мм",
+          "displayValue": "5–30 мм; максимум 60 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "sloy"
+          ],
+          "derived": false,
+          "definitionId": 8,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "ceiling_layer_thickness",
+          "value": "5–30 мм; максимум 60 мм",
+          "displayValue": "5–30 мм; максимум 60 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "sloy"
+          ],
+          "derived": false,
+          "definitionId": 9,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "value": "+5…+30 °C",
+          "displayValue": "+5…+30 °C",
+          "sourceStatus": "READY",
+          "sources": [
+            "sloy"
+          ],
+          "derived": false,
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "content": {
+        "full_description": {
+          "status": "WILL_ADD",
+          "value": "ВОЛМА-Слой 30 кг — гипсовая штукатурка для ручной внутренней отделки. Смесь используют для выравнивания стен и потолков перед нанесением финишных покрытий.\n\nВ каталоге представлена белая версия. Производитель допускает бежевые и светло-серые оттенки, зависящие от сырья; они не определяют технические свойства. Подготовку основания выполняют с учётом его впитывающей способности.",
+          "currentValue": null
+        }
+      },
+      "status": "READY",
+      "summary": {
+        "ready": 8,
+        "willAdd": 8,
+        "willFix": 0,
+        "needsSource": 0,
+        "absentByDesign": 0
+      }
+    },
+    {
+      "externalId": "MAT-000007",
+      "title": "Штукатурка гипсовая ВОЛМА Гипс Актив мех. Сер. 30 кг",
+      "productId": 7,
+      "statuses": {},
+      "current": {
+        "brand": null,
+        "description": null,
+        "specsCount": 0
+      },
+      "sourceKeys": [
+        "aktiv"
+      ],
+      "contentSources": {
+        "short_description": [
+          "aktiv"
+        ],
+        "full_description": [
+          "request",
+          "aktiv"
+        ],
+        "seo_title": [
+          "request",
+          "aktiv"
+        ],
+        "seo_description": [
+          "request",
+          "aktiv"
+        ]
+      },
+      "identityStatus": "CONFIRMED",
+      "notes": [],
+      "brand": {
+        "status": "WILL_ADD",
+        "value": "ВОЛМА",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "definitionId": 1
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "value": "Гипсовая штукатурка машинного нанесения",
+          "displayValue": "Гипсовая штукатурка машинного нанесения",
+          "sourceStatus": "READY",
+          "sources": [
+            "aktiv"
+          ],
+          "derived": false,
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "value": "Гипсовое вяжущее и лёгкий заполнитель с минеральными и химическими добавками",
+          "displayValue": "Гипсовое вяжущее и лёгкий заполнитель с минеральными и химическими добавками",
+          "sourceStatus": "READY",
+          "sources": [
+            "aktiv"
+          ],
+          "derived": false,
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "value": "Выравнивание стен и потолков внутри помещений с нормальной влажностью",
+          "displayValue": "Выравнивание стен и потолков внутри помещений с нормальной влажностью",
+          "sourceStatus": "READY",
+          "sources": [
+            "aktiv"
+          ],
+          "derived": false,
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "value": 30,
+          "displayValue": 30,
+          "sourceStatus": "READY",
+          "sources": [
+            "request"
+          ],
+          "formula": "Фасовка из exact title задания; при apply title проверяется.",
+          "derived": false,
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption_10mm",
+          "value": "8–9",
+          "displayValue": "8–9",
+          "sourceStatus": "READY",
+          "sources": [
+            "aktiv"
+          ],
+          "formula": "Official source range at 10 mm preserved verbatim; midpoint is not calculated.",
+          "rawSourceValue": "8–9 кг на 1 кв.м при толщине слоя 10 мм",
+          "derived": false,
+          "definitionId": 6,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "wall_layer_thickness",
+          "value": "5–30 мм; максимум 60 мм",
+          "displayValue": "5–30 мм; максимум 60 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "aktiv"
+          ],
+          "derived": false,
+          "definitionId": 8,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "ceiling_layer_thickness",
+          "value": "5–30 мм; максимум 60 мм",
+          "displayValue": "5–30 мм; максимум 60 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "aktiv"
+          ],
+          "derived": false,
+          "definitionId": 9,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "value": "+5…+30 °C",
+          "displayValue": "+5…+30 °C",
+          "sourceStatus": "READY",
+          "sources": [
+            "aktiv"
+          ],
+          "derived": false,
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "content": {
+        "full_description": {
+          "status": "WILL_ADD",
+          "value": "ВОЛМА Гипс Актив серая 30 кг — штукатурка на гипсовом вяжущем для машинного нанесения. Применяется при выравнивании стен и потолков в помещениях с нормальной влажностью.\n\nСмесь предназначена для подготовки поверхности под обои, краску или плитку. Перед работой основание очищают и обрабатывают грунтовкой, подходящей для его типа; штукатурную станцию настраивают по инструкции.",
+          "currentValue": null
+        }
+      },
+      "status": "READY",
+      "summary": {
+        "ready": 8,
+        "willAdd": 8,
+        "willFix": 0,
+        "needsSource": 0,
+        "absentByDesign": 0
+      }
+    },
+    {
+      "externalId": "MAT-000008",
+      "title": "Штукатурка гипсовая ВОЛМА Гипс Актив мех. Бел. 30 кг",
+      "productId": 8,
+      "statuses": {},
+      "current": {
+        "brand": null,
+        "description": null,
+        "specsCount": 0
+      },
+      "sourceKeys": [
+        "aktiv"
+      ],
+      "contentSources": {
+        "short_description": [
+          "aktiv"
+        ],
+        "full_description": [
+          "request",
+          "aktiv"
+        ],
+        "seo_title": [
+          "request",
+          "aktiv"
+        ],
+        "seo_description": [
+          "request",
+          "aktiv"
+        ]
+      },
+      "identityStatus": "CONFIRMED",
+      "notes": [],
+      "brand": {
+        "status": "WILL_ADD",
+        "value": "ВОЛМА",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "definitionId": 1
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "value": "Гипсовая штукатурка машинного нанесения",
+          "displayValue": "Гипсовая штукатурка машинного нанесения",
+          "sourceStatus": "READY",
+          "sources": [
+            "aktiv"
+          ],
+          "derived": false,
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "value": "Гипсовое вяжущее и лёгкий заполнитель с минеральными и химическими добавками",
+          "displayValue": "Гипсовое вяжущее и лёгкий заполнитель с минеральными и химическими добавками",
+          "sourceStatus": "READY",
+          "sources": [
+            "aktiv"
+          ],
+          "derived": false,
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "value": "Выравнивание стен и потолков внутри помещений с нормальной влажностью",
+          "displayValue": "Выравнивание стен и потолков внутри помещений с нормальной влажностью",
+          "sourceStatus": "READY",
+          "sources": [
+            "aktiv"
+          ],
+          "derived": false,
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "value": 30,
+          "displayValue": 30,
+          "sourceStatus": "READY",
+          "sources": [
+            "request"
+          ],
+          "formula": "Фасовка из exact title задания; при apply title проверяется.",
+          "derived": false,
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption_10mm",
+          "value": "8–9",
+          "displayValue": "8–9",
+          "sourceStatus": "READY",
+          "sources": [
+            "aktiv"
+          ],
+          "formula": "Official source range at 10 mm preserved verbatim; midpoint is not calculated.",
+          "rawSourceValue": "8–9 кг на 1 кв.м при толщине слоя 10 мм",
+          "derived": false,
+          "definitionId": 6,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "wall_layer_thickness",
+          "value": "5–30 мм; максимум 60 мм",
+          "displayValue": "5–30 мм; максимум 60 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "aktiv"
+          ],
+          "derived": false,
+          "definitionId": 8,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "ceiling_layer_thickness",
+          "value": "5–30 мм; максимум 60 мм",
+          "displayValue": "5–30 мм; максимум 60 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "aktiv"
+          ],
+          "derived": false,
+          "definitionId": 9,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "value": "+5…+30 °C",
+          "displayValue": "+5…+30 °C",
+          "sourceStatus": "READY",
+          "sources": [
+            "aktiv"
+          ],
+          "derived": false,
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "content": {
+        "full_description": {
+          "status": "WILL_ADD",
+          "value": "ВОЛМА Гипс Актив белая 30 кг — гипсовая смесь для механизированных штукатурных работ внутри помещений. Её выбирают для выравнивания стен и потолков под дальнейшую отделку.\n\nВ этой карточке указана белая версия продукта. Область применения линейки — помещения с нормальной влажностью; совместимость основания и подготовку поверхности проверяют перед нанесением.",
+          "currentValue": null
+        }
+      },
+      "status": "READY",
+      "summary": {
+        "ready": 8,
+        "willAdd": 8,
+        "willFix": 0,
+        "needsSource": 0,
+        "absentByDesign": 0
+      }
+    },
+    {
+      "externalId": "MAT-000009",
+      "title": "Штукатурка гипсовая Русеан Plaster Сер. 30кг",
+      "productId": 9,
+      "statuses": {},
+      "current": {
+        "brand": null,
+        "description": null,
+        "specsCount": 0
+      },
+      "sourceKeys": [
+        "plaster"
+      ],
+      "contentSources": {
+        "short_description": [
+          "plaster"
+        ],
+        "full_description": [
+          "request",
+          "plaster"
+        ],
+        "seo_title": [
+          "request",
+          "plaster"
+        ],
+        "seo_description": [
+          "request",
+          "plaster"
+        ]
+      },
+      "identityStatus": "CONFIRMED",
+      "notes": [],
+      "brand": {
+        "status": "WILL_ADD",
+        "value": "Русеан",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "definitionId": 1
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "value": "Гипсовая штукатурка",
+          "displayValue": "Гипсовая штукатурка",
+          "sourceStatus": "READY",
+          "sources": [
+            "plaster"
+          ],
+          "derived": false,
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "value": "Гипсовая",
+          "displayValue": "Гипсовая",
+          "sourceStatus": "READY",
+          "sources": [
+            "plaster"
+          ],
+          "derived": false,
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "value": "Ручное выравнивание стен внутри помещений с нормальной влажностью",
+          "displayValue": "Ручное выравнивание стен внутри помещений с нормальной влажностью",
+          "sourceStatus": "READY",
+          "sources": [
+            "plaster"
+          ],
+          "derived": false,
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "value": 30,
+          "displayValue": 30,
+          "sourceStatus": "READY",
+          "sources": [
+            "request"
+          ],
+          "formula": "Фасовка из exact title задания; при apply title проверяется.",
+          "derived": false,
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption_10mm",
+          "value": "9,5",
+          "displayValue": "9,5",
+          "sourceStatus": "READY",
+          "sources": [
+            "plaster"
+          ],
+          "formula": "Official current page table value at 10 mm preserved verbatim.",
+          "rawSourceValue": "9,5 кг/м² при толщине слоя 10 мм",
+          "derived": false,
+          "definitionId": 6,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "wall_layer_thickness",
+          "value": "5–50 мм",
+          "displayValue": "5–50 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "plaster"
+          ],
+          "derived": false,
+          "definitionId": 8,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "ceiling_layer_thickness",
+          "value": "до 15 мм",
+          "displayValue": "до 15 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "plaster"
+          ],
+          "derived": false,
+          "definitionId": 9,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "value": "от +5 до +25 °C",
+          "displayValue": "от +5 до +25 °C",
+          "sourceStatus": "READY",
+          "sources": [
+            "plaster"
+          ],
+          "derived": false,
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "content": {
+        "full_description": {
+          "status": "WILL_ADD",
+          "value": "Русеан Plaster серая 30 кг — гипсовая штукатурная смесь для подготовки поверхности к отделке. В этой карточке представлена версия Plaster в фасовке 30 кг.\n\nПроизводитель описывает выравнивание, подрезку и заглаживание штукатурного слоя перед окраской. К последующей обработке переходят с учётом состояния поверхности, температуры и влажности.",
+          "currentValue": null
+        }
+      },
+      "status": "READY",
+      "summary": {
+        "ready": 8,
+        "willAdd": 8,
+        "willFix": 0,
+        "needsSource": 0,
+        "absentByDesign": 0
+      }
+    },
+    {
+      "externalId": "MAT-000010",
+      "title": "Штукатурка гипсовая Русеан Termoplast Бел. 30кг",
+      "productId": 10,
+      "statuses": {},
+      "current": {
+        "brand": null,
+        "description": null,
+        "specsCount": 0
+      },
+      "sourceKeys": [
+        "termoplast"
+      ],
+      "contentSources": {
+        "short_description": [
+          "termoplast"
+        ],
+        "full_description": [
+          "request",
+          "termoplast"
+        ],
+        "seo_title": [
+          "request",
+          "termoplast"
+        ],
+        "seo_description": [
+          "request",
+          "termoplast"
+        ]
+      },
+      "identityStatus": "CONFIRMED",
+      "notes": [],
+      "brand": {
+        "status": "WILL_ADD",
+        "value": "Русеан",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "definitionId": 1
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "value": "Гипсовая штукатурка",
+          "displayValue": "Гипсовая штукатурка",
+          "sourceStatus": "READY",
+          "sources": [
+            "termoplast"
+          ],
+          "derived": false,
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "value": "Гипсовая",
+          "displayValue": "Гипсовая",
+          "sourceStatus": "READY",
+          "sources": [
+            "termoplast"
+          ],
+          "derived": false,
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "value": "Черновая отделка внутри помещений под обои, краску или плитку",
+          "displayValue": "Черновая отделка внутри помещений под обои, краску или плитку",
+          "sourceStatus": "READY",
+          "sources": [
+            "termoplast"
+          ],
+          "derived": false,
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "value": 30,
+          "displayValue": 30,
+          "sourceStatus": "READY",
+          "sources": [
+            "request"
+          ],
+          "formula": "Фасовка из exact title задания; при apply title проверяется.",
+          "derived": false,
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption_10mm",
+          "value": "10,5",
+          "displayValue": "10,5",
+          "sourceStatus": "READY",
+          "sources": [
+            "termoplast"
+          ],
+          "formula": "Official source table value at 10 mm preserved verbatim.",
+          "rawSourceValue": "10,5 кг/м² при толщине слоя 10 мм",
+          "derived": false,
+          "definitionId": 6,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "wall_layer_thickness",
+          "value": "8–50 мм",
+          "displayValue": "8–50 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "termoplast"
+          ],
+          "derived": false,
+          "definitionId": 8,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "ceiling_layer_thickness",
+          "value": "8–15 мм",
+          "displayValue": "8–15 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "termoplast"
+          ],
+          "derived": false,
+          "definitionId": 9,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "value": "от +5 до +25 °C",
+          "displayValue": "от +5 до +25 °C",
+          "sourceStatus": "READY",
+          "sources": [
+            "termoplast"
+          ],
+          "derived": false,
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "content": {
+        "full_description": {
+          "status": "WILL_ADD",
+          "value": "Русеан Termoplast белая 30 кг — гипсовая штукатурка для черновой отделки внутри помещений. После подготовки штукатурного слоя поверхность отделывают обоями, краской или керамической плиткой.\n\nВ описании производителя указаны кирпичные, бетонные и цементные основания. Для работы выбирают технологию подготовки, соответствующую поверхности и последующему покрытию.",
+          "currentValue": null
+        }
+      },
+      "status": "READY",
+      "summary": {
+        "ready": 8,
+        "willAdd": 8,
+        "willFix": 0,
+        "needsSource": 0,
+        "absentByDesign": 0
+      }
+    },
+    {
+      "externalId": "MAT-000011",
+      "title": "Штукатурка гипсовая UNIS Теплон белая 5 кг",
+      "productId": 11,
+      "statuses": {},
+      "current": {
+        "brand": null,
+        "description": null,
+        "specsCount": 0
+      },
+      "sourceKeys": [
+        "teplon"
+      ],
+      "contentSources": {
+        "short_description": [
+          "teplon"
+        ],
+        "full_description": [
+          "request",
+          "teplon"
+        ],
+        "seo_title": [
+          "request",
+          "teplon"
+        ],
+        "seo_description": [
+          "request",
+          "teplon"
+        ]
+      },
+      "identityStatus": "CONFIRMED",
+      "notes": [],
+      "brand": {
+        "status": "WILL_ADD",
+        "value": "UNIS",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "definitionId": 1
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "value": "Облегчённая гипсовая штукатурка с перлитом",
+          "displayValue": "Облегчённая гипсовая штукатурка с перлитом",
+          "sourceStatus": "READY",
+          "sources": [
+            "teplon"
+          ],
+          "derived": false,
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "value": "Гипсовая",
+          "displayValue": "Гипсовая",
+          "sourceStatus": "READY",
+          "sources": [
+            "teplon"
+          ],
+          "derived": false,
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "value": "Выравнивание стен и потолков внутри помещений",
+          "displayValue": "Выравнивание стен и потолков внутри помещений",
+          "sourceStatus": "READY",
+          "sources": [
+            "teplon"
+          ],
+          "derived": false,
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "value": 5,
+          "displayValue": 5,
+          "sourceStatus": "READY",
+          "sources": [
+            "request"
+          ],
+          "formula": "Фасовка из exact title задания; при apply title проверяется.",
+          "derived": false,
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption_10mm",
+          "value": "8,5",
+          "displayValue": "8,5",
+          "sourceStatus": "READY",
+          "sources": [
+            "teplon"
+          ],
+          "formula": "0,85 × 10 мм = 8,5 кг/м² при слое 10 мм; conversion is arithmetic only and source wording is retained in rawSourceValue.",
+          "rawSourceValue": "0,85 кг/м² при толщине слоя 1 мм",
+          "derived": true,
+          "definitionId": 6,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "wall_layer_thickness",
+          "value": "5–50 мм; локально до 100 мм",
+          "displayValue": "5–50 мм; локально до 100 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "teplon"
+          ],
+          "derived": false,
+          "definitionId": 8,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "ceiling_layer_thickness",
+          "value": "До 20 мм",
+          "displayValue": "До 20 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "teplon"
+          ],
+          "derived": false,
+          "definitionId": 9,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "value": "+5…+30 °C",
+          "displayValue": "+5…+30 °C",
+          "sourceStatus": "READY",
+          "sources": [
+            "teplon"
+          ],
+          "derived": false,
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "content": {
+        "full_description": {
+          "status": "WILL_ADD",
+          "value": "UNIS Теплон Белый 5 кг — облегчённая гипсовая штукатурка с перлитом. Применяется внутри помещений для подготовки стен и потолков к последующей отделке.\n\nСмесь допускает ручное и машинное нанесение. Во влажных отапливаемых помещениях производитель предусматривает последующую облицовку плиткой с тщательной затиркой межплиточных швов.",
+          "currentValue": null
+        }
+      },
+      "status": "READY",
+      "summary": {
+        "ready": 8,
+        "willAdd": 8,
+        "willFix": 0,
+        "needsSource": 0,
+        "absentByDesign": 0
+      }
+    },
+    {
+      "externalId": "MAT-000012",
+      "title": "Штукатурка гипсовая UNIS Теплон белая 30 кг",
+      "productId": 12,
+      "statuses": {},
+      "current": {
+        "brand": null,
+        "description": null,
+        "specsCount": 0
+      },
+      "sourceKeys": [
+        "teplon"
+      ],
+      "contentSources": {
+        "short_description": [
+          "teplon"
+        ],
+        "full_description": [
+          "request",
+          "teplon"
+        ],
+        "seo_title": [
+          "request",
+          "teplon"
+        ],
+        "seo_description": [
+          "request",
+          "teplon"
+        ]
+      },
+      "identityStatus": "CONFIRMED",
+      "notes": [],
+      "brand": {
+        "status": "WILL_ADD",
+        "value": "UNIS",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "definitionId": 1
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "value": "Облегчённая гипсовая штукатурка с перлитом",
+          "displayValue": "Облегчённая гипсовая штукатурка с перлитом",
+          "sourceStatus": "READY",
+          "sources": [
+            "teplon"
+          ],
+          "derived": false,
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "value": "Гипсовая",
+          "displayValue": "Гипсовая",
+          "sourceStatus": "READY",
+          "sources": [
+            "teplon"
+          ],
+          "derived": false,
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "value": "Выравнивание стен и потолков внутри помещений",
+          "displayValue": "Выравнивание стен и потолков внутри помещений",
+          "sourceStatus": "READY",
+          "sources": [
+            "teplon"
+          ],
+          "derived": false,
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "value": 30,
+          "displayValue": 30,
+          "sourceStatus": "READY",
+          "sources": [
+            "request"
+          ],
+          "formula": "Фасовка из exact title задания; при apply title проверяется.",
+          "derived": false,
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption_10mm",
+          "value": "8,5",
+          "displayValue": "8,5",
+          "sourceStatus": "READY",
+          "sources": [
+            "teplon"
+          ],
+          "formula": "0,85 × 10 мм = 8,5 кг/м² при слое 10 мм; conversion is arithmetic only and source wording is retained in rawSourceValue.",
+          "rawSourceValue": "0,85 кг/м² при толщине слоя 1 мм",
+          "derived": true,
+          "definitionId": 6,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "wall_layer_thickness",
+          "value": "5–50 мм; локально до 100 мм",
+          "displayValue": "5–50 мм; локально до 100 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "teplon"
+          ],
+          "derived": false,
+          "definitionId": 8,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "ceiling_layer_thickness",
+          "value": "До 20 мм",
+          "displayValue": "До 20 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "teplon"
+          ],
+          "derived": false,
+          "definitionId": 9,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "value": "+5…+30 °C",
+          "displayValue": "+5…+30 °C",
+          "sourceStatus": "READY",
+          "sources": [
+            "teplon"
+          ],
+          "derived": false,
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "content": {
+        "full_description": {
+          "status": "WILL_ADD",
+          "value": "UNIS Теплон Белый 30 кг — штукатурная смесь на гипсовой основе с лёгким перлитовым наполнителем. Используется для сплошного и местного выравнивания стен внутри помещений.\n\nМатериал также применяется на потолках и допускает ручное либо машинное нанесение. После высыхания поверхность готовят под выбранную отделку; условия влажности учитывают по инструкции производителя.",
+          "currentValue": null
+        }
+      },
+      "status": "READY",
+      "summary": {
+        "ready": 8,
+        "willAdd": 8,
+        "willFix": 0,
+        "needsSource": 0,
+        "absentByDesign": 0
+      }
+    },
+    {
+      "externalId": "MAT-000013",
+      "title": "Штукатурка гипсовая Старатели 30 кг",
+      "productId": 13,
+      "statuses": {},
+      "current": {
+        "brand": null,
+        "description": null,
+        "specsCount": 0
+      },
+      "sourceKeys": [
+        "starGypsum"
+      ],
+      "contentSources": {
+        "short_description": [
+          "starGypsum"
+        ],
+        "full_description": [
+          "request",
+          "starGypsum"
+        ],
+        "seo_title": [
+          "request",
+          "starGypsum"
+        ],
+        "seo_description": [
+          "request",
+          "starGypsum"
+        ]
+      },
+      "identityStatus": "CONFIRMED",
+      "notes": [],
+      "brand": {
+        "status": "WILL_ADD",
+        "value": "Старатели",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "definitionId": 1
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "value": "Гипсовая штукатурка",
+          "displayValue": "Гипсовая штукатурка",
+          "sourceStatus": "READY",
+          "sources": [
+            "starGypsum"
+          ],
+          "derived": false,
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "value": "Гипсовая",
+          "displayValue": "Гипсовая",
+          "sourceStatus": "READY",
+          "sources": [
+            "starGypsum"
+          ],
+          "derived": false,
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "value": "Ручное выравнивание стен и потолков в помещениях с нормальной влажностью",
+          "displayValue": "Ручное выравнивание стен и потолков в помещениях с нормальной влажностью",
+          "sourceStatus": "READY",
+          "sources": [
+            "starGypsum"
+          ],
+          "derived": false,
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "value": 30,
+          "displayValue": 30,
+          "sourceStatus": "READY",
+          "sources": [
+            "request"
+          ],
+          "formula": "Фасовка из exact title задания; при apply title проверяется.",
+          "derived": false,
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption_10mm",
+          "value": "около 9",
+          "displayValue": "около 9",
+          "sourceStatus": "READY",
+          "sources": [
+            "starGypsum"
+          ],
+          "formula": "Official source value at 10 mm preserved verbatim.",
+          "qualifier": "approx",
+          "rawSourceValue": "около 9 кг/м² при слое 10 мм",
+          "derived": false,
+          "definitionId": 6,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "wall_layer_thickness",
+          "value": "5–50 мм; локально до 100 мм",
+          "displayValue": "5–50 мм; локально до 100 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "starGypsum"
+          ],
+          "derived": false,
+          "definitionId": 8,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "ceiling_layer_thickness",
+          "value": "5–50 мм; локально до 100 мм",
+          "displayValue": "5–50 мм; локально до 100 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "starGypsum"
+          ],
+          "derived": false,
+          "definitionId": 9,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "value": "+5…+30 °C",
+          "displayValue": "+5…+30 °C",
+          "sourceStatus": "READY",
+          "sources": [
+            "starGypsum"
+          ],
+          "derived": false,
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "content": {
+        "full_description": {
+          "status": "WILL_ADD",
+          "value": "Гипсовая штукатурка Старатели 30 кг — классическая серая смесь для ручного выравнивания стен и потолков. Её применяют в помещениях с нормальной влажностью.\n\nВ составе используются гипсовое вяжущее, лёгкий наполнитель и модифицирующие добавки. Карточка относится к классической гипсовой штукатурке; технологию работ выбирают по её техническому описанию.",
+          "currentValue": null
+        }
+      },
+      "status": "READY",
+      "summary": {
+        "ready": 8,
+        "willAdd": 8,
+        "willFix": 0,
+        "needsSource": 0,
+        "absentByDesign": 0
+      }
+    },
+    {
+      "externalId": "MAT-000014",
+      "title": "Штукатурка гипсово-цементная Старатели Оптимум серая универсальная мех. 30 кг",
+      "productId": 14,
+      "statuses": {},
+      "current": {
+        "brand": null,
+        "description": null,
+        "specsCount": 0
+      },
+      "sourceKeys": [
+        "optimum"
+      ],
+      "contentSources": {
+        "short_description": [
+          "optimum"
+        ],
+        "full_description": [
+          "request",
+          "optimum"
+        ],
+        "seo_title": [
+          "request",
+          "optimum"
+        ],
+        "seo_description": [
+          "request",
+          "optimum"
+        ]
+      },
+      "identityStatus": "CONFIRMED",
+      "notes": [],
+      "brand": {
+        "status": "WILL_ADD",
+        "value": "Старатели",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "definitionId": 1
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "value": "Штукатурная смесь",
+          "displayValue": "Штукатурная смесь",
+          "sourceStatus": "READY",
+          "sources": [
+            "optimum"
+          ],
+          "derived": false,
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "value": "Гипс и цемент",
+          "displayValue": "Гипс и цемент",
+          "sourceStatus": "READY",
+          "sources": [
+            "optimum"
+          ],
+          "derived": false,
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "value": "Выравнивание стен и потолков в помещениях с нормальной и повышенной влажностью",
+          "displayValue": "Выравнивание стен и потолков в помещениях с нормальной и повышенной влажностью",
+          "sourceStatus": "READY",
+          "sources": [
+            "optimum"
+          ],
+          "derived": false,
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "value": 30,
+          "displayValue": 30,
+          "sourceStatus": "READY",
+          "sources": [
+            "request"
+          ],
+          "formula": "Фасовка из exact title задания; при apply title проверяется.",
+          "derived": false,
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption_10mm",
+          "value": "10–11",
+          "displayValue": "10–11",
+          "sourceStatus": "READY",
+          "sources": [
+            "optimum"
+          ],
+          "formula": "Official manufacturer shop value at 10 mm preserved verbatim; midpoint is not calculated.",
+          "rawSourceValue": "10–11 кг/м² при слое 10 мм",
+          "derived": false,
+          "definitionId": 6,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "wall_layer_thickness",
+          "value": "5–60 мм; локально до 90 мм",
+          "displayValue": "5–60 мм; локально до 90 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "optimum"
+          ],
+          "derived": false,
+          "definitionId": 8,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "ceiling_layer_thickness",
+          "value": "5–60 мм; локально до 90 мм",
+          "displayValue": "5–60 мм; локально до 90 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "optimum"
+          ],
+          "derived": false,
+          "definitionId": 9,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "value": "+5…+30 °C",
+          "displayValue": "+5…+30 °C",
+          "sourceStatus": "READY",
+          "sources": [
+            "optimum"
+          ],
+          "derived": false,
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "content": {
+        "full_description": {
+          "status": "WILL_ADD",
+          "value": "Старатели Оптимум 30 кг — штукатурная смесь на основе гипса и цемента с модифицирующими добавками. Предназначена для выравнивания стен и потолков внутри помещений.\n\nВ официальном магазине указано ручное и механизированное нанесение в помещениях с нормальной и повышенной влажностью. Перед отделкой следует сверить техническое описание с маркировкой поставляемой смеси.",
+          "currentValue": null
+        }
+      },
+      "status": "READY",
+      "summary": {
+        "ready": 8,
+        "willAdd": 8,
+        "willFix": 0,
+        "needsSource": 0,
+        "absentByDesign": 0
+      }
+    },
+    {
+      "externalId": "MAT-000015",
+      "title": "Штукатурка цементная Цементум 25 кг",
+      "productId": 15,
+      "statuses": {},
+      "current": {
+        "brand": null,
+        "description": null,
+        "specsCount": 0
+      },
+      "sourceKeys": [
+        "cementum"
+      ],
+      "contentSources": {
+        "short_description": [
+          "cementum"
+        ],
+        "full_description": [
+          "request",
+          "cementum"
+        ],
+        "seo_title": [
+          "request",
+          "cementum"
+        ],
+        "seo_description": [
+          "request",
+          "cementum"
+        ]
+      },
+      "identityStatus": "CONFIRMED",
+      "notes": [],
+      "brand": {
+        "status": "WILL_ADD",
+        "value": "ЦЕМЕНТУМ",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "definitionId": 1
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "value": "Цементная штукатурка",
+          "displayValue": "Цементная штукатурка",
+          "sourceStatus": "READY",
+          "sources": [
+            "cementum"
+          ],
+          "derived": false,
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "value": "Цементная",
+          "displayValue": "Цементная",
+          "sourceStatus": "READY",
+          "sources": [
+            "cementum"
+          ],
+          "derived": false,
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "value": "Восстановление и выравнивание минеральных поверхностей внутри и снаружи зданий",
+          "displayValue": "Восстановление и выравнивание минеральных поверхностей внутри и снаружи зданий",
+          "sourceStatus": "READY",
+          "sources": [
+            "cementum"
+          ],
+          "derived": false,
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "value": 25,
+          "displayValue": 25,
+          "sourceStatus": "READY",
+          "sources": [
+            "request"
+          ],
+          "formula": "Фасовка из exact title задания; при apply title проверяется.",
+          "derived": false,
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption_10mm",
+          "value": "14",
+          "displayValue": "14",
+          "sourceStatus": "READY",
+          "sources": [
+            "cementum"
+          ],
+          "formula": "Official source value at 10 mm preserved verbatim.",
+          "rawSourceValue": "14 кг/м² при слое 10 мм",
+          "derived": false,
+          "definitionId": 6,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "wall_layer_thickness",
+          "value": "5–30 мм; многослойно до 60 мм",
+          "displayValue": "5–30 мм; многослойно до 60 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "cementum"
+          ],
+          "derived": false,
+          "definitionId": 8,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "ceiling_layer_thickness",
+          "value": null,
+          "displayValue": null,
+          "sourceStatus": "ABSENT_BY_DESIGN",
+          "sources": [],
+          "reason": "В проверенном официальном позиционировании нанесение на потолок не заявлено.",
+          "derived": false,
+          "definitionId": 9,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "ABSENT_BY_DESIGN"
+        },
+        {
+          "code": "application_temperature",
+          "value": "+5…+30 °C",
+          "displayValue": "+5…+30 °C",
+          "sourceStatus": "READY",
+          "sources": [
+            "cementum"
+          ],
+          "derived": false,
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "content": {
+        "full_description": {
+          "status": "WILL_ADD",
+          "value": "Цементная штукатурка ЦЕМЕНТУМ 25 кг — смесь для восстановления и выравнивания минеральных поверхностей внутри и снаружи зданий. Состав содержит цемент, наполнители и модифицирующие добавки.\n\nНанесение возможно вручную или механизированным способом. Среди оснований производитель указывает кирпич, бетон, ячеистый бетон и цементные штукатурные покрытия; подготовку выполняют по инструкции для выбранной поверхности.",
+          "currentValue": null
+        }
+      },
+      "status": "READY",
+      "summary": {
+        "ready": 7,
+        "willAdd": 7,
+        "willFix": 0,
+        "needsSource": 0,
+        "absentByDesign": 1
+      }
+    },
+    {
+      "externalId": "MAT-000016",
+      "title": "Штукатурка цементная Knauf Унтерпутц 25 кг",
+      "productId": 16,
+      "statuses": {},
+      "current": {
+        "brand": null,
+        "description": null,
+        "specsCount": 0
+      },
+      "sourceKeys": [
+        "unterputz"
+      ],
+      "contentSources": {
+        "short_description": [
+          "unterputz"
+        ],
+        "full_description": [
+          "request",
+          "unterputz"
+        ],
+        "seo_title": [
+          "request",
+          "unterputz"
+        ],
+        "seo_description": [
+          "request",
+          "unterputz"
+        ]
+      },
+      "identityStatus": "CONFIRMED",
+      "notes": [],
+      "brand": {
+        "status": "WILL_ADD",
+        "value": "KNAUF",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "definitionId": 1
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "value": "Цементная фасадная штукатурка",
+          "displayValue": "Цементная фасадная штукатурка",
+          "sourceStatus": "READY",
+          "sources": [
+            "unterputz"
+          ],
+          "derived": false,
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "value": "Цементная",
+          "displayValue": "Цементная",
+          "sourceStatus": "READY",
+          "sources": [
+            "unterputz"
+          ],
+          "derived": false,
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "value": "Выравнивание фасадов и стен в помещениях с высокой влажностью",
+          "displayValue": "Выравнивание фасадов и стен в помещениях с высокой влажностью",
+          "sourceStatus": "READY",
+          "sources": [
+            "unterputz"
+          ],
+          "derived": false,
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "value": 25,
+          "displayValue": 25,
+          "sourceStatus": "READY",
+          "sources": [
+            "request"
+          ],
+          "formula": "Фасовка из exact title задания; при apply title проверяется.",
+          "derived": false,
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption_10mm",
+          "value": "17",
+          "displayValue": "17",
+          "sourceStatus": "READY",
+          "sources": [
+            "unterputz"
+          ],
+          "formula": "1,7 × 10 мм = 17 кг/м² при слое 10 мм; conversion is arithmetic only.",
+          "rawSourceValue": "1,7 кг/м² при толщине слоя 1 мм",
+          "derived": true,
+          "definitionId": 6,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "wall_layer_thickness",
+          "value": "10–35 мм",
+          "displayValue": "10–35 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "unterputz"
+          ],
+          "derived": false,
+          "definitionId": 8,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "ceiling_layer_thickness",
+          "value": null,
+          "displayValue": null,
+          "sourceStatus": "ABSENT_BY_DESIGN",
+          "sources": [],
+          "reason": "В проверенном официальном позиционировании нанесение на потолок не заявлено.",
+          "derived": false,
+          "definitionId": 9,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "ABSENT_BY_DESIGN"
+        },
+        {
+          "code": "application_temperature",
+          "value": "Температура воздуха и основания не ниже +5 °C",
+          "displayValue": "Температура воздуха и основания не ниже +5 °C",
+          "sourceStatus": "READY",
+          "sources": [
+            "unterputz"
+          ],
+          "derived": false,
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "content": {
+        "full_description": {
+          "status": "WILL_ADD",
+          "value": "KNAUF Унтерпутц 25 кг — цементная фасадная штукатурка для выравнивания стен. Применяется снаружи зданий и в помещениях с повышенной влажностью.\n\nСмесь наносят вручную либо штукатурной машиной. Подготовленный слой служит основанием под декоративную штукатурку, краску или облицовочную плитку; совместимость с основанием проверяют по инструкции КНАУФ.",
+          "currentValue": null
+        }
+      },
+      "status": "READY",
+      "summary": {
+        "ready": 7,
+        "willAdd": 7,
+        "willFix": 0,
+        "needsSource": 0,
+        "absentByDesign": 1
+      }
+    },
+    {
+      "externalId": "MAT-000017",
+      "title": "Штукатурка цементная Knauf Грюнбанд трещиностойкая 25 кг",
+      "productId": 17,
+      "statuses": {},
+      "current": {
+        "brand": null,
+        "description": null,
+        "specsCount": 0
+      },
+      "sourceKeys": [
+        "grunband"
+      ],
+      "contentSources": {
+        "short_description": [
+          "grunband"
+        ],
+        "full_description": [
+          "request",
+          "grunband"
+        ],
+        "seo_title": [
+          "request",
+          "grunband"
+        ],
+        "seo_description": [
+          "request",
+          "grunband"
+        ]
+      },
+      "identityStatus": "CONFIRMED",
+      "notes": [],
+      "brand": {
+        "status": "WILL_ADD",
+        "value": "KNAUF",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "definitionId": 1
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "value": "Лёгкая цементная фасадная штукатурка",
+          "displayValue": "Лёгкая цементная фасадная штукатурка",
+          "sourceStatus": "READY",
+          "sources": [
+            "grunband"
+          ],
+          "derived": false,
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "value": "Цемент с лёгким заполнителем из гранул пенополистирола",
+          "displayValue": "Цемент с лёгким заполнителем из гранул пенополистирола",
+          "sourceStatus": "READY",
+          "sources": [
+            "grunband"
+          ],
+          "derived": false,
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "value": "Выравнивание фасадов и стен во влажных помещениях",
+          "displayValue": "Выравнивание фасадов и стен во влажных помещениях",
+          "sourceStatus": "READY",
+          "sources": [
+            "grunband"
+          ],
+          "derived": false,
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "value": 25,
+          "displayValue": 25,
+          "sourceStatus": "READY",
+          "sources": [
+            "request"
+          ],
+          "formula": "Фасовка из exact title задания; при apply title проверяется.",
+          "derived": false,
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption_10mm",
+          "value": "12",
+          "displayValue": "12",
+          "sourceStatus": "READY",
+          "sources": [
+            "grunband"
+          ],
+          "formula": "Official source value at 10 mm preserved verbatim.",
+          "rawSourceValue": "12 кг/м² при слое 10 мм",
+          "derived": false,
+          "definitionId": 6,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "wall_layer_thickness",
+          "value": "10–30 мм",
+          "displayValue": "10–30 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "grunband"
+          ],
+          "derived": false,
+          "definitionId": 8,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "ceiling_layer_thickness",
+          "value": null,
+          "displayValue": null,
+          "sourceStatus": "ABSENT_BY_DESIGN",
+          "sources": [],
+          "reason": "В проверенном официальном позиционировании нанесение на потолок не заявлено.",
+          "derived": false,
+          "definitionId": 9,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "ABSENT_BY_DESIGN"
+        },
+        {
+          "code": "application_temperature",
+          "value": "Температура воздуха и основания не ниже +5 °C",
+          "displayValue": "Температура воздуха и основания не ниже +5 °C",
+          "sourceStatus": "READY",
+          "sources": [
+            "grunband"
+          ],
+          "derived": false,
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "content": {
+        "full_description": {
+          "status": "WILL_ADD",
+          "value": "KNAUF Грюнбанд 25 кг — лёгкая цементная штукатурка с заполнителем из гранул пенополистирола. Используется для выравнивания фасадов и поверхностей во влажных помещениях.\n\nМатериал допускает ручное и механизированное нанесение. Производитель рекомендует его в том числе для газобетонных и пенобетонных блоков; после подготовки штукатурного слоя выполняют финишную отделку.",
+          "currentValue": null
+        }
+      },
+      "status": "READY",
+      "summary": {
+        "ready": 7,
+        "willAdd": 7,
+        "willFix": 0,
+        "needsSource": 0,
+        "absentByDesign": 1
+      }
+    },
+    {
+      "externalId": "MAT-000018",
+      "title": "Штукатурка цементная Weber Vetonit ТТ40 фасадная 25 кг",
+      "productId": 18,
+      "statuses": {},
+      "current": {
+        "brand": null,
+        "description": null,
+        "specsCount": 0
+      },
+      "sourceKeys": [
+        "tt40",
+        "tt40Tds"
+      ],
+      "contentSources": {
+        "short_description": [
+          "tt40",
+          "tt40Tds"
+        ],
+        "full_description": [
+          "request",
+          "tt40"
+        ],
+        "seo_title": [
+          "request",
+          "tt40"
+        ],
+        "seo_description": [
+          "request",
+          "tt40"
+        ]
+      },
+      "identityStatus": "CONFIRMED",
+      "notes": [],
+      "brand": {
+        "status": "WILL_ADD",
+        "value": "Vetonit",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "definitionId": 1
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "value": "Цементная штукатурка",
+          "displayValue": "Цементная штукатурка",
+          "sourceStatus": "READY",
+          "sources": [
+            "tt40"
+          ],
+          "derived": false,
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "value": "Цементная",
+          "displayValue": "Цементная",
+          "sourceStatus": "READY",
+          "sources": [
+            "tt40"
+          ],
+          "derived": false,
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "value": "Базовое выравнивание стен и потолков в сухих, влажных и мокрых помещениях, а также фасадов",
+          "displayValue": "Базовое выравнивание стен и потолков в сухих, влажных и мокрых помещениях, а также фасадов",
+          "sourceStatus": "READY",
+          "sources": [
+            "tt40Tds"
+          ],
+          "derived": false,
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "value": 25,
+          "displayValue": 25,
+          "sourceStatus": "READY",
+          "sources": [
+            "request"
+          ],
+          "formula": "Фасовка из exact title задания; при apply title проверяется.",
+          "derived": false,
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption_10mm",
+          "value": "17",
+          "displayValue": "17",
+          "sourceStatus": "READY",
+          "sources": [
+            "tt40Tds"
+          ],
+          "formula": "1,7 × 10 мм = 17 кг/м² при слое 10 мм; conversion is arithmetic only.",
+          "rawSourceValue": "1,7 кг/м² на 1 мм толщины слоя",
+          "derived": true,
+          "definitionId": 6,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "wall_layer_thickness",
+          "value": "5–40 мм за одно нанесение; локально до 60 мм",
+          "displayValue": "5–40 мм за одно нанесение; локально до 60 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "tt40"
+          ],
+          "derived": false,
+          "definitionId": 8,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "ceiling_layer_thickness",
+          "value": "5–40 мм; локально до 60 мм",
+          "displayValue": "5–40 мм; локально до 60 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "tt40Tds"
+          ],
+          "derived": false,
+          "definitionId": 9,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "value": "+5…+30 °C",
+          "displayValue": "+5…+30 °C",
+          "sourceStatus": "READY",
+          "sources": [
+            "tt40Tds"
+          ],
+          "derived": false,
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "content": {
+        "full_description": {
+          "status": "WILL_ADD",
+          "value": "Weber Vetonit TT40 25 кг — цементная штукатурка для базового выравнивания стен. Производитель включает TT40 в систему подготовки поверхностей под плитку в сухих помещениях.\n\nВ этой системе смесь наносят вручную или механизированным способом. Приведённое назначение относится к подготовке стен; условия фасадного применения требуют сверки с отдельным техническим листом TT40.",
+          "currentValue": null
+        }
+      },
+      "status": "READY",
+      "summary": {
+        "ready": 8,
+        "willAdd": 8,
+        "willFix": 0,
+        "needsSource": 0,
+        "absentByDesign": 0
+      }
+    },
+    {
+      "externalId": "MAT-000019",
+      "title": "Штукатурка цементная Mapei Nivoplan Plus 25 кг",
+      "productId": 19,
+      "statuses": {},
+      "current": {
+        "brand": null,
+        "description": null,
+        "specsCount": 0
+      },
+      "sourceKeys": [
+        "nivoplan"
+      ],
+      "contentSources": {
+        "short_description": [
+          "nivoplan"
+        ],
+        "full_description": [
+          "request",
+          "nivoplan"
+        ],
+        "seo_title": [
+          "request",
+          "nivoplan"
+        ],
+        "seo_description": [
+          "request",
+          "nivoplan"
+        ]
+      },
+      "identityStatus": "CONFIRMED",
+      "notes": [],
+      "brand": {
+        "status": "WILL_ADD",
+        "value": "MAPEI",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "definitionId": 1
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "value": "Цементная штукатурная смесь",
+          "displayValue": "Цементная штукатурная смесь",
+          "sourceStatus": "READY",
+          "sources": [
+            "nivoplan"
+          ],
+          "derived": false,
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "value": "Цементная",
+          "displayValue": "Цементная",
+          "sourceStatus": "READY",
+          "sources": [
+            "nivoplan"
+          ],
+          "derived": false,
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "value": "Выравнивание стен, потолков и полов внутри и снаружи помещений",
+          "displayValue": "Выравнивание стен, потолков и полов внутри и снаружи помещений",
+          "sourceStatus": "READY",
+          "sources": [
+            "nivoplan"
+          ],
+          "derived": false,
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "value": 25,
+          "displayValue": 25,
+          "sourceStatus": "READY",
+          "sources": [
+            "request"
+          ],
+          "formula": "Фасовка из exact title задания; при apply title проверяется.",
+          "derived": false,
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption_10mm",
+          "value": "16",
+          "displayValue": "16",
+          "sourceStatus": "READY",
+          "sources": [
+            "nivoplan"
+          ],
+          "formula": "Источник указывает значение непосредственно на слое 10 мм; запись переведена в text для сохранения source-faithful display.",
+          "rawSourceValue": 16,
+          "derived": false,
+          "definitionId": 6,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "wall_layer_thickness",
+          "value": "5–50 мм",
+          "displayValue": "5–50 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "nivoplan"
+          ],
+          "derived": false,
+          "definitionId": 8,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "ceiling_layer_thickness",
+          "value": "5–50 мм",
+          "displayValue": "5–50 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "nivoplan"
+          ],
+          "derived": false,
+          "definitionId": 9,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "value": "От +5 °C до +30 °C",
+          "displayValue": "От +5 °C до +30 °C",
+          "sourceStatus": "READY",
+          "sources": [
+            "nivoplan"
+          ],
+          "derived": false,
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "content": {
+        "full_description": {
+          "status": "WILL_ADD",
+          "value": "Mapei Nivoplan Plus 25 кг — универсальная штукатурная смесь на цементной основе для выравнивания стен, потолков и полов внутри и снаружи помещений. Техническая карта MAPEI указывает нанесение слоем 5–50 мм.\n\nРаствор наносят шпателем или штукатурной машиной; подготовленная поверхность подходит для последующей укладки плитки, гидроизоляции и других финишных покрытий. Для гипсовых оснований производитель предусматривает предварительную грунтовку по технической карте.",
+          "currentValue": null
+        }
+      },
+      "status": "READY",
+      "summary": {
+        "ready": 8,
+        "willAdd": 8,
+        "willFix": 0,
+        "needsSource": 0,
+        "absentByDesign": 0
+      }
+    },
+    {
+      "externalId": "MAT-000020",
+      "title": "Штукатурка цементная Старатели 25 кг",
+      "productId": 20,
+      "statuses": {},
+      "current": {
+        "brand": null,
+        "description": null,
+        "specsCount": 0
+      },
+      "sourceKeys": [
+        "starCement"
+      ],
+      "contentSources": {
+        "short_description": [
+          "starCement"
+        ],
+        "full_description": [
+          "request",
+          "starCement"
+        ],
+        "seo_title": [
+          "request",
+          "starCement"
+        ],
+        "seo_description": [
+          "request",
+          "starCement"
+        ]
+      },
+      "identityStatus": "CONFIRMED",
+      "notes": [],
+      "brand": {
+        "status": "WILL_ADD",
+        "value": "Старатели",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "definitionId": 1
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "value": "Цементная штукатурка",
+          "displayValue": "Цементная штукатурка",
+          "sourceStatus": "READY",
+          "sources": [
+            "starCement"
+          ],
+          "derived": false,
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "value": "Цементная",
+          "displayValue": "Цементная",
+          "sourceStatus": "READY",
+          "sources": [
+            "starCement"
+          ],
+          "derived": false,
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "value": "Выравнивание стен внутри помещений и фасадов выше цоколя",
+          "displayValue": "Выравнивание стен внутри помещений и фасадов выше цоколя",
+          "sourceStatus": "READY",
+          "sources": [
+            "starCement"
+          ],
+          "derived": false,
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "value": 25,
+          "displayValue": 25,
+          "sourceStatus": "READY",
+          "sources": [
+            "request"
+          ],
+          "formula": "Фасовка из exact title задания; при apply title проверяется.",
+          "derived": false,
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption_10mm",
+          "value": "14–15",
+          "displayValue": "14–15",
+          "sourceStatus": "READY",
+          "sources": [
+            "starCement"
+          ],
+          "formula": "Official source range at 10 mm preserved verbatim; midpoint is not calculated.",
+          "rawSourceValue": "14–15 кг/м² при слое 10 мм",
+          "derived": false,
+          "definitionId": 6,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "wall_layer_thickness",
+          "value": "до 30 мм; многослойно до 60 мм",
+          "displayValue": "до 30 мм; многослойно до 60 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "starCement"
+          ],
+          "derived": false,
+          "definitionId": 8,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "ceiling_layer_thickness",
+          "value": null,
+          "displayValue": null,
+          "sourceStatus": "ABSENT_BY_DESIGN",
+          "sources": [],
+          "reason": "В проверенном официальном позиционировании нанесение на потолок не заявлено.",
+          "derived": false,
+          "definitionId": 9,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "ABSENT_BY_DESIGN"
+        },
+        {
+          "code": "application_temperature",
+          "value": "+5…+30 °C",
+          "displayValue": "+5…+30 °C",
+          "sourceStatus": "READY",
+          "sources": [
+            "starCement"
+          ],
+          "derived": false,
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "content": {
+        "full_description": {
+          "status": "WILL_ADD",
+          "value": "Цементная штукатурка Старатели 25 кг предназначена для выравнивания стен внутри помещений и фасадных поверхностей выше цоколя. Подходит для помещений с нормальной и повышенной влажностью, включая неотапливаемые.\n\nСостав допускает ручное и механизированное нанесение. В перечень оснований входят бетон, кирпич, ячеистый бетон и цементная штукатурка; перед нанесением поверхность подготавливают по инструкции производителя.",
+          "currentValue": null
+        }
+      },
+      "status": "READY",
+      "summary": {
+        "ready": 7,
+        "willAdd": 7,
+        "willFix": 0,
+        "needsSource": 0,
+        "absentByDesign": 1
+      }
+    },
+    {
+      "externalId": "MAT-000021",
+      "title": "Штукатурка цементная Волма Цоколь 25 кг",
+      "productId": 21,
+      "statuses": {},
+      "current": {
+        "brand": null,
+        "description": null,
+        "specsCount": 0
+      },
+      "sourceKeys": [
+        "tsokol"
+      ],
+      "contentSources": {
+        "short_description": [
+          "tsokol"
+        ],
+        "full_description": [
+          "request",
+          "tsokol"
+        ],
+        "seo_title": [
+          "request",
+          "tsokol"
+        ],
+        "seo_description": [
+          "request",
+          "tsokol"
+        ]
+      },
+      "identityStatus": "CONFIRMED",
+      "notes": [],
+      "brand": {
+        "status": "WILL_ADD",
+        "value": "ВОЛМА",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "definitionId": 1
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "value": "Цементная штукатурка с армирующими волокнами",
+          "displayValue": "Цементная штукатурка с армирующими волокнами",
+          "sourceStatus": "READY",
+          "sources": [
+            "tsokol"
+          ],
+          "derived": false,
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "value": "Портландцемент",
+          "displayValue": "Портландцемент",
+          "sourceStatus": "READY",
+          "sources": [
+            "tsokol"
+          ],
+          "derived": false,
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "value": "Выравнивание наружных и внутренних стен, цоколей и фундаментов",
+          "displayValue": "Выравнивание наружных и внутренних стен, цоколей и фундаментов",
+          "sourceStatus": "READY",
+          "sources": [
+            "tsokol"
+          ],
+          "derived": false,
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "value": 25,
+          "displayValue": 25,
+          "sourceStatus": "READY",
+          "sources": [
+            "request"
+          ],
+          "formula": "Фасовка из exact title задания; при apply title проверяется.",
+          "derived": false,
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption_10mm",
+          "value": "14–16",
+          "displayValue": "14–16",
+          "sourceStatus": "READY",
+          "sources": [
+            "tsokol"
+          ],
+          "formula": "Official source range at 10 mm preserved verbatim; midpoint is not calculated.",
+          "rawSourceValue": "14–16 кг/м² при слое 10 мм",
+          "derived": false,
+          "definitionId": 6,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "wall_layer_thickness",
+          "value": "10–30 мм; при заделке раковин и выбоин до 60 мм",
+          "displayValue": "10–30 мм; при заделке раковин и выбоин до 60 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "tsokol"
+          ],
+          "derived": false,
+          "definitionId": 8,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "ceiling_layer_thickness",
+          "value": null,
+          "displayValue": null,
+          "sourceStatus": "ABSENT_BY_DESIGN",
+          "sources": [],
+          "reason": "В проверенном официальном позиционировании нанесение на потолок не заявлено.",
+          "derived": false,
+          "definitionId": 9,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "ABSENT_BY_DESIGN"
+        },
+        {
+          "code": "application_temperature",
+          "value": "+5…+30 °C",
+          "displayValue": "+5…+30 °C",
+          "sourceStatus": "READY",
+          "sources": [
+            "tsokol"
+          ],
+          "derived": false,
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "content": {
+        "full_description": {
+          "status": "WILL_ADD",
+          "value": "ВОЛМА-Цоколь 25 кг — цементная выравнивающая штукатурка с армирующими волокнами. Предназначена для стен внутри и снаружи зданий, в том числе цоколей и фундаментов.\n\nСмесь наносят вручную или механизированно. Штукатурный слой готовят под керамическую плитку, керамогранит, природный камень, декоративную штукатурку либо последующее шпатлевание.",
+          "currentValue": null
+        }
+      },
+      "status": "READY",
+      "summary": {
+        "ready": 7,
+        "willAdd": 7,
+        "willFix": 0,
+        "needsSource": 0,
+        "absentByDesign": 1
+      }
+    },
+    {
+      "externalId": "MAT-000022",
+      "title": "Штукатурка цементная клеевая ВОЛМА Термофасад 25 кг",
+      "productId": 22,
+      "statuses": {},
+      "current": {
+        "brand": null,
+        "description": null,
+        "specsCount": 0
+      },
+      "sourceKeys": [
+        "termofasad"
+      ],
+      "contentSources": {
+        "short_description": [
+          "termofasad"
+        ],
+        "full_description": [
+          "request",
+          "termofasad"
+        ],
+        "seo_title": [
+          "request",
+          "termofasad"
+        ],
+        "seo_description": [
+          "request",
+          "termofasad"
+        ]
+      },
+      "identityStatus": "CONFIRMED",
+      "notes": [],
+      "brand": {
+        "status": "WILL_ADD",
+        "value": "ВОЛМА",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "definitionId": 1
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "value": "Цементная штукатурно-клеевая смесь",
+          "displayValue": "Цементная штукатурно-клеевая смесь",
+          "sourceStatus": "READY",
+          "sources": [
+            "termofasad"
+          ],
+          "derived": false,
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "value": "Портландцемент",
+          "displayValue": "Портландцемент",
+          "sourceStatus": "READY",
+          "sources": [
+            "termofasad"
+          ],
+          "derived": false,
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "value": "Клеевой и базовый штукатурный слои фасадных теплоизоляционных систем",
+          "displayValue": "Клеевой и базовый штукатурный слои фасадных теплоизоляционных систем",
+          "sourceStatus": "READY",
+          "sources": [
+            "termofasad"
+          ],
+          "derived": false,
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "value": 25,
+          "displayValue": 25,
+          "sourceStatus": "READY",
+          "sources": [
+            "request"
+          ],
+          "formula": "Фасовка из exact title задания; при apply title проверяется.",
+          "derived": false,
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption_10mm",
+          "value": null,
+          "displayValue": null,
+          "sourceStatus": "NEEDS_SOURCE",
+          "sources": [
+            "termofasad"
+          ],
+          "reason": "Официальное значение расхода на слое 10 мм не подтверждено.",
+          "derived": false,
+          "definitionId": 6,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "wall_layer_thickness",
+          "value": "2–10 мм",
+          "displayValue": "2–10 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "termofasad"
+          ],
+          "derived": false,
+          "definitionId": 8,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "ceiling_layer_thickness",
+          "value": null,
+          "displayValue": null,
+          "sourceStatus": "ABSENT_BY_DESIGN",
+          "sources": [],
+          "reason": "В проверенном официальном позиционировании нанесение на потолок не заявлено.",
+          "derived": false,
+          "definitionId": 9,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "ABSENT_BY_DESIGN"
+        },
+        {
+          "code": "application_temperature",
+          "value": "+5…+30 °C",
+          "displayValue": "+5…+30 °C",
+          "sourceStatus": "READY",
+          "sources": [
+            "termofasad"
+          ],
+          "derived": false,
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "content": {
+        "full_description": {
+          "status": "WILL_ADD",
+          "value": "ВОЛМА-Термофасад 25 кг — цементная штукатурно-клеевая смесь для фасадных теплоизоляционных систем. Состав включает кварцевый песок, полимерные и минеральные добавки, а также армирующие микроволокна.\n\nМатериал относится к составам для клеевого и базового штукатурного слоёв системы утепления. Его подбирают по технической документации фасадной системы с учётом используемого утеплителя.",
+          "currentValue": null
+        }
+      },
+      "status": "PARTIAL",
+      "summary": {
+        "ready": 6,
+        "willAdd": 6,
+        "willFix": 0,
+        "needsSource": 1,
+        "absentByDesign": 1
+      }
+    },
+    {
+      "externalId": "MAT-000023",
+      "title": "Штукатурка цементная Unis Силин армированная универсальная 25 кг",
+      "productId": 23,
+      "statuses": {},
+      "current": {
+        "brand": null,
+        "description": null,
+        "specsCount": 0
+      },
+      "sourceKeys": [
+        "silin"
+      ],
+      "contentSources": {
+        "short_description": [
+          "silin"
+        ],
+        "full_description": [
+          "request",
+          "silin"
+        ],
+        "seo_title": [
+          "request",
+          "silin"
+        ],
+        "seo_description": [
+          "request",
+          "silin"
+        ]
+      },
+      "identityStatus": "CONFIRMED",
+      "notes": [],
+      "brand": {
+        "status": "WILL_ADD",
+        "value": "UNIS",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "definitionId": 1
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "value": "Универсальная армированная цементная штукатурка",
+          "displayValue": "Универсальная армированная цементная штукатурка",
+          "sourceStatus": "READY",
+          "sources": [
+            "silin"
+          ],
+          "derived": false,
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "value": "Цементная",
+          "displayValue": "Цементная",
+          "sourceStatus": "READY",
+          "sources": [
+            "silin"
+          ],
+          "derived": false,
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "value": "Выравнивание стен и потолков внутри и снаружи зданий",
+          "displayValue": "Выравнивание стен и потолков внутри и снаружи зданий",
+          "sourceStatus": "READY",
+          "sources": [
+            "silin"
+          ],
+          "derived": false,
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "value": 25,
+          "displayValue": 25,
+          "sourceStatus": "READY",
+          "sources": [
+            "request"
+          ],
+          "formula": "Фасовка из exact title задания; при apply title проверяется.",
+          "derived": false,
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption_10mm",
+          "value": "14–16",
+          "displayValue": "14–16",
+          "sourceStatus": "READY",
+          "sources": [
+            "silin"
+          ],
+          "formula": "Official technical sheet value at 10 mm preserved verbatim; midpoint is not calculated.",
+          "rawSourceValue": "14–16 кг/м² при толщине слоя 10 мм",
+          "derived": false,
+          "definitionId": 6,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "wall_layer_thickness",
+          "value": "5–30 мм",
+          "displayValue": "5–30 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "silin"
+          ],
+          "derived": false,
+          "definitionId": 8,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "ceiling_layer_thickness",
+          "value": "5–30 мм",
+          "displayValue": "5–30 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "silin"
+          ],
+          "derived": false,
+          "definitionId": 9,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "value": "+5…+30 °C",
+          "displayValue": "+5…+30 °C",
+          "sourceStatus": "READY",
+          "sources": [
+            "silin"
+          ],
+          "derived": false,
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "content": {
+        "full_description": {
+          "status": "WILL_ADD",
+          "value": "UNIS Силин Универсальный Армированный 25 кг — цементная штукатурка для внутренней и наружной отделки. Применяется в том числе во влажных помещениях.\n\nМатериал предназначен для ручного и машинного нанесения. В этой карточке представлена армированная универсальная версия; при выборе технологии следует ориентироваться на её техническое описание.",
+          "currentValue": null
+        }
+      },
+      "status": "READY",
+      "summary": {
+        "ready": 8,
+        "willAdd": 8,
+        "willFix": 0,
+        "needsSource": 0,
+        "absentByDesign": 0
+      }
+    },
+    {
+      "externalId": "MAT-000024",
+      "title": "Штукатурка цементная ручного и машинного нанесения Основит Техно PC 21 M (25кг)",
+      "productId": 24,
+      "statuses": {},
+      "current": {
+        "brand": null,
+        "description": null,
+        "specsCount": 0
+      },
+      "sourceKeys": [
+        "techno"
+      ],
+      "contentSources": {
+        "short_description": [
+          "techno"
+        ],
+        "full_description": [
+          "request",
+          "techno"
+        ],
+        "seo_title": [
+          "request",
+          "techno"
+        ],
+        "seo_description": [
+          "request",
+          "techno"
+        ]
+      },
+      "identityStatus": "CONFIRMED",
+      "notes": [],
+      "brand": {
+        "status": "WILL_ADD",
+        "value": "Основит",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "definitionId": 1
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "value": "Цементная фасадная штукатурка",
+          "displayValue": "Цементная фасадная штукатурка",
+          "sourceStatus": "READY",
+          "sources": [
+            "techno"
+          ],
+          "derived": false,
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "value": "Цементная",
+          "displayValue": "Цементная",
+          "sourceStatus": "READY",
+          "sources": [
+            "techno"
+          ],
+          "derived": false,
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "value": "Выравнивание внутренних стен и фасадов выше цокольной части",
+          "displayValue": "Выравнивание внутренних стен и фасадов выше цокольной части",
+          "sourceStatus": "READY",
+          "sources": [
+            "techno"
+          ],
+          "derived": false,
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "value": 25,
+          "displayValue": 25,
+          "sourceStatus": "READY",
+          "sources": [
+            "request"
+          ],
+          "formula": "Фасовка из exact title задания; при apply title проверяется.",
+          "derived": false,
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption_10mm",
+          "value": "13",
+          "displayValue": "13",
+          "sourceStatus": "READY",
+          "sources": [
+            "techno"
+          ],
+          "formula": "Official source value at 10 mm preserved verbatim.",
+          "rawSourceValue": "13 кг/м² при слое 10 мм",
+          "derived": false,
+          "definitionId": 6,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "wall_layer_thickness",
+          "value": "5–30 мм; локально до 40 мм",
+          "displayValue": "5–30 мм; локально до 40 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "techno"
+          ],
+          "derived": false,
+          "definitionId": 8,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "ceiling_layer_thickness",
+          "value": null,
+          "displayValue": null,
+          "sourceStatus": "ABSENT_BY_DESIGN",
+          "sources": [],
+          "reason": "В проверенном официальном позиционировании нанесение на потолок не заявлено.",
+          "derived": false,
+          "definitionId": 9,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "ABSENT_BY_DESIGN"
+        },
+        {
+          "code": "application_temperature",
+          "value": "+5…+30 °C",
+          "displayValue": "+5…+30 °C",
+          "sourceStatus": "READY",
+          "sources": [
+            "techno"
+          ],
+          "derived": false,
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "content": {
+        "full_description": {
+          "status": "WILL_ADD",
+          "value": "Основит Техно PC21 M 25 кг — цементная штукатурка для ручного и машинного выравнивания стен. Её используют внутри зданий и при отделке фасадов выше цокольной части.\n\nПроизводитель указывает бетонные, кирпичные, пено- и газобетонные основания и помещения с любой степенью влажности. Перед работой подготавливают поверхность по технологии цементных штукатурок Основит.",
+          "currentValue": null
+        }
+      },
+      "status": "READY",
+      "summary": {
+        "ready": 7,
+        "willAdd": 7,
+        "willFix": 0,
+        "needsSource": 0,
+        "absentByDesign": 1
+      }
+    },
+    {
+      "externalId": "MAT-000025",
+      "title": "Штукатурка цементно - известковая фасадная Основит стартвэлл PC21 25 кг",
+      "productId": 25,
+      "statuses": {},
+      "current": {
+        "brand": null,
+        "description": null,
+        "specsCount": 0
+      },
+      "sourceKeys": [
+        "startwell"
+      ],
+      "contentSources": {
+        "short_description": [
+          "startwell"
+        ],
+        "full_description": [
+          "request",
+          "startwell"
+        ],
+        "seo_title": [
+          "request",
+          "startwell"
+        ],
+        "seo_description": [
+          "request",
+          "startwell"
+        ]
+      },
+      "identityStatus": "CONFIRMED",
+      "notes": [],
+      "brand": {
+        "status": "WILL_ADD",
+        "value": "Основит",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "definitionId": 1
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "value": "Фасадная штукатурка",
+          "displayValue": "Фасадная штукатурка",
+          "sourceStatus": "READY",
+          "sources": [
+            "startwell"
+          ],
+          "derived": false,
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "value": "Цементная",
+          "displayValue": "Цементная",
+          "sourceStatus": "READY",
+          "sources": [
+            "startwell"
+          ],
+          "derived": false,
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "value": "Выравнивание внутренних стен и фасадов выше цокольной части",
+          "displayValue": "Выравнивание внутренних стен и фасадов выше цокольной части",
+          "sourceStatus": "READY",
+          "sources": [
+            "startwell"
+          ],
+          "derived": false,
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "value": 25,
+          "displayValue": 25,
+          "sourceStatus": "READY",
+          "sources": [
+            "request"
+          ],
+          "formula": "Фасовка из exact title задания; при apply title проверяется.",
+          "derived": false,
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption_10mm",
+          "value": "16–17",
+          "displayValue": "16–17",
+          "sourceStatus": "READY",
+          "sources": [
+            "startwell"
+          ],
+          "formula": "Official source range at 10 mm preserved verbatim; midpoint is not calculated.",
+          "rawSourceValue": "16–17 кг/м² при слое 10 мм",
+          "derived": false,
+          "definitionId": 6,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "wall_layer_thickness",
+          "value": "5–30 мм; локально до 40 мм",
+          "displayValue": "5–30 мм; локально до 40 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "startwell"
+          ],
+          "derived": false,
+          "definitionId": 8,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "ceiling_layer_thickness",
+          "value": null,
+          "displayValue": null,
+          "sourceStatus": "ABSENT_BY_DESIGN",
+          "sources": [],
+          "reason": "В проверенном официальном позиционировании нанесение на потолок не заявлено.",
+          "derived": false,
+          "definitionId": 9,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "ABSENT_BY_DESIGN"
+        },
+        {
+          "code": "application_temperature",
+          "value": "+5…+30 °C",
+          "displayValue": "+5…+30 °C",
+          "sourceStatus": "READY",
+          "sources": [
+            "startwell"
+          ],
+          "derived": false,
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "content": {
+        "full_description": {
+          "status": "WILL_ADD",
+          "value": "Основит Стартвэлл PC21 25 кг — фасадная штукатурка для выравнивания стен из бетона, кирпича, пено- и газобетона. Предназначена для наружных и внутренних работ.\n\nПроизводитель рекомендует состав для фасадов выше цокольной части и помещений с любой степенью влажности. Для сцепления с основанием поверхность подготавливают по инструкции, включая предусмотренный штукатурный обрызг.",
+          "currentValue": null
+        }
+      },
+      "status": "READY",
+      "summary": {
+        "ready": 7,
+        "willAdd": 7,
+        "willFix": 0,
+        "needsSource": 0,
+        "absentByDesign": 1
+      }
+    },
+    {
+      "externalId": "MAT-000026",
+      "title": "Штукатурка цементная Kreisel 521 MH OPTIMA-PUTZ мех. Сер. 30 кг",
+      "productId": 26,
+      "statuses": {},
+      "current": {
+        "brand": null,
+        "description": null,
+        "specsCount": 0
+      },
+      "sourceKeys": [
+        "kreisel",
+        "kreiselTds"
+      ],
+      "contentSources": {
+        "short_description": [
+          "kreisel",
+          "kreiselTds"
+        ],
+        "full_description": [
+          "request",
+          "kreisel"
+        ],
+        "seo_title": [
+          "request",
+          "kreisel"
+        ],
+        "seo_description": [
+          "request",
+          "kreisel"
+        ]
+      },
+      "identityStatus": "CONFIRMED",
+      "notes": [],
+      "brand": {
+        "status": "WILL_ADD",
+        "value": "Kreisel",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "definitionId": 1
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "value": "Цементная штукатурка машинного нанесения",
+          "displayValue": "Цементная штукатурка машинного нанесения",
+          "sourceStatus": "READY",
+          "sources": [
+            "kreisel"
+          ],
+          "derived": false,
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "value": "Портландцемент",
+          "displayValue": "Портландцемент",
+          "sourceStatus": "READY",
+          "sources": [
+            "kreisel"
+          ],
+          "derived": false,
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "value": "Штукатурные работы внутри и снаружи зданий выше цокольной части",
+          "displayValue": "Штукатурные работы внутри и снаружи зданий выше цокольной части",
+          "sourceStatus": "READY",
+          "sources": [
+            "kreisel"
+          ],
+          "derived": false,
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "value": 30,
+          "displayValue": 30,
+          "sourceStatus": "READY",
+          "sources": [
+            "request"
+          ],
+          "formula": "Фасовка из exact title задания; при apply title проверяется.",
+          "derived": false,
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption_10mm",
+          "value": "14–15",
+          "displayValue": "14–15",
+          "sourceStatus": "READY",
+          "sources": [
+            "kreiselTds"
+          ],
+          "formula": "1,4–1,5 × 10 мм = около 14–15 кг/м² при слое 10 мм; range and approximate qualifier preserved.",
+          "qualifier": "approx",
+          "rawSourceValue": "около 1,4–1,5 кг/м² на 1 мм толщины слоя",
+          "derived": true,
+          "definitionId": 6,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "wall_layer_thickness",
+          "value": "5–30 мм",
+          "displayValue": "5–30 мм",
+          "sourceStatus": "READY",
+          "sources": [
+            "kreiselTds"
+          ],
+          "derived": false,
+          "definitionId": 8,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "ceiling_layer_thickness",
+          "value": null,
+          "displayValue": null,
+          "sourceStatus": "ABSENT_BY_DESIGN",
+          "sources": [],
+          "reason": "В проверенном официальном позиционировании нанесение на потолок не заявлено.",
+          "derived": false,
+          "definitionId": 9,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "ABSENT_BY_DESIGN"
+        },
+        {
+          "code": "application_temperature",
+          "value": "+5…+25 °C",
+          "displayValue": "+5…+25 °C",
+          "sourceStatus": "READY",
+          "sources": [
+            "kreiselTds"
+          ],
+          "derived": false,
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "content": {
+        "full_description": {
+          "status": "WILL_ADD",
+          "value": "Kreisel 521 MH OPTIMA-PUTZ серая 30 кг — цементная штукатурка для машинного нанесения. Предназначена для стен внутри и снаружи зданий выше цокольной части.\n\nСостав подходит для помещений с повышенной влажностью, включая кухни, ванные и душевые. После твердения образует водо- и морозостойкий слой; подготовку основания выполняют по технической карте продукта.",
+          "currentValue": null
+        }
+      },
+      "status": "READY",
+      "summary": {
+        "ready": 7,
+        "willAdd": 7,
+        "willFix": 0,
+        "needsSource": 0,
+        "absentByDesign": 1
+      }
+    },
+    {
+      "externalId": "MAT-000027",
+      "title": "Штукатурная смесь цементная Евро М-150 40кг",
+      "productId": 27,
+      "statuses": {},
+      "current": {
+        "brand": null,
+        "description": null,
+        "specsCount": 0
+      },
+      "sourceKeys": [
+        "euroRs"
+      ],
+      "contentSources": {
+        "short_description": [
+          "euroRs"
+        ],
+        "full_description": [
+          "request",
+          "request"
+        ],
+        "seo_title": [
+          "request",
+          "request"
+        ],
+        "seo_description": [
+          "request",
+          "request"
+        ]
+      },
+      "identityStatus": "BLOCKED_IDENTITY",
+      "notes": [],
+      "brand": {
+        "status": "BLOCKED_IDENTITY",
+        "value": null
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "value": null,
+          "displayValue": null,
+          "sourceStatus": "NEEDS_SOURCE",
+          "sources": [
+            "euroRs"
+          ],
+          "reason": "BLOCKED_IDENTITY: точная модификация и производитель не установлены.",
+          "derived": false,
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "base",
+          "value": null,
+          "displayValue": null,
+          "sourceStatus": "NEEDS_SOURCE",
+          "sources": [
+            "euroRs"
+          ],
+          "reason": "BLOCKED_IDENTITY: точная модификация и производитель не установлены.",
+          "derived": false,
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "purpose",
+          "value": null,
+          "displayValue": null,
+          "sourceStatus": "NEEDS_SOURCE",
+          "sources": [
+            "euroRs"
+          ],
+          "reason": "BLOCKED_IDENTITY: точная модификация и производитель не установлены.",
+          "derived": false,
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "package_weight",
+          "value": null,
+          "displayValue": null,
+          "sourceStatus": "NEEDS_SOURCE",
+          "sources": [
+            "euroRs"
+          ],
+          "reason": "BLOCKED_IDENTITY: точная модификация и производитель не установлены.",
+          "derived": false,
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "consumption_10mm",
+          "value": null,
+          "displayValue": null,
+          "sourceStatus": "NEEDS_SOURCE",
+          "sources": [
+            "euroRs"
+          ],
+          "reason": "BLOCKED_IDENTITY: точная модификация и производитель не установлены.",
+          "derived": false,
+          "definitionId": 6,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "wall_layer_thickness",
+          "value": null,
+          "displayValue": null,
+          "sourceStatus": "NEEDS_SOURCE",
+          "sources": [
+            "euroRs"
+          ],
+          "reason": "BLOCKED_IDENTITY: точная модификация и производитель не установлены.",
+          "derived": false,
+          "definitionId": 8,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "ceiling_layer_thickness",
+          "value": null,
+          "displayValue": null,
+          "sourceStatus": "NEEDS_SOURCE",
+          "sources": [
+            "euroRs"
+          ],
+          "reason": "BLOCKED_IDENTITY: точная модификация и производитель не установлены.",
+          "derived": false,
+          "definitionId": 9,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_temperature",
+          "value": null,
+          "displayValue": null,
+          "sourceStatus": "NEEDS_SOURCE",
+          "sources": [
+            "euroRs"
+          ],
+          "reason": "BLOCKED_IDENTITY: точная модификация и производитель не установлены.",
+          "derived": false,
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "NEEDS_SOURCE"
+        }
+      ],
+      "content": {
+        "full_description": {
+          "status": "NEEDS_SOURCE",
+          "value": "Евро М-150 40 кг — цементная штукатурная смесь из ассортимента MatMix. В карточке представлена фасовка 40 кг для штукатурных работ.\n\nПри подборе к конкретному основанию необходимо сверить паспорт смеси и маркировку упаковки. Они определяют способ нанесения, допустимую толщину и условия проведения работ.",
+          "currentValue": null,
+          "reason": "Description overwrite is not allowlisted."
+        }
+      },
+      "status": "BLOCKED_IDENTITY",
+      "summary": {
+        "ready": 0,
+        "willAdd": 0,
+        "willFix": 0,
+        "needsSource": 8,
+        "absentByDesign": 0
+      }
+    },
+    {
+      "externalId": "MAT-000028",
+      "title": "Штукатурная смесь цементная Русеан М-150 40кг",
+      "productId": 28,
+      "statuses": {},
+      "current": {
+        "brand": null,
+        "description": null,
+        "specsCount": 0
+      },
+      "sourceKeys": [
+        "ruseanM150",
+        "ruseanM150Standard",
+        "ruseanM150Modified"
+      ],
+      "contentSources": {
+        "short_description": [
+          "ruseanM150",
+          "ruseanM150Standard",
+          "ruseanM150Modified"
+        ],
+        "full_description": [
+          "request",
+          "request"
+        ],
+        "seo_title": [
+          "request",
+          "request"
+        ],
+        "seo_description": [
+          "request",
+          "request"
+        ]
+      },
+      "identityStatus": "BLOCKED_IDENTITY",
+      "notes": [],
+      "brand": {
+        "status": "BLOCKED_IDENTITY",
+        "value": null
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "value": null,
+          "displayValue": null,
+          "sourceStatus": "NEEDS_SOURCE",
+          "sources": [
+            "ruseanM150",
+            "ruseanM150Standard",
+            "ruseanM150Modified"
+          ],
+          "reason": "BLOCKED_IDENTITY: точная модификация и производитель не установлены.",
+          "derived": false,
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "base",
+          "value": null,
+          "displayValue": null,
+          "sourceStatus": "NEEDS_SOURCE",
+          "sources": [
+            "ruseanM150",
+            "ruseanM150Standard",
+            "ruseanM150Modified"
+          ],
+          "reason": "BLOCKED_IDENTITY: точная модификация и производитель не установлены.",
+          "derived": false,
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "purpose",
+          "value": null,
+          "displayValue": null,
+          "sourceStatus": "NEEDS_SOURCE",
+          "sources": [
+            "ruseanM150",
+            "ruseanM150Standard",
+            "ruseanM150Modified"
+          ],
+          "reason": "BLOCKED_IDENTITY: точная модификация и производитель не установлены.",
+          "derived": false,
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "package_weight",
+          "value": null,
+          "displayValue": null,
+          "sourceStatus": "NEEDS_SOURCE",
+          "sources": [
+            "ruseanM150",
+            "ruseanM150Standard",
+            "ruseanM150Modified"
+          ],
+          "reason": "BLOCKED_IDENTITY: точная модификация и производитель не установлены.",
+          "derived": false,
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "consumption_10mm",
+          "value": null,
+          "displayValue": null,
+          "sourceStatus": "NEEDS_SOURCE",
+          "sources": [
+            "ruseanM150",
+            "ruseanM150Standard",
+            "ruseanM150Modified"
+          ],
+          "reason": "BLOCKED_IDENTITY: точная модификация и производитель не установлены.",
+          "derived": false,
+          "definitionId": 6,
+          "definitionType": "number",
+          "currentValue": null,
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "wall_layer_thickness",
+          "value": null,
+          "displayValue": null,
+          "sourceStatus": "NEEDS_SOURCE",
+          "sources": [
+            "ruseanM150",
+            "ruseanM150Standard",
+            "ruseanM150Modified"
+          ],
+          "reason": "BLOCKED_IDENTITY: точная модификация и производитель не установлены.",
+          "derived": false,
+          "definitionId": 8,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "ceiling_layer_thickness",
+          "value": null,
+          "displayValue": null,
+          "sourceStatus": "NEEDS_SOURCE",
+          "sources": [
+            "ruseanM150",
+            "ruseanM150Standard",
+            "ruseanM150Modified"
+          ],
+          "reason": "BLOCKED_IDENTITY: точная модификация и производитель не установлены.",
+          "derived": false,
+          "definitionId": 9,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_temperature",
+          "value": null,
+          "displayValue": null,
+          "sourceStatus": "NEEDS_SOURCE",
+          "sources": [
+            "ruseanM150",
+            "ruseanM150Standard",
+            "ruseanM150Modified"
+          ],
+          "reason": "BLOCKED_IDENTITY: точная модификация и производитель не установлены.",
+          "derived": false,
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "status": "NEEDS_SOURCE"
+        }
+      ],
+      "content": {
+        "full_description": {
+          "status": "NEEDS_SOURCE",
+          "value": "Русеан М-150 40 кг — цементная смесь, представленная в разделе штукатурных материалов. Для этой карточки указана упаковка массой 40 кг.\n\nПроизводитель выпускает несколько смесей М-150. Перед выбором для конкретной работы необходимо сопоставить маркировку поставки с техническим описанием соответствующего состава.",
+          "currentValue": null,
+          "reason": "Description overwrite is not allowlisted."
+        }
+      },
+      "status": "BLOCKED_IDENTITY",
+      "summary": {
+        "ready": 0,
+        "willAdd": 0,
+        "willFix": 0,
+        "needsSource": 8,
+        "absentByDesign": 0
+      }
+    }
+  ],
+  "summary": {
+    "total": 28,
+    "ready": 25,
+    "partial": 1,
+    "blocked": 2,
+    "errors": 0,
+    "needsSource": 17
+  },
+  "schema": {
+    "consumption_10mm": {
+      "currentDataType": "number",
+      "proposedDataType": "text",
+      "unit": "кг/м²",
+      "migration": "Existing numeric values are copied to value_text with comma decimal display, value_number is cleared, and the canonical definition is changed to text during explicit apply."
+    }
+  },
+  "sources": {
+    "request": {
+      "title": "Перечень товаров и фасовок в задании пользователя",
+      "kind": "user-provided",
+      "note": "Подтверждает идентичность, тип и фасовку из задания; не является техническим паспортом или production snapshot.",
+      "checkedAt": "2026-09-15"
+    },
+    "rotband": {
+      "url": "https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/shtukaturki/knauf-rotband/",
+      "title": "КНАУФ-Ротбанд",
+      "checkedAt": "2026-09-15"
+    },
+    "goldband": {
+      "url": "https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/shtukaturki/knauf-goldband/",
+      "title": "КНАУФ-Гольдбанд",
+      "checkedAt": "2026-09-15"
+    },
+    "mp75": {
+      "url": "https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/shtukaturki/knauf-mp-75/",
+      "title": "КНАУФ-МП 75 (Россия)",
+      "checkedAt": "2026-09-15"
+    },
+    "sloy": {
+      "url": "https://www.volma.ru/production/catalog/plaster/volma-sloy/",
+      "title": "ВОЛМА-Слой",
+      "checkedAt": "2026-09-15"
+    },
+    "aktiv": {
+      "url": "https://www.volma.ru/production/catalog/plaster/volma-gypsum-is-an-asset/",
+      "title": "ВОЛМА-Гипс-Актив",
+      "note": "Общая карточка линейки; числовые параметры отдельно для серой и белой версий не подтверждены.",
+      "checkedAt": "2026-09-15"
+    },
+    "plaster": {
+      "url": "https://rusean.ru/catalog/shtukaturka_gipsovaya/gipsovaya_shtukaturka_plaster_serogo_tsveta_30_kg/",
+      "title": "Русеан ПЛАСТЕР серый 30 кг",
+      "checkedAt": "2026-09-15",
+      "note": "Current official Rusean product page for the exact gray 30 kg SKU. Its explicitly labeled table row states 9,5 кг/м² at 10 mm; the page also states a 5–50 mm wall range, ceiling use up to 15 mm, and +5…+25 °C. A separate generic instruction line still says 30 kg for 2.7 m², so the canonical field uses only the explicitly labeled 10 mm table value and the residual discrepancy remains visible for review."
+    },
+    "termoplast": {
+      "url": "https://rusean.ru/catalog/shtukaturka_gipsovaya/gipsovaya_shtukaturka_termoplast_po_30kg_belogo_tsveta/",
+      "title": "Русеан ТЕРМОПЛАСТ белый 30 кг",
+      "checkedAt": "2026-09-15",
+      "note": "Current official Rusean product page for exact white 30 kg SKU; its explicitly labeled table row confirms 10,5 кг/м² at 10 mm, 8–50 mm wall layer, 8–15 mm ceiling layer, walls/ceilings and +5…+25 °C. A separate generic instruction line says 30 kg for 2.7 m²; it is not used for the canonical 10 mm table field."
+    },
+    "teplon": {
+      "url": "https://unistrom.ru/catalog/otdelka-sten/shtukaturki/teplon-belyj/",
+      "title": "UNIS Теплон Белый",
+      "note": "Страница явно перечисляет фасовки 5 и 30 кг. Использован блок самого товара, не соседние рекомендации.",
+      "checkedAt": "2026-09-15"
+    },
+    "starGypsum": {
+      "url": "https://www.starateli.ru/shtukaturka/gipsovaya/",
+      "title": "Старатели: классическая гипсовая штукатурка",
+      "checkedAt": "2026-09-15"
+    },
+    "optimum": {
+      "url": "https://www.market.starateli.ru/products/shtukaturki/shtukaturka-optimum/",
+      "title": "Старатели Оптимум 30 кг",
+      "checkedAt": "2026-09-15",
+      "note": "Official manufacturer shop page for exact Optimum SKU; confirms gypsum-and-cement binder, manual/mechanized wall and ceiling use, 10–11 kg/m² at 10 mm, 5–60 mm layer (local 90 mm), +5…+30 °C."
+    },
+    "cementum": {
+      "url": "https://cementum.ru/catalog/shtukaturka-tsementnaya/",
+      "title": "ЦЕМЕНТУМ: цементная штукатурка",
+      "checkedAt": "2026-09-15"
+    },
+    "unterputz": {
+      "url": "https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/shtukaturki/knauf-unterputts/",
+      "title": "КНАУФ-Унтерпутц",
+      "note": "Official KNAUF page states 1.7 kg/m² per 1 mm; converted arithmetically to 17 kg/m² at 10 mm.",
+      "checkedAt": "2026-09-15"
+    },
+    "grunband": {
+      "url": "https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/shtukaturki/knauf-gryunband/",
+      "title": "КНАУФ-Грюнбанд",
+      "note": "Official KNAUF page states 12 kg/m² at 10 mm, layer 10–30 mm, and positioning for facades and walls in high-humidity rooms.",
+      "checkedAt": "2026-09-15"
+    },
+    "tt40": {
+      "url": "https://hub.vetonit.ru/product/19652/technical-sheet",
+      "title": "Vetonit: система выравнивания стен под плитку",
+      "note": "Страница 1, блок TT40: ручное/машинное нанесение, 5–40 мм, локально 60 мм. Документ системы не подтверждает все параметры отдельной фасадной карточки.",
+      "checkedAt": "2026-09-15"
+    },
+    "nivoplan": {
+      "url": "https://cdnmedia.mapei.com/docs/librariesprovider50/products-documents/1_1_nivoplan-plus_rus_68c06741cc434fd6b06efa1a88ef35cc-%281%29-pdf_new_38b1d7bcbac141a3bd288183b8cb95b7.pdf?sfvrsn=97b9aa29_0",
+      "title": "MAPEI Nivoplan Plus — русскоязычная техническая карта",
+      "kind": "official-technical-sheet",
+      "market": "RU",
+      "note": "Официальная русскоязычная техническая карта MAPEI: Nivoplan Plus как штукатурка/стяжка внутри и снаружи, фасовка серый мешок 25 кг. Все обновлённые предложения используют только этот источник; данные других регионов не смешиваются.",
+      "checkedAt": "2026-09-15"
+    },
+    "starCement": {
+      "url": "https://www.starateli.ru/cementnaya/",
+      "title": "Старатели: цементная штукатурка",
+      "checkedAt": "2026-09-15"
+    },
+    "tsokol": {
+      "url": "https://www.volma.ru/production/catalog/plaster/volma-cap-high-strength-cementitious-plaster-for-manual-appliance/",
+      "title": "ВОЛМА-Цоколь",
+      "checkedAt": "2026-09-15"
+    },
+    "termofasad": {
+      "url": "https://www.volma.ru/production/catalog/tile-adhesive/volma-termofasad/?ELEMENT_CODE=volma-termofasad&SECTION_CODE=tile-adhesive",
+      "title": "ВОЛМА-Термофасад",
+      "checkedAt": "2026-09-15",
+      "note": "Official product page confirms exact 25 kg SKU, 2–10 mm layer and +5…+30 °C application conditions. The listed 5 кг/м² consumption is explicitly for creating the base plaster layer, not a 10 mm consumption value, so consumption_10mm remains NEEDS_SOURCE.",
+      "sourceSupportedConsumption": "5 кг/м² для создания базового штукатурного слоя"
+    },
+    "silin": {
+      "url": "https://unistrom.ru/catalog/otdelka-sten/shtukaturki/silin-universalnyj-armirovannyj/",
+      "title": "UNIS Силин Универсальный Армированный",
+      "checkedAt": "2026-09-15"
+    },
+    "techno": {
+      "url": "https://osnovit.ru/catalog/plitochnye-klei/startvell-pc-21-m-shtukaturka-fasadnaya-osnovit-/",
+      "title": "Основит Техно PC21 M 25 кг",
+      "note": "Official ОСНОВИТ page for exact PC21 M 25 kg; values are limited to this modification.",
+      "checkedAt": "2026-09-15"
+    },
+    "startwell": {
+      "url": "https://osnovit.ru/catalog/shtukaturki-tsementnye/osnovit-startvell-pc-21-shtukaturka-fasadnaya-mn-N/",
+      "title": "Основит Стартвэлл PC21 25 кг",
+      "note": "Official ОСНОВИТ page for exact PC21 (not PC21 M), 25 kg; cement base is stated in the application instructions.",
+      "checkedAt": "2026-09-15"
+    },
+    "kreisel": {
+      "url": "https://kreisel.ru/products/optima-putz-521/",
+      "title": "Kreisel OPTIMA-PUTZ 521 MH",
+      "checkedAt": "2026-09-15"
+    },
+    "ruseanM150": {
+      "url": "https://rusean.ru/pricelist/",
+      "title": "Русеан: номенклатура сухих смесей",
+      "kind": "official-catalog",
+      "market": "RU",
+      "note": "Прайс Русеан показывает несколько разных позиций М-150 в мешках по 40 кг; точное соответствие MAT-000028 не установлено.",
+      "checkedAt": "2026-09-15"
+    },
+    "ruseanM150Standard": {
+      "url": "https://rusean.ru/catalog/sukhie_smesi_/universalnaya_smes_m_150_standart_v_mesh_po_40_kg_rets_2/",
+      "title": "Русеан Универсальная смесь М-150 (СТАНДАРТ), 40 кг",
+      "kind": "official-product-page",
+      "market": "RU",
+      "note": "Точная официальная карточка одной из двух М-150 40 кг; локальный title MAT-000028 не содержит признака СТАНДАРТ/рецепт №2.",
+      "checkedAt": "2026-09-15"
+    },
+    "ruseanM150Modified": {
+      "url": "https://rusean.ru/catalog/sukhie_smesi_/universalnaya_sukhaya_smes_m_150_modifitsirovannaya_v_mesh_po_40_kg/",
+      "title": "Русеан Универсальная смесь М-150 модифицированная, 40 кг",
+      "kind": "official-product-page",
+      "market": "RU",
+      "note": "Точная официальная карточка другой М-150 40 кг; локальный title MAT-000028 не содержит признака модифицированной версии.",
+      "checkedAt": "2026-09-15"
+    },
+    "euroRs": {
+      "url": "https://eurors.ru/catalog-cat/m-100-m-150-m-300-suhaya-smes",
+      "title": "Euro RS — каталог М-100/М-150/М-300",
+      "kind": "official-catalog",
+      "market": "RU",
+      "note": "Каталог производителя Euro RS содержит М-150 универсальную 40 кг, но не доказывает, что локальное краткое название «Евро М-150» относится именно к Euro RS.",
+      "checkedAt": "2026-09-15"
+    },
+    "volmaHolst": {
+      "url": "https://www.volma.ru/production/catalog/plaster/volma-canvas-gypsum-plaster-for-manual-application/",
+      "title": "ВОЛМА-Холст",
+      "checkedAt": "2026-09-15",
+      "note": "Exact product source for MAT-000005; values are limited to the exact product and are not copied from ВОЛМА-Слой."
+    },
+    "tt40Tds": {
+      "url": "https://vetonit.com/upload/iblock/3c9/r85rdb5ry9u3uxp8ghkeaemczeyk32ha.pdf",
+      "title": "weber.vetonit TT40 technical card",
+      "checkedAt": "2026-09-15",
+      "note": "Official manufacturer technical card for TT40: 1.7 kg/m² per 1 mm, 5–40 mm recommended layer (locally up to 60 mm), +5…+30 °C, 25 kg bag."
+    },
+    "kreiselTds": {
+      "url": "https://kreisel.ru/app/uploads/2025/03/521-Optima-Putz_%D0%9C%D0%9D_2025.03.04.pdf",
+      "title": "Kreisel OPTIMA-PUTZ 521 MH technical card",
+      "checkedAt": "2026-09-15",
+      "note": "Exact 521 MH technical card, current revision 04.03.2025; 1.4–1.5 kg/m² per 1 mm, 5–30 mm layer, +5…+25 °C."
+    }
+  }
+}
