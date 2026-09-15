@@ -64,7 +64,7 @@ test("dry-run invokes no writes; full review includes protected and unresolved",
     const report = await runBatch({ database: readOnly });
     assert.equal(report.summary.total, 28); assert.equal(report.targetSummary.total, 26);
     assert.equal(report.summary.protected, 2); assert.equal(report.summary.errors, 0);
-    assert.equal(report.summary.needsSource, 3);
+    assert.equal(report.summary.needsSource, 2);
     assert.deepEqual(await snapshot(db), before);
     const markdown = renderReview({ ...report, generatedAt: "fixture", database: ":memory:" });
     assert(markdown.includes("PROTECTED")); assert(markdown.includes("DEFINITION_MISSING"));
@@ -120,7 +120,8 @@ test("existing fields/specs preserved; repeat idempotency; immutable data and no
     assert.equal((await database.all("SELECT product_id,attribute_definition_id,count(*) n FROM product_attribute_values GROUP BY product_id,attribute_definition_id HAVING n>1")).length, 0);
     assert(!JSON.stringify(after.products).includes("NEEDS_SOURCE"));
     assert(!JSON.stringify(after.product_attribute_values).includes("UNKNOWN"));
-    for (const mat of ["MAT-000019", "MAT-000027", "MAT-000028"]) assert.deepEqual(after.products.find(p => p.external_id === mat), before.products.find(p => p.external_id === mat));
+    for (const mat of ["MAT-000027", "MAT-000028"]) assert.deepEqual(after.products.find(p => p.external_id === mat), before.products.find(p => p.external_id === mat));
+    assert.match(after.products.find(p => p.external_id === "MAT-000019").full_description, /Nivoplan Plus/);
 }));
 
 test("selection constrains actual writes; unknown and changed identity are controlled errors", () => withFixture(async database => {

@@ -3708,15 +3708,15 @@
     },
     {
       "externalId": "MAT-000019",
-      "status": "NEEDS_SOURCE",
+      "status": "PARTIAL",
       "proposedContent": {
         "full_description": {
-          "value": "Mapei Nivoplan Plus 25 кг — штукатурная смесь на цементной основе. В региональном каталоге MAPEI продукт представлен для выравнивания поверхностей внутри и снаружи помещений.\n\nПри подборе материала важно сверить назначение с техническим листом конкретной поставки. Фасовка этой карточки — 25 кг; сведения для других региональных версий требуют отдельной проверки.",
+          "value": "Mapei Nivoplan Plus 25 кг — универсальная штукатурная смесь на цементной основе для выравнивания стен, потолков и полов внутри и снаружи помещений. Техническая карта MAPEI указывает нанесение слоем 5–50 мм.\n\nРаствор наносят шпателем или штукатурной машиной; подготовленная поверхность подходит для последующей укладки плитки, гидроизоляции и других финишных покрытий. Для гипсовых оснований производитель предусматривает предварительную грунтовку по технической карте.",
           "sources": [
             "request",
             "nivoplan"
           ],
-          "status": "NEEDS_SOURCE"
+          "status": "READY"
         },
         "seo_title": {
           "value": "Mapei Nivoplan Plus 25 кг — цементная штукатурка | MatMix",
@@ -3724,18 +3724,186 @@
             "request",
             "nivoplan"
           ],
-          "status": "NEEDS_SOURCE"
+          "status": "READY"
         },
         "seo_description": {
-          "value": "Mapei Nivoplan Plus 25 кг — цементная штукатурная смесь. Описание продукта и фасовка в MatMix; применение уточняется по паспорту конкретной поставки.",
+          "value": "Mapei Nivoplan Plus 25 кг — цементная штукатурка для стен, потолков и полов. Слой 5–50 мм, расход 16 кг/м² при 10 мм. Техкарта MAPEI.",
           "sources": [
             "request",
             "nivoplan"
           ],
-          "status": "NEEDS_SOURCE"
+          "status": "READY"
         }
       },
       "proposedSpecs": [
+        {
+          "code": "product_type",
+          "label": "Тип продукта",
+          "type": "text",
+          "unit": "",
+          "value": "Цементная штукатурная смесь",
+          "sources": [
+            "nivoplan"
+          ],
+          "status": "READY",
+          "definitionId": 2
+        },
+        {
+          "code": "base",
+          "label": "Основа",
+          "type": "text",
+          "unit": "",
+          "value": "Цементная",
+          "sources": [
+            "nivoplan"
+          ],
+          "status": "READY",
+          "definitionId": 3
+        },
+        {
+          "code": "purpose",
+          "label": "Назначение",
+          "type": "text",
+          "unit": "",
+          "value": "Выравнивание стен, потолков и полов внутри и снаружи помещений",
+          "sources": [
+            "nivoplan"
+          ],
+          "status": "READY",
+          "definitionId": 4
+        },
+        {
+          "code": "wall_layer_thickness",
+          "label": "Толщина слоя на стене",
+          "type": "text",
+          "unit": "",
+          "value": "5–50 мм",
+          "sources": [
+            "nivoplan"
+          ],
+          "status": "READY",
+          "definitionId": 8
+        },
+        {
+          "code": "application_temperature",
+          "label": "Температура основания и воздуха",
+          "type": "text",
+          "unit": "",
+          "value": "От +5 °C до +30 °C",
+          "sources": [
+            "nivoplan"
+          ],
+          "status": "READY",
+          "definitionId": 10
+        },
+        {
+          "code": "pot_life",
+          "label": "Жизнеспособность раствора",
+          "type": "text",
+          "unit": "",
+          "value": "Не более 2 часов",
+          "sources": [
+            "nivoplan"
+          ],
+          "status": "SKIP",
+          "reason": "DEFINITION_MISSING: review-only; no definitions are created"
+        },
+        {
+          "code": "shelf_life",
+          "label": "Срок хранения",
+          "type": "number",
+          "unit": "месяцев",
+          "value": 12,
+          "sources": [
+            "nivoplan"
+          ],
+          "status": "READY",
+          "definitionId": 11
+        },
+        {
+          "code": "color",
+          "label": "Цвет",
+          "type": "text",
+          "unit": "",
+          "value": "Серый",
+          "sources": [
+            "nivoplan"
+          ],
+          "status": "SKIP",
+          "reason": "DEFINITION_MISSING: review-only; no definitions are created"
+        },
+        {
+          "code": "application_method",
+          "label": "Способ нанесения",
+          "type": "text",
+          "unit": "",
+          "value": "Ручное и механизированное",
+          "sources": [
+            "nivoplan"
+          ],
+          "status": "SKIP",
+          "reason": "DEFINITION_MISSING: review-only; no definitions are created"
+        },
+        {
+          "code": "compressive_strength",
+          "label": "Прочность на сжатие",
+          "type": "text",
+          "unit": "",
+          "value": "Не менее 20 МПа через 28 суток",
+          "sources": [
+            "nivoplan"
+          ],
+          "status": "SKIP",
+          "reason": "DEFINITION_MISSING: review-only; no definitions are created"
+        },
+        {
+          "code": "adhesion",
+          "label": "Адгезия",
+          "type": "text",
+          "unit": "",
+          "value": "Не менее 1 МПа через 28 суток",
+          "sources": [
+            "nivoplan"
+          ],
+          "status": "SKIP",
+          "reason": "DEFINITION_MISSING: review-only; no definitions are created"
+        },
+        {
+          "code": "grain_size",
+          "label": "Максимальный размер зерна",
+          "type": "text",
+          "unit": "",
+          "value": "До 3 мм",
+          "sources": [
+            "nivoplan"
+          ],
+          "status": "SKIP",
+          "reason": "DEFINITION_MISSING: review-only; no definitions are created"
+        },
+        {
+          "code": "substrates",
+          "label": "Основания",
+          "type": "text",
+          "unit": "",
+          "value": "Бетон, кирпич; для гипсовых оснований требуется грунтовка по технической карте",
+          "sources": [
+            "nivoplan"
+          ],
+          "status": "SKIP",
+          "reason": "DEFINITION_MISSING: review-only; no definitions are created"
+        },
+        {
+          "code": "consumption_10mm",
+          "label": "Расход при слое 10 мм",
+          "type": "number",
+          "unit": "кг/м²",
+          "value": 16,
+          "sources": [
+            "nivoplan"
+          ],
+          "status": "READY",
+          "definitionId": 6
+        },
         {
           "code": "package_weight",
           "label": "Фасовка",
@@ -3743,50 +3911,10 @@
           "unit": "кг",
           "value": 25,
           "sources": [
-            "request"
+            "nivoplan"
           ],
-          "status": "NEEDS_SOURCE",
-          "reason": "Не установлено точное соответствие продукта техническому источнику; запись заблокирована."
-        },
-        {
-          "code": "consumption_10mm",
-          "label": "Расход при слое 10 мм",
-          "type": "number",
-          "unit": "кг/м²",
-          "value": null,
-          "sources": [],
-          "status": "NEEDS_SOURCE",
-          "reason": "Не установлено точное соответствие продукта техническому источнику; запись заблокирована."
-        },
-        {
-          "code": "wall_layer_thickness",
-          "label": "Толщина слоя на стене",
-          "type": "text",
-          "unit": "",
-          "value": null,
-          "sources": [],
-          "status": "NEEDS_SOURCE",
-          "reason": "Не установлено точное соответствие продукта техническому источнику; запись заблокирована."
-        },
-        {
-          "code": "application_temperature",
-          "label": "Температура основания и воздуха",
-          "type": "text",
-          "unit": "",
-          "value": null,
-          "sources": [],
-          "status": "NEEDS_SOURCE",
-          "reason": "Не установлено точное соответствие продукта техническому источнику; запись заблокирована."
-        },
-        {
-          "code": "pot_life",
-          "label": "Жизнеспособность раствора",
-          "type": "text",
-          "unit": "",
-          "value": null,
-          "sources": [],
-          "status": "NEEDS_SOURCE",
-          "reason": "Не установлено точное соответствие продукта техническому источнику; запись заблокирована."
+          "status": "READY",
+          "definitionId": 5
         },
         {
           "code": "drying_time",
@@ -3796,51 +3924,11 @@
           "value": null,
           "sources": [],
           "status": "NEEDS_SOURCE",
-          "reason": "Не установлено точное соответствие продукта техническому источнику; запись заблокирована."
-        },
-        {
-          "code": "compressive_strength",
-          "label": "Прочность на сжатие",
-          "type": "text",
-          "unit": "",
-          "value": null,
-          "sources": [],
-          "status": "NEEDS_SOURCE",
-          "reason": "Не установлено точное соответствие продукта техническому источнику; запись заблокирована."
-        },
-        {
-          "code": "adhesion",
-          "label": "Адгезия",
-          "type": "text",
-          "unit": "",
-          "value": null,
-          "sources": [],
-          "status": "NEEDS_SOURCE",
-          "reason": "Не установлено точное соответствие продукта техническому источнику; запись заблокирована."
-        },
-        {
-          "code": "grain_size",
-          "label": "Максимальный размер зерна",
-          "type": "text",
-          "unit": "",
-          "value": null,
-          "sources": [],
-          "status": "NEEDS_SOURCE",
-          "reason": "Не установлено точное соответствие продукта техническому источнику; запись заблокирована."
-        },
-        {
-          "code": "substrates",
-          "label": "Основания",
-          "type": "text",
-          "unit": "",
-          "value": null,
-          "sources": [],
-          "status": "NEEDS_SOURCE",
-          "reason": "Не установлено точное соответствие продукта техническому источнику; запись заблокирована."
+          "reason": "Не подтверждено в проверенных источниках для этой версии товара; нужен технический лист с условиями измерения."
         }
       ],
       "notes": [
-        "NEEDS_SOURCE: подтвердить российский технический лист и соответствие региональной версии. Всё предлагаемое наполнение заблокировано до проверки."
+        "Identity confirmed: официальная русскоязычная техническая карта MAPEI подтверждает Nivoplan Plus, серый мешок 25 кг и характеристики этой версии. Данные других региональных листов не использовались."
       ],
       "title": "Штукатурка цементная Mapei Nivoplan Plus 25 кг",
       "current": {
@@ -3863,10 +3951,10 @@
       "productId": 19,
       "classificationMismatches": "",
       "specs": {
-        "ready": 0,
-        "needsSource": 10,
+        "ready": 8,
+        "needsSource": 1,
         "existing": 0,
-        "skipped": 0
+        "skipped": 7
       }
     },
     {
@@ -5452,7 +5540,7 @@
         }
       ],
       "notes": [
-        "NEEDS_SOURCE: не установлен точный производитель Евро и паспорт смеси; М-150 не преобразуется в прочность числом. Все предложения заблокированы."
+        "NEEDS_SOURCE: официальный каталог Euro RS показывает отдельную позицию «М-150 Сухая смесь универсальная 40 кг», но локальное «Евро М-150» не содержит юридического производителя, торговой марки, рецептуры или артикула. Нужны фото маркировки и паспорт именно этой поставки; все предложения заблокированы."
       ],
       "title": "Штукатурная смесь цементная Евро М-150 40кг",
       "current": {
@@ -5473,7 +5561,7 @@
         "imagesCount": 0
       },
       "productId": 27,
-      "classificationMismatches": "Бренд/производитель Евро и точная модификация М-150 не установлены по локальной карточке и проверенным источникам.",
+      "classificationMismatches": "Каталог Euro RS действительно содержит М-150 универсальную 40 кг, но локальное название «Евро М-150» не доказывает, что это именно Euro RS и именно универсальная модификация; производитель, артикул и паспорт не установлены.",
       "specs": {
         "ready": 0,
         "needsSource": 10,
@@ -5615,7 +5703,7 @@
         }
       ],
       "notes": [
-        "NEEDS_SOURCE: не установлена модификация М-150; не переносить свойства универсальной/модифицированной/машинной смеси. Все предложения заблокированы."
+        "NEEDS_SOURCE: официальный прайс Русеан и две официальные карточки подтверждают минимум две разные М-150 по 40 кг (СТАНДАРТ, рецепт №2, и модифицированная). Локальный title не указывает модификацию; нужны фото маркировки/артикул и паспорт именно этой поставки. Все предложения заблокированы."
       ],
       "title": "Штукатурная смесь цементная Русеан М-150 40кг",
       "current": {
@@ -5636,7 +5724,7 @@
         "imagesCount": 0
       },
       "productId": 28,
-      "classificationMismatches": "Русеан публикует несколько вариантов М-150; точное соответствие карточки и модификации не установлено.",
+      "classificationMismatches": "Русеан публикует несколько вариантов М-150 в фасовке 40 кг (стандарт и модифицированная); точное соответствие карточки и модификации не установлено.",
       "specs": {
         "ready": 0,
         "needsSource": 10,
@@ -5648,16 +5736,16 @@
   "summary": {
     "total": 28,
     "ready": 0,
-    "partial": 23,
-    "needsSource": 3,
+    "partial": 24,
+    "needsSource": 2,
     "protected": 2,
     "errors": 0
   },
   "targetSummary": {
     "total": 26,
     "ready": 0,
-    "partial": 23,
-    "needsSource": 3,
+    "partial": 24,
+    "needsSource": 2,
     "protected": 0,
     "errors": 0
   },
@@ -5796,7 +5884,7 @@
     }
   ],
   "database": "local snapshot (path omitted)",
-  "generatedAt": "2026-09-15T13:31:05.306Z",
+  "generatedAt": "2026-09-15T14:37:03.707Z",
   "sources": {
     "request": {
       "title": "Перечень товаров и фасовок в задании пользователя",
@@ -5883,9 +5971,11 @@
       "checkedAt": "2026-09-15"
     },
     "nivoplan": {
-      "url": "https://www.mapei.com/kz/ru/материалы/список-материалов/описание-материала/nivoplan-plus",
-      "title": "MAPEI NIVOPLAN PLUS (Казахстан)",
-      "note": "Только поисковая выдержка; российский технический PDF недоступен (403). Требуется подтверждение соответствия российской фасовке/рецептуре; предложения не готовы к записи.",
+      "url": "https://cdnmedia.mapei.com/docs/librariesprovider50/products-documents/1_1_nivoplan-plus_rus_68c06741cc434fd6b06efa1a88ef35cc-%281%29-pdf_new_38b1d7bcbac141a3bd288183b8cb95b7.pdf?sfvrsn=97b9aa29_0",
+      "title": "MAPEI Nivoplan Plus — русскоязычная техническая карта",
+      "kind": "official-technical-sheet",
+      "market": "RU",
+      "note": "Официальная русскоязычная техническая карта MAPEI: Nivoplan Plus как штукатурка/стяжка внутри и снаружи, фасовка серый мешок 25 кг. Все обновлённые предложения используют только этот источник; данные других регионов не смешиваются.",
       "checkedAt": "2026-09-15"
     },
     "starCement": {
@@ -5929,7 +6019,33 @@
     "ruseanM150": {
       "url": "https://rusean.ru/pricelist/",
       "title": "Русеан: номенклатура сухих смесей",
-      "note": "Есть несколько М-150 и отдельная машинная штукатурная смесь 40 кг. Точное соответствие MAT-000028 не установлено.",
+      "kind": "official-catalog",
+      "market": "RU",
+      "note": "Прайс Русеан показывает несколько разных позиций М-150 в мешках по 40 кг; точное соответствие MAT-000028 не установлено.",
+      "checkedAt": "2026-09-15"
+    },
+    "ruseanM150Standard": {
+      "url": "https://rusean.ru/catalog/sukhie_smesi_/universalnaya_smes_m_150_standart_v_mesh_po_40_kg_rets_2/",
+      "title": "Русеан Универсальная смесь М-150 (СТАНДАРТ), 40 кг",
+      "kind": "official-product-page",
+      "market": "RU",
+      "note": "Точная официальная карточка одной из двух М-150 40 кг; локальный title MAT-000028 не содержит признака СТАНДАРТ/рецепт №2.",
+      "checkedAt": "2026-09-15"
+    },
+    "ruseanM150Modified": {
+      "url": "https://rusean.ru/catalog/sukhie_smesi_/universalnaya_sukhaya_smes_m_150_modifitsirovannaya_v_mesh_po_40_kg/",
+      "title": "Русеан Универсальная смесь М-150 модифицированная, 40 кг",
+      "kind": "official-product-page",
+      "market": "RU",
+      "note": "Точная официальная карточка другой М-150 40 кг; локальный title MAT-000028 не содержит признака модифицированной версии.",
+      "checkedAt": "2026-09-15"
+    },
+    "euroRs": {
+      "url": "https://eurors.ru/catalog-cat/m-100-m-150-m-300-suhaya-smes",
+      "title": "Euro RS — каталог М-100/М-150/М-300",
+      "kind": "official-catalog",
+      "market": "RU",
+      "note": "Каталог производителя Euro RS содержит М-150 универсальную 40 кг, но не доказывает, что локальное краткое название «Евро М-150» относится именно к Euro RS.",
       "checkedAt": "2026-09-15"
     }
   }
