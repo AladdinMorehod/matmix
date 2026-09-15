@@ -211,7 +211,7 @@ app.get("/login.html", sendPrivateFile("login.html"));
 app.get("/manager.html", sendPrivateFile("manager.html"));
 app.get("/manifest.webmanifest", sendPublicFile("manifest.webmanifest"));
 app.get("/service-worker.js", sendPublicFile("service-worker.js"));
-app.get("/favicon.ico", (req, res) => { res.setHeader("Cache-Control", "public, max-age=86400"); res.sendFile(path.join(publicDir, "img", "logo-burgundy.png")); });
+app.get("/favicon.ico", (req, res) => { res.setHeader("Cache-Control", "public, max-age=86400"); res.sendFile(path.join(publicDir, "img", "mm-favicon-3d.webp")); });
 
 app.get("/manager", (req, res) => {
     sendPrivateFile("manager.html")(req, res);
