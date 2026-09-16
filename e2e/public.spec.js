@@ -330,7 +330,22 @@ test("SSR product page supports gallery, quantity, cart and responsive layouts",
     await expect(page.locator("footer.footer .footer-inner")).toContainText("Все права защищены");
     await expect(page.locator(".product-page-summary .product-page-benefits")).toHaveCount(1);
     await expect(page.locator(".product-page > .product-page-benefits")).toHaveCount(0);
-    await expect(page.locator(".product-page-supply")).toHaveText("Подтвердим наличие, цену и срок доставки после оформления заявки.");
+    await expect(page.locator(".product-page-meta")).toHaveText(`MatMix Test · Артикул ${code}`);
+    await expect(page.locator(".product-page-supply")).toHaveText("Срок и стоимость доставки рассчитаем при оформлении");
+    await expect(page.locator(".product-page-benefits")).toContainText("Доставка по Москве и МО");
+    await expect(page.locator(".product-page-benefits")).toContainText("Сегодня / Завтра / Срочно");
+    await expect(page.locator(".product-page-benefits")).toContainText("Удобный поиск");
+    await expect(page.locator(".product-page-benefits")).toContainText("По всему каталогу");
+    await expect(page.locator(".product-page-benefits")).toContainText("Заказ по списку");
+    await expect(page.locator(".product-page-benefits")).toContainText("Загрузите список — соберём заказ");
+    await expect(page.locator(".product-page-meta")).not.toContainText("MAT-код:");
+    await expect(page.locator(".product-page-meta")).not.toContainText("Бренд:");
+    await expect(page.locator(".product-page-upload-cta")).toHaveAttribute("data-upload-request-cta", "");
+    await page.locator(".product-page-upload-cta").click();
+    await expect(page.locator("#uploadRequestForm")).toBeVisible();
+    await page.locator("#cancelUploadRequest").click();
+    await page.locator("#closeCart").click();
+    await expect(page.locator("#cartModal")).toBeHidden();
     await expect(page.locator(".product-page-content-nav a")).toHaveText(["Характеристики", "Описание", "Доставка и оплата"]);
     await expect(page.getByText("Корзина пуста", { exact: true })).toHaveCount(0);
     await expect(page.locator("[data-gallery-thumbnail]")).toHaveCount(2);
@@ -392,7 +407,7 @@ test("SSR product page supports gallery, quantity, cart and responsive layouts",
 
     for (const viewport of [
         { width: 320, height: 800 }, { width: 360, height: 800 }, { width: 375, height: 812 },
-        { width: 390, height: 844 }, { width: 430, height: 900 }, { width: 1024, height: 768 },
+        { width: 390, height: 844 }, { width: 393, height: 852 }, { width: 430, height: 900 }, { width: 1024, height: 768 },
         { width: 1280, height: 900 }, { width: 1366, height: 768 }, { width: 1440, height: 900 },
         { width: 1920, height: 1080 }
     ]) {

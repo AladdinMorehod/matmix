@@ -103,6 +103,19 @@ async function main() {
             });
             assert.strictEqual(page.images.length, 2);
             assert.strictEqual(page.images[0].is_primary, 1);
+            const renderedHtml = productPage(seoConfig({ SEO_ALLOW_INDEXING: "false" }), {
+                product: { ...page.product, price: 750 }, attributes: page.attributes, images: page.images
+            }).html;
+            assert(renderedHtml.includes("Foundation Brand · Артикул MAT-FOUNDATION"));
+            assert(!renderedHtml.includes("MAT-код:"));
+            assert(!renderedHtml.includes("Бренд:"));
+            assert(renderedHtml.includes("Срок и стоимость доставки рассчитаем при оформлении"));
+            for (const text of ["Доставка по Москве и МО", "Сегодня / Завтра / Срочно", "Удобный поиск", "По всему каталогу", "Заказ по списку", "Загрузите список — соберём заказ"]) assert(renderedHtml.includes(text));
+            const noBrandHtml = productPage(seoConfig({ SEO_ALLOW_INDEXING: "false" }), {
+                product: { ...page.product, brand: "", price: 750 }, attributes: page.attributes, images: page.images
+            }).html;
+            assert(noBrandHtml.includes("Артикул MAT-FOUNDATION"));
+            assert(!noBrandHtml.includes("undefined"));
             const findings = await audit(db);
             assert.deepStrictEqual(findings.missingProductPageTables, []);
             for (const key of ["attributeValuesWithoutProduct", "attributeValuesWithoutDefinition", "attributeTemplatesWithoutStructure", "attributeTemplatesWithoutDefinition", "productImagesWithoutProduct", "productsWithMultiplePrimaryImages"]) assert.strictEqual(findings[key], 0);

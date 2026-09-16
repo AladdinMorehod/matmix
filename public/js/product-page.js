@@ -109,6 +109,14 @@ document.querySelectorAll("[data-gallery-thumbnail]").forEach(button => button.a
     });
 }));
 
+document.querySelectorAll("[data-upload-request-cta]").forEach(link => link.addEventListener("click", event => {
+    const uploadRequestNav = document.getElementById("uploadRequestNav");
+    if (!uploadRequestNav) return;
+    event.preventDefault();
+    event.stopPropagation();
+    uploadRequestNav.click();
+}));
+
 document.querySelectorAll(".product-page [data-add-product]").forEach(button => button.addEventListener("click", event => { event.stopPropagation(); addProduct(button); }));
 
 const quantityInput = document.querySelector("[data-quantity]");
