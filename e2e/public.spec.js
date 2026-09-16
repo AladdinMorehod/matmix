@@ -795,27 +795,51 @@ test("catalog shows all subcategory products before optional group filtering", a
 
     const productGrid = page.locator("#productGrid");
     const cards = productGrid.locator(".card");
+    const isMobileCatalog = () => (page.viewportSize()?.width || 0) < 800;
+
     const selectSubcategory = async name => {
-        const picker = page.locator('[data-catalog-picker="subcategory"]');
-        if (await picker.isVisible()) {
+        if (isMobileCatalog()) {
+            const picker = page.locator('[data-catalog-picker="subcategory"]');
             const popover = page.locator(".catalog-picker-popover");
-            if (await popover.isHidden()) await picker.click();
+
+            await expect(picker).toBeVisible();
+
+            if (await popover.isHidden()) {
+                await picker.click();
+            }
+
+            await expect(popover).toBeVisible();
             await popover.getByRole("option", { name, exact: true }).click();
             return;
         }
-        await page.locator("#categoryControls").getByRole("button", { name, exact: true }).click();
+
+        await page.locator("#categoryControls")
+            .getByRole("button", { name, exact: true })
+            .click();
     };
+
     const selectGroup = async name => {
-        const picker = page.locator('[data-catalog-picker="group"]');
-        if (await picker.isVisible()) {
-            await picker.click();
-            await page.locator(".catalog-picker-popover").getByRole("option", {
+        if (isMobileCatalog()) {
+            const picker = page.locator('[data-catalog-picker="group"]');
+            const popover = page.locator(".catalog-picker-popover");
+
+            await expect(picker).toBeVisible();
+
+            if (await popover.isHidden()) {
+                await picker.click();
+            }
+
+            await expect(popover).toBeVisible();
+            await popover.getByRole("option", {
                 name: name === "Все товары подкатегории" ? "Все товары" : name,
                 exact: true
             }).click();
             return;
         }
-        await page.locator("#categoryControls").getByRole("button", { name, exact: true }).click();
+
+        await page.locator("#categoryControls")
+            .getByRole("button", { name, exact: true })
+            .click();
     };
 
     for (const viewport of [{ width: 1280, height: 800 }, { width: 375, height: 812 }]) {
