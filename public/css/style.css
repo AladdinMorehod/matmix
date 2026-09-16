@@ -3677,19 +3677,58 @@ body {
     border-top: 1px solid var(--border);
 }
 
-.product-page-benefits span {
+.product-page-benefit {
     display: grid;
-    place-items: center;
-    min-height: 42px;
+    align-content: center;
+    justify-items: center;
+    min-width: 0;
+    min-height: 54px;
     padding: 7px 12px;
     color: var(--primary-dark);
     text-align: center;
     font-size: 0.88rem;
     font-weight: 600;
+    overflow-wrap: anywhere;
 }
 
-.product-page-benefits span + span {
+.product-page-benefit strong,
+.product-page-benefit small {
+    display: block;
+    max-width: 100%;
+}
+
+.product-page-benefit strong {
+    font-size: 0.9rem;
+    line-height: 1.3;
+}
+
+.product-page-benefit small {
+    margin-top: 3px;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    font-weight: 500;
+    line-height: 1.3;
+}
+
+.product-page-benefit + .product-page-benefit {
     border-left: 1px solid var(--border);
+}
+
+.product-page-upload-cta {
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.product-page-upload-cta:hover,
+.product-page-upload-cta:focus-visible {
+    background: var(--surface-soft);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.product-page-upload-cta:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
 }
 
 .product-page-details {
@@ -3946,7 +3985,7 @@ body {
     .product-page-benefits {
         grid-template-columns: 1fr;
     }
-    .product-page-benefits span + span {
+    .product-page-benefit + .product-page-benefit {
         border-top: 1px solid var(--border);
         border-left: 0;
     }
