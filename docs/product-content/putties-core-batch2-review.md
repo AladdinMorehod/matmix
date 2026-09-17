@@ -15,20 +15,20 @@
 
 | MAT | Current title | Brand | Core status | Source keys |
 |---|---|---|---|---|
-| MAT-000047 | Шпаклевка готовая Danogips SuperFinish (Шитрок) 5 кг | Danogips (WILL_ADD) | READY | danogips, localTitle |
-| MAT-000048 | Шпаклевка готовая Danogips SuperFinish (Шитрок) 28 кг | Danogips (WILL_ADD) | READY | danogips, localTitle |
-| MAT-000049 | Шпаклевка готовая финишная Knauf Ротбанд паста Профи 5 кг | KNAUF (WILL_ADD) | PARTIAL | knaufRotband, localTitle |
-| MAT-000050 | Шпаклевка готовая финишная Knauf Ротбанд паста Профи 18 кг | KNAUF (WILL_ADD) | PARTIAL | knaufRotband, localTitle |
-| MAT-000051 | Шпаклевка финишная готовая универсальная SEMIN CE 78 белая крышка 20кг | SEMIN (WILL_ADD) | PARTIAL | semin, localTitle |
-| MAT-000052 | Шпаклевка готовая VGT акриловая универсальная для наружных и внутренних работ 18кг | VGT (WILL_ADD) | PARTIAL | vgt, localTitle |
-| MAT-000053 | Шпаклевка Vetonit LR+ 5 кг | Vetonit (WILL_ADD) | READY | vetonitLR, localTitle |
-| MAT-000054 | Шпаклевка Vetonit LR+ 20 кг | Vetonit (WILL_ADD) | READY | vetonitLR, localTitle |
-| MAT-000055 | Шпаклевка Vetonit KR финиш белая 20 кг | Vetonit (WILL_ADD) | READY | vetonitKR, localTitle |
-| MAT-000056 | Шпаклевка полимерная финишная Vetonit JS Plus 20 кг | Vetonit (WILL_ADD) | READY | vetonitJS, localTitle |
-| MAT-000057 | Шпаклевка полимерная финишная Knauf Polymer finish 20 кг | KNAUF (WILL_ADD) | PARTIAL | knaufPolymer, localTitle |
-| MAT-000058 | Шпаклевка полимерная финишная Основит Элисилк РА39 W 28 кг | ОСНОВИТ (WILL_ADD) | READY | osnovit, localTitle |
-| MAT-000059 | Шпаклевка полимерная Danogips Dano Jet 5 выравнивающая 25 кг | Danogips (WILL_ADD) | PARTIAL | danoJet, localTitle |
-| MAT-000060 | Шпаклевка полимерная финишная Волма Искрит для внутренних и наружных работ, белоснежная мех. 19 кг | ВОЛМА (WILL_ADD) | PARTIAL | volma, localTitle |
+| MAT-000047 | Шпаклевка готовая Danogips SuperFinish (Шитрок) 5 кг | Danogips (product: WILL_FIX; attribute: WILL_ADD) | READY | danogips, localTitle |
+| MAT-000048 | Шпаклевка готовая Danogips SuperFinish (Шитрок) 28 кг | Danogips (product: WILL_FIX; attribute: WILL_ADD) | READY | danogips, localTitle |
+| MAT-000049 | Шпаклевка готовая финишная Knauf Ротбанд паста Профи 5 кг | KNAUF (product: WILL_FIX; attribute: WILL_ADD) | PARTIAL | knaufRotband, localTitle |
+| MAT-000050 | Шпаклевка готовая финишная Knauf Ротбанд паста Профи 18 кг | KNAUF (product: WILL_FIX; attribute: WILL_ADD) | PARTIAL | knaufRotband, localTitle |
+| MAT-000051 | Шпаклевка финишная готовая универсальная SEMIN CE 78 белая крышка 20кг | SEMIN (product: WILL_FIX; attribute: WILL_ADD) | PARTIAL | semin, localTitle |
+| MAT-000052 | Шпаклевка готовая VGT акриловая универсальная для наружных и внутренних работ 18кг | VGT (product: WILL_FIX; attribute: WILL_ADD) | PARTIAL | vgt, localTitle |
+| MAT-000053 | Шпаклевка Vetonit LR+ 5 кг | Vetonit (product: WILL_FIX; attribute: WILL_ADD) | READY | vetonitLR, localTitle |
+| MAT-000054 | Шпаклевка Vetonit LR+ 20 кг | Vetonit (product: WILL_FIX; attribute: WILL_ADD) | READY | vetonitLR, localTitle |
+| MAT-000055 | Шпаклевка Vetonit KR финиш белая 20 кг | Vetonit (product: WILL_FIX; attribute: WILL_ADD) | READY | vetonitKR, localTitle |
+| MAT-000056 | Шпаклевка полимерная финишная Vetonit JS Plus 20 кг | Vetonit (product: WILL_FIX; attribute: WILL_ADD) | READY | vetonitJS, localTitle |
+| MAT-000057 | Шпаклевка полимерная финишная Knauf Polymer finish 20 кг | KNAUF (product: WILL_FIX; attribute: WILL_ADD) | PARTIAL | knaufPolymer, localTitle |
+| MAT-000058 | Шпаклевка полимерная финишная Основит Элисилк РА39 W 28 кг | ОСНОВИТ (product: WILL_FIX; attribute: WILL_ADD) | READY | osnovit, localTitle |
+| MAT-000059 | Шпаклевка полимерная Danogips Dano Jet 5 выравнивающая 25 кг | Danogips (product: WILL_FIX; attribute: WILL_ADD) | PARTIAL | danoJet, localTitle |
+| MAT-000060 | Шпаклевка полимерная финишная Волма Искрит для внутренних и наружных работ, белоснежная мех. 19 кг | ВОЛМА (product: WILL_FIX; attribute: WILL_ADD) | PARTIAL | volma, localTitle |
 
 ## Per-MAT details
 
@@ -37,7 +37,7 @@
 - Current title: Шпаклевка готовая Danogips SuperFinish (Шитрок) 5 кг
 - Identity: IDENTITY_CONFIRMED
 - Category guard: Смеси / Шпаклевка
-- Brand: Danogips - WILL_ADD; product column and attribute are planned together.
+- Brand: Danogips; product column: WILL_FIX; brand attribute: WILL_ADD. These storage targets are planned independently and postchecked together.
 - Canonical identity: Danogips / Готовая финишная полимерная шпатлевка / 5 kg.
 - Official identity name: Danogips SuperFinish.
 - Title issues (review only; no title write): SUBSTANTIVE: Локальное «(Шитрок)» не подтверждает официальное название Danogips SuperFinish; title не меняется.
@@ -70,7 +70,7 @@
 - Current title: Шпаклевка готовая Danogips SuperFinish (Шитрок) 28 кг
 - Identity: IDENTITY_CONFIRMED
 - Category guard: Смеси / Шпаклевка
-- Brand: Danogips - WILL_ADD; product column and attribute are planned together.
+- Brand: Danogips; product column: WILL_FIX; brand attribute: WILL_ADD. These storage targets are planned independently and postchecked together.
 - Canonical identity: Danogips / Готовая финишная полимерная шпатлевка / 28 kg.
 - Official identity name: Danogips SuperFinish.
 - Title issues (review only; no title write): SUBSTANTIVE: Локальное «(Шитрок)» не подтверждает официальное название Danogips SuperFinish; title не меняется.
@@ -103,7 +103,7 @@
 - Current title: Шпаклевка готовая финишная Knauf Ротбанд паста Профи 5 кг
 - Identity: IDENTITY_CONFIRMED
 - Category guard: Смеси / Шпаклевка
-- Brand: KNAUF - WILL_ADD; product column and attribute are planned together.
+- Brand: KNAUF; product column: WILL_FIX; brand attribute: WILL_ADD. These storage targets are planned independently and postchecked together.
 - Canonical identity: KNAUF / Готовая финишная шпаклевка / 5 kg.
 - Title normalization: KEEP_UNCHANGED; Exact local title is an identity guard; title/category are review-only in this pass.
 - Stored/planned fields: brand, product_type, base, purpose, package_weight, application_temperature, shelf_life, form, application_area, application_method, substrates, layer_thickness, consumption, consumption_basis, drying_time
@@ -136,7 +136,7 @@
 - Current title: Шпаклевка готовая финишная Knauf Ротбанд паста Профи 18 кг
 - Identity: IDENTITY_CONFIRMED
 - Category guard: Смеси / Шпаклевка
-- Brand: KNAUF - WILL_ADD; product column and attribute are planned together.
+- Brand: KNAUF; product column: WILL_FIX; brand attribute: WILL_ADD. These storage targets are planned independently and postchecked together.
 - Canonical identity: KNAUF / Готовая финишная шпаклевка / 18 kg.
 - Title normalization: KEEP_UNCHANGED; Exact local title is an identity guard; title/category are review-only in this pass.
 - Stored/planned fields: brand, product_type, base, purpose, package_weight, application_temperature, shelf_life, form, application_area, application_method, substrates, layer_thickness, consumption, consumption_basis, drying_time
@@ -169,7 +169,7 @@
 - Current title: Шпаклевка финишная готовая универсальная SEMIN CE 78 белая крышка 20кг
 - Identity: IDENTITY_CONFIRMED
 - Category guard: Смеси / Шпаклевка
-- Brand: SEMIN - WILL_ADD; product column and attribute are planned together.
+- Brand: SEMIN; product column: WILL_FIX; brand attribute: WILL_ADD. These storage targets are planned independently and postchecked together.
 - Canonical identity: SEMIN / Готовая полимерная шпаклевка для швов и финиша / 20 kg.
 - Official identity name: SEMIN CE 78.
 - Title issues (review only; no title write): PACKAGING_NOTE: «Белая крышка» — признак упаковки, не подтверждение цвета состава.
@@ -204,7 +204,7 @@
 - Current title: Шпаклевка готовая VGT акриловая универсальная для наружных и внутренних работ 18кг
 - Identity: IDENTITY_CONFIRMED
 - Category guard: Смеси / Шпаклевка
-- Brand: VGT - WILL_ADD; product column and attribute are planned together.
+- Brand: VGT; product column: WILL_FIX; brand attribute: WILL_ADD. These storage targets are planned independently and postchecked together.
 - Canonical identity: VGT / Готовая акриловая универсальная шпаклевка / 18 kg.
 - Title normalization: KEEP_UNCHANGED; Exact local title is an identity guard; title/category are review-only in this pass.
 - Stored/planned fields: brand, product_type, base, purpose, package_weight, application_temperature, shelf_life, form, application_area, application_method, substrates, layer_thickness, consumption, consumption_basis, drying_time
@@ -237,7 +237,7 @@
 - Current title: Шпаклевка Vetonit LR+ 5 кг
 - Identity: IDENTITY_CONFIRMED
 - Category guard: Смеси / Шпаклевка
-- Brand: Vetonit - WILL_ADD; product column and attribute are planned together.
+- Brand: Vetonit; product column: WILL_FIX; brand attribute: WILL_ADD. These storage targets are planned independently and postchecked together.
 - Canonical identity: Vetonit / Сухая полимерная финишная шпаклевка / 5 kg.
 - Title normalization: KEEP_UNCHANGED; Exact local title is an identity guard; title/category are review-only in this pass.
 - Stored/planned fields: brand, product_type, base, purpose, package_weight, application_temperature, shelf_life, color, form, application_area, application_method, substrates, layer_thickness, consumption, consumption_basis, pot_life, drying_time
@@ -268,7 +268,7 @@
 - Current title: Шпаклевка Vetonit LR+ 20 кг
 - Identity: IDENTITY_CONFIRMED
 - Category guard: Смеси / Шпаклевка
-- Brand: Vetonit - WILL_ADD; product column and attribute are planned together.
+- Brand: Vetonit; product column: WILL_FIX; brand attribute: WILL_ADD. These storage targets are planned independently and postchecked together.
 - Canonical identity: Vetonit / Сухая полимерная финишная шпаклевка / 20 kg.
 - Title normalization: KEEP_UNCHANGED; Exact local title is an identity guard; title/category are review-only in this pass.
 - Stored/planned fields: brand, product_type, base, purpose, package_weight, application_temperature, shelf_life, color, form, application_area, application_method, substrates, layer_thickness, consumption, consumption_basis, pot_life, drying_time
@@ -299,7 +299,7 @@
 - Current title: Шпаклевка Vetonit KR финиш белая 20 кг
 - Identity: IDENTITY_CONFIRMED
 - Category guard: Смеси / Шпаклевка
-- Brand: Vetonit - WILL_ADD; product column and attribute are planned together.
+- Brand: Vetonit; product column: WILL_FIX; brand attribute: WILL_ADD. These storage targets are planned independently and postchecked together.
 - Canonical identity: Vetonit / Сухая финишная шпаклевка / 20 kg.
 - Title normalization: KEEP_UNCHANGED; Exact local title is an identity guard; title/category are review-only in this pass.
 - Stored/planned fields: brand, product_type, base, purpose, package_weight, application_temperature, shelf_life, color, form, application_area, application_method, substrates, layer_thickness, consumption, consumption_basis, pot_life, drying_time
@@ -330,7 +330,7 @@
 - Current title: Шпаклевка полимерная финишная Vetonit JS Plus 20 кг
 - Identity: IDENTITY_CONFIRMED
 - Category guard: Смеси / Шпаклевка
-- Brand: Vetonit - WILL_ADD; product column and attribute are planned together.
+- Brand: Vetonit; product column: WILL_FIX; brand attribute: WILL_ADD. These storage targets are planned independently and postchecked together.
 - Canonical identity: Vetonit / Сухая полимерная финишная шпаклевка / 20 kg.
 - Official identity name: Vetonit JS.
 - Title issues (review only; no title write): LEGACY: Текущий title содержит JS Plus; актуальная официальная карточка — Vetonit JS. Title не меняется.
@@ -363,7 +363,7 @@
 - Current title: Шпаклевка полимерная финишная Knauf Polymer finish 20 кг
 - Identity: IDENTITY_CONFIRMED
 - Category guard: Смеси / Шпаклевка
-- Brand: KNAUF - WILL_ADD; product column and attribute are planned together.
+- Brand: KNAUF; product column: WILL_FIX; brand attribute: WILL_ADD. These storage targets are planned independently and postchecked together.
 - Canonical identity: KNAUF / Сухая полимерная финишная шпаклевка / 20 kg.
 - Official identity name: КНАУФ-Полимер Финиш.
 - Title issues (review only; no title write): TYPOGRAPHY: Локальная латиница Polymer finish отличается от официального написания КНАУФ-Полимер Финиш; title не меняется.
@@ -398,7 +398,7 @@
 - Current title: Шпаклевка полимерная финишная Основит Элисилк РА39 W 28 кг
 - Identity: IDENTITY_CONFIRMED
 - Category guard: Смеси / Шпаклевка
-- Brand: ОСНОВИТ - WILL_ADD; product column and attribute are planned together.
+- Brand: ОСНОВИТ; product column: WILL_FIX; brand attribute: WILL_ADD. These storage targets are planned independently and postchecked together.
 - Canonical identity: ОСНОВИТ / Готовая суперфинишная полимерная шпаклевка / 28 kg.
 - Official identity name: ОСНОВИТ Элисилк PA39 W.
 - Title issues (review only; no title write): TYPOGRAPHY: Локальное РА39 W отличается от официального написания PA39 W; title не меняется.
@@ -431,7 +431,7 @@
 - Current title: Шпаклевка полимерная Danogips Dano Jet 5 выравнивающая 25 кг
 - Identity: IDENTITY_CONFIRMED
 - Category guard: Смеси / Шпаклевка
-- Brand: Danogips - WILL_ADD; product column and attribute are planned together.
+- Brand: Danogips; product column: WILL_FIX; brand attribute: WILL_ADD. These storage targets are planned independently and postchecked together.
 - Canonical identity: Danogips / Сухая полимерная выравнивающая шпаклевка / 25 kg.
 - Official identity name: Danogips Dano JET5.
 - Title issues (review only; no title write): TYPOGRAPHY: Локальное Dano Jet 5 отличается от официального Dano JET5; title не меняется.
@@ -466,7 +466,7 @@
 - Current title: Шпаклевка полимерная финишная Волма Искрит для внутренних и наружных работ, белоснежная мех. 19 кг
 - Identity: IDENTITY_CONFIRMED
 - Category guard: Смеси / Шпаклевка
-- Brand: ВОЛМА - WILL_ADD; product column and attribute are planned together.
+- Brand: ВОЛМА; product column: WILL_FIX; brand attribute: WILL_ADD. These storage targets are planned independently and postchecked together.
 - Canonical identity: ВОЛМА / Финишная шпаклевка / 19 kg.
 - Official identity name: ВОЛМА-Искрит.
 - Title issues (review only; no title write): SUBSTANTIVE: «для внутренних и наружных работ» в локальном title конфликтует с официальным применением внутри помещений с нормальной влажностью.; SUBSTANTIVE/QUALIFIER: «мех.» не доказывает отдельный SKU: официальный продукт допускает ручное и машинное нанесение.; CLASSIFICATION_NOTE: «полимерная» в title не является установленным официальным классом: источник указывает смешанные вяжущие и полимерную составляющую до 5%.
@@ -512,8 +512,8 @@
   "partial": 7,
   "readyProducts": 7,
   "errors": 0,
-  "willAdd": 223,
-  "willFix": 0,
+  "willAdd": 209,
+  "willFix": 14,
   "existingOk": 0,
   "needsSource": 8,
   "absentByDesign": 7,

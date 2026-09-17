@@ -20,7 +20,7 @@
       },
       "brand": {
         "code": "brand",
-        "status": "WILL_ADD",
+        "status": "WILL_FIX",
         "sourceStatus": "READY",
         "value": "Danogips",
         "sources": [
@@ -31,6 +31,8 @@
         "definitionType": "text",
         "currentValue": null,
         "currentId": null,
+        "productColumnStatus": "WILL_FIX",
+        "attributeStatus": "WILL_ADD",
         "currentProductBrand": null
       },
       "specs": [
@@ -330,12 +332,15 @@
       "summary": {
         "logicalSlots": 17,
         "ready": 16,
-        "willAdd": 16,
-        "willFix": 0,
+        "willAdd": 15,
+        "willFix": 1,
         "existingOk": 0,
         "needsSource": 0,
         "absentByDesign": 1,
-        "schemaBlocked": 0
+        "schemaBlocked": 0,
+        "existingConflict": 0,
+        "productBrandWrites": 1,
+        "attributeBrandWrites": 1
       }
     },
     {
@@ -357,7 +362,7 @@
       },
       "brand": {
         "code": "brand",
-        "status": "WILL_ADD",
+        "status": "WILL_FIX",
         "sourceStatus": "READY",
         "value": "Danogips",
         "sources": [
@@ -368,6 +373,8 @@
         "definitionType": "text",
         "currentValue": null,
         "currentId": null,
+        "productColumnStatus": "WILL_FIX",
+        "attributeStatus": "WILL_ADD",
         "currentProductBrand": null
       },
       "specs": [
@@ -667,12 +674,15 @@
       "summary": {
         "logicalSlots": 17,
         "ready": 16,
-        "willAdd": 16,
-        "willFix": 0,
+        "willAdd": 15,
+        "willFix": 1,
         "existingOk": 0,
         "needsSource": 0,
         "absentByDesign": 1,
-        "schemaBlocked": 0
+        "schemaBlocked": 0,
+        "existingConflict": 0,
+        "productBrandWrites": 1,
+        "attributeBrandWrites": 1
       }
     },
     {
@@ -694,7 +704,7 @@
       },
       "brand": {
         "code": "brand",
-        "status": "WILL_ADD",
+        "status": "WILL_FIX",
         "sourceStatus": "READY",
         "value": "KNAUF",
         "sources": [
@@ -705,6 +715,8 @@
         "definitionType": "text",
         "currentValue": null,
         "currentId": null,
+        "productColumnStatus": "WILL_FIX",
+        "attributeStatus": "WILL_ADD",
         "currentProductBrand": null
       },
       "specs": [
@@ -999,12 +1011,15 @@
       "summary": {
         "logicalSlots": 17,
         "ready": 15,
-        "willAdd": 15,
-        "willFix": 0,
+        "willAdd": 14,
+        "willFix": 1,
         "existingOk": 0,
         "needsSource": 1,
         "absentByDesign": 1,
-        "schemaBlocked": 0
+        "schemaBlocked": 0,
+        "existingConflict": 0,
+        "productBrandWrites": 1,
+        "attributeBrandWrites": 1
       }
     },
     {
@@ -1026,7 +1041,7 @@
       },
       "brand": {
         "code": "brand",
-        "status": "WILL_ADD",
+        "status": "WILL_FIX",
         "sourceStatus": "READY",
         "value": "KNAUF",
         "sources": [
@@ -1037,6 +1052,8 @@
         "definitionType": "text",
         "currentValue": null,
         "currentId": null,
+        "productColumnStatus": "WILL_FIX",
+        "attributeStatus": "WILL_ADD",
         "currentProductBrand": null
       },
       "specs": [
@@ -1331,12 +1348,15 @@
       "summary": {
         "logicalSlots": 17,
         "ready": 15,
-        "willAdd": 15,
-        "willFix": 0,
+        "willAdd": 14,
+        "willFix": 1,
         "existingOk": 0,
         "needsSource": 1,
         "absentByDesign": 1,
-        "schemaBlocked": 0
+        "schemaBlocked": 0,
+        "existingConflict": 0,
+        "productBrandWrites": 1,
+        "attributeBrandWrites": 1
       }
     },
     {
@@ -1358,7 +1378,7 @@
       },
       "brand": {
         "code": "brand",
-        "status": "WILL_ADD",
+        "status": "WILL_FIX",
         "sourceStatus": "READY",
         "value": "SEMIN",
         "sources": [
@@ -1369,6 +1389,8 @@
         "definitionType": "text",
         "currentValue": null,
         "currentId": null,
+        "productColumnStatus": "WILL_FIX",
+        "attributeStatus": "WILL_ADD",
         "currentProductBrand": null
       },
       "specs": [
@@ -1668,12 +1690,15 @@
       "summary": {
         "logicalSlots": 17,
         "ready": 15,
-        "willAdd": 15,
-        "willFix": 0,
+        "willAdd": 14,
+        "willFix": 1,
         "existingOk": 0,
         "needsSource": 1,
         "absentByDesign": 1,
-        "schemaBlocked": 0
+        "schemaBlocked": 0,
+        "existingConflict": 0,
+        "productBrandWrites": 1,
+        "attributeBrandWrites": 1
       }
     },
     {
@@ -1695,7 +1720,7 @@
       },
       "brand": {
         "code": "brand",
-        "status": "WILL_ADD",
+        "status": "WILL_FIX",
         "sourceStatus": "READY",
         "value": "VGT",
         "sources": [
@@ -1706,6 +1731,8 @@
         "definitionType": "text",
         "currentValue": null,
         "currentId": null,
+        "productColumnStatus": "WILL_FIX",
+        "attributeStatus": "WILL_ADD",
         "currentProductBrand": null
       },
       "specs": [
@@ -2000,12 +2027,15 @@
       "summary": {
         "logicalSlots": 17,
         "ready": 15,
-        "willAdd": 15,
-        "willFix": 0,
+        "willAdd": 14,
+        "willFix": 1,
         "existingOk": 0,
         "needsSource": 1,
         "absentByDesign": 1,
-        "schemaBlocked": 0
+        "schemaBlocked": 0,
+        "existingConflict": 0,
+        "productBrandWrites": 1,
+        "attributeBrandWrites": 1
       }
     },
     {
@@ -2027,7 +2057,7 @@
       },
       "brand": {
         "code": "brand",
-        "status": "WILL_ADD",
+        "status": "WILL_FIX",
         "sourceStatus": "READY",
         "value": "Vetonit",
         "sources": [
@@ -2038,6 +2068,8 @@
         "definitionType": "text",
         "currentValue": null,
         "currentId": null,
+        "productColumnStatus": "WILL_FIX",
+        "attributeStatus": "WILL_ADD",
         "currentProductBrand": null
       },
       "specs": [
@@ -2332,12 +2364,15 @@
       "summary": {
         "logicalSlots": 17,
         "ready": 17,
-        "willAdd": 17,
-        "willFix": 0,
+        "willAdd": 16,
+        "willFix": 1,
         "existingOk": 0,
         "needsSource": 0,
         "absentByDesign": 0,
-        "schemaBlocked": 0
+        "schemaBlocked": 0,
+        "existingConflict": 0,
+        "productBrandWrites": 1,
+        "attributeBrandWrites": 1
       }
     },
     {
@@ -2359,7 +2394,7 @@
       },
       "brand": {
         "code": "brand",
-        "status": "WILL_ADD",
+        "status": "WILL_FIX",
         "sourceStatus": "READY",
         "value": "Vetonit",
         "sources": [
@@ -2370,6 +2405,8 @@
         "definitionType": "text",
         "currentValue": null,
         "currentId": null,
+        "productColumnStatus": "WILL_FIX",
+        "attributeStatus": "WILL_ADD",
         "currentProductBrand": null
       },
       "specs": [
@@ -2664,12 +2701,15 @@
       "summary": {
         "logicalSlots": 17,
         "ready": 17,
-        "willAdd": 17,
-        "willFix": 0,
+        "willAdd": 16,
+        "willFix": 1,
         "existingOk": 0,
         "needsSource": 0,
         "absentByDesign": 0,
-        "schemaBlocked": 0
+        "schemaBlocked": 0,
+        "existingConflict": 0,
+        "productBrandWrites": 1,
+        "attributeBrandWrites": 1
       }
     },
     {
@@ -2691,7 +2731,7 @@
       },
       "brand": {
         "code": "brand",
-        "status": "WILL_ADD",
+        "status": "WILL_FIX",
         "sourceStatus": "READY",
         "value": "Vetonit",
         "sources": [
@@ -2702,6 +2742,8 @@
         "definitionType": "text",
         "currentValue": null,
         "currentId": null,
+        "productColumnStatus": "WILL_FIX",
+        "attributeStatus": "WILL_ADD",
         "currentProductBrand": null
       },
       "specs": [
@@ -2996,12 +3038,15 @@
       "summary": {
         "logicalSlots": 17,
         "ready": 17,
-        "willAdd": 17,
-        "willFix": 0,
+        "willAdd": 16,
+        "willFix": 1,
         "existingOk": 0,
         "needsSource": 0,
         "absentByDesign": 0,
-        "schemaBlocked": 0
+        "schemaBlocked": 0,
+        "existingConflict": 0,
+        "productBrandWrites": 1,
+        "attributeBrandWrites": 1
       }
     },
     {
@@ -3023,7 +3068,7 @@
       },
       "brand": {
         "code": "brand",
-        "status": "WILL_ADD",
+        "status": "WILL_FIX",
         "sourceStatus": "READY",
         "value": "Vetonit",
         "sources": [
@@ -3034,6 +3079,8 @@
         "definitionType": "text",
         "currentValue": null,
         "currentId": null,
+        "productColumnStatus": "WILL_FIX",
+        "attributeStatus": "WILL_ADD",
         "currentProductBrand": null
       },
       "specs": [
@@ -3333,12 +3380,15 @@
       "summary": {
         "logicalSlots": 17,
         "ready": 17,
-        "willAdd": 17,
-        "willFix": 0,
+        "willAdd": 16,
+        "willFix": 1,
         "existingOk": 0,
         "needsSource": 0,
         "absentByDesign": 0,
-        "schemaBlocked": 0
+        "schemaBlocked": 0,
+        "existingConflict": 0,
+        "productBrandWrites": 1,
+        "attributeBrandWrites": 1
       }
     },
     {
@@ -3360,7 +3410,7 @@
       },
       "brand": {
         "code": "brand",
-        "status": "WILL_ADD",
+        "status": "WILL_FIX",
         "sourceStatus": "READY",
         "value": "KNAUF",
         "sources": [
@@ -3371,6 +3421,8 @@
         "definitionType": "text",
         "currentValue": null,
         "currentId": null,
+        "productColumnStatus": "WILL_FIX",
+        "attributeStatus": "WILL_ADD",
         "currentProductBrand": null
       },
       "specs": [
@@ -3670,12 +3722,15 @@
       "summary": {
         "logicalSlots": 17,
         "ready": 15,
-        "willAdd": 15,
-        "willFix": 0,
+        "willAdd": 14,
+        "willFix": 1,
         "existingOk": 0,
         "needsSource": 2,
         "absentByDesign": 0,
-        "schemaBlocked": 0
+        "schemaBlocked": 0,
+        "existingConflict": 0,
+        "productBrandWrites": 1,
+        "attributeBrandWrites": 1
       }
     },
     {
@@ -3697,7 +3752,7 @@
       },
       "brand": {
         "code": "brand",
-        "status": "WILL_ADD",
+        "status": "WILL_FIX",
         "sourceStatus": "READY",
         "value": "ОСНОВИТ",
         "sources": [
@@ -3708,6 +3763,8 @@
         "definitionType": "text",
         "currentValue": null,
         "currentId": null,
+        "productColumnStatus": "WILL_FIX",
+        "attributeStatus": "WILL_ADD",
         "currentProductBrand": null
       },
       "specs": [
@@ -4007,12 +4064,15 @@
       "summary": {
         "logicalSlots": 17,
         "ready": 16,
-        "willAdd": 16,
-        "willFix": 0,
+        "willAdd": 15,
+        "willFix": 1,
         "existingOk": 0,
         "needsSource": 0,
         "absentByDesign": 1,
-        "schemaBlocked": 0
+        "schemaBlocked": 0,
+        "existingConflict": 0,
+        "productBrandWrites": 1,
+        "attributeBrandWrites": 1
       }
     },
     {
@@ -4034,7 +4094,7 @@
       },
       "brand": {
         "code": "brand",
-        "status": "WILL_ADD",
+        "status": "WILL_FIX",
         "sourceStatus": "READY",
         "value": "Danogips",
         "sources": [
@@ -4045,6 +4105,8 @@
         "definitionType": "text",
         "currentValue": null,
         "currentId": null,
+        "productColumnStatus": "WILL_FIX",
+        "attributeStatus": "WILL_ADD",
         "currentProductBrand": null
       },
       "specs": [
@@ -4344,12 +4406,15 @@
       "summary": {
         "logicalSlots": 17,
         "ready": 16,
-        "willAdd": 16,
-        "willFix": 0,
+        "willAdd": 15,
+        "willFix": 1,
         "existingOk": 0,
         "needsSource": 1,
         "absentByDesign": 0,
-        "schemaBlocked": 0
+        "schemaBlocked": 0,
+        "existingConflict": 0,
+        "productBrandWrites": 1,
+        "attributeBrandWrites": 1
       }
     },
     {
@@ -4371,7 +4436,7 @@
       },
       "brand": {
         "code": "brand",
-        "status": "WILL_ADD",
+        "status": "WILL_FIX",
         "sourceStatus": "READY",
         "value": "ВОЛМА",
         "sources": [
@@ -4382,6 +4447,8 @@
         "definitionType": "text",
         "currentValue": null,
         "currentId": null,
+        "productColumnStatus": "WILL_FIX",
+        "attributeStatus": "WILL_ADD",
         "currentProductBrand": null
       },
       "specs": [
@@ -4689,12 +4756,15 @@
       "summary": {
         "logicalSlots": 17,
         "ready": 16,
-        "willAdd": 16,
-        "willFix": 0,
+        "willAdd": 15,
+        "willFix": 1,
         "existingOk": 0,
         "needsSource": 1,
         "absentByDesign": 0,
-        "schemaBlocked": 0
+        "schemaBlocked": 0,
+        "existingConflict": 0,
+        "productBrandWrites": 1,
+        "attributeBrandWrites": 1
       }
     }
   ],
@@ -4704,8 +4774,8 @@
     "partial": 7,
     "readyProducts": 7,
     "errors": 0,
-    "willAdd": 223,
-    "willFix": 0,
+    "willAdd": 209,
+    "willFix": 14,
     "existingOk": 0,
     "needsSource": 8,
     "absentByDesign": 7,

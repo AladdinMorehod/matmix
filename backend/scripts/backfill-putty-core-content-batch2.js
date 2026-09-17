@@ -99,7 +99,7 @@ function buildItem(code, proposal, def, existing, config) {
   }
   let itemStatus = status;
   if (status === "READY") itemStatus = existing && sameValue(existing, proposal) ? "EXISTING_OK" : existing ? "WILL_FIX" : "WILL_ADD";
-  else if (status === "ABSENT_BY_DESIGN" && existing) itemStatus = "EXISTING_OK";
+  else if (status === "ABSENT_BY_DESIGN" && existing) itemStatus = "EXISTING_CONFLICT";
   return { code, status: itemStatus, sourceStatus: status, value: proposal.value, sources: proposal.sources || [], reason: proposal.reason, rawSourceValue: proposal.rawSourceValue, qualifier: proposal.qualifier, formula: proposal.formula, definitionId: def?.id || null, definitionType: def?.data_type || null, currentValue: valueOf(existing), currentId: existing?.id || null };
 }
 
@@ -108,7 +108,9 @@ async function planProduct(db, config, preloadedDefinitions) {
   const row = { externalId: config.externalId, title: product.title, productId: product.id, category: product.category, subcategory: product.subcategory, identityStatus: config.identityStatus, sourceKeys: config.sourceKeys, current: { brand: product.brand, weight: product.weight, description: product.full_description || product.short_description || product.description || null, specsCount: state.values.length }, brand: null, specs: [], content: {}, notes: [] };
   const brandDef = findDefinition(defs, "brand"); if (!brandDef || brandDef.data_type !== "text") throw new Error("Canonical brand definition missing/incompatible");
   const existingBrand = semantics.get("brand"); const brandProposal = { status: "READY", value: config.brand, sources: config.brandSources || config.sourceKeys };
-  row.brand = { ...buildItem("brand", brandProposal, brandDef, existingBrand, config), currentProductBrand: product.brand, value: config.brand };
+  const attributePlan = buildItem("brand", brandProposal, brandDef, existingBrand, config);
+  const productColumnStatus = String(product.brand || "") === String(config.brand) ? "EXISTING_OK" : "WILL_FIX";
+  row.brand = { ...attributePlan, status: productColumnStatus === "EXISTING_OK" && attributePlan.status === "EXISTING_OK" ? "EXISTING_OK" : "WILL_FIX", productColumnStatus, attributeStatus: attributePlan.status, currentProductBrand: product.brand, value: config.brand };
   for (const code of DATA.CORE_ORDER.filter(c => c !== "brand")) {
     const proposal = config.core[code]; if (!proposal) throw new Error(`Missing proposal: ${config.externalId}/${code}`);
     const def = findDefinition(defs, code); const existing = semantics.get(code); row.specs.push(buildItem(code, proposal, def, existing, config));
@@ -121,10 +123,12 @@ async function planProduct(db, config, preloadedDefinitions) {
   row.titleNormalization = { current: product.title, recommendation: "KEEP_UNCHANGED", reason: "Exact local title is an identity guard; title/category are review-only in this pass." };
   row.notStored = ["title", "slug", "category", "subcategory", "weight", "price", "stock_status", "image", "image_url", "description", "short_description", "full_description", "seo_title", "seo_description", "consumption_10mm", "coverage_30kg_10mm", "wall_layer_thickness", "ceiling_layer_thickness"];
   row.stored = [row.brand, ...row.specs].filter(i => ["WILL_ADD", "WILL_FIX", "EXISTING_OK"].includes(i.status)).map(i => i.code);
-  const unresolved = [row.brand, ...row.specs].some(i => ["NEEDS_SOURCE", "SCHEMA_BLOCKED"].includes(i.status));
-  row.status = row.identityStatus === "BLOCKED_IDENTITY" ? "BLOCKED_IDENTITY" : unresolved ? "PARTIAL" : "READY";
   const allItems = [row.brand, ...row.specs];
-  row.summary = { logicalSlots: DATA.CORE_ORDER.length, ready: allItems.filter(i => i.sourceStatus === "READY").length, willAdd: allItems.filter(i => i.status === "WILL_ADD").length, willFix: allItems.filter(i => i.status === "WILL_FIX").length, existingOk: allItems.filter(i => i.status === "EXISTING_OK").length, needsSource: allItems.filter(i => i.sourceStatus === "NEEDS_SOURCE").length, absentByDesign: allItems.filter(i => i.sourceStatus === "ABSENT_BY_DESIGN").length, schemaBlocked: allItems.filter(i => i.sourceStatus === "SCHEMA_BLOCKED").length };
+  const conflict = allItems.filter(i => i.status === "EXISTING_CONFLICT");
+  const unresolved = allItems.some(i => ["NEEDS_SOURCE", "SCHEMA_BLOCKED", "EXISTING_CONFLICT"].includes(i.status));
+  row.status = row.identityStatus === "BLOCKED_IDENTITY" ? "BLOCKED_IDENTITY" : conflict.length ? "ERROR" : unresolved ? "PARTIAL" : "READY";
+  if (conflict.length) row.error = `Existing value conflicts with ABSENT_BY_DESIGN: ${conflict.map(i => i.code).join(", ")}`;
+  row.summary = { logicalSlots: DATA.CORE_ORDER.length, ready: allItems.filter(i => i.sourceStatus === "READY").length, willAdd: allItems.filter(i => i.status === "WILL_ADD").length, willFix: allItems.filter(i => i.status === "WILL_FIX").length, existingOk: allItems.filter(i => i.status === "EXISTING_OK").length, needsSource: allItems.filter(i => i.sourceStatus === "NEEDS_SOURCE").length, absentByDesign: allItems.filter(i => i.sourceStatus === "ABSENT_BY_DESIGN" && i.status !== "EXISTING_CONFLICT").length, schemaBlocked: allItems.filter(i => i.sourceStatus === "SCHEMA_BLOCKED").length, existingConflict: conflict.length, productBrandWrites: row.brand.productColumnStatus === "WILL_FIX" ? 1 : 0, attributeBrandWrites: ["WILL_ADD", "WILL_FIX"].includes(row.brand.attributeStatus) ? 1 : 0 };
   return row;
 }
 function definitionsToCreate(definitions) { return DATA.NEW_DEFINITIONS.filter(d => !definitions.some(existing => existing.code === d.code)); }
@@ -154,8 +158,10 @@ async function applyBatch(db, dbPath, options, data = DATA) {
     const now = new Date().toISOString();
     for (const row of preflight.rows) {
       const brand = row.brand;
-      if (["WILL_ADD", "WILL_FIX"].includes(brand.status)) {
+      if (brand.productColumnStatus === "WILL_FIX") {
         await db.run("UPDATE products SET brand=? WHERE id=? AND external_id=?", [brand.value, row.productId, row.externalId]); writes++;
+      }
+      if (["WILL_ADD", "WILL_FIX"].includes(brand.attributeStatus)) {
         if (brand.currentId) await db.run("UPDATE product_attribute_values SET value_text=?,value_number=NULL,value_boolean=NULL,unit_override=NULL,updated_at=? WHERE id=?", [brand.value, now, brand.currentId]);
         else await db.run("INSERT INTO product_attribute_values(product_id,attribute_definition_id,value_text,value_number,value_boolean,unit_override,sort_order,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?)", [row.productId, brand.definitionId, brand.value, null, null, null, 0, now, now]);
         if (!brand.currentId) writes++;
@@ -171,19 +177,19 @@ async function applyBatch(db, dbPath, options, data = DATA) {
         writes++;
       }
     }
-    const post = await inspectBatch(db, { only: options.only, data }); if (post.summary.errors || post.rows.some(r => [r.brand, ...(r.specs || [])].some(i => ["WILL_ADD", "WILL_FIX"].includes(i.status)))) throw new Error("Postcheck failed: mandatory core values are not stable");
+    const post = await inspectBatch(db, { only: options.only, data }); if (post.summary.errors || post.rows.some(r => r.brand?.productColumnStatus !== "EXISTING_OK" || r.brand?.attributeStatus !== "EXISTING_OK" || (r.specs || []).some(i => ["WILL_ADD", "WILL_FIX"].includes(i.status)))) throw new Error("Postcheck failed: brand and mandatory core values are not stable");
     await db.run("COMMIT"); return { ...post, mode: "apply", writes, backup };
   } catch (error) { try { await db.run("ROLLBACK"); } catch {} throw error; }
 }
 function mdCell(v) { return String(v ?? "—").replace(/\|/g, "\\|").replace(/\n/g, " "); }
 function renderReview(report) {
   const lines = ["# Шпаклевка — CORE corrective review (batch 2)", "", `Проверено: ${DATA.CHECKED_AT}. Локальный dry-run; production не используется. Scope: MAT-000047…MAT-000060.`, "", "## Архитектура", "", "- Scope: только core attributes и синхронизация `products.brand` с атрибутом `brand`.", "- `TITLE_WRITES=0`: `products.title` используется только как identity guard; `canonicalIdentity` и `titleNormalization` — review metadata, не операции записи.", "- Запись только targeted upsert; wholesale delete не используется.", "- `consumption_10mm`, `coverage_30kg_10mm`, `wall_layer_thickness`, `ceiling_layer_thickness` не используются.", "- `ABSENT_BY_DESIGN` и `NEEDS_SOURCE` не создают значения; numeric-only `shelf_life` без числа получает `SCHEMA_BLOCKED`.", "- Templates: аудит без создания.", "", "## Dry-run", "", "| MAT | Current title | Brand | Core status | Source keys |", "|---|---|---|---|---|"];
-  for (const row of report.rows) lines.push(`| ${mdCell(row.externalId)} | ${mdCell(row.title)} | ${mdCell(row.brand?.value)} (${mdCell(row.brand?.status)}) | ${mdCell(row.status)} | ${mdCell(row.sourceKeys?.join(", "))} |`);
+  for (const row of report.rows) lines.push(`| ${mdCell(row.externalId)} | ${mdCell(row.title)} | ${mdCell(row.brand?.value)} (product: ${mdCell(row.brand?.productColumnStatus)}; attribute: ${mdCell(row.brand?.attributeStatus)}) | ${mdCell(row.status)} | ${mdCell(row.sourceKeys?.join(", "))} |`);
   lines.push("", "## Per-MAT details", "");
   for (const row of report.rows) {
     lines.push(`### ${row.externalId}`, "", `- Current title: ${row.title || "ERROR"}`, `- Identity: ${row.identityStatus || "ERROR"}`, `- Category guard: ${row.category || "-"} / ${row.subcategory || "-"}`);
     if (row.error) { lines.push(`- ERROR: ${row.error}`, ""); continue; }
-    lines.push(`- Brand: ${row.brand?.value} - ${row.brand?.status}; product column and attribute are planned together.`);
+    lines.push(`- Brand: ${row.brand?.value}; product column: ${row.brand?.productColumnStatus}; brand attribute: ${row.brand?.attributeStatus}. These storage targets are planned independently and postchecked together.`);
     lines.push(`- Canonical identity: ${mdCell(row.canonicalIdentity?.brand)} / ${mdCell(row.canonicalIdentity?.productType)} / ${mdCell(row.canonicalIdentity?.packageWeightKg)} kg.`);
     const config = DATA.PRODUCTS.find(p => p.externalId === row.externalId); if (config?.canonicalName) lines.push(`- Official identity name: ${mdCell(config.canonicalName)}.`);
     if (config?.titleIssues?.length) lines.push(`- Title issues (review only; no title write): ${config.titleIssues.map(i => `${i.kind}: ${mdCell(i.text)}`).join("; ")}`);
