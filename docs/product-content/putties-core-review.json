@@ -1,0 +1,4741 @@
+{
+  "mode": "dry-run",
+  "rows": [
+    {
+      "externalId": "MAT-000033",
+      "title": "Шпаклевка гипсовая Knauf Ротбанд Финиш 25 кг",
+      "productId": 31,
+      "category": "Смеси",
+      "subcategory": "Шпаклевка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sourceKeys": [
+        "knaufRotbandFinish"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 25,
+        "description": null,
+        "specsCount": 0
+      },
+      "brand": {
+        "code": "brand",
+        "status": "WILL_ADD",
+        "sourceStatus": "READY",
+        "value": "KNAUF",
+        "sources": [
+          "knaufRotbandFinish"
+        ],
+        "definitionId": 1,
+        "definitionType": "text",
+        "currentValue": null,
+        "currentId": null,
+        "currentProductBrand": null
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Гипсовая шпаклевка",
+          "sources": [
+            "knaufRotbandFinish"
+          ],
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "base",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Гипсовое вяжущее с полимерными добавками",
+          "sources": [
+            "knaufRotbandFinish"
+          ],
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "purpose",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Финишное выравнивание поверхностей внутри помещений",
+          "sources": [
+            "knaufRotbandFinish"
+          ],
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "package_weight",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 25,
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_temperature",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufRotbandFinish"
+          ],
+          "reason": "Точная температура применения для exact редакции не подтверждена в использованной карточке.",
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "shelf_life",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 6,
+          "sources": [
+            "knaufRotbandFinish"
+          ],
+          "definitionId": 11,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "color",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufRotbandFinish"
+          ],
+          "reason": "Цвет exact фасовки не зафиксирован в текстовой карточке.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "form",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Сухая смесь",
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_area",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Внутри помещений",
+          "sources": [
+            "knaufRotbandFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_method",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufRotbandFinish"
+          ],
+          "reason": "Способ нанесения exact SKU не указан однозначно.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "substrates",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "ГКЛ, ГВЛ, пазогребневые плиты, гипсовые и цементные штукатурки, бетон",
+          "sources": [
+            "knaufRotbandFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "layer_thickness",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "0,2–5 мм",
+          "sources": [
+            "knaufRotbandFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "1 кг/м²",
+          "sources": [
+            "knaufRotbandFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption_basis",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufRotbandFinish"
+          ],
+          "reason": "Источник указывает расход, но не фиксирует толщину слоя для этого значения; базис нельзя выводить.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "pot_life",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "не менее 70 минут",
+          "sources": [
+            "knaufRotbandFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "drying_time",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufRotbandFinish"
+          ],
+          "reason": "Точное время высыхания exact условиями не подтверждено.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        }
+      ],
+      "content": {
+        "short_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "full_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_title": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        }
+      },
+      "notes": [],
+      "canonicalIdentity": {
+        "brand": "KNAUF",
+        "productType": "Гипсовая шпаклевка",
+        "packageWeightKg": 25,
+        "sourceKeys": [
+          "knaufRotbandFinish"
+        ]
+      },
+      "titleNormalization": {
+        "current": "Шпаклевка гипсовая Knauf Ротбанд Финиш 25 кг",
+        "recommendation": "KEEP_UNCHANGED",
+        "reason": "Exact local title is an identity guard; title/category are review-only in this pass."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "category",
+        "subcategory",
+        "weight",
+        "price",
+        "stock_status",
+        "image",
+        "image_url",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "consumption_10mm",
+        "coverage_30kg_10mm",
+        "wall_layer_thickness",
+        "ceiling_layer_thickness"
+      ],
+      "stored": [
+        "brand",
+        "product_type",
+        "base",
+        "purpose",
+        "package_weight",
+        "shelf_life",
+        "form",
+        "application_area",
+        "substrates",
+        "layer_thickness",
+        "consumption",
+        "pot_life"
+      ],
+      "status": "PARTIAL",
+      "summary": {
+        "ready": 12,
+        "willAdd": 12,
+        "willFix": 0,
+        "needsSource": 5,
+        "schemaBlocked": 0
+      }
+    },
+    {
+      "externalId": "MAT-000034",
+      "title": "Шпаклевка гипсовая Knauf Унифлот 5 кг",
+      "productId": 32,
+      "category": "Смеси",
+      "subcategory": "Шпаклевка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sourceKeys": [
+        "knaufUniflottRu",
+        "knaufUniflottDe"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 5,
+        "description": null,
+        "specsCount": 0
+      },
+      "brand": {
+        "code": "brand",
+        "status": "WILL_ADD",
+        "sourceStatus": "READY",
+        "value": "KNAUF",
+        "sources": [
+          "knaufUniflottRu",
+          "knaufUniflottDe"
+        ],
+        "definitionId": 1,
+        "definitionType": "text",
+        "currentValue": null,
+        "currentId": null,
+        "currentProductBrand": null
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUniflottRu",
+            "knaufUniflottDe"
+          ],
+          "reason": "Foreign-market source confirms product family, but exact Russian MatMix SKU applicability is not proven.",
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "base",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUniflottRu",
+            "knaufUniflottDe"
+          ],
+          "reason": "Foreign-market source; exact Russian formulation is not proven.",
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "purpose",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUniflottRu",
+            "knaufUniflottDe"
+          ],
+          "reason": "Foreign-market source; exact Russian SKU purpose is not proven.",
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "package_weight",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 5,
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_temperature",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUniflottRu",
+            "knaufUniflottDe"
+          ],
+          "reason": "Exact Russian SKU temperature is not proven; foreign-market values retained as research only.",
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "shelf_life",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUniflottRu",
+            "knaufUniflottDe"
+          ],
+          "reason": "9 months is foreign-market data; exact Russian SKU applicability is not proven.",
+          "definitionId": 11,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "color",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUniflottRu",
+            "knaufUniflottDe"
+          ],
+          "reason": "Цвет exact SKU не подтверждён.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "form",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Сухая смесь",
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_area",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUniflottRu",
+            "knaufUniflottDe"
+          ],
+          "reason": "Foreign-market source; exact Russian SKU application area is not proven.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_method",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUniflottRu",
+            "knaufUniflottDe"
+          ],
+          "reason": "Foreign-market source; exact Russian SKU method is not proven.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "substrates",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUniflottRu",
+            "knaufUniflottDe"
+          ],
+          "reason": "Foreign-market source; exact Russian SKU substrates are not proven.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "layer_thickness",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUniflottRu",
+            "knaufUniflottDe"
+          ],
+          "reason": "Диапазон толщины exact Russian SKU не подтверждён.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUniflottRu",
+            "knaufUniflottDe"
+          ],
+          "reason": "Foreign-market consumption cannot be copied to the Russian SKU.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption_basis",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUniflottRu",
+            "knaufUniflottDe"
+          ],
+          "reason": "Foreign-market consumption basis cannot be copied to the Russian SKU.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "pot_life",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUniflottDe"
+          ],
+          "reason": "45 minutes is DE/AT data; exact Russian SKU applicability is not proven.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "drying_time",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUniflottDe"
+          ],
+          "reason": "24 hours/mm is DE/AT data; exact Russian SKU applicability is not proven.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        }
+      ],
+      "content": {
+        "short_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "full_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_title": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        }
+      },
+      "notes": [],
+      "canonicalIdentity": {
+        "brand": "KNAUF",
+        "productType": null,
+        "packageWeightKg": 5,
+        "sourceKeys": [
+          "knaufUniflottRu",
+          "knaufUniflottDe"
+        ]
+      },
+      "titleNormalization": {
+        "current": "Шпаклевка гипсовая Knauf Унифлот 5 кг",
+        "recommendation": "KEEP_UNCHANGED",
+        "reason": "Exact local title is an identity guard; title/category are review-only in this pass."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "category",
+        "subcategory",
+        "weight",
+        "price",
+        "stock_status",
+        "image",
+        "image_url",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "consumption_10mm",
+        "coverage_30kg_10mm",
+        "wall_layer_thickness",
+        "ceiling_layer_thickness"
+      ],
+      "stored": [
+        "brand",
+        "package_weight",
+        "form"
+      ],
+      "status": "PARTIAL",
+      "summary": {
+        "ready": 3,
+        "willAdd": 3,
+        "willFix": 0,
+        "needsSource": 14,
+        "schemaBlocked": 0
+      }
+    },
+    {
+      "externalId": "MAT-000035",
+      "title": "Шпаклевка гипсовая Knauf Унифлот 25 кг",
+      "productId": 33,
+      "category": "Смеси",
+      "subcategory": "Шпаклевка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sourceKeys": [
+        "knaufUniflottRu",
+        "knaufUniflottDe"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 25,
+        "description": null,
+        "specsCount": 0
+      },
+      "brand": {
+        "code": "brand",
+        "status": "WILL_ADD",
+        "sourceStatus": "READY",
+        "value": "KNAUF",
+        "sources": [
+          "knaufUniflottRu",
+          "knaufUniflottDe"
+        ],
+        "definitionId": 1,
+        "definitionType": "text",
+        "currentValue": null,
+        "currentId": null,
+        "currentProductBrand": null
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUniflottRu",
+            "knaufUniflottDe"
+          ],
+          "reason": "Foreign-market source confirms product family, but exact Russian MatMix SKU applicability is not proven.",
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "base",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUniflottRu",
+            "knaufUniflottDe"
+          ],
+          "reason": "Foreign-market source; exact Russian formulation is not proven.",
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "purpose",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUniflottRu",
+            "knaufUniflottDe"
+          ],
+          "reason": "Foreign-market source; exact Russian SKU purpose is not proven.",
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "package_weight",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 25,
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_temperature",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUniflottRu",
+            "knaufUniflottDe"
+          ],
+          "reason": "Exact Russian SKU temperature is not proven; foreign-market values retained as research only.",
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "shelf_life",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUniflottRu",
+            "knaufUniflottDe"
+          ],
+          "reason": "9 months is foreign-market data; exact Russian SKU applicability is not proven.",
+          "definitionId": 11,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "color",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUniflottRu",
+            "knaufUniflottDe"
+          ],
+          "reason": "Цвет exact SKU не подтверждён.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "form",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Сухая смесь",
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_area",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUniflottRu",
+            "knaufUniflottDe"
+          ],
+          "reason": "Foreign-market source; exact Russian SKU application area is not proven.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_method",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUniflottRu",
+            "knaufUniflottDe"
+          ],
+          "reason": "Foreign-market source; exact Russian SKU method is not proven.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "substrates",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUniflottRu",
+            "knaufUniflottDe"
+          ],
+          "reason": "Foreign-market source; exact Russian SKU substrates are not proven.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "layer_thickness",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUniflottRu",
+            "knaufUniflottDe"
+          ],
+          "reason": "Диапазон толщины exact Russian SKU не подтверждён.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUniflottRu",
+            "knaufUniflottDe"
+          ],
+          "reason": "Foreign-market consumption cannot be copied to the Russian SKU.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption_basis",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUniflottRu",
+            "knaufUniflottDe"
+          ],
+          "reason": "Foreign-market consumption basis cannot be copied to the Russian SKU.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "pot_life",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUniflottDe"
+          ],
+          "reason": "45 minutes is DE/AT data; exact Russian SKU applicability is not proven.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "drying_time",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUniflottDe"
+          ],
+          "reason": "24 hours/mm is DE/AT data; exact Russian SKU applicability is not proven.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        }
+      ],
+      "content": {
+        "short_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "full_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_title": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        }
+      },
+      "notes": [],
+      "canonicalIdentity": {
+        "brand": "KNAUF",
+        "productType": null,
+        "packageWeightKg": 25,
+        "sourceKeys": [
+          "knaufUniflottRu",
+          "knaufUniflottDe"
+        ]
+      },
+      "titleNormalization": {
+        "current": "Шпаклевка гипсовая Knauf Унифлот 25 кг",
+        "recommendation": "KEEP_UNCHANGED",
+        "reason": "Exact local title is an identity guard; title/category are review-only in this pass."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "category",
+        "subcategory",
+        "weight",
+        "price",
+        "stock_status",
+        "image",
+        "image_url",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "consumption_10mm",
+        "coverage_30kg_10mm",
+        "wall_layer_thickness",
+        "ceiling_layer_thickness"
+      ],
+      "stored": [
+        "brand",
+        "package_weight",
+        "form"
+      ],
+      "status": "PARTIAL",
+      "summary": {
+        "ready": 3,
+        "willAdd": 3,
+        "willFix": 0,
+        "needsSource": 14,
+        "schemaBlocked": 0
+      }
+    },
+    {
+      "externalId": "MAT-000036",
+      "title": "Шпаклевка гипсовая Knauf Фуген 25 кг",
+      "productId": 34,
+      "category": "Смеси",
+      "subcategory": "Шпаклевка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sourceKeys": [
+        "knaufFugenRu"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 25,
+        "description": null,
+        "specsCount": 0
+      },
+      "brand": {
+        "code": "brand",
+        "status": "WILL_ADD",
+        "sourceStatus": "READY",
+        "value": "KNAUF",
+        "sources": [
+          "knaufFugenRu"
+        ],
+        "definitionId": 1,
+        "definitionType": "text",
+        "currentValue": null,
+        "currentId": null,
+        "currentProductBrand": null
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Гипсовая шпаклевка",
+          "sources": [
+            "knaufFugenRu"
+          ],
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "base",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Гипсовое вяжущее с полимерными добавками",
+          "sources": [
+            "knaufFugenRu"
+          ],
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "purpose",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Заделка швов и выравнивание поверхностей внутри помещений",
+          "sources": [
+            "knaufFugenRu"
+          ],
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "package_weight",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 25,
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_temperature",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufFugenRu"
+          ],
+          "reason": "Температура применения не указана на проверенной странице.",
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "shelf_life",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 6,
+          "sources": [
+            "knaufFugenRu"
+          ],
+          "definitionId": 11,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "color",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufFugenRu"
+          ],
+          "reason": "Цвет не зафиксирован в карточке.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "form",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Сухая смесь",
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_area",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Внутри помещений",
+          "sources": [
+            "knaufRotbandFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_method",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufFugenRu"
+          ],
+          "reason": "Способ нанесения exact SKU не указан однозначно.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "substrates",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "ГКЛ, ГВЛ, бетон, штукатурка",
+          "sources": [
+            "knaufFugenRu"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "layer_thickness",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "1–5 мм",
+          "sources": [
+            "knaufFugenRu"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "0,8–1,0 кг/м²",
+          "sources": [
+            "knaufFugenRu"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption_basis",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "при толщине слоя 1 мм; для швов ГКЛ 0,25 кг/м²",
+          "sources": [
+            "knaufFugenRu"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "pot_life",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufFugenRu"
+          ],
+          "reason": "Время жизнеспособности замеса exact фасовки не подтверждено.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "drying_time",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufFugenRu"
+          ],
+          "reason": "Время высыхания не подтверждено.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        }
+      ],
+      "content": {
+        "short_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "full_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_title": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        }
+      },
+      "notes": [],
+      "canonicalIdentity": {
+        "brand": "KNAUF",
+        "productType": "Гипсовая шпаклевка",
+        "packageWeightKg": 25,
+        "sourceKeys": [
+          "knaufFugenRu"
+        ]
+      },
+      "titleNormalization": {
+        "current": "Шпаклевка гипсовая Knauf Фуген 25 кг",
+        "recommendation": "KEEP_UNCHANGED",
+        "reason": "Exact local title is an identity guard; title/category are review-only in this pass."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "category",
+        "subcategory",
+        "weight",
+        "price",
+        "stock_status",
+        "image",
+        "image_url",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "consumption_10mm",
+        "coverage_30kg_10mm",
+        "wall_layer_thickness",
+        "ceiling_layer_thickness"
+      ],
+      "stored": [
+        "brand",
+        "product_type",
+        "base",
+        "purpose",
+        "package_weight",
+        "shelf_life",
+        "form",
+        "application_area",
+        "substrates",
+        "layer_thickness",
+        "consumption",
+        "consumption_basis"
+      ],
+      "status": "PARTIAL",
+      "summary": {
+        "ready": 12,
+        "willAdd": 12,
+        "willFix": 0,
+        "needsSource": 5,
+        "schemaBlocked": 0
+      }
+    },
+    {
+      "externalId": "MAT-000037",
+      "title": "Шпаклевка гипсовая Knauf Фуген 5 кг",
+      "productId": 35,
+      "category": "Смеси",
+      "subcategory": "Шпаклевка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sourceKeys": [
+        "knaufFugenRu"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 5,
+        "description": null,
+        "specsCount": 0
+      },
+      "brand": {
+        "code": "brand",
+        "status": "WILL_ADD",
+        "sourceStatus": "READY",
+        "value": "KNAUF",
+        "sources": [
+          "knaufFugenRu"
+        ],
+        "definitionId": 1,
+        "definitionType": "text",
+        "currentValue": null,
+        "currentId": null,
+        "currentProductBrand": null
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Гипсовая шпаклевка",
+          "sources": [
+            "knaufFugenRu"
+          ],
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "base",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Гипсовое вяжущее с полимерными добавками",
+          "sources": [
+            "knaufFugenRu"
+          ],
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "purpose",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Заделка швов и выравнивание поверхностей внутри помещений",
+          "sources": [
+            "knaufFugenRu"
+          ],
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "package_weight",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 5,
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_temperature",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufFugenRu"
+          ],
+          "reason": "Температура применения не указана на проверенной странице.",
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "shelf_life",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 12,
+          "sources": [
+            "knaufFugenRu"
+          ],
+          "definitionId": 11,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "color",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufFugenRu"
+          ],
+          "reason": "Цвет не зафиксирован в карточке.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "form",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Сухая смесь",
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_area",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Внутри помещений",
+          "sources": [
+            "knaufRotbandFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_method",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufFugenRu"
+          ],
+          "reason": "Способ нанесения exact SKU не указан однозначно.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "substrates",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "ГКЛ, ГВЛ, бетон, штукатурка",
+          "sources": [
+            "knaufFugenRu"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "layer_thickness",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "1–5 мм",
+          "sources": [
+            "knaufFugenRu"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "0,8–1,0 кг/м²",
+          "sources": [
+            "knaufFugenRu"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption_basis",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "при толщине слоя 1 мм; для швов ГКЛ 0,25 кг/м²",
+          "sources": [
+            "knaufFugenRu"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "pot_life",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufFugenRu"
+          ],
+          "reason": "Время жизнеспособности замеса exact фасовки не подтверждено.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "drying_time",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufFugenRu"
+          ],
+          "reason": "Время высыхания не подтверждено.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        }
+      ],
+      "content": {
+        "short_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "full_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_title": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        }
+      },
+      "notes": [],
+      "canonicalIdentity": {
+        "brand": "KNAUF",
+        "productType": "Гипсовая шпаклевка",
+        "packageWeightKg": 5,
+        "sourceKeys": [
+          "knaufFugenRu"
+        ]
+      },
+      "titleNormalization": {
+        "current": "Шпаклевка гипсовая Knauf Фуген 5 кг",
+        "recommendation": "KEEP_UNCHANGED",
+        "reason": "Exact local title is an identity guard; title/category are review-only in this pass."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "category",
+        "subcategory",
+        "weight",
+        "price",
+        "stock_status",
+        "image",
+        "image_url",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "consumption_10mm",
+        "coverage_30kg_10mm",
+        "wall_layer_thickness",
+        "ceiling_layer_thickness"
+      ],
+      "stored": [
+        "brand",
+        "product_type",
+        "base",
+        "purpose",
+        "package_weight",
+        "shelf_life",
+        "form",
+        "application_area",
+        "substrates",
+        "layer_thickness",
+        "consumption",
+        "consumption_basis"
+      ],
+      "status": "PARTIAL",
+      "summary": {
+        "ready": 12,
+        "willAdd": 12,
+        "willFix": 0,
+        "needsSource": 5,
+        "schemaBlocked": 0
+      }
+    },
+    {
+      "externalId": "MAT-000038",
+      "title": "Шпаклевка гипсовая высокопрочная Knauf Унихард 20 кг",
+      "productId": 36,
+      "category": "Смеси",
+      "subcategory": "Шпаклевка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sourceKeys": [
+        "knaufUnihard"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 20,
+        "description": null,
+        "specsCount": 0
+      },
+      "brand": {
+        "code": "brand",
+        "status": "WILL_ADD",
+        "sourceStatus": "READY",
+        "value": "KNAUF",
+        "sources": [
+          "knaufUnihard"
+        ],
+        "definitionId": 1,
+        "definitionType": "text",
+        "currentValue": null,
+        "currentId": null,
+        "currentProductBrand": null
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Высокопрочная гипсовая шпаклевка",
+          "sources": [
+            "knaufUnihard"
+          ],
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "base",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Гипсовое вяжущее",
+          "sources": [
+            "knaufUnihard"
+          ],
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "purpose",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Выравнивание и финишная подготовка поверхностей внутри помещений",
+          "sources": [
+            "knaufUnihard"
+          ],
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "package_weight",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 20,
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_temperature",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUnihard"
+          ],
+          "reason": "Температура применения exact SKU не подтверждена.",
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "shelf_life",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 6,
+          "sources": [
+            "knaufUnihard"
+          ],
+          "definitionId": 11,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "color",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUnihard"
+          ],
+          "reason": "Цвет не зафиксирован.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "form",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Сухая смесь",
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_area",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Внутри помещений",
+          "sources": [
+            "knaufRotbandFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_method",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUnihard"
+          ],
+          "reason": "Способ нанесения exact SKU не подтверждён.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "substrates",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUnihard"
+          ],
+          "reason": "Перечень оснований exact версии не подтверждён.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "layer_thickness",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUnihard"
+          ],
+          "reason": "Диапазон слоя не подтверждён.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUnihard"
+          ],
+          "reason": "Расход exact версии не подтверждён.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption_basis",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUnihard"
+          ],
+          "reason": "Основание расхода не подтверждено.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "pot_life",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUnihard"
+          ],
+          "reason": "Жизнеспособность не подтверждена.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "drying_time",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufUnihard"
+          ],
+          "reason": "Время высыхания не подтверждено.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        }
+      ],
+      "content": {
+        "short_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "full_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_title": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        }
+      },
+      "notes": [],
+      "canonicalIdentity": {
+        "brand": "KNAUF",
+        "productType": "Высокопрочная гипсовая шпаклевка",
+        "packageWeightKg": 20,
+        "sourceKeys": [
+          "knaufUnihard"
+        ]
+      },
+      "titleNormalization": {
+        "current": "Шпаклевка гипсовая высокопрочная Knauf Унихард 20 кг",
+        "recommendation": "KEEP_UNCHANGED",
+        "reason": "Exact local title is an identity guard; title/category are review-only in this pass."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "category",
+        "subcategory",
+        "weight",
+        "price",
+        "stock_status",
+        "image",
+        "image_url",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "consumption_10mm",
+        "coverage_30kg_10mm",
+        "wall_layer_thickness",
+        "ceiling_layer_thickness"
+      ],
+      "stored": [
+        "brand",
+        "product_type",
+        "base",
+        "purpose",
+        "package_weight",
+        "shelf_life",
+        "form",
+        "application_area"
+      ],
+      "status": "PARTIAL",
+      "summary": {
+        "ready": 8,
+        "willAdd": 8,
+        "willFix": 0,
+        "needsSource": 9,
+        "schemaBlocked": 0
+      }
+    },
+    {
+      "externalId": "MAT-000039",
+      "title": "Шпаклевка гипсовая Старатели базовая 20 кг",
+      "productId": 37,
+      "category": "Смеси",
+      "subcategory": "Шпаклевка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sourceKeys": [
+        "starBase"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 20,
+        "description": null,
+        "specsCount": 0
+      },
+      "brand": {
+        "code": "brand",
+        "status": "WILL_ADD",
+        "sourceStatus": "READY",
+        "value": "Старатели",
+        "sources": [
+          "starBase"
+        ],
+        "definitionId": 1,
+        "definitionType": "text",
+        "currentValue": null,
+        "currentId": null,
+        "currentProductBrand": null
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Гипсовая базовая шпаклевка",
+          "sources": [
+            "starBase"
+          ],
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "base",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Гипсовое вяжущее",
+          "sources": [
+            "starBase"
+          ],
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "purpose",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Базовое выравнивание стен и потолков внутри помещений",
+          "sources": [
+            "starBase"
+          ],
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "package_weight",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 20,
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_temperature",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "от +10 до +30 °C",
+          "sources": [
+            "starBase"
+          ],
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "shelf_life",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 12,
+          "sources": [
+            "starBase"
+          ],
+          "definitionId": 11,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "color",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Белый",
+          "sources": [
+            "starBase"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "form",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Сухая смесь",
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_area",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Внутри помещений с нормальной влажностью",
+          "sources": [
+            "starBase"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_method",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Ручное и механизированное нанесение",
+          "sources": [
+            "starBase"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "substrates",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Бетон, кирпич, цементная и гипсовая штукатурка, ПГП, ГКЛ, ГВЛ",
+          "sources": [
+            "starBase"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "layer_thickness",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "1–10 мм",
+          "sources": [
+            "starBase"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "1 кг/м²",
+          "sources": [
+            "starBase"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption_basis",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "при толщине слоя 1 мм",
+          "sources": [
+            "starBase"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "pot_life",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "не менее 1 часа",
+          "sources": [
+            "starBase"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "drying_time",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "около 24 часов до готовности",
+          "sources": [
+            "starBase"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        }
+      ],
+      "content": {
+        "short_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "full_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_title": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        }
+      },
+      "notes": [],
+      "canonicalIdentity": {
+        "brand": "Старатели",
+        "productType": "Гипсовая базовая шпаклевка",
+        "packageWeightKg": 20,
+        "sourceKeys": [
+          "starBase"
+        ]
+      },
+      "titleNormalization": {
+        "current": "Шпаклевка гипсовая Старатели базовая 20 кг",
+        "recommendation": "KEEP_UNCHANGED",
+        "reason": "Exact local title is an identity guard; title/category are review-only in this pass."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "category",
+        "subcategory",
+        "weight",
+        "price",
+        "stock_status",
+        "image",
+        "image_url",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "consumption_10mm",
+        "coverage_30kg_10mm",
+        "wall_layer_thickness",
+        "ceiling_layer_thickness"
+      ],
+      "stored": [
+        "brand",
+        "product_type",
+        "base",
+        "purpose",
+        "package_weight",
+        "application_temperature",
+        "shelf_life",
+        "color",
+        "form",
+        "application_area",
+        "application_method",
+        "substrates",
+        "layer_thickness",
+        "consumption",
+        "consumption_basis",
+        "pot_life",
+        "drying_time"
+      ],
+      "status": "READY",
+      "summary": {
+        "ready": 17,
+        "willAdd": 17,
+        "willFix": 0,
+        "needsSource": 0,
+        "schemaBlocked": 0
+      }
+    },
+    {
+      "externalId": "MAT-000040",
+      "title": "Шпаклевка гипсовая Старатели финишная 20 кг",
+      "productId": 38,
+      "category": "Смеси",
+      "subcategory": "Шпаклевка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sourceKeys": [
+        "starFinish"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 20,
+        "description": null,
+        "specsCount": 0
+      },
+      "brand": {
+        "code": "brand",
+        "status": "WILL_ADD",
+        "sourceStatus": "READY",
+        "value": "Старатели",
+        "sources": [
+          "starFinish"
+        ],
+        "definitionId": 1,
+        "definitionType": "text",
+        "currentValue": null,
+        "currentId": null,
+        "currentProductBrand": null
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Гипсовая финишная шпаклевка",
+          "sources": [
+            "starFinish"
+          ],
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "base",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Гипсовое вяжущее",
+          "sources": [
+            "starFinish"
+          ],
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "purpose",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Финишное выравнивание стен и потолков внутри помещений",
+          "sources": [
+            "starFinish"
+          ],
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "package_weight",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 20,
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_temperature",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "от +10 до +30 °C",
+          "sources": [
+            "starFinish"
+          ],
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "shelf_life",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 12,
+          "sources": [
+            "starFinish"
+          ],
+          "definitionId": 11,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "color",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Белый",
+          "sources": [
+            "starFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "form",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Сухая смесь",
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_area",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Внутри помещений с нормальной влажностью",
+          "sources": [
+            "starFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_method",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Ручное и механизированное нанесение",
+          "sources": [
+            "starFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "substrates",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Бетон, кирпич, гипсовая и цементная штукатурка, ПГП, ГКЛ, ГВЛ",
+          "sources": [
+            "starFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "layer_thickness",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "0,3–5 мм",
+          "sources": [
+            "starFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "0,9 кг/м²",
+          "sources": [
+            "starFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption_basis",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "при толщине слоя 1 мм",
+          "sources": [
+            "starFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "pot_life",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "не менее 1 часа",
+          "sources": [
+            "starFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "drying_time",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "около 24 часов до готовности",
+          "sources": [
+            "starFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        }
+      ],
+      "content": {
+        "short_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "full_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_title": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        }
+      },
+      "notes": [],
+      "canonicalIdentity": {
+        "brand": "Старатели",
+        "productType": "Гипсовая финишная шпаклевка",
+        "packageWeightKg": 20,
+        "sourceKeys": [
+          "starFinish"
+        ]
+      },
+      "titleNormalization": {
+        "current": "Шпаклевка гипсовая Старатели финишная 20 кг",
+        "recommendation": "KEEP_UNCHANGED",
+        "reason": "Exact local title is an identity guard; title/category are review-only in this pass."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "category",
+        "subcategory",
+        "weight",
+        "price",
+        "stock_status",
+        "image",
+        "image_url",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "consumption_10mm",
+        "coverage_30kg_10mm",
+        "wall_layer_thickness",
+        "ceiling_layer_thickness"
+      ],
+      "stored": [
+        "brand",
+        "product_type",
+        "base",
+        "purpose",
+        "package_weight",
+        "application_temperature",
+        "shelf_life",
+        "color",
+        "form",
+        "application_area",
+        "application_method",
+        "substrates",
+        "layer_thickness",
+        "consumption",
+        "consumption_basis",
+        "pot_life",
+        "drying_time"
+      ],
+      "status": "READY",
+      "summary": {
+        "ready": 17,
+        "willAdd": 17,
+        "willFix": 0,
+        "needsSource": 0,
+        "schemaBlocked": 0
+      }
+    },
+    {
+      "externalId": "MAT-000041",
+      "title": "Шпаклевка гипсовая Волма Финиш 20 кг",
+      "productId": 39,
+      "category": "Смеси",
+      "subcategory": "Шпаклевка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sourceKeys": [
+        "volmaFinish"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 20,
+        "description": null,
+        "specsCount": 0
+      },
+      "brand": {
+        "code": "brand",
+        "status": "WILL_ADD",
+        "sourceStatus": "READY",
+        "value": "ВОЛМА",
+        "sources": [
+          "volmaFinish"
+        ],
+        "definitionId": 1,
+        "definitionType": "text",
+        "currentValue": null,
+        "currentId": null,
+        "currentProductBrand": null
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Гипсовая финишная шпаклевка",
+          "sources": [
+            "volmaFinish"
+          ],
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "base",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Гипсовое вяжущее",
+          "sources": [
+            "volmaFinish"
+          ],
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "purpose",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Финишное выравнивание стен и потолков внутри помещений",
+          "sources": [
+            "volmaFinish"
+          ],
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "package_weight",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 20,
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_temperature",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "от +5 до +30 °C",
+          "sources": [
+            "volmaFinish"
+          ],
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "shelf_life",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 12,
+          "sources": [
+            "volmaFinish"
+          ],
+          "definitionId": 11,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "color",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "volmaFinish"
+          ],
+          "reason": "Цвет exact фасовки отдельно не указан.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "form",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Сухая смесь",
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_area",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Внутри помещений",
+          "sources": [
+            "volmaFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_method",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Ручное нанесение",
+          "sources": [
+            "volmaFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "substrates",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Бетон, гипсовая штукатурка, ГКЛ, ГВЛ, ПГП",
+          "sources": [
+            "volmaFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "layer_thickness",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "0,2–3 мм; максимум 5 мм",
+          "sources": [
+            "volmaFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "0,9–1,0 кг/м²",
+          "sources": [
+            "volmaFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption_basis",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "при толщине слоя 1 мм",
+          "sources": [
+            "volmaFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "pot_life",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "около 100 минут",
+          "sources": [
+            "volmaFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "drying_time",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "5–7 часов",
+          "sources": [
+            "volmaFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        }
+      ],
+      "content": {
+        "short_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "full_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_title": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        }
+      },
+      "notes": [],
+      "canonicalIdentity": {
+        "brand": "ВОЛМА",
+        "productType": "Гипсовая финишная шпаклевка",
+        "packageWeightKg": 20,
+        "sourceKeys": [
+          "volmaFinish"
+        ]
+      },
+      "titleNormalization": {
+        "current": "Шпаклевка гипсовая Волма Финиш 20 кг",
+        "recommendation": "KEEP_UNCHANGED",
+        "reason": "Exact local title is an identity guard; title/category are review-only in this pass."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "category",
+        "subcategory",
+        "weight",
+        "price",
+        "stock_status",
+        "image",
+        "image_url",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "consumption_10mm",
+        "coverage_30kg_10mm",
+        "wall_layer_thickness",
+        "ceiling_layer_thickness"
+      ],
+      "stored": [
+        "brand",
+        "product_type",
+        "base",
+        "purpose",
+        "package_weight",
+        "application_temperature",
+        "shelf_life",
+        "form",
+        "application_area",
+        "application_method",
+        "substrates",
+        "layer_thickness",
+        "consumption",
+        "consumption_basis",
+        "pot_life",
+        "drying_time"
+      ],
+      "status": "PARTIAL",
+      "summary": {
+        "ready": 16,
+        "willAdd": 16,
+        "willFix": 0,
+        "needsSource": 1,
+        "schemaBlocked": 0
+      }
+    },
+    {
+      "externalId": "MAT-000042",
+      "title": "Шпаклевка гипсовая финишная Волма Шелк 20 кг",
+      "productId": 40,
+      "category": "Смеси",
+      "subcategory": "Шпаклевка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sourceKeys": [
+        "volmaSilk"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 20,
+        "description": null,
+        "specsCount": 0
+      },
+      "brand": {
+        "code": "brand",
+        "status": "WILL_ADD",
+        "sourceStatus": "READY",
+        "value": "ВОЛМА",
+        "sources": [
+          "volmaSilk"
+        ],
+        "definitionId": 1,
+        "definitionType": "text",
+        "currentValue": null,
+        "currentId": null,
+        "currentProductBrand": null
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Гипсовая финишная шпаклевка",
+          "sources": [
+            "volmaSilk"
+          ],
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "base",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Гипсовое вяжущее",
+          "sources": [
+            "volmaSilk"
+          ],
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "purpose",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Финишное выравнивание поверхностей внутри помещений",
+          "sources": [
+            "volmaSilk"
+          ],
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "package_weight",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 20,
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_temperature",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "от +5 до +30 °C",
+          "sources": [
+            "volmaSilk"
+          ],
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "shelf_life",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 12,
+          "sources": [
+            "volmaSilk"
+          ],
+          "definitionId": 11,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "color",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "volmaSilk"
+          ],
+          "reason": "Цвет exact фасовки не указан в TDS.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "form",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Сухая смесь",
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_area",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Внутри помещений с нормальной влажностью",
+          "sources": [
+            "volmaSilk"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_method",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Ручное нанесение",
+          "sources": [
+            "volmaSilk"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "substrates",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Бетон, гипсовая штукатурка, ГКЛ, ГВЛ, ПГП",
+          "sources": [
+            "volmaSilk"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "layer_thickness",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "0,2–3 мм; максимум 5 мм",
+          "sources": [
+            "volmaSilk"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "0,9–1,0 кг/м²",
+          "sources": [
+            "volmaSilk"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption_basis",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "при толщине слоя 1 мм",
+          "sources": [
+            "volmaSilk"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "pot_life",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "около 60 минут",
+          "sources": [
+            "volmaSilk"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "drying_time",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "5–7 часов",
+          "sources": [
+            "volmaSilk"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        }
+      ],
+      "content": {
+        "short_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "full_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_title": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        }
+      },
+      "notes": [],
+      "canonicalIdentity": {
+        "brand": "ВОЛМА",
+        "productType": "Гипсовая финишная шпаклевка",
+        "packageWeightKg": 20,
+        "sourceKeys": [
+          "volmaSilk"
+        ]
+      },
+      "titleNormalization": {
+        "current": "Шпаклевка гипсовая финишная Волма Шелк 20 кг",
+        "recommendation": "KEEP_UNCHANGED",
+        "reason": "Exact local title is an identity guard; title/category are review-only in this pass."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "category",
+        "subcategory",
+        "weight",
+        "price",
+        "stock_status",
+        "image",
+        "image_url",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "consumption_10mm",
+        "coverage_30kg_10mm",
+        "wall_layer_thickness",
+        "ceiling_layer_thickness"
+      ],
+      "stored": [
+        "brand",
+        "product_type",
+        "base",
+        "purpose",
+        "package_weight",
+        "application_temperature",
+        "shelf_life",
+        "form",
+        "application_area",
+        "application_method",
+        "substrates",
+        "layer_thickness",
+        "consumption",
+        "consumption_basis",
+        "pot_life",
+        "drying_time"
+      ],
+      "status": "PARTIAL",
+      "summary": {
+        "ready": 16,
+        "willAdd": 16,
+        "willFix": 0,
+        "needsSource": 1,
+        "schemaBlocked": 0
+      }
+    },
+    {
+      "externalId": "MAT-000043",
+      "title": "Шпаклевка гипсовая финишная Волма Arctic 20 кг",
+      "productId": 41,
+      "category": "Смеси",
+      "subcategory": "Шпаклевка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sourceKeys": [
+        "volmaArctic"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 20,
+        "description": null,
+        "specsCount": 0
+      },
+      "brand": {
+        "code": "brand",
+        "status": "WILL_ADD",
+        "sourceStatus": "READY",
+        "value": "ВОЛМА",
+        "sources": [
+          "volmaArctic"
+        ],
+        "definitionId": 1,
+        "definitionType": "text",
+        "currentValue": null,
+        "currentId": null,
+        "currentProductBrand": null
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Гипсовая финишная шпаклевка",
+          "sources": [
+            "volmaArctic"
+          ],
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "base",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Гипсовое вяжущее",
+          "sources": [
+            "volmaArctic"
+          ],
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "purpose",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Финишное выравнивание стен и потолков внутри помещений",
+          "sources": [
+            "volmaArctic"
+          ],
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "package_weight",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 20,
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_temperature",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "от +5 до +30 °C",
+          "sources": [
+            "volmaArctic"
+          ],
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "shelf_life",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 12,
+          "sources": [
+            "volmaArctic"
+          ],
+          "definitionId": 11,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "color",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Белый / снежно-белый",
+          "sources": [
+            "volmaArctic"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "form",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Сухая смесь",
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_area",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Внутри помещений с нормальной влажностью",
+          "sources": [
+            "volmaArctic"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_method",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Ручное и механизированное нанесение",
+          "sources": [
+            "volmaArctic"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "substrates",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Бетон, гипсовая штукатурка, ГКЛ, ГВЛ, ПГП",
+          "sources": [
+            "volmaArctic"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "layer_thickness",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "0,2–3 мм; максимум 5 мм",
+          "sources": [
+            "volmaArctic"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "0,9–1,0 кг/м²",
+          "sources": [
+            "volmaArctic"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption_basis",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "при толщине слоя 1 мм",
+          "sources": [
+            "volmaArctic"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "pot_life",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "не менее 60 минут",
+          "sources": [
+            "volmaArctic"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "drying_time",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "5–7 часов",
+          "sources": [
+            "volmaArctic"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        }
+      ],
+      "content": {
+        "short_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "full_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_title": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        }
+      },
+      "notes": [],
+      "canonicalIdentity": {
+        "brand": "ВОЛМА",
+        "productType": "Гипсовая финишная шпаклевка",
+        "packageWeightKg": 20,
+        "sourceKeys": [
+          "volmaArctic"
+        ]
+      },
+      "titleNormalization": {
+        "current": "Шпаклевка гипсовая финишная Волма Arctic 20 кг",
+        "recommendation": "KEEP_UNCHANGED",
+        "reason": "Exact local title is an identity guard; title/category are review-only in this pass."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "category",
+        "subcategory",
+        "weight",
+        "price",
+        "stock_status",
+        "image",
+        "image_url",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "consumption_10mm",
+        "coverage_30kg_10mm",
+        "wall_layer_thickness",
+        "ceiling_layer_thickness"
+      ],
+      "stored": [
+        "brand",
+        "product_type",
+        "base",
+        "purpose",
+        "package_weight",
+        "application_temperature",
+        "shelf_life",
+        "color",
+        "form",
+        "application_area",
+        "application_method",
+        "substrates",
+        "layer_thickness",
+        "consumption",
+        "consumption_basis",
+        "pot_life",
+        "drying_time"
+      ],
+      "status": "READY",
+      "summary": {
+        "ready": 17,
+        "willAdd": 17,
+        "willFix": 0,
+        "needsSource": 0,
+        "schemaBlocked": 0
+      }
+    },
+    {
+      "externalId": "MAT-000044",
+      "title": "Шпаклевка гипсовая универсальная Glatt Und Full Pufas / Пуфас 25кг",
+      "productId": 42,
+      "category": "Смеси",
+      "subcategory": "Шпаклевка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sourceKeys": [
+        "pufasGlatt"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 25,
+        "description": null,
+        "specsCount": 0
+      },
+      "brand": {
+        "code": "brand",
+        "status": "WILL_ADD",
+        "sourceStatus": "READY",
+        "value": "PUFAS",
+        "sources": [
+          "pufasGlatt"
+        ],
+        "definitionId": 1,
+        "definitionType": "text",
+        "currentValue": null,
+        "currentId": null,
+        "currentProductBrand": null
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Гипсовая армированная шпаклевка",
+          "sources": [
+            "pufasGlatt"
+          ],
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "base",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Гипсовое вяжущее с целлюлозным армированием",
+          "sources": [
+            "pufasGlatt"
+          ],
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "purpose",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Заполнение и выравнивание поверхностей внутри помещений",
+          "sources": [
+            "pufasGlatt"
+          ],
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "package_weight",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 25,
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_temperature",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "pufasGlatt"
+          ],
+          "reason": "Температура применения не указана в использованном TDS.",
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "shelf_life",
+          "status": "SCHEMA_BLOCKED",
+          "sourceStatus": "SCHEMA_BLOCKED",
+          "value": null,
+          "sources": [
+            "pufasGlatt"
+          ],
+          "reason": "В официальном источнике указано, что срок хранения неначатой упаковки не ограничен в сухом месте; числовая схема месяцев это не представляет.",
+          "definitionId": 11,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "color",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Белый",
+          "sources": [
+            "pufasGlatt"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "form",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Сухая смесь",
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_area",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Внутри помещений",
+          "sources": [
+            "pufasGlatt"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_method",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "pufasGlatt"
+          ],
+          "reason": "Способ нанесения exact SKU не указан однозначно.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "substrates",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Минеральные основания, кирпич, бетон, штукатурка, ГКЛ, ГВЛ",
+          "sources": [
+            "pufasGlatt"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "layer_thickness",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "от 0 до 15 см и более",
+          "sources": [
+            "pufasGlatt"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "0,8–1 кг/м²",
+          "sources": [
+            "pufasGlatt"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption_basis",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "при толщине слоя 1 мм",
+          "sources": [
+            "pufasGlatt"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "pot_life",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "около 60 минут",
+          "sources": [
+            "pufasGlatt"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "drying_time",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "pufasGlatt"
+          ],
+          "reason": "Время высыхания зависит от толщины/условий; точное значение не подтверждено.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        }
+      ],
+      "content": {
+        "short_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "full_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_title": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        }
+      },
+      "notes": [],
+      "canonicalIdentity": {
+        "brand": "PUFAS",
+        "productType": "Гипсовая армированная шпаклевка",
+        "packageWeightKg": 25,
+        "sourceKeys": [
+          "pufasGlatt"
+        ]
+      },
+      "titleNormalization": {
+        "current": "Шпаклевка гипсовая универсальная Glatt Und Full Pufas / Пуфас 25кг",
+        "recommendation": "KEEP_UNCHANGED",
+        "reason": "Exact local title is an identity guard; title/category are review-only in this pass."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "category",
+        "subcategory",
+        "weight",
+        "price",
+        "stock_status",
+        "image",
+        "image_url",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "consumption_10mm",
+        "coverage_30kg_10mm",
+        "wall_layer_thickness",
+        "ceiling_layer_thickness"
+      ],
+      "stored": [
+        "brand",
+        "product_type",
+        "base",
+        "purpose",
+        "package_weight",
+        "color",
+        "form",
+        "application_area",
+        "substrates",
+        "layer_thickness",
+        "consumption",
+        "consumption_basis",
+        "pot_life"
+      ],
+      "status": "PARTIAL",
+      "summary": {
+        "ready": 13,
+        "willAdd": 13,
+        "willFix": 0,
+        "needsSource": 3,
+        "schemaBlocked": 1
+      }
+    },
+    {
+      "externalId": "MAT-000045",
+      "title": "Шпаклевка гипсовая финишная, заполняющая Full+Finish Pufas / Пуфас 5 кг",
+      "productId": 43,
+      "category": "Смеси",
+      "subcategory": "Шпаклевка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sourceKeys": [
+        "pufasFullFinish"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 5,
+        "description": null,
+        "specsCount": 0
+      },
+      "brand": {
+        "code": "brand",
+        "status": "WILL_ADD",
+        "sourceStatus": "READY",
+        "value": "PUFAS",
+        "sources": [
+          "pufasFullFinish"
+        ],
+        "definitionId": 1,
+        "definitionType": "text",
+        "currentValue": null,
+        "currentId": null,
+        "currentProductBrand": null
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Гипсовая заполняющая и финишная шпаклевка",
+          "sources": [
+            "pufasFullFinish"
+          ],
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "base",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Гипсовое вяжущее с целлюлозным армированием",
+          "sources": [
+            "pufasFullFinish"
+          ],
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "purpose",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Заполнение и финишное выравнивание поверхностей внутри помещений",
+          "sources": [
+            "pufasFullFinish"
+          ],
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "package_weight",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 5,
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_temperature",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "pufasFullFinish"
+          ],
+          "reason": "Температура применения не указана в использованном TDS.",
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "shelf_life",
+          "status": "SCHEMA_BLOCKED",
+          "sourceStatus": "SCHEMA_BLOCKED",
+          "value": null,
+          "sources": [
+            "pufasFullFinish"
+          ],
+          "reason": "Официальный TDS указывает неограниченный срок хранения в сухом месте; числовое значение не записывается.",
+          "definitionId": 11,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "color",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Белый",
+          "sources": [
+            "pufasFullFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "form",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Сухая смесь",
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_area",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Внутри помещений",
+          "sources": [
+            "pufasFullFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_method",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "pufasFullFinish"
+          ],
+          "reason": "Способ нанесения exact SKU не указан однозначно.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "substrates",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Минеральные основания, штукатурка, бетон, кладка, газобетон, ГКЛ",
+          "sources": [
+            "pufasFullFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "layer_thickness",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "до 15 см и более; с растушёвкой до нуля",
+          "sources": [
+            "pufasFullFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "1 кг/м²",
+          "sources": [
+            "pufasFullFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption_basis",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "при толщине слоя 1 мм",
+          "sources": [
+            "pufasFullFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "pot_life",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "около 60 минут",
+          "sources": [
+            "pufasFullFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "drying_time",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "pufasFullFinish"
+          ],
+          "reason": "Зависит от толщины и условий; точное время не подтверждено.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        }
+      ],
+      "content": {
+        "short_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "full_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_title": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        }
+      },
+      "notes": [],
+      "canonicalIdentity": {
+        "brand": "PUFAS",
+        "productType": "Гипсовая заполняющая и финишная шпаклевка",
+        "packageWeightKg": 5,
+        "sourceKeys": [
+          "pufasFullFinish"
+        ]
+      },
+      "titleNormalization": {
+        "current": "Шпаклевка гипсовая финишная, заполняющая Full+Finish Pufas / Пуфас 5 кг",
+        "recommendation": "KEEP_UNCHANGED",
+        "reason": "Exact local title is an identity guard; title/category are review-only in this pass."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "category",
+        "subcategory",
+        "weight",
+        "price",
+        "stock_status",
+        "image",
+        "image_url",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "consumption_10mm",
+        "coverage_30kg_10mm",
+        "wall_layer_thickness",
+        "ceiling_layer_thickness"
+      ],
+      "stored": [
+        "brand",
+        "product_type",
+        "base",
+        "purpose",
+        "package_weight",
+        "color",
+        "form",
+        "application_area",
+        "substrates",
+        "layer_thickness",
+        "consumption",
+        "consumption_basis",
+        "pot_life"
+      ],
+      "status": "PARTIAL",
+      "summary": {
+        "ready": 13,
+        "willAdd": 13,
+        "willFix": 0,
+        "needsSource": 3,
+        "schemaBlocked": 1
+      }
+    },
+    {
+      "externalId": "MAT-000046",
+      "title": "Шпаклевка гипсовая финишная, заполняющая Full+Finish Pufas / Пуфас 20 кг",
+      "productId": 44,
+      "category": "Смеси",
+      "subcategory": "Шпаклевка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sourceKeys": [
+        "pufasFullFinish"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 20,
+        "description": null,
+        "specsCount": 0
+      },
+      "brand": {
+        "code": "brand",
+        "status": "WILL_ADD",
+        "sourceStatus": "READY",
+        "value": "PUFAS",
+        "sources": [
+          "pufasFullFinish"
+        ],
+        "definitionId": 1,
+        "definitionType": "text",
+        "currentValue": null,
+        "currentId": null,
+        "currentProductBrand": null
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Гипсовая заполняющая и финишная шпаклевка",
+          "sources": [
+            "pufasFullFinish"
+          ],
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "base",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Гипсовое вяжущее с целлюлозным армированием",
+          "sources": [
+            "pufasFullFinish"
+          ],
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "purpose",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Заполнение и финишное выравнивание поверхностей внутри помещений",
+          "sources": [
+            "pufasFullFinish"
+          ],
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "package_weight",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 20,
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_temperature",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "pufasFullFinish"
+          ],
+          "reason": "Температура применения не указана в использованном TDS.",
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "shelf_life",
+          "status": "SCHEMA_BLOCKED",
+          "sourceStatus": "SCHEMA_BLOCKED",
+          "value": null,
+          "sources": [
+            "pufasFullFinish"
+          ],
+          "reason": "Официальный TDS указывает неограниченный срок хранения в сухом месте; числовое значение не записывается.",
+          "definitionId": 11,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "color",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Белый",
+          "sources": [
+            "pufasFullFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "form",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Сухая смесь",
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_area",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Внутри помещений",
+          "sources": [
+            "pufasFullFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_method",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "pufasFullFinish"
+          ],
+          "reason": "Способ нанесения exact SKU не указан однозначно.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "substrates",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Минеральные основания, штукатурка, бетон, кладка, газобетон, ГКЛ",
+          "sources": [
+            "pufasFullFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "layer_thickness",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "до 15 см и более; с растушёвкой до нуля",
+          "sources": [
+            "pufasFullFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "1 кг/м²",
+          "sources": [
+            "pufasFullFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption_basis",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "при толщине слоя 1 мм",
+          "sources": [
+            "pufasFullFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "pot_life",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "около 60 минут",
+          "sources": [
+            "pufasFullFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "drying_time",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "pufasFullFinish"
+          ],
+          "reason": "Зависит от толщины и условий; точное время не подтверждено.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        }
+      ],
+      "content": {
+        "short_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "full_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_title": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        }
+      },
+      "notes": [],
+      "canonicalIdentity": {
+        "brand": "PUFAS",
+        "productType": "Гипсовая заполняющая и финишная шпаклевка",
+        "packageWeightKg": 20,
+        "sourceKeys": [
+          "pufasFullFinish"
+        ]
+      },
+      "titleNormalization": {
+        "current": "Шпаклевка гипсовая финишная, заполняющая Full+Finish Pufas / Пуфас 20 кг",
+        "recommendation": "KEEP_UNCHANGED",
+        "reason": "Exact local title is an identity guard; title/category are review-only in this pass."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "category",
+        "subcategory",
+        "weight",
+        "price",
+        "stock_status",
+        "image",
+        "image_url",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "consumption_10mm",
+        "coverage_30kg_10mm",
+        "wall_layer_thickness",
+        "ceiling_layer_thickness"
+      ],
+      "stored": [
+        "brand",
+        "product_type",
+        "base",
+        "purpose",
+        "package_weight",
+        "color",
+        "form",
+        "application_area",
+        "substrates",
+        "layer_thickness",
+        "consumption",
+        "consumption_basis",
+        "pot_life"
+      ],
+      "status": "PARTIAL",
+      "summary": {
+        "ready": 13,
+        "willAdd": 13,
+        "willFix": 0,
+        "needsSource": 3,
+        "schemaBlocked": 1
+      }
+    }
+  ],
+  "summary": {
+    "total": 14,
+    "ready": 3,
+    "partial": 11,
+    "errors": 0,
+    "willAdd": 172,
+    "willFix": 0,
+    "existingOk": 0,
+    "needsSource": 63,
+    "schemaBlocked": 3,
+    "definitionsToCreate": 10
+  },
+  "definitionsToCreate": [
+    {
+      "code": "color",
+      "label": "Цвет",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "form",
+      "label": "Форма продукта",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "application_area",
+      "label": "Область применения",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "application_method",
+      "label": "Способ нанесения",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "substrates",
+      "label": "Применимые основания",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "layer_thickness",
+      "label": "Толщина слоя",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "consumption",
+      "label": "Расход",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "consumption_basis",
+      "label": "Основание расхода",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "pot_life",
+      "label": "Жизнеспособность раствора",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "drying_time",
+      "label": "Время высыхания",
+      "dataType": "text",
+      "defaultUnit": null
+    }
+  ],
+  "templateAudit": {
+    "globalCount": 0,
+    "categoryCount": 0,
+    "action": "No templates created; current global/category template count is audited only."
+  },
+  "schema": {
+    "prohibited": [
+      "consumption_10mm",
+      "coverage_30kg_10mm",
+      "wall_layer_thickness",
+      "ceiling_layer_thickness"
+    ],
+    "shelfLife": "Numeric months only; unlimited/textual source remains SCHEMA_BLOCKED; no migration."
+  },
+  "sources": {
+    "knaufRotbandFinish": {
+      "title": "KNAUF Ротбанд Финиш",
+      "url": "https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/shpaklyevki/knauf-rotband-finish/",
+      "owner": "KNAUF",
+      "note": "Официальная страница продукта; свойства приведены только для соответствующего семейства."
+    },
+    "knaufUniflottRu": {
+      "title": "KNAUF Унифлот RU/UZ",
+      "url": "https://knauf.com/ru-UZ/p/produkt/knauf-uniflot-10132_0604",
+      "owner": "KNAUF",
+      "market": "RU-UZ (не российская карточка)",
+      "note": "Официальная карточка продукта; варианты 5/25 кг и материал указаны производителем. Используется как research note; exact RU SKU не доказан."
+    },
+    "knaufUniflottDe": {
+      "title": "KNAUF Uniflott DE/AT",
+      "url": "https://knauf.com/de-AT/p/produkt/uniflott-10132_0070",
+      "owner": "KNAUF",
+      "market": "DE/AT",
+      "note": "Официальная региональная карточка; используется только как research note/corroboration идентичности, не как доказательство российского SKU."
+    },
+    "knaufFugenRu": {
+      "title": "KNAUF Фуген",
+      "url": "https://www.knauf.ru/catalog/shpaklyevki/shpaklyevki-gipsovye/knauf-fugen/",
+      "owner": "KNAUF",
+      "note": "Официальная российская страница продукта и фасовок."
+    },
+    "knaufUnihard": {
+      "title": "KNAUF УниХард",
+      "url": "https://www.knauf.ru/catalog/shpaklyevki/shpaklyevki-gipsovye/knauf-unikhard/",
+      "owner": "KNAUF",
+      "note": "Официальная карточка продукта; exact 20 кг проверяется по маркировке/каталогу."
+    },
+    "starBase": {
+      "title": "Старатели Базовая гипсовая",
+      "url": "https://www.starateli.ru/good/show/152/",
+      "owner": "Старатели",
+      "note": "Текущая официальная страница: гипсовая базовая шпаклевка, мешок 20 кг."
+    },
+    "starFinish": {
+      "title": "Старатели Финишная гипсовая",
+      "url": "https://www.starateli.ru/good/show/60/",
+      "owner": "Старатели",
+      "note": "Текущая официальная страница: гипсовая финишная шпаклевка, мешок 20 кг."
+    },
+    "volmaFinish": {
+      "title": "ВОЛМА-Финиш",
+      "url": "https://www.volma.ru/production/catalog/putty/volma-finish-finish-plaster/",
+      "owner": "ВОЛМА",
+      "note": "Официальная страница продукта; дополнительная документация производителя доступна в каталоге."
+    },
+    "volmaSilk": {
+      "title": "ВОЛМА-ШЕЛК TDS",
+      "url": "https://www.volma.ru/upload/iblock/590/5908ad985839daa82335e6eb757acca8.pdf",
+      "owner": "ВОЛМА",
+      "note": "Официальный TDS: фасовки 20/25 кг и характеристики ВОЛМА-ШЕЛК."
+    },
+    "volmaArctic": {
+      "title": "ВОЛМА Arctic",
+      "url": "https://www.volma.ru/production/catalog/putty/volma-arctic/",
+      "owner": "ВОЛМА",
+      "note": "Официальная страница продукта; белая гипсовая финишная шпаклевка."
+    },
+    "pufasGlatt": {
+      "title": "PUFAS Glatt+Füll GFS 25 kg",
+      "url": "https://www.pufas.com/org/products/filling-and-smoothing/glatt-und-fullspachtel-gfs/25kg/",
+      "owner": "PUFAS",
+      "note": "Официальная страница 25 кг, article 003203000/EAN 4007954032039."
+    },
+    "pufasFullFinish": {
+      "title": "PUFAS Full+Finish Spachtel TDS",
+      "url": "https://www.pufas.com/site/assets/files/3223/tds_p_full_finish_spachtel_ru.pdf",
+      "owner": "PUFAS",
+      "note": "Официальный русскоязычный TDS: фасовки 5/20 кг и свойства exact продукта."
+    },
+    "localTitle": {
+      "title": "Локальная карточка MatMix",
+      "url": null,
+      "owner": "MatMix local audit",
+      "note": "Только для проверки external_id/title/массы; не production truth и не источник свойств."
+    }
+  }
+}
