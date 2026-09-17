@@ -28,7 +28,7 @@
 | MAT-000057 | Шпаклевка полимерная финишная Knauf Polymer finish 20 кг | KNAUF (product: WILL_FIX; attribute: WILL_ADD) | PARTIAL | knaufPolymer, localTitle |
 | MAT-000058 | Шпаклевка полимерная финишная Основит Элисилк РА39 W 28 кг | ОСНОВИТ (product: WILL_FIX; attribute: WILL_ADD) | READY | osnovit, localTitle |
 | MAT-000059 | Шпаклевка полимерная Danogips Dano Jet 5 выравнивающая 25 кг | Danogips (product: WILL_FIX; attribute: WILL_ADD) | PARTIAL | danoJet, localTitle |
-| MAT-000060 | Шпаклевка полимерная финишная Волма Искрит для внутренних и наружных работ, белоснежная мех. 19 кг | ВОЛМА (product: WILL_FIX; attribute: WILL_ADD) | PARTIAL | volma, localTitle |
+| MAT-000060 | Шпаклевка полимерная финишная Волма Искрит, белоснежная мех. 19 кг | ВОЛМА (product: WILL_FIX; attribute: WILL_ADD) | PARTIAL | volma, localTitle |
 
 ## Per-MAT details
 
@@ -463,13 +463,13 @@
 
 ### MAT-000060
 
-- Current title: Шпаклевка полимерная финишная Волма Искрит для внутренних и наружных работ, белоснежная мех. 19 кг
+- Current title: Шпаклевка полимерная финишная Волма Искрит, белоснежная мех. 19 кг
 - Identity: IDENTITY_CONFIRMED
 - Category guard: Смеси / Шпаклевка
 - Brand: ВОЛМА; product column: WILL_FIX; brand attribute: WILL_ADD. These storage targets are planned independently and postchecked together.
 - Canonical identity: ВОЛМА / Финишная шпаклевка / 19 kg.
 - Official identity name: ВОЛМА-Искрит.
-- Title issues (review only; no title write): SUBSTANTIVE: «для внутренних и наружных работ» в локальном title конфликтует с официальным применением внутри помещений с нормальной влажностью.; SUBSTANTIVE/QUALIFIER: «мех.» не доказывает отдельный SKU: официальный продукт допускает ручное и машинное нанесение.; CLASSIFICATION_NOTE: «полимерная» в title не является установленным официальным классом: источник указывает смешанные вяжущие и полимерную составляющую до 5%.
+- Title issues (review only; no title write): SUBSTANTIVE/QUALIFIER: «мех.» не доказывает отдельный SKU: официальный продукт допускает ручное и машинное нанесение.; CLASSIFICATION_NOTE: «полимерная» в title не является установленным официальным классом: источник указывает смешанные вяжущие и полимерную составляющую до 5%.
 - Title normalization: KEEP_UNCHANGED; Exact local title is an identity guard; title/category are review-only in this pass.
 - Stored/planned fields: brand, product_type, base, purpose, package_weight, application_temperature, shelf_life, color, form, application_area, application_method, substrates, layer_thickness, consumption, consumption_basis, pot_life
 - Not stored: title, slug, category, subcategory, weight, price, stock_status, image, image_url, description, short_description, full_description, seo_title, seo_description, consumption_10mm, coverage_30kg_10mm, wall_layer_thickness, ceiling_layer_thickness
