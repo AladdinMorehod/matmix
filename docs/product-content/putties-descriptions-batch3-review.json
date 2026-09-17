@@ -1,0 +1,298 @@
+{
+  "mode": "dry-run",
+  "rows": [
+    {
+      "externalId": "MAT-000061",
+      "productId": 59,
+      "title": "Шпаклевка цементная Knauf Мультифиниш фасадная 25 кг",
+      "status": "NEEDS_FIX",
+      "currentDescription": null,
+      "proposedDescription": "КНАУФ-Мульти-Финиш 25 кг — цементная фасадная шпаклёвка для выравнивания бетонных и цементных поверхностей, ремонта и заполнения дефектов. Подходит для наружных и внутренних работ, включая влажные помещения.\n\nСухую смесь наносят вручную слоем 1–3 мм; локально допускается до 5 мм. Расход — 1,2 кг/м² при слое 1 мм. Работы выполняют при температуре не ниже +5 °C, жизнеспособность — не менее 3 часов. Фасовка — 25 кг.",
+      "canonicalIdentity": "КНАУФ-Мульти-Финиш",
+      "sourceKeys": [
+        "knaufMultiFinish",
+        "localTitle"
+      ],
+      "reasonForChange": "Заполнить full_description на основе подтверждённых core-фактов; остальные поля не изменяются.",
+      "factsUsed": [
+        "product_type: Цементная фасадная шпаклёвка",
+        "purpose: Выравнивание бетонных и цементных поверхностей, ремонт и заполнение дефектов",
+        "package_weight: 25",
+        "form: Сухая смесь",
+        "application_area: Наружные и внутренние работы, включая влажные помещения",
+        "application_method: Ручное нанесение",
+        "substrates: Бетон, цементные штукатурки",
+        "layer_thickness: 1–3 мм; локально до 5 мм",
+        "consumption: 1,2 кг/м²",
+        "consumption_basis: при толщине слоя 1 мм",
+        "application_temperature: Не менее +5 °C",
+        "pot_life: не менее 3 часов"
+      ],
+      "factsIntentionallyOmitted": [
+        "color: Официальный продукт выпускается в белом и сером вариантах; exact вариант локальной карточки не установлен.",
+        "drying_time: Точное время высыхания для exact SKU/условий не подтверждено."
+      ],
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "characterCount": 416,
+      "immutableSnapshot": {
+        "title": "Шпаклевка цементная Knauf Мультифиниш фасадная 25 кг",
+        "slug": "шпаклевка-цементная-knauf-мультифиниш-фасадная-25-кг",
+        "brand": null,
+        "weight": 25,
+        "price": null,
+        "category": "Смеси",
+        "subcategory": "Шпаклевка",
+        "short_description": null,
+        "description": "",
+        "seo_title": null,
+        "seo_description": null,
+        "stock_status": "unknown",
+        "image": "",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png"
+      }
+    },
+    {
+      "externalId": "MAT-000062",
+      "productId": 60,
+      "title": "Шпаклевка цементная базовая Старатели 20 кг",
+      "status": "NEEDS_FIX",
+      "currentDescription": null,
+      "proposedDescription": "Старатели Базовая 20 кг — цементная базовая шпатлёвка для выравнивания стен и потолков внутри помещений с нормальной и повышенной влажностью. Подходит для бетона, железобетона, ячеистого бетона, кирпича и цементной штукатурки.\n\nСухую смесь наносят вручную или механизированно слоем 0,8–8 мм. Расход — 1 кг/м² при слое 1 мм. Работы выполняют при температуре от +10 до +30 °C; жизнеспособность — не менее 3 часов, последующая обработка возможна через 24 часа. Цвет — светло-бежевый. Фасовка — 20 кг.",
+      "canonicalIdentity": "Шпатлёвка цементная «Базовая» ГОСТ 33699-2015",
+      "sourceKeys": [
+        "starBaseCement",
+        "localTitle"
+      ],
+      "reasonForChange": "Заполнить full_description на основе подтверждённых core-фактов; остальные поля не изменяются.",
+      "factsUsed": [
+        "product_type: Цементная шпатлёвка базовая",
+        "purpose: Выравнивание стен и потолков",
+        "package_weight: 20",
+        "form: Сухая смесь",
+        "application_area: Внутри помещений, нормальная и повышенная влажность",
+        "application_method: Ручное и механизированное",
+        "substrates: Бетон, железобетон, ячеистый бетон, кирпич, цементная штукатурка",
+        "layer_thickness: 0,8–8 мм",
+        "consumption: 1 кг/м²",
+        "consumption_basis: при толщине слоя 1 мм",
+        "application_temperature: от +10 до +30 °C",
+        "pot_life: не менее 3 часов",
+        "drying_time: 24 часа до последующей обработки",
+        "color: Светло-бежевый"
+      ],
+      "factsIntentionallyOmitted": [],
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "characterCount": 497,
+      "immutableSnapshot": {
+        "title": "Шпаклевка цементная базовая Старатели 20 кг",
+        "slug": "шпаклевка-цементная-базовая-старатели-20-кг",
+        "brand": null,
+        "weight": 20,
+        "price": 399,
+        "category": "Смеси",
+        "subcategory": "Шпаклевка",
+        "short_description": null,
+        "description": "",
+        "seo_title": null,
+        "seo_description": null,
+        "stock_status": "unknown",
+        "image": "",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png"
+      }
+    },
+    {
+      "externalId": "MAT-000063",
+      "productId": 61,
+      "title": "Шпаклевка цементная фасадно финишная Старатели 20 кг",
+      "status": "NEEDS_FIX",
+      "currentDescription": null,
+      "proposedDescription": "Старатели Фасадно-финишная 20 кг — цементная фасадно-финишная шпатлёвка для финишного выравнивания фасадов, стен и потолков. Подходит для наружных и внутренних работ, включая влажные и неотапливаемые помещения. Применяется по бетону, цементным штукатуркам и крупнозернистым шпатлёвкам; также допускается нанесение на ПГП, ГКЛ, ГВЛ, гипсовые штукатурки и ячеистый бетон.\n\nСухую смесь наносят вручную или механизированно слоем 0,3–3 мм. Расход — 1 кг/м² при слое 1 мм. Работы выполняют при температуре от +10 до +30 °C; жизнеспособность — не менее 3 часов, последующая обработка возможна через 24 часа. Цвет — белый. Фасовка — 20 кг.",
+      "canonicalIdentity": "Шпатлёвка цементная «Фасадно-финишная» ГОСТ 33699-2015",
+      "sourceKeys": [
+        "starFacadeFinish",
+        "localTitle"
+      ],
+      "reasonForChange": "Заполнить full_description на основе подтверждённых core-фактов; остальные поля не изменяются.",
+      "factsUsed": [
+        "product_type: Цементная фасадно-финишная шпатлёвка",
+        "purpose: Финишное выравнивание фасадов, стен и потолков",
+        "package_weight: 20",
+        "form: Сухая смесь",
+        "application_area: Наружные и внутренние работы, включая влажные и неотапливаемые помещения",
+        "application_method: Ручное и механизированное",
+        "substrates: Бетон, цементные штукатурки, крупнозернистые шпатлёвки; допускаются ПГП, ГКЛ, ГВЛ, гипсовые штукатурки и ячеистый бетон",
+        "layer_thickness: 0,3–3 мм",
+        "consumption: 1 кг/м²",
+        "consumption_basis: при толщине слоя 1 мм",
+        "application_temperature: от +10 до +30 °C",
+        "pot_life: не менее 3 часов",
+        "drying_time: 24 часа до последующей обработки",
+        "color: Белый"
+      ],
+      "factsIntentionallyOmitted": [],
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "characterCount": 631,
+      "immutableSnapshot": {
+        "title": "Шпаклевка цементная фасадно финишная Старатели 20 кг",
+        "slug": "шпаклевка-цементная-фасадно-финишная-старатели-20-кг",
+        "brand": null,
+        "weight": 20,
+        "price": 624.75,
+        "category": "Смеси",
+        "subcategory": "Шпаклевка",
+        "short_description": null,
+        "description": "",
+        "seo_title": null,
+        "seo_description": null,
+        "stock_status": "unknown",
+        "image": "",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png"
+      }
+    },
+    {
+      "externalId": "MAT-000064",
+      "productId": 62,
+      "title": "Шпаклевка Vetonit VH для влажных помещений белая 20 кг",
+      "status": "NEEDS_FIX",
+      "currentDescription": null,
+      "proposedDescription": "Vetonit ВХ 20 кг — цементная влагостойкая шпаклёвка для финишного выравнивания стен и потолков под окраску и обои. Подходит для сухих и влажных помещений, а также фасадов; наносится по цементным и цементно-известковым штукатуркам, ГКЛ и ГВЛ.\n\nСухую смесь наносят вручную или механизированно слоем 1–4 мм. Расход — 1,2 кг/м² на каждый 1 мм слоя. Работы выполняют при температуре от +10 до +30 °C; жизнеспособность — 1,5 часа после затворения, высыхание — 1–2 суток для одного слоя. Цвет — белый. Фасовка — 20 кг.",
+      "canonicalIdentity": "Vetonit ВХ",
+      "sourceKeys": [
+        "vetonitVH",
+        "localTitle"
+      ],
+      "reasonForChange": "Заполнить full_description на основе подтверждённых core-фактов; остальные поля не изменяются.",
+      "factsUsed": [
+        "product_type: Цементная влагостойкая шпаклёвка",
+        "purpose: Финишное выравнивание стен и потолков под окраску и обои",
+        "package_weight: 20",
+        "form: Сухая смесь",
+        "application_area: Сухие и влажные помещения, фасады",
+        "application_method: Ручное и механизированное",
+        "substrates: Цементные и цементно-известковые штукатурки, ГКЛ, ГВЛ",
+        "layer_thickness: 1–4 мм",
+        "consumption: 1,2 кг/м²/мм",
+        "consumption_basis: на 1 мм слоя",
+        "application_temperature: от +10 до +30 °C",
+        "pot_life: 1,5 часа после затворения",
+        "drying_time: 1–2 суток для одного слоя",
+        "color: Белый"
+      ],
+      "factsIntentionallyOmitted": [],
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "characterCount": 511,
+      "immutableSnapshot": {
+        "title": "Шпаклевка Vetonit VH для влажных помещений белая 20 кг",
+        "slug": "шпаклевка-vetonit-vh-для-влажных-помещений-белая-20-кг",
+        "brand": null,
+        "weight": 20,
+        "price": 750.75,
+        "category": "Смеси",
+        "subcategory": "Шпаклевка",
+        "short_description": null,
+        "description": "",
+        "seo_title": null,
+        "seo_description": null,
+        "stock_status": "unknown",
+        "image": "",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png"
+      }
+    },
+    {
+      "externalId": "MAT-000065",
+      "productId": 63,
+      "title": "Шпаклевка по дереву VGT Белая 1 кг",
+      "status": "NEEDS_FIX",
+      "currentDescription": null,
+      "proposedDescription": "VGT «Экстра по дереву» 1 кг — готовая белая шпаклёвка для заполнения и выравнивания деревянных поверхностей внутри и снаружи помещений.\n\nСостав наносят шпателем. Оптимальная толщина слоя — около 1 мм; локально можно заполнять неровности до 7 мм. Расход — 0,5–1,4 кг/м². Работы выполняют при температуре не ниже +7 °C; полное высыхание — 24 часа при +20±2 °C, относительной влажности не выше 65% и слое до 2 мм. Фасовка — 1 кг.",
+      "canonicalIdentity": "VGT «Шпатлевка Экстра по дереву»",
+      "sourceKeys": [
+        "vgtExtraWood",
+        "localTitle"
+      ],
+      "reasonForChange": "Заполнить full_description на основе подтверждённых core-фактов; остальные поля не изменяются.",
+      "factsUsed": [
+        "product_type: Готовая шпаклёвка по дереву",
+        "purpose: Заполнение и выравнивание деревянных поверхностей",
+        "package_weight: 1",
+        "form: Готовая паста",
+        "application_area: Внутренние и наружные работы",
+        "application_method: Шпатель",
+        "substrates: Деревянные поверхности",
+        "layer_thickness: около 1 мм (оптимально); локальное заполнение неровностей до 7 мм",
+        "consumption: 0,5–1,4 кг/м²",
+        "application_temperature: Не ниже +7 °C",
+        "drying_time: до отлипа 2 часа; полное высыхание 24 часа при +20±2 °C, RH ≤65%, слой ≤2 мм",
+        "color: Белая"
+      ],
+      "factsIntentionallyOmitted": [
+        "pot_life: absent by design"
+      ],
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "characterCount": 426,
+      "immutableSnapshot": {
+        "title": "Шпаклевка по дереву VGT Белая 1 кг",
+        "slug": "шпаклевка-по-дереву-vgt-белая-1-кг",
+        "brand": null,
+        "weight": 1,
+        "price": 399,
+        "category": "Смеси",
+        "subcategory": "Шпаклевка",
+        "short_description": null,
+        "description": "",
+        "seo_title": null,
+        "seo_description": null,
+        "stock_status": "unknown",
+        "image": "",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png"
+      }
+    }
+  ],
+  "summary": {
+    "total": 5,
+    "existingOk": 0,
+    "needsFix": 5,
+    "blockedIdentity": 0,
+    "excludedAllowlist": 0,
+    "errors": 0,
+    "unsupportedClaims": 0
+  },
+  "sources": {
+    "knaufMultiFinish": {
+      "title": "KNAUF-Мульти-Финиш — официальный сайт и TDS",
+      "url": "https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/shpaklyevki/knauf-multi-finish/",
+      "owner": "KNAUF",
+      "note": "Официальная карточка продукта; белая TDS: https://www.knauf.ru/upload/iblock/a6f/znbug54f7lfpmcp0h0bw9bl9oiboa70i/25_IL_KNAUF_Multi_Finish_belyy_25_03_2025_v01_Preview.pdf. Цвет exact local variant и точное время высыхания не установлены."
+    },
+    "starBaseCement": {
+      "title": "Старатели — цементная Базовая",
+      "url": "https://www.starateli.ru/catalog/229-229/",
+      "owner": "Старатели",
+      "note": "Официальная карточка цементной шпатлевки «Базовая» ГОСТ 33699-2015, фасовка 20 кг."
+    },
+    "starFacadeFinish": {
+      "title": "Старатели — цементная Фасадно-финишная",
+      "url": "https://www.starateli.ru/good/show/59/",
+      "owner": "Старатели",
+      "note": "Официальная карточка цементной шпатлевки «Фасадно-финишная» ГОСТ 33699-2015, фасовка 20 кг."
+    },
+    "vetonitVH": {
+      "title": "Vetonit ВХ 20 кг — официальный сайт и TDS",
+      "url": "https://vetonit.com/product/vetonit_vkh_20_kg/",
+      "owner": "Vetonit",
+      "note": "Официальная карточка Vetonit ВХ 20 кг; TDS: https://vetonit.com/upload/iblock/5c0/pd6sfdysuk62adx6p07bk210y3o6iu7q.pdf. Локальное VH — legacy spelling; title не меняется."
+    },
+    "vgtExtraWood": {
+      "title": "VGT — Шпатлевка «Экстра» по дереву",
+      "url": "https://vgtkraska.ru/ekstra-po-derevu",
+      "owner": "VGT",
+      "note": "Официальная карточка готовой белой шпатлевки по дереву; фасовка 1 кг."
+    },
+    "localTitle": {
+      "title": "Локальная карточка MatMix",
+      "url": null,
+      "owner": "MatMix local audit",
+      "note": "Только identity/weight guard; не источник технических свойств и не production truth."
+    }
+  }
+}
