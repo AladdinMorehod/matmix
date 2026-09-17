@@ -1,0 +1,1852 @@
+{
+  "mode": "dry-run",
+  "rows": [
+    {
+      "externalId": "MAT-000061",
+      "title": "Шпаклевка цементная Knauf Мультифиниш фасадная 25 кг",
+      "productId": 59,
+      "category": "Смеси",
+      "subcategory": "Шпаклевка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sourceKeys": [
+        "knaufMultiFinish",
+        "localTitle"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 25,
+        "description": null,
+        "specsCount": 0
+      },
+      "brand": {
+        "code": "brand",
+        "status": "WILL_FIX",
+        "sourceStatus": "READY",
+        "value": "KNAUF",
+        "sources": [
+          "knaufMultiFinish",
+          "localTitle"
+        ],
+        "definitionId": 1,
+        "definitionType": "text",
+        "currentValue": null,
+        "currentId": null,
+        "productColumnStatus": "WILL_FIX",
+        "attributeStatus": "WILL_ADD",
+        "currentProductBrand": null
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Цементная фасадная шпаклёвка",
+          "sources": [
+            "knaufMultiFinish"
+          ],
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "base",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Цемент, минеральный наполнитель, полимерные добавки, армирующее волокно",
+          "sources": [
+            "knaufMultiFinish"
+          ],
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "purpose",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Выравнивание бетонных и цементных поверхностей, ремонт и заполнение дефектов",
+          "sources": [
+            "knaufMultiFinish"
+          ],
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "package_weight",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 25,
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_temperature",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Не менее +5 °C",
+          "sources": [
+            "knaufMultiFinish"
+          ],
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "shelf_life",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 12,
+          "sources": [
+            "knaufMultiFinish"
+          ],
+          "definitionId": 11,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "color",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufMultiFinish"
+          ],
+          "reason": "Официальный продукт выпускается в белом и сером вариантах; exact вариант локальной карточки не установлен.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "form",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Сухая смесь",
+          "sources": [
+            "knaufMultiFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_area",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Наружные и внутренние работы, включая влажные помещения",
+          "sources": [
+            "knaufMultiFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_method",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Ручное нанесение",
+          "sources": [
+            "knaufMultiFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "substrates",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Бетон, цементные штукатурки",
+          "sources": [
+            "knaufMultiFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "layer_thickness",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "1–3 мм; локально до 5 мм",
+          "sources": [
+            "knaufMultiFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "1,2 кг/м²",
+          "sources": [
+            "knaufMultiFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption_basis",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "при толщине слоя 1 мм",
+          "sources": [
+            "knaufMultiFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "pot_life",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "не менее 3 часов",
+          "sources": [
+            "knaufMultiFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "drying_time",
+          "status": "NEEDS_SOURCE",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "knaufMultiFinish"
+          ],
+          "reason": "Точное время высыхания для exact SKU/условий не подтверждено.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        }
+      ],
+      "content": {
+        "short_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "full_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_title": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        }
+      },
+      "notes": [],
+      "canonicalIdentity": {
+        "brand": "KNAUF",
+        "officialName": "КНАУФ-Мульти-Финиш",
+        "productType": "Цементная фасадная шпаклёвка",
+        "packageWeightKg": 25,
+        "sourceKeys": [
+          "knaufMultiFinish",
+          "localTitle"
+        ]
+      },
+      "titleIssues": [
+        {
+          "kind": "TYPOGRAPHY",
+          "text": "Локальное «Мультифиниш» отличается от официального «КНАУФ-Мульти-Финиш»; title не меняется."
+        }
+      ],
+      "titleNormalization": {
+        "current": "Шпаклевка цементная Knauf Мультифиниш фасадная 25 кг",
+        "recommendation": "KEEP_UNCHANGED",
+        "reason": "Exact local title is an identity guard; title/category are review-only in this pass."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "category",
+        "subcategory",
+        "weight",
+        "price",
+        "stock_status",
+        "image",
+        "image_url",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "consumption_10mm",
+        "coverage_30kg_10mm",
+        "wall_layer_thickness",
+        "ceiling_layer_thickness"
+      ],
+      "stored": [
+        "brand",
+        "product_type",
+        "base",
+        "purpose",
+        "package_weight",
+        "application_temperature",
+        "shelf_life",
+        "form",
+        "application_area",
+        "application_method",
+        "substrates",
+        "layer_thickness",
+        "consumption",
+        "consumption_basis",
+        "pot_life"
+      ],
+      "status": "PARTIAL",
+      "summary": {
+        "logicalSlots": 17,
+        "ready": 15,
+        "willAdd": 14,
+        "willFix": 1,
+        "existingOk": 0,
+        "needsSource": 2,
+        "absentByDesign": 0,
+        "schemaBlocked": 0,
+        "existingConflict": 0,
+        "productBrandWrites": 1,
+        "attributeBrandWrites": 1
+      }
+    },
+    {
+      "externalId": "MAT-000062",
+      "title": "Шпаклевка цементная базовая Старатели 20 кг",
+      "productId": 60,
+      "category": "Смеси",
+      "subcategory": "Шпаклевка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sourceKeys": [
+        "starBaseCement",
+        "localTitle"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 20,
+        "description": null,
+        "specsCount": 0
+      },
+      "brand": {
+        "code": "brand",
+        "status": "WILL_FIX",
+        "sourceStatus": "READY",
+        "value": "Старатели",
+        "sources": [
+          "starBaseCement",
+          "localTitle"
+        ],
+        "definitionId": 1,
+        "definitionType": "text",
+        "currentValue": null,
+        "currentId": null,
+        "productColumnStatus": "WILL_FIX",
+        "attributeStatus": "WILL_ADD",
+        "currentProductBrand": null
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Цементная шпатлёвка базовая",
+          "sources": [
+            "starBaseCement"
+          ],
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "base",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Белый цемент с минеральными наполнителями и модифицирующими добавками",
+          "sources": [
+            "starBaseCement"
+          ],
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "purpose",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Выравнивание стен и потолков",
+          "sources": [
+            "starBaseCement"
+          ],
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "package_weight",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 20,
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_temperature",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "от +10 до +30 °C",
+          "sources": [
+            "starBaseCement"
+          ],
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "shelf_life",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 12,
+          "sources": [
+            "starBaseCement"
+          ],
+          "definitionId": 11,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "color",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Светло-бежевый",
+          "sources": [
+            "starBaseCement"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "form",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Сухая смесь",
+          "sources": [
+            "starBaseCement"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_area",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Внутри помещений, нормальная и повышенная влажность",
+          "sources": [
+            "starBaseCement"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_method",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Ручное и механизированное",
+          "sources": [
+            "starBaseCement"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "substrates",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Бетон, железобетон, ячеистый бетон, кирпич, цементная штукатурка",
+          "sources": [
+            "starBaseCement"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "layer_thickness",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "0,8–8 мм",
+          "sources": [
+            "starBaseCement"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "1 кг/м²",
+          "sources": [
+            "starBaseCement"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption_basis",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "при толщине слоя 1 мм",
+          "sources": [
+            "starBaseCement"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "pot_life",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "не менее 3 часов",
+          "sources": [
+            "starBaseCement"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "drying_time",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "24 часа до последующей обработки",
+          "sources": [
+            "starBaseCement"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        }
+      ],
+      "content": {
+        "short_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "full_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_title": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        }
+      },
+      "notes": [],
+      "canonicalIdentity": {
+        "brand": "Старатели",
+        "officialName": "Шпатлёвка цементная «Базовая» ГОСТ 33699-2015",
+        "productType": "Цементная шпатлёвка базовая",
+        "packageWeightKg": 20,
+        "sourceKeys": [
+          "starBaseCement",
+          "localTitle"
+        ]
+      },
+      "titleIssues": [
+        {
+          "kind": "QUALIFIER/TYPOGRAPHY",
+          "text": "Локальное описательное имя отличается от официального «Шпатлевка цементная «Базовая»»; title не меняется."
+        }
+      ],
+      "titleNormalization": {
+        "current": "Шпаклевка цементная базовая Старатели 20 кг",
+        "recommendation": "KEEP_UNCHANGED",
+        "reason": "Exact local title is an identity guard; title/category are review-only in this pass."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "category",
+        "subcategory",
+        "weight",
+        "price",
+        "stock_status",
+        "image",
+        "image_url",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "consumption_10mm",
+        "coverage_30kg_10mm",
+        "wall_layer_thickness",
+        "ceiling_layer_thickness"
+      ],
+      "stored": [
+        "brand",
+        "product_type",
+        "base",
+        "purpose",
+        "package_weight",
+        "application_temperature",
+        "shelf_life",
+        "color",
+        "form",
+        "application_area",
+        "application_method",
+        "substrates",
+        "layer_thickness",
+        "consumption",
+        "consumption_basis",
+        "pot_life",
+        "drying_time"
+      ],
+      "status": "READY",
+      "summary": {
+        "logicalSlots": 17,
+        "ready": 17,
+        "willAdd": 16,
+        "willFix": 1,
+        "existingOk": 0,
+        "needsSource": 0,
+        "absentByDesign": 0,
+        "schemaBlocked": 0,
+        "existingConflict": 0,
+        "productBrandWrites": 1,
+        "attributeBrandWrites": 1
+      }
+    },
+    {
+      "externalId": "MAT-000063",
+      "title": "Шпаклевка цементная фасадно финишная Старатели 20 кг",
+      "productId": 61,
+      "category": "Смеси",
+      "subcategory": "Шпаклевка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sourceKeys": [
+        "starFacadeFinish",
+        "localTitle"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 20,
+        "description": null,
+        "specsCount": 0
+      },
+      "brand": {
+        "code": "brand",
+        "status": "WILL_FIX",
+        "sourceStatus": "READY",
+        "value": "Старатели",
+        "sources": [
+          "starFacadeFinish",
+          "localTitle"
+        ],
+        "definitionId": 1,
+        "definitionType": "text",
+        "currentValue": null,
+        "currentId": null,
+        "productColumnStatus": "WILL_FIX",
+        "attributeStatus": "WILL_ADD",
+        "currentProductBrand": null
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Цементная фасадно-финишная шпатлёвка",
+          "sources": [
+            "starFacadeFinish"
+          ],
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "base",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Белый цемент с минеральными наполнителями и модифицирующими добавками",
+          "sources": [
+            "starFacadeFinish"
+          ],
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "purpose",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Финишное выравнивание фасадов, стен и потолков",
+          "sources": [
+            "starFacadeFinish"
+          ],
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "package_weight",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 20,
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_temperature",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "от +10 до +30 °C",
+          "sources": [
+            "starFacadeFinish"
+          ],
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "shelf_life",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 12,
+          "sources": [
+            "starFacadeFinish"
+          ],
+          "definitionId": 11,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "color",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Белый",
+          "sources": [
+            "starFacadeFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "form",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Сухая смесь",
+          "sources": [
+            "starFacadeFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_area",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Наружные и внутренние работы, включая влажные и неотапливаемые помещения",
+          "sources": [
+            "starFacadeFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_method",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Ручное и механизированное",
+          "sources": [
+            "starFacadeFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "substrates",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Бетон, цементные штукатурки, крупнозернистые шпатлёвки; допускаются ПГП, ГКЛ, ГВЛ, гипсовые штукатурки и ячеистый бетон",
+          "sources": [
+            "starFacadeFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "layer_thickness",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "0,3–3 мм",
+          "sources": [
+            "starFacadeFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "1 кг/м²",
+          "sources": [
+            "starFacadeFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption_basis",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "при толщине слоя 1 мм",
+          "sources": [
+            "starFacadeFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "pot_life",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "не менее 3 часов",
+          "sources": [
+            "starFacadeFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "drying_time",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "24 часа до последующей обработки",
+          "sources": [
+            "starFacadeFinish"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        }
+      ],
+      "content": {
+        "short_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "full_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_title": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        }
+      },
+      "notes": [],
+      "canonicalIdentity": {
+        "brand": "Старатели",
+        "officialName": "Шпатлёвка цементная «Фасадно-финишная» ГОСТ 33699-2015",
+        "productType": "Цементная фасадно-финишная шпатлёвка",
+        "packageWeightKg": 20,
+        "sourceKeys": [
+          "starFacadeFinish",
+          "localTitle"
+        ]
+      },
+      "titleIssues": [
+        {
+          "kind": "TYPOGRAPHY",
+          "text": "В локальном title отсутствует дефис в «фасадно финишная»; title не меняется."
+        }
+      ],
+      "titleNormalization": {
+        "current": "Шпаклевка цементная фасадно финишная Старатели 20 кг",
+        "recommendation": "KEEP_UNCHANGED",
+        "reason": "Exact local title is an identity guard; title/category are review-only in this pass."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "category",
+        "subcategory",
+        "weight",
+        "price",
+        "stock_status",
+        "image",
+        "image_url",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "consumption_10mm",
+        "coverage_30kg_10mm",
+        "wall_layer_thickness",
+        "ceiling_layer_thickness"
+      ],
+      "stored": [
+        "brand",
+        "product_type",
+        "base",
+        "purpose",
+        "package_weight",
+        "application_temperature",
+        "shelf_life",
+        "color",
+        "form",
+        "application_area",
+        "application_method",
+        "substrates",
+        "layer_thickness",
+        "consumption",
+        "consumption_basis",
+        "pot_life",
+        "drying_time"
+      ],
+      "status": "READY",
+      "summary": {
+        "logicalSlots": 17,
+        "ready": 17,
+        "willAdd": 16,
+        "willFix": 1,
+        "existingOk": 0,
+        "needsSource": 0,
+        "absentByDesign": 0,
+        "schemaBlocked": 0,
+        "existingConflict": 0,
+        "productBrandWrites": 1,
+        "attributeBrandWrites": 1
+      }
+    },
+    {
+      "externalId": "MAT-000064",
+      "title": "Шпаклевка Vetonit VH для влажных помещений белая 20 кг",
+      "productId": 62,
+      "category": "Смеси",
+      "subcategory": "Шпаклевка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sourceKeys": [
+        "vetonitVH",
+        "localTitle"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 20,
+        "description": null,
+        "specsCount": 0
+      },
+      "brand": {
+        "code": "brand",
+        "status": "WILL_FIX",
+        "sourceStatus": "READY",
+        "value": "Vetonit",
+        "sources": [
+          "vetonitVH",
+          "localTitle"
+        ],
+        "definitionId": 1,
+        "definitionType": "text",
+        "currentValue": null,
+        "currentId": null,
+        "productColumnStatus": "WILL_FIX",
+        "attributeStatus": "WILL_ADD",
+        "currentProductBrand": null
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Цементная влагостойкая шпаклёвка",
+          "sources": [
+            "vetonitVH"
+          ],
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "base",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Цемент, молотый мрамор, функциональные добавки",
+          "sources": [
+            "vetonitVH"
+          ],
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "purpose",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Финишное выравнивание стен и потолков под окраску и обои",
+          "sources": [
+            "vetonitVH"
+          ],
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "package_weight",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 20,
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_temperature",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "от +10 до +30 °C",
+          "sources": [
+            "vetonitVH"
+          ],
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "shelf_life",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 12,
+          "sources": [
+            "vetonitVH"
+          ],
+          "definitionId": 11,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "color",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Белый",
+          "sources": [
+            "vetonitVH"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "form",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Сухая смесь",
+          "sources": [
+            "vetonitVH"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_area",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Сухие и влажные помещения, фасады",
+          "sources": [
+            "vetonitVH"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_method",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Ручное и механизированное",
+          "sources": [
+            "vetonitVH"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "substrates",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Цементные и цементно-известковые штукатурки, ГКЛ, ГВЛ",
+          "sources": [
+            "vetonitVH"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "layer_thickness",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "1–4 мм",
+          "sources": [
+            "vetonitVH"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "1,2 кг/м²/мм",
+          "sources": [
+            "vetonitVH"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption_basis",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "на 1 мм слоя",
+          "sources": [
+            "vetonitVH"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "pot_life",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "1,5 часа после затворения",
+          "sources": [
+            "vetonitVH"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "drying_time",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "1–2 суток для одного слоя",
+          "sources": [
+            "vetonitVH"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        }
+      ],
+      "content": {
+        "short_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "full_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_title": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        }
+      },
+      "notes": [],
+      "canonicalIdentity": {
+        "brand": "Vetonit",
+        "officialName": "Vetonit ВХ",
+        "productType": "Цементная влагостойкая шпаклёвка",
+        "packageWeightKg": 20,
+        "sourceKeys": [
+          "vetonitVH",
+          "localTitle"
+        ]
+      },
+      "titleIssues": [
+        {
+          "kind": "LEGACY/TYPOGRAPHY",
+          "text": "Локальное Latin VH отличается от текущего официального Cyrillic ВХ; title не меняется."
+        },
+        {
+          "kind": "QUALIFIER",
+          "text": "«для влажных помещений» и «белая» подтверждены официальным источником."
+        }
+      ],
+      "titleNormalization": {
+        "current": "Шпаклевка Vetonit VH для влажных помещений белая 20 кг",
+        "recommendation": "KEEP_UNCHANGED",
+        "reason": "Exact local title is an identity guard; title/category are review-only in this pass."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "category",
+        "subcategory",
+        "weight",
+        "price",
+        "stock_status",
+        "image",
+        "image_url",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "consumption_10mm",
+        "coverage_30kg_10mm",
+        "wall_layer_thickness",
+        "ceiling_layer_thickness"
+      ],
+      "stored": [
+        "brand",
+        "product_type",
+        "base",
+        "purpose",
+        "package_weight",
+        "application_temperature",
+        "shelf_life",
+        "color",
+        "form",
+        "application_area",
+        "application_method",
+        "substrates",
+        "layer_thickness",
+        "consumption",
+        "consumption_basis",
+        "pot_life",
+        "drying_time"
+      ],
+      "status": "READY",
+      "summary": {
+        "logicalSlots": 17,
+        "ready": 17,
+        "willAdd": 16,
+        "willFix": 1,
+        "existingOk": 0,
+        "needsSource": 0,
+        "absentByDesign": 0,
+        "schemaBlocked": 0,
+        "existingConflict": 0,
+        "productBrandWrites": 1,
+        "attributeBrandWrites": 1
+      }
+    },
+    {
+      "externalId": "MAT-000065",
+      "title": "Шпаклевка по дереву VGT Белая 1 кг",
+      "productId": 63,
+      "category": "Смеси",
+      "subcategory": "Шпаклевка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sourceKeys": [
+        "vgtExtraWood",
+        "localTitle"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 1,
+        "description": null,
+        "specsCount": 0
+      },
+      "brand": {
+        "code": "brand",
+        "status": "WILL_FIX",
+        "sourceStatus": "READY",
+        "value": "VGT",
+        "sources": [
+          "vgtExtraWood",
+          "localTitle"
+        ],
+        "definitionId": 1,
+        "definitionType": "text",
+        "currentValue": null,
+        "currentId": null,
+        "productColumnStatus": "WILL_FIX",
+        "attributeStatus": "WILL_ADD",
+        "currentProductBrand": null
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Готовая шпаклёвка по дереву",
+          "sources": [
+            "vgtExtraWood"
+          ],
+          "definitionId": 2,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "base",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Водная дисперсия стирол-акрилового полимера, наполнитель, модифицирующие добавки, пигмент",
+          "sources": [
+            "vgtExtraWood"
+          ],
+          "definitionId": 3,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "purpose",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Заполнение и выравнивание деревянных поверхностей",
+          "sources": [
+            "vgtExtraWood"
+          ],
+          "definitionId": 4,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "package_weight",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 1,
+          "sources": [
+            "localTitle"
+          ],
+          "definitionId": 5,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_temperature",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Не ниже +7 °C",
+          "sources": [
+            "vgtExtraWood"
+          ],
+          "definitionId": 10,
+          "definitionType": "text",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "shelf_life",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": 24,
+          "sources": [
+            "vgtExtraWood"
+          ],
+          "definitionId": 11,
+          "definitionType": "number",
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "color",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Белая",
+          "sources": [
+            "vgtExtraWood"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "form",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Готовая паста",
+          "sources": [
+            "vgtExtraWood"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_area",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Внутренние и наружные работы",
+          "sources": [
+            "vgtExtraWood"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "application_method",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Шпатель",
+          "sources": [
+            "vgtExtraWood"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "substrates",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "Деревянные поверхности",
+          "sources": [
+            "vgtExtraWood"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "layer_thickness",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "около 1 мм (оптимально); локальное заполнение неровностей до 7 мм",
+          "sources": [
+            "vgtExtraWood"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "0,5–1,4 кг/м²",
+          "sources": [
+            "vgtExtraWood"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "consumption_basis",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "по данным производителя, без фиксированной толщины слоя",
+          "sources": [
+            "vgtExtraWood"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "pot_life",
+          "status": "ABSENT_BY_DESIGN",
+          "sourceStatus": "ABSENT_BY_DESIGN",
+          "value": null,
+          "sources": [
+            "vgtExtraWood"
+          ],
+          "reason": "Готовая паста, смешивание не требуется.",
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        },
+        {
+          "code": "drying_time",
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "value": "до отлипа 2 часа; полное высыхание 24 часа при +20±2 °C, RH ≤65%, слой ≤2 мм",
+          "sources": [
+            "vgtExtraWood"
+          ],
+          "definitionId": null,
+          "definitionType": null,
+          "currentValue": null,
+          "currentId": null
+        }
+      ],
+      "content": {
+        "short_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "full_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_title": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        },
+        "seo_description": {
+          "status": "EXISTING_OK",
+          "value": null,
+          "reason": "Putty core pass is read-only for content fields."
+        }
+      },
+      "notes": [],
+      "canonicalIdentity": {
+        "brand": "VGT",
+        "officialName": "VGT «Шпатлевка Экстра по дереву»",
+        "productType": "Готовая шпаклёвка по дереву",
+        "packageWeightKg": 1,
+        "sourceKeys": [
+          "vgtExtraWood",
+          "localTitle"
+        ]
+      },
+      "titleIssues": [
+        {
+          "kind": "SUBSTANTIVE",
+          "text": "Локальное title не содержит официальное «Экстра»; title не меняется."
+        },
+        {
+          "kind": "PACKAGING/VARIANT",
+          "text": "«Белая» — подтверждённый цветовой вариант официальной карточки."
+        }
+      ],
+      "titleNormalization": {
+        "current": "Шпаклевка по дереву VGT Белая 1 кг",
+        "recommendation": "KEEP_UNCHANGED",
+        "reason": "Exact local title is an identity guard; title/category are review-only in this pass."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "category",
+        "subcategory",
+        "weight",
+        "price",
+        "stock_status",
+        "image",
+        "image_url",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "consumption_10mm",
+        "coverage_30kg_10mm",
+        "wall_layer_thickness",
+        "ceiling_layer_thickness"
+      ],
+      "stored": [
+        "brand",
+        "product_type",
+        "base",
+        "purpose",
+        "package_weight",
+        "application_temperature",
+        "shelf_life",
+        "color",
+        "form",
+        "application_area",
+        "application_method",
+        "substrates",
+        "layer_thickness",
+        "consumption",
+        "consumption_basis",
+        "drying_time"
+      ],
+      "status": "READY",
+      "summary": {
+        "logicalSlots": 17,
+        "ready": 16,
+        "willAdd": 15,
+        "willFix": 1,
+        "existingOk": 0,
+        "needsSource": 0,
+        "absentByDesign": 1,
+        "schemaBlocked": 0,
+        "existingConflict": 0,
+        "productBrandWrites": 1,
+        "attributeBrandWrites": 1
+      }
+    }
+  ],
+  "summary": {
+    "total": 5,
+    "ready": 82,
+    "partial": 1,
+    "readyProducts": 4,
+    "errors": 0,
+    "willAdd": 77,
+    "willFix": 5,
+    "existingOk": 0,
+    "needsSource": 2,
+    "absentByDesign": 1,
+    "schemaBlocked": 0,
+    "logicalSlots": 85,
+    "definitionsToCreate": 10
+  },
+  "definitionsToCreate": [
+    {
+      "code": "color",
+      "label": "Цвет",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "form",
+      "label": "Форма продукта",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "application_area",
+      "label": "Область применения",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "application_method",
+      "label": "Способ нанесения",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "substrates",
+      "label": "Применимые основания",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "layer_thickness",
+      "label": "Толщина слоя",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "consumption",
+      "label": "Расход",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "consumption_basis",
+      "label": "Основание расхода",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "pot_life",
+      "label": "Жизнеспособность раствора",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "drying_time",
+      "label": "Время высыхания",
+      "dataType": "text",
+      "defaultUnit": null
+    }
+  ],
+  "templateAudit": {
+    "globalCount": 0,
+    "categoryCount": 0,
+    "action": "No templates created; current global/category template count is audited only."
+  },
+  "schema": {
+    "prohibited": [
+      "consumption_10mm",
+      "coverage_30kg_10mm",
+      "wall_layer_thickness",
+      "ceiling_layer_thickness"
+    ],
+    "shelfLife": "Numeric months only; unlimited/textual source remains SCHEMA_BLOCKED; no migration."
+  },
+  "sources": {
+    "knaufMultiFinish": {
+      "title": "KNAUF-Мульти-Финиш — официальный сайт и TDS",
+      "url": "https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/shpaklyevki/knauf-multi-finish/",
+      "owner": "KNAUF",
+      "note": "Официальная карточка продукта; белая TDS: https://www.knauf.ru/upload/iblock/a6f/znbug54f7lfpmcp0h0bw9bl9oiboa70i/25_IL_KNAUF_Multi_Finish_belyy_25_03_2025_v01_Preview.pdf. Цвет exact local variant и точное время высыхания не установлены."
+    },
+    "starBaseCement": {
+      "title": "Старатели — цементная Базовая",
+      "url": "https://www.starateli.ru/catalog/229-229/",
+      "owner": "Старатели",
+      "note": "Официальная карточка цементной шпатлевки «Базовая» ГОСТ 33699-2015, фасовка 20 кг."
+    },
+    "starFacadeFinish": {
+      "title": "Старатели — цементная Фасадно-финишная",
+      "url": "https://www.starateli.ru/good/show/59/",
+      "owner": "Старатели",
+      "note": "Официальная карточка цементной шпатлевки «Фасадно-финишная» ГОСТ 33699-2015, фасовка 20 кг."
+    },
+    "vetonitVH": {
+      "title": "Vetonit ВХ 20 кг — официальный сайт и TDS",
+      "url": "https://vetonit.com/product/vetonit_vkh_20_kg/",
+      "owner": "Vetonit",
+      "note": "Официальная карточка Vetonit ВХ 20 кг; TDS: https://vetonit.com/upload/iblock/5c0/pd6sfdysuk62adx6p07bk210y3o6iu7q.pdf. Локальное VH — legacy spelling; title не меняется."
+    },
+    "vgtExtraWood": {
+      "title": "VGT — Шпатлевка «Экстра» по дереву",
+      "url": "https://vgtkraska.ru/ekstra-po-derevu",
+      "owner": "VGT",
+      "note": "Официальная карточка готовой белой шпатлевки по дереву; фасовка 1 кг."
+    },
+    "localTitle": {
+      "title": "Локальная карточка MatMix",
+      "url": null,
+      "owner": "MatMix local audit",
+      "note": "Только identity/weight guard; не источник технических свойств и не production truth."
+    }
+  }
+}
