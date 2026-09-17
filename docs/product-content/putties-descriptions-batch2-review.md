@@ -22,7 +22,7 @@ UNSUPPORTED_CLAIMS=0
 | MAT-000057 | Шпаклевка полимерная финишная Knauf Polymer finish 20 кг | NEEDS_FIX | 394 | knaufPolymer, localTitle |
 | MAT-000058 | Шпаклевка полимерная финишная Основит Элисилк РА39 W 28 кг | NEEDS_FIX | 442 | osnovit, localTitle |
 | MAT-000059 | Шпаклевка полимерная Danogips Dano Jet 5 выравнивающая 25 кг | NEEDS_FIX | 440 | danoJet, localTitle |
-| MAT-000060 | Шпаклевка полимерная финишная Волма Искрит для внутренних и наружных работ, белоснежная мех. 19 кг | NEEDS_FIX | 376 | volma, localTitle |
+| MAT-000060 | Шпаклевка полимерная финишная Волма Искрит, белоснежная мех. 19 кг | NEEDS_FIX | 376 | volma, localTitle |
 
 ## Per-MAT description review
 
@@ -249,14 +249,13 @@ Danogips Dano JET5 25 кг — сухая полимерная выравнив�
 
 ### MAT-000060
 
-- Exact current title: Шпаклевка полимерная финишная Волма Искрит для внутренних и наружных работ, белоснежная мех. 19 кг
+- Exact current title: Шпаклевка полимерная финишная Волма Искрит, белоснежная мех. 19 кг
 - Canonical identity: ВОЛМА-Искрит
 - Status: **NEEDS_FIX**
 - Character count: 376
 - Source keys: volma, localTitle
 - Facts used: product_type: Финишная шпаклевка; base: Смешанные вяжущие; полимерная составляющая до 5% массы смеси; purpose: Финишное выравнивание стен и потолков внутри помещений; package_weight: 19; form: Сухая смесь; application_area: Внутри помещений с нормальной относительной влажностью; application_method: Ручное и машинное; substrates: стены, потолки и прочие недеформирующиеся основания; layer_thickness: 0,2–3 мм; consumption: 1,0–1,1 кг/м² при слое 1 мм; consumption_basis: при толщине слоя 1 мм; pot_life: 72 часа; application_temperature: от +5 до +30 °C; color: Белоснежный
 - Facts intentionally omitted: drying_time: Числовое время высыхания exact SKU не подтверждено.
-- Title issue: **SUBSTANTIVE** — локальный title содержит «для внутренних и наружных работ», тогда как официальный источник ВОЛМА-Искрит подтверждает применение внутри помещений с нормальной относительной влажностью; title не изменяется, требуется ручная корректировка номенклатуры.
 - Reason: Заполнить full_description на основе подтверждённых core-фактов; остальные поля не изменяются.
 
 **Proposed description:**

@@ -5,8 +5,7 @@ const CORE = require("./putties-core-content-batch2");
 const DESCRIPTION_MUTABLE_FIELDS_EXACTLY = Object.freeze(["full_description"]);
 const TARGET_MATS = Object.freeze(Array.from({ length: 14 }, (_, index) => `MAT-${String(index + 47).padStart(6, "0")}`));
 const LOCAL_TITLES = Object.freeze({
-  ...Object.fromEntries(CORE.PRODUCTS.map(product => [product.externalId, product.expectedTitle])),
-  "MAT-000060": "Шпаклевка полимерная финишная Волма Искрит для внутренних и наружных работ, белоснежная мех. 19 кг"
+  ...Object.fromEntries(CORE.PRODUCTS.map(product => [product.externalId, product.expectedTitle]))
 });
 const CANONICAL_IDENTITIES = Object.freeze({
   "MAT-000047": "Danogips SuperFinish",
