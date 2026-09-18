@@ -2,28 +2,20 @@
 
 Checked: 2026-09-18
 
-## Summary
+## Current image state
 
-- Total tracked primer MAT: 15
-- Existing production images retained: 2
-- Ready prepared: 13
-- Source blocked: 0
-- Variant unresolved: 0
+- Existing production images: **10** (MAT-000228, MAT-000231, MAT-000232, MAT-000233, MAT-000235, MAT-000236, MAT-000241, MAT-000242, MAT-000243, MAT-000244).
+- READY_PREPARED candidates: **4** (MAT-000227, MAT-000230, MAT-000237, MAT-000240).
+- IMAGE_BLOCKED_FINAL: **1** (MAT-000234).
 
-## Last-five resolved sources
-
-| MAT | title | status | source | source size | final | final SHA-256 | visual QA |
+| MAT | title | status | source | source size | final | SHA-256 | QA |
 |---|---|---|---|---:|---|---|---|
-| MAT-000227 | Грунтовка Knauf Тифенгрунд 5 кг | READY_PREPARED | [source](https://knauf-chelyabinsk.ru/product/gruntovka_ukreplyayushchaya_glubokogo_proniknoveniya_knauf_tifengrund_5_kg/) | 500x500 | 1200x1200 WebP (39692 bytes) | 1ae23ff9611fb9eac54054e12198ff352478ec33091fd7e595a79b2b6e10c89a | PASS: clean product image, full bucket, white canvas after importer render; no watermark observed. |
-| MAT-000230 | Грунтовка Knauf Мульти Грунд универсальный 10 кг | READY_PREPARED | [source](https://www.knauf.ru/catalog/gruntovki/knauf-multigrund/) | 653x420 | 1200x1200 WebP (26452 bytes) | 28b05db1b9bb865e02ff1a702732d35848b29cc8d3e5c9cecc9041cd5071909f | PASS framing and identity; official source has a light-gray studio background retained unchanged, with white outer canvas corners after render. |
-| MAT-000234 | Грунт Litokol PRIMER A универсальный укрепляющий 10 кг | READY_PREPARED | [source](https://www.litokol.ru/catalog/primer-a/) | 600x600 | 1200x1200 WebP (31324 bytes) | d9caefbfa99af105e8ecf57b38f02c10d92a626c5e686d7d6f53b8c074a61fbe | PASS: full exact canister, transparent source composited by importer to white, no watermark observed. |
-| MAT-000237 | Грунтовка Oscar глубокого проникновения 10 кг | READY_PREPARED | [source](https://www.vseinstrumenti.ru/product/ukreplyayuschaya-gruntovka-glubokogo-proniknoveniya-oscar-vedro-10-kg-gv-os-10kg-1202936/) | 560x504 | 1200x1200 WebP (48594 bytes) | 03e1b5891bd9dbf04d47e3ad04ef4465cb3b573c8f715028e89fdf69a47feb08 | PASS: full bucket, white background in rendered output, no watermark observed. |
-| MAT-000240 | Грунтовка Knauf Миттельгрунд для впитывающих оснований концентрат 10 кг | READY_PREPARED | [source](https://www.knauf.ru/catalog/gruntovki/knauf-mittelgrund/) | 1000x1000 | 1200x1200 WebP (76668 bytes) | 71b4dc2905591f833c791f96a4ead0e8efa61352334fed2acbde3c786ec18d7d | PASS: full bucket, white background in rendered output, no watermark observed. |
-
-## Existing production images
-
-MAT-000228, MAT-000231, MAT-000232, MAT-000233, MAT-000235, MAT-000236, MAT-000241, MAT-000242, MAT-000243 and MAT-000244 remain unchanged and are excluded from this recovery pass.
+| MAT-000227 | Грунтовка Knauf Тифенгрунд 5 кг | READY_PREPARED | [source](https://knauf-chelyabinsk.ru/upload/iblock/73e/vxka63vovo9twzla05hpzp43d4lsmlrn.png) | 500x500 | 1200x1200 webp | 1ae23ff9611fb9eac54054e12198ff352478ec33091fd7e595a79b2b6e10c89a | PASS: exact visible package, full product, pure-white surrounding background, no watermark; canonical render parity verified. |
+| MAT-000230 | Грунтовка Knauf Мульти Грунд универсальный 10 кг | READY_PREPARED | [source](https://www.knauf.ru/upload/iv_resize/detail_page/original/iblock/f91/7uu2bpxjzhtb6jo6zdscd3813fpimlnn/Vedro_Multigrund_10_kg_16_03_2023_Oborot_1000x1000_v01.webp) | 1000x1000 | 1200x1200 webp | 05f743dbf651217177b8c1f8f0fe030a07aabd417c7e871fd080abecabc10854 | PASS: exact visible 10 кг package, pure-white surrounding background, no watermark; canonical render parity verified. |
+| MAT-000234 | Грунт Litokol PRIMER A универсальный укрепляющий 10 кг | IMAGE_BLOCKED_FINAL | [source](https://litokol-market.ru/upload/resize_cache/iblock/7cc/2d8wdkmirsl45s8eta6jzgb972umbqfc/600_600_1/Primer-A-10L-_-2024_11_22.webp) | 600x600 | —  | — | REJECT: visible package unit conflicts with corrected 10 кг title. |
+| MAT-000237 | Грунтовка Oscar глубокого проникновения 10 кг | READY_PREPARED | [source](https://cdn.vseinstrumenti.ru/images/goods/stroitelnye-materialy/otdelochnye-materialy/1202936/560x504/69951865.jpg) | 560x504 | 1200x1200 webp | 03e1b5891bd9dbf04d47e3ad04ef4465cb3b573c8f715028e89fdf69a47feb08 | PASS: exact visible package, full product, pure-white surrounding background, no watermark; canonical render parity verified. |
+| MAT-000240 | Грунтовка Knauf Миттельгрунд для впитывающих оснований концентрат 10 кг | READY_PREPARED | [source](https://www.knauf.ru/upload/iv_resize/detail_page/original/iblock/7b0/29vjnk67n2b13i3k32kpvt81wa3epmoe/Vedro_Mittelgrund_10_kg_17_03_2023_Oborot_1000x1000_v01.webp) | 1000x1000 | 1200x1200 webp | 71b4dc2905591f833c791f96a4ead0e8efa61352334fed2acbde3c786ec18d7d | PASS: exact visible package, full product, pure-white surrounding background, no watermark; canonical render parity verified. |
 
 ## Import policy
 
-Originals are retained under `product-images-batch/primers/source/`; importer-compatible copies are under `product-images-batch/primers/import-source/`; canonical previews are under `product-images-batch/primers/import-ready/`. No image import apply was executed.
+Only the four READY_PREPARED sources may enter the next local dry-run. MAT-000234 remains excluded until an exact visible 10 kg LITOKOL Primer A packshot is proven. No production import was executed.

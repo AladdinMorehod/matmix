@@ -1,11 +1,11 @@
 {
   "checkedAt": "2026-09-18",
   "summary": {
-    "titleUnitTotal": 5,
-    "titleUnitConfirmed": 5,
+    "titleUnitTotal": 6,
+    "titleUnitConfirmed": 6,
     "titleUnitBlocked": 0,
-    "imageReadyPrepared": 5,
-    "imageBlocked": 0
+    "imageReadyPrepared": 4,
+    "imageBlocked": 1
   },
   "policy": {
     "mutableField": "products.title only",
@@ -20,6 +20,23 @@
       "newTitle": "Грунтовка Knauf Тифенгрунд 5 кг",
       "officialName": "КНАУФ-Тифенгрунд",
       "officialPackage": "5 кг",
+      "sourceKeys": [
+        "knaufTiefengrund"
+      ],
+      "sourceUrls": [
+        "https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/gruntovki/knauf-tifengrund/"
+      ],
+      "identityConfidence": "HIGH",
+      "titleUnitFactuallyWrong": true,
+      "slugDecision": "PRESERVE_EXISTING_SLUG",
+      "slugReason": "Public product routing/canonical URLs use external_id; no redirect-backed slug migration is required or executed."
+    },
+    {
+      "externalId": "MAT-000228",
+      "oldTitle": "Грунтовка Knauf Тифенгрунд 10 л",
+      "newTitle": "Грунтовка Knauf Тифенгрунд 10 кг",
+      "officialName": "КНАУФ-Тифенгрунд",
+      "officialPackage": "10 кг",
       "sourceKeys": [
         "knaufTiefengrund"
       ],
@@ -144,8 +161,10 @@
   "imageReadyMats": [
     "MAT-000227",
     "MAT-000230",
-    "MAT-000234",
     "MAT-000237",
     "MAT-000240"
+  ],
+  "imageBlockedMats": [
+    "MAT-000234"
   ]
 }

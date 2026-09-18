@@ -34,8 +34,8 @@ async function main() {
   const before = await hashDb();
   const db = await open();
   const dry = await inspectBatch(db, DATA.TARGET_MATS);
-  assert.strictEqual(dry.summary.total, 5);
-  assert.strictEqual(dry.summary.willFix, 5);
+  assert.strictEqual(dry.summary.total, 6);
+  assert.strictEqual(dry.summary.willFix, 6);
   assert.strictEqual(dry.summary.titleConflict, 0);
   assert.strictEqual(dry.summary.titleGuardBlocked, 0);
   assert.strictEqual(await hashDb(), before);
@@ -56,7 +56,7 @@ async function main() {
   db2 = await open(); await assert.rejects(() => applyBatch(db2, tempDb, { only: [DATA.PRODUCTS[0].externalId], confirm: CONFIRM, backupDir: tempBackup }), /forced rollback/); await db2.close();
   const check = new sqlite3.Database(tempDb); const rows = await allRaw(check, "SELECT title FROM products"); await new Promise(resolve => check.close(() => resolve())); assert.strictEqual(rows[0].title, DATA.PRODUCTS[0].oldTitle);
 
-  assert.strictEqual(DATA.TARGET_MATS.length, 5);
+  assert.strictEqual(DATA.TARGET_MATS.length, 6);
   console.log("PASS: title allowlist, exact guards, normalized structure, dry-run immutability, title-only apply, rollback, idempotency");
 }
 

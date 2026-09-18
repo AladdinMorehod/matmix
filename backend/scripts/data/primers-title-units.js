@@ -14,6 +14,7 @@ const SOURCES = Object.freeze({
 
 const PRODUCTS = Object.freeze([
   { externalId: "MAT-000227", oldTitle: "Грунтовка Knauf Тифенгрунд 5 л", newTitle: "Грунтовка Knauf Тифенгрунд 5 кг", officialName: "КНАУФ-Тифенгрунд", package: "5 кг", sourceKeys: ["knaufTiefengrund"] },
+  { externalId: "MAT-000228", oldTitle: "Грунтовка Knauf Тифенгрунд 10 л", newTitle: "Грунтовка Knauf Тифенгрунд 10 кг", officialName: "КНАУФ-Тифенгрунд", package: "10 кг", sourceKeys: ["knaufTiefengrund"] },
   { externalId: "MAT-000230", oldTitle: "Грунтовка Knauf Мульти Грунд универсальный 10 л", newTitle: "Грунтовка Knauf Мульти Грунд универсальный 10 кг", officialName: "КНАУФ-Мультигрунд", package: "10 кг", sourceKeys: ["knaufMultigrund"] },
   { externalId: "MAT-000234", oldTitle: "Грунт Litokol PRIMER A универсальный укрепляющий 10 л", newTitle: "Грунт Litokol PRIMER A универсальный укрепляющий 10 кг", officialName: "LITOKOL Primer A", package: "10 кг", sourceKeys: ["litokolPrimerA"] },
   { externalId: "MAT-000237", oldTitle: "Грунтовка Oscar глубокого проникновения 10 л", newTitle: "Грунтовка Oscar глубокого проникновения 10 кг", officialName: "Oscar G os-10kg", package: "10 кг", sourceKeys: ["oscarG", "oscarCatalog"] },
