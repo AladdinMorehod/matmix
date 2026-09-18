@@ -48,13 +48,13 @@ const local = ["localTitle"];
 const p = (externalId, expectedTitle, brand, core, meta = {}) => ({ externalId, expectedTitle, expectedCategory: "Грунт / БетонКонтакт", expectedSubcategory: "Грунтовка", brand, core, sourceKeys: meta.sourceKeys || [...new Set(Object.values(core).flatMap(value => value.sources || []))], ...meta });
 
 const products = [
-  p("MAT-000234", "Грунт Litokol PRIMER A универсальный укрепляющий 10 л", "LITOKOL", {
+  p("MAT-000234", "Грунт Litokol PRIMER A универсальный укрепляющий 10 кг", "LITOKOL", {
     brand: ready("LITOKOL", ["litokolPrimerA"]),
     product_type: ready("Универсальная грунтовка", ["litokolPrimerA"]),
     base: ready("Водная дисперсия", ["litokolPrimerA"]),
     purpose: ready("Подготовка оснований перед покраской, оклейкой обоями, облицовкой плиткой, штукатурными и шпатлёвочными работами", ["litokolPrimerA"]),
     package_weight: ready(10, ["litokolPrimerA"]),
-    package_volume: need("Official source confirms 10 kg packaging; local title says 10 l. No kg↔l conversion is allowed.", ["litokolPrimerA", ...local]),
+    package_volume: need("Official source confirms 10 kg packaging; volume is not inferred.", ["litokolPrimerA", ...local]),
     primer_type: ready("Универсальная", ["litokolPrimerA"]),
     application_area: ready("Внутренние и наружные работы", ["litokolPrimerA"]),
     application_method: ready("Валик, кисть или распылитель", ["litokolPrimerA"]),
@@ -66,15 +66,15 @@ const products = [
     color: ready("Голубой", ["litokolPrimerA"]),
     application_temperature: ready("от +5 до +35 °C", ["litokolPrimerA"]),
     shelf_life: need("Срок хранения exact SKU не указан на проверенной официальной странице.", ["litokolPrimerA"])
-  }, { sourceKeys: ["litokolPrimerA", ...local], titleStatus: "TITLE_UNIT_MISMATCH", notes: ["Official package is 10 kg; local title retains 10 l and is not changed."] }),
+  }, { sourceKeys: ["litokolPrimerA", ...local], titleStatus: "TITLE_UNIT_CONFIRMED", notes: ["Official package is 10 kg; title normalized to the confirmed unit."] }),
 
-  p("MAT-000237", "Грунтовка Oscar глубокого проникновения 10 л", "Oscar", {
+  p("MAT-000237", "Грунтовка Oscar глубокого проникновения 10 кг", "Oscar", {
     brand: ready("Oscar", ["oscarG", "oscarCatalog"]),
     product_type: ready("Грунтовка глубокого проникновения", ["oscarG", "oscarCatalog"]),
     base: ready("Латексная грунтовка", ["oscarG", "oscarCatalog"]),
     purpose: ready("Укрепление оснований и снижение впитываемости", ["oscarG", "oscarCatalog"]),
     package_weight: ready(10, ["oscarG", "oscarCatalog"]),
-    package_volume: need("Brand source identifies the exact package as 10 kg; local title says 10 l. No kg↔l conversion is allowed.", ["oscarG", "oscarCatalog", ...local]),
+    package_volume: need("Brand source identifies the exact package as 10 kg; volume is not inferred.", ["oscarG", "oscarCatalog", ...local]),
     primer_type: ready("Глубокого проникновения", ["oscarG", "oscarCatalog"]),
     application_area: ready("Наружные работы", ["oscarG"]),
     application_method: need("Exact application method for this SKU is not stated in the retained brand source.", ["oscarG", "oscarCatalog"]),
@@ -86,7 +86,7 @@ const products = [
     color: need("Color is not confirmed for this exact SKU.", ["oscarG", "oscarCatalog"]),
     application_temperature: need("Application temperature is not confirmed for this exact SKU.", ["oscarG", "oscarCatalog"]),
     shelf_life: need("Shelf life is not confirmed for this exact SKU.", ["oscarG", "oscarCatalog"])
-  }, { sourceKeys: ["oscarG", "oscarCatalog", ...local], titleStatus: "TITLE_UNIT_MISMATCH", notes: ["Brand support/catalog confirms Oscar G os-10kg family; local title retains 10 l and is not changed."] }),
+  }, { sourceKeys: ["oscarG", "oscarCatalog", ...local], titleStatus: "TITLE_UNIT_CONFIRMED", notes: ["Brand support/catalog confirms Oscar G os-10kg family; title normalized to the confirmed unit."] }),
 
   p("MAT-000243", "Грунт адгезионный Forbo Eurocol 044, концентрат 1:2 10 кг", "Forbo Eurocol", {
     brand: ready("Forbo Eurocol", ["forbo044"]),
