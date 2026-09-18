@@ -1,0 +1,3403 @@
+{
+  "mode": "dry-run",
+  "rows": [
+    {
+      "externalId": "MAT-000227",
+      "title": "Грунтовка Knauf Тифенгрунд 5 л",
+      "productId": 198,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "titleStatus": "TITLE_UNIT_MISMATCH",
+      "sourceKeys": [
+        "knaufTiefengrund",
+        "localTitle"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 5,
+        "description": null,
+        "specsCount": 0
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "READY",
+          "value": "Грунтовка глубокого проникновения",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "READY",
+          "value": "Полимерная дисперсия",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "READY",
+          "value": "Укрепление основания, снижение впитываемости и улучшение адгезии",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 5,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_volume",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": "Local title says 5 л, while the official source confirms 5 кг; no kg→l conversion is allowed.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "primer_type",
+          "sourceStatus": "READY",
+          "value": "Глубокого проникновения",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "READY",
+          "value": "Внутренние и наружные работы",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": "Source registry does not contain an exact application-method statement for this SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "READY",
+          "value": "ГКЛ/ГВЛ, гипсовые и цементные штукатурки, ПГП, стяжки",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "READY",
+          "value": "0,1 кг/м²",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "drying_time",
+          "sourceStatus": "READY",
+          "value": "3 часа",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "dilution_ratio",
+          "sourceStatus": "ABSENT_BY_DESIGN",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": "Готовый состав; разбавление не заявлено для этого SKU.",
+          "status": "ABSENT_BY_DESIGN"
+        },
+        {
+          "code": "concentrate",
+          "sourceStatus": "READY",
+          "value": false,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "READY",
+          "value": "Белый",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": "Температура применения не подтверждена в source registry.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "READY",
+          "value": 12,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "contentWrites": [],
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "category",
+        "subcategory",
+        "image",
+        "image_url",
+        "stock_status"
+      ],
+      "notes": [],
+      "brand": {
+        "code": "brand",
+        "sourceStatus": "READY",
+        "value": "KNAUF",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "currentId": null,
+        "definitionId": 1,
+        "definitionType": "text",
+        "sources": [
+          "knaufTiefengrund"
+        ],
+        "attributeStatus": "WILL_ADD",
+        "productColumnStatus": "WILL_ADD",
+        "status": "WILL_ADD"
+      },
+      "status": "PARTIAL",
+      "summary": {
+        "logicalSlots": 17,
+        "willAdd": 13,
+        "willFix": 0,
+        "existingOk": 0,
+        "needsSource": 3,
+        "absentByDesign": 1,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0
+      }
+    },
+    {
+      "externalId": "MAT-000228",
+      "title": "Грунтовка Knauf Тифенгрунд 10 л",
+      "productId": 199,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "titleStatus": "TITLE_UNIT_MISMATCH",
+      "sourceKeys": [
+        "knaufTiefengrund",
+        "localTitle"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 10,
+        "description": null,
+        "specsCount": 0
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "READY",
+          "value": "Грунтовка глубокого проникновения",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "READY",
+          "value": "Полимерная дисперсия",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "READY",
+          "value": "Укрепление основания, снижение впитываемости и улучшение адгезии",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 10,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_volume",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": "Local title says 10 л, while the official source confirms 10 кг; no kg→l conversion is allowed.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "primer_type",
+          "sourceStatus": "READY",
+          "value": "Глубокого проникновения",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "READY",
+          "value": "Внутренние и наружные работы",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": "Source registry does not contain an exact application-method statement for this SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "READY",
+          "value": "ГКЛ/ГВЛ, гипсовые и цементные штукатурки, ПГП, стяжки",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "READY",
+          "value": "0,1 кг/м²",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "drying_time",
+          "sourceStatus": "READY",
+          "value": "3 часа",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "dilution_ratio",
+          "sourceStatus": "ABSENT_BY_DESIGN",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": "Готовый состав; разбавление не заявлено для этого SKU.",
+          "status": "ABSENT_BY_DESIGN"
+        },
+        {
+          "code": "concentrate",
+          "sourceStatus": "READY",
+          "value": false,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "READY",
+          "value": "Белый",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": "Температура применения не подтверждена в source registry.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "READY",
+          "value": 12,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "knaufTiefengrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "contentWrites": [],
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "category",
+        "subcategory",
+        "image",
+        "image_url",
+        "stock_status"
+      ],
+      "notes": [],
+      "brand": {
+        "code": "brand",
+        "sourceStatus": "READY",
+        "value": "KNAUF",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "currentId": null,
+        "definitionId": 1,
+        "definitionType": "text",
+        "sources": [
+          "knaufTiefengrund"
+        ],
+        "attributeStatus": "WILL_ADD",
+        "productColumnStatus": "WILL_ADD",
+        "status": "WILL_ADD"
+      },
+      "status": "PARTIAL",
+      "summary": {
+        "logicalSlots": 17,
+        "willAdd": 13,
+        "willFix": 0,
+        "existingOk": 0,
+        "needsSource": 3,
+        "absentByDesign": 1,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0
+      }
+    },
+    {
+      "externalId": "MAT-000230",
+      "title": "Грунтовка Knauf Мульти Грунд универсальный 10 л",
+      "productId": 201,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "titleStatus": "TITLE_UNIT_MISMATCH",
+      "sourceKeys": [
+        "knaufMultigrund",
+        "localTitle"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 10,
+        "description": null,
+        "specsCount": 0
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "READY",
+          "value": "Универсальная грунтовка для впитывающих оснований",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "knaufMultigrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "READY",
+          "value": "Полимерная дисперсия",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "knaufMultigrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "READY",
+          "value": "Снижение и регулирование впитываемости, улучшение адгезии",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "knaufMultigrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 10,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "knaufMultigrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_volume",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufMultigrund"
+          ],
+          "reason": "Local title says 10 л, while the official source confirms 10 кг; no kg→l conversion is allowed.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "primer_type",
+          "sourceStatus": "READY",
+          "value": "Универсальная для впитывающих оснований",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufMultigrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "READY",
+          "value": "Внутренние и наружные работы",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufMultigrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufMultigrund"
+          ],
+          "reason": "Source registry does not contain an exact application-method statement for this SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "READY",
+          "value": "Газо- и пенобетон, кирпич, штукатурки, стяжки",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufMultigrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "READY",
+          "value": "0,2 кг/м²",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufMultigrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "drying_time",
+          "sourceStatus": "READY",
+          "value": "6 часов",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufMultigrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "dilution_ratio",
+          "sourceStatus": "ABSENT_BY_DESIGN",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufMultigrund"
+          ],
+          "reason": "Готовый состав; разбавление не заявлено для этого SKU.",
+          "status": "ABSENT_BY_DESIGN"
+        },
+        {
+          "code": "concentrate",
+          "sourceStatus": "READY",
+          "value": false,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufMultigrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "READY",
+          "value": "Жёлтый",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufMultigrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "knaufMultigrund"
+          ],
+          "reason": "Температура применения не подтверждена в source registry.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "READY",
+          "value": 12,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "knaufMultigrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "contentWrites": [],
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "category",
+        "subcategory",
+        "image",
+        "image_url",
+        "stock_status"
+      ],
+      "notes": [],
+      "brand": {
+        "code": "brand",
+        "sourceStatus": "READY",
+        "value": "KNAUF",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "currentId": null,
+        "definitionId": 1,
+        "definitionType": "text",
+        "sources": [
+          "knaufMultigrund"
+        ],
+        "attributeStatus": "WILL_ADD",
+        "productColumnStatus": "WILL_ADD",
+        "status": "WILL_ADD"
+      },
+      "status": "PARTIAL",
+      "summary": {
+        "logicalSlots": 17,
+        "willAdd": 13,
+        "willFix": 0,
+        "existingOk": 0,
+        "needsSource": 3,
+        "absentByDesign": 1,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0
+      }
+    },
+    {
+      "externalId": "MAT-000231",
+      "title": "Грунтовка Ceresit CT-17 PRO, 5л",
+      "productId": 202,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "titleStatus": "MATCH",
+      "sourceKeys": [
+        "ceresitCt17",
+        "localTitle"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 5,
+        "description": null,
+        "specsCount": 0
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "READY",
+          "value": "Грунтовка глубокого проникновения",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "READY",
+          "value": "Водная дисперсия сополимеров акрилатов",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "READY",
+          "value": "Укрепление, связывание пыли, снижение впитываемости и повышение адгезии",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "ABSENT_BY_DESIGN",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": "Source specifies this liquid SKU in litres; mass is not provided.",
+          "status": "ABSENT_BY_DESIGN"
+        },
+        {
+          "code": "package_volume",
+          "sourceStatus": "READY",
+          "value": 5,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "primer_type",
+          "sourceStatus": "READY",
+          "value": "Глубокого проникновения",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "READY",
+          "value": "Внутренние и наружные работы",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": "Source registry does not contain an exact application-method statement for this SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "READY",
+          "value": "Цементные, известковые и гипсовые штукатурки, стяжки, бетон, кирпич, ГКЛ, ДСП/ДВП",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "READY",
+          "value": "0,1–0,2 л/м²",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "drying_time",
+          "sourceStatus": "READY",
+          "value": "до 2 часов",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "dilution_ratio",
+          "sourceStatus": "ABSENT_BY_DESIGN",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": "Готовый состав; разбавление не заявлено для этого SKU.",
+          "status": "ABSENT_BY_DESIGN"
+        },
+        {
+          "code": "concentrate",
+          "sourceStatus": "READY",
+          "value": false,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "READY",
+          "value": "Светло-жёлтый",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "READY",
+          "value": "0…+35 °C",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": "Срок хранения в месяцах не подтверждён для exact SKU.",
+          "status": "NEEDS_SOURCE"
+        }
+      ],
+      "contentWrites": [],
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "category",
+        "subcategory",
+        "image",
+        "image_url",
+        "stock_status"
+      ],
+      "notes": [],
+      "brand": {
+        "code": "brand",
+        "sourceStatus": "READY",
+        "value": "Ceresit",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "currentId": null,
+        "definitionId": 1,
+        "definitionType": "text",
+        "sources": [
+          "ceresitCt17"
+        ],
+        "attributeStatus": "WILL_ADD",
+        "productColumnStatus": "WILL_ADD",
+        "status": "WILL_ADD"
+      },
+      "status": "PARTIAL",
+      "summary": {
+        "logicalSlots": 17,
+        "willAdd": 13,
+        "willFix": 0,
+        "existingOk": 0,
+        "needsSource": 2,
+        "absentByDesign": 2,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0
+      }
+    },
+    {
+      "externalId": "MAT-000232",
+      "title": "Грунтовка Ceresit CT-17 PRO, 10л",
+      "productId": 203,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "titleStatus": "MATCH",
+      "sourceKeys": [
+        "ceresitCt17",
+        "localTitle"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 10,
+        "description": null,
+        "specsCount": 0
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "READY",
+          "value": "Грунтовка глубокого проникновения",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "READY",
+          "value": "Водная дисперсия сополимеров акрилатов",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "READY",
+          "value": "Укрепление, связывание пыли, снижение впитываемости и повышение адгезии",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "ABSENT_BY_DESIGN",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": "Source specifies this liquid SKU in litres; mass is not provided.",
+          "status": "ABSENT_BY_DESIGN"
+        },
+        {
+          "code": "package_volume",
+          "sourceStatus": "READY",
+          "value": 10,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "primer_type",
+          "sourceStatus": "READY",
+          "value": "Глубокого проникновения",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "READY",
+          "value": "Внутренние и наружные работы",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": "Source registry does not contain an exact application-method statement for this SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "READY",
+          "value": "Цементные, известковые и гипсовые штукатурки, стяжки, бетон, кирпич, ГКЛ, ДСП/ДВП",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "READY",
+          "value": "0,1–0,2 л/м²",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "drying_time",
+          "sourceStatus": "READY",
+          "value": "до 2 часов",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "dilution_ratio",
+          "sourceStatus": "ABSENT_BY_DESIGN",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": "Готовый состав; разбавление не заявлено для этого SKU.",
+          "status": "ABSENT_BY_DESIGN"
+        },
+        {
+          "code": "concentrate",
+          "sourceStatus": "READY",
+          "value": false,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "READY",
+          "value": "Светло-жёлтый",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "READY",
+          "value": "0…+35 °C",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "ceresitCt17"
+          ],
+          "reason": "Срок хранения в месяцах не подтверждён для exact SKU.",
+          "status": "NEEDS_SOURCE"
+        }
+      ],
+      "contentWrites": [],
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "category",
+        "subcategory",
+        "image",
+        "image_url",
+        "stock_status"
+      ],
+      "notes": [],
+      "brand": {
+        "code": "brand",
+        "sourceStatus": "READY",
+        "value": "Ceresit",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "currentId": null,
+        "definitionId": 1,
+        "definitionType": "text",
+        "sources": [
+          "ceresitCt17"
+        ],
+        "attributeStatus": "WILL_ADD",
+        "productColumnStatus": "WILL_ADD",
+        "status": "WILL_ADD"
+      },
+      "status": "PARTIAL",
+      "summary": {
+        "logicalSlots": 17,
+        "willAdd": 13,
+        "willFix": 0,
+        "existingOk": 0,
+        "needsSource": 2,
+        "absentByDesign": 2,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0
+      }
+    },
+    {
+      "externalId": "MAT-000233",
+      "title": "Грунтовка Ceresit CT16 под декоративную штукатурку 10 л",
+      "productId": 204,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "titleStatus": "MATCH",
+      "sourceKeys": [
+        "ceresitCt16",
+        "ceresitFacade",
+        "localTitle"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 10,
+        "description": null,
+        "specsCount": 0
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "READY",
+          "value": "Кварц-грунтовка под декоративные штукатурки",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCt16"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "READY",
+          "value": "Водная дисперсия полимеров с пигментами и минеральными наполнителями",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCt16"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "READY",
+          "value": "Подготовка оснований перед декоративными штукатурками и повышение адгезии",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCt16"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "ABSENT_BY_DESIGN",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "ceresitCt16"
+          ],
+          "reason": "Source specifies this liquid SKU in litres; mass is not provided.",
+          "status": "ABSENT_BY_DESIGN"
+        },
+        {
+          "code": "package_volume",
+          "sourceStatus": "READY",
+          "value": 10,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt16"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "primer_type",
+          "sourceStatus": "READY",
+          "value": "Кварц-грунтовка",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt16"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "READY",
+          "value": "Внутренние и наружные работы",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt16"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt16"
+          ],
+          "reason": "Source registry does not contain an exact application-method statement for this SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "READY",
+          "value": "Бетон, цементные/гипсовые/цементно-известковые штукатурки, ГКЛ, ДСП, прочные ЛКМ",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt16"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "READY",
+          "value": "0,2–0,5 л/м²",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt16"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "drying_time",
+          "sourceStatus": "READY",
+          "value": "около 3 часов",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt16"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "dilution_ratio",
+          "sourceStatus": "ABSENT_BY_DESIGN",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt16"
+          ],
+          "reason": "Готовый состав; разбавление не заявлено для этого SKU.",
+          "status": "ABSENT_BY_DESIGN"
+        },
+        {
+          "code": "concentrate",
+          "sourceStatus": "READY",
+          "value": false,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt16"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "READY",
+          "value": "Белый, может колероваться",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt16"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "READY",
+          "value": "+5…+30 °C",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCt16"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "READY",
+          "value": 12,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "ceresitCt16"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "contentWrites": [],
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "category",
+        "subcategory",
+        "image",
+        "image_url",
+        "stock_status"
+      ],
+      "notes": [],
+      "brand": {
+        "code": "brand",
+        "sourceStatus": "READY",
+        "value": "Ceresit",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "currentId": null,
+        "definitionId": 1,
+        "definitionType": "text",
+        "sources": [
+          "ceresitCt16"
+        ],
+        "attributeStatus": "WILL_ADD",
+        "productColumnStatus": "WILL_ADD",
+        "status": "WILL_ADD"
+      },
+      "status": "PARTIAL",
+      "summary": {
+        "logicalSlots": 17,
+        "willAdd": 14,
+        "willFix": 0,
+        "existingOk": 0,
+        "needsSource": 1,
+        "absentByDesign": 2,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0
+      }
+    },
+    {
+      "externalId": "MAT-000235",
+      "title": "Грунтовка Старатели универсальная 10 л",
+      "productId": 206,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "titleStatus": "MATCH",
+      "sourceKeys": [
+        "starateli",
+        "localTitle"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 10,
+        "description": null,
+        "specsCount": 0
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "READY",
+          "value": "Универсальная грунтовка",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "starateli"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "READY",
+          "value": "Водная грунтовка; binder не указан в карточке",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "starateli"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "READY",
+          "value": "Увеличение сцепления, обеспыливание, регулирование впитываемости, подготовка стен, потолков и полов",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "starateli"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "ABSENT_BY_DESIGN",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "starateli"
+          ],
+          "reason": "Source specifies this liquid SKU in litres; mass is not provided.",
+          "status": "ABSENT_BY_DESIGN"
+        },
+        {
+          "code": "package_volume",
+          "sourceStatus": "READY",
+          "value": 10,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "starateli"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "primer_type",
+          "sourceStatus": "READY",
+          "value": "Универсальная",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "starateli"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "READY",
+          "value": "Внутренние и наружные работы",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "starateli"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "starateli"
+          ],
+          "reason": "Source registry does not contain an exact application-method statement for this SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "READY",
+          "value": "Стены, потолки и полы; полный список оснований требует TDS",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "starateli"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "READY",
+          "value": "100–200 мл/м²",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "starateli"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "drying_time",
+          "sourceStatus": "READY",
+          "value": "не менее 1 часа",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "starateli"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "dilution_ratio",
+          "sourceStatus": "ABSENT_BY_DESIGN",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "starateli"
+          ],
+          "reason": "Готовый состав; разбавление не заявлено для этого SKU.",
+          "status": "ABSENT_BY_DESIGN"
+        },
+        {
+          "code": "concentrate",
+          "sourceStatus": "READY",
+          "value": false,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "starateli"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "READY",
+          "value": "Прозрачный после высыхания",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "starateli"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "READY",
+          "value": "+5…+30 °C",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "starateli"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "READY",
+          "value": 18,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "starateli"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "contentWrites": [],
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "category",
+        "subcategory",
+        "image",
+        "image_url",
+        "stock_status"
+      ],
+      "notes": [],
+      "brand": {
+        "code": "brand",
+        "sourceStatus": "READY",
+        "value": "Старатели",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "currentId": null,
+        "definitionId": 1,
+        "definitionType": "text",
+        "sources": [
+          "starateli"
+        ],
+        "attributeStatus": "WILL_ADD",
+        "productColumnStatus": "WILL_ADD",
+        "status": "WILL_ADD"
+      },
+      "status": "PARTIAL",
+      "summary": {
+        "logicalSlots": 17,
+        "willAdd": 14,
+        "willFix": 0,
+        "existingOk": 0,
+        "needsSource": 1,
+        "absentByDesign": 2,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0
+      }
+    },
+    {
+      "externalId": "MAT-000236",
+      "title": "Грунтовка UNIS глубокого проникновения укрепляющий 10 л",
+      "productId": 207,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "titleStatus": "MINOR_NAMING_DIFFERENCE",
+      "sourceKeys": [
+        "unisCatalog",
+        "unisRetailer",
+        "localTitle"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 10,
+        "description": null,
+        "specsCount": 0
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "READY",
+          "value": "Грунтовка глубокого проникновения",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "unisCatalog"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "READY",
+          "value": "Акриловый полимер",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "unisCatalog"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "READY",
+          "value": "Укрепление рыхлых, мелящих и сильновпитывающих оснований, обеспыливание",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "unisCatalog"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "ABSENT_BY_DESIGN",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "unisCatalog",
+            "unisRetailer"
+          ],
+          "reason": "Source specifies this liquid SKU in litres; mass is not provided.",
+          "status": "ABSENT_BY_DESIGN"
+        },
+        {
+          "code": "package_volume",
+          "sourceStatus": "READY",
+          "value": 10,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "unisCatalog",
+            "unisRetailer"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "primer_type",
+          "sourceStatus": "READY",
+          "value": "Глубокого проникновения",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "unisCatalog"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "READY",
+          "value": "Внутренние и наружные работы",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "unisCatalog"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "unisCatalog"
+          ],
+          "reason": "Source registry does not contain an exact application-method statement for this SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "READY",
+          "value": "Минеральные впитывающие основания; полный список требует TDS",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "unisCatalog"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "READY",
+          "value": "около 100 мл/м²",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "unisCatalog"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "drying_time",
+          "sourceStatus": "READY",
+          "value": "около 3 часов",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "unisCatalog"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "dilution_ratio",
+          "sourceStatus": "ABSENT_BY_DESIGN",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "unisCatalog"
+          ],
+          "reason": "Готовый состав; разбавление не заявлено для этого SKU.",
+          "status": "ABSENT_BY_DESIGN"
+        },
+        {
+          "code": "concentrate",
+          "sourceStatus": "READY",
+          "value": false,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "unisCatalog"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "unisCatalog"
+          ],
+          "reason": "Цвет exact SKU не подтверждён в source registry.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "READY",
+          "value": "+5…+30 °C",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "unisCatalog"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "READY",
+          "value": 12,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "unisCatalog"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "contentWrites": [],
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "category",
+        "subcategory",
+        "image",
+        "image_url",
+        "stock_status"
+      ],
+      "notes": [],
+      "brand": {
+        "code": "brand",
+        "sourceStatus": "READY",
+        "value": "UNIS",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "currentId": null,
+        "definitionId": 1,
+        "definitionType": "text",
+        "sources": [
+          "unisCatalog"
+        ],
+        "attributeStatus": "WILL_ADD",
+        "productColumnStatus": "WILL_ADD",
+        "status": "WILL_ADD"
+      },
+      "status": "PARTIAL",
+      "summary": {
+        "logicalSlots": 17,
+        "willAdd": 13,
+        "willFix": 0,
+        "existingOk": 0,
+        "needsSource": 2,
+        "absentByDesign": 2,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0
+      }
+    },
+    {
+      "externalId": "MAT-000240",
+      "title": "Грунтовка Knauf Миттельгрунд для впитывающих оснований концентрат 10 л",
+      "productId": 211,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "titleStatus": "TITLE_UNIT_MISMATCH",
+      "sourceKeys": [
+        "knaufMittelgrund",
+        "localTitle"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 10,
+        "description": null,
+        "specsCount": 0
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "READY",
+          "value": "Грунтовка-концентрат для впитывающих оснований",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "knaufMittelgrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "READY",
+          "value": "Полимерная дисперсия с жёлтым пигментом",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "knaufMittelgrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "READY",
+          "value": "Снижение и регулирование впитываемости, подготовка под штукатурки, плитку и стяжки",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "knaufMittelgrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 10,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "knaufMittelgrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_volume",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufMittelgrund"
+          ],
+          "reason": "Local title says 10 л, while the official source confirms 10 кг; no kg→l conversion is allowed.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "primer_type",
+          "sourceStatus": "READY",
+          "value": "Концентрат для впитывающих оснований",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufMittelgrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "READY",
+          "value": "Внутренние и наружные работы",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufMittelgrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufMittelgrund"
+          ],
+          "reason": "Source registry does not contain an exact application-method statement for this SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "READY",
+          "value": "Газо- и пенобетон, кирпич, штукатурки, бетонные и гипсовые стяжки",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufMittelgrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "READY",
+          "value": "0,05 кг/м² концентрата; раствор зависит от основания",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufMittelgrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "drying_time",
+          "sourceStatus": "READY",
+          "value": "6 часов",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufMittelgrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "dilution_ratio",
+          "sourceStatus": "READY",
+          "value": "1:3–1:5 в зависимости от основания",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufMittelgrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "concentrate",
+          "sourceStatus": "READY",
+          "value": true,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufMittelgrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "READY",
+          "value": "Жёлтый",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufMittelgrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "knaufMittelgrund"
+          ],
+          "reason": "Температура применения не подтверждена в source registry.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "READY",
+          "value": 12,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "knaufMittelgrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "contentWrites": [],
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "category",
+        "subcategory",
+        "image",
+        "image_url",
+        "stock_status"
+      ],
+      "notes": [],
+      "brand": {
+        "code": "brand",
+        "sourceStatus": "READY",
+        "value": "KNAUF",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "currentId": null,
+        "definitionId": 1,
+        "definitionType": "text",
+        "sources": [
+          "knaufMittelgrund"
+        ],
+        "attributeStatus": "WILL_ADD",
+        "productColumnStatus": "WILL_ADD",
+        "status": "WILL_ADD"
+      },
+      "status": "PARTIAL",
+      "summary": {
+        "logicalSlots": 17,
+        "willAdd": 14,
+        "willFix": 0,
+        "existingOk": 0,
+        "needsSource": 3,
+        "absentByDesign": 0,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0
+      }
+    },
+    {
+      "externalId": "MAT-000241",
+      "title": "Грунт Tikkurila Euro Primer концентрат 0,9 л",
+      "productId": 212,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "titleStatus": "MATCH",
+      "sourceKeys": [
+        "tikkurila",
+        "tikkurilaCatalog",
+        "localTitle"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 1,
+        "description": null,
+        "specsCount": 0
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "READY",
+          "value": "Акрилатная грунтовка-концентрат глубокого проникновения",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "tikkurila"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "READY",
+          "value": "Акрилатная основа",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "tikkurila"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "READY",
+          "value": "Укрепление пористых оснований и выравнивание впитываемости перед окраской",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "tikkurila"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "ABSENT_BY_DESIGN",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "tikkurila",
+            "tikkurilaCatalog"
+          ],
+          "reason": "Source identifies the exact SKU by volume; mass is not provided.",
+          "status": "ABSENT_BY_DESIGN"
+        },
+        {
+          "code": "package_volume",
+          "sourceStatus": "READY",
+          "value": 0.9,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "tikkurila",
+            "tikkurilaCatalog"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "primer_type",
+          "sourceStatus": "READY",
+          "value": "Концентрат глубокого проникновения",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "tikkurila"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "READY",
+          "value": "Внутренние и наружные работы",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "tikkurila"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "tikkurila"
+          ],
+          "reason": "Source registry does not contain an exact application-method statement for this SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "READY",
+          "value": "Штукатурка, кирпич, бетон, ГКЛ, газобетон, гипсовые материалы, ДВП/ДСП",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "tikkurila"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "READY",
+          "value": "5–14 м²/л",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "tikkurila"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "drying_time",
+          "sourceStatus": "READY",
+          "value": "1–1,5 часа",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "tikkurila"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "dilution_ratio",
+          "sourceStatus": "READY",
+          "value": "1:3",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "tikkurila"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "concentrate",
+          "sourceStatus": "READY",
+          "value": true,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "tikkurila"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "tikkurila"
+          ],
+          "reason": "Цвет exact SKU не подтверждён в source registry.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "tikkurila"
+          ],
+          "reason": "Температура применения не подтверждена в source registry.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "READY",
+          "value": 24,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "tikkurila"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "contentWrites": [],
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "category",
+        "subcategory",
+        "image",
+        "image_url",
+        "stock_status"
+      ],
+      "notes": [],
+      "brand": {
+        "code": "brand",
+        "sourceStatus": "READY",
+        "value": "Tikkurila",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "currentId": null,
+        "definitionId": 1,
+        "definitionType": "text",
+        "sources": [
+          "tikkurila"
+        ],
+        "attributeStatus": "WILL_ADD",
+        "productColumnStatus": "WILL_ADD",
+        "status": "WILL_ADD"
+      },
+      "status": "PARTIAL",
+      "summary": {
+        "logicalSlots": 17,
+        "willAdd": 13,
+        "willFix": 0,
+        "existingOk": 0,
+        "needsSource": 3,
+        "absentByDesign": 1,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0
+      }
+    },
+    {
+      "externalId": "MAT-000242",
+      "title": "Грунт Tikkurila Euro Primer концентрат 3 л",
+      "productId": 213,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "titleStatus": "MATCH",
+      "sourceKeys": [
+        "tikkurila",
+        "tikkurilaCatalog",
+        "localTitle"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 3,
+        "description": null,
+        "specsCount": 0
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "READY",
+          "value": "Акрилатная грунтовка-концентрат глубокого проникновения",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "tikkurila"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "READY",
+          "value": "Акрилатная основа",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "tikkurila"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "READY",
+          "value": "Укрепление пористых оснований и выравнивание впитываемости перед окраской",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "tikkurila"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "ABSENT_BY_DESIGN",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "tikkurila",
+            "tikkurilaCatalog"
+          ],
+          "reason": "Source identifies the exact SKU by volume; mass is not provided.",
+          "status": "ABSENT_BY_DESIGN"
+        },
+        {
+          "code": "package_volume",
+          "sourceStatus": "READY",
+          "value": 3,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "tikkurila",
+            "tikkurilaCatalog"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "primer_type",
+          "sourceStatus": "READY",
+          "value": "Концентрат глубокого проникновения",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "tikkurila"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "READY",
+          "value": "Внутренние и наружные работы",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "tikkurila"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "tikkurila"
+          ],
+          "reason": "Source registry does not contain an exact application-method statement for this SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "READY",
+          "value": "Штукатурка, кирпич, бетон, ГКЛ, газобетон, гипсовые материалы, ДВП/ДСП",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "tikkurila"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "READY",
+          "value": "5–14 м²/л",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "tikkurila"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "drying_time",
+          "sourceStatus": "READY",
+          "value": "1–1,5 часа",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "tikkurila"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "dilution_ratio",
+          "sourceStatus": "READY",
+          "value": "1:3",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "tikkurila"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "concentrate",
+          "sourceStatus": "READY",
+          "value": true,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "tikkurila"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "tikkurila"
+          ],
+          "reason": "Цвет exact SKU не подтверждён в source registry.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "tikkurila"
+          ],
+          "reason": "Температура применения не подтверждена в source registry.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "READY",
+          "value": 24,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "tikkurila"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "contentWrites": [],
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "category",
+        "subcategory",
+        "image",
+        "image_url",
+        "stock_status"
+      ],
+      "notes": [],
+      "brand": {
+        "code": "brand",
+        "sourceStatus": "READY",
+        "value": "Tikkurila",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "currentId": null,
+        "definitionId": 1,
+        "definitionType": "text",
+        "sources": [
+          "tikkurila"
+        ],
+        "attributeStatus": "WILL_ADD",
+        "productColumnStatus": "WILL_ADD",
+        "status": "WILL_ADD"
+      },
+      "status": "PARTIAL",
+      "summary": {
+        "logicalSlots": 17,
+        "willAdd": 13,
+        "willFix": 0,
+        "existingOk": 0,
+        "needsSource": 3,
+        "absentByDesign": 1,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0
+      }
+    }
+  ],
+  "summary": {
+    "total": 11,
+    "readyProducts": 0,
+    "partialProducts": 11,
+    "errors": 0,
+    "logicalSlots": 187,
+    "willAdd": 146,
+    "willFix": 0,
+    "existingOk": 0,
+    "needsSource": 26,
+    "absentByDesign": 15,
+    "schemaBlocked": 0,
+    "valueConflict": 0,
+    "brandConflict": 0,
+    "titleGuardBlocked": 0,
+    "definitionsToCreate": 9
+  },
+  "definitionsToCreate": [
+    {
+      "code": "primer_type",
+      "label": "Тип грунтовки",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "application_area",
+      "label": "Область применения",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "substrates",
+      "label": "Основания",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "consumption",
+      "label": "Расход",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "drying_time",
+      "label": "Время высыхания",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "concentrate",
+      "label": "Концентрат",
+      "dataType": "boolean",
+      "defaultUnit": null
+    },
+    {
+      "code": "color",
+      "label": "Цвет",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "package_volume",
+      "label": "Объём упаковки",
+      "dataType": "number",
+      "defaultUnit": "л"
+    },
+    {
+      "code": "dilution_ratio",
+      "label": "Разбавление",
+      "dataType": "text",
+      "defaultUnit": null
+    }
+  ],
+  "sources": {
+    "knaufTiefengrund": {
+      "title": "KNAUF Tiefengrund — официальный сайт",
+      "url": "https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/gruntovki/knauf-tifengrund/",
+      "owner": "KNAUF"
+    },
+    "knaufMultigrund": {
+      "title": "KNAUF Multigrund — официальный сайт",
+      "url": "https://www.knauf.ru/catalog/gruntovki/knauf-multigrund/",
+      "owner": "KNAUF"
+    },
+    "ceresitCt17": {
+      "title": "Ceresit CT 17 PRO — официальный сайт",
+      "url": "https://www.ceresit.ru/ru/products/tiling/supplementary-materials/ct_17_pro",
+      "owner": "Ceresit"
+    },
+    "ceresitCt16": {
+      "title": "Ceresit CT 16 — официальный TDS",
+      "url": "https://dm.henkel-dam.com/is/content/henkel/tds-ru-ceresit-ct16pdf",
+      "owner": "Henkel/Ceresit"
+    },
+    "ceresitFacade": {
+      "title": "Ceresit facade plasters — официальный каталог",
+      "url": "https://www.ceresit.ru/ru/products/etics/facade-plasters",
+      "owner": "Ceresit"
+    },
+    "starateli": {
+      "title": "Старатели — Грунтовка Универсальная",
+      "url": "https://www.starateli.ru/gruntovka_universalnaya/",
+      "owner": "Старатели"
+    },
+    "unisCatalog": {
+      "title": "UNIS — каталог грунтовок",
+      "url": "https://unistrom.ru/catalog/grunty/gruntovki-10-litrov/",
+      "owner": "UNIS"
+    },
+    "unisRetailer": {
+      "title": "UNIS — exact 10 l retailer context",
+      "url": "https://www.unimart24.ru/product/gruntovka-glubokogo-proniknoveniya-unis-kanistra-10-l/",
+      "owner": "UNIS / retailer"
+    },
+    "knaufMittelgrund": {
+      "title": "KNAUF Mittelgrund — официальный сайт",
+      "url": "https://www.knauf.ru/catalog/gruntovki/knauf-mittelgrund/",
+      "owner": "KNAUF"
+    },
+    "tikkurila": {
+      "title": "Tikkurila Euro Primer — regional product page",
+      "url": "https://tikkurila-russia.ru/tikkurila-euro-primer",
+      "owner": "Tikkurila regional"
+    },
+    "tikkurilaCatalog": {
+      "title": "Tikkurila — catalog PDF",
+      "url": "https://tikkurila-color.ru/upload/iblock/b78/8ru2u12d2dcid0ndjs6k284anryu30xu.pdf",
+      "owner": "Tikkurila regional"
+    },
+    "localTitle": {
+      "title": "Локальная карточка MatMix",
+      "url": null,
+      "owner": "MatMix local audit"
+    }
+  },
+  "writableSurface": {
+    "products": [
+      "brand"
+    ],
+    "attributeValueCodes": [
+      "brand",
+      "product_type",
+      "base",
+      "purpose",
+      "package_weight",
+      "package_volume",
+      "primer_type",
+      "application_area",
+      "application_method",
+      "substrates",
+      "consumption",
+      "drying_time",
+      "dilution_ratio",
+      "concentrate",
+      "color",
+      "application_temperature",
+      "shelf_life"
+    ],
+    "forbidden": [
+      "title",
+      "slug",
+      "description",
+      "short_description",
+      "full_description",
+      "seo_title",
+      "seo_description",
+      "price",
+      "weight",
+      "category",
+      "subcategory",
+      "image",
+      "image_url",
+      "stock_status",
+      "any image table"
+    ]
+  }
+}

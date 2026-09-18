@@ -1,0 +1,140 @@
+{
+  "category": "Грунтовки",
+  "generatedFrom": "primers-audit.json",
+  "checkedAt": "2026-09-18",
+  "localEvidence": [
+    "products.source=excel",
+    "exact local title/slug/category/subcategory/product id",
+    "historical repo/import search",
+    "local snapshot/backups search"
+  ],
+  "note": "No title, slug, weight, brand, image or DB data was changed. Historical artifacts did not provide additional manufacturer identity for generic rows.",
+  "summary": {
+    "identityResolved": 2,
+    "partiallyResolved": 2,
+    "identityBlocked": 5
+  },
+  "rows": [
+    {
+      "externalId": "MAT-000234",
+      "currentTitle": "Грунт Litokol PRIMER A универсальный укрепляющий 10 л",
+      "canonicalIdentity": "LITOKOL Primer A, exact product family confirmed; package unit remains unresolved",
+      "package": "official 10 kg; local title 10 l",
+      "sourceUrls": [
+        "https://www.litokol.ru/catalog/primer-a/"
+      ],
+      "identityStatus": "PARTIALLY_RESOLVED",
+      "titleStatus": "POSSIBLE_ERROR",
+      "inventoryDiscrepancy": "products.weight=10 matches numeric local quantity but unit is not independently proven; official package is kg, title is l",
+      "coreReadiness": "Identity/facts usable except package_volume and unit guard",
+      "reason": "Official LITOKOL page confirms Primer A and 10 kg, but does not prove that the local 10 l nomenclature is the same commercial unit."
+    },
+    {
+      "externalId": "MAT-000237",
+      "currentTitle": "Грунтовка Oscar глубокого проникновения 10 л",
+      "canonicalIdentity": "Oscar G os-10kg, latex deep-penetration primer; exact family supported by brand support",
+      "package": "official support 10 kg; local title 10 l",
+      "sourceUrls": [
+        "https://support.alaxar.ru/produktsiya/katalog/gruntovka-2/dlya-naruzhnyh-rabot.html",
+        "https://moscow.petrovich.ru/product/622085/"
+      ],
+      "identityStatus": "PARTIALLY_RESOLVED",
+      "titleStatus": "POSSIBLE_ERROR",
+      "inventoryDiscrepancy": "products.weight=10 matches numeric local quantity but unit is not independently proven; official package is kg, title is l",
+      "coreReadiness": "Identity/facts usable except package_volume and unit guard",
+      "reason": "Brand support identifies G os-10kg, but the local 10 l title cannot be safely normalized to kg or volume."
+    },
+    {
+      "externalId": "MAT-000243",
+      "currentTitle": "Грунт адгезионный Forbo Eurocol 044, концентрат 1:2 10 кг",
+      "canonicalIdentity": "Forbo Eurocol 044 Europrimer Multi",
+      "package": "official 10 kg",
+      "sourceUrls": [
+        "https://www.forbo.com/eurocol/ru/044-europrimer-multi/ewr8vw"
+      ],
+      "identityStatus": "IDENTITY_RESOLVED",
+      "titleStatus": "MATCH",
+      "inventoryDiscrepancy": "products.weight=3 conflicts with exact title and official 10 kg package; likely corrupted/stale inventory field, but no source proves why it is 3",
+      "coreReadiness": "Identity and package resolved; products.weight remains untouched",
+      "reason": "Official product page directly identifies 044 Europrimer Multi and 10 kg. No evidence supports weight=3."
+    },
+    {
+      "externalId": "MAT-000244",
+      "currentTitle": "Грунтовка Forbo 041 Europrimer EC, для укладки токопроводящих и антистатических покрытий 10 кг",
+      "canonicalIdentity": "Forbo Eurocol 041 Europrimer EC",
+      "package": "official 10 kg",
+      "sourceUrls": [
+        "https://www.forbo.com/eurocol/ru/041-europrimer-ec/e3spag"
+      ],
+      "identityStatus": "IDENTITY_RESOLVED",
+      "titleStatus": "MATCH",
+      "inventoryDiscrepancy": "products.weight=3 conflicts with exact title and official 10 kg package; likely corrupted/stale inventory field, but no source proves why it is 3",
+      "coreReadiness": "Identity and package resolved; products.weight remains untouched",
+      "reason": "Official product page directly identifies 041 Europrimer EC and 10 kg. No evidence supports weight=3."
+    },
+    {
+      "externalId": "MAT-000229",
+      "currentTitle": "Грунтовка Knauf Тифенгрунд морозостойкая (до -40) 10 л",
+      "canonicalIdentity": "KNAUF Tiefengrund family only; exact “морозостойкая до -40” SKU not proven",
+      "package": "local title 10 l; official family page lists 5/10 kg and optional frost resistance but no exact -40 SKU",
+      "sourceUrls": [
+        "https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/gruntovki/knauf-tifengrund/"
+      ],
+      "identityStatus": "IDENTITY_BLOCKED",
+      "titleStatus": "POSSIBLE_ERROR",
+      "inventoryDiscrepancy": "products.weight=10 is only local numeric context",
+      "coreReadiness": "Do not seed this MAT until exact SKU/package proof",
+      "reason": "Family-level KNAUF source is insufficient to identify the frost-resistant -40 variant."
+    },
+    {
+      "externalId": "MAT-000238",
+      "currentTitle": "Грунтовка Акрил 5 л",
+      "canonicalIdentity": null,
+      "package": "5 l only from local title",
+      "sourceUrls": [],
+      "identityStatus": "IDENTITY_BLOCKED",
+      "titleStatus": "IDENTITY_CONFLICT",
+      "inventoryDiscrepancy": "products.weight=5 is only local numeric context",
+      "coreReadiness": "No core or image write",
+      "reason": "Generic title/slug/category and local source=excel contain no manufacturer or model marker; historical repo/import search found no additional identity."
+    },
+    {
+      "externalId": "MAT-000239",
+      "currentTitle": "Грунтовка Акрил 10 л",
+      "canonicalIdentity": null,
+      "package": "10 l only from local title",
+      "sourceUrls": [],
+      "identityStatus": "IDENTITY_BLOCKED",
+      "titleStatus": "IDENTITY_CONFLICT",
+      "inventoryDiscrepancy": "products.weight=10 is only local numeric context",
+      "coreReadiness": "No core or image write",
+      "reason": "Generic title/slug/category and local source=excel contain no manufacturer or model marker; historical repo/import search found no additional identity."
+    },
+    {
+      "externalId": "MAT-000259",
+      "currentTitle": "Грунт ГФ-021 по металлу и дереву серый 0,8 кг",
+      "canonicalIdentity": null,
+      "package": "0.8 kg only from local title",
+      "sourceUrls": [
+        "https://prestige-holding.ru/upload/%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B5%20%D0%BE%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D1%8F%20%D1%81%D0%B5%D0%B3%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%2020-178%20%D0%B2%D0%B5%D1%80%D1%81%D0%B8%D1%8F%2016%20%2820-178%29.pdf"
+      ],
+      "identityStatus": "IDENTITY_BLOCKED",
+      "titleStatus": "IDENTITY_CONFLICT",
+      "inventoryDiscrepancy": "products.weight=1 conflicts numerically with title 0.8 kg; no manufacturer or SKU proves either value",
+      "coreReadiness": "No core or image write",
+      "reason": "GF-021 is a generic product standard used by many manufacturers; the available PDF is not exact manufacturer identity."
+    },
+    {
+      "externalId": "MAT-000260",
+      "currentTitle": "Грунт по металлу серый 1 л",
+      "canonicalIdentity": null,
+      "package": "1 l only from local title",
+      "sourceUrls": [],
+      "identityStatus": "IDENTITY_BLOCKED",
+      "titleStatus": "IDENTITY_CONFLICT",
+      "inventoryDiscrepancy": "products.weight=1 is only local numeric context",
+      "coreReadiness": "No core or image write",
+      "reason": "Generic title/slug/category and local source=excel contain no manufacturer, model, or exact technical document."
+    }
+  ]
+}

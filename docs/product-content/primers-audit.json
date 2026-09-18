@@ -1,0 +1,1270 @@
+{
+  "category": {
+    "name": "Грунтовки",
+    "segments": [
+      {
+        "categoryId": 29,
+        "categoryName": "Грунт / БетонКонтакт",
+        "categoryCode": "CAT-000002",
+        "subcategoryId": 31,
+        "subcategoryName": "Грунтовка",
+        "subcategoryCode": "SUB-000029",
+        "breadcrumb": [
+          "Грунт / БетонКонтакт",
+          "Грунтовка"
+        ]
+      },
+      {
+        "categoryId": 35,
+        "categoryName": "ЛакоКрасочные",
+        "categoryCode": "CAT-000004",
+        "subcategoryId": 36,
+        "subcategoryName": "Грунты",
+        "subcategoryCode": "SUB-000032",
+        "breadcrumb": [
+          "ЛакоКрасочные",
+          "Грунты"
+        ]
+      }
+    ]
+  },
+  "database": {
+    "path": "backend/database/matmix.db",
+    "isProductionTruth": false,
+    "activeProductCount": 20,
+    "contentAudit": {
+      "coreEmpty": 20,
+      "corePartial": 0,
+      "coreFilled": 0,
+      "descriptionEmpty": 20,
+      "seoEmpty": 20,
+      "imagePlaceholder": 20,
+      "imageReal": 0,
+      "imageProtected": 0,
+      "sharedPlaceholder": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png"
+    }
+  },
+  "schemaAudit": {
+    "existingDefinitions": [
+      {
+        "code": "brand",
+        "label": "Бренд",
+        "dataType": "text",
+        "unit": null
+      },
+      {
+        "code": "product_type",
+        "label": "Тип продукта",
+        "dataType": "text",
+        "unit": null
+      },
+      {
+        "code": "base",
+        "label": "Основа",
+        "dataType": "text",
+        "unit": null
+      },
+      {
+        "code": "purpose",
+        "label": "Назначение",
+        "dataType": "text",
+        "unit": null
+      },
+      {
+        "code": "package_weight",
+        "label": "Фасовка",
+        "dataType": "number",
+        "unit": "кг"
+      },
+      {
+        "code": "consumption_10mm",
+        "label": "Расход при слое 10 мм",
+        "dataType": "number",
+        "unit": "кг/м²"
+      },
+      {
+        "code": "coverage_30kg_10mm",
+        "label": "Площадь мешка 30 кг при 10 мм",
+        "dataType": "number",
+        "unit": "м²"
+      },
+      {
+        "code": "wall_layer_thickness",
+        "label": "Толщина слоя на стене",
+        "dataType": "text",
+        "unit": null
+      },
+      {
+        "code": "ceiling_layer_thickness",
+        "label": "Толщина слоя на потолке",
+        "dataType": "text",
+        "unit": null
+      },
+      {
+        "code": "application_temperature",
+        "label": "Температура основания и воздуха",
+        "dataType": "text",
+        "unit": null
+      },
+      {
+        "code": "shelf_life",
+        "label": "Срок хранения",
+        "dataType": "number",
+        "unit": "месяцев"
+      }
+    ],
+    "reusableForPrimers": [
+      "brand",
+      "product_type",
+      "base",
+      "purpose",
+      "shelf_life"
+    ],
+    "reusableWithCaveats": [
+      "package_weight"
+    ],
+    "notPrimerSpecific": [
+      "consumption_10mm",
+      "coverage_30kg_10mm",
+      "wall_layer_thickness",
+      "ceiling_layer_thickness"
+    ],
+    "proposedNewDefinitions": [
+      {
+        "code": "package_volume",
+        "label": "Объём упаковки",
+        "dataType": "number",
+        "unit": "л",
+        "rationale": "Грунтовки в БД часто продаются в литрах; package_weight с единицей кг нельзя безопасно переиспользовать как объём."
+      },
+      {
+        "code": "primer_type",
+        "label": "Тип грунтовки",
+        "dataType": "text",
+        "unit": null,
+        "rationale": "Глубокого проникновения, универсальная, адгезионная, токопроводящая и т.п."
+      },
+      {
+        "code": "application_area",
+        "label": "Область применения",
+        "dataType": "text",
+        "unit": null,
+        "rationale": "Внутри/снаружи, стены/полы/потолки и назначение по основанию."
+      },
+      {
+        "code": "application_method",
+        "label": "Способ нанесения",
+        "dataType": "text",
+        "unit": null,
+        "rationale": "Кисть, валик, распылитель или ограничения конкретного SKU."
+      },
+      {
+        "code": "substrates",
+        "label": "Основания",
+        "dataType": "text",
+        "unit": null,
+        "rationale": "Существующего определения нет; не создавать дубликаты при проверке общего каталога."
+      },
+      {
+        "code": "consumption",
+        "label": "Расход",
+        "dataType": "text",
+        "unit": "л/м² или кг/м²",
+        "rationale": "Диапазоны и зависимость от впитываемости должны храниться как TEXT."
+      },
+      {
+        "code": "drying_time",
+        "label": "Время высыхания",
+        "dataType": "text",
+        "unit": null,
+        "rationale": "Диапазоны, условия и qualifiers требуют TEXT."
+      },
+      {
+        "code": "dilution_ratio",
+        "label": "Разбавление",
+        "dataType": "text",
+        "unit": null,
+        "rationale": "Концентраты имеют соотношения 1:3, 1:5 и зависящие от основания варианты."
+      },
+      {
+        "code": "concentrate",
+        "label": "Концентрат",
+        "dataType": "boolean",
+        "unit": null,
+        "rationale": "Отличает готовые составы от концентратов; применять только при подтверждении source."
+      }
+    ],
+    "decision": "Definitions are proposed only. No schema, template or DB mutation was performed."
+  },
+  "summary": {
+    "totalProducts": 20,
+    "fullySourced": 13,
+    "partiallySourced": 3,
+    "identityBlocked": 4,
+    "titleDiscrepancies": 9,
+    "photo": {
+      "readySource": 13,
+      "readySourceSecondary": 2,
+      "lowQuality": 0,
+      "wrongVariant": 0,
+      "variantUnclear": 5,
+      "notFound": 0,
+      "protectedExistingReal": 0
+    }
+  },
+  "products": [
+    {
+      "externalId": "MAT-000227",
+      "productId": 198,
+      "currentTitle": "Грунтовка Knauf Тифенгрунд 5 л",
+      "slug": "грунтовка-knauf-тифенгрунд-5-л",
+      "dbBrand": null,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "price": 766.5,
+      "dbWeight": 5,
+      "unit": "шт",
+      "currentImageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+      "primaryImage": null,
+      "galleryCount": 0,
+      "canonicalIdentity": "КНАУФ-Тифенгрунд, готовая укрепляющая грунтовка глубокого проникновения, 5 кг/л variant",
+      "canonicalBrand": "KNAUF",
+      "titleStatus": "MATCH",
+      "sourceCoverage": "FULLY_SOURCED",
+      "sourceUrls": [
+        "https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/gruntovki/knauf-tifengrund/"
+      ],
+      "sourceLevel": "official manufacturer",
+      "package": "5 kg (local title uses 5 l; official page exposes 5 and 10 kg)",
+      "facts": {
+        "form": "готовая к применению жидкость",
+        "base": "полимерная дисперсия",
+        "purpose": "укрепление основания, снижение впитываемости, улучшение адгезии",
+        "applicationArea": "внутренние и наружные работы",
+        "substrates": "ГКЛ/ГВЛ, гипсовые и цементные штукатурки, ПГП, стяжки",
+        "consumption": "0,1 кг/м²",
+        "dryingTime": "3 часа",
+        "color": "белый",
+        "shelfLife": "12 месяцев"
+      },
+      "needsSource": [
+        "точная единица объёма для local title 5 л versus official 5 кг"
+      ],
+      "photo": {
+        "status": "READY_SOURCE",
+        "officialPage": "https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/gruntovki/knauf-tifengrund/",
+        "imageUrl": "https://www.knauf.ru/upload/iv_resize/detail_page/original/iblock/29a/55x9do76h9yl4e2vsyr1q0uv4snnyxxe/Vedro-Tifengrund-10-kg-_40_Gbg.webp",
+        "dimensions": "not fetched",
+        "watermark": "not assessed from bytes; official media",
+        "variantConfidence": "high family, package image candidate is 10 kg and must not be reused for 5 l without exact 5-unit asset"
+      }
+    },
+    {
+      "externalId": "MAT-000228",
+      "productId": 199,
+      "currentTitle": "Грунтовка Knauf Тифенгрунд 10 л",
+      "slug": "грунтовка-knauf-тифенгрунд-10-л",
+      "dbBrand": null,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "price": 1102.5,
+      "dbWeight": 10,
+      "unit": "шт",
+      "currentImageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+      "primaryImage": null,
+      "galleryCount": 0,
+      "canonicalIdentity": "КНАУФ-Тифенгрунд, готовая укрепляющая грунтовка глубокого проникновения, 10 kg",
+      "canonicalBrand": "KNAUF",
+      "titleStatus": "MATCH",
+      "sourceCoverage": "FULLY_SOURCED",
+      "sourceUrls": [
+        "https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/gruntovki/knauf-tifengrund/"
+      ],
+      "sourceLevel": "official manufacturer",
+      "package": "10 kg official; local title says 10 l",
+      "facts": {
+        "form": "готовая к применению жидкость",
+        "base": "полимерная дисперсия",
+        "purpose": "укрепление основания, снижение впитываемости, улучшение адгезии",
+        "applicationArea": "внутренние и наружные работы",
+        "substrates": "ГКЛ/ГВЛ, гипсовые и цементные штукатурки, ПГП, стяжки",
+        "consumption": "0,1 кг/м²",
+        "dryingTime": "3 часа",
+        "color": "белый",
+        "shelfLife": "12 месяцев"
+      },
+      "needsSource": [
+        "единица local title (л) versus official package field (кг) should be resolved before write"
+      ],
+      "photo": {
+        "status": "READY_SOURCE",
+        "officialPage": "https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/gruntovki/knauf-tifengrund/",
+        "imageUrl": "https://www.knauf.ru/upload/iv_resize/detail_page/original/iblock/29a/55x9do76h9yl4e2vsyr1q0uv4snnyxxe/Vedro-Tifengrund-10-kg-_40_Gbg.webp",
+        "dimensions": "not fetched",
+        "watermark": "not assessed from bytes; official media",
+        "variantConfidence": "high"
+      }
+    },
+    {
+      "externalId": "MAT-000229",
+      "productId": 200,
+      "currentTitle": "Грунтовка Knauf Тифенгрунд морозостойкая (до -40) 10 л",
+      "slug": "грунтовка-knauf-тифенгрунд-морозостойкая-до-40-10-л",
+      "dbBrand": null,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "price": null,
+      "dbWeight": 10,
+      "unit": "шт",
+      "currentImageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+      "primaryImage": null,
+      "galleryCount": 0,
+      "canonicalIdentity": "КНАУФ-Тифенгрунд, 10 kg, optional frost-resistant transport variant",
+      "canonicalBrand": "KNAUF",
+      "titleStatus": "POSSIBLE_ERROR",
+      "sourceCoverage": "PARTIALLY_SOURCED",
+      "sourceUrls": [
+        "https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/gruntovki/knauf-tifengrund/"
+      ],
+      "sourceLevel": "official manufacturer",
+      "package": "official page lists 5 and 10 kg; separate SKU for ‘до -40’ not exposed",
+      "facts": {
+        "form": "готовая к применению жидкость",
+        "base": "полимерная дисперсия",
+        "purpose": "укрепление основания, снижение впитываемости, улучшение адгезии",
+        "applicationArea": "внутренние и наружные работы",
+        "consumption": "0,1 кг/м²",
+        "dryingTime": "3 часа",
+        "color": "белый",
+        "shelfLife": "12 месяцев",
+        "frost": "official page says optional 5 cycles; does not establish exact separate -40 SKU"
+      },
+      "needsSource": [
+        "exact SKU/packaging proof for the frozen-resistant 10 l title variant"
+      ],
+      "photo": {
+        "status": "VARIANT_UNCLEAR",
+        "officialPage": "https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/gruntovki/knauf-tifengrund/",
+        "imageUrl": "https://www.knauf.ru/upload/iv_resize/detail_page/original/iblock/29a/55x9do76h9yl4e2vsyr1q0uv4snnyxxe/Vedro-Tifengrund-10-kg-_40_Gbg.webp",
+        "dimensions": "not fetched",
+        "watermark": "not assessed from bytes; official media",
+        "variantConfidence": "medium; frost variant not separated from standard image"
+      },
+      "resolutionStatus": "IDENTITY_BLOCKED",
+      "resolutionIdentity": "KNAUF Tiefengrund family only; exact “морозостойкая до -40” SKU not proven",
+      "resolutionReason": "Family-level KNAUF source is insufficient to identify the frost-resistant -40 variant.",
+      "inventoryDiscrepancy": "products.weight=10 is only local numeric context"
+    },
+    {
+      "externalId": "MAT-000230",
+      "productId": 201,
+      "currentTitle": "Грунтовка Knauf Мульти Грунд универсальный 10 л",
+      "slug": "грунтовка-knauf-мульти-грунд-универсальный-10-л",
+      "dbBrand": null,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "price": 1732.5,
+      "dbWeight": 10,
+      "unit": "шт",
+      "currentImageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+      "primaryImage": null,
+      "galleryCount": 0,
+      "canonicalIdentity": "КНАУФ-Мультигрунд, универсальная готовая грунтовка для впитывающих оснований, 10 kg",
+      "canonicalBrand": "KNAUF",
+      "titleStatus": "MINOR_NAMING_DIFFERENCE",
+      "sourceCoverage": "FULLY_SOURCED",
+      "sourceUrls": [
+        "https://www.knauf.ru/catalog/gruntovki/knauf-multigrund/"
+      ],
+      "sourceLevel": "official manufacturer",
+      "package": "10 kg official; local spelling ‘Мульти Грунд’ and unit l",
+      "facts": {
+        "form": "готовая к применению",
+        "base": "полимерная дисперсия",
+        "purpose": "снижение и регулирование впитываемости, улучшение адгезии",
+        "applicationArea": "внутренние и наружные работы",
+        "substrates": "газо- и пенобетон, кирпич, штукатурки, стяжки",
+        "consumption": "0,2 кг/м²",
+        "dryingTime": "6 часов",
+        "color": "желтый",
+        "shelfLife": "12 месяцев"
+      },
+      "needsSource": [
+        "local l/kg unit normalization"
+      ],
+      "photo": {
+        "status": "READY_SOURCE",
+        "officialPage": "https://www.knauf.ru/catalog/gruntovki/knauf-multigrund/",
+        "imageUrl": "https://www.knauf.ru/upload/iv_resize/detail_page/original/iblock/760/mhbl3w3d1flfv9e8fen3upgy8wueh879/KNF_1223.webp",
+        "dimensions": "not fetched",
+        "watermark": "not assessed from bytes; official media",
+        "variantConfidence": "high"
+      }
+    },
+    {
+      "externalId": "MAT-000231",
+      "productId": 202,
+      "currentTitle": "Грунтовка Ceresit CT-17 PRO, 5л",
+      "slug": "грунтовка-ceresit-ct-17-pro-5л",
+      "dbBrand": null,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "price": 724.5,
+      "dbWeight": 5,
+      "unit": "шт",
+      "currentImageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+      "primaryImage": null,
+      "galleryCount": 0,
+      "canonicalIdentity": "Ceresit CT 17 PRO, universal deep-penetrating water-dispersion primer, 5 l",
+      "canonicalBrand": "Ceresit",
+      "titleStatus": "MATCH",
+      "sourceCoverage": "FULLY_SOURCED",
+      "sourceUrls": [
+        "https://www.ceresit.ru/ru/products/tiling/supplementary-materials/ct_17_pro"
+      ],
+      "sourceLevel": "official manufacturer",
+      "package": "5 l local variant; official page describes CT 17 PRO and package family",
+      "facts": {
+        "form": "готовая к применению жидкость",
+        "base": "водная дисперсия сополимеров акрилатов",
+        "purpose": "укрепление, связывание пыли, снижение впитываемости, повышение адгезии",
+        "applicationArea": "внутренние и наружные работы",
+        "substrates": "цементные, известковые и гипсовые штукатурки, стяжки, бетон, кирпич, ГКЛ, ДСП/ДВП",
+        "consumption": "0,1–0,2 л/м²",
+        "dryingTime": "до 2 часов",
+        "applicationTemperature": "0…+35 °C",
+        "color": "светло-желтый"
+      },
+      "needsSource": [],
+      "photo": {
+        "status": "READY_SOURCE",
+        "officialPage": "https://www.ceresit.ru/ru/products/tiling/supplementary-materials/ct_17_pro",
+        "imageUrl": null,
+        "dimensions": "not fetched",
+        "watermark": "not assessed",
+        "variantConfidence": "high family; exact 5 l image still needs pack-specific download check"
+      }
+    },
+    {
+      "externalId": "MAT-000232",
+      "productId": 203,
+      "currentTitle": "Грунтовка Ceresit CT-17 PRO, 10л",
+      "slug": "грунтовка-ceresit-ct-17-pro-10л",
+      "dbBrand": null,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "price": 1102.5,
+      "dbWeight": 10,
+      "unit": "шт",
+      "currentImageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+      "primaryImage": null,
+      "galleryCount": 0,
+      "canonicalIdentity": "Ceresit CT 17 PRO, universal deep-penetrating water-dispersion primer, 10 l",
+      "canonicalBrand": "Ceresit",
+      "titleStatus": "MATCH",
+      "sourceCoverage": "FULLY_SOURCED",
+      "sourceUrls": [
+        "https://www.ceresit.ru/ru/products/tiling/supplementary-materials/ct_17_pro"
+      ],
+      "sourceLevel": "official manufacturer",
+      "package": "10 l local variant",
+      "facts": {
+        "form": "готовая к применению жидкость",
+        "base": "водная дисперсия сополимеров акрилатов",
+        "purpose": "укрепление, связывание пыли, снижение впитываемости, повышение адгезии",
+        "applicationArea": "внутренние и наружные работы",
+        "substrates": "цементные, известковые и гипсовые штукатурки, стяжки, бетон, кирпич, ГКЛ, ДСП/ДВП",
+        "consumption": "0,1–0,2 л/м²",
+        "dryingTime": "до 2 часов",
+        "applicationTemperature": "0…+35 °C",
+        "color": "светло-желтый"
+      },
+      "needsSource": [],
+      "photo": {
+        "status": "READY_SOURCE",
+        "officialPage": "https://www.ceresit.ru/ru/products/tiling/supplementary-materials/ct_17_pro",
+        "imageUrl": null,
+        "dimensions": "not fetched",
+        "watermark": "not assessed",
+        "variantConfidence": "high"
+      }
+    },
+    {
+      "externalId": "MAT-000233",
+      "productId": 204,
+      "currentTitle": "Грунтовка Ceresit CT16 под декоративную штукатурку 10 л",
+      "slug": "грунтовка-ceresit-ct16-под-декоративную штукатурку-10-л",
+      "dbBrand": null,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "price": null,
+      "dbWeight": 10,
+      "unit": "шт",
+      "currentImageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+      "primaryImage": null,
+      "galleryCount": 0,
+      "canonicalIdentity": "Ceresit CT 16, ready-to-use quartz-filled primer under decorative plasters, 10 l",
+      "canonicalBrand": "Ceresit",
+      "titleStatus": "MATCH",
+      "sourceCoverage": "FULLY_SOURCED",
+      "sourceUrls": [
+        "https://dm.henkel-dam.com/is/content/henkel/tds-ru-ceresit-ct16pdf",
+        "https://www.ceresit.ru/ru/products/etics/facade-plasters"
+      ],
+      "sourceLevel": "official manufacturer TDS",
+      "package": "10 l; official TDS lists 5 and 10 l",
+      "facts": {
+        "form": "готовая к применению густая жидкость",
+        "base": "водная дисперсия полимеров с пигментами и минеральными наполнителями",
+        "purpose": "подготовка перед декоративными штукатурками, повышение адгезии",
+        "applicationArea": "внутренние и наружные работы",
+        "substrates": "бетон, цементные/гипсовые/цементно-известковые штукатурки, ГКЛ, ДСП, прочные ЛКМ",
+        "consumption": "0,2–0,5 л/м²",
+        "dryingTime": "около 3 часов",
+        "applicationTemperature": "+5…+30 °C",
+        "shelfLife": "12 месяцев",
+        "color": "белый, может колероваться"
+      },
+      "needsSource": [],
+      "photo": {
+        "status": "READY_SOURCE",
+        "officialPage": "https://www.ceresit.ru/ru/products/etics/facade-plasters",
+        "imageUrl": null,
+        "dimensions": "not fetched",
+        "watermark": "not assessed",
+        "variantConfidence": "high"
+      }
+    },
+    {
+      "externalId": "MAT-000234",
+      "productId": 205,
+      "currentTitle": "Грунт Litokol PRIMER A универсальный укрепляющий 10 л",
+      "slug": "грунт-litokol-primer-a-универсальный-укрепляющий-10-л",
+      "dbBrand": null,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "price": 787.5,
+      "dbWeight": 10,
+      "unit": "шт",
+      "currentImageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+      "primaryImage": null,
+      "galleryCount": 0,
+      "canonicalIdentity": "LITOKOL Primer A, universal ready-to-use water-based primer, 10 kg package",
+      "canonicalBrand": "LITOKOL",
+      "titleStatus": "POSSIBLE_ERROR",
+      "sourceCoverage": "PARTIALLY_SOURCED",
+      "sourceUrls": [
+        "https://www.litokol.ru/catalog/primer-a/"
+      ],
+      "sourceLevel": "official manufacturer",
+      "package": "official page lists 10 kg; local title says 10 l",
+      "facts": {
+        "form": "готовая к применению",
+        "base": "водная основа; точная химическая база в source не заявлена как acrylic in the title",
+        "purpose": "подготовка оснований перед окраской, обоями, плиткой, штукатуркой и шпаклевкой",
+        "applicationArea": "внутренние и наружные работы",
+        "substrates": "бетон, цементные/известковые штукатурки и шпаклевки, кирпич, ГКЛ/ГВЛ, цементные листовые материалы",
+        "consumption": "от 100 г/м²",
+        "dryingTime": "2–4 часа",
+        "applicationTemperature": "+5…+35 °C",
+        "color": "голубой",
+        "shelfLife": "12 месяцев"
+      },
+      "needsSource": [
+        "resolve official package unit 10 kg versus local 10 l before writing package field"
+      ],
+      "photo": {
+        "status": "READY_SOURCE",
+        "officialPage": "https://www.litokol.ru/catalog/primer-a/",
+        "imageUrl": null,
+        "dimensions": "not fetched",
+        "watermark": "not assessed",
+        "variantConfidence": "high family, package unit conflict remains"
+      },
+      "resolutionStatus": "PARTIALLY_RESOLVED",
+      "resolutionIdentity": "LITOKOL Primer A, exact product family confirmed; package unit remains unresolved",
+      "resolutionReason": "Official LITOKOL page confirms Primer A and 10 kg, but does not prove that the local 10 l nomenclature is the same commercial unit.",
+      "inventoryDiscrepancy": "products.weight=10 matches numeric local quantity but unit is not independently proven; official package is kg, title is l"
+    },
+    {
+      "externalId": "MAT-000235",
+      "productId": 206,
+      "currentTitle": "Грунтовка Старатели универсальная 10 л",
+      "slug": "грунтовка-старатели-универсальная-10-л",
+      "dbBrand": null,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "price": 682.5,
+      "dbWeight": 10,
+      "unit": "шт",
+      "currentImageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+      "primaryImage": null,
+      "galleryCount": 0,
+      "canonicalIdentity": "Старатели Грунтовка Универсальная, 10 литров",
+      "canonicalBrand": "Старатели",
+      "titleStatus": "MATCH",
+      "sourceCoverage": "FULLY_SOURCED",
+      "sourceUrls": [
+        "https://www.starateli.ru/gruntovka_universalnaya/",
+        "https://www.market.starateli.ru/products/gruntovki/gruntovka-universalnaya/"
+      ],
+      "sourceLevel": "official manufacturer",
+      "package": "10 l",
+      "facts": {
+        "form": "готовая к применению",
+        "base": "водная грунтовка; exact binder not stated in the product page",
+        "purpose": "увеличение сцепления, обеспыливание, регулирование впитываемости, подготовка стен/потолков/полов",
+        "applicationArea": "внутренние и наружные работы",
+        "substrates": "поверхности стен, потолков и полов; exact substrate list needs TDS",
+        "consumption": "100–200 мл/м²",
+        "dryingTime": "не менее 1 часа",
+        "applicationTemperature": "+5…+30 °C",
+        "color": "прозрачный после высыхания",
+        "shelfLife": "18 месяцев"
+      },
+      "needsSource": [
+        "full technical sheet for exact binder and complete substrate list"
+      ],
+      "photo": {
+        "status": "READY_SOURCE",
+        "officialPage": "https://www.starateli.ru/gruntovki/",
+        "imageUrl": null,
+        "dimensions": "not fetched",
+        "watermark": "not assessed",
+        "variantConfidence": "high"
+      }
+    },
+    {
+      "externalId": "MAT-000236",
+      "productId": 207,
+      "currentTitle": "Грунтовка UNIS глубокого проникновения укрепляющий 10 л",
+      "slug": "грунтовка-unis-глубокого-проникновения-укрепляющий-10-л",
+      "dbBrand": null,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "price": 892.5,
+      "dbWeight": 10,
+      "unit": "шт",
+      "currentImageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+      "primaryImage": null,
+      "galleryCount": 0,
+      "canonicalIdentity": "UNIS Грунт глубокого проникновения, ready acrylic polymer primer, 10 l",
+      "canonicalBrand": "UNIS",
+      "titleStatus": "MINOR_NAMING_DIFFERENCE",
+      "sourceCoverage": "FULLY_SOURCED",
+      "sourceUrls": [
+        "https://unistrom.ru/catalog/grunty/gruntovki-10-litrov/",
+        "https://www.unimart24.ru/product/gruntovka-glubokogo-proniknoveniya-unis-kanistra-10-l/"
+      ],
+      "sourceLevel": "manufacturer catalog plus reliable retailer",
+      "package": "10 l",
+      "facts": {
+        "form": "готовый к применению",
+        "base": "акриловый полимер",
+        "purpose": "укрепление рыхлых/мелящих/сильновпитывающих оснований, обеспыливание",
+        "applicationArea": "внутренние и наружные работы according to catalog filters",
+        "substrates": "mineral absorbent substrates; exact list needs product TDS",
+        "consumption": "около 100 мл/м²",
+        "dryingTime": "около 3 часов",
+        "applicationTemperature": "+5…+30 °C",
+        "shelfLife": "12 месяцев"
+      },
+      "needsSource": [
+        "exact official product page/TDS linked to local ‘укрепляющий’ wording"
+      ],
+      "photo": {
+        "status": "READY_SOURCE_SECONDARY",
+        "officialPage": "https://unistrom.ru/catalog/grunty/gruntovki-10-litrov/",
+        "imageUrl": null,
+        "secondaryPage": "https://www.unimart24.ru/product/gruntovka-glubokogo-proniknoveniya-unis-kanistra-10-l/",
+        "dimensions": "not fetched",
+        "watermark": "not assessed",
+        "variantConfidence": "medium-high"
+      }
+    },
+    {
+      "externalId": "MAT-000237",
+      "productId": 208,
+      "currentTitle": "Грунтовка Oscar глубокого проникновения 10 л",
+      "slug": "грунтовка-oscar-глубокого-проникновения-10-л",
+      "dbBrand": null,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "price": 1060.5,
+      "dbWeight": 10,
+      "unit": "шт",
+      "currentImageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+      "primaryImage": null,
+      "galleryCount": 0,
+      "canonicalIdentity": "Oscar G os-10kg, latex deep-penetrating strengthening primer, 10 kg",
+      "canonicalBrand": "Oscar / Alaxar",
+      "titleStatus": "POSSIBLE_ERROR",
+      "sourceCoverage": "PARTIALLY_SOURCED",
+      "sourceUrls": [
+        "https://support.alaxar.ru/produktsiya/katalog/gruntovka-2/dlya-naruzhnyh-rabot.html",
+        "https://itelgroup-bucket.storage.yandexcloud.net/Production/exb_doc/2032/4956/%D0%9F%D1%80%D0%B0%D0%B9%D1%81-%D0%BA%D0%B0%D1%82%D0%B0%D0%BB%D0%BE%D0%B3_300425_preview2.pdf"
+      ],
+      "sourceLevel": "brand support/catalog",
+      "package": "official support says 10 kg in sealed bucket; local title says 10 l",
+      "facts": {
+        "form": "готовая к применению",
+        "base": "латексная",
+        "purpose": "укрепление осыпающихся оснований, снижение впитываемости, улучшение адгезии",
+        "applicationArea": "внутренние и наружные работы",
+        "substrates": "бетон, гипсовые и цементные штукатурки/стяжки, ГКЛ/ГВЛ, ПГП, кирпич",
+        "consumption": "100–250 г/м²",
+        "dryingTime": "source variants 2–4 часа; exact current TDS should be selected",
+        "applicationTemperature": "+5…+35 °C",
+        "shelfLife": "3 года in brand support"
+      },
+      "needsSource": [
+        "resolve kg/l unit and select one current technical sheet revision"
+      ],
+      "photo": {
+        "status": "READY_SOURCE_SECONDARY",
+        "officialPage": "https://support.alaxar.ru/produktsiya/katalog/gruntovka-2/dlya-naruzhnyh-rabot.html",
+        "imageUrl": null,
+        "secondaryPage": "https://moscow.petrovich.ru/product/622085/",
+        "dimensions": "not fetched",
+        "watermark": "not assessed",
+        "variantConfidence": "medium-high"
+      },
+      "resolutionStatus": "PARTIALLY_RESOLVED",
+      "resolutionIdentity": "Oscar G os-10kg, latex deep-penetration primer; exact family supported by brand support",
+      "resolutionReason": "Brand support identifies G os-10kg, but the local 10 l title cannot be safely normalized to kg or volume.",
+      "inventoryDiscrepancy": "products.weight=10 matches numeric local quantity but unit is not independently proven; official package is kg, title is l"
+    },
+    {
+      "externalId": "MAT-000238",
+      "productId": 209,
+      "currentTitle": "Грунтовка Акрил 5 л",
+      "slug": "грунтовка-акрил-5-л",
+      "dbBrand": null,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "price": 315,
+      "dbWeight": 5,
+      "unit": "шт",
+      "currentImageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+      "primaryImage": null,
+      "galleryCount": 0,
+      "canonicalIdentity": null,
+      "canonicalBrand": null,
+      "titleStatus": "IDENTITY_CONFLICT",
+      "sourceCoverage": "IDENTITY_BLOCKED",
+      "sourceUrls": [],
+      "sourceLevel": "none",
+      "package": "5 l stated only by local title",
+      "facts": {},
+      "needsSource": [
+        "manufacturer/brand, exact product family, binder and current technical sheet"
+      ],
+      "photo": {
+        "status": "VARIANT_UNCLEAR",
+        "officialPage": null,
+        "imageUrl": null,
+        "dimensions": "not available",
+        "watermark": "unknown",
+        "variantConfidence": "none"
+      },
+      "resolutionStatus": "IDENTITY_BLOCKED",
+      "resolutionIdentity": null,
+      "resolutionReason": "Generic title/slug/category and local source=excel contain no manufacturer or model marker; historical repo/import search found no additional identity.",
+      "inventoryDiscrepancy": "products.weight=5 is only local numeric context"
+    },
+    {
+      "externalId": "MAT-000239",
+      "productId": 210,
+      "currentTitle": "Грунтовка Акрил 10 л",
+      "slug": "грунтовка-акрил-10-л",
+      "dbBrand": null,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "price": 504,
+      "dbWeight": 10,
+      "unit": "шт",
+      "currentImageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+      "primaryImage": null,
+      "galleryCount": 0,
+      "canonicalIdentity": null,
+      "canonicalBrand": null,
+      "titleStatus": "IDENTITY_CONFLICT",
+      "sourceCoverage": "IDENTITY_BLOCKED",
+      "sourceUrls": [],
+      "sourceLevel": "none",
+      "package": "10 l stated only by local title",
+      "facts": {},
+      "needsSource": [
+        "manufacturer/brand, exact product family, binder and current technical sheet"
+      ],
+      "photo": {
+        "status": "VARIANT_UNCLEAR",
+        "officialPage": null,
+        "imageUrl": null,
+        "dimensions": "not available",
+        "watermark": "unknown",
+        "variantConfidence": "none"
+      },
+      "resolutionStatus": "IDENTITY_BLOCKED",
+      "resolutionIdentity": null,
+      "resolutionReason": "Generic title/slug/category and local source=excel contain no manufacturer or model marker; historical repo/import search found no additional identity.",
+      "inventoryDiscrepancy": "products.weight=10 is only local numeric context"
+    },
+    {
+      "externalId": "MAT-000240",
+      "productId": 211,
+      "currentTitle": "Грунтовка Knauf Миттельгрунд для впитывающих оснований концентрат 10 л",
+      "slug": "грунтовка-knauf-миттельгрунд-для-впитывающих-оснований-концентрат-10-л",
+      "dbBrand": null,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "price": 3360,
+      "dbWeight": 10,
+      "unit": "шт",
+      "currentImageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+      "primaryImage": null,
+      "galleryCount": 0,
+      "canonicalIdentity": "КНАУФ-Миттельгрунд, universal primer concentrate for absorbent substrates, 10 kg",
+      "canonicalBrand": "KNAUF",
+      "titleStatus": "MINOR_NAMING_DIFFERENCE",
+      "sourceCoverage": "FULLY_SOURCED",
+      "sourceUrls": [
+        "https://www.knauf.ru/catalog/gruntovki/knauf-mittelgrund/"
+      ],
+      "sourceLevel": "official manufacturer",
+      "package": "10 kg official; local title says 10 l",
+      "facts": {
+        "form": "концентрат",
+        "base": "полимерная дисперсия с желтым пигментом",
+        "purpose": "снижение и регулирование впитываемости, подготовка под штукатурки, плитку, стяжки",
+        "applicationArea": "внутренние и наружные работы",
+        "substrates": "газо- и пенобетон, кирпич, штукатурки, бетонные/гипсовые стяжки",
+        "consumption": "0,05 кг/м² концентрата; solution varies by substrate",
+        "dryingTime": "6 часов",
+        "dilutionRatio": "1:3 to 1:5 depending on substrate",
+        "color": "желтый",
+        "shelfLife": "12 месяцев"
+      },
+      "needsSource": [
+        "local l/kg unit normalization"
+      ],
+      "photo": {
+        "status": "READY_SOURCE",
+        "officialPage": "https://www.knauf.ru/catalog/gruntovki/knauf-mittelgrund/",
+        "imageUrl": "https://www.knauf.ru/upload/iv_resize/detail_page/original/iblock/7b0/29vjnk67n2b13i3k32kpvt81wa3epmoe/Vedro_Mittelgrund_10_kg_17_03_2023_Oborot_1000x1000_v01.webp",
+        "dimensions": "not fetched",
+        "watermark": "not assessed from bytes; official media",
+        "variantConfidence": "high"
+      }
+    },
+    {
+      "externalId": "MAT-000241",
+      "productId": 212,
+      "currentTitle": "Грунт Tikkurila Euro Primer концентрат 0,9 л",
+      "slug": "грунт-tikkurila-euro-primer-концентрат-0-9-л",
+      "dbBrand": null,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "price": null,
+      "dbWeight": 1,
+      "unit": "шт",
+      "currentImageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+      "primaryImage": null,
+      "galleryCount": 0,
+      "canonicalIdentity": "Tikkurila Euro Primer, acrylic strengthening deep-penetration concentrate 0.9 l",
+      "canonicalBrand": "Tikkurila",
+      "titleStatus": "MATCH",
+      "sourceCoverage": "FULLY_SOURCED",
+      "sourceUrls": [
+        "https://tikkurila-russia.ru/tikkurila-euro-primer",
+        "https://tikkurila-color.ru/upload/iblock/b78/8ru2u12d2dcid0ndjs6k284anryu30xu.pdf"
+      ],
+      "sourceLevel": "official regional distributor/catalog PDF",
+      "package": "0.9 l",
+      "facts": {
+        "form": "концентрат 1:3",
+        "base": "акрилатная",
+        "purpose": "укрепление пористых оснований и выравнивание впитываемости перед окраской",
+        "applicationArea": "внутренние и наружные работы",
+        "substrates": "штукатурка, кирпич, бетон, ГКЛ, газобетон, гипсовые материалы, ДВП/ДСП",
+        "consumption": "5–14 м²/л",
+        "dryingTime": "1–1,5 часа between/next coat per source revision",
+        "color": "бесцветный or package-dependent source variant",
+        "dilutionRatio": "1:3",
+        "shelfLife": "24 месяца in catalog"
+      },
+      "needsSource": [],
+      "photo": {
+        "status": "READY_SOURCE",
+        "officialPage": "https://tikkurila-russia.ru/tikkurila-euro-primer",
+        "imageUrl": null,
+        "dimensions": "not fetched",
+        "watermark": "not assessed",
+        "variantConfidence": "high exact 0.9 l variant listed"
+      }
+    },
+    {
+      "externalId": "MAT-000242",
+      "productId": 213,
+      "currentTitle": "Грунт Tikkurila Euro Primer концентрат 3 л",
+      "slug": "грунт-tikkurila-euro-primer-концентрат-3-л",
+      "dbBrand": null,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "price": null,
+      "dbWeight": 3,
+      "unit": "шт",
+      "currentImageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+      "primaryImage": null,
+      "galleryCount": 0,
+      "canonicalIdentity": "Tikkurila Euro Primer, acrylic strengthening deep-penetration concentrate 3 l",
+      "canonicalBrand": "Tikkurila",
+      "titleStatus": "MATCH",
+      "sourceCoverage": "FULLY_SOURCED",
+      "sourceUrls": [
+        "https://tikkurila-russia.ru/tikkurila-euro-primer",
+        "https://tikkurila-color.ru/upload/iblock/b78/8ru2u12d2dcid0ndjs6k284anryu30xu.pdf"
+      ],
+      "sourceLevel": "official regional distributor/catalog PDF",
+      "package": "3 l",
+      "facts": {
+        "form": "концентрат 1:3",
+        "base": "акрилатная",
+        "purpose": "укрепление пористых оснований и выравнивание впитываемости перед окраской",
+        "applicationArea": "внутренние и наружные работы",
+        "substrates": "штукатурка, кирпич, бетон, ГКЛ, газобетон, гипсовые материалы, ДВП/ДСП",
+        "consumption": "5–14 м²/л",
+        "dryingTime": "1–1,5 часа between/next coat per source revision",
+        "color": "бесцветный or package-dependent source variant",
+        "dilutionRatio": "1:3",
+        "shelfLife": "24 месяца in catalog"
+      },
+      "needsSource": [],
+      "photo": {
+        "status": "READY_SOURCE",
+        "officialPage": "https://tikkurila-russia.ru/tikkurila-euro-primer",
+        "imageUrl": null,
+        "dimensions": "not fetched",
+        "watermark": "not assessed",
+        "variantConfidence": "high exact 3 l variant listed"
+      }
+    },
+    {
+      "externalId": "MAT-000243",
+      "productId": 214,
+      "currentTitle": "Грунт адгезионный Forbo Eurocol 044, концентрат 1:2 10 кг",
+      "slug": "грунт-адгезионный-forbo-eurocol-044-концентрат-1-2-10-кг",
+      "dbBrand": null,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "price": null,
+      "dbWeight": 3,
+      "unit": "шт",
+      "currentImageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+      "primaryImage": null,
+      "galleryCount": 0,
+      "canonicalIdentity": "Forbo Eurocol 044 Europrimer Multi, acrylic dispersion concentrate, 10 kg",
+      "canonicalBrand": "Forbo Eurocol",
+      "titleStatus": "MATCH",
+      "sourceCoverage": "FULLY_SOURCED",
+      "sourceUrls": [
+        "https://www.forbo.com/eurocol/ru/044-europrimer-multi/ewr8vw"
+      ],
+      "sourceLevel": "official manufacturer",
+      "package": "10 kg official; local DB weight field is stale 3 and must not be used as identity",
+      "facts": {
+        "form": "концентрат",
+        "base": "акриловая дисперсия",
+        "purpose": "универсальная грунтовка для впитывающих и невпитывающих минеральных оснований перед шпатлевочными/клеевыми работами",
+        "applicationArea": "внутренние и наружные работы",
+        "substrates": "цементные стяжки, гипсовые поверхности, бетон, керамика и другие минеральные основания",
+        "consumption": "50–150 г/м²",
+        "dryingTime": "30–60 минут to 15 hours depending on dilution/substrate",
+        "dilutionRatio": "varies by substrate; official page lists 1:1, 1:2, 1:5 cases",
+        "color": "белый",
+        "shelfLife": "not confirmed on product page"
+      },
+      "needsSource": [
+        "reconcile products.weight=3 with title/source 10 kg; do not infer volume"
+      ],
+      "photo": {
+        "status": "READY_SOURCE",
+        "officialPage": "https://www.forbo.com/eurocol/ru/044-europrimer-multi/ewr8vw",
+        "imageUrl": null,
+        "dimensions": "not fetched",
+        "watermark": "not assessed",
+        "variantConfidence": "high exact 044 and 10 kg"
+      },
+      "resolutionStatus": "IDENTITY_RESOLVED",
+      "resolutionIdentity": "Forbo Eurocol 044 Europrimer Multi",
+      "resolutionReason": "Official product page directly identifies 044 Europrimer Multi and 10 kg. No evidence supports weight=3.",
+      "inventoryDiscrepancy": "products.weight=3 conflicts with exact title and official 10 kg package; likely corrupted/stale inventory field, but no source proves why it is 3"
+    },
+    {
+      "externalId": "MAT-000244",
+      "productId": 215,
+      "currentTitle": "Грунтовка Forbo 041 Europrimer EC, для укладки токопроводящих и антистатических покрытий 10 кг",
+      "slug": "грунтовка-forbo-041-europrimer-ec-для-укладки-токопроводящих-и-антистатических-покрытий-10-кг",
+      "dbBrand": null,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "price": null,
+      "dbWeight": 3,
+      "unit": "шт",
+      "currentImageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+      "primaryImage": null,
+      "galleryCount": 0,
+      "canonicalIdentity": "Forbo Eurocol 041 Europrimer EC, ready-to-use conductive acrylic primer, 10 kg",
+      "canonicalBrand": "Forbo Eurocol",
+      "titleStatus": "MATCH",
+      "sourceCoverage": "FULLY_SOURCED",
+      "sourceUrls": [
+        "https://www.forbo.com/eurocol/ru/041-europrimer-ec/e3spag"
+      ],
+      "sourceLevel": "official manufacturer",
+      "package": "10 kg official; local DB weight field is stale 3",
+      "facts": {
+        "form": "готовая к применению",
+        "base": "акриловая дисперсия with carbon black",
+        "purpose": "создание поперечной токопроводимости under conductive adhesive and flooring systems",
+        "applicationArea": "внутренние работы",
+        "substrates": "prepared absorbent subfloors; exact local substrate list needs technical sheet",
+        "consumption": "100–150 г/м²",
+        "dryingTime": "not stated as one generic value",
+        "applicationTemperature": "material/subfloor 15–20 °C; room >=18 °C",
+        "color": "черный"
+      },
+      "needsSource": [
+        "reconcile products.weight=3 with title/source 10 kg"
+      ],
+      "photo": {
+        "status": "READY_SOURCE",
+        "officialPage": "https://www.forbo.com/eurocol/ru/041-europrimer-ec/e3spag",
+        "imageUrl": null,
+        "dimensions": "not fetched",
+        "watermark": "not assessed",
+        "variantConfidence": "high exact 041 and 10 kg"
+      },
+      "resolutionStatus": "IDENTITY_RESOLVED",
+      "resolutionIdentity": "Forbo Eurocol 041 Europrimer EC",
+      "resolutionReason": "Official product page directly identifies 041 Europrimer EC and 10 kg. No evidence supports weight=3.",
+      "inventoryDiscrepancy": "products.weight=3 conflicts with exact title and official 10 kg package; likely corrupted/stale inventory field, but no source proves why it is 3"
+    },
+    {
+      "externalId": "MAT-000259",
+      "productId": 225,
+      "currentTitle": "Грунт ГФ-021 по металлу и дереву серый 0,8 кг",
+      "slug": "грунт-гф-021-по-металлу-и-дереву-серый-0-8-кг",
+      "dbBrand": null,
+      "category": "ЛакоКрасочные",
+      "subcategory": "Грунты",
+      "price": 404.25,
+      "dbWeight": 1,
+      "unit": "шт",
+      "currentImageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+      "primaryImage": null,
+      "galleryCount": 0,
+      "canonicalIdentity": null,
+      "canonicalBrand": null,
+      "titleStatus": "IDENTITY_CONFLICT",
+      "sourceCoverage": "IDENTITY_BLOCKED",
+      "sourceUrls": [
+        "https://prestige-holding.ru/upload/%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B5%20%D0%BE%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5%20%D1%81%D0%B5%D0%B3%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%2020-178%20%D0%B2%D0%B5%D1%80%D1%81%D0%B8%D1%8F%2016%20%2820-178%29.pdf"
+      ],
+      "sourceLevel": "secondary generic GF-021 reference only",
+      "package": "0.8 kg stated locally",
+      "facts": {},
+      "needsSource": [
+        "manufacturer/brand, exact GF-021 technical sheet and exact packaging image"
+      ],
+      "photo": {
+        "status": "VARIANT_UNCLEAR",
+        "officialPage": null,
+        "imageUrl": null,
+        "dimensions": "not available",
+        "watermark": "unknown",
+        "variantConfidence": "none; many manufacturers and colors use GF-021"
+      },
+      "resolutionStatus": "IDENTITY_BLOCKED",
+      "resolutionIdentity": null,
+      "resolutionReason": "GF-021 is a generic product standard used by many manufacturers; the available PDF is not exact manufacturer identity.",
+      "inventoryDiscrepancy": "products.weight=1 conflicts numerically with title 0.8 kg; no manufacturer or SKU proves either value"
+    },
+    {
+      "externalId": "MAT-000260",
+      "productId": 226,
+      "currentTitle": "Грунт по металлу серый 1 л",
+      "slug": "грунт-по-металлу-серый-1-л",
+      "dbBrand": null,
+      "category": "ЛакоКрасочные",
+      "subcategory": "Грунты",
+      "price": 892.5,
+      "dbWeight": 1,
+      "unit": "шт",
+      "currentImageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+      "primaryImage": null,
+      "galleryCount": 0,
+      "canonicalIdentity": null,
+      "canonicalBrand": null,
+      "titleStatus": "IDENTITY_CONFLICT",
+      "sourceCoverage": "IDENTITY_BLOCKED",
+      "sourceUrls": [],
+      "sourceLevel": "none",
+      "package": "1 l stated locally",
+      "facts": {},
+      "needsSource": [
+        "manufacturer/brand, exact product type and technical sheet"
+      ],
+      "photo": {
+        "status": "VARIANT_UNCLEAR",
+        "officialPage": null,
+        "imageUrl": null,
+        "dimensions": "not available",
+        "watermark": "unknown",
+        "variantConfidence": "none"
+      },
+      "resolutionStatus": "IDENTITY_BLOCKED",
+      "resolutionIdentity": null,
+      "resolutionReason": "Generic title/slug/category and local source=excel contain no manufacturer, model, or exact technical document.",
+      "inventoryDiscrepancy": "products.weight=1 is only local numeric context"
+    }
+  ],
+  "resolutionPass": {
+    "checkedAt": "2026-09-18",
+    "localEvidence": [
+      "products.source=excel",
+      "exact local title/slug/category/subcategory/product id",
+      "historical repo/import search",
+      "local snapshot/backups search"
+    ],
+    "note": "No title, slug, weight, brand, image or DB data was changed. Historical artifacts did not provide additional manufacturer identity for generic rows.",
+    "summary": {
+      "identityResolved": 2,
+      "partiallyResolved": 2,
+      "identityBlocked": 5
+    },
+    "rows": [
+      {
+        "externalId": "MAT-000234",
+        "currentTitle": "Грунт Litokol PRIMER A универсальный укрепляющий 10 л",
+        "canonicalIdentity": "LITOKOL Primer A, exact product family confirmed; package unit remains unresolved",
+        "package": "official 10 kg; local title 10 l",
+        "sourceUrls": [
+          "https://www.litokol.ru/catalog/primer-a/"
+        ],
+        "identityStatus": "PARTIALLY_RESOLVED",
+        "titleStatus": "POSSIBLE_ERROR",
+        "inventoryDiscrepancy": "products.weight=10 matches numeric local quantity but unit is not independently proven; official package is kg, title is l",
+        "coreReadiness": "Identity/facts usable except package_volume and unit guard",
+        "reason": "Official LITOKOL page confirms Primer A and 10 kg, but does not prove that the local 10 l nomenclature is the same commercial unit."
+      },
+      {
+        "externalId": "MAT-000237",
+        "currentTitle": "Грунтовка Oscar глубокого проникновения 10 л",
+        "canonicalIdentity": "Oscar G os-10kg, latex deep-penetration primer; exact family supported by brand support",
+        "package": "official support 10 kg; local title 10 l",
+        "sourceUrls": [
+          "https://support.alaxar.ru/produktsiya/katalog/gruntovka-2/dlya-naruzhnyh-rabot.html",
+          "https://moscow.petrovich.ru/product/622085/"
+        ],
+        "identityStatus": "PARTIALLY_RESOLVED",
+        "titleStatus": "POSSIBLE_ERROR",
+        "inventoryDiscrepancy": "products.weight=10 matches numeric local quantity but unit is not independently proven; official package is kg, title is l",
+        "coreReadiness": "Identity/facts usable except package_volume and unit guard",
+        "reason": "Brand support identifies G os-10kg, but the local 10 l title cannot be safely normalized to kg or volume."
+      },
+      {
+        "externalId": "MAT-000243",
+        "currentTitle": "Грунт адгезионный Forbo Eurocol 044, концентрат 1:2 10 кг",
+        "canonicalIdentity": "Forbo Eurocol 044 Europrimer Multi",
+        "package": "official 10 kg",
+        "sourceUrls": [
+          "https://www.forbo.com/eurocol/ru/044-europrimer-multi/ewr8vw"
+        ],
+        "identityStatus": "IDENTITY_RESOLVED",
+        "titleStatus": "MATCH",
+        "inventoryDiscrepancy": "products.weight=3 conflicts with exact title and official 10 kg package; likely corrupted/stale inventory field, but no source proves why it is 3",
+        "coreReadiness": "Identity and package resolved; products.weight remains untouched",
+        "reason": "Official product page directly identifies 044 Europrimer Multi and 10 kg. No evidence supports weight=3."
+      },
+      {
+        "externalId": "MAT-000244",
+        "currentTitle": "Грунтовка Forbo 041 Europrimer EC, для укладки токопроводящих и антистатических покрытий 10 кг",
+        "canonicalIdentity": "Forbo Eurocol 041 Europrimer EC",
+        "package": "official 10 kg",
+        "sourceUrls": [
+          "https://www.forbo.com/eurocol/ru/041-europrimer-ec/e3spag"
+        ],
+        "identityStatus": "IDENTITY_RESOLVED",
+        "titleStatus": "MATCH",
+        "inventoryDiscrepancy": "products.weight=3 conflicts with exact title and official 10 kg package; likely corrupted/stale inventory field, but no source proves why it is 3",
+        "coreReadiness": "Identity and package resolved; products.weight remains untouched",
+        "reason": "Official product page directly identifies 041 Europrimer EC and 10 kg. No evidence supports weight=3."
+      },
+      {
+        "externalId": "MAT-000229",
+        "currentTitle": "Грунтовка Knauf Тифенгрунд морозостойкая (до -40) 10 л",
+        "canonicalIdentity": "KNAUF Tiefengrund family only; exact “морозостойкая до -40” SKU not proven",
+        "package": "local title 10 l; official family page lists 5/10 kg and optional frost resistance but no exact -40 SKU",
+        "sourceUrls": [
+          "https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/gruntovki/knauf-tifengrund/"
+        ],
+        "identityStatus": "IDENTITY_BLOCKED",
+        "titleStatus": "POSSIBLE_ERROR",
+        "inventoryDiscrepancy": "products.weight=10 is only local numeric context",
+        "coreReadiness": "Do not seed this MAT until exact SKU/package proof",
+        "reason": "Family-level KNAUF source is insufficient to identify the frost-resistant -40 variant."
+      },
+      {
+        "externalId": "MAT-000238",
+        "currentTitle": "Грунтовка Акрил 5 л",
+        "canonicalIdentity": null,
+        "package": "5 l only from local title",
+        "sourceUrls": [],
+        "identityStatus": "IDENTITY_BLOCKED",
+        "titleStatus": "IDENTITY_CONFLICT",
+        "inventoryDiscrepancy": "products.weight=5 is only local numeric context",
+        "coreReadiness": "No core or image write",
+        "reason": "Generic title/slug/category and local source=excel contain no manufacturer or model marker; historical repo/import search found no additional identity."
+      },
+      {
+        "externalId": "MAT-000239",
+        "currentTitle": "Грунтовка Акрил 10 л",
+        "canonicalIdentity": null,
+        "package": "10 l only from local title",
+        "sourceUrls": [],
+        "identityStatus": "IDENTITY_BLOCKED",
+        "titleStatus": "IDENTITY_CONFLICT",
+        "inventoryDiscrepancy": "products.weight=10 is only local numeric context",
+        "coreReadiness": "No core or image write",
+        "reason": "Generic title/slug/category and local source=excel contain no manufacturer or model marker; historical repo/import search found no additional identity."
+      },
+      {
+        "externalId": "MAT-000259",
+        "currentTitle": "Грунт ГФ-021 по металлу и дереву серый 0,8 кг",
+        "canonicalIdentity": null,
+        "package": "0.8 kg only from local title",
+        "sourceUrls": [
+          "https://prestige-holding.ru/upload/%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B5%20%D0%BE%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D1%8F%20%D1%81%D0%B5%D0%B3%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%2020-178%20%D0%B2%D0%B5%D1%80%D1%81%D0%B8%D1%8F%2016%20%2820-178%29.pdf"
+        ],
+        "identityStatus": "IDENTITY_BLOCKED",
+        "titleStatus": "IDENTITY_CONFLICT",
+        "inventoryDiscrepancy": "products.weight=1 conflicts numerically with title 0.8 kg; no manufacturer or SKU proves either value",
+        "coreReadiness": "No core or image write",
+        "reason": "GF-021 is a generic product standard used by many manufacturers; the available PDF is not exact manufacturer identity."
+      },
+      {
+        "externalId": "MAT-000260",
+        "currentTitle": "Грунт по металлу серый 1 л",
+        "canonicalIdentity": null,
+        "package": "1 l only from local title",
+        "sourceUrls": [],
+        "identityStatus": "IDENTITY_BLOCKED",
+        "titleStatus": "IDENTITY_CONFLICT",
+        "inventoryDiscrepancy": "products.weight=1 is only local numeric context",
+        "coreReadiness": "No core or image write",
+        "reason": "Generic title/slug/category and local source=excel contain no manufacturer, model, or exact technical document."
+      }
+    ]
+  }
+}
