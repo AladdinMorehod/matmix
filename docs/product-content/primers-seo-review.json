@@ -1,0 +1,577 @@
+{
+  "mode": "dry-run",
+  "rows": [
+    {
+      "externalId": "MAT-000227",
+      "productId": 198,
+      "title": "Грунтовка Knauf Тифенгрунд 5 л",
+      "currentSeoTitle": null,
+      "currentSeoDescription": null,
+      "proposedSeoTitle": "KNAUF Тифенгрунд 5 кг — грунтовка глубокого проникновения",
+      "proposedSeoDescription": "KNAUF Тифенгрунд — готовая грунтовка глубокого проникновения для укрепления основания, снижения впитываемости и улучшения адгезии.",
+      "status": "WILL_ADD",
+      "validationIssues": [],
+      "sourceKeys": [
+        "knaufTiefengrund"
+      ],
+      "notes": [],
+      "immutableSnapshot": {
+        "title": "Грунтовка Knauf Тифенгрунд 5 л",
+        "slug": "грунтовка-knauf-тифенгрунд-5-л",
+        "brand": null,
+        "weight": 5,
+        "price": 766.5,
+        "category": "Грунт / БетонКонтакт",
+        "subcategory": "Грунтовка",
+        "short_description": null,
+        "description": "",
+        "full_description": null,
+        "stock_status": "unknown",
+        "image": "",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png"
+      },
+      "seoTitleCharacterCount": 57,
+      "seoDescriptionCharacterCount": 130
+    },
+    {
+      "externalId": "MAT-000228",
+      "productId": 199,
+      "title": "Грунтовка Knauf Тифенгрунд 10 л",
+      "currentSeoTitle": null,
+      "currentSeoDescription": null,
+      "proposedSeoTitle": "KNAUF Тифенгрунд 10 кг — грунтовка глубокого проникновения",
+      "proposedSeoDescription": "KNAUF Тифенгрунд 10 кг — готовая грунтовка для укрепления основания, снижения впитываемости и улучшения адгезии внутри и снаружи.",
+      "status": "WILL_ADD",
+      "validationIssues": [],
+      "sourceKeys": [
+        "knaufTiefengrund"
+      ],
+      "notes": [],
+      "immutableSnapshot": {
+        "title": "Грунтовка Knauf Тифенгрунд 10 л",
+        "slug": "грунтовка-knauf-тифенгрунд-10-л",
+        "brand": null,
+        "weight": 10,
+        "price": 1102.5,
+        "category": "Грунт / БетонКонтакт",
+        "subcategory": "Грунтовка",
+        "short_description": null,
+        "description": "",
+        "full_description": null,
+        "stock_status": "unknown",
+        "image": "",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png"
+      },
+      "seoTitleCharacterCount": 58,
+      "seoDescriptionCharacterCount": 129
+    },
+    {
+      "externalId": "MAT-000230",
+      "productId": 201,
+      "title": "Грунтовка Knauf Мульти Грунд универсальный 10 л",
+      "currentSeoTitle": null,
+      "currentSeoDescription": null,
+      "proposedSeoTitle": "KNAUF Мульти Грунд 10 кг — универсальная грунтовка",
+      "proposedSeoDescription": "KNAUF Мульти Грунд — универсальная грунтовка для впитывающих оснований, регулирования впитываемости и подготовки поверхности к отделке.",
+      "status": "WILL_ADD",
+      "validationIssues": [],
+      "sourceKeys": [
+        "knaufMultigrund"
+      ],
+      "notes": [],
+      "immutableSnapshot": {
+        "title": "Грунтовка Knauf Мульти Грунд универсальный 10 л",
+        "slug": "грунтовка-knauf-мульти-грунд-универсальный-10-л",
+        "brand": null,
+        "weight": 10,
+        "price": 1732.5,
+        "category": "Грунт / БетонКонтакт",
+        "subcategory": "Грунтовка",
+        "short_description": null,
+        "description": "",
+        "full_description": null,
+        "stock_status": "unknown",
+        "image": "",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png"
+      },
+      "seoTitleCharacterCount": 50,
+      "seoDescriptionCharacterCount": 135
+    },
+    {
+      "externalId": "MAT-000231",
+      "productId": 202,
+      "title": "Грунтовка Ceresit CT-17 PRO, 5л",
+      "currentSeoTitle": null,
+      "currentSeoDescription": null,
+      "proposedSeoTitle": "Ceresit CT 17 PRO 5 л — грунтовка глубокого проникновения",
+      "proposedSeoDescription": "Ceresit CT 17 PRO 5 л — универсальная грунтовка для впитывающих оснований перед штукатуркой, стяжкой, плиточными клеями и другими отделочными материалами.",
+      "status": "WILL_ADD",
+      "validationIssues": [],
+      "sourceKeys": [
+        "ceresitCt17"
+      ],
+      "notes": [],
+      "immutableSnapshot": {
+        "title": "Грунтовка Ceresit CT-17 PRO, 5л",
+        "slug": "грунтовка-ceresit-ct-17-pro-5л",
+        "brand": null,
+        "weight": 5,
+        "price": 724.5,
+        "category": "Грунт / БетонКонтакт",
+        "subcategory": "Грунтовка",
+        "short_description": null,
+        "description": "",
+        "full_description": null,
+        "stock_status": "unknown",
+        "image": "",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png"
+      },
+      "seoTitleCharacterCount": 57,
+      "seoDescriptionCharacterCount": 154
+    },
+    {
+      "externalId": "MAT-000232",
+      "productId": 203,
+      "title": "Грунтовка Ceresit CT-17 PRO, 10л",
+      "currentSeoTitle": null,
+      "currentSeoDescription": null,
+      "proposedSeoTitle": "Ceresit CT 17 PRO 10 л — грунтовка глубокого проникновения",
+      "proposedSeoDescription": "Ceresit CT 17 PRO 10 л — грунтовка для впитывающих оснований. Укрепляет поверхность, связывает пыль и снижает впитываемость.",
+      "status": "WILL_ADD",
+      "validationIssues": [],
+      "sourceKeys": [
+        "ceresitCt17"
+      ],
+      "notes": [],
+      "immutableSnapshot": {
+        "title": "Грунтовка Ceresit CT-17 PRO, 10л",
+        "slug": "грунтовка-ceresit-ct-17-pro-10л",
+        "brand": null,
+        "weight": 10,
+        "price": 1102.5,
+        "category": "Грунт / БетонКонтакт",
+        "subcategory": "Грунтовка",
+        "short_description": null,
+        "description": "",
+        "full_description": null,
+        "stock_status": "unknown",
+        "image": "",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png"
+      },
+      "seoTitleCharacterCount": 58,
+      "seoDescriptionCharacterCount": 124
+    },
+    {
+      "externalId": "MAT-000233",
+      "productId": 204,
+      "title": "Грунтовка Ceresit CT16 под декоративную штукатурку 10 л",
+      "currentSeoTitle": null,
+      "currentSeoDescription": null,
+      "proposedSeoTitle": "Ceresit CT 16 10 л — кварц-грунтовка под декор",
+      "proposedSeoDescription": "Ceresit CT 16 10 л — кварц-грунтовка для подготовки оснований перед декоративной штукатуркой и повышения адгезии последующих слоёв.",
+      "status": "WILL_ADD",
+      "validationIssues": [],
+      "sourceKeys": [
+        "ceresitCt16"
+      ],
+      "notes": [],
+      "immutableSnapshot": {
+        "title": "Грунтовка Ceresit CT16 под декоративную штукатурку 10 л",
+        "slug": "грунтовка-ceresit-ct16-под-декоративную-штукатурку-10-л",
+        "brand": null,
+        "weight": 10,
+        "price": null,
+        "category": "Грунт / БетонКонтакт",
+        "subcategory": "Грунтовка",
+        "short_description": null,
+        "description": "",
+        "full_description": null,
+        "stock_status": "unknown",
+        "image": "",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png"
+      },
+      "seoTitleCharacterCount": 46,
+      "seoDescriptionCharacterCount": 131
+    },
+    {
+      "externalId": "MAT-000234",
+      "productId": 205,
+      "title": "Грунт Litokol PRIMER A универсальный укрепляющий 10 л",
+      "currentSeoTitle": null,
+      "currentSeoDescription": null,
+      "proposedSeoTitle": "LITOKOL Primer A — универсальная укрепляющая грунтовка",
+      "proposedSeoDescription": "LITOKOL Primer A — готовая грунтовка на водной основе для подготовки оснований перед окраской, обоями, плиткой, штукатуркой и шпаклёвкой.",
+      "status": "WILL_ADD",
+      "validationIssues": [],
+      "sourceKeys": [
+        "litokolPrimerA"
+      ],
+      "notes": [
+        "Официальный источник указывает 10 кг; единица 10 л из локального title в SEO не повторяется."
+      ],
+      "immutableSnapshot": {
+        "title": "Грунт Litokol PRIMER A универсальный укрепляющий 10 л",
+        "slug": "грунт-litokol-primer-a-универсальный-укрепляющий-10-л",
+        "brand": null,
+        "weight": 10,
+        "price": 787.5,
+        "category": "Грунт / БетонКонтакт",
+        "subcategory": "Грунтовка",
+        "short_description": null,
+        "description": "",
+        "full_description": null,
+        "stock_status": "unknown",
+        "image": "",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png"
+      },
+      "seoTitleCharacterCount": 54,
+      "seoDescriptionCharacterCount": 137
+    },
+    {
+      "externalId": "MAT-000235",
+      "productId": 206,
+      "title": "Грунтовка Старатели универсальная 10 л",
+      "currentSeoTitle": null,
+      "currentSeoDescription": null,
+      "proposedSeoTitle": "Старатели 10 л — универсальная грунтовка для оснований",
+      "proposedSeoDescription": "Универсальная грунтовка «Старатели» для обеспыливания, регулирования впитываемости и повышения сцепления отделочных материалов с основанием.",
+      "status": "WILL_ADD",
+      "validationIssues": [],
+      "sourceKeys": [
+        "starateli"
+      ],
+      "notes": [],
+      "immutableSnapshot": {
+        "title": "Грунтовка Старатели универсальная 10 л",
+        "slug": "грунтовка-старатели-универсальная-10-л",
+        "brand": null,
+        "weight": 10,
+        "price": 682.5,
+        "category": "Грунт / БетонКонтакт",
+        "subcategory": "Грунтовка",
+        "short_description": null,
+        "description": "",
+        "full_description": null,
+        "stock_status": "unknown",
+        "image": "",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png"
+      },
+      "seoTitleCharacterCount": 54,
+      "seoDescriptionCharacterCount": 140
+    },
+    {
+      "externalId": "MAT-000236",
+      "productId": 207,
+      "title": "Грунтовка UNIS глубокого проникновения укрепляющий 10 л",
+      "currentSeoTitle": null,
+      "currentSeoDescription": null,
+      "proposedSeoTitle": "UNIS 10 л — грунтовка глубокого проникновения",
+      "proposedSeoDescription": "UNIS — грунтовка глубокого проникновения для укрепления рыхлых и впитывающих минеральных оснований перед дальнейшей отделкой.",
+      "status": "WILL_ADD",
+      "validationIssues": [],
+      "sourceKeys": [
+        "unisCatalog"
+      ],
+      "notes": [],
+      "immutableSnapshot": {
+        "title": "Грунтовка UNIS глубокого проникновения укрепляющий 10 л",
+        "slug": "грунтовка-unis-глубокого-проникновения-укрепляющий-10-л",
+        "brand": null,
+        "weight": 10,
+        "price": 892.5,
+        "category": "Грунт / БетонКонтакт",
+        "subcategory": "Грунтовка",
+        "short_description": null,
+        "description": "",
+        "full_description": null,
+        "stock_status": "unknown",
+        "image": "",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png"
+      },
+      "seoTitleCharacterCount": 45,
+      "seoDescriptionCharacterCount": 125
+    },
+    {
+      "externalId": "MAT-000237",
+      "productId": 208,
+      "title": "Грунтовка Oscar глубокого проникновения 10 л",
+      "currentSeoTitle": null,
+      "currentSeoDescription": null,
+      "proposedSeoTitle": "Oscar G — латексная грунтовка глубокого проникновения",
+      "proposedSeoDescription": "Oscar G — латексная грунтовка глубокого проникновения для укрепления оснований. Официальный каталог указывает фасовку 10 кг; локальная единица title сохранена.",
+      "status": "WILL_ADD",
+      "validationIssues": [],
+      "sourceKeys": [
+        "oscarG",
+        "oscarCatalog"
+      ],
+      "notes": [],
+      "immutableSnapshot": {
+        "title": "Грунтовка Oscar глубокого проникновения 10 л",
+        "slug": "грунтовка-oscar-глубокого-проникновения-10-л",
+        "brand": null,
+        "weight": 10,
+        "price": 1060.5,
+        "category": "Грунт / БетонКонтакт",
+        "subcategory": "Грунтовка",
+        "short_description": null,
+        "description": "",
+        "full_description": null,
+        "stock_status": "unknown",
+        "image": "",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png"
+      },
+      "seoTitleCharacterCount": 53,
+      "seoDescriptionCharacterCount": 159
+    },
+    {
+      "externalId": "MAT-000240",
+      "productId": 211,
+      "title": "Грунтовка Knauf Миттельгрунд для впитывающих оснований концентрат 10 л",
+      "currentSeoTitle": null,
+      "currentSeoDescription": null,
+      "proposedSeoTitle": "KNAUF Миттельгрунд — грунтовка-концентрат для оснований",
+      "proposedSeoDescription": "KNAUF Миттельгрунд — грунтовка-концентрат для регулирования впитываемости и подготовки оснований перед штукатурками, клеями и стяжками.",
+      "status": "WILL_ADD",
+      "validationIssues": [],
+      "sourceKeys": [
+        "knaufMittelgrund"
+      ],
+      "notes": [],
+      "immutableSnapshot": {
+        "title": "Грунтовка Knauf Миттельгрунд для впитывающих оснований концентрат 10 л",
+        "slug": "грунтовка-knauf-миттельгрунд-для-впитывающих-оснований-концентрат-10-л",
+        "brand": null,
+        "weight": 10,
+        "price": 3360,
+        "category": "Грунт / БетонКонтакт",
+        "subcategory": "Грунтовка",
+        "short_description": null,
+        "description": "",
+        "full_description": null,
+        "stock_status": "unknown",
+        "image": "",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png"
+      },
+      "seoTitleCharacterCount": 55,
+      "seoDescriptionCharacterCount": 135
+    },
+    {
+      "externalId": "MAT-000241",
+      "productId": 212,
+      "title": "Грунт Tikkurila Euro Primer концентрат 0,9 л",
+      "currentSeoTitle": null,
+      "currentSeoDescription": null,
+      "proposedSeoTitle": "Tikkurila Euro Primer 0,9 л — грунтовка-концентрат",
+      "proposedSeoDescription": "Tikkurila Euro Primer 0,9 л — акрилатная грунтовка-концентрат для укрепления пористых оснований и выравнивания впитываемости перед окраской.",
+      "status": "WILL_ADD",
+      "validationIssues": [],
+      "sourceKeys": [
+        "tikkurila",
+        "tikkurilaCatalog"
+      ],
+      "notes": [],
+      "immutableSnapshot": {
+        "title": "Грунт Tikkurila Euro Primer концентрат 0,9 л",
+        "slug": "грунт-tikkurila-euro-primer-концентрат-0-9-л",
+        "brand": null,
+        "weight": 1,
+        "price": null,
+        "category": "Грунт / БетонКонтакт",
+        "subcategory": "Грунтовка",
+        "short_description": null,
+        "description": "",
+        "full_description": null,
+        "stock_status": "unknown",
+        "image": "",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png"
+      },
+      "seoTitleCharacterCount": 50,
+      "seoDescriptionCharacterCount": 140
+    },
+    {
+      "externalId": "MAT-000242",
+      "productId": 213,
+      "title": "Грунт Tikkurila Euro Primer концентрат 3 л",
+      "currentSeoTitle": null,
+      "currentSeoDescription": null,
+      "proposedSeoTitle": "Tikkurila Euro Primer 3 л — грунтовка-концентрат",
+      "proposedSeoDescription": "Tikkurila Euro Primer 3 л — акрилатная грунтовка-концентрат для укрепления пористых оснований и выравнивания впитываемости перед окраской.",
+      "status": "WILL_ADD",
+      "validationIssues": [],
+      "sourceKeys": [
+        "tikkurila",
+        "tikkurilaCatalog"
+      ],
+      "notes": [],
+      "immutableSnapshot": {
+        "title": "Грунт Tikkurila Euro Primer концентрат 3 л",
+        "slug": "грунт-tikkurila-euro-primer-концентрат-3-л",
+        "brand": null,
+        "weight": 3,
+        "price": null,
+        "category": "Грунт / БетонКонтакт",
+        "subcategory": "Грунтовка",
+        "short_description": null,
+        "description": "",
+        "full_description": null,
+        "stock_status": "unknown",
+        "image": "",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png"
+      },
+      "seoTitleCharacterCount": 48,
+      "seoDescriptionCharacterCount": 138
+    },
+    {
+      "externalId": "MAT-000243",
+      "productId": 214,
+      "title": "Грунт адгезионный Forbo Eurocol 044, концентрат 1:2 10 кг",
+      "currentSeoTitle": null,
+      "currentSeoDescription": null,
+      "proposedSeoTitle": "Forbo Eurocol 044 10 кг — адгезионная грунтовка-концентрат",
+      "proposedSeoDescription": "Forbo Eurocol 044 Europrimer Multi — акриловая грунтовка-концентрат для пористых, гладких и невпитывающих оснований перед выравниванием.",
+      "status": "WILL_ADD",
+      "validationIssues": [],
+      "sourceKeys": [
+        "forbo044"
+      ],
+      "notes": [],
+      "immutableSnapshot": {
+        "title": "Грунт адгезионный Forbo Eurocol 044, концентрат 1:2 10 кг",
+        "slug": "грунт-адгезионный-forbo-eurocol-044-концентрат-1-2-10-кг",
+        "brand": null,
+        "weight": 3,
+        "price": null,
+        "category": "Грунт / БетонКонтакт",
+        "subcategory": "Грунтовка",
+        "short_description": null,
+        "description": "",
+        "full_description": null,
+        "stock_status": "unknown",
+        "image": "",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png"
+      },
+      "seoTitleCharacterCount": 58,
+      "seoDescriptionCharacterCount": 136
+    },
+    {
+      "externalId": "MAT-000244",
+      "productId": 215,
+      "title": "Грунтовка Forbo 041 Europrimer EC, для укладки токопроводящих и антистатических покрытий 10 кг",
+      "currentSeoTitle": null,
+      "currentSeoDescription": null,
+      "proposedSeoTitle": "Forbo Eurocol 041 10 кг — токопроводящая грунтовка",
+      "proposedSeoDescription": "Forbo Eurocol 041 Europrimer EC — готовая токопроводящая грунтовка перед укладкой токопроводящих и антистатических напольных покрытий.",
+      "status": "WILL_ADD",
+      "validationIssues": [],
+      "sourceKeys": [
+        "forbo041"
+      ],
+      "notes": [],
+      "immutableSnapshot": {
+        "title": "Грунтовка Forbo 041 Europrimer EC, для укладки токопроводящих и антистатических покрытий 10 кг",
+        "slug": "грунтовка-forbo-041-europrimer-ec-для-укладки-токопроводящих-и-антистатических-покрытий-10-кг",
+        "brand": null,
+        "weight": 3,
+        "price": null,
+        "category": "Грунт / БетонКонтакт",
+        "subcategory": "Грунтовка",
+        "short_description": null,
+        "description": "",
+        "full_description": null,
+        "stock_status": "unknown",
+        "image": "",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png"
+      },
+      "seoTitleCharacterCount": 50,
+      "seoDescriptionCharacterCount": 134
+    }
+  ],
+  "sources": {
+    "knaufTiefengrund": {
+      "title": "KNAUF Tiefengrund — официальный сайт",
+      "url": "https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/gruntovki/knauf-tifengrund/",
+      "owner": "KNAUF"
+    },
+    "knaufMultigrund": {
+      "title": "KNAUF Multigrund — официальный сайт",
+      "url": "https://www.knauf.ru/catalog/gruntovki/knauf-multigrund/",
+      "owner": "KNAUF"
+    },
+    "ceresitCt17": {
+      "title": "Ceresit CT 17 PRO — официальный сайт",
+      "url": "https://www.ceresit.ru/ru/products/tiling/supplementary-materials/ct_17_pro",
+      "owner": "Ceresit"
+    },
+    "ceresitCt16": {
+      "title": "Ceresit CT 16 — официальный TDS",
+      "url": "https://dm.henkel-dam.com/is/content/henkel/tds-ru-ceresit-ct16pdf",
+      "owner": "Henkel/Ceresit"
+    },
+    "litokolPrimerA": {
+      "title": "LITOKOL Primer A — официальный сайт",
+      "url": "https://www.litokol.ru/catalog/primer-a/",
+      "owner": "LITOKOL"
+    },
+    "starateli": {
+      "title": "Старатели — Грунтовка Универсальная",
+      "url": "https://www.starateli.ru/gruntovka_universalnaya/",
+      "owner": "Старатели"
+    },
+    "unisCatalog": {
+      "title": "UNIS — каталог грунтовок",
+      "url": "https://unistrom.ru/catalog/grunty/gruntovki-10-litrov/",
+      "owner": "UNIS"
+    },
+    "oscarG": {
+      "title": "Oscar G os-10kg — brand support/catalog",
+      "url": "https://support.alaxar.ru/produktsiya/katalog/gruntovka-2/dlya-naruzhnyh-rabot.html",
+      "owner": "Oscar / brand support"
+    },
+    "oscarCatalog": {
+      "title": "Oscar — catalog PDF",
+      "url": "https://itelgroup-bucket.storage.yandexcloud.net/Production/exb_doc/2032/4956/%D0%9F%D1%80%D0%B0%D0%B9%D1%81-%D0%BA%D0%B0%D1%82%D0%B0%D0%BB%D0%BE%D0%B3_300425_preview2.pdf",
+      "owner": "Oscar / brand catalog"
+    },
+    "knaufMittelgrund": {
+      "title": "KNAUF Mittelgrund — официальный сайт",
+      "url": "https://www.knauf.ru/catalog/gruntovki/knauf-mittelgrund/",
+      "owner": "KNAUF"
+    },
+    "tikkurila": {
+      "title": "Tikkurila Euro Primer — regional product page",
+      "url": "https://tikkurila-russia.ru/tikkurila-euro-primer",
+      "owner": "Tikkurila regional"
+    },
+    "tikkurilaCatalog": {
+      "title": "Tikkurila — catalog PDF",
+      "url": "https://tikkurila-color.ru/upload/iblock/b78/8ru2u12d2dcid0ndjs6k284anryu30xu.pdf",
+      "owner": "Tikkurila regional"
+    },
+    "forbo044": {
+      "title": "Forbo Eurocol 044 Europrimer Multi — официальный сайт",
+      "url": "https://www.forbo.com/eurocol/ru/044-europrimer-multi/ewr8vw",
+      "owner": "Forbo Eurocol"
+    },
+    "forbo041": {
+      "title": "Forbo Eurocol 041 Europrimer EC — официальный сайт",
+      "url": "https://www.forbo.com/eurocol/ru/041-europrimer-ec/e3spag",
+      "owner": "Forbo Eurocol"
+    },
+    "localTitle": {
+      "title": "Локальная карточка MatMix",
+      "url": null,
+      "owner": "MatMix local audit"
+    }
+  },
+  "summary": {
+    "total": 15,
+    "willAdd": 15,
+    "existingOk": 0,
+    "contentConflict": 0,
+    "errors": 0,
+    "excludedAllowlist": 0,
+    "duplicateSeoTitles": 0,
+    "duplicateSeoDescriptions": 0
+  }
+}
