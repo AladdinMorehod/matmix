@@ -1,0 +1,35 @@
+{
+  "scope": ["MAT-000243", "MAT-000244"],
+  "decision": "CORRECTION_REQUIRED",
+  "writableField": "products.weight",
+  "guard": {
+    "oldWeight": 3,
+    "newWeight": 10,
+    "unit": "шт",
+    "titleExact": true
+  },
+  "reason": "products.weight is used for order totalWeight and price-per-kg calculations. The legacy value 3 conflicts with the source-backed 10 kg package identity. This review does not claim gross/shipping weight is exactly 10 kg; 10 kg is the authoritative package net weight and the available operational unit-weight basis.",
+  "rows": [
+    {
+      "externalId": "MAT-000243",
+      "title": "Грунт адгезионный Forbo Eurocol 044, концентрат 1:2 10 кг",
+      "oldOperationalWeight": 3,
+      "packageWeightKg": 10,
+      "targetOperationalWeight": 10,
+      "unit": "шт",
+      "sourceUrl": "https://www.forbo.com/eurocol/ru/044-europrimer-multi/ewr8vw"
+    },
+    {
+      "externalId": "MAT-000244",
+      "title": "Грунтовка Forbo 041 Europrimer EC, для укладки токопроводящих и антистатических покрытий 10 кг",
+      "oldOperationalWeight": 3,
+      "packageWeightKg": 10,
+      "targetOperationalWeight": 10,
+      "unit": "шт",
+      "sourceUrl": "https://www.forbo.com/eurocol/ru/041-europrimer-ec/e3spag"
+    }
+  ],
+  "nonTargets": ["title", "slug", "price", "unit", "images", "description", "SEO", "product attributes", "package_weight", "category", "subcategory", "other products fields"],
+  "production": "untouched",
+  "apply": "not executed against production"
+}
