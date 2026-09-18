@@ -13,6 +13,7 @@ const DEFINITION_CATALOG = Object.freeze({ ...DATA.REUSABLE_DEFINITIONS, ...Obje
 const MASS_LABELS = new Set(["вес", "масса", "вес упаковки", "масса упаковки", "фасовка"]);
 
 const normalize = value => String(value ?? "").toLowerCase().replace(/ё/g, "е").replace(/\s+/g, " ").trim();
+const normalizeStructureName = value => String(value ?? "").normalize("NFKC").replace(/\s+/gu, " ").trim().toLocaleLowerCase("ru-RU");
 const normalizedCompact = value => normalize(value).replace(/[^\p{L}\p{N}.]+/gu, "");
 const nonempty = value => value !== null && value !== undefined && String(value).trim() !== "";
 const valueOf = row => row?.value_text ?? row?.value_number ?? row?.value_boolean ?? null;
@@ -100,7 +101,7 @@ async function loadState(db, config) {
 function guardStatus(product, config) {
   if (!product || Number(product.is_active) !== 1 || product.deleted_at) return { status: "ERROR", reason: "Product is missing, inactive, or deleted." };
   if (product.title !== config.expectedTitle) return { status: "TITLE_GUARD_BLOCKED", reason: `Exact title mismatch: expected «${config.expectedTitle}», got «${product.title}».` };
-  if (product.category !== config.expectedCategory || product.subcategory !== config.expectedSubcategory) return { status: "TITLE_GUARD_BLOCKED", reason: `Category guard mismatch: expected ${config.expectedCategory} / ${config.expectedSubcategory}, got ${product.category} / ${product.subcategory}.` };
+  if (normalizeStructureName(product.category) !== normalizeStructureName(config.expectedCategory) || normalizeStructureName(product.subcategory) !== normalizeStructureName(config.expectedSubcategory)) return { status: "TITLE_GUARD_BLOCKED", reason: `Category guard mismatch: expected ${config.expectedCategory} / ${config.expectedSubcategory}, got ${product.category} / ${product.subcategory}.` };
   return { status: "OK" };
 }
 
