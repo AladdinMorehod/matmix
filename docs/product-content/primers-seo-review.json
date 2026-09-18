@@ -298,7 +298,7 @@
       "currentSeoTitle": null,
       "currentSeoDescription": null,
       "proposedSeoTitle": "Oscar G — латексная грунтовка глубокого проникновения",
-      "proposedSeoDescription": "Oscar G — латексная грунтовка глубокого проникновения для укрепления оснований. Официальный каталог указывает фасовку 10 кг; локальная единица title сохранена.",
+      "proposedSeoDescription": "Oscar G — латексная грунтовка глубокого проникновения для укрепления оснований и снижения их впитываемости.",
       "status": "WILL_ADD",
       "validationIssues": [],
       "sourceKeys": [
@@ -322,7 +322,7 @@
         "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png"
       },
       "seoTitleCharacterCount": 53,
-      "seoDescriptionCharacterCount": 159
+      "seoDescriptionCharacterCount": 107
     },
     {
       "externalId": "MAT-000240",

@@ -9,7 +9,7 @@ const CONFIRM = "BACKFILL_PRIMER_DESCRIPTIONS";
 const ALL_MATS = Object.freeze(DATA.TARGET_MATS);
 const DESCRIPTION_MUTABLE_FIELDS_EXACTLY = Object.freeze(["full_description"]);
 const IMMUTABLE_FIELDS = Object.freeze(["title", "slug", "brand", "weight", "price", "category", "subcategory", "short_description", "description", "seo_title", "seo_description", "stock_status", "image", "image_url"]);
-const PUBLIC_META_MARKERS = Object.freeze(["официальный источник", "локальн", "exact sku", "проверенном источнике", "не подтвержд", "needs_source", "research", "review", "schema_blocked"]);
+const PUBLIC_META_MARKERS = Object.freeze(["для этой карточки", "карточка содержит", "в источнике", "официальный каталог", "локальная единица", "локальный title", "официальный источник", "локальн", "exact sku", "проверенном источнике", "не подтвержд", "needs_source", "research", "review", "schema_blocked"]);
 const normalizeStructure = value => String(value ?? "").normalize("NFKC").replace(/\s+/gu, " ").trim().toLocaleLowerCase("ru-RU");
 const nonempty = value => value !== null && value !== undefined && String(value).trim() !== "";
 
@@ -50,6 +50,7 @@ function parseArgs(args) {
 function snapshot(product) { return Object.fromEntries(IMMUTABLE_FIELDS.map(field => [field, product[field] ?? null])); }
 function sameSnapshot(before, after) { return IMMUTABLE_FIELDS.every(field => (before[field] ?? null) === (after[field] ?? null)); }
 function validatePublicDescription(value) { const lower = String(value || "").toLocaleLowerCase("ru-RU"); const found = PUBLIC_META_MARKERS.filter(marker => lower.includes(marker)); if (found.length) throw new Error(`Public description contains review/meta language: ${found.join(", ")}`); }
+function validateSourceKeys(data) { const known = new Set(Object.keys(data.SOURCES || {})); const dangling = data.PRODUCTS.flatMap(item => (item.sourceKeys || []).filter(key => !known.has(key)).map(key => `${item.externalId}:${key}`)); if (dangling.length) throw new Error(`Dangling source registry keys: ${dangling.join(", ")}`); }
 function guard(product, config) {
   if (!product || Number(product.is_active) !== 1 || product.deleted_at) throw new Error("Product missing, inactive, or deleted");
   if (product.title !== config.expectedTitle) throw new Error(`Exact title guard failed: expected «${config.expectedTitle}», got «${product.title}»`);
@@ -57,6 +58,7 @@ function guard(product, config) {
 }
 
 async function inspectBatch(db, { only, data = DATA } = {}) {
+  validateSourceKeys(data);
   const selected = [...new Set(only || [])]; if (!selected.length) throw new Error("Explicit nonempty --only is required");
   const rows = [];
   for (const externalId of selected) {
@@ -100,5 +102,5 @@ function renderReview(report) {
 }
 async function main() { const options = parseArgs(process.argv.slice(2)); const db = await openDatabase(options.db, options.apply); try { const report = options.apply ? await applyBatch(db, options.db, options) : await inspectBatch(db, options); if (options.review) { const base = path.resolve(options.review); fs.mkdirSync(path.dirname(base), { recursive: true }); fs.writeFileSync(`${base}.json`, JSON.stringify(report, null, 2) + "\n"); fs.writeFileSync(`${base}.md`, renderReview(report)); } for (const row of report.rows) console.log(JSON.stringify(row)); console.log(JSON.stringify({ mode: report.mode, summary: report.summary })); if (report.summary.errors || report.summary.contentConflict) process.exitCode = 1; } finally { await db.close(); } }
 
-module.exports = { ALL_MATS, CONFIRM, DATA, DESCRIPTION_MUTABLE_FIELDS_EXACTLY, IMMUTABLE_FIELDS, PUBLIC_META_MARKERS, applyBatch, inspectBatch, normalizeStructure, openDatabase, parseArgs, renderReview, validatePublicDescription };
+module.exports = { ALL_MATS, CONFIRM, DATA, DESCRIPTION_MUTABLE_FIELDS_EXACTLY, IMMUTABLE_FIELDS, PUBLIC_META_MARKERS, applyBatch, inspectBatch, normalizeStructure, openDatabase, parseArgs, renderReview, validatePublicDescription, validateSourceKeys };
 if (require.main === module) main().catch(error => { console.error(`PRIMER DESCRIPTION BACKFILL ABORTED: ${error.message}`); process.exitCode = 1; });

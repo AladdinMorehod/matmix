@@ -22,10 +22,10 @@ CONFIRM = BACKFILL_PRIMER_DESCRIPTIONS
 |---|---|---:|---|
 | MAT-000227 | WILL_ADD | 699 | knaufTiefengrund, localTitle |
 | MAT-000228 | WILL_ADD | 878 | knaufTiefengrund |
-| MAT-000230 | WILL_ADD | 602 | knaufMultigrund |
-| MAT-000231 | WILL_ADD | 790 | ceresitCt17 |
+| MAT-000230 | WILL_ADD | 541 | knaufMultigrund |
+| MAT-000231 | WILL_ADD | 774 | ceresitCt17 |
 | MAT-000232 | WILL_ADD | 1084 | ceresitCt17 |
-| MAT-000233 | WILL_ADD | 670 | ceresitCt16, ceresitFacade |
+| MAT-000233 | WILL_ADD | 670 | ceresitCt16 |
 | MAT-000234 | WILL_ADD | 686 | litokolPrimerA |
 | MAT-000235 | WILL_ADD | 496 | starateli |
 | MAT-000236 | WILL_ADD | 484 | unisCatalog |
@@ -33,7 +33,7 @@ CONFIRM = BACKFILL_PRIMER_DESCRIPTIONS
 | MAT-000240 | WILL_ADD | 692 | knaufMittelgrund |
 | MAT-000241 | WILL_ADD | 552 | tikkurila, tikkurilaCatalog |
 | MAT-000242 | WILL_ADD | 550 | tikkurila, tikkurilaCatalog |
-| MAT-000243 | WILL_ADD | 857 | forbo044 |
+| MAT-000243 | WILL_ADD | 836 | forbo044 |
 | MAT-000244 | WILL_ADD | 674 | forbo041 |
 
 ## Proposed descriptions
@@ -111,7 +111,7 @@ CONFIRM = BACKFILL_PRIMER_DESCRIPTIONS
 Расход — около 0,2 кг/м². Время высыхания — около 6 часов. Цвет — жёлтый.
 
 Применение:
-Грунтовка предназначена для готового применения; разбавление для этой карточки не заявлено.
+Грунтовка готова к применению.
 
 Хранение:
 Срок хранения — 12 месяцев в неповреждённой упаковке.
@@ -139,7 +139,7 @@ Ceresit CT 17 PRO — универсальная водно-дисперсион
 Грунтовка наносится кистью или валиком; перед применением содержимое перемешивают.
 
 Упаковка:
-Карточка содержит фасовку 5 л.
+Фасовка — 5 л.
 
 ### MAT-000232
 
@@ -173,7 +173,7 @@ Ceresit CT 17 PRO — универсальная водно-дисперсион
 
 - Title: Грунтовка Ceresit CT16 под декоративную штукатурку 10 л
 - Status: **WILL_ADD**
-- Source keys: ceresitCt16, ceresitFacade
+- Source keys: ceresitCt16
 - Notes: —
 
 Что это:
@@ -377,7 +377,7 @@ Forbo Eurocol 044 Europrimer Multi — универсальная грунтов
 Расход — около 50–150 г/м². Время высыхания — 0,5–15 часов в зависимости от основания. Цвет — белый.
 
 Применение:
-Концентрат разбавляют водой в зависимости от основания; в источнике приведены соотношения от 1:1 до 1:5. Наносится валиком или распылителем.
+Концентрат разбавляют водой в соотношении от 1:1 до 1:5 в зависимости от основания. Наносится валиком или распылителем.
 
 Упаковка:
 Фасовка — 10 кг.
