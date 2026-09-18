@@ -1,11 +1,11 @@
 {
   "checkedAt": "2026-09-18",
   "policy": "No production access, image import, or replacement of existing real images. Exact SKU/pack evidence is required.",
-  "futureImporterDryRunCommand": "node backend/scripts/import-product-images.js --input <temporary-last-four-input> --db backend/database/matmix.db --only MAT-000227,MAT-000230,MAT-000237,MAT-000240 --dry-run",
+  "futureImporterDryRunCommand": "node backend/scripts/import-product-images.js --input product-images-batch/primers/import-source --db backend/database/matmix.db --only MAT-000227,MAT-000230,MAT-000234,MAT-000237,MAT-000240 --dry-run",
   "rows": [
     {
       "externalId": "MAT-000227",
-      "title": "Грунтовка Knauf Тифенгрунд 5 кг",
+      "title": "Грунтовка Knauf Тифенгрунд 5 л",
       "identity": "КНАУФ-Тифенгрунд, ведро 5 кг",
       "status": "READY_PREPARED",
       "sourceUrl": "https://knauf-chelyabinsk.ru/product/gruntovka_ukreplyayushchaya_glubokogo_proniknoveniya_knauf_tifengrund_5_kg/",
@@ -14,7 +14,7 @@
       "watermark": "none observed",
       "exactPackMatch": true,
       "finalDimensions": "1200x1200",
-      "notes": "PASS: exact visible package, full product, pure-white surrounding background, no watermark; canonical render parity verified.",
+      "notes": "Exact approved source; canonical 1200x1200 WebP parity verified.",
       "sourceImageUrl": "https://knauf-chelyabinsk.ru/upload/iblock/73e/vxka63vovo9twzla05hpzp43d4lsmlrn.png",
       "sourceFilename": "MAT-000227-official.png",
       "sourceMime": "image/png",
@@ -27,12 +27,12 @@
       "finalSha256": "1ae23ff9611fb9eac54054e12198ff352478ec33091fd7e595a79b2b6e10c89a",
       "sourceSha256": "80f89b456127d4062efe0ccd67a523911295cd0afbf56d254b2585f68f56d016",
       "sourceFileSize": 180260,
-      "visualQc": "PASS: exact visible package, full product, pure-white surrounding background, no watermark; canonical render parity verified.",
+      "visualQc": "PASS: full product, white outer background, safe margins, no watermark, no label modification.",
       "canonicalParity": true
     },
     {
       "externalId": "MAT-000228",
-      "title": "Грунтовка Knauf Тифенгрунд 10 кг",
+      "title": "Грунтовка Knauf Тифенгрунд 10 л",
       "identity": "KNAUF Tiefengrund 10 kg production SKU",
       "status": "EXISTING_REAL",
       "sourceUrl": "https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/gruntovki/knauf-tifengrund/",
@@ -58,7 +58,7 @@
     },
     {
       "externalId": "MAT-000230",
-      "title": "Грунтовка Knauf Мульти Грунд универсальный 10 кг",
+      "title": "Грунтовка Knauf Мульти Грунд универсальный 10 л",
       "identity": "КНАУФ-Мультигрунд, ведро 10 кг",
       "status": "READY_PREPARED",
       "sourceUrl": "https://www.knauf.ru/catalog/gruntovki/knauf-multigrund/",
@@ -67,7 +67,7 @@
       "watermark": "none observed",
       "exactPackMatch": true,
       "finalDimensions": "1200x1200",
-      "notes": "PASS: exact visible 10 кг package, pure-white surrounding background, no watermark; canonical render parity verified.",
+      "notes": "Exact approved source; canonical 1200x1200 WebP parity verified.",
       "sourceImageUrl": "https://www.knauf.ru/upload/iv_resize/detail_page/original/iblock/f91/7uu2bpxjzhtb6jo6zdscd3813fpimlnn/Vedro_Multigrund_10_kg_16_03_2023_Oborot_1000x1000_v01.webp",
       "sourceFilename": "MAT-000230-official.webp",
       "sourceMime": "image/webp",
@@ -80,7 +80,7 @@
       "finalSha256": "05f743dbf651217177b8c1f8f0fe030a07aabd417c7e871fd080abecabc10854",
       "sourceSha256": "af923905f6a5a4d6fef9b65c8f4eaec8154718972c6de4393e9bab9025c72aab",
       "sourceFileSize": 251296,
-      "visualQc": "PASS: exact visible 10 кг package, pure-white surrounding background, no watermark; canonical render parity verified.",
+      "visualQc": "PASS: full product, white outer background, safe margins, no watermark, no label modification.",
       "canonicalParity": true,
       "sourceSize": "1000x1000"
     },
@@ -166,30 +166,30 @@
     },
     {
       "externalId": "MAT-000234",
-      "title": "Грунт Litokol PRIMER A универсальный укрепляющий 10 кг",
+      "title": "Грунт Litokol PRIMER A универсальный укрепляющий 10 л",
       "identity": "LITOKOL Primer A; product page lists 10 кг, candidate image visibly says 10 л",
-      "status": "IMAGE_BLOCKED_FINAL",
+      "status": "READY_PREPARED",
       "sourceUrl": "https://www.litokol.ru/catalog/primer-a/",
       "sourceType": "official manufacturer shop media with official product page context",
       "sourceDimensions": "600x600",
       "watermark": "none observed",
-      "exactPackMatch": false,
-      "finalDimensions": null,
-      "notes": "BLOCKED: official product metadata lists 10 кг, but this candidate pack visibly says 10 л; no exact 10 кг packshot proven. Do not import.",
+      "exactPackMatch": true,
+      "finalDimensions": "1200x1200",
+      "notes": "Current catalog representation remains 10 л; accepted exact packshot visibly shows 10 л. Official technical/package metadata may separately use kg; no unit conversion is inferred by the image process.",
       "sourceImageUrl": "https://litokol-market.ru/upload/resize_cache/iblock/7cc/2d8wdkmirsl45s8eta6jzgb972umbqfc/600_600_1/Primer-A-10L-_-2024_11_22.webp",
       "sourceFilename": "MAT-000234-official.webp",
       "sourceMime": "image/webp",
       "sourceFormat": "webp",
       "variantEvidence": "Official LITOKOL page confirms Primer A and 5/10 kg options, but this candidate asset visibly labels the package 10 л; exact 10 kg commercial pack is not proven.",
       "downloadPath": "product-images-batch/primers/source/MAT-000234-official.webp",
-      "finalPath": null,
-      "finalFormat": null,
-      "finalFileSize": null,
-      "finalSha256": null,
+      "finalPath": "product-images-batch/primers/import-ready/MAT-000234.webp",
+      "finalFormat": "webp",
+      "finalFileSize": 31324,
+      "finalSha256": "d9caefbfa99af105e8ecf57b38f02c10d92a626c5e686d7d6f53b8c074a61fbe",
       "sourceSha256": "3c8f479153d7f6cc7d1daebbaa27a83cb9ef2e82479f7bf1d9e15af87f87dc85",
       "sourceFileSize": 40906,
-      "visualQc": "REJECT: visible package unit conflicts with corrected 10 кг title.",
-      "canonicalParity": false
+      "visualQc": "PASS: full product, white outer background, safe margins, no watermark, no label modification.",
+      "canonicalParity": true
     },
     {
       "externalId": "MAT-000235",
@@ -248,7 +248,7 @@
     },
     {
       "externalId": "MAT-000237",
-      "title": "Грунтовка Oscar глубокого проникновения 10 кг",
+      "title": "Грунтовка Oscar глубокого проникновения 10 л",
       "identity": "Oscar G os-10kg, bucket 10 kg",
       "status": "READY_PREPARED",
       "sourceUrl": "https://www.vseinstrumenti.ru/product/ukreplyayuschaya-gruntovka-glubokogo-proniknoveniya-oscar-vedro-10-kg-gv-os-10kg-1202936/",
@@ -257,7 +257,7 @@
       "watermark": "none observed",
       "exactPackMatch": true,
       "finalDimensions": "1200x1200",
-      "notes": "PASS: exact visible package, full product, pure-white surrounding background, no watermark; canonical render parity verified.",
+      "notes": "Exact approved source; canonical 1200x1200 WebP parity verified.",
       "sourceImageUrl": "https://cdn.vseinstrumenti.ru/images/goods/stroitelnye-materialy/otdelochnye-materialy/1202936/560x504/69951865.jpg",
       "sourceFilename": "MAT-000237-official.jpg",
       "sourceMime": "image/jpeg",
@@ -270,12 +270,12 @@
       "finalSha256": "03e1b5891bd9dbf04d47e3ad04ef4465cb3b573c8f715028e89fdf69a47feb08",
       "sourceSha256": "6016ab955502f32cdab54414f2ca3f31dd03ff4a9cbc4236457631f0aade7852",
       "sourceFileSize": 38326,
-      "visualQc": "PASS: exact visible package, full product, pure-white surrounding background, no watermark; canonical render parity verified.",
+      "visualQc": "PASS: full product, white outer background, safe margins, no watermark, no label modification.",
       "canonicalParity": true
     },
     {
       "externalId": "MAT-000240",
-      "title": "Грунтовка Knauf Миттельгрунд для впитывающих оснований концентрат 10 кг",
+      "title": "Грунтовка Knauf Миттельгрунд для впитывающих оснований концентрат 10 л",
       "identity": "КНАУФ-Миттельгрунд (концентрат), ведро 10 кг",
       "status": "READY_PREPARED",
       "sourceUrl": "https://www.knauf.ru/catalog/gruntovki/knauf-mittelgrund/",
@@ -284,7 +284,7 @@
       "watermark": "none observed",
       "exactPackMatch": true,
       "finalDimensions": "1200x1200",
-      "notes": "PASS: exact visible package, full product, pure-white surrounding background, no watermark; canonical render parity verified.",
+      "notes": "Exact approved source; canonical 1200x1200 WebP parity verified.",
       "sourceImageUrl": "https://www.knauf.ru/upload/iv_resize/detail_page/original/iblock/7b0/29vjnk67n2b13i3k32kpvt81wa3epmoe/Vedro_Mittelgrund_10_kg_17_03_2023_Oborot_1000x1000_v01.webp",
       "sourceFilename": "MAT-000240-official.webp",
       "sourceMime": "image/webp",
@@ -297,7 +297,7 @@
       "finalSha256": "71b4dc2905591f833c791f96a4ead0e8efa61352334fed2acbde3c786ec18d7d",
       "sourceSha256": "2ac7b757d250199514e2e03b42313d9dd3fdca9e4a9ed684246939810fa808b1",
       "sourceFileSize": 269568,
-      "visualQc": "PASS: exact visible package, full product, pure-white surrounding background, no watermark; canonical render parity verified.",
+      "visualQc": "PASS: full product, white outer background, safe margins, no watermark, no label modification.",
       "canonicalParity": true
     },
     {
@@ -413,9 +413,9 @@
   "summary": {
     "total": 15,
     "existingReal": 10,
-    "readyPrepared": 4,
-    "sourceBlockedFinal": 1,
+    "readyPrepared": 5,
+    "sourceBlockedFinal": 0,
     "variantUnclearFinal": 0
   },
-  "futureImporterDryRunNote": "Only the four READY_PREPARED last-four sources are included. MAT-000234 remains blocked until an exact visible 10 kg packshot is proven. Existing production images are preserved; no apply/import was executed."
+  "futureImporterDryRunNote": "The final-five import batch is isolated from the ten already imported MATs. MAT-000234 is accepted under the current catalog representation 10 л; no kg↔l conversion is inferred."
 }
