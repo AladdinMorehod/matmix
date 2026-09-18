@@ -23,10 +23,10 @@ CONFIRM = BACKFILL_PRIMER_SEO
 | MAT | Status | Title chars | Description chars |
 |---|---|---:|---:|
 | MAT-000227 | WILL_ADD | 57 | 130 |
-| MAT-000228 | WILL_ADD | 58 | 129 |
+| MAT-000228 | WILL_ADD | 50 | 147 |
 | MAT-000230 | WILL_ADD | 50 | 135 |
 | MAT-000231 | WILL_ADD | 57 | 154 |
-| MAT-000232 | WILL_ADD | 58 | 124 |
+| MAT-000232 | WILL_ADD | 50 | 128 |
 | MAT-000233 | WILL_ADD | 46 | 131 |
 | MAT-000234 | WILL_ADD | 54 | 137 |
 | MAT-000235 | WILL_ADD | 54 | 140 |
@@ -56,9 +56,9 @@ CONFIRM = BACKFILL_PRIMER_SEO
 - Status: **WILL_ADD**
 - Source keys: knaufTiefengrund
 
-**seo_title:** KNAUF Тифенгрунд 10 кг — грунтовка глубокого проникновения
+**seo_title:** Грунтовка KNAUF Тифенгрунд 10 кг — купить в MatMix
 
-**seo_description:** KNAUF Тифенгрунд 10 кг — готовая грунтовка для укрепления основания, снижения впитываемости и улучшения адгезии внутри и снаружи.
+**seo_description:** KNAUF Тифенгрунд 10 кг — грунтовка глубокого проникновения для укрепления основания и улучшения адгезии. Расход 0,1 кг/м², высыхание около 3 часов.
 
 ### MAT-000230
 
@@ -86,9 +86,9 @@ CONFIRM = BACKFILL_PRIMER_SEO
 - Status: **WILL_ADD**
 - Source keys: ceresitCt17
 
-**seo_title:** Ceresit CT 17 PRO 10 л — грунтовка глубокого проникновения
+**seo_title:** Грунтовка Ceresit CT 17 PRO 10 л — купить в MatMix
 
-**seo_description:** Ceresit CT 17 PRO 10 л — грунтовка для впитывающих оснований. Укрепляет поверхность, связывает пыль и снижает впитываемость.
+**seo_description:** Ceresit CT 17 PRO 10 л — грунтовка глубокого проникновения для впитывающих оснований. Расход 0,1–0,2 л/м², высыхание до 2 часов.
 
 ### MAT-000233
 
