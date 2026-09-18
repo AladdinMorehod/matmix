@@ -2,6 +2,20 @@
   "scope": ["MAT-000243", "MAT-000244"],
   "decision": "CORRECTION_REQUIRED",
   "writableField": "products.weight",
+  "productionWrites": 2,
+  "postcheck": {
+    "willFix": 0,
+    "existingOk": 2,
+    "blockers": 0,
+    "status": "PRIMER_WEIGHT_POSTCHECK=PASS"
+  },
+  "attributeAudit": "PRIMER_WEIGHT_ATTRIBUTE_AUDIT=PASS",
+  "service": {
+    "status": "active",
+    "health": "ok",
+    "ready": "ok"
+  },
+  "backupBeforeApply": "/var/backups/matmix/matmix-backup-2026-09-18T20-04-48-364Z-24376d78",
   "guard": {
     "oldWeight": 3,
     "newWeight": 10,
@@ -15,21 +29,23 @@
       "title": "Грунт адгезионный Forbo Eurocol 044, концентрат 1:2 10 кг",
       "oldOperationalWeight": 3,
       "packageWeightKg": 10,
-      "targetOperationalWeight": 10,
+      "newProductionOperationalWeight": 10,
       "unit": "шт",
-      "sourceUrl": "https://www.forbo.com/eurocol/ru/044-europrimer-multi/ewr8vw"
+      "sourceUrl": "https://www.forbo.com/eurocol/ru/044-europrimer-multi/ewr8vw",
+      "status": "PRODUCTION_APPLIED_VERIFIED"
     },
     {
       "externalId": "MAT-000244",
       "title": "Грунтовка Forbo 041 Europrimer EC, для укладки токопроводящих и антистатических покрытий 10 кг",
       "oldOperationalWeight": 3,
       "packageWeightKg": 10,
-      "targetOperationalWeight": 10,
+      "newProductionOperationalWeight": 10,
       "unit": "шт",
-      "sourceUrl": "https://www.forbo.com/eurocol/ru/041-europrimer-ec/e3spag"
+      "sourceUrl": "https://www.forbo.com/eurocol/ru/041-europrimer-ec/e3spag",
+      "status": "PRODUCTION_APPLIED_VERIFIED"
     }
   ],
   "nonTargets": ["title", "slug", "price", "unit", "images", "description", "SEO", "product attributes", "package_weight", "category", "subcategory", "other products fields"],
-  "production": "untouched",
-  "apply": "not executed against production"
+  "production": "applied and independently verified",
+  "apply": "writes=2; postcheck passed"
 }
