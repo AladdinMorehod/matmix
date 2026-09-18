@@ -1,0 +1,1376 @@
+{
+  "mode": "dry-run",
+  "rows": [
+    {
+      "externalId": "MAT-000234",
+      "title": "Грунт Litokol PRIMER A универсальный укрепляющий 10 л",
+      "productId": 205,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "titleStatus": "TITLE_UNIT_MISMATCH",
+      "sourceKeys": [
+        "litokolPrimerA",
+        "localTitle"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 10,
+        "description": null,
+        "specsCount": 0
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "READY",
+          "value": "Универсальная грунтовка",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "litokolPrimerA"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "READY",
+          "value": "Водная дисперсия",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "litokolPrimerA"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "READY",
+          "value": "Подготовка оснований перед покраской, оклейкой обоями, облицовкой плиткой, штукатурными и шпатлёвочными работами",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "litokolPrimerA"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 10,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "litokolPrimerA"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_volume",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "litokolPrimerA",
+            "localTitle"
+          ],
+          "reason": "Official source confirms 10 kg packaging; local title says 10 l. No kg↔l conversion is allowed.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "primer_type",
+          "sourceStatus": "READY",
+          "value": "Универсальная",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "litokolPrimerA"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "READY",
+          "value": "Внутренние и наружные работы",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "litokolPrimerA"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "READY",
+          "value": "Валик, кисть или распылитель",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "litokolPrimerA"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "READY",
+          "value": "Цементные, известковые и гипсовые штукатурки и шпатлёвки, стяжки, бетон, кирпич, ГКЛ, ГВЛ и гипсовые блоки",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "litokolPrimerA"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "READY",
+          "value": "от 100 г/м²",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "litokolPrimerA"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "drying_time",
+          "sourceStatus": "READY",
+          "value": "2–4 часа",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "litokolPrimerA"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "dilution_ratio",
+          "sourceStatus": "ABSENT_BY_DESIGN",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "litokolPrimerA"
+          ],
+          "reason": "Готова к применению; разбавление не заявлено для этого продукта.",
+          "status": "ABSENT_BY_DESIGN"
+        },
+        {
+          "code": "concentrate",
+          "sourceStatus": "READY",
+          "value": false,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "litokolPrimerA"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "READY",
+          "value": "Голубой",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "litokolPrimerA"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "READY",
+          "value": "от +5 до +35 °C",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "litokolPrimerA"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "litokolPrimerA"
+          ],
+          "reason": "Срок хранения exact SKU не указан на проверенной официальной странице.",
+          "status": "NEEDS_SOURCE"
+        }
+      ],
+      "contentWrites": [],
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "category",
+        "subcategory",
+        "image",
+        "image_url",
+        "stock_status"
+      ],
+      "notes": [],
+      "brand": {
+        "code": "brand",
+        "sourceStatus": "READY",
+        "value": "LITOKOL",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "currentId": null,
+        "definitionId": 1,
+        "definitionType": "text",
+        "sources": [
+          "litokolPrimerA"
+        ],
+        "attributeStatus": "WILL_ADD",
+        "productColumnStatus": "WILL_ADD",
+        "status": "WILL_ADD"
+      },
+      "status": "PARTIAL",
+      "summary": {
+        "logicalSlots": 17,
+        "willAdd": 14,
+        "willFix": 0,
+        "existingOk": 0,
+        "needsSource": 2,
+        "absentByDesign": 1,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0
+      }
+    },
+    {
+      "externalId": "MAT-000237",
+      "title": "Грунтовка Oscar глубокого проникновения 10 л",
+      "productId": 208,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "titleStatus": "TITLE_UNIT_MISMATCH",
+      "sourceKeys": [
+        "oscarG",
+        "oscarCatalog",
+        "localTitle"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 10,
+        "description": null,
+        "specsCount": 0
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "READY",
+          "value": "Грунтовка глубокого проникновения",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "oscarG",
+            "oscarCatalog"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "READY",
+          "value": "Латексная грунтовка",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "oscarG",
+            "oscarCatalog"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "READY",
+          "value": "Укрепление оснований и снижение впитываемости",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "oscarG",
+            "oscarCatalog"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 10,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "oscarG",
+            "oscarCatalog"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_volume",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "oscarG",
+            "oscarCatalog",
+            "localTitle"
+          ],
+          "reason": "Brand source identifies the exact package as 10 kg; local title says 10 l. No kg↔l conversion is allowed.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "primer_type",
+          "sourceStatus": "READY",
+          "value": "Глубокого проникновения",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "oscarG",
+            "oscarCatalog"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "READY",
+          "value": "Наружные работы",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "oscarG"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "oscarG",
+            "oscarCatalog"
+          ],
+          "reason": "Exact application method for this SKU is not stated in the retained brand source.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "oscarG",
+            "oscarCatalog"
+          ],
+          "reason": "Exact substrate list for this SKU is not stated in the retained brand source.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "oscarG",
+            "oscarCatalog"
+          ],
+          "reason": "Exact consumption is not stated in the retained brand source.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "drying_time",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "oscarG",
+            "oscarCatalog"
+          ],
+          "reason": "Exact drying time is not stated in the retained brand source.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "dilution_ratio",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "oscarG",
+            "oscarCatalog"
+          ],
+          "reason": "Dilution requirement is not confirmed for this exact SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "concentrate",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "oscarG",
+            "oscarCatalog"
+          ],
+          "reason": "Concentrate status is not confirmed for this exact SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "oscarG",
+            "oscarCatalog"
+          ],
+          "reason": "Color is not confirmed for this exact SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "oscarG",
+            "oscarCatalog"
+          ],
+          "reason": "Application temperature is not confirmed for this exact SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "oscarG",
+            "oscarCatalog"
+          ],
+          "reason": "Shelf life is not confirmed for this exact SKU.",
+          "status": "NEEDS_SOURCE"
+        }
+      ],
+      "contentWrites": [],
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "category",
+        "subcategory",
+        "image",
+        "image_url",
+        "stock_status"
+      ],
+      "notes": [],
+      "brand": {
+        "code": "brand",
+        "sourceStatus": "READY",
+        "value": "Oscar",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "currentId": null,
+        "definitionId": 1,
+        "definitionType": "text",
+        "sources": [
+          "oscarG",
+          "oscarCatalog"
+        ],
+        "attributeStatus": "WILL_ADD",
+        "productColumnStatus": "WILL_ADD",
+        "status": "WILL_ADD"
+      },
+      "status": "PARTIAL",
+      "summary": {
+        "logicalSlots": 17,
+        "willAdd": 7,
+        "willFix": 0,
+        "existingOk": 0,
+        "needsSource": 10,
+        "absentByDesign": 0,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0
+      }
+    },
+    {
+      "externalId": "MAT-000243",
+      "title": "Грунт адгезионный Forbo Eurocol 044, концентрат 1:2 10 кг",
+      "productId": 214,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "titleStatus": "WEIGHT_DISCREPANCY",
+      "sourceKeys": [
+        "forbo044",
+        "localTitle"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 3,
+        "description": null,
+        "specsCount": 0
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "READY",
+          "value": "Универсальная грунтовка-концентрат",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "forbo044"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "READY",
+          "value": "Акриловая дисперсия",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "forbo044"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "READY",
+          "value": "Снижение влаговпитывания пористых оснований и создание адгезии выравнивающих смесей к гладким, невпитывающим и деревянным основаниям",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "forbo044"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 10,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "forbo044"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_volume",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "forbo044"
+          ],
+          "reason": "Official source confirms 10 kg packaging; no exact litre volume is provided.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "primer_type",
+          "sourceStatus": "READY",
+          "value": "Концентрат",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "forbo044"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "READY",
+          "value": "Внутренние и наружные работы",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "forbo044"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "READY",
+          "value": "Валик или распылитель",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "forbo044"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "READY",
+          "value": "Цементные стяжки, основания на основе сульфата кальция, гипсовые поверхности, терраццо, керамическая плитка, натуральный камень, наливной асфальт, ДСП и фанера",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "forbo044"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "READY",
+          "value": "около 50–150 г/м²",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "forbo044"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "drying_time",
+          "sourceStatus": "READY",
+          "value": "0,5–15 часов в зависимости от основания",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "forbo044"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "dilution_ratio",
+          "sourceStatus": "READY",
+          "value": "1:1–1:5 в зависимости от основания",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "forbo044"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "concentrate",
+          "sourceStatus": "READY",
+          "value": true,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "forbo044"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "READY",
+          "value": "Белый",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "forbo044"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "READY",
+          "value": "материал и помещение не ниже +18 °C; пол не ниже +15 °C",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "forbo044"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "READY",
+          "value": 15,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "forbo044"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "contentWrites": [],
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "category",
+        "subcategory",
+        "image",
+        "image_url",
+        "stock_status"
+      ],
+      "notes": [],
+      "brand": {
+        "code": "brand",
+        "sourceStatus": "READY",
+        "value": "Forbo Eurocol",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "currentId": null,
+        "definitionId": 1,
+        "definitionType": "text",
+        "sources": [
+          "forbo044"
+        ],
+        "attributeStatus": "WILL_ADD",
+        "productColumnStatus": "WILL_ADD",
+        "status": "WILL_ADD"
+      },
+      "status": "PARTIAL",
+      "summary": {
+        "logicalSlots": 17,
+        "willAdd": 16,
+        "willFix": 0,
+        "existingOk": 0,
+        "needsSource": 1,
+        "absentByDesign": 0,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0
+      }
+    },
+    {
+      "externalId": "MAT-000244",
+      "title": "Грунтовка Forbo 041 Europrimer EC, для укладки токопроводящих и антистатических покрытий 10 кг",
+      "productId": 215,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "Грунтовка",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "titleStatus": "WEIGHT_DISCREPANCY",
+      "sourceKeys": [
+        "forbo041",
+        "localTitle"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 3,
+        "description": null,
+        "specsCount": 0
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "READY",
+          "value": "Токопроводящая водно-дисперсионная грунтовка",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "forbo041"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "READY",
+          "value": "Акриловая дисперсия",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "forbo041"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "READY",
+          "value": "Создание поперечной токопроводимости перед нанесением токопроводящего клея",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "forbo041"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 10,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "forbo041"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_volume",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "forbo041"
+          ],
+          "reason": "Official source confirms 10 kg packaging; no exact litre volume is provided.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "primer_type",
+          "sourceStatus": "READY",
+          "value": "Токопроводящая",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "forbo041"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "forbo041"
+          ],
+          "reason": "Official page confirms use in flooring systems but does not define a general indoor/outdoor field for this attribute.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "READY",
+          "value": "Валик из пеноматериала",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "forbo041"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "READY",
+          "value": "Подготовленные влаговпитывающие поверхности",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "forbo041"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "READY",
+          "value": "около 100–150 г/м²",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "forbo041"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "drying_time",
+          "sourceStatus": "READY",
+          "value": "2–4 часа в зависимости от основания",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "forbo041"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "dilution_ratio",
+          "sourceStatus": "ABSENT_BY_DESIGN",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "forbo041"
+          ],
+          "reason": "Готова к применению; разбавление не заявлено.",
+          "status": "ABSENT_BY_DESIGN"
+        },
+        {
+          "code": "concentrate",
+          "sourceStatus": "READY",
+          "value": false,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "forbo041"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "READY",
+          "value": "Чёрный",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "forbo041"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "READY",
+          "value": "материал и помещение не ниже +18 °C; пол не ниже +15 °C",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "forbo041"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "READY",
+          "value": 15,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "forbo041"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "contentWrites": [],
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "category",
+        "subcategory",
+        "image",
+        "image_url",
+        "stock_status"
+      ],
+      "notes": [],
+      "brand": {
+        "code": "brand",
+        "sourceStatus": "READY",
+        "value": "Forbo Eurocol",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "currentId": null,
+        "definitionId": 1,
+        "definitionType": "text",
+        "sources": [
+          "forbo041"
+        ],
+        "attributeStatus": "WILL_ADD",
+        "productColumnStatus": "WILL_ADD",
+        "status": "WILL_ADD"
+      },
+      "status": "PARTIAL",
+      "summary": {
+        "logicalSlots": 17,
+        "willAdd": 14,
+        "willFix": 0,
+        "existingOk": 0,
+        "needsSource": 2,
+        "absentByDesign": 1,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0
+      }
+    }
+  ],
+  "summary": {
+    "total": 4,
+    "readyProducts": 0,
+    "partialProducts": 4,
+    "errors": 0,
+    "logicalSlots": 68,
+    "willAdd": 51,
+    "willFix": 0,
+    "existingOk": 0,
+    "needsSource": 15,
+    "absentByDesign": 2,
+    "schemaBlocked": 0,
+    "valueConflict": 0,
+    "brandConflict": 0,
+    "titleGuardBlocked": 0,
+    "definitionsToCreate": 9
+  },
+  "definitionsToCreate": [
+    {
+      "code": "primer_type",
+      "label": "Тип грунтовки",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "application_area",
+      "label": "Область применения",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "application_method",
+      "label": "Способ нанесения",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "substrates",
+      "label": "Основания",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "consumption",
+      "label": "Расход",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "drying_time",
+      "label": "Время высыхания",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "concentrate",
+      "label": "Концентрат",
+      "dataType": "boolean",
+      "defaultUnit": null
+    },
+    {
+      "code": "color",
+      "label": "Цвет",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "dilution_ratio",
+      "label": "Разбавление",
+      "dataType": "text",
+      "defaultUnit": null
+    }
+  ],
+  "sources": {
+    "litokolPrimerA": {
+      "title": "LITOKOL Primer A — официальный сайт",
+      "url": "https://www.litokol.ru/catalog/primer-a/",
+      "owner": "LITOKOL"
+    },
+    "oscarG": {
+      "title": "Oscar G os-10kg — brand support/catalog",
+      "url": "https://support.alaxar.ru/produktsiya/katalog/gruntovka-2/dlya-naruzhnyh-rabot.html",
+      "owner": "Oscar / brand support"
+    },
+    "oscarCatalog": {
+      "title": "Oscar — catalog PDF",
+      "url": "https://itelgroup-bucket.storage.yandexcloud.net/Production/exb_doc/2032/4956/%D0%9F%D1%80%D0%B0%D0%B9%D1%81-%D0%BA%D0%B0%D1%82%D0%B0%D0%BB%D0%BE%D0%B3_300425_preview2.pdf",
+      "owner": "Oscar / brand catalog"
+    },
+    "forbo044": {
+      "title": "Forbo Eurocol 044 Europrimer Multi — официальный сайт",
+      "url": "https://www.forbo.com/eurocol/ru/044-europrimer-multi/ewr8vw",
+      "owner": "Forbo Eurocol"
+    },
+    "forbo041": {
+      "title": "Forbo Eurocol 041 Europrimer EC — официальный сайт",
+      "url": "https://www.forbo.com/eurocol/ru/041-europrimer-ec/e3spag",
+      "owner": "Forbo Eurocol"
+    },
+    "localTitle": {
+      "title": "Локальная карточка MatMix",
+      "url": null,
+      "owner": "MatMix local audit"
+    }
+  },
+  "identityReview": [
+    {
+      "externalId": "MAT-000229",
+      "status": "IDENTITY_BLOCKED_FINAL",
+      "currentTitle": "Грунтовка Knauf Тифенгрунд морозостойкая (до -40) 10 л",
+      "finding": "KNAUF Tiefengrund family is known, but a distinct exact frost-resistant до -40 SKU/package is not proven by the available official source.",
+      "missing": "Exact manufacturer SKU or current TDS/packaging proving the морозостойкая до -40 10 l identity."
+    },
+    {
+      "externalId": "MAT-000238",
+      "status": "IDENTITY_BLOCKED_FINAL",
+      "currentTitle": "Грунтовка Акрил 5 л",
+      "finding": "Generic title has no manufacturer, product model, or authoritative source identity.",
+      "missing": "Manufacturer and exact model/SKU for the 5 l acrylic primer."
+    },
+    {
+      "externalId": "MAT-000239",
+      "status": "IDENTITY_BLOCKED_FINAL",
+      "currentTitle": "Грунтовка Акрил 10 л",
+      "finding": "Generic title has no manufacturer, product model, or authoritative source identity.",
+      "missing": "Manufacturer and exact model/SKU for the 10 l acrylic primer."
+    },
+    {
+      "externalId": "MAT-000259",
+      "status": "IDENTITY_BLOCKED_FINAL",
+      "currentTitle": "Грунт ГФ-021 по металлу и дереву серый 0,8 кг",
+      "finding": "GF-021 is a generic product class; no manufacturer or exact SKU is established. Historical secondary reference is insufficient.",
+      "missing": "Manufacturer, exact GF-021 model, and authoritative 0.8 kg package evidence."
+    },
+    {
+      "externalId": "MAT-000260",
+      "status": "IDENTITY_BLOCKED_FINAL",
+      "currentTitle": "Грунт по металлу серый 1 л",
+      "finding": "Generic grey metal-primer title has no manufacturer or exact product model.",
+      "missing": "Manufacturer, exact model/SKU, and authoritative 1 l package evidence."
+    }
+  ],
+  "productionInspectionSql": "SELECT p.external_id,p.title,p.brand,p.weight,\n  CASE WHEN COALESCE(p.description,p.short_description,p.full_description,'')<>'' THEN 1 ELSE 0 END AS description_present,\n  p.image,p.image_url,\n  (SELECT GROUP_CONCAT(d.code || '=' || COALESCE(v.value_text,CAST(v.value_number AS TEXT),CAST(v.value_boolean AS TEXT)), ' | ')\n   FROM product_attribute_values v JOIN product_attribute_definitions d ON d.id=v.attribute_definition_id\n   WHERE v.product_id=p.id) AS primer_attributes,\n  (SELECT GROUP_CONCAT(i.image_url, ' | ') FROM product_images i WHERE i.product_id=p.id) AS gallery_refs\nFROM products p\nWHERE p.external_id IN ('MAT-000234','MAT-000237','MAT-000243','MAT-000244','MAT-000229','MAT-000238','MAT-000239','MAT-000259','MAT-000260')\nORDER BY p.external_id;",
+  "writableSurface": {
+    "products": [
+      "brand"
+    ],
+    "attributeValueCodes": [
+      "brand",
+      "product_type",
+      "base",
+      "purpose",
+      "package_weight",
+      "package_volume",
+      "primer_type",
+      "application_area",
+      "application_method",
+      "substrates",
+      "consumption",
+      "drying_time",
+      "dilution_ratio",
+      "concentrate",
+      "color",
+      "application_temperature",
+      "shelf_life"
+    ],
+    "forbidden": [
+      "title",
+      "slug",
+      "description",
+      "short_description",
+      "full_description",
+      "seo_title",
+      "seo_description",
+      "price",
+      "weight",
+      "category",
+      "subcategory",
+      "image",
+      "image_url",
+      "stock_status",
+      "any image table"
+    ]
+  }
+}
