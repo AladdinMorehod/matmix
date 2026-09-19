@@ -15,6 +15,31 @@
 - IDENTITY_BLOCKED_MATS=MAT-000222, MAT-000223, MAT-000224
 - IDENTITY_PARTIAL_MATS=MAT-000225
 
+## Final production postcheck
+
+- PRODUCTION_APPLIED=yes
+- PRODUCTION_POSTCHECK=PASS
+- PRODUCTION_IMAGE_READY=4
+- PRODUCTION_IMAGE_EXCEPTION=1
+- PRODUCTION_READY_MATS=MAT-000217, MAT-000219, MAT-000220, MAT-000221
+- PRODUCTION_EXCEPTION_MATS=MAT-000218
+- BETONCONTACT_IMAGES_POSTCHECK=PASS
+- BETONCONTACT_RENDERED_FILES=PASS
+- MAT218_UNCHANGED=PASS
+- BETONCONTACT_NONIMAGE_UNCHANGED=PASS
+- Post-import summary: total=4, ready=0, existingReal=4, protected=0, invalid=0, notFound=0, duplicates=0, errors=0
+- Verified backup: /var/backups/matmix/matmix-backup-2026-09-19T11-36-12-142Z-00cac9dc
+- Service: active; health=ok; ready=ok
+- Server-rendered SHA256 values were not supplied in the operator output; HTTP=200 was reported for all four URLs.
+
+| MAT | final production image_url | server format | dimensions | HTTP | server SHA256 |
+|---|---|---|---:|---:|---|
+| MAT-000217 | /uploads/products/MAT-000217-ae8c66e474e7f9ce.webp | WebP | 1200×1200 | 200 | not supplied |
+| MAT-000219 | /uploads/products/MAT-000219-a46789d5b3f82351.webp | WebP | 1200×1200 | 200 | not supplied |
+| MAT-000220 | /uploads/products/MAT-000220-82467bd3ee2c392f.webp | WebP | 1200×1200 | 200 | not supplied |
+| MAT-000221 | /uploads/products/MAT-000221-bb24de51b94a37ab.webp | WebP | 1200×1200 | 200 | not supplied |
+| MAT-000218 | unchanged; intentional exception | — | — | — | — |
+
 ## Current local image audit
 
 All five target products currently point to `/uploads/products/MAT-000001-20260714153714969-3fb7fe.png`; no primary binding and no gallery rows were found. Local placeholder SHA256: `65729e6fd1cc852743ff99cbeb62ade8154f6a55389149a6875da6b7b70896ad`. All five require replacement.

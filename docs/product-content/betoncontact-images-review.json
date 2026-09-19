@@ -1,5 +1,5 @@
 {
-  "mode": "read-only-image-research",
+  "mode": "production-postcheck",
   "generatedAt": "2026-09-19",
   "targets": [
     {
@@ -48,7 +48,16 @@
         "packageWeight": 5,
         "match": true
       },
-      "importReady": true
+      "importReady": true,
+      "productionImageUrl": "/uploads/products/MAT-000217-ae8c66e474e7f9ce.webp",
+      "serverRendered": {
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "sha256": null,
+        "sha256Status": "not supplied in operator output",
+        "httpStatus": 200
+      }
     },
     {
       "mat": "MAT-000218",
@@ -126,7 +135,11 @@
       ],
       "packageGeneration": "OVAL_CURRENT",
       "exactPackMatch": true,
-      "reason": "No safe clean white-background source without edge/product alteration"
+      "reason": "No safe clean white-background source without edge/product alteration",
+      "productionImageUrl": null,
+      "productionStatus": "INTENTIONAL_EXCEPTION",
+      "productionBinding": "unchanged",
+      "serverRendered": null
     },
     {
       "mat": "MAT-000219",
@@ -174,7 +187,16 @@
         "packageWeight": 5,
         "match": true
       },
-      "importReady": true
+      "importReady": true,
+      "productionImageUrl": "/uploads/products/MAT-000219-a46789d5b3f82351.webp",
+      "serverRendered": {
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "sha256": null,
+        "sha256Status": "not supplied in operator output",
+        "httpStatus": 200
+      }
     },
     {
       "mat": "MAT-000220",
@@ -222,7 +244,16 @@
         "packageWeight": 15,
         "match": true
       },
-      "importReady": true
+      "importReady": true,
+      "productionImageUrl": "/uploads/products/MAT-000220-82467bd3ee2c392f.webp",
+      "serverRendered": {
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "sha256": null,
+        "sha256Status": "not supplied in operator output",
+        "httpStatus": 200
+      }
     },
     {
       "mat": "MAT-000221",
@@ -270,7 +301,16 @@
         "packageWeight": 20,
         "match": true
       },
-      "importReady": true
+      "importReady": true,
+      "productionImageUrl": "/uploads/products/MAT-000221-bb24de51b94a37ab.webp",
+      "serverRendered": {
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "sha256": null,
+        "sha256Status": "not supplied in operator output",
+        "httpStatus": 200
+      }
     }
   ],
   "summary": {
@@ -315,5 +355,39 @@
     "productionWrites": false,
     "dbChanged": false,
     "sourceImagesStaged": false
+  },
+  "production": {
+    "applied": true,
+    "postcheck": "BETONCONTACT_IMAGES_POSTCHECK=PASS",
+    "imageReady": 4,
+    "imageException": 1,
+    "readyMats": [
+      "MAT-000217",
+      "MAT-000219",
+      "MAT-000220",
+      "MAT-000221"
+    ],
+    "exceptionMats": [
+      "MAT-000218"
+    ],
+    "renderedFiles": "BETONCONTACT_RENDERED_FILES=PASS",
+    "mat218Unchanged": "MAT218_UNCHANGED=PASS",
+    "nonImageUnchanged": "BETONCONTACT_NONIMAGE_UNCHANGED=PASS",
+    "postImportSummary": {
+      "total": 4,
+      "ready": 0,
+      "existingReal": 4,
+      "protected": 0,
+      "invalid": 0,
+      "notFound": 0,
+      "duplicates": 0,
+      "errors": 0
+    },
+    "backup": "/var/backups/matmix/matmix-backup-2026-09-19T11-36-12-142Z-00cac9dc",
+    "service": "active",
+    "health": "ok",
+    "ready": "ok",
+    "serverRenderedSha256Supplied": false,
+    "httpChecks": "HTTP=200 for all four imported URLs"
   }
 }
