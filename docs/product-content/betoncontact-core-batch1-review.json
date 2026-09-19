@@ -1,0 +1,1458 @@
+{
+  "mode": "dry-run",
+  "rows": [
+    {
+      "externalId": "MAT-000217",
+      "title": "Бетонконтакт Knauf Бетогрунд 5 кг",
+      "productId": 189,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "БетонКонтакт",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "titleStatus": "MATCH",
+      "sourceKeys": [
+        "knaufBetogrund"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 5,
+        "unit": "шт",
+        "price": null,
+        "description": null,
+        "seoTitle": null,
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "specsCount": 0
+      },
+      "specs": [
+        {
+          "code": "brand",
+          "sourceStatus": "READY",
+          "value": "KNAUF",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 1,
+          "definitionType": "text",
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "product_type",
+          "sourceStatus": "READY",
+          "value": "Грунтовка адгезионная для бетонных и гладких оснований",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "READY",
+          "value": "Полимерная дисперсия с кварцевым песком",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "READY",
+          "value": "Подготовка бетонных и гладких оснований перед нанесением последующих покрытий",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 5,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "primer_type",
+          "sourceStatus": "READY",
+          "value": "Адгезионная грунтовка-бетонконтакт",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "READY",
+          "value": "Внутренние работы",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": "Official source does not state an exact application method for this SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "READY",
+          "value": "Бетон, гладкие плотные основания",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "READY",
+          "value": "около 0,25 кг/м²",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "drying_time",
+          "sourceStatus": "READY",
+          "value": "12 часов",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "concentrate",
+          "sourceStatus": "READY",
+          "value": false,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "READY",
+          "value": "Розовый",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": "Exact application temperature is not stated on the authoritative source used for this batch.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "READY",
+          "value": 12,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "notStored": [
+        "products.brand",
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "unit",
+        "category",
+        "subcategory",
+        "image",
+        "image_url",
+        "stock_status",
+        "all image tables"
+      ],
+      "status": "PARTIAL",
+      "summary": {
+        "logicalSlots": 15,
+        "willAdd": 13,
+        "willFix": 0,
+        "existingOk": 0,
+        "needsSource": 2,
+        "absentByDesign": 0,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "titleGuardBlocked": 0
+      }
+    },
+    {
+      "externalId": "MAT-000218",
+      "title": "Бетонконтакт Knauf Бетогрунд 15 кг",
+      "productId": 190,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "БетонКонтакт",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "titleStatus": "MATCH",
+      "sourceKeys": [
+        "knaufBetogrund"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 15,
+        "unit": "шт",
+        "price": 1974,
+        "description": null,
+        "seoTitle": null,
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "specsCount": 0
+      },
+      "specs": [
+        {
+          "code": "brand",
+          "sourceStatus": "READY",
+          "value": "KNAUF",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 1,
+          "definitionType": "text",
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "product_type",
+          "sourceStatus": "READY",
+          "value": "Грунтовка адгезионная для бетонных и гладких оснований",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "READY",
+          "value": "Полимерная дисперсия с кварцевым песком",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "READY",
+          "value": "Подготовка бетонных и гладких оснований перед нанесением последующих покрытий",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 15,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "primer_type",
+          "sourceStatus": "READY",
+          "value": "Адгезионная грунтовка-бетонконтакт",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "READY",
+          "value": "Внутренние работы",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": "Official source does not state an exact application method for this SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "READY",
+          "value": "Бетон, гладкие плотные основания",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "READY",
+          "value": "около 0,25 кг/м²",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "drying_time",
+          "sourceStatus": "READY",
+          "value": "12 часов",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "concentrate",
+          "sourceStatus": "READY",
+          "value": false,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "READY",
+          "value": "Розовый",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": "Exact application temperature is not stated on the authoritative source used for this batch.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "READY",
+          "value": 12,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "knaufBetogrund"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "notStored": [
+        "products.brand",
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "unit",
+        "category",
+        "subcategory",
+        "image",
+        "image_url",
+        "stock_status",
+        "all image tables"
+      ],
+      "status": "PARTIAL",
+      "summary": {
+        "logicalSlots": 15,
+        "willAdd": 13,
+        "willFix": 0,
+        "existingOk": 0,
+        "needsSource": 2,
+        "absentByDesign": 0,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "titleGuardBlocked": 0
+      }
+    },
+    {
+      "externalId": "MAT-000219",
+      "title": "Бетонконтакт Ceresit CT 19, 5 кг",
+      "productId": 191,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "БетонКонтакт",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "titleStatus": "MATCH",
+      "sourceKeys": [
+        "ceresitCt19"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 5,
+        "unit": "шт",
+        "price": 787.5,
+        "description": null,
+        "seoTitle": null,
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "specsCount": 0
+      },
+      "specs": [
+        {
+          "code": "brand",
+          "sourceStatus": "READY",
+          "value": "Ceresit",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 1,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "product_type",
+          "sourceStatus": "READY",
+          "value": "Адгезионная грунтовка для бетонных оснований",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "READY",
+          "value": "Водная дисперсия акриловых сополимеров с минеральными наполнителями",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "READY",
+          "value": "Повышение адгезии последующих покрытий к гладким бетонным основаниям",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 5,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "primer_type",
+          "sourceStatus": "READY",
+          "value": "Адгезионная грунтовка-бетонконтакт",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "READY",
+          "value": "Внутренние и наружные работы",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": "Official source does not state an exact application method for this SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "READY",
+          "value": "Гладкий бетон; монолитные и сборные железобетонные основания",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "READY",
+          "value": "около 0,2 кг/м²",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "drying_time",
+          "sourceStatus": "READY",
+          "value": "около 3 часов",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "concentrate",
+          "sourceStatus": "READY",
+          "value": false,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "READY",
+          "value": "Розовый",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "READY",
+          "value": "+5…+30 °C",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": "Shelf life in months is not confirmed for this exact SKU on the authoritative source.",
+          "status": "NEEDS_SOURCE"
+        }
+      ],
+      "notStored": [
+        "products.brand",
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "unit",
+        "category",
+        "subcategory",
+        "image",
+        "image_url",
+        "stock_status",
+        "all image tables"
+      ],
+      "status": "PARTIAL",
+      "summary": {
+        "logicalSlots": 15,
+        "willAdd": 13,
+        "willFix": 0,
+        "existingOk": 0,
+        "needsSource": 2,
+        "absentByDesign": 0,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "titleGuardBlocked": 0
+      }
+    },
+    {
+      "externalId": "MAT-000220",
+      "title": "Бетонконтакт Ceresit CT 19, 15 кг",
+      "productId": 192,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "БетонКонтакт",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "titleStatus": "MATCH",
+      "sourceKeys": [
+        "ceresitCt19"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 15,
+        "unit": "шт",
+        "price": 2205,
+        "description": null,
+        "seoTitle": null,
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "specsCount": 0
+      },
+      "specs": [
+        {
+          "code": "brand",
+          "sourceStatus": "READY",
+          "value": "Ceresit",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 1,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "product_type",
+          "sourceStatus": "READY",
+          "value": "Адгезионная грунтовка для бетонных оснований",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "READY",
+          "value": "Водная дисперсия акриловых сополимеров с минеральными наполнителями",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "READY",
+          "value": "Повышение адгезии последующих покрытий к гладким бетонным основаниям",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 15,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "primer_type",
+          "sourceStatus": "READY",
+          "value": "Адгезионная грунтовка-бетонконтакт",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "READY",
+          "value": "Внутренние и наружные работы",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": "Official source does not state an exact application method for this SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "READY",
+          "value": "Гладкий бетон; монолитные и сборные железобетонные основания",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "READY",
+          "value": "около 0,2 кг/м²",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "drying_time",
+          "sourceStatus": "READY",
+          "value": "около 3 часов",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "concentrate",
+          "sourceStatus": "READY",
+          "value": false,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "READY",
+          "value": "Розовый",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "READY",
+          "value": "+5…+30 °C",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "ceresitCt19"
+          ],
+          "reason": "Shelf life in months is not confirmed for this exact SKU on the authoritative source.",
+          "status": "NEEDS_SOURCE"
+        }
+      ],
+      "notStored": [
+        "products.brand",
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "unit",
+        "category",
+        "subcategory",
+        "image",
+        "image_url",
+        "stock_status",
+        "all image tables"
+      ],
+      "status": "PARTIAL",
+      "summary": {
+        "logicalSlots": 15,
+        "willAdd": 13,
+        "willFix": 0,
+        "existingOk": 0,
+        "needsSource": 2,
+        "absentByDesign": 0,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "titleGuardBlocked": 0
+      }
+    },
+    {
+      "externalId": "MAT-000221",
+      "title": "Бетонконтакт Cтаратели 20 кг",
+      "productId": 193,
+      "category": "Грунт / БетонКонтакт",
+      "subcategory": "БетонКонтакт",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "titleStatus": "MATCH",
+      "sourceKeys": [
+        "starateliBeton"
+      ],
+      "current": {
+        "brand": null,
+        "weight": 20,
+        "unit": "шт",
+        "price": 2520,
+        "description": null,
+        "seoTitle": null,
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "specsCount": 0
+      },
+      "specs": [
+        {
+          "code": "brand",
+          "sourceStatus": "READY",
+          "value": "Старатели",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 1,
+          "definitionType": "text",
+          "sources": [
+            "starateliBeton"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "product_type",
+          "sourceStatus": "READY",
+          "value": "Грунтовка БЕТОН-КОНТАКТ",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "starateliBeton"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "READY",
+          "value": "Полимерная дисперсия с песком, водой и функциональными добавками",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "starateliBeton"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "READY",
+          "value": "Подготовка бетонных и других плотных оснований перед последующими покрытиями",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "starateliBeton"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 20,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "starateliBeton"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "primer_type",
+          "sourceStatus": "READY",
+          "value": "Адгезионная грунтовка-бетонконтакт",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "starateliBeton"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "READY",
+          "value": "Внутренние работы",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "starateliBeton"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "READY",
+          "value": "Валик или кисть",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "starateliBeton"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "READY",
+          "value": "Бетон, керамическая плитка, поверхности с масляной краской",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "starateliBeton"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "READY",
+          "value": "0,2–0,3 кг/м²",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "starateliBeton"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "drying_time",
+          "sourceStatus": "READY",
+          "value": "2–3 часа",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "starateliBeton"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "concentrate",
+          "sourceStatus": "READY",
+          "value": false,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "starateliBeton"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "READY",
+          "value": "Вишнёвый",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "starateliBeton"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "READY",
+          "value": "+5…+30 °C",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "starateliBeton"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "READY",
+          "value": 12,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "starateliBeton"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "notStored": [
+        "products.brand",
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "unit",
+        "category",
+        "subcategory",
+        "image",
+        "image_url",
+        "stock_status",
+        "all image tables"
+      ],
+      "status": "READY",
+      "summary": {
+        "logicalSlots": 15,
+        "willAdd": 15,
+        "willFix": 0,
+        "existingOk": 0,
+        "needsSource": 0,
+        "absentByDesign": 0,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "titleGuardBlocked": 0
+      }
+    }
+  ],
+  "summary": {
+    "total": 5,
+    "readyProducts": 1,
+    "partialProducts": 4,
+    "errors": 0,
+    "logicalSlots": 75,
+    "willAdd": 67,
+    "willFix": 0,
+    "existingOk": 0,
+    "needsSource": 8,
+    "absentByDesign": 0,
+    "schemaBlocked": 0,
+    "valueConflict": 0,
+    "titleGuardBlocked": 0,
+    "definitionsToCreate": 8
+  },
+  "definitionsToCreate": [
+    {
+      "code": "primer_type",
+      "label": "Тип грунтовки",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "application_area",
+      "label": "Область применения",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "substrates",
+      "label": "Основания",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "consumption",
+      "label": "Расход",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "drying_time",
+      "label": "Время высыхания",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "concentrate",
+      "label": "Концентрат",
+      "dataType": "boolean",
+      "defaultUnit": null
+    },
+    {
+      "code": "color",
+      "label": "Цвет",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "application_method",
+      "label": "Способ нанесения",
+      "dataType": "text",
+      "defaultUnit": null
+    }
+  ],
+  "absentByDesign": {
+    "package_volume": "All five exact SKUs are catalogued by mass (kg); no authoritative volume value exists, and kg↔l conversion is forbidden."
+  },
+  "sources": {
+    "knaufBetogrund": {
+      "owner": "KNAUF Russia",
+      "title": "КНАУФ-Бетогрунд",
+      "url": "https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/gruntovki/knauf-betogrund/",
+      "evidence": "Official RU product page confirms the product family, ready-to-use adhesive primer, 5/15 kg packs, pink color, consumption, drying and shelf life."
+    },
+    "ceresitCt19": {
+      "owner": "Ceresit Russia",
+      "title": "Ceresit CT 19 Бетонконтакт",
+      "url": "https://www.ceresit.ru/ru/products/tiling/supplementary-materials/ct-19-contact-primer-supercontact",
+      "evidence": "Official RU product page confirms CT 19, ready-to-use adhesive primer, internal/external use, 5/15 kg packs, consumption, drying and temperature."
+    },
+    "starateliBeton": {
+      "owner": "Старатели",
+      "title": "Грунтовка БЕТОН-КОНТАКТ",
+      "url": "https://www.starateli.ru/po-betonu/",
+      "evidence": "Official manufacturer page confirms 20/5/3 kg packs, ready-to-use composition, substrates, roller/brush application, consumption, drying, temperature, color and shelf life."
+    }
+  },
+  "writableSurface": {
+    "products": [],
+    "attributeValueCodes": [
+      "brand",
+      "product_type",
+      "base",
+      "purpose",
+      "package_weight",
+      "primer_type",
+      "application_area",
+      "application_method",
+      "substrates",
+      "consumption",
+      "drying_time",
+      "concentrate",
+      "color",
+      "application_temperature",
+      "shelf_life"
+    ],
+    "forbidden": [
+      "products.brand",
+      "title",
+      "slug",
+      "description",
+      "short_description",
+      "full_description",
+      "seo_title",
+      "seo_description",
+      "price",
+      "weight",
+      "unit",
+      "category",
+      "subcategory",
+      "image",
+      "image_url",
+      "stock_status",
+      "any image table"
+    ]
+  }
+}
