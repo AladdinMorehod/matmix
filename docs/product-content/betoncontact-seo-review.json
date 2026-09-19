@@ -9,7 +9,7 @@
       "currentSeoDescription": null,
       "proposedSeoTitle": "KNAUF Бетогрунд 5 кг — бетонконтакт | MatMix",
       "proposedSeoDescription": "KNAUF Бетогрунд 5 кг — готовая адгезионная грунтовка для бетонных и гладких оснований. Расход около 0,25 кг/м², высыхание 12 часов.",
-      "status": "WILL_ADD",
+      "status": "EXISTING_OK",
       "validationIssues": [],
       "sourceKeys": [
         "knaufBetogrund"
@@ -41,7 +41,7 @@
       "currentSeoDescription": null,
       "proposedSeoTitle": "KNAUF Бетогрунд 15 кг — бетонконтакт | MatMix",
       "proposedSeoDescription": "KNAUF Бетогрунд 15 кг — готовая адгезионная грунтовка для бетонных и гладких оснований. Расход около 0,25 кг/м², высыхание 12 часов.",
-      "status": "WILL_ADD",
+      "status": "EXISTING_OK",
       "validationIssues": [],
       "sourceKeys": [
         "knaufBetogrund"
@@ -73,7 +73,7 @@
       "currentSeoDescription": null,
       "proposedSeoTitle": "Ceresit CT 19 5 кг — бетонконтакт | MatMix",
       "proposedSeoDescription": "Ceresit CT 19 5 кг — готовая адгезионная грунтовка для гладкого бетона, внутренних и наружных работ. Расход около 0,2 кг/м², высыхание около 3 часов.",
-      "status": "WILL_ADD",
+      "status": "EXISTING_OK",
       "validationIssues": [],
       "sourceKeys": [
         "ceresitCt19"
@@ -105,7 +105,7 @@
       "currentSeoDescription": null,
       "proposedSeoTitle": "Ceresit CT 19 15 кг — бетонконтакт | MatMix",
       "proposedSeoDescription": "Ceresit CT 19 15 кг — готовая адгезионная грунтовка для гладкого бетона, внутренних и наружных работ. Расход около 0,2 кг/м², высыхание около 3 часов.",
-      "status": "WILL_ADD",
+      "status": "EXISTING_OK",
       "validationIssues": [],
       "sourceKeys": [
         "ceresitCt19"
@@ -137,7 +137,7 @@
       "currentSeoDescription": null,
       "proposedSeoTitle": "Старатели Бетон-Контакт 20 кг | MatMix",
       "proposedSeoDescription": "Старатели Бетон-Контакт 20 кг — готовая грунтовка для бетонных, плиточных и окрашенных масляной краской оснований. Наносится валиком или кистью; расход 0,2–0,3 кг/м².",
-      "status": "WILL_ADD",
+      "status": "EXISTING_OK",
       "validationIssues": [],
       "sourceKeys": [
         "starateliBeton"
@@ -206,12 +206,14 @@
   },
   "summary": {
     "total": 5,
-    "willAdd": 5,
-    "existingOk": 0,
+    "willAdd": 0,
+    "existingOk": 5,
     "contentConflict": 0,
     "errors": 0,
     "duplicateSeoTitles": 0,
-    "duplicateSeoDescriptions": 0
+    "duplicateSeoDescriptions": 0,
+    "productionApplied": true,
+    "productionPostcheck": "PASS"
   },
   "identityResearch": {
     "MAT_000225": {
@@ -233,5 +235,21 @@
     "seoCopyApply": "PASS",
     "seoSecondDryRun": "PASS",
     "realLocalDbMutated": false
+  },
+  "production": {
+    "applied": true,
+    "postcheck": "PASS",
+    "existingOk": 5,
+    "willAdd": 0,
+    "contentConflict": 0,
+    "errors": 0,
+    "duplicateSeoTitles": 0,
+    "duplicateSeoDescriptions": 0,
+    "backup": "/var/backups/matmix/matmix-backup-2026-09-19T10-56-44-373Z-c742b342",
+    "coreAfterContent": "BETONCONTACT_CORE_AFTER_CONTENT=PASS",
+    "nonContentUnchanged": "BETONCONTACT_NONCONTENT_UNCHANGED=PASS",
+    "service": "active",
+    "health": "ok",
+    "ready": "ok"
   }
 }

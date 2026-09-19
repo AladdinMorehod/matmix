@@ -5,13 +5,23 @@
 DESCRIPTION_MUTABLE_FIELDS_EXACTLY = ["full_description"]
 CONFIRM = BACKFILL_BETONCONTACT_DESCRIPTIONS
 
+## Production postcheck
+
+- PRODUCTION_APPLIED=yes
+- PRODUCTION_POSTCHECK=PASS
+- existingOk=5; willAdd=0; contentConflict=0; errors=0
+- backup: /var/backups/matmix/matmix-backup-2026-09-19T10-56-44-373Z-c742b342
+- BETONCONTACT_CORE_AFTER_CONTENT=PASS
+- BETONCONTACT_NONCONTENT_UNCHANGED=PASS
+- service active; health ok; ready ok
+
 ## Summary
 
 ```json
 {
   "total": 5,
-  "willAdd": 5,
-  "existingOk": 0,
+  "willAdd": 0,
+  "existingOk": 5,
   "contentConflict": 0,
   "errors": 0,
   "excludedAllowlist": 0
@@ -20,18 +30,18 @@ CONFIRM = BACKFILL_BETONCONTACT_DESCRIPTIONS
 
 | MAT | Status | Characters | Source keys |
 |---|---|---:|---|
-| MAT-000217 | WILL_ADD | 312 | knaufBetogrund |
-| MAT-000218 | WILL_ADD | 313 | knaufBetogrund |
-| MAT-000219 | WILL_ADD | 342 | ceresitCt19 |
-| MAT-000220 | WILL_ADD | 343 | ceresitCt19 |
-| MAT-000221 | WILL_ADD | 371 | starateliBeton |
+| MAT-000217 | EXISTING_OK | 312 | knaufBetogrund |
+| MAT-000218 | EXISTING_OK | 313 | knaufBetogrund |
+| MAT-000219 | EXISTING_OK | 342 | ceresitCt19 |
+| MAT-000220 | EXISTING_OK | 343 | ceresitCt19 |
+| MAT-000221 | EXISTING_OK | 371 | starateliBeton |
 
 ## Proposed descriptions
 
 ### MAT-000217
 
 - Title: Бетонконтакт Knauf Бетогрунд 5 кг
-- Status: **WILL_ADD**
+- Status: **EXISTING_OK**
 - Source keys: knaufBetogrund
 
 КНАУФ-Бетогрунд — готовая к применению адгезионная грунтовка на полимерной дисперсии с кварцевым песком. Предназначена для подготовки бетонных и гладких плотных оснований перед нанесением последующих покрытий во внутренних работах. Расход — около 0,25 кг/м², высыхание — 12 часов. Цвет — розовый. Фасовка — 5 кг.
@@ -39,7 +49,7 @@ CONFIRM = BACKFILL_BETONCONTACT_DESCRIPTIONS
 ### MAT-000218
 
 - Title: Бетонконтакт Knauf Бетогрунд 15 кг
-- Status: **WILL_ADD**
+- Status: **EXISTING_OK**
 - Source keys: knaufBetogrund
 
 КНАУФ-Бетогрунд — готовая к применению адгезионная грунтовка на полимерной дисперсии с кварцевым песком. Предназначена для подготовки бетонных и гладких плотных оснований перед нанесением последующих покрытий во внутренних работах. Расход — около 0,25 кг/м², высыхание — 12 часов. Цвет — розовый. Фасовка — 15 кг.
@@ -47,7 +57,7 @@ CONFIRM = BACKFILL_BETONCONTACT_DESCRIPTIONS
 ### MAT-000219
 
 - Title: Бетонконтакт Ceresit CT 19, 5 кг
-- Status: **WILL_ADD**
+- Status: **EXISTING_OK**
 - Source keys: ceresitCt19
 
 Ceresit CT 19 — готовая к применению адгезионная грунтовка для гладких бетонных, монолитных и сборных железобетонных оснований. Предназначена для внутренних и наружных работ и повышения адгезии последующих покрытий. Расход — около 0,2 кг/м², высыхание — около 3 часов, температура применения — от +5 до +30 °C. Цвет — розовый. Фасовка — 5 кг.
@@ -55,7 +65,7 @@ Ceresit CT 19 — готовая к применению адгезионная 
 ### MAT-000220
 
 - Title: Бетонконтакт Ceresit CT 19, 15 кг
-- Status: **WILL_ADD**
+- Status: **EXISTING_OK**
 - Source keys: ceresitCt19
 
 Ceresit CT 19 — готовая к применению адгезионная грунтовка для гладких бетонных, монолитных и сборных железобетонных оснований. Предназначена для внутренних и наружных работ и повышения адгезии последующих покрытий. Расход — около 0,2 кг/м², высыхание — около 3 часов, температура применения — от +5 до +30 °C. Цвет — розовый. Фасовка — 15 кг.
@@ -63,7 +73,7 @@ Ceresit CT 19 — готовая к применению адгезионная 
 ### MAT-000221
 
 - Title: Бетонконтакт Cтаратели 20 кг
-- Status: **WILL_ADD**
+- Status: **EXISTING_OK**
 - Source keys: starateliBeton
 
 Грунтовка «БЕТОН-КОНТАКТ» «Старатели» — готовый к применению состав на полимерной дисперсии с песком. Используется для подготовки бетонных, плиточных и окрашенных масляной краской оснований во внутренних работах. Наносится валиком или кистью. Расход — 0,2–0,3 кг/м², высыхание — 2–3 часа, температура применения — от +5 до +30 °C. Цвет плёнки — вишнёвый. Фасовка — 20 кг.

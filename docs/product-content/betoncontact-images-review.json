@@ -1,0 +1,271 @@
+{
+  "mode": "read-only-image-research",
+  "generatedAt": "2026-09-19",
+  "targets": [
+    {
+      "mat": "MAT-000217",
+      "title": "Бетонконтакт Knauf Бетогрунд 5 кг",
+      "sourcePage": "https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/gruntovki/knauf-betogrund/",
+      "direct": "https://www.knauf.ru/upload/iv_resize/detail_page/original/iblock/eb4/xkij8atadmim3fzs1osprpgd7ejb5guv/Vedro_Betogrund_5_kg_17_03_2023_Oborot_1000x1000_v01.webp",
+      "owner": "KNAUF Russia",
+      "tier": "official manufacturer CDN",
+      "sourceFile": "product-images-batch/betoncontact/source/MAT-000217-knauf5.webp",
+      "preparedFile": "product-images-batch/betoncontact/ready/MAT-000217.webp",
+      "exactPack": "Official gallery offer id 18927 uses this exact 5 kg asset; 5 kg marking is visible on the back label.",
+      "packVisible": true,
+      "status": "IMAGE_CONFIRMED",
+      "prep": "READY",
+      "source": {
+        "format": "webp",
+        "width": 1000,
+        "height": 1000,
+        "sizeBytes": 273168,
+        "sha256": "ab3eb8ef6952fbbbbb97a5e6226de3f086a88c6e348095d50eafd9aaad9fd5cb",
+        "watermark": "none observed",
+        "background": "white/transparent source; importer flatten produces white"
+      },
+      "prepared": {
+        "path": "product-images-batch/betoncontact/ready/MAT-000217.webp",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "sizeBytes": 74378,
+        "sha256": "ae8c66e474e7f9cea6965ee4c007f72b6747d4616fec0770cff72cd67a793a69",
+        "whiteCorners": true,
+        "visualQA": "full product, proportions preserved, safe framing; no visible watermark"
+      },
+      "current": {
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "primaryImage": null,
+        "galleryCount": 0,
+        "classification": "placeholder",
+        "placeholderHash": "65729e6fd1cc852743ff99cbeb62ade8154f6a55389149a6875da6b7b70896ad",
+        "requiresReplacement": true
+      },
+      "identity": {
+        "localTitle": "Бетонконтакт Knauf Бетогрунд 5 кг",
+        "brand": "KNAUF",
+        "packageWeight": 5,
+        "match": true
+      },
+      "importReady": true
+    },
+    {
+      "mat": "MAT-000218",
+      "title": "Бетонконтакт Knauf Бетогрунд 15 кг",
+      "sourcePage": "https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/gruntovki/knauf-betogrund/",
+      "direct": "https://www.knauf.ru/upload/iv_resize/detail_page/original/iblock/754/a4tgzmld2um0kzlot9x8dm0a2hcq4zv0/Vedro-Betogrund-15-kg-_03_02_2026_-Ovalnoe-Hi_Res-v02_Gbg.webp",
+      "owner": "KNAUF Russia",
+      "tier": "official manufacturer CDN",
+      "sourceFile": "product-images-batch/betoncontact/source/MAT-000218-knauf15.webp",
+      "preparedFile": null,
+      "exactPack": "Official gallery offer id 18928; filename identifies Betogrund 15 kg and source page lists 15 kg/5 kg packaging.",
+      "packVisible": true,
+      "status": "IMAGE_PARTIAL",
+      "prep": "PREP_BLOCKED_GRAY_BACKGROUND",
+      "source": {
+        "format": "webp",
+        "width": 653,
+        "height": 420,
+        "sizeBytes": 72722,
+        "sha256": "c1d4286580f464415d23b620a0e4a8ac2e2ad4f99dde2b6e4610e4e4030e856e",
+        "watermark": "none observed",
+        "background": "opaque light gray with shadow; fails pure-white requirement"
+      },
+      "prepared": null,
+      "current": {
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "primaryImage": null,
+        "galleryCount": 0,
+        "classification": "placeholder",
+        "placeholderHash": "65729e6fd1cc852743ff99cbeb62ade8154f6a55389149a6875da6b7b70896ad",
+        "requiresReplacement": true
+      },
+      "identity": {
+        "localTitle": "Бетонконтакт Knauf Бетогрунд 15 кг",
+        "brand": "KNAUF",
+        "packageWeight": 15,
+        "match": true
+      },
+      "importReady": false
+    },
+    {
+      "mat": "MAT-000219",
+      "title": "Бетонконтакт Ceresit CT 19, 5 кг",
+      "sourcePage": "https://www.ceresit.ru/ru/products/tiling/supplementary-materials/ct-19-contact-primer-supercontact/",
+      "direct": "https://msk.ceresit-russia.com/image/cache/catalog/products/210168/gruntovka-ceresit-ct-19-betonkontakt-5-kg-30_jpg-700x700.jpg",
+      "owner": "Ceresit Russia authorized dealer (msk.ceresit-russia.com)",
+      "tier": "authorized dealer; exact page linked by official Ceresit product page",
+      "sourceFile": "product-images-batch/betoncontact/source/MAT-000219-ceresit5.jpg",
+      "preparedFile": "product-images-batch/betoncontact/ready/MAT-000219.webp",
+      "exactPack": "Dealer page title, manufacturer article 1505278, фасовка 5 кг, and image filename all identify CT 19 5 kg.",
+      "packVisible": true,
+      "status": "IMAGE_CONFIRMED",
+      "prep": "READY",
+      "source": {
+        "format": "jpeg",
+        "width": 700,
+        "height": 700,
+        "sizeBytes": 84517,
+        "sha256": "8004d27104910da545c65ff1412bdd174dc56f6dd618537724aeeab81aed0ed3",
+        "watermark": "none observed",
+        "background": "white/transparent source; importer flatten produces white"
+      },
+      "prepared": {
+        "path": "product-images-batch/betoncontact/ready/MAT-000219.webp",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "sizeBytes": 57582,
+        "sha256": "a46789d5b3f823517ef9cc1fe3570eb6f69057758e16c1a520c8ddb4fdb7ba9a",
+        "whiteCorners": true,
+        "visualQA": "full product, proportions preserved, safe framing; no visible watermark"
+      },
+      "current": {
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "primaryImage": null,
+        "galleryCount": 0,
+        "classification": "placeholder",
+        "placeholderHash": "65729e6fd1cc852743ff99cbeb62ade8154f6a55389149a6875da6b7b70896ad",
+        "requiresReplacement": true
+      },
+      "identity": {
+        "localTitle": "Бетонконтакт Ceresit CT 19, 5 кг",
+        "brand": "Ceresit",
+        "packageWeight": 5,
+        "match": true
+      },
+      "importReady": true
+    },
+    {
+      "mat": "MAT-000220",
+      "title": "Бетонконтакт Ceresit CT 19, 15 кг",
+      "sourcePage": "https://www.ceresit.ru/ru/products/tiling/supplementary-materials/ct-19-contact-primer-supercontact/",
+      "direct": "https://www.ceresit.ru/upload/resize_cache/iblock/ca1/iardks7evls64dsbk6nnufq0le96900c/900_900_1/CT19_15kg_front_2000_2000.webp",
+      "owner": "Ceresit Russia",
+      "tier": "official manufacturer CDN",
+      "sourceFile": "product-images-batch/betoncontact/source/MAT-000220-ceresit15.webp",
+      "preparedFile": "product-images-batch/betoncontact/ready/MAT-000220.webp",
+      "exactPack": "Official product HTML embeds CT19_15kg_front_2000_2000.webp and lists 15 kg as an offered pack.",
+      "packVisible": true,
+      "status": "IMAGE_CONFIRMED",
+      "prep": "READY",
+      "source": {
+        "format": "webp",
+        "width": 900,
+        "height": 900,
+        "sizeBytes": 63132,
+        "sha256": "c692ee65efdc42229e413f4443cd1842dddc80439353c5b0b933329b07dd833f",
+        "watermark": "none observed",
+        "background": "white/transparent source; importer flatten produces white"
+      },
+      "prepared": {
+        "path": "product-images-batch/betoncontact/ready/MAT-000220.webp",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "sizeBytes": 38920,
+        "sha256": "82467bd3ee2c392feeba8f83e8daa3bfb2798225818c2f38c472b6ab88654610",
+        "whiteCorners": true,
+        "visualQA": "full product, proportions preserved, safe framing; no visible watermark"
+      },
+      "current": {
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "primaryImage": null,
+        "galleryCount": 0,
+        "classification": "placeholder",
+        "placeholderHash": "65729e6fd1cc852743ff99cbeb62ade8154f6a55389149a6875da6b7b70896ad",
+        "requiresReplacement": true
+      },
+      "identity": {
+        "localTitle": "Бетонконтакт Ceresit CT 19, 15 кг",
+        "brand": "Ceresit",
+        "packageWeight": 15,
+        "match": true
+      },
+      "importReady": true
+    },
+    {
+      "mat": "MAT-000221",
+      "title": "Бетонконтакт Cтаратели 20 кг",
+      "sourcePage": "https://www.starateli.ru/po-betonu/",
+      "direct": "https://www.starateli.ru/images/images/%D0%93%D1%80%D1%83%D0%BD%D1%82%D0%BE%D0%B2%D0%BA%D0%B0_%D0%91%D0%95%D0%A2%D0%9E%D0%9D-%D0%9A%D0%9E%D0%9D%D0%A2%D0%90%D0%9A%D0%A2_20_%D0%BA%D0%B3_365x365.png",
+      "owner": "Старатели",
+      "tier": "official manufacturer site asset",
+      "sourceFile": "product-images-batch/betoncontact/source/MAT-000221-starateli.png",
+      "preparedFile": "product-images-batch/betoncontact/ready/MAT-000221.webp",
+      "exactPack": "Official page lists ведро 20 кг and image filename/label show БЕТОН-КОНТАКТ 20 кг.",
+      "packVisible": true,
+      "status": "IMAGE_CONFIRMED",
+      "prep": "READY",
+      "source": {
+        "format": "png",
+        "width": 365,
+        "height": 365,
+        "sizeBytes": 76765,
+        "sha256": "cd72402d2010d23a9c9641ee85593735bead1c9fe350b62bcf5d8b3950d17842",
+        "watermark": "none observed",
+        "background": "white/transparent source; importer flatten produces white"
+      },
+      "prepared": {
+        "path": "product-images-batch/betoncontact/ready/MAT-000221.webp",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "sizeBytes": 40440,
+        "sha256": "bb24de51b94a37ab19ebb78163436cf0adb067055845387a602d20016717f950",
+        "whiteCorners": true,
+        "visualQA": "full product, proportions preserved, safe framing; no visible watermark"
+      },
+      "current": {
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "primaryImage": null,
+        "galleryCount": 0,
+        "classification": "placeholder",
+        "placeholderHash": "65729e6fd1cc852743ff99cbeb62ade8154f6a55389149a6875da6b7b70896ad",
+        "requiresReplacement": true
+      },
+      "identity": {
+        "localTitle": "Бетонконтакт Cтаратели 20 кг",
+        "brand": "Старатели",
+        "packageWeight": 20,
+        "match": true
+      },
+      "importReady": true
+    }
+  ],
+  "summary": {
+    "confirmedTargets": 5,
+    "imageConfirmed": 4,
+    "imagePartial": 1,
+    "imageBlocked": 0,
+    "preparedReady": 4,
+    "importReady": 4,
+    "identityBlockedMats": [
+      "MAT-000222",
+      "MAT-000223",
+      "MAT-000224"
+    ],
+    "identityPartialMats": [
+      "MAT-000225"
+    ]
+  },
+  "mat225": {
+    "status": "IDENTITY_PARTIAL",
+    "primarySource": null,
+    "secondarySource": "https://mixtools.ru/catalog/lakokrasochnye_materialy/gruntovki_i_betonokontakt/betonokontakt/betonokontakt_universalnyy_real_beton_kontakt_vedro_20kg_bs_725_20/",
+    "note": "No primary manufacturer evidence; remains excluded."
+  },
+  "importer": {
+    "script": "backend/scripts/import-product-images.js",
+    "render": "rotate + flatten white + contain 1080x1080 + extend 60px + WebP quality 82",
+    "placeholderClassification": "all five local bindings classify as placeholder; no --allow-real-overwrite required",
+    "dryRunCommand": "node backend/scripts/import-product-images.js --input product-images-batch/betoncontact/ready --db backend/database/matmix.db --only MAT-000217,MAT-000219,MAT-000220,MAT-000221 --dry-run"
+  },
+  "safety": {
+    "productionAccess": false,
+    "productionWrites": false,
+    "dbChanged": false,
+    "sourceImagesStaged": false
+  }
+}

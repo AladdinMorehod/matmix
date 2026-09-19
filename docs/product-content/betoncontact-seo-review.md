@@ -5,13 +5,24 @@
 SEO_MUTABLE_FIELDS_EXACTLY = ["seo_title", "seo_description"]
 CONFIRM = BACKFILL_BETONCONTACT_SEO
 
+## Production postcheck
+
+- PRODUCTION_APPLIED=yes
+- PRODUCTION_POSTCHECK=PASS
+- existingOk=5; willAdd=0; contentConflict=0; errors=0
+- duplicateSeoTitles=0; duplicateSeoDescriptions=0
+- backup: /var/backups/matmix/matmix-backup-2026-09-19T10-56-44-373Z-c742b342
+- BETONCONTACT_CORE_AFTER_CONTENT=PASS
+- BETONCONTACT_NONCONTENT_UNCHANGED=PASS
+- service active; health ok; ready ok
+
 ## Summary
 
 ```json
 {
   "total": 5,
-  "willAdd": 5,
-  "existingOk": 0,
+  "willAdd": 0,
+  "existingOk": 5,
   "contentConflict": 0,
   "errors": 0,
   "duplicateSeoTitles": 0,
@@ -21,18 +32,18 @@ CONFIRM = BACKFILL_BETONCONTACT_SEO
 
 | MAT | Status | SEO title chars | SEO description chars |
 |---|---|---:|---:|
-| MAT-000217 | WILL_ADD | 44 | 131 |
-| MAT-000218 | WILL_ADD | 45 | 132 |
-| MAT-000219 | WILL_ADD | 42 | 149 |
-| MAT-000220 | WILL_ADD | 43 | 150 |
-| MAT-000221 | WILL_ADD | 38 | 166 |
+| MAT-000217 | EXISTING_OK | 44 | 131 |
+| MAT-000218 | EXISTING_OK | 45 | 132 |
+| MAT-000219 | EXISTING_OK | 42 | 149 |
+| MAT-000220 | EXISTING_OK | 43 | 150 |
+| MAT-000221 | EXISTING_OK | 38 | 166 |
 
 ## SEO proposals
 
 ### MAT-000217
 
 - Title: Бетонконтакт Knauf Бетогрунд 5 кг
-- Status: **WILL_ADD**
+- Status: **EXISTING_OK**
 - Source keys: knaufBetogrund
 - SEO title: KNAUF Бетогрунд 5 кг — бетонконтакт \| MatMix
 - SEO description: KNAUF Бетогрунд 5 кг — готовая адгезионная грунтовка для бетонных и гладких оснований. Расход около 0,25 кг/м², высыхание 12 часов.
@@ -40,7 +51,7 @@ CONFIRM = BACKFILL_BETONCONTACT_SEO
 ### MAT-000218
 
 - Title: Бетонконтакт Knauf Бетогрунд 15 кг
-- Status: **WILL_ADD**
+- Status: **EXISTING_OK**
 - Source keys: knaufBetogrund
 - SEO title: KNAUF Бетогрунд 15 кг — бетонконтакт \| MatMix
 - SEO description: KNAUF Бетогрунд 15 кг — готовая адгезионная грунтовка для бетонных и гладких оснований. Расход около 0,25 кг/м², высыхание 12 часов.
@@ -48,7 +59,7 @@ CONFIRM = BACKFILL_BETONCONTACT_SEO
 ### MAT-000219
 
 - Title: Бетонконтакт Ceresit CT 19, 5 кг
-- Status: **WILL_ADD**
+- Status: **EXISTING_OK**
 - Source keys: ceresitCt19
 - SEO title: Ceresit CT 19 5 кг — бетонконтакт \| MatMix
 - SEO description: Ceresit CT 19 5 кг — готовая адгезионная грунтовка для гладкого бетона, внутренних и наружных работ. Расход около 0,2 кг/м², высыхание около 3 часов.
@@ -56,7 +67,7 @@ CONFIRM = BACKFILL_BETONCONTACT_SEO
 ### MAT-000220
 
 - Title: Бетонконтакт Ceresit CT 19, 15 кг
-- Status: **WILL_ADD**
+- Status: **EXISTING_OK**
 - Source keys: ceresitCt19
 - SEO title: Ceresit CT 19 15 кг — бетонконтакт \| MatMix
 - SEO description: Ceresit CT 19 15 кг — готовая адгезионная грунтовка для гладкого бетона, внутренних и наружных работ. Расход около 0,2 кг/м², высыхание около 3 часов.
@@ -64,7 +75,7 @@ CONFIRM = BACKFILL_BETONCONTACT_SEO
 ### MAT-000221
 
 - Title: Бетонконтакт Cтаратели 20 кг
-- Status: **WILL_ADD**
+- Status: **EXISTING_OK**
 - Source keys: starateliBeton
 - SEO title: Старатели Бетон-Контакт 20 кг \| MatMix
 - SEO description: Старатели Бетон-Контакт 20 кг — готовая грунтовка для бетонных, плиточных и окрашенных масляной краской оснований. Наносится валиком или кистью; расход 0,2–0,3 кг/м².

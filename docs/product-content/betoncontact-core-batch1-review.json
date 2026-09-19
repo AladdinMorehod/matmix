@@ -1415,11 +1415,11 @@
     "willFix": 0,
     "blockers": 0,
     "errors": 0,
-    "postcheck": "BETONCONTACT_CORE_POSTCHECK=PASS",
-    "productsUnchanged": "BETONCONTACT_PRODUCTS_UNCHANGED=PASS",
+    "postcheck": "BETONCONTACT_CORE_AFTER_CONTENT=PASS",
+    "nonContentUnchanged": "BETONCONTACT_NONCONTENT_UNCHANGED=PASS",
     "service": "active",
     "health": "ok",
     "ready": "ok",
-    "backup": "/var/backups/matmix/matmix-backup-2026-09-19T10-34-11-763Z-5a6fcfb7"
+    "backup": "/var/backups/matmix/matmix-backup-2026-09-19T10-56-44-373Z-c742b342"
   }
 }
