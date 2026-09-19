@@ -16,6 +16,18 @@ const compact = value => normalize(value).replace(/[^\p{L}\p{N}.]+/gu, "");
 const nonempty = value => value !== null && value !== undefined && String(value).trim() !== "";
 const valueOf = row => row?.value_text ?? row?.value_number ?? row?.value_boolean ?? null;
 const isPlaceholder = value => /NEEDS_SOURCE|UNKNOWN/i.test(String(value ?? ""));
+function normalizeOnly(only) {
+  if (typeof only === "string") return only.split(",").map(value => value.trim());
+  if (Array.isArray(only)) return only.map(value => String(value).trim());
+  throw new Error("Exact --only batch is required");
+}
+function assertExactBatch(only) {
+  const selected = normalizeOnly(only);
+  if (selected.length !== ALL_MATS.length || new Set(selected).size !== ALL_MATS.length || selected.some((value, index) => value !== ALL_MATS[index])) {
+    throw new Error(`Exact batch required: ${ALL_MATS.join(",")}`);
+  }
+  return selected;
+}
 
 function openDatabase(file, writable = false) {
   if (!file || file === ":memory:") throw new Error("Explicit --db path to an existing database is required");
@@ -45,7 +57,7 @@ function parseArgs(args) {
   if (seen.has("--apply") && seen.has("--dry-run")) throw new Error("Choose either --dry-run or --apply");
   if (!out.db || out.db === ":memory:") throw new Error("Explicit --db path is required");
   if (out.only === undefined) throw new Error("Explicit --only is required");
-  out.only = out.only.split(",").map(v => v.trim()).filter(Boolean); if (!out.only.length) throw new Error("Nonempty --only is required");
+  out.only = assertExactBatch(out.only);
   if (seen.has("--confirm") && !out.apply) throw new Error("--confirm requires --apply");
   if (out.apply && out.confirm !== CONFIRM) throw new Error(`Apply requires --confirm ${CONFIRM}`);
   return out;
@@ -98,7 +110,7 @@ async function planProduct(db, config) {
 }
 function requiredDefinitions(rows, definitions) { const out = []; for (const row of rows) for (const item of row.specs || []) if (item && ["WILL_ADD", "WILL_FIX"].includes(item.status) && !item.definitionId && !findDefinition(definitions, item.code)) { const d = expectedDefinition(item.code); if (d && !out.some(x => x.code === item.code)) out.push({ code: item.code, ...d }); } return out; }
 async function inspectBatch(db, { only, data = DATA } = {}) {
-  const selected = [...new Set(only || [])]; if (!selected.length) throw new Error("Explicit nonempty --only is required"); const definitions = await db.all("SELECT * FROM product_attribute_definitions", []); const rows = [];
+  const selected = assertExactBatch(only); const definitions = await db.all("SELECT * FROM product_attribute_definitions", []); const rows = [];
   for (const id of selected) { const config = data.PRODUCTS.find(p => p.externalId === id); if (!config || !ALL_MATS.includes(id)) rows.push({ externalId: id, status: "ERROR", error: `MAT is outside exact batch1 allowlist: ${id}` }); else { try { rows.push(await planProduct(db, config)); } catch (e) { rows.push({ externalId: id, status: "ERROR", error: e.message }); } } }
   const definitionsToCreate = requiredDefinitions(rows.filter(r => !["ERROR", "TITLE_GUARD_BLOCKED"].includes(r.status)), definitions); const sum = key => rows.reduce((n, r) => n + (r.summary?.[key] || 0), 0);
   return { mode: "dry-run", rows, summary: { total: rows.length, readyProducts: rows.filter(r => r.status === "READY").length, partialProducts: rows.filter(r => r.status === "PARTIAL").length, errors: rows.filter(r => r.status === "ERROR").length, logicalSlots: sum("logicalSlots"), willAdd: sum("willAdd"), willFix: sum("willFix"), existingOk: sum("existingOk"), needsSource: sum("needsSource"), absentByDesign: sum("absentByDesign"), schemaBlocked: sum("schemaBlocked"), valueConflict: sum("valueConflict"), titleGuardBlocked: sum("titleGuardBlocked"), definitionsToCreate: definitionsToCreate.length }, definitionsToCreate, absentByDesign: data.ABSENT_BY_DESIGN || {}, sources: data.SOURCES, writableSurface: { products: PRODUCT_MUTABLE_FIELDS_EXACTLY, attributeValueCodes: DATA.CORE_ORDER, forbidden: ["products.brand", "title", "slug", "description", "short_description", "full_description", "seo_title", "seo_description", "price", "weight", "unit", "category", "subcategory", "image", "image_url", "stock_status", "any image table"] } };
@@ -119,5 +131,5 @@ async function applyBatch(db, dbPath, options, data = DATA) {
 function md(value) { return String(value ?? "—").replace(/\|/g, "\\|").replace(/\n/g, " "); }
 function renderReview(report) { const lines = ["# Бетонконтакт — CORE batch 1 review", "", `Режим: ${report.mode}. Дата: ${DATA.CHECKED_AT}. Production и product fields не изменяются.`, "", "## Scope", "", "Только MAT-000217…MAT-000221. MAT-000222…224 заблокированы по identity, MAT-000225 частично подтверждён и исключён.", "", "## Writable surface", "", "- `products`: ничего не изменяется.", "- `product_attribute_values`: только " + DATA.CORE_ORDER.join(", ") + " для пяти target MAT.", "- Definitions создаются только для READY source-backed values; templates не создаются.", "- Title, slug, descriptions, SEO, prices, weight/unit, category, images и stock не являются write targets.", "- Dry-run read-only; apply требует explicit confirmation, backup и transaction.", "", "## ABSENT_BY_DESIGN", "", ...Object.entries(report.absentByDesign || {}).map(([code, reason]) => `- **${code}**: ${reason}`), "", "## Summary", "", "```json", JSON.stringify(report.summary, null, 2), "```", "", "## Products", "", "| MAT | title | status | slots | willAdd | existingOk | needsSource | absentByDesign | conflicts |", "|---|---|---|---:|---:|---:|---:|---:|---:|"]; for (const row of report.rows) { const s = row.summary || {}; lines.push(`| ${row.externalId} | ${md(row.title || row.error)} | ${row.status} | ${s.logicalSlots || 0} | ${s.willAdd || 0} | ${s.existingOk || 0} | ${s.needsSource || 0} | ${s.absentByDesign || 0} | ${(s.valueConflict || 0) + (s.schemaBlocked || 0) + (s.titleGuardBlocked || 0)} |`); } lines.push("", "## Per-MAT details", ""); for (const row of report.rows) { lines.push(`### ${row.externalId}`, "", `- Current title: ${md(row.title || row.error)}`, `- Guard: ${row.status === "TITLE_GUARD_BLOCKED" ? md(row.guardReason) : "PASS"}`, `- Source keys: ${md((row.sourceKeys || []).join(", "))}`, "", "| code | proposed | current | status | source/reason |", "|---|---|---|---|---|"); for (const item of row.specs || []) lines.push(`| ${item.code} | ${md(item.value)} | ${md(item.currentValue)} | ${item.status} | ${md((item.sources || []).join(", ") || item.reason)} |`); lines.push(""); } lines.push("## Source registry", ""); for (const [key, source] of Object.entries(report.sources || {})) lines.push(`- **${key}**: [${source.title}](${source.url}) — ${source.evidence}`); return lines.join("\n") + "\n"; }
 async function main() { const options = parseArgs(process.argv.slice(2)); const db = await openDatabase(options.db, options.apply); try { const report = options.apply ? await applyBatch(db, options.db, options) : await inspectBatch(db, options); if (options.review) { const base = path.resolve(options.review); fs.mkdirSync(path.dirname(base), { recursive: true }); fs.writeFileSync(`${base}.json`, JSON.stringify(report, null, 2) + "\n"); fs.writeFileSync(`${base}.md`, renderReview(report)); } for (const row of report.rows) console.log(JSON.stringify(row)); console.log(JSON.stringify({ mode: report.mode, summary: report.summary })); if (report.summary.errors || report.summary.titleGuardBlocked || report.summary.valueConflict || report.summary.schemaBlocked) process.exitCode = 1; } finally { await db.close(); } }
-module.exports = { ALL_MATS, CONFIRM, DATA, PRODUCT_MUTABLE_FIELDS_EXACTLY, applyBatch, inspectBatch, openDatabase, parseArgs, renderReview };
+module.exports = { ALL_MATS, CONFIRM, DATA, PRODUCT_MUTABLE_FIELDS_EXACTLY, applyBatch, assertExactBatch, inspectBatch, normalizeOnly, openDatabase, parseArgs, renderReview };
 if (require.main === module) main().catch(error => { console.error(`BACKFILL ABORTED: ${error.message}`); process.exitCode = 1; });
