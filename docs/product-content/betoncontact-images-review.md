@@ -6,7 +6,9 @@
 
 - CONFIRMED_TARGETS=5
 - IMAGE_CONFIRMED=4
-- IMAGE_PARTIAL=1 (MAT-000218: exact official source, opaque gray background prevents safe white-background preparation)
+- IMAGE_PARTIAL=1
+- IMAGE_PARTIAL_MATS=MAT-000218
+- IMPORT_READY_MATS=MAT-000217, MAT-000219, MAT-000220, MAT-000221
 - IMAGE_BLOCKED=0
 - PREPARED_READY=4
 - IMPORT_READY=4
@@ -45,6 +47,10 @@ All five target products currently point to `/uploads/products/MAT-000001-202607
 
 ### MAT-000218
 
+- PACKAGE_GENERATION=OVAL_CURRENT
+- EXACT_PACK_MATCH=yes
+- REASON=no safe clean white-background source without edge/product alteration
+
 - Local title: Бетонконтакт Knauf Бетогрунд 15 кг
 - Source page: [https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/gruntovki/knauf-betogrund/](https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/gruntovki/knauf-betogrund/)
 - Direct image: [asset](https://www.knauf.ru/upload/iv_resize/detail_page/original/iblock/754/a4tgzmld2um0kzlot9x8dm0a2hcq4zv0/Vedro-Betogrund-15-kg-_03_02_2026_-Ovalnoe-Hi_Res-v02_Gbg.webp)
@@ -56,6 +62,7 @@ All five target products currently point to `/uploads/products/MAT-000001-202607
 - Background: opaque light gray with shadow; fails pure-white requirement
 - Decision: **IMAGE_PARTIAL**; prep **PREP_BLOCKED_GRAY_BACKGROUND**
 - No final file created because the gray opaque background cannot be removed without risking package edge pixels.
+- Alternate exact candidate review: [Petrovich product page](https://petrovich.ru/product/952904/) main image is exact 15 kg transitional round packaging but includes the large non-product overlay «РОЗОВЫЙ» and pink background; rejected. Its alternate asset is a different NEOMID product. [Official KNAUF news](https://www.knauf.ru/company/news/knauf-betogrund-15-kg-nachnet-vypuskatsya-v-novom-formate-upakovki-/) confirms the current oval package and article 00965803, but its image is an editorial banner with two buckets, headline text and a gray scene; rejected as an import source.
 
 ### MAT-000219
 

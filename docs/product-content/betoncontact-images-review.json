@@ -87,7 +87,46 @@
         "packageWeight": 15,
         "match": true
       },
-      "importReady": false
+      "importReady": false,
+      "researchConclusion": "No safe clean exact packshot found. The official oval asset remains exact but has opaque gray background; deterministic removal leaves edge/shadow artifacts. Petrovich exact 15 kg candidate is rejected because the image contains a large retailer overlay (РОЗОВЫЙ) and non-white pink background; its alternate asset is a different product. Official KNAUF news asset is an editorial composite with two buckets, text and gray scene background.",
+      "alternateCandidates": [
+        {
+          "sourcePage": "https://petrovich.ru/product/952904/",
+          "directImage": "https://cs.p-static.ru/image/66047512/original.jpg",
+          "sourceTier": "major retailer exact product page",
+          "packageGeneration": "ROUND_TRANSITIONAL",
+          "dimensions": "2000×2000 JPEG",
+          "identityMatch": true,
+          "packMatch": true,
+          "decision": "REJECT",
+          "reason": "Exact 15 kg Betogrund, but large non-product text РОЗОВЫЙ and pink background make it unsuitable; removing them safely would alter/clip surrounding pixels."
+        },
+        {
+          "sourcePage": "https://petrovich.ru/product/952904/",
+          "directImage": "https://cs.p-static.ru/image/65697117/original.jpg",
+          "sourceTier": "major retailer exact product page",
+          "packageGeneration": "not applicable",
+          "dimensions": "2000×2000 JPEG",
+          "identityMatch": false,
+          "packMatch": false,
+          "decision": "REJECT",
+          "reason": "Image is a different NEOMID product."
+        },
+        {
+          "sourcePage": "https://www.knauf.ru/company/news/knauf-betogrund-15-kg-nachnet-vypuskatsya-v-novom-formate-upakovki-/",
+          "directImage": "https://www.knauf.ru/upload/iv_resize/news_detail/resize/66113/Knauf_betogrund_new_1200x600px_v2.webp",
+          "sourceTier": "official KNAUF news",
+          "packageGeneration": "OVAL_CURRENT",
+          "dimensions": "862×431 WebP",
+          "identityMatch": true,
+          "packMatch": true,
+          "decision": "REJECT",
+          "reason": "Editorial banner with two products, headline text and gray scene background; not a clean single-product source."
+        }
+      ],
+      "packageGeneration": "OVAL_CURRENT",
+      "exactPackMatch": true,
+      "reason": "No safe clean white-background source without edge/product alteration"
     },
     {
       "mat": "MAT-000219",
@@ -248,6 +287,15 @@
     ],
     "identityPartialMats": [
       "MAT-000225"
+    ],
+    "importReadyMats": [
+      "MAT-000217",
+      "MAT-000219",
+      "MAT-000220",
+      "MAT-000221"
+    ],
+    "imagePartialMats": [
+      "MAT-000218"
     ]
   },
   "mat225": {
