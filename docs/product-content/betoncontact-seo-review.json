@@ -1,0 +1,237 @@
+{
+  "mode": "dry-run",
+  "rows": [
+    {
+      "externalId": "MAT-000217",
+      "productId": 189,
+      "title": "Бетонконтакт Knauf Бетогрунд 5 кг",
+      "currentSeoTitle": null,
+      "currentSeoDescription": null,
+      "proposedSeoTitle": "KNAUF Бетогрунд 5 кг — бетонконтакт | MatMix",
+      "proposedSeoDescription": "KNAUF Бетогрунд 5 кг — готовая адгезионная грунтовка для бетонных и гладких оснований. Расход около 0,25 кг/м², высыхание 12 часов.",
+      "status": "WILL_ADD",
+      "validationIssues": [],
+      "sourceKeys": [
+        "knaufBetogrund"
+      ],
+      "immutableSnapshot": {
+        "title": "Бетонконтакт Knauf Бетогрунд 5 кг",
+        "slug": "бетонконтакт-knauf-бетогрунд-5-кг",
+        "brand": null,
+        "weight": 5,
+        "unit": "шт",
+        "price": null,
+        "category": "Грунт / БетонКонтакт",
+        "subcategory": "БетонКонтакт",
+        "short_description": null,
+        "description": "",
+        "full_description": null,
+        "stock_status": "unknown",
+        "image": "",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png"
+      },
+      "seoTitleCharacterCount": 44,
+      "seoDescriptionCharacterCount": 131
+    },
+    {
+      "externalId": "MAT-000218",
+      "productId": 190,
+      "title": "Бетонконтакт Knauf Бетогрунд 15 кг",
+      "currentSeoTitle": null,
+      "currentSeoDescription": null,
+      "proposedSeoTitle": "KNAUF Бетогрунд 15 кг — бетонконтакт | MatMix",
+      "proposedSeoDescription": "KNAUF Бетогрунд 15 кг — готовая адгезионная грунтовка для бетонных и гладких оснований. Расход около 0,25 кг/м², высыхание 12 часов.",
+      "status": "WILL_ADD",
+      "validationIssues": [],
+      "sourceKeys": [
+        "knaufBetogrund"
+      ],
+      "immutableSnapshot": {
+        "title": "Бетонконтакт Knauf Бетогрунд 15 кг",
+        "slug": "бетонконтакт-knauf-бетогрунд-15-кг",
+        "brand": null,
+        "weight": 15,
+        "unit": "шт",
+        "price": 1974,
+        "category": "Грунт / БетонКонтакт",
+        "subcategory": "БетонКонтакт",
+        "short_description": null,
+        "description": "",
+        "full_description": null,
+        "stock_status": "unknown",
+        "image": "",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png"
+      },
+      "seoTitleCharacterCount": 45,
+      "seoDescriptionCharacterCount": 132
+    },
+    {
+      "externalId": "MAT-000219",
+      "productId": 191,
+      "title": "Бетонконтакт Ceresit CT 19, 5 кг",
+      "currentSeoTitle": null,
+      "currentSeoDescription": null,
+      "proposedSeoTitle": "Ceresit CT 19 5 кг — бетонконтакт | MatMix",
+      "proposedSeoDescription": "Ceresit CT 19 5 кг — готовая адгезионная грунтовка для гладкого бетона, внутренних и наружных работ. Расход около 0,2 кг/м², высыхание около 3 часов.",
+      "status": "WILL_ADD",
+      "validationIssues": [],
+      "sourceKeys": [
+        "ceresitCt19"
+      ],
+      "immutableSnapshot": {
+        "title": "Бетонконтакт Ceresit CT 19, 5 кг",
+        "slug": "бетонконтакт-ceresit-ct-19-5-кг",
+        "brand": null,
+        "weight": 5,
+        "unit": "шт",
+        "price": 787.5,
+        "category": "Грунт / БетонКонтакт",
+        "subcategory": "БетонКонтакт",
+        "short_description": null,
+        "description": "",
+        "full_description": null,
+        "stock_status": "unknown",
+        "image": "",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png"
+      },
+      "seoTitleCharacterCount": 42,
+      "seoDescriptionCharacterCount": 149
+    },
+    {
+      "externalId": "MAT-000220",
+      "productId": 192,
+      "title": "Бетонконтакт Ceresit CT 19, 15 кг",
+      "currentSeoTitle": null,
+      "currentSeoDescription": null,
+      "proposedSeoTitle": "Ceresit CT 19 15 кг — бетонконтакт | MatMix",
+      "proposedSeoDescription": "Ceresit CT 19 15 кг — готовая адгезионная грунтовка для гладкого бетона, внутренних и наружных работ. Расход около 0,2 кг/м², высыхание около 3 часов.",
+      "status": "WILL_ADD",
+      "validationIssues": [],
+      "sourceKeys": [
+        "ceresitCt19"
+      ],
+      "immutableSnapshot": {
+        "title": "Бетонконтакт Ceresit CT 19, 15 кг",
+        "slug": "бетонконтакт-ceresit-ct-19-15-кг",
+        "brand": null,
+        "weight": 15,
+        "unit": "шт",
+        "price": 2205,
+        "category": "Грунт / БетонКонтакт",
+        "subcategory": "БетонКонтакт",
+        "short_description": null,
+        "description": "",
+        "full_description": null,
+        "stock_status": "unknown",
+        "image": "",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png"
+      },
+      "seoTitleCharacterCount": 43,
+      "seoDescriptionCharacterCount": 150
+    },
+    {
+      "externalId": "MAT-000221",
+      "productId": 193,
+      "title": "Бетонконтакт Cтаратели 20 кг",
+      "currentSeoTitle": null,
+      "currentSeoDescription": null,
+      "proposedSeoTitle": "Старатели Бетон-Контакт 20 кг | MatMix",
+      "proposedSeoDescription": "Старатели Бетон-Контакт 20 кг — готовая грунтовка для бетонных, плиточных и окрашенных масляной краской оснований. Наносится валиком или кистью; расход 0,2–0,3 кг/м².",
+      "status": "WILL_ADD",
+      "validationIssues": [],
+      "sourceKeys": [
+        "starateliBeton"
+      ],
+      "immutableSnapshot": {
+        "title": "Бетонконтакт Cтаратели 20 кг",
+        "slug": "бетонконтакт-cтаратели-20-кг",
+        "brand": null,
+        "weight": 20,
+        "unit": "шт",
+        "price": 2520,
+        "category": "Грунт / БетонКонтакт",
+        "subcategory": "БетонКонтакт",
+        "short_description": null,
+        "description": "",
+        "full_description": null,
+        "stock_status": "unknown",
+        "image": "",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png"
+      },
+      "seoTitleCharacterCount": 38,
+      "seoDescriptionCharacterCount": 166
+    }
+  ],
+  "sources": {
+    "knaufBetogrund": {
+      "title": "КНАУФ-Бетогрунд",
+      "owner": "KNAUF Russia",
+      "url": "https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/gruntovki/knauf-betogrund/"
+    },
+    "ceresitCt19": {
+      "title": "Ceresit CT 19 Бетонконтакт",
+      "owner": "Ceresit Russia",
+      "url": "https://www.ceresit.ru/ru/products/tiling/supplementary-materials/ct-19-contact-primer-supercontact"
+    },
+    "starateliBeton": {
+      "title": "Грунтовка БЕТОН-КОНТАКТ",
+      "owner": "Старатели",
+      "url": "https://www.starateli.ru/po-betonu/"
+    }
+  },
+  "writableSurface": {
+    "products": [
+      "seo_title",
+      "seo_description"
+    ],
+    "forbidden": [
+      "title",
+      "slug",
+      "brand",
+      "weight",
+      "unit",
+      "price",
+      "category",
+      "subcategory",
+      "short_description",
+      "description",
+      "full_description",
+      "stock_status",
+      "image",
+      "image_url",
+      "full_description",
+      "all product_attribute_values",
+      "all product_images"
+    ]
+  },
+  "summary": {
+    "total": 5,
+    "willAdd": 5,
+    "existingOk": 0,
+    "contentConflict": 0,
+    "errors": 0,
+    "duplicateSeoTitles": 0,
+    "duplicateSeoDescriptions": 0
+  },
+  "identityResearch": {
+    "MAT_000225": {
+      "status": "IDENTITY_PARTIAL",
+      "primarySource": null,
+      "secondarySources": [
+        "https://mixtools.ru/catalog/lakokrasochnye_materialy/gruntovki_i_betonokontakt/betonokontakt/betonokontakt_universalnyy_real_beton_kontakt_vedro_20kg_bs_725_20/"
+      ],
+      "exactSku": "БС-725-20 / BS-725-20 (secondary retailer evidence)",
+      "manufacturer": "СТК Профи (reported by retailer; primary confirmation not found)",
+      "package": "20 кг (secondary evidence)",
+      "evidence": "Retailer page ties REAL BETON-KONTAKT, article БС-725-20, 20 kg and manufacturer СТК Профи. No primary manufacturer page, TDS, certificate or official CDN asset was found.",
+      "blocker": "Identity cannot be promoted from retailer repetition alone; MAT-000225 remains excluded from description/SEO/core."
+    }
+  },
+  "localRehearsal": {
+    "descriptionCopyApply": "PASS",
+    "descriptionSecondDryRun": "PASS",
+    "seoCopyApply": "PASS",
+    "seoSecondDryRun": "PASS",
+    "realLocalDbMutated": false
+  }
+}

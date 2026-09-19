@@ -1,6 +1,21 @@
 # Бетонконтакт — CORE batch 1 review
 
-Режим: dry-run. Дата: 2026-09-19. Production и product fields не изменяются.
+Режим: production-postcheck. Дата: 2026-09-19. Production apply уже завершён; products columns и запрещённые поверхности не изменялись.
+
+## Final production audit
+
+- TARGET_TOTAL=5
+- PRODUCTION_APPLIED=yes
+- EXISTING_OK=67
+- NEEDS_SOURCE=8
+- WILL_ADD=0
+- WILL_FIX=0
+- BLOCKERS=0
+- ERRORS=0
+- BETONCONTACT_CORE_POSTCHECK=PASS
+- BETONCONTACT_PRODUCTS_UNCHANGED=PASS
+- service active; health ok; ready ok
+- backup: /var/backups/matmix/matmix-backup-2026-09-19T10-34-11-763Z-5a6fcfb7
 
 ## Scope
 
@@ -27,15 +42,15 @@
   "partialProducts": 4,
   "errors": 0,
   "logicalSlots": 75,
-  "willAdd": 67,
+  "willAdd": 0,
   "willFix": 0,
-  "existingOk": 0,
+  "existingOk": 67,
   "needsSource": 8,
   "absentByDesign": 0,
   "schemaBlocked": 0,
   "valueConflict": 0,
   "titleGuardBlocked": 0,
-  "definitionsToCreate": 8
+  "definitionsToCreate": 0
 }
 ```
 
@@ -59,21 +74,21 @@
 
 | code | proposed | current | status | source/reason |
 |---|---|---|---|---|
-| brand | KNAUF | — | WILL_ADD | knaufBetogrund |
-| product_type | Грунтовка адгезионная для бетонных и гладких оснований | — | WILL_ADD | knaufBetogrund |
-| base | Полимерная дисперсия с кварцевым песком | — | WILL_ADD | knaufBetogrund |
-| purpose | Подготовка бетонных и гладких оснований перед нанесением последующих покрытий | — | WILL_ADD | knaufBetogrund |
-| package_weight | 5 | — | WILL_ADD | knaufBetogrund |
-| primer_type | Адгезионная грунтовка-бетонконтакт | — | WILL_ADD | knaufBetogrund |
-| application_area | Внутренние работы | — | WILL_ADD | knaufBetogrund |
+| brand | KNAUF | — | EXISTING_OK | knaufBetogrund |
+| product_type | Грунтовка адгезионная для бетонных и гладких оснований | — | EXISTING_OK | knaufBetogrund |
+| base | Полимерная дисперсия с кварцевым песком | — | EXISTING_OK | knaufBetogrund |
+| purpose | Подготовка бетонных и гладких оснований перед нанесением последующих покрытий | — | EXISTING_OK | knaufBetogrund |
+| package_weight | 5 | — | EXISTING_OK | knaufBetogrund |
+| primer_type | Адгезионная грунтовка-бетонконтакт | — | EXISTING_OK | knaufBetogrund |
+| application_area | Внутренние работы | — | EXISTING_OK | knaufBetogrund |
 | application_method | — | — | NEEDS_SOURCE | knaufBetogrund |
-| substrates | Бетон, гладкие плотные основания | — | WILL_ADD | knaufBetogrund |
-| consumption | около 0,25 кг/м² | — | WILL_ADD | knaufBetogrund |
-| drying_time | 12 часов | — | WILL_ADD | knaufBetogrund |
-| concentrate | false | — | WILL_ADD | knaufBetogrund |
-| color | Розовый | — | WILL_ADD | knaufBetogrund |
+| substrates | Бетон, гладкие плотные основания | — | EXISTING_OK | knaufBetogrund |
+| consumption | около 0,25 кг/м² | — | EXISTING_OK | knaufBetogrund |
+| drying_time | 12 часов | — | EXISTING_OK | knaufBetogrund |
+| concentrate | false | — | EXISTING_OK | knaufBetogrund |
+| color | Розовый | — | EXISTING_OK | knaufBetogrund |
 | application_temperature | — | — | NEEDS_SOURCE | knaufBetogrund |
-| shelf_life | 12 | — | WILL_ADD | knaufBetogrund |
+| shelf_life | 12 | — | EXISTING_OK | knaufBetogrund |
 
 ### MAT-000218
 
@@ -83,21 +98,21 @@
 
 | code | proposed | current | status | source/reason |
 |---|---|---|---|---|
-| brand | KNAUF | — | WILL_ADD | knaufBetogrund |
-| product_type | Грунтовка адгезионная для бетонных и гладких оснований | — | WILL_ADD | knaufBetogrund |
-| base | Полимерная дисперсия с кварцевым песком | — | WILL_ADD | knaufBetogrund |
-| purpose | Подготовка бетонных и гладких оснований перед нанесением последующих покрытий | — | WILL_ADD | knaufBetogrund |
-| package_weight | 15 | — | WILL_ADD | knaufBetogrund |
-| primer_type | Адгезионная грунтовка-бетонконтакт | — | WILL_ADD | knaufBetogrund |
-| application_area | Внутренние работы | — | WILL_ADD | knaufBetogrund |
+| brand | KNAUF | — | EXISTING_OK | knaufBetogrund |
+| product_type | Грунтовка адгезионная для бетонных и гладких оснований | — | EXISTING_OK | knaufBetogrund |
+| base | Полимерная дисперсия с кварцевым песком | — | EXISTING_OK | knaufBetogrund |
+| purpose | Подготовка бетонных и гладких оснований перед нанесением последующих покрытий | — | EXISTING_OK | knaufBetogrund |
+| package_weight | 15 | — | EXISTING_OK | knaufBetogrund |
+| primer_type | Адгезионная грунтовка-бетонконтакт | — | EXISTING_OK | knaufBetogrund |
+| application_area | Внутренние работы | — | EXISTING_OK | knaufBetogrund |
 | application_method | — | — | NEEDS_SOURCE | knaufBetogrund |
-| substrates | Бетон, гладкие плотные основания | — | WILL_ADD | knaufBetogrund |
-| consumption | около 0,25 кг/м² | — | WILL_ADD | knaufBetogrund |
-| drying_time | 12 часов | — | WILL_ADD | knaufBetogrund |
-| concentrate | false | — | WILL_ADD | knaufBetogrund |
-| color | Розовый | — | WILL_ADD | knaufBetogrund |
+| substrates | Бетон, гладкие плотные основания | — | EXISTING_OK | knaufBetogrund |
+| consumption | около 0,25 кг/м² | — | EXISTING_OK | knaufBetogrund |
+| drying_time | 12 часов | — | EXISTING_OK | knaufBetogrund |
+| concentrate | false | — | EXISTING_OK | knaufBetogrund |
+| color | Розовый | — | EXISTING_OK | knaufBetogrund |
 | application_temperature | — | — | NEEDS_SOURCE | knaufBetogrund |
-| shelf_life | 12 | — | WILL_ADD | knaufBetogrund |
+| shelf_life | 12 | — | EXISTING_OK | knaufBetogrund |
 
 ### MAT-000219
 
@@ -107,20 +122,20 @@
 
 | code | proposed | current | status | source/reason |
 |---|---|---|---|---|
-| brand | Ceresit | — | WILL_ADD | ceresitCt19 |
-| product_type | Адгезионная грунтовка для бетонных оснований | — | WILL_ADD | ceresitCt19 |
-| base | Водная дисперсия акриловых сополимеров с минеральными наполнителями | — | WILL_ADD | ceresitCt19 |
-| purpose | Повышение адгезии последующих покрытий к гладким бетонным основаниям | — | WILL_ADD | ceresitCt19 |
-| package_weight | 5 | — | WILL_ADD | ceresitCt19 |
-| primer_type | Адгезионная грунтовка-бетонконтакт | — | WILL_ADD | ceresitCt19 |
-| application_area | Внутренние и наружные работы | — | WILL_ADD | ceresitCt19 |
+| brand | Ceresit | — | EXISTING_OK | ceresitCt19 |
+| product_type | Адгезионная грунтовка для бетонных оснований | — | EXISTING_OK | ceresitCt19 |
+| base | Водная дисперсия акриловых сополимеров с минеральными наполнителями | — | EXISTING_OK | ceresitCt19 |
+| purpose | Повышение адгезии последующих покрытий к гладким бетонным основаниям | — | EXISTING_OK | ceresitCt19 |
+| package_weight | 5 | — | EXISTING_OK | ceresitCt19 |
+| primer_type | Адгезионная грунтовка-бетонконтакт | — | EXISTING_OK | ceresitCt19 |
+| application_area | Внутренние и наружные работы | — | EXISTING_OK | ceresitCt19 |
 | application_method | — | — | NEEDS_SOURCE | ceresitCt19 |
-| substrates | Гладкий бетон; монолитные и сборные железобетонные основания | — | WILL_ADD | ceresitCt19 |
-| consumption | около 0,2 кг/м² | — | WILL_ADD | ceresitCt19 |
-| drying_time | около 3 часов | — | WILL_ADD | ceresitCt19 |
-| concentrate | false | — | WILL_ADD | ceresitCt19 |
-| color | Розовый | — | WILL_ADD | ceresitCt19 |
-| application_temperature | +5…+30 °C | — | WILL_ADD | ceresitCt19 |
+| substrates | Гладкий бетон; монолитные и сборные железобетонные основания | — | EXISTING_OK | ceresitCt19 |
+| consumption | около 0,2 кг/м² | — | EXISTING_OK | ceresitCt19 |
+| drying_time | около 3 часов | — | EXISTING_OK | ceresitCt19 |
+| concentrate | false | — | EXISTING_OK | ceresitCt19 |
+| color | Розовый | — | EXISTING_OK | ceresitCt19 |
+| application_temperature | +5…+30 °C | — | EXISTING_OK | ceresitCt19 |
 | shelf_life | — | — | NEEDS_SOURCE | ceresitCt19 |
 
 ### MAT-000220
@@ -131,20 +146,20 @@
 
 | code | proposed | current | status | source/reason |
 |---|---|---|---|---|
-| brand | Ceresit | — | WILL_ADD | ceresitCt19 |
-| product_type | Адгезионная грунтовка для бетонных оснований | — | WILL_ADD | ceresitCt19 |
-| base | Водная дисперсия акриловых сополимеров с минеральными наполнителями | — | WILL_ADD | ceresitCt19 |
-| purpose | Повышение адгезии последующих покрытий к гладким бетонным основаниям | — | WILL_ADD | ceresitCt19 |
-| package_weight | 15 | — | WILL_ADD | ceresitCt19 |
-| primer_type | Адгезионная грунтовка-бетонконтакт | — | WILL_ADD | ceresitCt19 |
-| application_area | Внутренние и наружные работы | — | WILL_ADD | ceresitCt19 |
+| brand | Ceresit | — | EXISTING_OK | ceresitCt19 |
+| product_type | Адгезионная грунтовка для бетонных оснований | — | EXISTING_OK | ceresitCt19 |
+| base | Водная дисперсия акриловых сополимеров с минеральными наполнителями | — | EXISTING_OK | ceresitCt19 |
+| purpose | Повышение адгезии последующих покрытий к гладким бетонным основаниям | — | EXISTING_OK | ceresitCt19 |
+| package_weight | 15 | — | EXISTING_OK | ceresitCt19 |
+| primer_type | Адгезионная грунтовка-бетонконтакт | — | EXISTING_OK | ceresitCt19 |
+| application_area | Внутренние и наружные работы | — | EXISTING_OK | ceresitCt19 |
 | application_method | — | — | NEEDS_SOURCE | ceresitCt19 |
-| substrates | Гладкий бетон; монолитные и сборные железобетонные основания | — | WILL_ADD | ceresitCt19 |
-| consumption | около 0,2 кг/м² | — | WILL_ADD | ceresitCt19 |
-| drying_time | около 3 часов | — | WILL_ADD | ceresitCt19 |
-| concentrate | false | — | WILL_ADD | ceresitCt19 |
-| color | Розовый | — | WILL_ADD | ceresitCt19 |
-| application_temperature | +5…+30 °C | — | WILL_ADD | ceresitCt19 |
+| substrates | Гладкий бетон; монолитные и сборные железобетонные основания | — | EXISTING_OK | ceresitCt19 |
+| consumption | около 0,2 кг/м² | — | EXISTING_OK | ceresitCt19 |
+| drying_time | около 3 часов | — | EXISTING_OK | ceresitCt19 |
+| concentrate | false | — | EXISTING_OK | ceresitCt19 |
+| color | Розовый | — | EXISTING_OK | ceresitCt19 |
+| application_temperature | +5…+30 °C | — | EXISTING_OK | ceresitCt19 |
 | shelf_life | — | — | NEEDS_SOURCE | ceresitCt19 |
 
 ### MAT-000221
@@ -155,21 +170,21 @@
 
 | code | proposed | current | status | source/reason |
 |---|---|---|---|---|
-| brand | Старатели | — | WILL_ADD | starateliBeton |
-| product_type | Грунтовка БЕТОН-КОНТАКТ | — | WILL_ADD | starateliBeton |
-| base | Полимерная дисперсия с песком, водой и функциональными добавками | — | WILL_ADD | starateliBeton |
-| purpose | Подготовка бетонных и других плотных оснований перед последующими покрытиями | — | WILL_ADD | starateliBeton |
-| package_weight | 20 | — | WILL_ADD | starateliBeton |
-| primer_type | Адгезионная грунтовка-бетонконтакт | — | WILL_ADD | starateliBeton |
-| application_area | Внутренние работы | — | WILL_ADD | starateliBeton |
-| application_method | Валик или кисть | — | WILL_ADD | starateliBeton |
-| substrates | Бетон, керамическая плитка, поверхности с масляной краской | — | WILL_ADD | starateliBeton |
-| consumption | 0,2–0,3 кг/м² | — | WILL_ADD | starateliBeton |
-| drying_time | 2–3 часа | — | WILL_ADD | starateliBeton |
-| concentrate | false | — | WILL_ADD | starateliBeton |
-| color | Вишнёвый | — | WILL_ADD | starateliBeton |
-| application_temperature | +5…+30 °C | — | WILL_ADD | starateliBeton |
-| shelf_life | 12 | — | WILL_ADD | starateliBeton |
+| brand | Старатели | — | EXISTING_OK | starateliBeton |
+| product_type | Грунтовка БЕТОН-КОНТАКТ | — | EXISTING_OK | starateliBeton |
+| base | Полимерная дисперсия с песком, водой и функциональными добавками | — | EXISTING_OK | starateliBeton |
+| purpose | Подготовка бетонных и других плотных оснований перед последующими покрытиями | — | EXISTING_OK | starateliBeton |
+| package_weight | 20 | — | EXISTING_OK | starateliBeton |
+| primer_type | Адгезионная грунтовка-бетонконтакт | — | EXISTING_OK | starateliBeton |
+| application_area | Внутренние работы | — | EXISTING_OK | starateliBeton |
+| application_method | Валик или кисть | — | EXISTING_OK | starateliBeton |
+| substrates | Бетон, керамическая плитка, поверхности с масляной краской | — | EXISTING_OK | starateliBeton |
+| consumption | 0,2–0,3 кг/м² | — | EXISTING_OK | starateliBeton |
+| drying_time | 2–3 часа | — | EXISTING_OK | starateliBeton |
+| concentrate | false | — | EXISTING_OK | starateliBeton |
+| color | Вишнёвый | — | EXISTING_OK | starateliBeton |
+| application_temperature | +5…+30 °C | — | EXISTING_OK | starateliBeton |
+| shelf_life | 12 | — | EXISTING_OK | starateliBeton |
 
 ## Source registry
 

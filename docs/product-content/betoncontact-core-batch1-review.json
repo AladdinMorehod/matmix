@@ -1,5 +1,5 @@
 {
-  "mode": "dry-run",
+  "mode": "production-postcheck",
   "rows": [
     {
       "externalId": "MAT-000217",
@@ -27,7 +27,7 @@
           "code": "brand",
           "sourceStatus": "READY",
           "value": "KNAUF",
-          "currentValue": null,
+          "currentValue": "KNAUF",
           "currentId": null,
           "definitionId": 1,
           "definitionType": "text",
@@ -35,13 +35,13 @@
             "knaufBetogrund"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "product_type",
           "sourceStatus": "READY",
           "value": "Грунтовка адгезионная для бетонных и гладких оснований",
-          "currentValue": null,
+          "currentValue": "Грунтовка адгезионная для бетонных и гладких оснований",
           "currentId": null,
           "definitionId": 2,
           "definitionType": "text",
@@ -49,13 +49,13 @@
             "knaufBetogrund"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "base",
           "sourceStatus": "READY",
           "value": "Полимерная дисперсия с кварцевым песком",
-          "currentValue": null,
+          "currentValue": "Полимерная дисперсия с кварцевым песком",
           "currentId": null,
           "definitionId": 3,
           "definitionType": "text",
@@ -63,13 +63,13 @@
             "knaufBetogrund"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "purpose",
           "sourceStatus": "READY",
           "value": "Подготовка бетонных и гладких оснований перед нанесением последующих покрытий",
-          "currentValue": null,
+          "currentValue": "Подготовка бетонных и гладких оснований перед нанесением последующих покрытий",
           "currentId": null,
           "definitionId": 4,
           "definitionType": "text",
@@ -77,13 +77,13 @@
             "knaufBetogrund"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "package_weight",
           "sourceStatus": "READY",
           "value": 5,
-          "currentValue": null,
+          "currentValue": 5,
           "currentId": null,
           "definitionId": 5,
           "definitionType": "number",
@@ -91,13 +91,13 @@
             "knaufBetogrund"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "primer_type",
           "sourceStatus": "READY",
           "value": "Адгезионная грунтовка-бетонконтакт",
-          "currentValue": null,
+          "currentValue": "Адгезионная грунтовка-бетонконтакт",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -105,13 +105,13 @@
             "knaufBetogrund"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "application_area",
           "sourceStatus": "READY",
           "value": "Внутренние работы",
-          "currentValue": null,
+          "currentValue": "Внутренние работы",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -119,7 +119,7 @@
             "knaufBetogrund"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "application_method",
@@ -139,7 +139,7 @@
           "code": "substrates",
           "sourceStatus": "READY",
           "value": "Бетон, гладкие плотные основания",
-          "currentValue": null,
+          "currentValue": "Бетон, гладкие плотные основания",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -147,13 +147,13 @@
             "knaufBetogrund"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "consumption",
           "sourceStatus": "READY",
           "value": "около 0,25 кг/м²",
-          "currentValue": null,
+          "currentValue": "около 0,25 кг/м²",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -161,13 +161,13 @@
             "knaufBetogrund"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "drying_time",
           "sourceStatus": "READY",
           "value": "12 часов",
-          "currentValue": null,
+          "currentValue": "12 часов",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -175,13 +175,13 @@
             "knaufBetogrund"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "concentrate",
           "sourceStatus": "READY",
           "value": false,
-          "currentValue": null,
+          "currentValue": false,
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -189,13 +189,13 @@
             "knaufBetogrund"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "color",
           "sourceStatus": "READY",
           "value": "Розовый",
-          "currentValue": null,
+          "currentValue": "Розовый",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -203,7 +203,7 @@
             "knaufBetogrund"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "application_temperature",
@@ -223,7 +223,7 @@
           "code": "shelf_life",
           "sourceStatus": "READY",
           "value": 12,
-          "currentValue": null,
+          "currentValue": 12,
           "currentId": null,
           "definitionId": 11,
           "definitionType": "number",
@@ -231,7 +231,7 @@
             "knaufBetogrund"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         }
       ],
       "notStored": [
@@ -256,9 +256,9 @@
       "status": "PARTIAL",
       "summary": {
         "logicalSlots": 15,
-        "willAdd": 13,
+        "willAdd": 0,
         "willFix": 0,
-        "existingOk": 0,
+        "existingOk": 13,
         "needsSource": 2,
         "absentByDesign": 0,
         "schemaBlocked": 0,
@@ -292,7 +292,7 @@
           "code": "brand",
           "sourceStatus": "READY",
           "value": "KNAUF",
-          "currentValue": null,
+          "currentValue": "KNAUF",
           "currentId": null,
           "definitionId": 1,
           "definitionType": "text",
@@ -300,13 +300,13 @@
             "knaufBetogrund"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "product_type",
           "sourceStatus": "READY",
           "value": "Грунтовка адгезионная для бетонных и гладких оснований",
-          "currentValue": null,
+          "currentValue": "Грунтовка адгезионная для бетонных и гладких оснований",
           "currentId": null,
           "definitionId": 2,
           "definitionType": "text",
@@ -314,13 +314,13 @@
             "knaufBetogrund"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "base",
           "sourceStatus": "READY",
           "value": "Полимерная дисперсия с кварцевым песком",
-          "currentValue": null,
+          "currentValue": "Полимерная дисперсия с кварцевым песком",
           "currentId": null,
           "definitionId": 3,
           "definitionType": "text",
@@ -328,13 +328,13 @@
             "knaufBetogrund"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "purpose",
           "sourceStatus": "READY",
           "value": "Подготовка бетонных и гладких оснований перед нанесением последующих покрытий",
-          "currentValue": null,
+          "currentValue": "Подготовка бетонных и гладких оснований перед нанесением последующих покрытий",
           "currentId": null,
           "definitionId": 4,
           "definitionType": "text",
@@ -342,13 +342,13 @@
             "knaufBetogrund"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "package_weight",
           "sourceStatus": "READY",
           "value": 15,
-          "currentValue": null,
+          "currentValue": 15,
           "currentId": null,
           "definitionId": 5,
           "definitionType": "number",
@@ -356,13 +356,13 @@
             "knaufBetogrund"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "primer_type",
           "sourceStatus": "READY",
           "value": "Адгезионная грунтовка-бетонконтакт",
-          "currentValue": null,
+          "currentValue": "Адгезионная грунтовка-бетонконтакт",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -370,13 +370,13 @@
             "knaufBetogrund"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "application_area",
           "sourceStatus": "READY",
           "value": "Внутренние работы",
-          "currentValue": null,
+          "currentValue": "Внутренние работы",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -384,7 +384,7 @@
             "knaufBetogrund"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "application_method",
@@ -404,7 +404,7 @@
           "code": "substrates",
           "sourceStatus": "READY",
           "value": "Бетон, гладкие плотные основания",
-          "currentValue": null,
+          "currentValue": "Бетон, гладкие плотные основания",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -412,13 +412,13 @@
             "knaufBetogrund"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "consumption",
           "sourceStatus": "READY",
           "value": "около 0,25 кг/м²",
-          "currentValue": null,
+          "currentValue": "около 0,25 кг/м²",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -426,13 +426,13 @@
             "knaufBetogrund"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "drying_time",
           "sourceStatus": "READY",
           "value": "12 часов",
-          "currentValue": null,
+          "currentValue": "12 часов",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -440,13 +440,13 @@
             "knaufBetogrund"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "concentrate",
           "sourceStatus": "READY",
           "value": false,
-          "currentValue": null,
+          "currentValue": false,
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -454,13 +454,13 @@
             "knaufBetogrund"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "color",
           "sourceStatus": "READY",
           "value": "Розовый",
-          "currentValue": null,
+          "currentValue": "Розовый",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -468,7 +468,7 @@
             "knaufBetogrund"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "application_temperature",
@@ -488,7 +488,7 @@
           "code": "shelf_life",
           "sourceStatus": "READY",
           "value": 12,
-          "currentValue": null,
+          "currentValue": 12,
           "currentId": null,
           "definitionId": 11,
           "definitionType": "number",
@@ -496,7 +496,7 @@
             "knaufBetogrund"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         }
       ],
       "notStored": [
@@ -521,9 +521,9 @@
       "status": "PARTIAL",
       "summary": {
         "logicalSlots": 15,
-        "willAdd": 13,
+        "willAdd": 0,
         "willFix": 0,
-        "existingOk": 0,
+        "existingOk": 13,
         "needsSource": 2,
         "absentByDesign": 0,
         "schemaBlocked": 0,
@@ -557,7 +557,7 @@
           "code": "brand",
           "sourceStatus": "READY",
           "value": "Ceresit",
-          "currentValue": null,
+          "currentValue": "Ceresit",
           "currentId": null,
           "definitionId": 1,
           "definitionType": "text",
@@ -565,13 +565,13 @@
             "ceresitCt19"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "product_type",
           "sourceStatus": "READY",
           "value": "Адгезионная грунтовка для бетонных оснований",
-          "currentValue": null,
+          "currentValue": "Адгезионная грунтовка для бетонных оснований",
           "currentId": null,
           "definitionId": 2,
           "definitionType": "text",
@@ -579,13 +579,13 @@
             "ceresitCt19"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "base",
           "sourceStatus": "READY",
           "value": "Водная дисперсия акриловых сополимеров с минеральными наполнителями",
-          "currentValue": null,
+          "currentValue": "Водная дисперсия акриловых сополимеров с минеральными наполнителями",
           "currentId": null,
           "definitionId": 3,
           "definitionType": "text",
@@ -593,13 +593,13 @@
             "ceresitCt19"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "purpose",
           "sourceStatus": "READY",
           "value": "Повышение адгезии последующих покрытий к гладким бетонным основаниям",
-          "currentValue": null,
+          "currentValue": "Повышение адгезии последующих покрытий к гладким бетонным основаниям",
           "currentId": null,
           "definitionId": 4,
           "definitionType": "text",
@@ -607,13 +607,13 @@
             "ceresitCt19"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "package_weight",
           "sourceStatus": "READY",
           "value": 5,
-          "currentValue": null,
+          "currentValue": 5,
           "currentId": null,
           "definitionId": 5,
           "definitionType": "number",
@@ -621,13 +621,13 @@
             "ceresitCt19"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "primer_type",
           "sourceStatus": "READY",
           "value": "Адгезионная грунтовка-бетонконтакт",
-          "currentValue": null,
+          "currentValue": "Адгезионная грунтовка-бетонконтакт",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -635,13 +635,13 @@
             "ceresitCt19"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "application_area",
           "sourceStatus": "READY",
           "value": "Внутренние и наружные работы",
-          "currentValue": null,
+          "currentValue": "Внутренние и наружные работы",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -649,7 +649,7 @@
             "ceresitCt19"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "application_method",
@@ -669,7 +669,7 @@
           "code": "substrates",
           "sourceStatus": "READY",
           "value": "Гладкий бетон; монолитные и сборные железобетонные основания",
-          "currentValue": null,
+          "currentValue": "Гладкий бетон; монолитные и сборные железобетонные основания",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -677,13 +677,13 @@
             "ceresitCt19"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "consumption",
           "sourceStatus": "READY",
           "value": "около 0,2 кг/м²",
-          "currentValue": null,
+          "currentValue": "около 0,2 кг/м²",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -691,13 +691,13 @@
             "ceresitCt19"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "drying_time",
           "sourceStatus": "READY",
           "value": "около 3 часов",
-          "currentValue": null,
+          "currentValue": "около 3 часов",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -705,13 +705,13 @@
             "ceresitCt19"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "concentrate",
           "sourceStatus": "READY",
           "value": false,
-          "currentValue": null,
+          "currentValue": false,
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -719,13 +719,13 @@
             "ceresitCt19"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "color",
           "sourceStatus": "READY",
           "value": "Розовый",
-          "currentValue": null,
+          "currentValue": "Розовый",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -733,13 +733,13 @@
             "ceresitCt19"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "application_temperature",
           "sourceStatus": "READY",
           "value": "+5…+30 °C",
-          "currentValue": null,
+          "currentValue": "+5…+30 °C",
           "currentId": null,
           "definitionId": 10,
           "definitionType": "text",
@@ -747,7 +747,7 @@
             "ceresitCt19"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "shelf_life",
@@ -786,9 +786,9 @@
       "status": "PARTIAL",
       "summary": {
         "logicalSlots": 15,
-        "willAdd": 13,
+        "willAdd": 0,
         "willFix": 0,
-        "existingOk": 0,
+        "existingOk": 13,
         "needsSource": 2,
         "absentByDesign": 0,
         "schemaBlocked": 0,
@@ -822,7 +822,7 @@
           "code": "brand",
           "sourceStatus": "READY",
           "value": "Ceresit",
-          "currentValue": null,
+          "currentValue": "Ceresit",
           "currentId": null,
           "definitionId": 1,
           "definitionType": "text",
@@ -830,13 +830,13 @@
             "ceresitCt19"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "product_type",
           "sourceStatus": "READY",
           "value": "Адгезионная грунтовка для бетонных оснований",
-          "currentValue": null,
+          "currentValue": "Адгезионная грунтовка для бетонных оснований",
           "currentId": null,
           "definitionId": 2,
           "definitionType": "text",
@@ -844,13 +844,13 @@
             "ceresitCt19"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "base",
           "sourceStatus": "READY",
           "value": "Водная дисперсия акриловых сополимеров с минеральными наполнителями",
-          "currentValue": null,
+          "currentValue": "Водная дисперсия акриловых сополимеров с минеральными наполнителями",
           "currentId": null,
           "definitionId": 3,
           "definitionType": "text",
@@ -858,13 +858,13 @@
             "ceresitCt19"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "purpose",
           "sourceStatus": "READY",
           "value": "Повышение адгезии последующих покрытий к гладким бетонным основаниям",
-          "currentValue": null,
+          "currentValue": "Повышение адгезии последующих покрытий к гладким бетонным основаниям",
           "currentId": null,
           "definitionId": 4,
           "definitionType": "text",
@@ -872,13 +872,13 @@
             "ceresitCt19"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "package_weight",
           "sourceStatus": "READY",
           "value": 15,
-          "currentValue": null,
+          "currentValue": 15,
           "currentId": null,
           "definitionId": 5,
           "definitionType": "number",
@@ -886,13 +886,13 @@
             "ceresitCt19"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "primer_type",
           "sourceStatus": "READY",
           "value": "Адгезионная грунтовка-бетонконтакт",
-          "currentValue": null,
+          "currentValue": "Адгезионная грунтовка-бетонконтакт",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -900,13 +900,13 @@
             "ceresitCt19"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "application_area",
           "sourceStatus": "READY",
           "value": "Внутренние и наружные работы",
-          "currentValue": null,
+          "currentValue": "Внутренние и наружные работы",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -914,7 +914,7 @@
             "ceresitCt19"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "application_method",
@@ -934,7 +934,7 @@
           "code": "substrates",
           "sourceStatus": "READY",
           "value": "Гладкий бетон; монолитные и сборные железобетонные основания",
-          "currentValue": null,
+          "currentValue": "Гладкий бетон; монолитные и сборные железобетонные основания",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -942,13 +942,13 @@
             "ceresitCt19"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "consumption",
           "sourceStatus": "READY",
           "value": "около 0,2 кг/м²",
-          "currentValue": null,
+          "currentValue": "около 0,2 кг/м²",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -956,13 +956,13 @@
             "ceresitCt19"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "drying_time",
           "sourceStatus": "READY",
           "value": "около 3 часов",
-          "currentValue": null,
+          "currentValue": "около 3 часов",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -970,13 +970,13 @@
             "ceresitCt19"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "concentrate",
           "sourceStatus": "READY",
           "value": false,
-          "currentValue": null,
+          "currentValue": false,
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -984,13 +984,13 @@
             "ceresitCt19"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "color",
           "sourceStatus": "READY",
           "value": "Розовый",
-          "currentValue": null,
+          "currentValue": "Розовый",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -998,13 +998,13 @@
             "ceresitCt19"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "application_temperature",
           "sourceStatus": "READY",
           "value": "+5…+30 °C",
-          "currentValue": null,
+          "currentValue": "+5…+30 °C",
           "currentId": null,
           "definitionId": 10,
           "definitionType": "text",
@@ -1012,7 +1012,7 @@
             "ceresitCt19"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "shelf_life",
@@ -1051,9 +1051,9 @@
       "status": "PARTIAL",
       "summary": {
         "logicalSlots": 15,
-        "willAdd": 13,
+        "willAdd": 0,
         "willFix": 0,
-        "existingOk": 0,
+        "existingOk": 13,
         "needsSource": 2,
         "absentByDesign": 0,
         "schemaBlocked": 0,
@@ -1087,7 +1087,7 @@
           "code": "brand",
           "sourceStatus": "READY",
           "value": "Старатели",
-          "currentValue": null,
+          "currentValue": "Старатели",
           "currentId": null,
           "definitionId": 1,
           "definitionType": "text",
@@ -1095,13 +1095,13 @@
             "starateliBeton"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "product_type",
           "sourceStatus": "READY",
           "value": "Грунтовка БЕТОН-КОНТАКТ",
-          "currentValue": null,
+          "currentValue": "Грунтовка БЕТОН-КОНТАКТ",
           "currentId": null,
           "definitionId": 2,
           "definitionType": "text",
@@ -1109,13 +1109,13 @@
             "starateliBeton"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "base",
           "sourceStatus": "READY",
           "value": "Полимерная дисперсия с песком, водой и функциональными добавками",
-          "currentValue": null,
+          "currentValue": "Полимерная дисперсия с песком, водой и функциональными добавками",
           "currentId": null,
           "definitionId": 3,
           "definitionType": "text",
@@ -1123,13 +1123,13 @@
             "starateliBeton"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "purpose",
           "sourceStatus": "READY",
           "value": "Подготовка бетонных и других плотных оснований перед последующими покрытиями",
-          "currentValue": null,
+          "currentValue": "Подготовка бетонных и других плотных оснований перед последующими покрытиями",
           "currentId": null,
           "definitionId": 4,
           "definitionType": "text",
@@ -1137,13 +1137,13 @@
             "starateliBeton"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "package_weight",
           "sourceStatus": "READY",
           "value": 20,
-          "currentValue": null,
+          "currentValue": 20,
           "currentId": null,
           "definitionId": 5,
           "definitionType": "number",
@@ -1151,13 +1151,13 @@
             "starateliBeton"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "primer_type",
           "sourceStatus": "READY",
           "value": "Адгезионная грунтовка-бетонконтакт",
-          "currentValue": null,
+          "currentValue": "Адгезионная грунтовка-бетонконтакт",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -1165,13 +1165,13 @@
             "starateliBeton"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "application_area",
           "sourceStatus": "READY",
           "value": "Внутренние работы",
-          "currentValue": null,
+          "currentValue": "Внутренние работы",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -1179,13 +1179,13 @@
             "starateliBeton"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "application_method",
           "sourceStatus": "READY",
           "value": "Валик или кисть",
-          "currentValue": null,
+          "currentValue": "Валик или кисть",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -1193,13 +1193,13 @@
             "starateliBeton"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "substrates",
           "sourceStatus": "READY",
           "value": "Бетон, керамическая плитка, поверхности с масляной краской",
-          "currentValue": null,
+          "currentValue": "Бетон, керамическая плитка, поверхности с масляной краской",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -1207,13 +1207,13 @@
             "starateliBeton"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "consumption",
           "sourceStatus": "READY",
           "value": "0,2–0,3 кг/м²",
-          "currentValue": null,
+          "currentValue": "0,2–0,3 кг/м²",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -1221,13 +1221,13 @@
             "starateliBeton"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "drying_time",
           "sourceStatus": "READY",
           "value": "2–3 часа",
-          "currentValue": null,
+          "currentValue": "2–3 часа",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -1235,13 +1235,13 @@
             "starateliBeton"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "concentrate",
           "sourceStatus": "READY",
           "value": false,
-          "currentValue": null,
+          "currentValue": false,
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -1249,13 +1249,13 @@
             "starateliBeton"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "color",
           "sourceStatus": "READY",
           "value": "Вишнёвый",
-          "currentValue": null,
+          "currentValue": "Вишнёвый",
           "currentId": null,
           "definitionId": null,
           "definitionType": null,
@@ -1263,13 +1263,13 @@
             "starateliBeton"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "application_temperature",
           "sourceStatus": "READY",
           "value": "+5…+30 °C",
-          "currentValue": null,
+          "currentValue": "+5…+30 °C",
           "currentId": null,
           "definitionId": 10,
           "definitionType": "text",
@@ -1277,13 +1277,13 @@
             "starateliBeton"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         },
         {
           "code": "shelf_life",
           "sourceStatus": "READY",
           "value": 12,
-          "currentValue": null,
+          "currentValue": 12,
           "currentId": null,
           "definitionId": 11,
           "definitionType": "number",
@@ -1291,7 +1291,7 @@
             "starateliBeton"
           ],
           "reason": null,
-          "status": "WILL_ADD"
+          "status": "EXISTING_OK"
         }
       ],
       "notStored": [
@@ -1316,9 +1316,9 @@
       "status": "READY",
       "summary": {
         "logicalSlots": 15,
-        "willAdd": 15,
+        "willAdd": 0,
         "willFix": 0,
-        "existingOk": 0,
+        "existingOk": 15,
         "needsSource": 0,
         "absentByDesign": 0,
         "schemaBlocked": 0,
@@ -1333,66 +1333,17 @@
     "partialProducts": 4,
     "errors": 0,
     "logicalSlots": 75,
-    "willAdd": 67,
+    "willAdd": 0,
     "willFix": 0,
-    "existingOk": 0,
+    "existingOk": 67,
     "needsSource": 8,
     "absentByDesign": 0,
     "schemaBlocked": 0,
     "valueConflict": 0,
     "titleGuardBlocked": 0,
-    "definitionsToCreate": 8
+    "definitionsToCreate": 0
   },
-  "definitionsToCreate": [
-    {
-      "code": "primer_type",
-      "label": "Тип грунтовки",
-      "dataType": "text",
-      "defaultUnit": null
-    },
-    {
-      "code": "application_area",
-      "label": "Область применения",
-      "dataType": "text",
-      "defaultUnit": null
-    },
-    {
-      "code": "substrates",
-      "label": "Основания",
-      "dataType": "text",
-      "defaultUnit": null
-    },
-    {
-      "code": "consumption",
-      "label": "Расход",
-      "dataType": "text",
-      "defaultUnit": null
-    },
-    {
-      "code": "drying_time",
-      "label": "Время высыхания",
-      "dataType": "text",
-      "defaultUnit": null
-    },
-    {
-      "code": "concentrate",
-      "label": "Концентрат",
-      "dataType": "boolean",
-      "defaultUnit": null
-    },
-    {
-      "code": "color",
-      "label": "Цвет",
-      "dataType": "text",
-      "defaultUnit": null
-    },
-    {
-      "code": "application_method",
-      "label": "Способ нанесения",
-      "dataType": "text",
-      "defaultUnit": null
-    }
-  ],
+  "definitionsToCreate": [],
   "absentByDesign": {
     "package_volume": "All five exact SKUs are catalogued by mass (kg); no authoritative volume value exists, and kg↔l conversion is forbidden."
   },
@@ -1454,5 +1405,21 @@
       "stock_status",
       "any image table"
     ]
+  },
+  "production": {
+    "applied": true,
+    "targetTotal": 5,
+    "existingOk": 67,
+    "needsSource": 8,
+    "willAdd": 0,
+    "willFix": 0,
+    "blockers": 0,
+    "errors": 0,
+    "postcheck": "BETONCONTACT_CORE_POSTCHECK=PASS",
+    "productsUnchanged": "BETONCONTACT_PRODUCTS_UNCHANGED=PASS",
+    "service": "active",
+    "health": "ok",
+    "ready": "ok",
+    "backup": "/var/backups/matmix/matmix-backup-2026-09-19T10-34-11-763Z-5a6fcfb7"
   }
 }
