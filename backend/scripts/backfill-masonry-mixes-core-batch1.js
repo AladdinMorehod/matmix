@@ -99,7 +99,8 @@ async function loadState(db, config) {
 
 function guardStatus(state, config) {
   if (state.productCount !== 1 || !state.product || Number(state.product.is_active) !== 1 || state.product.deleted_at) return { status: "ERROR", reason: `Expected exactly one active product, found ${state.productCount}.` };
-  if (state.product.title !== config.expectedTitle) return { status: "TITLE_GUARD_BLOCKED", reason: `Exact title mismatch: expected «${config.expectedTitle}», got «${state.product.title}».` };
+  const acceptedTitles = [config.expectedTitle, config.titleCandidate].filter(Boolean);
+  if (!acceptedTitles.includes(state.product.title)) return { status: "TITLE_GUARD_BLOCKED", reason: `Exact title mismatch: expected one of «${acceptedTitles.join("» or «")}», got «${state.product.title}».` };
   if (normalize(state.product.category) !== normalize(config.expectedCategory) || normalize(state.product.subcategory) !== normalize(config.expectedSubcategory)) return { status: "TITLE_GUARD_BLOCKED", reason: `Category guard mismatch: expected ${config.expectedCategory} / ${config.expectedSubcategory}, got ${state.product.category} / ${state.product.subcategory}.` };
   return { status: "OK" };
 }
