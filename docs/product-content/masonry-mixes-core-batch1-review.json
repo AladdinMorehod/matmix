@@ -1,0 +1,1214 @@
+{
+  "mode": "dry-run",
+  "rows": [
+    {
+      "externalId": "MAT-000067",
+      "title": "Кладочно - монтажная смесь цементная Евро М-200 40кг",
+      "productId": 64,
+      "category": "Смеси",
+      "subcategory": "Кладочные Смеси",
+      "identityStatus": "CONFIRMED_OWNER_IDENTITY_PARTIAL_PRIMARY_SOURCE",
+      "sourceKeys": [
+        "ownerEuromix",
+        "euromixSecondary"
+      ],
+      "titleCandidate": "Кладочно-монтажная смесь EUROmix М-200 40 кг",
+      "image": {
+        "currentUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "productImagesCount": 0,
+        "cleanupEligible": true
+      },
+      "current": {
+        "brand": null,
+        "weight": 40,
+        "unit": "шт",
+        "price": null,
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "description": null,
+        "specsCount": 0
+      },
+      "brand": {
+        "code": "brand",
+        "value": "EUROMIX",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "currentId": null,
+        "definitionId": 1,
+        "sources": [
+          "ownerEuromix"
+        ],
+        "attributeStatus": "WILL_ADD",
+        "productColumnStatus": "WILL_ADD",
+        "status": "WILL_ADD"
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "READY",
+          "value": "Кладочно-монтажная смесь",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "ownerEuromix"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "ownerEuromix"
+          ],
+          "reason": "Exact product source does not confirm this field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "ownerEuromix"
+          ],
+          "reason": "Exact product source does not confirm this field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 40,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "ownerEuromix",
+            "euromixSecondary"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ownerEuromix"
+          ],
+          "reason": "Exact product source does not confirm this field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ownerEuromix"
+          ],
+          "reason": "Exact product source does not confirm this field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ownerEuromix"
+          ],
+          "reason": "Exact product source does not confirm this field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ownerEuromix"
+          ],
+          "reason": "Exact product source does not confirm this field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "layer_thickness",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ownerEuromix"
+          ],
+          "reason": "Exact product source does not confirm this field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "consumption_10mm",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 6,
+          "definitionType": "number",
+          "sources": [
+            "ownerEuromix"
+          ],
+          "reason": "Exact product source does not confirm this field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "water_requirement",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ownerEuromix"
+          ],
+          "reason": "Exact product source does not confirm this field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "pot_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ownerEuromix"
+          ],
+          "reason": "Exact product source does not confirm this field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "ownerEuromix"
+          ],
+          "reason": "Exact product source does not confirm this field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "compressive_strength",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ownerEuromix"
+          ],
+          "reason": "Exact product source does not confirm this field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "adhesion",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ownerEuromix"
+          ],
+          "reason": "Exact product source does not confirm this field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "frost_resistance",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ownerEuromix"
+          ],
+          "reason": "Exact product source does not confirm this field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "ownerEuromix"
+          ],
+          "reason": "Exact product source does not confirm this field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "standard",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ownerEuromix"
+          ],
+          "reason": "Exact product source does not confirm this field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "mortar_grade",
+          "sourceStatus": "READY",
+          "value": "М-200",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ownerEuromix",
+            "euromixSecondary"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "imageCleanup": {
+        "code": "image_url",
+        "value": null,
+        "expectedPlaceholder": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "reason": "Remove only the known MAT-000001 shared placeholder when no product_images rows exist; SSR and SPA render the neutral 'Фото скоро появятся' fallback for an empty URL.",
+        "status": "ELIGIBLE",
+        "currentValue": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "productImagesCount": 0
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "unit",
+        "category",
+        "subcategory",
+        "stock_status",
+        "product_images"
+      ],
+      "status": "PARTIAL",
+      "summary": {
+        "logicalSlots": 20,
+        "willAdd": 4,
+        "willFix": 0,
+        "existingOk": 0,
+        "needsSource": 16,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0,
+        "imageCleanup": 1
+      }
+    },
+    {
+      "externalId": "MAT-000068",
+      "title": "Кладочно - монтажная смесь цементная Русеан М-200 40кг",
+      "productId": 65,
+      "category": "Смеси",
+      "subcategory": "Кладочные Смеси",
+      "identityStatus": "CONFIRMED_PRIMARY",
+      "sourceKeys": [
+        "ruseanM200",
+        "ruseanPrice"
+      ],
+      "titleCandidate": "Кладочно-монтажная смесь Русеан М-200 40 кг",
+      "image": {
+        "currentUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "productImagesCount": 0,
+        "cleanupEligible": true
+      },
+      "current": {
+        "brand": null,
+        "weight": 40,
+        "unit": "шт",
+        "price": 346.5,
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "description": null,
+        "specsCount": 0
+      },
+      "brand": {
+        "code": "brand",
+        "value": "Русеан",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "currentId": null,
+        "definitionId": 1,
+        "sources": [
+          "ruseanM200"
+        ],
+        "attributeStatus": "WILL_ADD",
+        "productColumnStatus": "WILL_ADD",
+        "status": "WILL_ADD"
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "READY",
+          "value": "Сухая монтажно-кладочная смесь",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "ruseanM200"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "READY",
+          "value": "Портландцемент и сухой фракционный песок",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "ruseanM200"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "READY",
+          "value": "Кладка кирпича, монтаж бетонных блоков, укладка тротуарной плитки и брусчатки, ремонт кирпичных и бетонных стен и полов, заделка швов, трещин, выбоин и углублений, фиксация металлических элементов и конструкций",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "ruseanM200"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 40,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "ruseanM200"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "READY",
+          "value": "Внутренние и наружные работы",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ruseanM200"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "READY",
+          "value": "Ручное нанесение",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ruseanM200"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "READY",
+          "value": "Кирпич, бетонные основания и бетонные блоки",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ruseanM200"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "READY",
+          "value": "Серый",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ruseanM200"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "layer_thickness",
+          "sourceStatus": "READY",
+          "value": "10–30 мм",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ruseanM200"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "consumption_10mm",
+          "sourceStatus": "READY",
+          "value": 19.5,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 6,
+          "definitionType": "number",
+          "sources": [
+            "ruseanM200"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "water_requirement",
+          "sourceStatus": "READY",
+          "value": "4,4–5,6 л на 40 кг",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ruseanM200"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "pot_life",
+          "sourceStatus": "READY",
+          "value": 1,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ruseanM200"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "READY",
+          "value": "от +5 до +25 °C",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "ruseanM200"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "compressive_strength",
+          "sourceStatus": "READY",
+          "value": 23,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ruseanM200"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "adhesion",
+          "sourceStatus": "READY",
+          "value": 0.4,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ruseanM200"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "frost_resistance",
+          "sourceStatus": "READY",
+          "value": "F35",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ruseanM200"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "READY",
+          "value": 6,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "ruseanM200"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "standard",
+          "sourceStatus": "READY",
+          "value": "ГОСТ 31357-2007",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ruseanM200"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "mortar_grade",
+          "sourceStatus": "READY",
+          "value": "М-200",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "ruseanM200"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "imageCleanup": {
+        "code": "image_url",
+        "value": null,
+        "expectedPlaceholder": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "reason": "Remove only the known MAT-000001 shared placeholder when no product_images rows exist; SSR and SPA render the neutral 'Фото скоро появятся' fallback for an empty URL.",
+        "status": "ELIGIBLE",
+        "currentValue": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "productImagesCount": 0
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "unit",
+        "category",
+        "subcategory",
+        "stock_status",
+        "product_images"
+      ],
+      "status": "READY",
+      "summary": {
+        "logicalSlots": 20,
+        "willAdd": 20,
+        "willFix": 0,
+        "existingOk": 0,
+        "needsSource": 0,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0,
+        "imageCleanup": 1
+      }
+    },
+    {
+      "externalId": "MAT-000069",
+      "title": "Кладочно - монтажная смесь цементная Вертекс М-200 40кг",
+      "productId": 66,
+      "category": "Смеси",
+      "subcategory": "Кладочные Смеси",
+      "identityStatus": "CONFIRMED_PRIMARY_LIMITED_TECHNICAL_DATA",
+      "sourceKeys": [
+        "vertexM200"
+      ],
+      "titleCandidate": "Кладочно-монтажная смесь VERTEX М-200 40 кг",
+      "image": {
+        "currentUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "productImagesCount": 0,
+        "cleanupEligible": true
+      },
+      "current": {
+        "brand": null,
+        "weight": 40,
+        "unit": "шт",
+        "price": 241.5,
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "description": null,
+        "specsCount": 0
+      },
+      "brand": {
+        "code": "brand",
+        "value": "VERTEX",
+        "currentValue": null,
+        "currentProductBrand": null,
+        "currentId": null,
+        "definitionId": 1,
+        "sources": [
+          "vertexM200"
+        ],
+        "attributeStatus": "WILL_ADD",
+        "productColumnStatus": "WILL_ADD",
+        "status": "WILL_ADD"
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "READY",
+          "value": "Сухая монтажно-кладочная смесь",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "vertexM200"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "READY",
+          "value": "Цемент и специальные добавки",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "vertexM200"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "READY",
+          "value": "Кладка стен из кирпича, монтаж бетонных блоков, укладка тротуарной плитки и брусчатки, устройство стяжек, ремонт кирпичных и бетонных стен, полов и фундаментов, заделка швов, трещин, выбоин и углублений, монтаж и крепление металлических элементов и конструкций",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "vertexM200"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 40,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "vertexM200"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "READY",
+          "value": "Внутренние и наружные работы",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "vertexM200"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "vertexM200"
+          ],
+          "reason": "Exact product source does not confirm this field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "READY",
+          "value": "Кирпич, бетонные блоки, кирпичные и бетонные основания",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "vertexM200"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "vertexM200"
+          ],
+          "reason": "Exact product source does not confirm this field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "layer_thickness",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "vertexM200"
+          ],
+          "reason": "Exact product source does not confirm this field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "consumption_10mm",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 6,
+          "definitionType": "number",
+          "sources": [
+            "vertexM200"
+          ],
+          "reason": "Exact product source does not confirm this field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "water_requirement",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "vertexM200"
+          ],
+          "reason": "Exact product source does not confirm this field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "pot_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "vertexM200"
+          ],
+          "reason": "Exact product source does not confirm this field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "vertexM200"
+          ],
+          "reason": "Exact product source does not confirm this field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "compressive_strength",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "vertexM200"
+          ],
+          "reason": "Exact product source does not confirm this field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "adhesion",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "vertexM200"
+          ],
+          "reason": "Exact product source does not confirm this field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "frost_resistance",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "vertexM200"
+          ],
+          "reason": "Exact product source does not confirm this field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "vertexM200"
+          ],
+          "reason": "Exact product source does not confirm this field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "standard",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "vertexM200"
+          ],
+          "reason": "Exact product source does not confirm this field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "mortar_grade",
+          "sourceStatus": "READY",
+          "value": "М-200",
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": null,
+          "definitionType": null,
+          "sources": [
+            "vertexM200"
+          ],
+          "reason": null,
+          "status": "WILL_ADD"
+        }
+      ],
+      "imageCleanup": {
+        "code": "image_url",
+        "value": null,
+        "expectedPlaceholder": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "reason": "Remove only the known MAT-000001 shared placeholder when no product_images rows exist; SSR and SPA render the neutral 'Фото скоро появятся' fallback for an empty URL.",
+        "status": "ELIGIBLE",
+        "currentValue": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "productImagesCount": 0
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "unit",
+        "category",
+        "subcategory",
+        "stock_status",
+        "product_images"
+      ],
+      "status": "PARTIAL",
+      "summary": {
+        "logicalSlots": 20,
+        "willAdd": 8,
+        "willFix": 0,
+        "existingOk": 0,
+        "needsSource": 12,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0,
+        "imageCleanup": 1
+      }
+    }
+  ],
+  "summary": {
+    "total": 3,
+    "readyProducts": 1,
+    "partialProducts": 2,
+    "errors": 0,
+    "logicalSlots": 60,
+    "willAdd": 32,
+    "willFix": 0,
+    "existingOk": 0,
+    "needsSource": 28,
+    "schemaBlocked": 0,
+    "valueConflict": 0,
+    "brandConflict": 0,
+    "titleGuardBlocked": 0,
+    "imageCleanupEligible": 3,
+    "definitionsToCreate": 12
+  },
+  "definitionsToCreate": [
+    {
+      "code": "mortar_grade",
+      "label": "Марка раствора",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "application_area",
+      "label": "Область применения",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "application_method",
+      "label": "Способ нанесения",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "substrates",
+      "label": "Основания",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "color",
+      "label": "Цвет",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "layer_thickness",
+      "label": "Толщина слоя",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "water_requirement",
+      "label": "Расход воды",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "pot_life",
+      "label": "Жизнеспособность раствора",
+      "dataType": "number",
+      "defaultUnit": "час"
+    },
+    {
+      "code": "compressive_strength",
+      "label": "Прочность на сжатие",
+      "dataType": "number",
+      "defaultUnit": "МПа"
+    },
+    {
+      "code": "adhesion",
+      "label": "Адгезия",
+      "dataType": "number",
+      "defaultUnit": "МПа"
+    },
+    {
+      "code": "frost_resistance",
+      "label": "Морозостойкость",
+      "dataType": "text",
+      "defaultUnit": null
+    },
+    {
+      "code": "standard",
+      "label": "Стандарт",
+      "dataType": "text",
+      "defaultUnit": null
+    }
+  ],
+  "sources": {
+    "ownerEuromix": {
+      "owner": "MatMix owner identity",
+      "title": "Owner-confirmed EUROMIX M-200 identity",
+      "url": "",
+      "evidence": "Owner-confirmed EUROMIX/EUROmix M-200 cement dry masonry/installation mix, 40 kg. Identity source only; technical fields remain unresolved."
+    },
+    "euromixSecondary": {
+      "owner": "Bobrёнок",
+      "title": "Сухая смесь М-200 Euromix Кладочная (40 кг)",
+      "url": "https://bobr.su/sukhaya-smes-m-200-euromix-kladochnaya-40kg/",
+      "evidence": "Exact product/pack context from a secondary listing; not used for unverified technical specifications."
+    },
+    "ruseanM200": {
+      "owner": "Русеан",
+      "title": "Сухая смесь М-200 монтажно-кладочная, 40 кг",
+      "url": "https://rusean.ru/catalog/sukhie_smesi_/sukhaya_smes_m_200_montazhno_kladochnaya_40_kg/",
+      "evidence": "Official product page with exact 40 kg identity and specification table."
+    },
+    "ruseanPrice": {
+      "owner": "Русеан",
+      "title": "Русеан official price list",
+      "url": "https://rusean.ru/pricelist/",
+      "evidence": "Official price list separately lists the exact M-200 монтажно-кладочная 40 kg product."
+    },
+    "vertexM200": {
+      "owner": "VERTEX.production",
+      "title": "VERTEX.production M-200",
+      "url": "https://vertexproduction.ru/",
+      "evidence": "Official manufacturer page identifies M-200 as a 40 kg cement-based dry masonry/installation mix for internal and external work."
+    }
+  },
+  "writableSurface": {
+    "products": [
+      "brand",
+      "image_url"
+    ],
+    "attributeValueCodes": [
+      "brand",
+      "product_type",
+      "base",
+      "purpose",
+      "package_weight",
+      "application_area",
+      "application_method",
+      "substrates",
+      "color",
+      "layer_thickness",
+      "consumption_10mm",
+      "water_requirement",
+      "pot_life",
+      "application_temperature",
+      "compressive_strength",
+      "adhesion",
+      "frost_resistance",
+      "shelf_life",
+      "standard",
+      "mortar_grade"
+    ],
+    "forbidden": [
+      "title",
+      "slug",
+      "description",
+      "short_description",
+      "full_description",
+      "seo_title",
+      "seo_description",
+      "price",
+      "weight",
+      "unit",
+      "category",
+      "subcategory",
+      "stock_status",
+      "any image table"
+    ]
+  }
+}

@@ -1,0 +1,632 @@
+{
+  "reviewType": "stage1-discovery",
+  "reviewDate": "2026-09-24",
+  "category": "Кладочные Смеси",
+  "targets": [
+    {
+      "externalId": "MAT-000067",
+      "localState": {
+        "id": 64,
+        "title": "Кладочно - монтажная смесь цементная Евро М-200 40кг",
+        "slug": "кладочно-монтажная-смесь-цементная-евро-м-200-40кг",
+        "brandColumn": null,
+        "weight": 40,
+        "unit": "шт",
+        "category": "Смеси",
+        "subcategory": "Кладочные Смеси",
+        "price": null,
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "contentEmpty": true,
+        "attributeValueCount": 0,
+        "productImageRowCount": 0,
+        "imageRisk": "The same local placeholder path is used by all three target rows; it is not evidence of an exact MAT-000067 image.",
+        "image": "",
+        "description": "",
+        "shortDescription": null,
+        "fullDescription": null,
+        "seoTitle": null,
+        "seoDescription": null,
+        "isActive": 1,
+        "deletedAt": null,
+        "stockStatus": "unknown",
+        "source": "excel",
+        "lastImportedAt": "2026-07-15T13:44:51.601Z",
+        "updatedAt": "2026-07-15T13:44:51.601Z",
+        "productGroup": "",
+        "sortOrder": 1,
+        "createdAt": "2026-07-08T17:22:48.872Z",
+        "deletedById": null,
+        "deletedByName": null
+      },
+      "identity": {
+        "status": "CONFIRMED_OWNER_IDENTITY_PARTIAL_PRIMARY_SOURCE",
+        "ownerConfirmedBrand": "EUROMIX",
+        "ownerConfirmedProduct": "EUROmix M-200",
+        "ownerConfirmedPackWeightKg": 40,
+        "ownerConfirmedPositioning": "Цементная сухая монтажно-кладочная смесь",
+        "canonicalTitleCandidate": "Кладочно-монтажная смесь EUROmix М-200 40 кг"
+      },
+      "sources": [
+        {
+          "tier": "OWNER_IDENTITY",
+          "type": "owner instruction",
+          "url": null,
+          "evidence": "Owner correction identifies MAT-000067 as EUROMIX / EUROmix M-200, 40 kg, cement dry masonry/installation mix.",
+          "currentness": "authoritative for local identity only"
+        },
+        {
+          "tier": "SECONDARY",
+          "type": "retailer listing",
+          "url": "https://bobr.su/sukhaya-smes-m-200-euromix-kladochnaya-40kg/",
+          "evidence": "Page title names Сухая смесь М-200 Euromix Кладочная (40кг); it confirms the product/pack context but is not a manufacturer TDS.",
+          "currentness": "crawled 2026-09-24"
+        },
+        {
+          "tier": "SECONDARY",
+          "type": "retailer listing",
+          "url": "https://dlyaproraba.ru/",
+          "evidence": "Catalog search result lists EuroMix Монтажно-кладочная смесь М200 Euromix 40 кг; only identity context, not a sufficient technical source.",
+          "currentness": "crawled 2026-09-24"
+        }
+      ],
+      "facts": {
+        "brand": {
+          "status": "READY",
+          "value": "EUROMIX",
+          "source": "owner identity"
+        },
+        "product_type": {
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "note": "Owner identity says cement dry masonry/installation mix; an official product document is still required before writing technical core data."
+        },
+        "base": {
+          "status": "NEEDS_SOURCE",
+          "value": null
+        },
+        "purpose": {
+          "status": "NEEDS_SOURCE",
+          "value": null
+        },
+        "package_weight": {
+          "status": "READY",
+          "value": 40,
+          "unit": "кг",
+          "source": "owner identity plus exact 40 kg listings"
+        },
+        "application_area": {
+          "status": "NEEDS_SOURCE",
+          "value": null
+        },
+        "application_method": {
+          "status": "NEEDS_SOURCE",
+          "value": null
+        },
+        "substrates": {
+          "status": "NEEDS_SOURCE",
+          "value": null
+        },
+        "color": {
+          "status": "NEEDS_SOURCE",
+          "value": null
+        },
+        "layer_thickness": {
+          "status": "NEEDS_SOURCE",
+          "value": null
+        },
+        "consumption_10mm": {
+          "status": "NEEDS_SOURCE",
+          "value": null
+        },
+        "water_requirement": {
+          "status": "NEEDS_SOURCE",
+          "value": null
+        },
+        "pot_life": {
+          "status": "NEEDS_SOURCE",
+          "value": null
+        },
+        "application_temperature": {
+          "status": "NEEDS_SOURCE",
+          "value": null
+        },
+        "compressive_strength": {
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "note": "Do not infer MPa from the M-200 name."
+        },
+        "adhesion": {
+          "status": "NEEDS_SOURCE",
+          "value": null
+        },
+        "frost_resistance": {
+          "status": "NEEDS_SOURCE",
+          "value": null
+        },
+        "shelf_life": {
+          "status": "NEEDS_SOURCE",
+          "value": null
+        },
+        "standard": {
+          "status": "NEEDS_SOURCE",
+          "value": null
+        }
+      },
+      "image": {
+        "status": "IMAGE_PARTIAL",
+        "sourceUrl": "https://bobr.su/sukhaya-smes-m-200-euromix-kladochnaya-40kg/",
+        "decision": "Do not use until the exact 40 kg EUROMIX package is visually verified and a clean, direct asset is obtained."
+      },
+      "finalStatus": "PARTIAL"
+    },
+    {
+      "externalId": "MAT-000068",
+      "localState": {
+        "id": 65,
+        "title": "Кладочно - монтажная смесь цементная Русеан М-200 40кг",
+        "slug": "кладочно-монтажная-смесь-цементная-русеан-м-200-40кг",
+        "brandColumn": null,
+        "weight": 40,
+        "unit": "шт",
+        "category": "Смеси",
+        "subcategory": "Кладочные Смеси",
+        "price": 346.5,
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "contentEmpty": true,
+        "attributeValueCount": 0,
+        "productImageRowCount": 0,
+        "imageRisk": "Local image path is the shared MAT-000001 placeholder, not an exact MAT-000068 source.",
+        "image": "",
+        "description": "",
+        "shortDescription": null,
+        "fullDescription": null,
+        "seoTitle": null,
+        "seoDescription": null,
+        "isActive": 1,
+        "deletedAt": null,
+        "stockStatus": "unknown",
+        "source": "excel",
+        "lastImportedAt": "2026-07-15T13:44:51.601Z",
+        "updatedAt": "2026-07-15T13:44:51.601Z",
+        "productGroup": "",
+        "sortOrder": 2,
+        "createdAt": "2026-07-08T17:22:48.872Z",
+        "deletedById": null,
+        "deletedByName": null
+      },
+      "identity": {
+        "status": "CONFIRMED_PRIMARY",
+        "brand": "Русеан",
+        "product": "Сухая смесь М-200 монтажно-кладочная",
+        "packWeightKg": 40,
+        "canonicalTitleCandidate": "Кладочно-монтажная смесь Русеан М-200 40 кг"
+      },
+      "sources": [
+        {
+          "tier": "PRIMARY",
+          "type": "manufacturer product page",
+          "url": "https://rusean.ru/catalog/sukhie_smesi_/sukhaya_smes_m_200_montazhno_kladochnaya_40_kg/",
+          "evidence": "Official Русеан page title names the exact M-200 монтажно-кладочная product and 40 kg pack; the page identifies the product as Русеан and provides the full specification table.",
+          "currentness": "crawled 2026-09-23/24"
+        },
+        {
+          "tier": "PRIMARY",
+          "type": "manufacturer price list",
+          "url": "https://rusean.ru/pricelist/",
+          "evidence": "Official price list separately lists Сухая смесь М-200 монтажно-кладочная, 40 кг.",
+          "currentness": "crawled 2026-09-24"
+        }
+      ],
+      "facts": {
+        "brand": {
+          "status": "READY",
+          "value": "Русеан",
+          "source": "official product page"
+        },
+        "product_type": {
+          "status": "READY",
+          "value": "Сухая монтажно-кладочная смесь",
+          "source": "official product page"
+        },
+        "base": {
+          "status": "READY",
+          "value": "Портландцемент и сухой фракционный песок",
+          "source": "official product page"
+        },
+        "purpose": {
+          "status": "READY",
+          "value": "Кладка кирпича, монтаж бетонных блоков, укладка плитки/брусчатки, ремонт стен и полов, заделка швов/трещин/выбоин/углублений, фиксация металлических элементов",
+          "source": "official product page"
+        },
+        "package_weight": {
+          "status": "READY",
+          "value": 40,
+          "unit": "кг",
+          "source": "official product page"
+        },
+        "application_area": {
+          "status": "READY",
+          "value": "Внутренние и наружные работы",
+          "source": "official product page"
+        },
+        "application_method": {
+          "status": "READY",
+          "value": "Ручное нанесение; перемешивание вручную или механически",
+          "source": "official product page"
+        },
+        "substrates": {
+          "status": "READY",
+          "value": "Кирпич, бетонные основания/блоки",
+          "source": "official product page"
+        },
+        "color": {
+          "status": "READY",
+          "value": "Серый",
+          "source": "official product page"
+        },
+        "layer_thickness": {
+          "status": "READY",
+          "value": "10–30 мм",
+          "source": "official product page"
+        },
+        "consumption_10mm": {
+          "status": "READY",
+          "value": 19.5,
+          "unit": "кг/м²",
+          "source": "official product page"
+        },
+        "water_requirement": {
+          "status": "READY",
+          "value": "4,4–5,6 л на 40 кг",
+          "source": "official product page"
+        },
+        "pot_life": {
+          "status": "READY",
+          "value": 1,
+          "unit": "час",
+          "source": "official product page"
+        },
+        "application_temperature": {
+          "status": "READY",
+          "value": "от +5 до +25 °C",
+          "source": "official product page"
+        },
+        "compressive_strength": {
+          "status": "READY",
+          "value": 23,
+          "unit": "МПа",
+          "source": "official product page"
+        },
+        "adhesion": {
+          "status": "READY",
+          "value": 0.4,
+          "unit": "МПа через 28 суток",
+          "source": "official product page"
+        },
+        "frost_resistance": {
+          "status": "READY",
+          "value": "F35",
+          "source": "official product page"
+        },
+        "shelf_life": {
+          "status": "READY",
+          "value": 6,
+          "unit": "месяцев",
+          "source": "official product page"
+        },
+        "standard": {
+          "status": "READY",
+          "value": "ГОСТ 31357-2007; Пк-2, В15, F35",
+          "source": "official product page"
+        }
+      },
+      "image": {
+        "status": "IMAGE_CONFIRMED_CANDIDATE",
+        "sourceUrl": "https://rusean.ru/catalog/sukhie_smesi_/sukhaya_smes_m_200_montazhno_kladochnaya_40_kg/",
+        "decision": "The official exact-product page exposes product image slots. Direct asset URL, dimensions, watermark and clean-background suitability still require a separate asset capture/verification pass."
+      },
+      "finalStatus": "READY_FOR_CORE_REVIEW"
+    },
+    {
+      "externalId": "MAT-000069",
+      "localState": {
+        "id": 66,
+        "title": "Кладочно - монтажная смесь цементная Вертекс М-200 40кг",
+        "slug": "кладочно-монтажная-смесь-цементная-вертекс-м-200-40кг",
+        "brandColumn": null,
+        "weight": 40,
+        "unit": "шт",
+        "category": "Смеси",
+        "subcategory": "Кладочные Смеси",
+        "price": 241.5,
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "contentEmpty": true,
+        "attributeValueCount": 0,
+        "productImageRowCount": 0,
+        "imageRisk": "Local image path is the shared MAT-000001 placeholder, not an exact MAT-000069 source.",
+        "image": "",
+        "description": "",
+        "shortDescription": null,
+        "fullDescription": null,
+        "seoTitle": null,
+        "seoDescription": null,
+        "isActive": 1,
+        "deletedAt": null,
+        "stockStatus": "unknown",
+        "source": "excel",
+        "lastImportedAt": "2026-07-15T13:44:51.601Z",
+        "updatedAt": "2026-07-15T13:44:51.601Z",
+        "productGroup": "",
+        "sortOrder": 3,
+        "createdAt": "2026-07-08T17:22:48.872Z",
+        "deletedById": null,
+        "deletedByName": null
+      },
+      "identity": {
+        "status": "CONFIRMED_PRIMARY_LIMITED_TECHNICAL_DATA",
+        "brand": "VERTEX",
+        "product": "М-200 сухая монтажно-кладочная смесь",
+        "packWeightKg": 40,
+        "canonicalTitleCandidate": "Кладочно-монтажная смесь VERTEX М-200 40 кг"
+      },
+      "sources": [
+        {
+          "tier": "PRIMARY",
+          "type": "manufacturer product catalog page",
+          "url": "https://vertexproduction.ru/",
+          "evidence": "Official VERTEX.production page identifies ООО «Вертекс Продакшн» as the dry-mix manufacturer and lists М-200 as a 40 kg dry cement-based masonry/installation mix for indoor and outdoor work.",
+          "currentness": "crawled 2026-09-24"
+        }
+      ],
+      "facts": {
+        "brand": {
+          "status": "READY",
+          "value": "VERTEX",
+          "source": "official manufacturer site"
+        },
+        "product_type": {
+          "status": "READY",
+          "value": "Сухая монтажно-кладочная смесь",
+          "source": "official manufacturer site"
+        },
+        "base": {
+          "status": "READY",
+          "value": "Цемент и специальные добавки",
+          "source": "official manufacturer site"
+        },
+        "purpose": {
+          "status": "READY",
+          "value": "Кладка стен из кирпича, монтаж бетонных блоков, укладка плитки/брусчатки, стяжки, ремонт кирпичных и бетонных стен/полов/фундаментов, заделка швов/трещин/выбоин/углублений, крепление металлических элементов",
+          "source": "official manufacturer site"
+        },
+        "package_weight": {
+          "status": "READY",
+          "value": 40,
+          "unit": "кг",
+          "source": "official manufacturer site"
+        },
+        "application_area": {
+          "status": "READY",
+          "value": "Внутренние и наружные работы",
+          "source": "official manufacturer site"
+        },
+        "application_method": {
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "note": "The page does not state manual/mechanical application for this exact product."
+        },
+        "substrates": {
+          "status": "READY",
+          "value": "Кирпич, бетонные блоки, бетонные и кирпичные основания",
+          "source": "official manufacturer site"
+        },
+        "color": {
+          "status": "NEEDS_SOURCE",
+          "value": null
+        },
+        "layer_thickness": {
+          "status": "NEEDS_SOURCE",
+          "value": null
+        },
+        "consumption_10mm": {
+          "status": "NEEDS_SOURCE",
+          "value": null
+        },
+        "water_requirement": {
+          "status": "NEEDS_SOURCE",
+          "value": null
+        },
+        "pot_life": {
+          "status": "NEEDS_SOURCE",
+          "value": null
+        },
+        "application_temperature": {
+          "status": "NEEDS_SOURCE",
+          "value": null
+        },
+        "compressive_strength": {
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "note": "Do not infer MPa from the M-200 name."
+        },
+        "adhesion": {
+          "status": "NEEDS_SOURCE",
+          "value": null
+        },
+        "frost_resistance": {
+          "status": "NEEDS_SOURCE",
+          "value": null
+        },
+        "shelf_life": {
+          "status": "NEEDS_SOURCE",
+          "value": null
+        },
+        "standard": {
+          "status": "NEEDS_SOURCE",
+          "value": null
+        }
+      },
+      "image": {
+        "status": "IMAGE_PARTIAL",
+        "sourceUrl": "https://vertexproduction.ru/",
+        "decision": "Exact M-200/40 kg identity is proven by the manufacturer page, but a direct clean image asset and visual package verification are not exposed in the captured HTML."
+      },
+      "finalStatus": "PARTIAL"
+    }
+  ],
+  "schemaProposal": {
+    "existingDefinitions": [
+      {
+        "code": "brand",
+        "dataType": "text",
+        "decision": "REUSE"
+      },
+      {
+        "code": "product_type",
+        "dataType": "text",
+        "decision": "REUSE"
+      },
+      {
+        "code": "base",
+        "dataType": "text",
+        "decision": "REUSE"
+      },
+      {
+        "code": "purpose",
+        "dataType": "text",
+        "decision": "REUSE"
+      },
+      {
+        "code": "package_weight",
+        "dataType": "number",
+        "unit": "кг",
+        "decision": "REUSE"
+      },
+      {
+        "code": "consumption_10mm",
+        "dataType": "number",
+        "unit": "кг/м²",
+        "decision": "REUSE_ONLY_FOR_EXACT_NUMERIC_SOURCE"
+      },
+      {
+        "code": "application_temperature",
+        "dataType": "text",
+        "decision": "REUSE"
+      },
+      {
+        "code": "shelf_life",
+        "dataType": "number",
+        "unit": "месяцев",
+        "decision": "REUSE"
+      }
+    ],
+    "notApplicableExistingDefinitions": [
+      "coverage_30kg_10mm",
+      "wall_layer_thickness",
+      "ceiling_layer_thickness"
+    ],
+    "newDefinitionsRecommended": [
+      {
+        "code": "application_area",
+        "type": "text",
+        "reason": "inside/outside and work-area scope"
+      },
+      {
+        "code": "application_method",
+        "type": "text",
+        "reason": "manual/mechanical application"
+      },
+      {
+        "code": "substrates",
+        "type": "text",
+        "reason": "brick, concrete blocks and other exact substrates"
+      },
+      {
+        "code": "color",
+        "type": "text",
+        "reason": "manufacturer-stated color"
+      },
+      {
+        "code": "layer_thickness",
+        "type": "text",
+        "reason": "ranges cannot safely use the current numeric consumption definition"
+      },
+      {
+        "code": "water_requirement",
+        "type": "text",
+        "reason": "per-bag ranges and units must remain explicit"
+      },
+      {
+        "code": "pot_life",
+        "type": "number_or_text",
+        "reason": "hours, with text fallback for qualifiers"
+      },
+      {
+        "code": "compressive_strength",
+        "type": "text",
+        "reason": "keep MPa/grade wording source-specific; never infer from M-200"
+      },
+      {
+        "code": "adhesion",
+        "type": "text",
+        "reason": "value may include test age and substrate"
+      },
+      {
+        "code": "frost_resistance",
+        "type": "text",
+        "reason": "F-cycle designation"
+      },
+      {
+        "code": "standard",
+        "type": "text",
+        "reason": "GOST/TU or manufacturer standard"
+      },
+      {
+        "code": "mortar_grade",
+        "type": "text",
+        "reason": "retain M-200 as product grade without mapping it to MPa"
+      }
+    ],
+    "templates": {
+      "localTemplateRowCount": 0,
+      "decision": "No product attribute template exists locally; do not create one in Stage 1."
+    }
+  },
+  "summary": {
+    "targetCount": 3,
+    "identityConfirmed": [
+      "MAT-000067",
+      "MAT-000068",
+      "MAT-000069"
+    ],
+    "identityPartialPrimary": [
+      "MAT-000067"
+    ],
+    "readyForCoreReview": [
+      "MAT-000068"
+    ],
+    "partial": [
+      "MAT-000067",
+      "MAT-000069"
+    ],
+    "blockedIdentity": [],
+    "imageConfirmedCandidates": [
+      "MAT-000068"
+    ],
+    "imagePartial": [
+      "MAT-000067",
+      "MAT-000069"
+    ],
+    "conflicts": [],
+    "nextBatchRecommendation": "Start a guarded core batch only after accepting the schema proposal. MAT-000068 can lead with primary-source facts; MAT-000067 needs an official EUROMIX/RU technical document; MAT-000069 needs a technical sheet for missing numeric/handling values. Keep all three image candidates out of import until direct assets pass exact-identity and visual QA."
+  },
+  "safety": {
+    "productionAccess": false,
+    "productionDbChanged": false,
+    "titlesChanged": false,
+    "attributesCreatedOrChanged": false,
+    "imagesChanged": false,
+    "importRun": false,
+    "deployRun": false
+  }
+}

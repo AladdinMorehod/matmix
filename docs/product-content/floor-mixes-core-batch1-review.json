@@ -1,0 +1,6099 @@
+{
+  "mode": "dry-run",
+  "rows": [
+    {
+      "externalId": "MAT-000075",
+      "title": "Наливной пол \"Unis Горизонт\" 20 кг",
+      "productId": 70,
+      "category": "Смеси",
+      "subcategory": "Наливной Пол",
+      "identityStatus": "IDENTITY_UNCERTAIN",
+      "sourceKeys": [
+        "unisFamily"
+      ],
+      "titleCandidate": "Наливной пол UNIS Горизонт 20 кг",
+      "image": {
+        "currentUrl": null,
+        "productImagesCount": 0,
+        "cleanupEligible": false
+      },
+      "current": {
+        "brand": "UNIS",
+        "weight": 20,
+        "unit": "шт",
+        "price": 346.5,
+        "imageUrl": null,
+        "slug": "наливной-пол-unis-горизонт-20-кг",
+        "seoTitle": null,
+        "seoDescription": null,
+        "specsCount": 2
+      },
+      "brand": {
+        "code": "brand",
+        "value": "UNIS",
+        "currentValue": "UNIS",
+        "currentProductBrand": "UNIS",
+        "currentId": 66,
+        "definitionId": 1,
+        "sources": [
+          "unisFamily"
+        ],
+        "attributeStatus": "EXISTING_OK",
+        "productColumnStatus": "EXISTING_OK",
+        "status": "EXISTING_OK"
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "unisFamily"
+          ],
+          "reason": "Exact Горизонт variant is unresolved; variant-dependent data is intentionally withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "unisFamily"
+          ],
+          "reason": "Exact Горизонт variant is unresolved; variant-dependent data is intentionally withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "unisFamily"
+          ],
+          "reason": "Exact Горизонт variant is unresolved; variant-dependent data is intentionally withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 20,
+          "currentValue": 20,
+          "currentId": 67,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "unisFamily"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 13,
+          "definitionType": "text",
+          "sources": [
+            "unisFamily"
+          ],
+          "reason": "Exact Горизонт variant is unresolved; variant-dependent data is intentionally withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 14,
+          "definitionType": "text",
+          "sources": [
+            "unisFamily"
+          ],
+          "reason": "Exact Горизонт variant is unresolved; variant-dependent data is intentionally withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 15,
+          "definitionType": "text",
+          "sources": [
+            "unisFamily"
+          ],
+          "reason": "Exact Горизонт variant is unresolved; variant-dependent data is intentionally withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 16,
+          "definitionType": "text",
+          "sources": [
+            "unisFamily"
+          ],
+          "reason": "Exact Горизонт variant is unresolved; variant-dependent data is intentionally withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "layer_thickness",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 17,
+          "definitionType": "text",
+          "sources": [
+            "unisFamily"
+          ],
+          "reason": "Exact Горизонт variant is unresolved; variant-dependent data is intentionally withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "consumption_10mm",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 6,
+          "definitionType": "number",
+          "sources": [
+            "unisFamily"
+          ],
+          "reason": "Exact Горизонт variant is unresolved; variant-dependent data is intentionally withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "water_requirement",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 18,
+          "definitionType": "text",
+          "sources": [
+            "unisFamily"
+          ],
+          "reason": "Exact Горизонт variant is unresolved; variant-dependent data is intentionally withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "pot_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 19,
+          "definitionType": "number",
+          "sources": [
+            "unisFamily"
+          ],
+          "reason": "Exact Горизонт variant is unresolved; variant-dependent data is intentionally withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "unisFamily"
+          ],
+          "reason": "Exact Горизонт variant is unresolved; variant-dependent data is intentionally withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "compressive_strength",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 20,
+          "definitionType": "number",
+          "sources": [
+            "unisFamily"
+          ],
+          "reason": "Exact Горизонт variant is unresolved; variant-dependent data is intentionally withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "adhesion",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 21,
+          "definitionType": "number",
+          "sources": [
+            "unisFamily"
+          ],
+          "reason": "Exact Горизонт variant is unresolved; variant-dependent data is intentionally withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "frost_resistance",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 22,
+          "definitionType": "text",
+          "sources": [
+            "unisFamily"
+          ],
+          "reason": "Exact Горизонт variant is unresolved; variant-dependent data is intentionally withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "unisFamily"
+          ],
+          "reason": "Exact Горизонт variant is unresolved; variant-dependent data is intentionally withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "standard",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 23,
+          "definitionType": "text",
+          "sources": [
+            "unisFamily"
+          ],
+          "reason": "Exact Горизонт variant is unresolved; variant-dependent data is intentionally withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "mortar_grade",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 12,
+          "definitionType": "text",
+          "sources": [
+            "unisFamily"
+          ],
+          "reason": "Exact Горизонт variant is unresolved; variant-dependent data is intentionally withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 25,
+          "definitionType": "text",
+          "sources": [
+            "unisFamily"
+          ],
+          "reason": "Exact Горизонт variant is unresolved; variant-dependent data is intentionally withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "flexural_strength",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 26,
+          "definitionType": "text",
+          "sources": [
+            "unisFamily"
+          ],
+          "reason": "Exact Горизонт variant is unresolved; variant-dependent data is intentionally withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "walkability",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 24,
+          "definitionType": "text",
+          "sources": [
+            "unisFamily"
+          ],
+          "reason": "Exact Горизонт variant is unresolved; variant-dependent data is intentionally withheld.",
+          "status": "NEEDS_SOURCE"
+        }
+      ],
+      "imageCleanup": {
+        "status": "SKIPPED",
+        "currentValue": null,
+        "productImagesCount": 0,
+        "reason": "Cleanup requires the exact shared placeholder and zero product_images rows."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "unit",
+        "category",
+        "subcategory",
+        "stock_status",
+        "product_images"
+      ],
+      "status": "IDENTITY_UNCERTAIN",
+      "summary": {
+        "logicalSlots": 23,
+        "willAdd": 0,
+        "willFix": 0,
+        "existingOk": 2,
+        "needsSource": 21,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0,
+        "imageCleanup": 0
+      }
+    },
+    {
+      "externalId": "MAT-000076",
+      "title": "Наливной пол UNIS Горизонт Армированный 20 кг",
+      "productId": 71,
+      "category": "Смеси",
+      "subcategory": "Наливной Пол",
+      "identityStatus": "READY_FOR_CORE_REVIEW",
+      "sourceKeys": [
+        "unisArmored"
+      ],
+      "titleCandidate": "Наливной пол UNIS Горизонт Армированный 20 кг",
+      "image": {
+        "currentUrl": null,
+        "productImagesCount": 0,
+        "cleanupEligible": false
+      },
+      "current": {
+        "brand": "UNIS",
+        "weight": 20,
+        "unit": "шт",
+        "price": null,
+        "imageUrl": null,
+        "slug": "наливной-пол-unis-горизонт-армированный-20-кг",
+        "seoTitle": null,
+        "seoDescription": null,
+        "specsCount": 10
+      },
+      "brand": {
+        "code": "brand",
+        "value": "UNIS",
+        "currentValue": "UNIS",
+        "currentProductBrand": "UNIS",
+        "currentId": 68,
+        "definitionId": 1,
+        "sources": [
+          "unisArmored"
+        ],
+        "attributeStatus": "EXISTING_OK",
+        "productColumnStatus": "EXISTING_OK",
+        "status": "EXISTING_OK"
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "READY",
+          "value": "Армированный базовый ровнитель для пола",
+          "currentValue": "Армированный базовый ровнитель для пола",
+          "currentId": 69,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "unisArmored"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "unisArmored"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "unisArmored"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 20,
+          "currentValue": 20,
+          "currentId": 70,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "unisArmored"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 13,
+          "definitionType": "text",
+          "sources": [
+            "unisArmored"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 14,
+          "definitionType": "text",
+          "sources": [
+            "unisArmored"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 15,
+          "definitionType": "text",
+          "sources": [
+            "unisArmored"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 16,
+          "definitionType": "text",
+          "sources": [
+            "unisArmored"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "layer_thickness",
+          "sourceStatus": "READY",
+          "value": "30–300 мм",
+          "currentValue": "30–300 мм",
+          "currentId": 71,
+          "definitionId": 17,
+          "definitionType": "text",
+          "sources": [
+            "unisArmored"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "consumption_10mm",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 6,
+          "definitionType": "number",
+          "sources": [
+            "unisArmored"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "water_requirement",
+          "sourceStatus": "READY",
+          "value": "3,8–4,8 л на 20 кг",
+          "currentValue": "3,8–4,8 л на 20 кг",
+          "currentId": 72,
+          "definitionId": 18,
+          "definitionType": "text",
+          "sources": [
+            "unisArmored"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "pot_life",
+          "sourceStatus": "READY",
+          "value": 1,
+          "currentValue": 1,
+          "currentId": 73,
+          "definitionId": 19,
+          "definitionType": "number",
+          "sources": [
+            "unisArmored"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "unisArmored"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "compressive_strength",
+          "sourceStatus": "READY",
+          "value": 15,
+          "currentValue": 15,
+          "currentId": 74,
+          "definitionId": 20,
+          "definitionType": "number",
+          "sources": [
+            "unisArmored"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "adhesion",
+          "sourceStatus": "READY",
+          "value": 0.6,
+          "currentValue": 0.6,
+          "currentId": 75,
+          "definitionId": 21,
+          "definitionType": "number",
+          "sources": [
+            "unisArmored"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "frost_resistance",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 22,
+          "definitionType": "text",
+          "sources": [
+            "unisArmored"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "READY",
+          "value": 12,
+          "currentValue": 12,
+          "currentId": 76,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "unisArmored"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "standard",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 23,
+          "definitionType": "text",
+          "sources": [
+            "unisArmored"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "mortar_grade",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 12,
+          "definitionType": "text",
+          "sources": [
+            "unisArmored"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 25,
+          "definitionType": "text",
+          "sources": [
+            "unisArmored"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "flexural_strength",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 26,
+          "definitionType": "text",
+          "sources": [
+            "unisArmored"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "walkability",
+          "sourceStatus": "READY",
+          "value": "12 часов",
+          "currentValue": "12 часов",
+          "currentId": 77,
+          "definitionId": 24,
+          "definitionType": "text",
+          "sources": [
+            "unisArmored"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        }
+      ],
+      "imageCleanup": {
+        "status": "SKIPPED",
+        "currentValue": null,
+        "productImagesCount": 0,
+        "reason": "Cleanup requires the exact shared placeholder and zero product_images rows."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "unit",
+        "category",
+        "subcategory",
+        "stock_status",
+        "product_images"
+      ],
+      "status": "READY",
+      "summary": {
+        "logicalSlots": 23,
+        "willAdd": 0,
+        "willFix": 0,
+        "existingOk": 10,
+        "needsSource": 13,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0,
+        "imageCleanup": 0
+      }
+    },
+    {
+      "externalId": "MAT-000077",
+      "title": "Наливной пол \"Старатели\" Быстрый 20 кг",
+      "productId": 72,
+      "category": "Смеси",
+      "subcategory": "Наливной Пол",
+      "identityStatus": "SOURCE_CONFLICT",
+      "sourceKeys": [
+        "starateliCatalog"
+      ],
+      "titleCandidate": "Наливной пол Старатели Быстротвердеющий 20 кг",
+      "image": {
+        "currentUrl": null,
+        "productImagesCount": 0,
+        "cleanupEligible": false
+      },
+      "current": {
+        "brand": "Старатели",
+        "weight": 20,
+        "unit": "шт",
+        "price": 378,
+        "imageUrl": null,
+        "slug": "наливной-пол-старатели-быстрый-20-кг",
+        "seoTitle": null,
+        "seoDescription": null,
+        "specsCount": 2
+      },
+      "brand": {
+        "code": "brand",
+        "value": "Старатели",
+        "currentValue": "Старатели",
+        "currentProductBrand": "Старатели",
+        "currentId": 78,
+        "definitionId": 1,
+        "sources": [
+          "starateliCatalog"
+        ],
+        "attributeStatus": "EXISTING_OK",
+        "productColumnStatus": "EXISTING_OK",
+        "status": "EXISTING_OK"
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "starateliCatalog"
+          ],
+          "reason": "Быстрый/Быстротвердеющий naming conflict is unresolved; version-dependent data is withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "starateliCatalog"
+          ],
+          "reason": "Быстрый/Быстротвердеющий naming conflict is unresolved; version-dependent data is withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "starateliCatalog"
+          ],
+          "reason": "Быстрый/Быстротвердеющий naming conflict is unresolved; version-dependent data is withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 20,
+          "currentValue": 20,
+          "currentId": 79,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "starateliCatalog"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 13,
+          "definitionType": "text",
+          "sources": [
+            "starateliCatalog"
+          ],
+          "reason": "Быстрый/Быстротвердеющий naming conflict is unresolved; version-dependent data is withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 14,
+          "definitionType": "text",
+          "sources": [
+            "starateliCatalog"
+          ],
+          "reason": "Быстрый/Быстротвердеющий naming conflict is unresolved; version-dependent data is withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 15,
+          "definitionType": "text",
+          "sources": [
+            "starateliCatalog"
+          ],
+          "reason": "Быстрый/Быстротвердеющий naming conflict is unresolved; version-dependent data is withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 16,
+          "definitionType": "text",
+          "sources": [
+            "starateliCatalog"
+          ],
+          "reason": "Быстрый/Быстротвердеющий naming conflict is unresolved; version-dependent data is withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "layer_thickness",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 17,
+          "definitionType": "text",
+          "sources": [
+            "starateliCatalog"
+          ],
+          "reason": "Быстрый/Быстротвердеющий naming conflict is unresolved; version-dependent data is withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "consumption_10mm",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 6,
+          "definitionType": "number",
+          "sources": [
+            "starateliCatalog"
+          ],
+          "reason": "Быстрый/Быстротвердеющий naming conflict is unresolved; version-dependent data is withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "water_requirement",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 18,
+          "definitionType": "text",
+          "sources": [
+            "starateliCatalog"
+          ],
+          "reason": "Быстрый/Быстротвердеющий naming conflict is unresolved; version-dependent data is withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "pot_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 19,
+          "definitionType": "number",
+          "sources": [
+            "starateliCatalog"
+          ],
+          "reason": "Быстрый/Быстротвердеющий naming conflict is unresolved; version-dependent data is withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "starateliCatalog"
+          ],
+          "reason": "Быстрый/Быстротвердеющий naming conflict is unresolved; version-dependent data is withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "compressive_strength",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 20,
+          "definitionType": "number",
+          "sources": [
+            "starateliCatalog"
+          ],
+          "reason": "Быстрый/Быстротвердеющий naming conflict is unresolved; version-dependent data is withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "adhesion",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 21,
+          "definitionType": "number",
+          "sources": [
+            "starateliCatalog"
+          ],
+          "reason": "Быстрый/Быстротвердеющий naming conflict is unresolved; version-dependent data is withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "frost_resistance",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 22,
+          "definitionType": "text",
+          "sources": [
+            "starateliCatalog"
+          ],
+          "reason": "Быстрый/Быстротвердеющий naming conflict is unresolved; version-dependent data is withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "starateliCatalog"
+          ],
+          "reason": "Быстрый/Быстротвердеющий naming conflict is unresolved; version-dependent data is withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "standard",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 23,
+          "definitionType": "text",
+          "sources": [
+            "starateliCatalog"
+          ],
+          "reason": "Быстрый/Быстротвердеющий naming conflict is unresolved; version-dependent data is withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "mortar_grade",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 12,
+          "definitionType": "text",
+          "sources": [
+            "starateliCatalog"
+          ],
+          "reason": "Быстрый/Быстротвердеющий naming conflict is unresolved; version-dependent data is withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 25,
+          "definitionType": "text",
+          "sources": [
+            "starateliCatalog"
+          ],
+          "reason": "Быстрый/Быстротвердеющий naming conflict is unresolved; version-dependent data is withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "flexural_strength",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 26,
+          "definitionType": "text",
+          "sources": [
+            "starateliCatalog"
+          ],
+          "reason": "Быстрый/Быстротвердеющий naming conflict is unresolved; version-dependent data is withheld.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "walkability",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 24,
+          "definitionType": "text",
+          "sources": [
+            "starateliCatalog"
+          ],
+          "reason": "Быстрый/Быстротвердеющий naming conflict is unresolved; version-dependent data is withheld.",
+          "status": "NEEDS_SOURCE"
+        }
+      ],
+      "imageCleanup": {
+        "status": "SKIPPED",
+        "currentValue": null,
+        "productImagesCount": 0,
+        "reason": "Cleanup requires the exact shared placeholder and zero product_images rows."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "unit",
+        "category",
+        "subcategory",
+        "stock_status",
+        "product_images"
+      ],
+      "status": "SOURCE_CONFLICT",
+      "summary": {
+        "logicalSlots": 23,
+        "willAdd": 0,
+        "willFix": 0,
+        "existingOk": 2,
+        "needsSource": 21,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0,
+        "imageCleanup": 0
+      }
+    },
+    {
+      "externalId": "MAT-000078",
+      "title": "Наливной пол Старатели Толстый 25 кг",
+      "productId": 73,
+      "category": "Смеси",
+      "subcategory": "Наливной Пол",
+      "identityStatus": "READY_FOR_CORE_REVIEW",
+      "sourceKeys": [
+        "starateliThick"
+      ],
+      "titleCandidate": "Наливной пол Старатели Толстый 25 кг",
+      "image": {
+        "currentUrl": null,
+        "productImagesCount": 0,
+        "cleanupEligible": false
+      },
+      "current": {
+        "brand": "Старатели",
+        "weight": 25,
+        "unit": "шт",
+        "price": null,
+        "imageUrl": null,
+        "slug": "наливной-пол-старатели-толстый-25кг",
+        "seoTitle": null,
+        "seoDescription": null,
+        "specsCount": 10
+      },
+      "brand": {
+        "code": "brand",
+        "value": "Старатели",
+        "currentValue": "Старатели",
+        "currentProductBrand": "Старатели",
+        "currentId": 80,
+        "definitionId": 1,
+        "sources": [
+          "starateliThick"
+        ],
+        "attributeStatus": "EXISTING_OK",
+        "productColumnStatus": "EXISTING_OK",
+        "status": "EXISTING_OK"
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "starateliThick"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "READY",
+          "value": "Цементное вяжущее",
+          "currentValue": "Цементное вяжущее",
+          "currentId": 81,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "starateliThick"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "starateliThick"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 25,
+          "currentValue": 25,
+          "currentId": 82,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "starateliThick"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "READY",
+          "value": "Внутренние и наружные работы; нормальная и высокая влажность",
+          "currentValue": "Внутренние и наружные работы; нормальная и высокая влажность",
+          "currentId": 83,
+          "definitionId": 13,
+          "definitionType": "text",
+          "sources": [
+            "starateliThick"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "READY",
+          "value": "Ручное и механизированное",
+          "currentValue": "Ручное и механизированное",
+          "currentId": 84,
+          "definitionId": 14,
+          "definitionType": "text",
+          "sources": [
+            "starateliThick"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 15,
+          "definitionType": "text",
+          "sources": [
+            "starateliThick"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 16,
+          "definitionType": "text",
+          "sources": [
+            "starateliThick"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "layer_thickness",
+          "sourceStatus": "READY",
+          "value": "30–100 мм",
+          "currentValue": "30–100 мм",
+          "currentId": 85,
+          "definitionId": 17,
+          "definitionType": "text",
+          "sources": [
+            "starateliThick"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "consumption_10mm",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 6,
+          "definitionType": "number",
+          "sources": [
+            "starateliThick"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "water_requirement",
+          "sourceStatus": "READY",
+          "value": "5–6 л на 25 кг",
+          "currentValue": "5–6 л на 25 кг",
+          "currentId": 86,
+          "definitionId": 18,
+          "definitionType": "text",
+          "sources": [
+            "starateliThick"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "pot_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 19,
+          "definitionType": "number",
+          "sources": [
+            "starateliThick"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "starateliThick"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "compressive_strength",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 20,
+          "definitionType": "number",
+          "sources": [
+            "starateliThick"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "adhesion",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 21,
+          "definitionType": "number",
+          "sources": [
+            "starateliThick"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "frost_resistance",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 22,
+          "definitionType": "text",
+          "sources": [
+            "starateliThick"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "starateliThick"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "standard",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 23,
+          "definitionType": "text",
+          "sources": [
+            "starateliThick"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "mortar_grade",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 12,
+          "definitionType": "text",
+          "sources": [
+            "starateliThick"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "READY",
+          "value": "16–18 кг/м² при 10 мм",
+          "currentValue": "16–18 кг/м² при 10 мм",
+          "currentId": 87,
+          "definitionId": 25,
+          "definitionType": "text",
+          "sources": [
+            "starateliThick"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "flexural_strength",
+          "sourceStatus": "READY",
+          "value": "≥5 МПа",
+          "currentValue": "≥5 МПа",
+          "currentId": 88,
+          "definitionId": 26,
+          "definitionType": "text",
+          "sources": [
+            "starateliThick"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "walkability",
+          "sourceStatus": "READY",
+          "value": "24 часа",
+          "currentValue": "24 часа",
+          "currentId": 89,
+          "definitionId": 24,
+          "definitionType": "text",
+          "sources": [
+            "starateliThick"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        }
+      ],
+      "imageCleanup": {
+        "status": "SKIPPED",
+        "currentValue": null,
+        "productImagesCount": 0,
+        "reason": "Cleanup requires the exact shared placeholder and zero product_images rows."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "unit",
+        "category",
+        "subcategory",
+        "stock_status",
+        "product_images"
+      ],
+      "status": "READY",
+      "summary": {
+        "logicalSlots": 23,
+        "willAdd": 0,
+        "willFix": 0,
+        "existingOk": 10,
+        "needsSource": 13,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0,
+        "imageCleanup": 0
+      }
+    },
+    {
+      "externalId": "MAT-000079",
+      "title": "Наливной пол Weber Vetonit 3000 20 кг",
+      "productId": 74,
+      "category": "Смеси",
+      "subcategory": "Наливной Пол",
+      "identityStatus": "READY_FOR_CORE_REVIEW",
+      "sourceKeys": [
+        "vetonit3000"
+      ],
+      "titleCandidate": "Наливной пол Weber Vetonit 3000 20 кг",
+      "image": {
+        "currentUrl": null,
+        "productImagesCount": 0,
+        "cleanupEligible": false
+      },
+      "current": {
+        "brand": "Weber Vetonit",
+        "weight": 20,
+        "unit": "шт",
+        "price": 1039.5,
+        "imageUrl": null,
+        "slug": "наливной-пол-финишный-weber-vetonit-3000-самовыравнивающийся-20-кг",
+        "seoTitle": null,
+        "seoDescription": null,
+        "specsCount": 10
+      },
+      "brand": {
+        "code": "brand",
+        "value": "Weber Vetonit",
+        "currentValue": "Weber Vetonit",
+        "currentProductBrand": "Weber Vetonit",
+        "currentId": 90,
+        "definitionId": 1,
+        "sources": [
+          "vetonit3000"
+        ],
+        "attributeStatus": "EXISTING_OK",
+        "productColumnStatus": "EXISTING_OK",
+        "status": "EXISTING_OK"
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "READY",
+          "value": "Финишный самовыравнивающийся пол",
+          "currentValue": "Финишный самовыравнивающийся пол",
+          "currentId": 91,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "vetonit3000"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "vetonit3000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "vetonit3000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 20,
+          "currentValue": 20,
+          "currentId": 92,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "vetonit3000"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 13,
+          "definitionType": "text",
+          "sources": [
+            "vetonit3000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "READY",
+          "value": "Ручное нанесение",
+          "currentValue": "Ручное нанесение",
+          "currentId": 93,
+          "definitionId": 14,
+          "definitionType": "text",
+          "sources": [
+            "vetonit3000"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 15,
+          "definitionType": "text",
+          "sources": [
+            "vetonit3000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 16,
+          "definitionType": "text",
+          "sources": [
+            "vetonit3000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "layer_thickness",
+          "sourceStatus": "READY",
+          "value": "1–5 мм",
+          "currentValue": "1–5 мм",
+          "currentId": 94,
+          "definitionId": 17,
+          "definitionType": "text",
+          "sources": [
+            "vetonit3000"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "consumption_10mm",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 6,
+          "definitionType": "number",
+          "sources": [
+            "vetonit3000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "water_requirement",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 18,
+          "definitionType": "text",
+          "sources": [
+            "vetonit3000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "pot_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 19,
+          "definitionType": "number",
+          "sources": [
+            "vetonit3000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "vetonit3000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "compressive_strength",
+          "sourceStatus": "READY",
+          "value": 20,
+          "currentValue": 20,
+          "currentId": 95,
+          "definitionId": 20,
+          "definitionType": "number",
+          "sources": [
+            "vetonit3000"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "adhesion",
+          "sourceStatus": "READY",
+          "value": 1,
+          "currentValue": 1,
+          "currentId": 96,
+          "definitionId": 21,
+          "definitionType": "number",
+          "sources": [
+            "vetonit3000"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "frost_resistance",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 22,
+          "definitionType": "text",
+          "sources": [
+            "vetonit3000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "vetonit3000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "standard",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 23,
+          "definitionType": "text",
+          "sources": [
+            "vetonit3000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "mortar_grade",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 12,
+          "definitionType": "text",
+          "sources": [
+            "vetonit3000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "READY",
+          "value": "1,5 кг/м²/мм",
+          "currentValue": "1,5 кг/м²/мм",
+          "currentId": 97,
+          "definitionId": 25,
+          "definitionType": "text",
+          "sources": [
+            "vetonit3000"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "flexural_strength",
+          "sourceStatus": "READY",
+          "value": "5 МПа",
+          "currentValue": "5 МПа",
+          "currentId": 98,
+          "definitionId": 26,
+          "definitionType": "text",
+          "sources": [
+            "vetonit3000"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "walkability",
+          "sourceStatus": "READY",
+          "value": "3–4 часа",
+          "currentValue": "3–4 часа",
+          "currentId": 99,
+          "definitionId": 24,
+          "definitionType": "text",
+          "sources": [
+            "vetonit3000"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        }
+      ],
+      "imageCleanup": {
+        "status": "SKIPPED",
+        "currentValue": null,
+        "productImagesCount": 0,
+        "reason": "Cleanup requires the exact shared placeholder and zero product_images rows."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "unit",
+        "category",
+        "subcategory",
+        "stock_status",
+        "product_images"
+      ],
+      "status": "READY",
+      "summary": {
+        "logicalSlots": 23,
+        "willAdd": 0,
+        "willFix": 0,
+        "existingOk": 10,
+        "needsSource": 13,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0,
+        "imageCleanup": 0
+      }
+    },
+    {
+      "externalId": "MAT-000080",
+      "title": "Наливной пол Weber Vetonit fast 4000 20 кг",
+      "productId": 75,
+      "category": "Смеси",
+      "subcategory": "Наливной Пол",
+      "identityStatus": "READY_FOR_CORE_REVIEW",
+      "sourceKeys": [
+        "vetonitFast4000"
+      ],
+      "titleCandidate": "Наливной пол Weber Vetonit fast 4000 20 кг",
+      "image": {
+        "currentUrl": null,
+        "productImagesCount": 0,
+        "cleanupEligible": false
+      },
+      "current": {
+        "brand": "Weber Vetonit",
+        "weight": 20,
+        "unit": "шт",
+        "price": 504,
+        "imageUrl": null,
+        "slug": "наливной-пол-универсальный-weber-vetonit-fast-4000-20-кг",
+        "seoTitle": null,
+        "seoDescription": null,
+        "specsCount": 10
+      },
+      "brand": {
+        "code": "brand",
+        "value": "Weber Vetonit",
+        "currentValue": "Weber Vetonit",
+        "currentProductBrand": "Weber Vetonit",
+        "currentId": 100,
+        "definitionId": 1,
+        "sources": [
+          "vetonitFast4000"
+        ],
+        "attributeStatus": "EXISTING_OK",
+        "productColumnStatus": "EXISTING_OK",
+        "status": "EXISTING_OK"
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "vetonitFast4000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "vetonitFast4000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "vetonitFast4000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 20,
+          "currentValue": 20,
+          "currentId": 101,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "vetonitFast4000"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "READY",
+          "value": "Сухие и влажные помещения",
+          "currentValue": "Сухие и влажные помещения",
+          "currentId": 102,
+          "definitionId": 13,
+          "definitionType": "text",
+          "sources": [
+            "vetonitFast4000"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "READY",
+          "value": "Ручное и механизированное",
+          "currentValue": "Ручное и механизированное",
+          "currentId": 103,
+          "definitionId": 14,
+          "definitionType": "text",
+          "sources": [
+            "vetonitFast4000"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 15,
+          "definitionType": "text",
+          "sources": [
+            "vetonitFast4000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 16,
+          "definitionType": "text",
+          "sources": [
+            "vetonitFast4000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "layer_thickness",
+          "sourceStatus": "READY",
+          "value": "3–80 мм",
+          "currentValue": "3–80 мм",
+          "currentId": 104,
+          "definitionId": 17,
+          "definitionType": "text",
+          "sources": [
+            "vetonitFast4000"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "consumption_10mm",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 6,
+          "definitionType": "number",
+          "sources": [
+            "vetonitFast4000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "water_requirement",
+          "sourceStatus": "READY",
+          "value": "5,2–5,4 л на 20 кг",
+          "currentValue": "5,2–5,4 л на 20 кг",
+          "currentId": 105,
+          "definitionId": 18,
+          "definitionType": "text",
+          "sources": [
+            "vetonitFast4000"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "pot_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 19,
+          "definitionType": "number",
+          "sources": [
+            "vetonitFast4000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "READY",
+          "value": "от +10 до +25 °C",
+          "currentValue": "от +10 до +25 °C",
+          "currentId": 106,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "vetonitFast4000"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "compressive_strength",
+          "sourceStatus": "READY",
+          "value": 16,
+          "currentValue": 16,
+          "currentId": 107,
+          "definitionId": 20,
+          "definitionType": "number",
+          "sources": [
+            "vetonitFast4000"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "adhesion",
+          "sourceStatus": "READY",
+          "value": 0.6,
+          "currentValue": 0.6,
+          "currentId": 108,
+          "definitionId": 21,
+          "definitionType": "number",
+          "sources": [
+            "vetonitFast4000"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "frost_resistance",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 22,
+          "definitionType": "text",
+          "sources": [
+            "vetonitFast4000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "vetonitFast4000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "standard",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 23,
+          "definitionType": "text",
+          "sources": [
+            "vetonitFast4000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "mortar_grade",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 12,
+          "definitionType": "text",
+          "sources": [
+            "vetonitFast4000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 25,
+          "definitionType": "text",
+          "sources": [
+            "vetonitFast4000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "flexural_strength",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 26,
+          "definitionType": "text",
+          "sources": [
+            "vetonitFast4000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "walkability",
+          "sourceStatus": "READY",
+          "value": "4 часа",
+          "currentValue": "4 часа",
+          "currentId": 109,
+          "definitionId": 24,
+          "definitionType": "text",
+          "sources": [
+            "vetonitFast4000"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        }
+      ],
+      "imageCleanup": {
+        "status": "SKIPPED",
+        "currentValue": null,
+        "productImagesCount": 0,
+        "reason": "Cleanup requires the exact shared placeholder and zero product_images rows."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "unit",
+        "category",
+        "subcategory",
+        "stock_status",
+        "product_images"
+      ],
+      "status": "READY",
+      "summary": {
+        "logicalSlots": 23,
+        "willAdd": 0,
+        "willFix": 0,
+        "existingOk": 10,
+        "needsSource": 13,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0,
+        "imageCleanup": 0
+      }
+    },
+    {
+      "externalId": "MAT-000081",
+      "title": "Наливной пол Weber Vetonit 4100 20 кг",
+      "productId": 76,
+      "category": "Смеси",
+      "subcategory": "Наливной Пол",
+      "identityStatus": "READY_FOR_CORE_REVIEW",
+      "sourceKeys": [
+        "vetonit4100"
+      ],
+      "titleCandidate": "Наливной пол Weber Vetonit 4100 20 кг",
+      "image": {
+        "currentUrl": null,
+        "productImagesCount": 0,
+        "cleanupEligible": false
+      },
+      "current": {
+        "brand": "Weber Vetonit",
+        "weight": 20,
+        "unit": "шт",
+        "price": 1018.5,
+        "imageUrl": null,
+        "slug": "наливной-пол-финишный-vetonit-4100-высокопрочный-20-кг",
+        "seoTitle": null,
+        "seoDescription": null,
+        "specsCount": 11
+      },
+      "brand": {
+        "code": "brand",
+        "value": "Weber Vetonit",
+        "currentValue": "Weber Vetonit",
+        "currentProductBrand": "Weber Vetonit",
+        "currentId": 110,
+        "definitionId": 1,
+        "sources": [
+          "vetonit4100"
+        ],
+        "attributeStatus": "EXISTING_OK",
+        "productColumnStatus": "EXISTING_OK",
+        "status": "EXISTING_OK"
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "vetonit4100"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "vetonit4100"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "vetonit4100"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 20,
+          "currentValue": 20,
+          "currentId": 111,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "vetonit4100"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 13,
+          "definitionType": "text",
+          "sources": [
+            "vetonit4100"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "READY",
+          "value": "Ручное и механизированное",
+          "currentValue": "Ручное и механизированное",
+          "currentId": 112,
+          "definitionId": 14,
+          "definitionType": "text",
+          "sources": [
+            "vetonit4100"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 15,
+          "definitionType": "text",
+          "sources": [
+            "vetonit4100"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 16,
+          "definitionType": "text",
+          "sources": [
+            "vetonit4100"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "layer_thickness",
+          "sourceStatus": "READY",
+          "value": "2–30 мм",
+          "currentValue": "2–30 мм",
+          "currentId": 113,
+          "definitionId": 17,
+          "definitionType": "text",
+          "sources": [
+            "vetonit4100"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "consumption_10mm",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 6,
+          "definitionType": "number",
+          "sources": [
+            "vetonit4100"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "water_requirement",
+          "sourceStatus": "READY",
+          "value": "4,4–4,8 л на 20 кг",
+          "currentValue": "4,4–4,8 л на 20 кг",
+          "currentId": 114,
+          "definitionId": 18,
+          "definitionType": "text",
+          "sources": [
+            "vetonit4100"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "pot_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 19,
+          "definitionType": "number",
+          "sources": [
+            "vetonit4100"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "READY",
+          "value": "от +10 до +25 °C",
+          "currentValue": "от +10 до +25 °C",
+          "currentId": 115,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "vetonit4100"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "compressive_strength",
+          "sourceStatus": "READY",
+          "value": 20,
+          "currentValue": 20,
+          "currentId": 116,
+          "definitionId": 20,
+          "definitionType": "number",
+          "sources": [
+            "vetonit4100"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "adhesion",
+          "sourceStatus": "READY",
+          "value": 1,
+          "currentValue": 1,
+          "currentId": 117,
+          "definitionId": 21,
+          "definitionType": "number",
+          "sources": [
+            "vetonit4100"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "frost_resistance",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 22,
+          "definitionType": "text",
+          "sources": [
+            "vetonit4100"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "vetonit4100"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "standard",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 23,
+          "definitionType": "text",
+          "sources": [
+            "vetonit4100"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "mortar_grade",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 12,
+          "definitionType": "text",
+          "sources": [
+            "vetonit4100"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "READY",
+          "value": "1,6 кг/м²/мм",
+          "currentValue": "1,6 кг/м²/мм",
+          "currentId": 118,
+          "definitionId": 25,
+          "definitionType": "text",
+          "sources": [
+            "vetonit4100"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "flexural_strength",
+          "sourceStatus": "READY",
+          "value": "5 МПа",
+          "currentValue": "5 МПа",
+          "currentId": 119,
+          "definitionId": 26,
+          "definitionType": "text",
+          "sources": [
+            "vetonit4100"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "walkability",
+          "sourceStatus": "READY",
+          "value": "3–4 часа",
+          "currentValue": "3–4 часа",
+          "currentId": 120,
+          "definitionId": 24,
+          "definitionType": "text",
+          "sources": [
+            "vetonit4100"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        }
+      ],
+      "imageCleanup": {
+        "status": "SKIPPED",
+        "currentValue": null,
+        "productImagesCount": 0,
+        "reason": "Cleanup requires the exact shared placeholder and zero product_images rows."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "unit",
+        "category",
+        "subcategory",
+        "stock_status",
+        "product_images"
+      ],
+      "status": "READY",
+      "summary": {
+        "logicalSlots": 23,
+        "willAdd": 0,
+        "willFix": 0,
+        "existingOk": 11,
+        "needsSource": 12,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0,
+        "imageCleanup": 0
+      }
+    },
+    {
+      "externalId": "MAT-000082",
+      "title": "Наливной пол Weber Vetonit 5000 25 кг",
+      "productId": 77,
+      "category": "Смеси",
+      "subcategory": "Наливной Пол",
+      "identityStatus": "READY_FOR_CORE_REVIEW",
+      "sourceKeys": [
+        "vetonit5000"
+      ],
+      "titleCandidate": "Наливной пол Weber Vetonit 5000 25 кг",
+      "image": {
+        "currentUrl": null,
+        "productImagesCount": 0,
+        "cleanupEligible": false
+      },
+      "current": {
+        "brand": "Weber Vetonit",
+        "weight": 25,
+        "unit": "шт",
+        "price": 1029,
+        "imageUrl": null,
+        "slug": "наливной-пол-первичный-weber-vetonit-5000-быстротвердеющий-25-кг",
+        "seoTitle": null,
+        "seoDescription": null,
+        "specsCount": 11
+      },
+      "brand": {
+        "code": "brand",
+        "value": "Weber Vetonit",
+        "currentValue": "Weber Vetonit",
+        "currentProductBrand": "Weber Vetonit",
+        "currentId": 121,
+        "definitionId": 1,
+        "sources": [
+          "vetonit5000"
+        ],
+        "attributeStatus": "EXISTING_OK",
+        "productColumnStatus": "EXISTING_OK",
+        "status": "EXISTING_OK"
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "vetonit5000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "vetonit5000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "vetonit5000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 25,
+          "currentValue": 25,
+          "currentId": 122,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "vetonit5000"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "READY",
+          "value": "Внутренние сухие и влажные помещения",
+          "currentValue": "Внутренние сухие и влажные помещения",
+          "currentId": 123,
+          "definitionId": 13,
+          "definitionType": "text",
+          "sources": [
+            "vetonit5000"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "READY",
+          "value": "Ручное нанесение",
+          "currentValue": "Ручное нанесение",
+          "currentId": 124,
+          "definitionId": 14,
+          "definitionType": "text",
+          "sources": [
+            "vetonit5000"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 15,
+          "definitionType": "text",
+          "sources": [
+            "vetonit5000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 16,
+          "definitionType": "text",
+          "sources": [
+            "vetonit5000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "layer_thickness",
+          "sourceStatus": "READY",
+          "value": "5–50 мм; локально до 80 мм",
+          "currentValue": "5–50 мм; локально до 80 мм",
+          "currentId": 125,
+          "definitionId": 17,
+          "definitionType": "text",
+          "sources": [
+            "vetonit5000"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "consumption_10mm",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 6,
+          "definitionType": "number",
+          "sources": [
+            "vetonit5000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "water_requirement",
+          "sourceStatus": "READY",
+          "value": "3–3,5 л на 25 кг",
+          "currentValue": "3–3,5 л на 25 кг",
+          "currentId": 126,
+          "definitionId": 18,
+          "definitionType": "text",
+          "sources": [
+            "vetonit5000"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "pot_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 19,
+          "definitionType": "number",
+          "sources": [
+            "vetonit5000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "vetonit5000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "compressive_strength",
+          "sourceStatus": "READY",
+          "value": 20,
+          "currentValue": 20,
+          "currentId": 127,
+          "definitionId": 20,
+          "definitionType": "number",
+          "sources": [
+            "vetonit5000"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "adhesion",
+          "sourceStatus": "READY",
+          "value": 1,
+          "currentValue": 1,
+          "currentId": 128,
+          "definitionId": 21,
+          "definitionType": "number",
+          "sources": [
+            "vetonit5000"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "frost_resistance",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 22,
+          "definitionType": "text",
+          "sources": [
+            "vetonit5000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "vetonit5000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "standard",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 23,
+          "definitionType": "text",
+          "sources": [
+            "vetonit5000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "mortar_grade",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 12,
+          "definitionType": "text",
+          "sources": [
+            "vetonit5000"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "READY",
+          "value": "1,8 кг/м²/мм",
+          "currentValue": "1,8 кг/м²/мм",
+          "currentId": 129,
+          "definitionId": 25,
+          "definitionType": "text",
+          "sources": [
+            "vetonit5000"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "flexural_strength",
+          "sourceStatus": "READY",
+          "value": "5 МПа",
+          "currentValue": "5 МПа",
+          "currentId": 130,
+          "definitionId": 26,
+          "definitionType": "text",
+          "sources": [
+            "vetonit5000"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "walkability",
+          "sourceStatus": "READY",
+          "value": "3–4 часа",
+          "currentValue": "3–4 часа",
+          "currentId": 131,
+          "definitionId": 24,
+          "definitionType": "text",
+          "sources": [
+            "vetonit5000"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        }
+      ],
+      "imageCleanup": {
+        "status": "SKIPPED",
+        "currentValue": null,
+        "productImagesCount": 0,
+        "reason": "Cleanup requires the exact shared placeholder and zero product_images rows."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "unit",
+        "category",
+        "subcategory",
+        "stock_status",
+        "product_images"
+      ],
+      "status": "READY",
+      "summary": {
+        "logicalSlots": 23,
+        "willAdd": 0,
+        "willFix": 0,
+        "existingOk": 11,
+        "needsSource": 12,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0,
+        "imageCleanup": 0
+      }
+    },
+    {
+      "externalId": "MAT-000083",
+      "title": "Наливной пол Litokol LITOLIV S10 EXPRESS 20 кг",
+      "productId": 78,
+      "category": "Смеси",
+      "subcategory": "Наливной Пол",
+      "identityStatus": "READY_FOR_CORE_REVIEW",
+      "sourceKeys": [
+        "litokolS10"
+      ],
+      "titleCandidate": "Наливной пол Litokol LITOLIV S10 EXPRESS 20 кг",
+      "image": {
+        "currentUrl": null,
+        "productImagesCount": 0,
+        "cleanupEligible": false
+      },
+      "current": {
+        "brand": "Litokol",
+        "weight": 20,
+        "unit": "шт",
+        "price": null,
+        "imageUrl": null,
+        "slug": "наливной-пол-litokol-litoliv-s10-express-20-кг",
+        "seoTitle": null,
+        "seoDescription": null,
+        "specsCount": 6
+      },
+      "brand": {
+        "code": "brand",
+        "value": "Litokol",
+        "currentValue": "Litokol",
+        "currentProductBrand": "Litokol",
+        "currentId": 132,
+        "definitionId": 1,
+        "sources": [
+          "litokolS10"
+        ],
+        "attributeStatus": "EXISTING_OK",
+        "productColumnStatus": "EXISTING_OK",
+        "status": "EXISTING_OK"
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "READY",
+          "value": "Тонкослойный самовыравнивающийся состав",
+          "currentValue": "Тонкослойный самовыравнивающийся состав",
+          "currentId": 133,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "litokolS10"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "litokolS10"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "litokolS10"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 20,
+          "currentValue": 20,
+          "currentId": 134,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "litokolS10"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "READY",
+          "value": "Внутренние помещения, включая теплый пол",
+          "currentValue": "Внутренние помещения, включая теплый пол",
+          "currentId": 135,
+          "definitionId": 13,
+          "definitionType": "text",
+          "sources": [
+            "litokolS10"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 14,
+          "definitionType": "text",
+          "sources": [
+            "litokolS10"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "READY",
+          "value": "Бетонные и цементные/гипсовые стяжки",
+          "currentValue": "Бетонные и цементные/гипсовые стяжки",
+          "currentId": 136,
+          "definitionId": 15,
+          "definitionType": "text",
+          "sources": [
+            "litokolS10"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 16,
+          "definitionType": "text",
+          "sources": [
+            "litokolS10"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "layer_thickness",
+          "sourceStatus": "READY",
+          "value": "1–10 мм",
+          "currentValue": "1–10 мм",
+          "currentId": 137,
+          "definitionId": 17,
+          "definitionType": "text",
+          "sources": [
+            "litokolS10"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "consumption_10mm",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 6,
+          "definitionType": "number",
+          "sources": [
+            "litokolS10"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "water_requirement",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 18,
+          "definitionType": "text",
+          "sources": [
+            "litokolS10"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "pot_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 19,
+          "definitionType": "number",
+          "sources": [
+            "litokolS10"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "litokolS10"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "compressive_strength",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 20,
+          "definitionType": "number",
+          "sources": [
+            "litokolS10"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "adhesion",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 21,
+          "definitionType": "number",
+          "sources": [
+            "litokolS10"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "frost_resistance",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 22,
+          "definitionType": "text",
+          "sources": [
+            "litokolS10"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "litokolS10"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "standard",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 23,
+          "definitionType": "text",
+          "sources": [
+            "litokolS10"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "mortar_grade",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 12,
+          "definitionType": "text",
+          "sources": [
+            "litokolS10"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 25,
+          "definitionType": "text",
+          "sources": [
+            "litokolS10"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "flexural_strength",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 26,
+          "definitionType": "text",
+          "sources": [
+            "litokolS10"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "walkability",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 24,
+          "definitionType": "text",
+          "sources": [
+            "litokolS10"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        }
+      ],
+      "imageCleanup": {
+        "status": "SKIPPED",
+        "currentValue": null,
+        "productImagesCount": 0,
+        "reason": "Cleanup requires the exact shared placeholder and zero product_images rows."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "unit",
+        "category",
+        "subcategory",
+        "stock_status",
+        "product_images"
+      ],
+      "status": "READY",
+      "summary": {
+        "logicalSlots": 23,
+        "willAdd": 0,
+        "willFix": 0,
+        "existingOk": 6,
+        "needsSource": 17,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0,
+        "imageCleanup": 0
+      }
+    },
+    {
+      "externalId": "MAT-000084",
+      "title": "Наливной пол Litokol LITOLIV S50 EVO 20 кг",
+      "productId": 79,
+      "category": "Смеси",
+      "subcategory": "Наливной Пол",
+      "identityStatus": "READY_FOR_CORE_REVIEW",
+      "sourceKeys": [
+        "litokolS50"
+      ],
+      "titleCandidate": "Наливной пол Litokol LITOLIV S50 EVO 20 кг",
+      "image": {
+        "currentUrl": null,
+        "productImagesCount": 0,
+        "cleanupEligible": false
+      },
+      "current": {
+        "brand": "Litokol",
+        "weight": 20,
+        "unit": "шт",
+        "price": 409.5,
+        "imageUrl": null,
+        "slug": "наливной-пол-универсальный-litokol-litoliv-s50-самовыравнивающийся-20-кг",
+        "seoTitle": null,
+        "seoDescription": null,
+        "specsCount": 7
+      },
+      "brand": {
+        "code": "brand",
+        "value": "Litokol",
+        "currentValue": "Litokol",
+        "currentProductBrand": "Litokol",
+        "currentId": 138,
+        "definitionId": 1,
+        "sources": [
+          "litokolS50"
+        ],
+        "attributeStatus": "EXISTING_OK",
+        "productColumnStatus": "EXISTING_OK",
+        "status": "EXISTING_OK"
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "litokolS50"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "litokolS50"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "litokolS50"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 20,
+          "currentValue": 20,
+          "currentId": 139,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "litokolS50"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 13,
+          "definitionType": "text",
+          "sources": [
+            "litokolS50"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 14,
+          "definitionType": "text",
+          "sources": [
+            "litokolS50"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 15,
+          "definitionType": "text",
+          "sources": [
+            "litokolS50"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 16,
+          "definitionType": "text",
+          "sources": [
+            "litokolS50"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "layer_thickness",
+          "sourceStatus": "READY",
+          "value": "2–100 мм",
+          "currentValue": "2–100 мм",
+          "currentId": 140,
+          "definitionId": 17,
+          "definitionType": "text",
+          "sources": [
+            "litokolS50"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "consumption_10mm",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 6,
+          "definitionType": "number",
+          "sources": [
+            "litokolS50"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "water_requirement",
+          "sourceStatus": "READY",
+          "value": "4,2–4,6 л на 20 кг",
+          "currentValue": "4,2–4,6 л на 20 кг",
+          "currentId": 141,
+          "definitionId": 18,
+          "definitionType": "text",
+          "sources": [
+            "litokolS50"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "pot_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 19,
+          "definitionType": "number",
+          "sources": [
+            "litokolS50"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "READY",
+          "value": "от +5 до +35 °C",
+          "currentValue": "от +5 до +35 °C",
+          "currentId": 142,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "litokolS50"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "compressive_strength",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 20,
+          "definitionType": "number",
+          "sources": [
+            "litokolS50"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "adhesion",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 21,
+          "definitionType": "number",
+          "sources": [
+            "litokolS50"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "frost_resistance",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 22,
+          "definitionType": "text",
+          "sources": [
+            "litokolS50"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "READY",
+          "value": 12,
+          "currentValue": 12,
+          "currentId": 143,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "litokolS50"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "standard",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 23,
+          "definitionType": "text",
+          "sources": [
+            "litokolS50"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "mortar_grade",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 12,
+          "definitionType": "text",
+          "sources": [
+            "litokolS50"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 25,
+          "definitionType": "text",
+          "sources": [
+            "litokolS50"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "flexural_strength",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 26,
+          "definitionType": "text",
+          "sources": [
+            "litokolS50"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "walkability",
+          "sourceStatus": "READY",
+          "value": "2–4 часа",
+          "currentValue": "2–4 часа",
+          "currentId": 144,
+          "definitionId": 24,
+          "definitionType": "text",
+          "sources": [
+            "litokolS50"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        }
+      ],
+      "imageCleanup": {
+        "status": "SKIPPED",
+        "currentValue": null,
+        "productImagesCount": 0,
+        "reason": "Cleanup requires the exact shared placeholder and zero product_images rows."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "unit",
+        "category",
+        "subcategory",
+        "stock_status",
+        "product_images"
+      ],
+      "status": "READY",
+      "summary": {
+        "logicalSlots": 23,
+        "willAdd": 0,
+        "willFix": 0,
+        "existingOk": 7,
+        "needsSource": 16,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0,
+        "imageCleanup": 0
+      }
+    },
+    {
+      "externalId": "MAT-000085",
+      "title": "Наливной пол ВОЛМА-Нивелир Экспресс 25 кг",
+      "productId": 80,
+      "category": "Смеси",
+      "subcategory": "Наливной Пол",
+      "identityStatus": "READY_FOR_CORE_REVIEW",
+      "sourceKeys": [
+        "volmaExpress"
+      ],
+      "titleCandidate": "Наливной пол ВОЛМА-Нивелир Экспресс 25 кг",
+      "image": {
+        "currentUrl": null,
+        "productImagesCount": 0,
+        "cleanupEligible": false
+      },
+      "current": {
+        "brand": "ВОЛМА",
+        "weight": 25,
+        "unit": "шт",
+        "price": 399,
+        "imageUrl": null,
+        "slug": "наливной-пол-волма-нивелир-экспресс-25-кг",
+        "seoTitle": null,
+        "seoDescription": null,
+        "specsCount": 7
+      },
+      "brand": {
+        "code": "brand",
+        "value": "ВОЛМА",
+        "currentValue": "ВОЛМА",
+        "currentProductBrand": "ВОЛМА",
+        "currentId": 145,
+        "definitionId": 1,
+        "sources": [
+          "volmaExpress"
+        ],
+        "attributeStatus": "EXISTING_OK",
+        "productColumnStatus": "EXISTING_OK",
+        "status": "EXISTING_OK"
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "volmaExpress"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "volmaExpress"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "volmaExpress"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 25,
+          "currentValue": 25,
+          "currentId": 146,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "volmaExpress"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 13,
+          "definitionType": "text",
+          "sources": [
+            "volmaExpress"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 14,
+          "definitionType": "text",
+          "sources": [
+            "volmaExpress"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 15,
+          "definitionType": "text",
+          "sources": [
+            "volmaExpress"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 16,
+          "definitionType": "text",
+          "sources": [
+            "volmaExpress"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "layer_thickness",
+          "sourceStatus": "READY",
+          "value": "2–100 мм",
+          "currentValue": "2–100 мм",
+          "currentId": 147,
+          "definitionId": 17,
+          "definitionType": "text",
+          "sources": [
+            "volmaExpress"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "consumption_10mm",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 6,
+          "definitionType": "number",
+          "sources": [
+            "volmaExpress"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "water_requirement",
+          "sourceStatus": "READY",
+          "value": "0,29–0,34 л/кг",
+          "currentValue": "0,29–0,34 л/кг",
+          "currentId": 148,
+          "definitionId": 18,
+          "definitionType": "text",
+          "sources": [
+            "volmaExpress"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "pot_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 19,
+          "definitionType": "number",
+          "sources": [
+            "volmaExpress"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "READY",
+          "value": "от +5 до +30 °C",
+          "currentValue": "от +5 до +30 °C",
+          "currentId": 149,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "volmaExpress"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "compressive_strength",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 20,
+          "definitionType": "number",
+          "sources": [
+            "volmaExpress"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "adhesion",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 21,
+          "definitionType": "number",
+          "sources": [
+            "volmaExpress"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "frost_resistance",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 22,
+          "definitionType": "text",
+          "sources": [
+            "volmaExpress"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "READY",
+          "value": 12,
+          "currentValue": 12,
+          "currentId": 150,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "volmaExpress"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "standard",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 23,
+          "definitionType": "text",
+          "sources": [
+            "volmaExpress"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "mortar_grade",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 12,
+          "definitionType": "text",
+          "sources": [
+            "volmaExpress"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 25,
+          "definitionType": "text",
+          "sources": [
+            "volmaExpress"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "flexural_strength",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 26,
+          "definitionType": "text",
+          "sources": [
+            "volmaExpress"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "walkability",
+          "sourceStatus": "READY",
+          "value": "3 часа",
+          "currentValue": "3 часа",
+          "currentId": 151,
+          "definitionId": 24,
+          "definitionType": "text",
+          "sources": [
+            "volmaExpress"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        }
+      ],
+      "imageCleanup": {
+        "status": "SKIPPED",
+        "currentValue": null,
+        "productImagesCount": 0,
+        "reason": "Cleanup requires the exact shared placeholder and zero product_images rows."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "unit",
+        "category",
+        "subcategory",
+        "stock_status",
+        "product_images"
+      ],
+      "status": "READY",
+      "summary": {
+        "logicalSlots": 23,
+        "willAdd": 0,
+        "willFix": 0,
+        "existingOk": 7,
+        "needsSource": 16,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0,
+        "imageCleanup": 0
+      }
+    },
+    {
+      "externalId": "MAT-000086",
+      "title": "Наливной пол Основит Скорлайн FK45 R 20 кг",
+      "productId": 81,
+      "category": "Смеси",
+      "subcategory": "Наливной Пол",
+      "identityStatus": "READY_FOR_CORE_REVIEW",
+      "sourceKeys": [
+        "osnovitFk45"
+      ],
+      "titleCandidate": "Наливной пол Основит Скорлайн FK45 R 20 кг",
+      "image": {
+        "currentUrl": null,
+        "productImagesCount": 0,
+        "cleanupEligible": false
+      },
+      "current": {
+        "brand": "Основит",
+        "weight": 20,
+        "unit": "шт",
+        "price": 493.5,
+        "imageUrl": null,
+        "slug": "наливной-пол-основит-скорлайн-fk45r-самовыравнивающийся-20-кг",
+        "seoTitle": null,
+        "seoDescription": null,
+        "specsCount": 10
+      },
+      "brand": {
+        "code": "brand",
+        "value": "Основит",
+        "currentValue": "Основит",
+        "currentProductBrand": "Основит",
+        "currentId": 152,
+        "definitionId": 1,
+        "sources": [
+          "osnovitFk45"
+        ],
+        "attributeStatus": "EXISTING_OK",
+        "productColumnStatus": "EXISTING_OK",
+        "status": "EXISTING_OK"
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFk45"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFk45"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFk45"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 20,
+          "currentValue": 20,
+          "currentId": 153,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "osnovitFk45"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "READY",
+          "value": "Внутренние сухие и влажные помещения",
+          "currentValue": "Внутренние сухие и влажные помещения",
+          "currentId": 154,
+          "definitionId": 13,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFk45"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "READY",
+          "value": "Ручное и механизированное",
+          "currentValue": "Ручное и механизированное",
+          "currentId": 155,
+          "definitionId": 14,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFk45"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "READY",
+          "value": "Бетон, гипсовые и цементно-песчаные основания",
+          "currentValue": "Бетон, гипсовые и цементно-песчаные основания",
+          "currentId": 156,
+          "definitionId": 15,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFk45"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 16,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFk45"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "layer_thickness",
+          "sourceStatus": "READY",
+          "value": "2–100 мм",
+          "currentValue": "2–100 мм",
+          "currentId": 157,
+          "definitionId": 17,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFk45"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "consumption_10mm",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 6,
+          "definitionType": "number",
+          "sources": [
+            "osnovitFk45"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "water_requirement",
+          "sourceStatus": "READY",
+          "value": "0,26–0,27 л/кг",
+          "currentValue": "0,26–0,27 л/кг",
+          "currentId": 158,
+          "definitionId": 18,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFk45"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "pot_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 19,
+          "definitionType": "number",
+          "sources": [
+            "osnovitFk45"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "READY",
+          "value": "от +5 до +30 °C",
+          "currentValue": "от +5 до +30 °C",
+          "currentId": 159,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFk45"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "compressive_strength",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 20,
+          "definitionType": "number",
+          "sources": [
+            "osnovitFk45"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "adhesion",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 21,
+          "definitionType": "number",
+          "sources": [
+            "osnovitFk45"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "frost_resistance",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 22,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFk45"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "READY",
+          "value": 12,
+          "currentValue": 12,
+          "currentId": 160,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "osnovitFk45"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "standard",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 23,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFk45"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "mortar_grade",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 12,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFk45"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 25,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFk45"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "flexural_strength",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 26,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFk45"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "walkability",
+          "sourceStatus": "READY",
+          "value": "4 часа",
+          "currentValue": "4 часа",
+          "currentId": 161,
+          "definitionId": 24,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFk45"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        }
+      ],
+      "imageCleanup": {
+        "status": "SKIPPED",
+        "currentValue": null,
+        "productImagesCount": 0,
+        "reason": "Cleanup requires the exact shared placeholder and zero product_images rows."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "unit",
+        "category",
+        "subcategory",
+        "stock_status",
+        "product_images"
+      ],
+      "status": "READY",
+      "summary": {
+        "logicalSlots": 23,
+        "willAdd": 0,
+        "willFix": 0,
+        "existingOk": 10,
+        "needsSource": 13,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0,
+        "imageCleanup": 0
+      }
+    },
+    {
+      "externalId": "MAT-000087",
+      "title": "Наливной пол Ceresit CN 175 Super 20 кг",
+      "productId": 82,
+      "category": "Смеси",
+      "subcategory": "Наливной Пол",
+      "identityStatus": "READY_FOR_CORE_REVIEW",
+      "sourceKeys": [
+        "ceresitCn175"
+      ],
+      "titleCandidate": "Наливной пол Ceresit CN 175 Super 20 кг",
+      "image": {
+        "currentUrl": null,
+        "productImagesCount": 0,
+        "cleanupEligible": false
+      },
+      "current": {
+        "brand": "Ceresit",
+        "weight": 20,
+        "unit": "шт",
+        "price": null,
+        "imageUrl": null,
+        "slug": "наливной-пол-самовыравнивающийся-ceresit-cn-175-20-кг",
+        "seoTitle": null,
+        "seoDescription": null,
+        "specsCount": 8
+      },
+      "brand": {
+        "code": "brand",
+        "value": "Ceresit",
+        "currentValue": "Ceresit",
+        "currentProductBrand": "Ceresit",
+        "currentId": 162,
+        "definitionId": 1,
+        "sources": [
+          "ceresitCn175"
+        ],
+        "attributeStatus": "EXISTING_OK",
+        "productColumnStatus": "EXISTING_OK",
+        "status": "EXISTING_OK"
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCn175"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCn175"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCn175"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 20,
+          "currentValue": 20,
+          "currentId": 163,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "ceresitCn175"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 13,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCn175"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "READY",
+          "value": "Ручное и механизированное",
+          "currentValue": "Ручное и механизированное",
+          "currentId": 164,
+          "definitionId": 14,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCn175"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 15,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCn175"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 16,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCn175"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "layer_thickness",
+          "sourceStatus": "READY",
+          "value": "3–60 мм",
+          "currentValue": "3–60 мм",
+          "currentId": 165,
+          "definitionId": 17,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCn175"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "consumption_10mm",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 6,
+          "definitionType": "number",
+          "sources": [
+            "ceresitCn175"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "water_requirement",
+          "sourceStatus": "READY",
+          "value": "около 3,6 л на 20 кг; 4,5 л на 25 кг",
+          "currentValue": "около 3,6 л на 20 кг; 4,5 л на 25 кг",
+          "currentId": 166,
+          "definitionId": 18,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCn175"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "pot_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 19,
+          "definitionType": "number",
+          "sources": [
+            "ceresitCn175"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "READY",
+          "value": "от +5 до +30 °C",
+          "currentValue": "от +5 до +30 °C",
+          "currentId": 167,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCn175"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "compressive_strength",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 20,
+          "definitionType": "number",
+          "sources": [
+            "ceresitCn175"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "adhesion",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 21,
+          "definitionType": "number",
+          "sources": [
+            "ceresitCn175"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "frost_resistance",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 22,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCn175"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "ceresitCn175"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "standard",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 23,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCn175"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "mortar_grade",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 12,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCn175"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "READY",
+          "value": "около 1,8 кг/м²/мм",
+          "currentValue": "около 1,8 кг/м²/мм",
+          "currentId": 168,
+          "definitionId": 25,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCn175"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "flexural_strength",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 26,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCn175"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "walkability",
+          "sourceStatus": "READY",
+          "value": "не менее 5 часов",
+          "currentValue": "не менее 5 часов",
+          "currentId": 169,
+          "definitionId": 24,
+          "definitionType": "text",
+          "sources": [
+            "ceresitCn175"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        }
+      ],
+      "imageCleanup": {
+        "status": "SKIPPED",
+        "currentValue": null,
+        "productImagesCount": 0,
+        "reason": "Cleanup requires the exact shared placeholder and zero product_images rows."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "unit",
+        "category",
+        "subcategory",
+        "stock_status",
+        "product_images"
+      ],
+      "status": "READY",
+      "summary": {
+        "logicalSlots": 23,
+        "willAdd": 0,
+        "willFix": 0,
+        "existingOk": 8,
+        "needsSource": 15,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0,
+        "imageCleanup": 0
+      }
+    },
+    {
+      "externalId": "MAT-000089",
+      "title": "Легкая стяжка пола KNAUF Ubo 25 кг",
+      "productId": 83,
+      "category": "Смеси",
+      "subcategory": "Стяжки Пола",
+      "identityStatus": "READY_FOR_CORE_REVIEW",
+      "sourceKeys": [
+        "knaufUbo"
+      ],
+      "titleCandidate": "Легкая стяжка пола KNAUF Ubo 25 кг",
+      "image": {
+        "currentUrl": null,
+        "productImagesCount": 0,
+        "cleanupEligible": false
+      },
+      "current": {
+        "brand": "KNAUF",
+        "weight": 25,
+        "unit": "шт",
+        "price": null,
+        "imageUrl": null,
+        "slug": "стяжка-пола-цементная-легкая-knauf-ubo-25-кг",
+        "seoTitle": null,
+        "seoDescription": null,
+        "specsCount": 8
+      },
+      "brand": {
+        "code": "brand",
+        "value": "KNAUF",
+        "currentValue": "KNAUF",
+        "currentProductBrand": "KNAUF",
+        "currentId": 170,
+        "definitionId": 1,
+        "sources": [
+          "knaufUbo"
+        ],
+        "attributeStatus": "EXISTING_OK",
+        "productColumnStatus": "EXISTING_OK",
+        "status": "EXISTING_OK"
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "knaufUbo"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "READY",
+          "value": "Специальный цемент и гранулы полистирола",
+          "currentValue": "Специальный цемент и гранулы полистирола",
+          "currentId": 171,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "knaufUbo"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "READY",
+          "value": "Легкая стяжка для слабых оснований и размещения коммуникаций",
+          "currentValue": "Легкая стяжка для слабых оснований и размещения коммуникаций",
+          "currentId": 172,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "knaufUbo"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 25,
+          "currentValue": 25,
+          "currentId": 173,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "knaufUbo"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 13,
+          "definitionType": "text",
+          "sources": [
+            "knaufUbo"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 14,
+          "definitionType": "text",
+          "sources": [
+            "knaufUbo"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 15,
+          "definitionType": "text",
+          "sources": [
+            "knaufUbo"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 16,
+          "definitionType": "text",
+          "sources": [
+            "knaufUbo"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "layer_thickness",
+          "sourceStatus": "READY",
+          "value": "3–30 см",
+          "currentValue": "3–30 см",
+          "currentId": 174,
+          "definitionId": 17,
+          "definitionType": "text",
+          "sources": [
+            "knaufUbo"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "consumption_10mm",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 6,
+          "definitionType": "number",
+          "sources": [
+            "knaufUbo"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "water_requirement",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 18,
+          "definitionType": "text",
+          "sources": [
+            "knaufUbo"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "pot_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 19,
+          "definitionType": "number",
+          "sources": [
+            "knaufUbo"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "knaufUbo"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "compressive_strength",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 20,
+          "definitionType": "number",
+          "sources": [
+            "knaufUbo"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "adhesion",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 21,
+          "definitionType": "number",
+          "sources": [
+            "knaufUbo"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "frost_resistance",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 22,
+          "definitionType": "text",
+          "sources": [
+            "knaufUbo"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "READY",
+          "value": 12,
+          "currentValue": 12,
+          "currentId": 175,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "knaufUbo"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "standard",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 23,
+          "definitionType": "text",
+          "sources": [
+            "knaufUbo"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "mortar_grade",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 12,
+          "definitionType": "text",
+          "sources": [
+            "knaufUbo"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 25,
+          "definitionType": "text",
+          "sources": [
+            "knaufUbo"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "flexural_strength",
+          "sourceStatus": "READY",
+          "value": ">0,5 МПа",
+          "currentValue": ">0,5 МПа",
+          "currentId": 176,
+          "definitionId": 26,
+          "definitionType": "text",
+          "sources": [
+            "knaufUbo"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "walkability",
+          "sourceStatus": "READY",
+          "value": "48 часов",
+          "currentValue": "48 часов",
+          "currentId": 177,
+          "definitionId": 24,
+          "definitionType": "text",
+          "sources": [
+            "knaufUbo"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        }
+      ],
+      "imageCleanup": {
+        "status": "SKIPPED",
+        "currentValue": null,
+        "productImagesCount": 0,
+        "reason": "Cleanup requires the exact shared placeholder and zero product_images rows."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "unit",
+        "category",
+        "subcategory",
+        "stock_status",
+        "product_images"
+      ],
+      "status": "READY",
+      "summary": {
+        "logicalSlots": 23,
+        "willAdd": 0,
+        "willFix": 0,
+        "existingOk": 8,
+        "needsSource": 15,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0,
+        "imageCleanup": 0
+      }
+    },
+    {
+      "externalId": "MAT-000090",
+      "title": "Стяжка пола Основит Стартолайн FC41 H высокопрочная, 25 кг",
+      "productId": 84,
+      "category": "Смеси",
+      "subcategory": "Стяжки Пола",
+      "identityStatus": "PARTIAL",
+      "sourceKeys": [
+        "osnovitFc41"
+      ],
+      "titleCandidate": "Стяжка пола Основит Стартолайн FC41 H 25 кг",
+      "image": {
+        "currentUrl": null,
+        "productImagesCount": 0,
+        "cleanupEligible": false
+      },
+      "current": {
+        "brand": "Основит",
+        "weight": 25,
+        "unit": "шт",
+        "price": null,
+        "imageUrl": null,
+        "slug": "стяжка-пола-основит-стартолайн-fc41-h-высокопрочная-25-кг",
+        "seoTitle": null,
+        "seoDescription": null,
+        "specsCount": 4
+      },
+      "brand": {
+        "code": "brand",
+        "value": "Основит",
+        "currentValue": "Основит",
+        "currentProductBrand": "Основит",
+        "currentId": 178,
+        "definitionId": 1,
+        "sources": [
+          "osnovitFc41"
+        ],
+        "attributeStatus": "EXISTING_OK",
+        "productColumnStatus": "EXISTING_OK",
+        "status": "EXISTING_OK"
+      },
+      "specs": [
+        {
+          "code": "product_type",
+          "sourceStatus": "READY",
+          "value": "Высокопрочная стяжка",
+          "currentValue": "Высокопрочная стяжка",
+          "currentId": 179,
+          "definitionId": 2,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFc41"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "base",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 3,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFc41"
+          ],
+          "reason": "Exact current FC41 H TDS is required for this technical field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "purpose",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 4,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFc41"
+          ],
+          "reason": "Exact current FC41 H TDS is required for this technical field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "package_weight",
+          "sourceStatus": "READY",
+          "value": 25,
+          "currentValue": 25,
+          "currentId": 180,
+          "definitionId": 5,
+          "definitionType": "number",
+          "sources": [
+            "osnovitFc41"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "application_area",
+          "sourceStatus": "READY",
+          "value": "Внутренние и наружные работы; тёплый пол",
+          "currentValue": "Внутренние и наружные работы; тёплый пол",
+          "currentId": 181,
+          "definitionId": 13,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFc41"
+          ],
+          "reason": null,
+          "status": "EXISTING_OK"
+        },
+        {
+          "code": "application_method",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 14,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFc41"
+          ],
+          "reason": "Exact current FC41 H TDS is required for this technical field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "substrates",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 15,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFc41"
+          ],
+          "reason": "Exact current FC41 H TDS is required for this technical field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "color",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 16,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFc41"
+          ],
+          "reason": "Exact current FC41 H TDS is required for this technical field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "layer_thickness",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 17,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFc41"
+          ],
+          "reason": "Exact current FC41 H TDS is required for this technical field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "consumption_10mm",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 6,
+          "definitionType": "number",
+          "sources": [
+            "osnovitFc41"
+          ],
+          "reason": "Exact current FC41 H TDS is required for this technical field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "water_requirement",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 18,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFc41"
+          ],
+          "reason": "Exact current FC41 H TDS is required for this technical field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "pot_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 19,
+          "definitionType": "number",
+          "sources": [
+            "osnovitFc41"
+          ],
+          "reason": "Exact current FC41 H TDS is required for this technical field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "application_temperature",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 10,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFc41"
+          ],
+          "reason": "Exact current FC41 H TDS is required for this technical field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "compressive_strength",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 20,
+          "definitionType": "number",
+          "sources": [
+            "osnovitFc41"
+          ],
+          "reason": "Exact current FC41 H TDS is required for this technical field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "adhesion",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 21,
+          "definitionType": "number",
+          "sources": [
+            "osnovitFc41"
+          ],
+          "reason": "Exact current FC41 H TDS is required for this technical field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "frost_resistance",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 22,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFc41"
+          ],
+          "reason": "Exact current FC41 H TDS is required for this technical field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "shelf_life",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 11,
+          "definitionType": "number",
+          "sources": [
+            "osnovitFc41"
+          ],
+          "reason": "Exact current FC41 H TDS is required for this technical field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "standard",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 23,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFc41"
+          ],
+          "reason": "Exact current FC41 H TDS is required for this technical field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "mortar_grade",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 12,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFc41"
+          ],
+          "reason": "Exact current FC41 H TDS is required for this technical field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "consumption",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 25,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFc41"
+          ],
+          "reason": "Exact current FC41 H TDS is required for this technical field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "flexural_strength",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 26,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFc41"
+          ],
+          "reason": "Exact current FC41 H TDS is required for this technical field.",
+          "status": "NEEDS_SOURCE"
+        },
+        {
+          "code": "walkability",
+          "sourceStatus": "NEEDS_SOURCE",
+          "value": null,
+          "currentValue": null,
+          "currentId": null,
+          "definitionId": 24,
+          "definitionType": "text",
+          "sources": [
+            "osnovitFc41"
+          ],
+          "reason": "Exact current FC41 H TDS is required for this technical field.",
+          "status": "NEEDS_SOURCE"
+        }
+      ],
+      "imageCleanup": {
+        "status": "SKIPPED",
+        "currentValue": null,
+        "productImagesCount": 0,
+        "reason": "Cleanup requires the exact shared placeholder and zero product_images rows."
+      },
+      "notStored": [
+        "title",
+        "slug",
+        "description",
+        "short_description",
+        "full_description",
+        "seo_title",
+        "seo_description",
+        "price",
+        "weight",
+        "unit",
+        "category",
+        "subcategory",
+        "stock_status",
+        "product_images"
+      ],
+      "status": "PARTIAL",
+      "summary": {
+        "logicalSlots": 23,
+        "willAdd": 0,
+        "willFix": 0,
+        "existingOk": 4,
+        "needsSource": 19,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0,
+        "imageCleanup": 0
+      }
+    }
+  ],
+  "summary": {
+    "total": 15,
+    "readyProducts": 12,
+    "partialProducts": 3,
+    "errors": 0,
+    "logicalSlots": 345,
+    "willAdd": 0,
+    "willFix": 0,
+    "existingOk": 116,
+    "needsSource": 229,
+    "schemaBlocked": 0,
+    "valueConflict": 0,
+    "brandConflict": 0,
+    "titleGuardBlocked": 0,
+    "imageCleanupEligible": 0,
+    "definitionsToCreate": 0
+  },
+  "scopeParity": {
+    "expected": [
+      "MAT-000075",
+      "MAT-000076",
+      "MAT-000077",
+      "MAT-000078",
+      "MAT-000079",
+      "MAT-000080",
+      "MAT-000081",
+      "MAT-000082",
+      "MAT-000083",
+      "MAT-000084",
+      "MAT-000085",
+      "MAT-000086",
+      "MAT-000087",
+      "MAT-000089",
+      "MAT-000090"
+    ],
+    "actual": [
+      "MAT-000075",
+      "MAT-000076",
+      "MAT-000077",
+      "MAT-000078",
+      "MAT-000079",
+      "MAT-000080",
+      "MAT-000081",
+      "MAT-000082",
+      "MAT-000083",
+      "MAT-000084",
+      "MAT-000085",
+      "MAT-000086",
+      "MAT-000087",
+      "MAT-000089",
+      "MAT-000090"
+    ]
+  },
+  "titleNormalization": [
+    {
+      "externalId": "MAT-000075",
+      "beforeGuardTitle": "Наливной пол \"Unis Горизонт\" 20 кг",
+      "targetTitle": "Наливной пол UNIS Горизонт 20 кг",
+      "currentTitle": "Наливной пол \"Unis Горизонт\" 20 кг",
+      "result": "UNCHANGED_BY_POLICY"
+    },
+    {
+      "externalId": "MAT-000076",
+      "beforeGuardTitle": "Наливной пол \"Unis Горизонт\" Армированный 20 кг",
+      "targetTitle": "Наливной пол UNIS Горизонт Армированный 20 кг",
+      "currentTitle": "Наливной пол UNIS Горизонт Армированный 20 кг",
+      "result": "EXISTING_OK"
+    },
+    {
+      "externalId": "MAT-000077",
+      "beforeGuardTitle": "Наливной пол \"Старатели\" Быстрый 20 кг",
+      "targetTitle": "Наливной пол Старатели Быстротвердеющий 20 кг",
+      "currentTitle": "Наливной пол \"Старатели\" Быстрый 20 кг",
+      "result": "UNCHANGED_BY_POLICY"
+    },
+    {
+      "externalId": "MAT-000078",
+      "beforeGuardTitle": "Наливной пол \"Старатели\" Толстый 25кг",
+      "targetTitle": "Наливной пол Старатели Толстый 25 кг",
+      "currentTitle": "Наливной пол Старатели Толстый 25 кг",
+      "result": "EXISTING_OK"
+    },
+    {
+      "externalId": "MAT-000079",
+      "beforeGuardTitle": "Наливной пол финишный Weber Vetonit 3000 самовыравнивающийся 20 кг",
+      "targetTitle": "Наливной пол Weber Vetonit 3000 20 кг",
+      "currentTitle": "Наливной пол Weber Vetonit 3000 20 кг",
+      "result": "EXISTING_OK"
+    },
+    {
+      "externalId": "MAT-000080",
+      "beforeGuardTitle": "Наливной пол универсальный Weber Vetonit fast 4000 20 кг",
+      "targetTitle": "Наливной пол Weber Vetonit fast 4000 20 кг",
+      "currentTitle": "Наливной пол Weber Vetonit fast 4000 20 кг",
+      "result": "EXISTING_OK"
+    },
+    {
+      "externalId": "MAT-000081",
+      "beforeGuardTitle": "Наливной пол финишный Vetonit 4100 высокопрочный 20 кг",
+      "targetTitle": "Наливной пол Weber Vetonit 4100 20 кг",
+      "currentTitle": "Наливной пол Weber Vetonit 4100 20 кг",
+      "result": "EXISTING_OK"
+    },
+    {
+      "externalId": "MAT-000082",
+      "beforeGuardTitle": "Наливной пол первичный Weber Vetonit 5000 быстротвердеющий 25 кг",
+      "targetTitle": "Наливной пол Weber Vetonit 5000 25 кг",
+      "currentTitle": "Наливной пол Weber Vetonit 5000 25 кг",
+      "result": "EXISTING_OK"
+    },
+    {
+      "externalId": "MAT-000083",
+      "beforeGuardTitle": "Наливной пол Litokol LitoLiv S10 Express 20 кг",
+      "targetTitle": "Наливной пол Litokol LITOLIV S10 EXPRESS 20 кг",
+      "currentTitle": "Наливной пол Litokol LITOLIV S10 EXPRESS 20 кг",
+      "result": "EXISTING_OK"
+    },
+    {
+      "externalId": "MAT-000084",
+      "beforeGuardTitle": "Наливной пол универсальный Litokol Litoliv S50 самовыравнивающийся 20 кг",
+      "targetTitle": "Наливной пол Litokol LITOLIV S50 EVO 20 кг",
+      "currentTitle": "Наливной пол Litokol LITOLIV S50 EVO 20 кг",
+      "result": "EXISTING_OK"
+    },
+    {
+      "externalId": "MAT-000085",
+      "beforeGuardTitle": "Наливной пол Волма Нивелир Экспресс 25 кг",
+      "targetTitle": "Наливной пол ВОЛМА-Нивелир Экспресс 25 кг",
+      "currentTitle": "Наливной пол ВОЛМА-Нивелир Экспресс 25 кг",
+      "result": "EXISTING_OK"
+    },
+    {
+      "externalId": "MAT-000086",
+      "beforeGuardTitle": "Наливной пол Основит Скорлайн FK45R самовыравнивающийся 20 кг",
+      "targetTitle": "Наливной пол Основит Скорлайн FK45 R 20 кг",
+      "currentTitle": "Наливной пол Основит Скорлайн FK45 R 20 кг",
+      "result": "EXISTING_OK"
+    },
+    {
+      "externalId": "MAT-000087",
+      "beforeGuardTitle": "Наливной пол самовыравнивающийся Ceresit CN 175 20 кг",
+      "targetTitle": "Наливной пол Ceresit CN 175 Super 20 кг",
+      "currentTitle": "Наливной пол Ceresit CN 175 Super 20 кг",
+      "result": "EXISTING_OK"
+    },
+    {
+      "externalId": "MAT-000089",
+      "beforeGuardTitle": "Стяжка пола цементная, легкая Knauf Ubo 25 кг",
+      "targetTitle": "Легкая стяжка пола KNAUF Ubo 25 кг",
+      "currentTitle": "Легкая стяжка пола KNAUF Ubo 25 кг",
+      "result": "EXISTING_OK"
+    },
+    {
+      "externalId": "MAT-000090",
+      "beforeGuardTitle": "Стяжка пола Основит Стартолайн FC41 H высокопрочная, 25 кг",
+      "targetTitle": "Стяжка пола Основит Стартолайн FC41 H 25 кг",
+      "currentTitle": "Стяжка пола Основит Стартолайн FC41 H высокопрочная, 25 кг",
+      "result": "UNCHANGED_BY_POLICY"
+    }
+  ],
+  "definitionsToCreate": [],
+  "sources": {
+    "unisArmored": {
+      "title": "UNIS Горизонт Армированный",
+      "owner": "UNIS",
+      "url": "https://unistrom.ru/catalog/ustrojstvo-polov/gorizont-armirovannyj/"
+    },
+    "starateliCatalog": {
+      "title": "Старатели — наливные полы",
+      "owner": "Старатели",
+      "url": "https://www.starateli.ru/nalivnoy-pol/"
+    },
+    "starateliThick": {
+      "title": "Старатели Толстый",
+      "owner": "Старатели",
+      "url": "https://market.starateli.ru/products/nalivnye-poly/nalivnoj-pol-tolstyj/"
+    },
+    "vetonit3000": {
+      "title": "Vetonit 3000",
+      "owner": "Vetonit",
+      "url": "https://vetonit.com/product/vetonit_3000_20kg/"
+    },
+    "vetonitFast4000": {
+      "title": "Vetonit fast 4000",
+      "owner": "Vetonit",
+      "url": "https://vetonit.com/product/vetonit_fast_4000_20kg/"
+    },
+    "vetonit4100": {
+      "title": "Vetonit 4100",
+      "owner": "Vetonit",
+      "url": "https://vetonit.com/product/vetonit_4100_20kg/"
+    },
+    "vetonit5000": {
+      "title": "Vetonit 5000",
+      "owner": "Vetonit",
+      "url": "https://www.vetonit.com/product/vetonit_5000_25kg/"
+    },
+    "litokolS10": {
+      "title": "Litokol LITOLIV S10 EXPRESS",
+      "owner": "Litokol",
+      "url": "https://www.litokol.ru/catalog/litoliv-s10-express/"
+    },
+    "litokolS50": {
+      "title": "Litokol LITOLIV S50 EVO",
+      "owner": "Litokol",
+      "url": "https://litokol-market.ru/catalog/styazhki-i-nalivnye-poly/litoliv-s50-evo/?offer=1005"
+    },
+    "volmaExpress": {
+      "title": "ВОЛМА-Нивелир Экспресс",
+      "owner": "ВОЛМА",
+      "url": "https://www.volma.ru/production/catalog/mixtures-for-floor-leveling/volma-nivelir-ekspress-25kg/"
+    },
+    "osnovitFk45": {
+      "title": "Основит Скорлайн FK45 R",
+      "owner": "Основит",
+      "url": "https://www.osnovit.msk.ru/fk45r"
+    },
+    "ceresitCn175": {
+      "title": "Ceresit CN 175 Super",
+      "owner": "Ceresit/Henkel",
+      "url": "https://www.ceresit.ru/ru/products/flooring/levelling-compounds/cn_175_super",
+      "tds": "https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-CN175-"
+    },
+    "knaufUbo": {
+      "title": "KNAUF Ubo",
+      "owner": "KNAUF",
+      "url": "https://www.knauf.ru/upload/iblock/dc7/dxgmyqn4icdelrl4jzevwo2w26lb633j/34_IL_KNAUF_Ubo_25_03_2025_v01_Preview.pdf",
+      "catalog": "https://www.knauf.ru/upload/iblock/f14/fpvhzrlva5q9ra48tx3iajbx1aua443o/KNAUF-Katalog-produktsii-Blok-_10_03_2025_-v10-Preview.pdf"
+    },
+    "osnovitFc41": {
+      "title": "Основит Стартолайн FC41 H",
+      "owner": "Основит",
+      "url": "https://osnovit.ru/articles/sravnenie-trekh-tipov-styazhek-osnovit-startolayn-legkaya-fc43-l-fc41-h-i-fc40/",
+      "catalog": "https://osnovit.ru/catalog/styazhki/"
+    },
+    "unisFamily": {
+      "title": "UNIS Горизонт family",
+      "owner": "UNIS",
+      "url": "https://unistrom.ru/catalog/ustrojstvo-polov/nalivnye-poly/gorizont-universalnyj/",
+      "variant": "https://unistrom.ru/catalog/ustrojstvo-polov/nalivnye-poly/gorizont-universalnyj-monolit/"
+    }
+  },
+  "writableSurface": {
+    "products": [
+      "brand",
+      "image_url"
+    ],
+    "attributeValueCodes": [
+      "brand",
+      "product_type",
+      "base",
+      "purpose",
+      "package_weight",
+      "application_area",
+      "application_method",
+      "substrates",
+      "color",
+      "layer_thickness",
+      "consumption_10mm",
+      "water_requirement",
+      "pot_life",
+      "application_temperature",
+      "compressive_strength",
+      "adhesion",
+      "frost_resistance",
+      "shelf_life",
+      "standard",
+      "mortar_grade",
+      "consumption",
+      "flexural_strength",
+      "walkability"
+    ],
+    "forbidden": [
+      "title",
+      "slug",
+      "description",
+      "short_description",
+      "full_description",
+      "seo_title",
+      "seo_description",
+      "price",
+      "weight",
+      "unit",
+      "category",
+      "subcategory",
+      "stock_status",
+      "any image table"
+    ]
+  }
+}

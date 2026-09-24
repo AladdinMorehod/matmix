@@ -1,0 +1,987 @@
+{
+  "reviewType": "stage1-discovery",
+  "reviewDate": "2026-09-24",
+  "scope": {
+    "category": "Смеси",
+    "subcategories": [
+      "Наливной Пол",
+      "Стяжки Пола"
+    ],
+    "exactDbSpelling": true,
+    "targetCount": 15,
+    "externalIds": [
+      "MAT-000075",
+      "MAT-000076",
+      "MAT-000077",
+      "MAT-000078",
+      "MAT-000079",
+      "MAT-000080",
+      "MAT-000081",
+      "MAT-000082",
+      "MAT-000083",
+      "MAT-000084",
+      "MAT-000085",
+      "MAT-000086",
+      "MAT-000087",
+      "MAT-000089",
+      "MAT-000090"
+    ]
+  },
+  "localAudit": {
+    "database": "backend/database/matmix.db",
+    "readOnly": true,
+    "allProductsHaveAttributes": false,
+    "productsWithZeroAttributes": 15,
+    "productsWithProductImages": 0,
+    "sharedPlaceholder": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+    "placeholderCount": 15,
+    "note": "The shared placeholder is not evidence of an exact product image and was not cleared during discovery."
+  },
+  "rows": [
+    {
+      "externalId": "MAT-000075",
+      "subcategory": "Наливной Пол",
+      "currentTitle": "Наливной пол \"Unis Горизонт\" 20 кг",
+      "current": {
+        "brand": null,
+        "weight": 20,
+        "unit": "шт",
+        "category": "Смеси",
+        "subcategory": "Наливной Пол",
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "slug": "наливной-пол-unis-горизонт-20-кг",
+        "productImagesCount": 0,
+        "attributeCount": 0,
+        "placeholderState": "SHARED_PLACEHOLDER",
+        "price": 346.5
+      },
+      "identity": {
+        "brand": "UNIS",
+        "officialProduct": "Горизонт (variant not identified: Universal/M-45/Monолит)",
+        "packageWeightKg": 20,
+        "confidence": "PARTIAL",
+        "status": "IDENTITY_UNCERTAIN"
+      },
+      "primarySource": {
+        "url": "https://unistrom.ru/catalog/ustrojstvo-polov/nalivnye-poly/gorizont-universalnyj/",
+        "owner": "UNIS",
+        "type": "official manufacturer page",
+        "evidence": "Official Горизонт product family and 20 kg pack are present, but the local title does not identify the exact variant."
+      },
+      "additionalSources": [
+        "https://unistrom.ru/catalog/ustrojstvo-polov/nalivnye-poly/gorizont-universalnyj-monolit/"
+      ],
+      "imageCandidate": {
+        "status": "IMAGE_PARTIAL",
+        "sourceUrl": "https://unistrom.ru/catalog/ustrojstvo-polov/nalivnye-poly/gorizont-universalnyj/",
+        "evidence": "Official family image may be a different Горизонт variant; do not use until variant identity is resolved."
+      },
+      "proposedTitle": "Наливной пол UNIS Горизонт 20 кг",
+      "confirmedFacts": {
+        "brand": "UNIS",
+        "package_weight": "20 кг",
+        "product_family": "Горизонт"
+      },
+      "omittedFacts": [
+        "variant-specific layer, consumption, strength and handling values"
+      ],
+      "status": "IDENTITY_UNCERTAIN",
+      "blockers": [
+        "Exact Горизонт variant is absent from the local title/source identity."
+      ]
+    },
+    {
+      "externalId": "MAT-000076",
+      "subcategory": "Наливной Пол",
+      "currentTitle": "Наливной пол \"Unis Горизонт\" Армированный 20 кг",
+      "current": {
+        "brand": null,
+        "weight": 20,
+        "unit": "шт",
+        "category": "Смеси",
+        "subcategory": "Наливной Пол",
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "slug": "наливной-пол-unis-горизонт-армированный-20-кг",
+        "productImagesCount": 0,
+        "attributeCount": 0,
+        "placeholderState": "SHARED_PLACEHOLDER",
+        "price": null
+      },
+      "identity": {
+        "brand": "UNIS",
+        "officialProduct": "Горизонт Армированный",
+        "packageWeightKg": 20,
+        "confidence": "HIGH",
+        "status": "CONFIRMED_PRIMARY"
+      },
+      "primarySource": {
+        "url": "https://unistrom.ru/catalog/ustrojstvo-polov/gorizont-armirovannyj/",
+        "owner": "UNIS",
+        "type": "official manufacturer page",
+        "evidence": "Exact name, reinforced floor leveler positioning and 20 kg package are shown by the manufacturer."
+      },
+      "imageCandidate": {
+        "status": "IMAGE_CONFIRMED_CANDIDATE",
+        "sourceUrl": "https://unistrom.ru/catalog/ustrojstvo-polov/gorizont-armirovannyj/",
+        "evidence": "Official product page includes the exact product context and image."
+      },
+      "proposedTitle": "Наливной пол UNIS Горизонт Армированный 20 кг",
+      "confirmedFacts": {
+        "brand": "UNIS",
+        "product_type": "Армированный базовый ровнитель для пола",
+        "package_weight": "20 кг",
+        "layer_thickness": "30–300 мм",
+        "compressive_strength": "15 МПа",
+        "adhesion": "0,6 МПа",
+        "pot_life": "1 час",
+        "walkability": "12 часов",
+        "water_requirement": "3,8–4,8 л на 20 кг",
+        "shelf_life": "12 месяцев"
+      },
+      "omittedFacts": [
+        "Any fields not explicitly exposed by the page should be taken from the current TDS before core apply."
+      ],
+      "status": "READY_FOR_CORE_REVIEW"
+    },
+    {
+      "externalId": "MAT-000077",
+      "subcategory": "Наливной Пол",
+      "currentTitle": "Наливной пол \"Старатели\" Быстрый 20 кг",
+      "current": {
+        "brand": null,
+        "weight": 20,
+        "unit": "шт",
+        "category": "Смеси",
+        "subcategory": "Наливной Пол",
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "slug": "наливной-пол-старатели-быстрый-20-кг",
+        "productImagesCount": 0,
+        "attributeCount": 0,
+        "placeholderState": "SHARED_PLACEHOLDER",
+        "price": 378
+      },
+      "identity": {
+        "brand": "Старатели",
+        "officialProduct": "Наливной пол Быстротвердеющий",
+        "packageWeightKg": 20,
+        "confidence": "PARTIAL",
+        "status": "SOURCE_CONFLICT"
+      },
+      "primarySource": {
+        "url": "https://www.starateli.ru/nalivnoy-pol/",
+        "owner": "Старатели",
+        "type": "official manufacturer catalog",
+        "evidence": "Current official catalog calls the 20 kg product Быстротвердеющий; local title says Быстрый."
+      },
+      "imageCandidate": {
+        "status": "IMAGE_PARTIAL",
+        "sourceUrl": "https://www.starateli.ru/nalivnoy-pol/",
+        "evidence": "Image is available in the official catalog, but the naming/version conflict must be resolved first."
+      },
+      "proposedTitle": "Наливной пол Старатели Быстротвердеющий 20 кг",
+      "confirmedFacts": {
+        "brand": "Старатели",
+        "package_weight": "20 кг",
+        "current_official_name": "Быстротвердеющий"
+      },
+      "omittedFacts": [
+        "Numeric facts pending exact name/version reconciliation."
+      ],
+      "status": "SOURCE_CONFLICT",
+      "blockers": [
+        "Local Быстрый and current official Быстротвердеющий naming are not assumed identical without a version/source decision."
+      ]
+    },
+    {
+      "externalId": "MAT-000078",
+      "subcategory": "Наливной Пол",
+      "currentTitle": "Наливной пол \"Старатели\" Толстый 25кг",
+      "current": {
+        "brand": null,
+        "weight": 25,
+        "unit": "шт",
+        "category": "Смеси",
+        "subcategory": "Наливной Пол",
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "slug": "наливной-пол-старатели-толстый-25кг",
+        "productImagesCount": 0,
+        "attributeCount": 0,
+        "placeholderState": "SHARED_PLACEHOLDER",
+        "price": null
+      },
+      "identity": {
+        "brand": "Старатели",
+        "officialProduct": "Наливной пол Толстый",
+        "packageWeightKg": 25,
+        "confidence": "HIGH",
+        "status": "CONFIRMED_PRIMARY"
+      },
+      "primarySource": {
+        "url": "https://market.starateli.ru/products/nalivnye-poly/nalivnoj-pol-tolstyj/",
+        "owner": "Старатели",
+        "type": "official manufacturer shop",
+        "evidence": "Exact Толстый product, 25 kg package and manufacturer technical facts."
+      },
+      "imageCandidate": {
+        "status": "IMAGE_CONFIRMED_CANDIDATE",
+        "sourceUrl": "https://market.starateli.ru/products/nalivnye-poly/nalivnoj-pol-tolstyj/",
+        "evidence": "Official manufacturer shop image is in exact product context."
+      },
+      "proposedTitle": "Наливной пол Старатели Толстый 25 кг",
+      "confirmedFacts": {
+        "brand": "Старатели",
+        "package_weight": "25 кг",
+        "base": "Цементное вяжущее",
+        "application_area": "Внутренние и наружные работы; нормальная и высокая влажность",
+        "application_method": "Ручное и механизированное",
+        "layer_thickness": "30–100 мм",
+        "consumption_10mm": "16–18 кг/м²",
+        "water_requirement": "5–6 л на 25 кг",
+        "adhesion": "≥0,6 МПа",
+        "compressive_strength": "≥20 МПа",
+        "flexural_strength": "≥5 МПа",
+        "pot_life": "≥40 мин",
+        "walkability": "24 часа"
+      },
+      "omittedFacts": [
+        "Facts not shown in the cited product context."
+      ],
+      "status": "READY_FOR_CORE_REVIEW"
+    },
+    {
+      "externalId": "MAT-000079",
+      "subcategory": "Наливной Пол",
+      "currentTitle": "Наливной пол финишный Weber Vetonit 3000 самовыравнивающийся 20 кг",
+      "current": {
+        "brand": null,
+        "weight": 20,
+        "unit": "шт",
+        "category": "Смеси",
+        "subcategory": "Наливной Пол",
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "slug": "наливной-пол-финишный-weber-vetonit-3000-самовыравнивающийся-20-кг",
+        "productImagesCount": 0,
+        "attributeCount": 0,
+        "placeholderState": "SHARED_PLACEHOLDER",
+        "price": 1039.5
+      },
+      "identity": {
+        "brand": "Weber Vetonit",
+        "officialProduct": "Vetonit 3000",
+        "packageWeightKg": 20,
+        "confidence": "HIGH",
+        "status": "CONFIRMED_PRIMARY"
+      },
+      "primarySource": {
+        "url": "https://vetonit.com/product/vetonit_3000_20kg/",
+        "owner": "Vetonit",
+        "type": "official manufacturer page",
+        "evidence": "Exact product name and 20 kg package."
+      },
+      "additionalSources": [
+        "https://www.vetonit.com/sites/default/files/uploads/pim/technical_maps/29a63c5a-d7bd-11ee-bdfd-5a6432849841.pdf"
+      ],
+      "imageCandidate": {
+        "status": "IMAGE_CONFIRMED_CANDIDATE",
+        "sourceUrl": "https://vetonit.com/product/vetonit_3000_20kg/",
+        "evidence": "Official product page image."
+      },
+      "proposedTitle": "Наливной пол Weber Vetonit 3000 20 кг",
+      "confirmedFacts": {
+        "brand": "Weber Vetonit",
+        "package_weight": "20 кг",
+        "product_type": "Финишный самовыравнивающийся пол",
+        "layer_thickness": "1–5 мм",
+        "application_method": "Ручное нанесение",
+        "compressive_strength": "20 МПа",
+        "consumption": "1,5 кг/м²/мм",
+        "walkability": "3–4 часа"
+      },
+      "omittedFacts": [
+        "Use only source fields matching the existing schema semantics."
+      ],
+      "status": "READY_FOR_CORE_REVIEW"
+    },
+    {
+      "externalId": "MAT-000080",
+      "subcategory": "Наливной Пол",
+      "currentTitle": "Наливной пол универсальный Weber Vetonit fast 4000 20 кг",
+      "current": {
+        "brand": null,
+        "weight": 20,
+        "unit": "шт",
+        "category": "Смеси",
+        "subcategory": "Наливной Пол",
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "slug": "наливной-пол-универсальный-weber-vetonit-fast-4000-20-кг",
+        "productImagesCount": 0,
+        "attributeCount": 0,
+        "placeholderState": "SHARED_PLACEHOLDER",
+        "price": 504
+      },
+      "identity": {
+        "brand": "Weber Vetonit",
+        "officialProduct": "Vetonit fast 4000",
+        "packageWeightKg": 20,
+        "confidence": "HIGH",
+        "status": "CONFIRMED_PRIMARY"
+      },
+      "primarySource": {
+        "url": "https://vetonit.com/product/vetonit_fast_4000_20kg/",
+        "owner": "Vetonit",
+        "type": "official manufacturer page",
+        "evidence": "Exact fast 4000 product and 20 kg package."
+      },
+      "imageCandidate": {
+        "status": "IMAGE_CONFIRMED_CANDIDATE",
+        "sourceUrl": "https://vetonit.com/product/vetonit_fast_4000_20kg/",
+        "evidence": "Official product page image."
+      },
+      "proposedTitle": "Наливной пол Weber Vetonit fast 4000 20 кг",
+      "confirmedFacts": {
+        "brand": "Weber Vetonit",
+        "package_weight": "20 кг",
+        "application_area": "Сухие и влажные помещения",
+        "application_method": "Ручное и механизированное",
+        "layer_thickness": "3–80 мм",
+        "water_requirement": "5,2–5,4 л на 20 кг",
+        "pot_life": "30 минут",
+        "compressive_strength": "16 МПа",
+        "adhesion": "0,6 МПа",
+        "application_temperature": "+10…+25 °C",
+        "walkability": "4 часа"
+      },
+      "omittedFacts": [
+        "Fields without exact existing-definition equivalence."
+      ],
+      "status": "READY_FOR_CORE_REVIEW"
+    },
+    {
+      "externalId": "MAT-000081",
+      "subcategory": "Наливной Пол",
+      "currentTitle": "Наливной пол финишный Vetonit 4100 высокопрочный 20 кг",
+      "current": {
+        "brand": null,
+        "weight": 20,
+        "unit": "шт",
+        "category": "Смеси",
+        "subcategory": "Наливной Пол",
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "slug": "наливной-пол-финишный-vetonit-4100-высокопрочный-20-кг",
+        "productImagesCount": 0,
+        "attributeCount": 0,
+        "placeholderState": "SHARED_PLACEHOLDER",
+        "price": 1018.5
+      },
+      "identity": {
+        "brand": "Weber Vetonit",
+        "officialProduct": "Vetonit 4100",
+        "packageWeightKg": 20,
+        "confidence": "HIGH",
+        "status": "CONFIRMED_PRIMARY"
+      },
+      "primarySource": {
+        "url": "https://vetonit.com/product/vetonit_4100_20kg/",
+        "owner": "Vetonit",
+        "type": "official manufacturer page",
+        "evidence": "Exact 4100 product and 20 kg package."
+      },
+      "imageCandidate": {
+        "status": "IMAGE_CONFIRMED_CANDIDATE",
+        "sourceUrl": "https://vetonit.com/product/vetonit_4100_20kg/",
+        "evidence": "Official product page image."
+      },
+      "proposedTitle": "Наливной пол Weber Vetonit 4100 20 кг",
+      "confirmedFacts": {
+        "brand": "Weber Vetonit",
+        "package_weight": "20 кг",
+        "application_method": "Ручное и механизированное",
+        "layer_thickness": "2–30 мм",
+        "consumption": "1,6 кг/м²/мм",
+        "water_requirement": "4,4–4,8 л на 20 кг",
+        "compressive_strength": "20 МПа",
+        "adhesion": "1 МПа",
+        "application_temperature": "+10…+25 °C",
+        "walkability": "3–4 часа"
+      },
+      "omittedFacts": [
+        "Fields without exact existing-definition equivalence."
+      ],
+      "status": "READY_FOR_CORE_REVIEW"
+    },
+    {
+      "externalId": "MAT-000082",
+      "subcategory": "Наливной Пол",
+      "currentTitle": "Наливной пол первичный Weber Vetonit 5000 быстротвердеющий 25 кг",
+      "current": {
+        "brand": null,
+        "weight": 25,
+        "unit": "шт",
+        "category": "Смеси",
+        "subcategory": "Наливной Пол",
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "slug": "наливной-пол-первичный-weber-vetonit-5000-быстротвердеющий-25-кг",
+        "productImagesCount": 0,
+        "attributeCount": 0,
+        "placeholderState": "SHARED_PLACEHOLDER",
+        "price": 1029
+      },
+      "identity": {
+        "brand": "Weber Vetonit",
+        "officialProduct": "Vetonit 5000",
+        "packageWeightKg": 25,
+        "confidence": "HIGH",
+        "status": "CONFIRMED_PRIMARY"
+      },
+      "primarySource": {
+        "url": "https://www.vetonit.com/product/vetonit_5000_25kg/",
+        "owner": "Vetonit",
+        "type": "official manufacturer page",
+        "evidence": "Exact 5000 product and 25 kg package."
+      },
+      "imageCandidate": {
+        "status": "IMAGE_CONFIRMED_CANDIDATE",
+        "sourceUrl": "https://www.vetonit.com/product/vetonit_5000_25kg/",
+        "evidence": "Official product page image."
+      },
+      "proposedTitle": "Наливной пол Weber Vetonit 5000 25 кг",
+      "confirmedFacts": {
+        "brand": "Weber Vetonit",
+        "package_weight": "25 кг",
+        "application_area": "Внутренние сухие и влажные помещения",
+        "application_method": "Ручное нанесение",
+        "layer_thickness": "5–50 мм; локально до 80 мм",
+        "consumption": "1,8 кг/м²/мм",
+        "water_requirement": "3–3,5 л на 25 кг",
+        "compressive_strength": "20 МПа",
+        "adhesion": "1 МПа",
+        "walkability": "3–4 часа",
+        "application_temperature": "+10…+25 °C"
+      },
+      "omittedFacts": [
+        "Fields without exact existing-definition equivalence."
+      ],
+      "status": "READY_FOR_CORE_REVIEW"
+    },
+    {
+      "externalId": "MAT-000083",
+      "subcategory": "Наливной Пол",
+      "currentTitle": "Наливной пол Litokol LitoLiv S10 Express 20 кг",
+      "current": {
+        "brand": null,
+        "weight": 20,
+        "unit": "шт",
+        "category": "Смеси",
+        "subcategory": "Наливной Пол",
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "slug": "наливной-пол-litokol-litoliv-s10-express-20-кг",
+        "productImagesCount": 0,
+        "attributeCount": 0,
+        "placeholderState": "SHARED_PLACEHOLDER",
+        "price": null
+      },
+      "identity": {
+        "brand": "Litokol",
+        "officialProduct": "LITOLIV S10 EXPRESS",
+        "packageWeightKg": 20,
+        "confidence": "HIGH",
+        "status": "CONFIRMED_PRIMARY"
+      },
+      "primarySource": {
+        "url": "https://www.litokol.ru/catalog/litoliv-s10-express/",
+        "owner": "Litokol",
+        "type": "official manufacturer product page",
+        "evidence": "Exact S10 EXPRESS product and 20 kg package context."
+      },
+      "imageCandidate": {
+        "status": "IMAGE_CONFIRMED_CANDIDATE",
+        "sourceUrl": "https://www.litokol.ru/catalog/litoliv-s10-express/",
+        "evidence": "Official product page/catalog image."
+      },
+      "proposedTitle": "Наливной пол Litokol LITOLIV S10 EXPRESS 20 кг",
+      "confirmedFacts": {
+        "brand": "Litokol",
+        "package_weight": "20 кг",
+        "product_type": "Тонкослойный самовыравнивающийся состав",
+        "layer_thickness": "1–10 мм",
+        "application_area": "Внутренние помещения, включая теплый пол",
+        "substrates": "Бетонные и цементные/гипсовые стяжки"
+      },
+      "omittedFacts": [
+        "Numeric technical values pending direct PDF extraction."
+      ],
+      "status": "READY_FOR_CORE_REVIEW"
+    },
+    {
+      "externalId": "MAT-000084",
+      "subcategory": "Наливной Пол",
+      "currentTitle": "Наливной пол универсальный Litokol Litoliv S50 самовыравнивающийся 20 кг",
+      "current": {
+        "brand": null,
+        "weight": 20,
+        "unit": "шт",
+        "category": "Смеси",
+        "subcategory": "Наливной Пол",
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "slug": "наливной-пол-универсальный-litokol-litoliv-s50-самовыравнивающийся-20-кг",
+        "productImagesCount": 0,
+        "attributeCount": 0,
+        "placeholderState": "SHARED_PLACEHOLDER",
+        "price": 409.5
+      },
+      "identity": {
+        "brand": "Litokol",
+        "officialProduct": "LITOLIV S50 EVO",
+        "packageWeightKg": 20,
+        "confidence": "HIGH",
+        "status": "CONFIRMED_PRIMARY"
+      },
+      "primarySource": {
+        "url": "https://litokol-market.ru/catalog/styazhki-i-nalivnye-poly/litoliv-s50-evo/?offer=1005",
+        "owner": "Litokol official shop",
+        "type": "official manufacturer shop",
+        "evidence": "Exact S50 EVO family, 20 kg offer and technical context."
+      },
+      "additionalSources": [
+        "https://www.litokol.ru/catalog/litoliv-s50-evo/"
+      ],
+      "imageCandidate": {
+        "status": "IMAGE_CONFIRMED_CANDIDATE",
+        "sourceUrl": "https://litokol-market.ru/catalog/styazhki-i-nalivnye-poly/litoliv-s50-evo/?offer=1005",
+        "evidence": "Official shop image in exact product context."
+      },
+      "proposedTitle": "Наливной пол Litokol LITOLIV S50 EVO 20 кг",
+      "confirmedFacts": {
+        "brand": "Litokol",
+        "package_weight": "20 кг",
+        "layer_thickness": "2–100 мм",
+        "water_requirement": "4,2–4,6 л на 20 кг",
+        "pot_life": "35–40 минут",
+        "compressive_strength": "≥15 МПа",
+        "adhesion": "≥1 МПа",
+        "application_temperature": "+5…+35 °C",
+        "walkability": "2–4 часа",
+        "shelf_life": "12 месяцев"
+      },
+      "omittedFacts": [
+        "Do not map generic consumption to consumption_10mm without an explicit 10 mm basis."
+      ],
+      "status": "READY_FOR_CORE_REVIEW"
+    },
+    {
+      "externalId": "MAT-000085",
+      "subcategory": "Наливной Пол",
+      "currentTitle": "Наливной пол Волма Нивелир Экспресс 25 кг",
+      "current": {
+        "brand": null,
+        "weight": 25,
+        "unit": "шт",
+        "category": "Смеси",
+        "subcategory": "Наливной Пол",
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "slug": "наливной-пол-волма-нивелир-экспресс-25-кг",
+        "productImagesCount": 0,
+        "attributeCount": 0,
+        "placeholderState": "SHARED_PLACEHOLDER",
+        "price": 399
+      },
+      "identity": {
+        "brand": "ВОЛМА",
+        "officialProduct": "ВОЛМА-Нивелир Экспресс",
+        "packageWeightKg": 25,
+        "confidence": "HIGH",
+        "status": "CONFIRMED_PRIMARY"
+      },
+      "primarySource": {
+        "url": "https://www.volma.ru/production/catalog/mixtures-for-floor-leveling/volma-nivelir-ekspress-25kg/",
+        "owner": "ВОЛМА",
+        "type": "official manufacturer page",
+        "evidence": "Exact product and 25 kg package."
+      },
+      "imageCandidate": {
+        "status": "IMAGE_CONFIRMED_CANDIDATE",
+        "sourceUrl": "https://www.volma.ru/production/catalog/mixtures-for-floor-leveling/volma-nivelir-ekspress-25kg/",
+        "evidence": "Official product image."
+      },
+      "proposedTitle": "Наливной пол ВОЛМА-Нивелир Экспресс 25 кг",
+      "confirmedFacts": {
+        "brand": "ВОЛМА",
+        "package_weight": "25 кг",
+        "layer_thickness": "2–100 мм",
+        "consumption": "12–15 кг/м²/10 мм",
+        "water_requirement": "0,29–0,34 л/кг",
+        "pot_life": "40 минут",
+        "application_temperature": "+5…+30 °C",
+        "compressive_strength": "≥15 МПа",
+        "adhesion": "≥1 МПа",
+        "walkability": "3 часа",
+        "shelf_life": "12 месяцев"
+      },
+      "omittedFacts": [
+        "Use the exact regional consumption wording from the page/TDS."
+      ],
+      "status": "READY_FOR_CORE_REVIEW"
+    },
+    {
+      "externalId": "MAT-000086",
+      "subcategory": "Наливной Пол",
+      "currentTitle": "Наливной пол Основит Скорлайн FK45R самовыравнивающийся 20 кг",
+      "current": {
+        "brand": null,
+        "weight": 20,
+        "unit": "шт",
+        "category": "Смеси",
+        "subcategory": "Наливной Пол",
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "slug": "наливной-пол-основит-скорлайн-fk45r-самовыравнивающийся-20-кг",
+        "productImagesCount": 0,
+        "attributeCount": 0,
+        "placeholderState": "SHARED_PLACEHOLDER",
+        "price": 493.5
+      },
+      "identity": {
+        "brand": "Основит",
+        "officialProduct": "Скорлайн FK45 R",
+        "packageWeightKg": 20,
+        "confidence": "HIGH",
+        "status": "CONFIRMED_PRIMARY"
+      },
+      "primarySource": {
+        "url": "https://www.osnovit.msk.ru/fk45r",
+        "owner": "Основит",
+        "type": "official manufacturer page",
+        "evidence": "Exact FK45 R product, 20 kg package and technical facts."
+      },
+      "imageCandidate": {
+        "status": "IMAGE_CONFIRMED_CANDIDATE",
+        "sourceUrl": "https://www.osnovit.msk.ru/fk45r",
+        "evidence": "Official product page image."
+      },
+      "proposedTitle": "Наливной пол Основит Скорлайн FK45 R 20 кг",
+      "confirmedFacts": {
+        "brand": "Основит",
+        "package_weight": "20 кг",
+        "application_method": "Ручное и механизированное",
+        "application_area": "Внутренние сухие и влажные помещения",
+        "substrates": "Бетон, гипсовые и цементно-песчаные основания",
+        "layer_thickness": "2–100 мм",
+        "consumption_10mm": "16–17 кг/м²",
+        "water_requirement": "0,26–0,27 л/кг",
+        "pot_life": "40 минут",
+        "application_temperature": "+5…+30 °C",
+        "compressive_strength": "≥20 МПа",
+        "adhesion": "≥0,8 МПа",
+        "walkability": "4 часа",
+        "shelf_life": "12 месяцев"
+      },
+      "omittedFacts": [
+        "Fields without exact existing-definition equivalence."
+      ],
+      "status": "READY_FOR_CORE_REVIEW"
+    },
+    {
+      "externalId": "MAT-000087",
+      "subcategory": "Наливной Пол",
+      "currentTitle": "Наливной пол самовыравнивающийся Ceresit CN 175 20 кг",
+      "current": {
+        "brand": null,
+        "weight": 20,
+        "unit": "шт",
+        "category": "Смеси",
+        "subcategory": "Наливной Пол",
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "slug": "наливной-пол-самовыравнивающийся-ceresit-cn-175-20-кг",
+        "productImagesCount": 0,
+        "attributeCount": 0,
+        "placeholderState": "SHARED_PLACEHOLDER",
+        "price": null
+      },
+      "identity": {
+        "brand": "Ceresit",
+        "officialProduct": "CN 175 Super",
+        "packageWeightKg": 20,
+        "confidence": "HIGH",
+        "status": "CONFIRMED_PRIMARY"
+      },
+      "primarySource": {
+        "url": "https://www.ceresit.ru/ru/products/flooring/levelling-compounds/cn_175_super",
+        "owner": "Ceresit/Henkel",
+        "type": "official manufacturer page",
+        "evidence": "Exact CN 175 Super product; official page and TDS cover 20 kg and 25 kg variants."
+      },
+      "additionalSources": [
+        "https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-CN175-"
+      ],
+      "imageCandidate": {
+        "status": "IMAGE_CONFIRMED_CANDIDATE",
+        "sourceUrl": "https://www.ceresit.ru/ru/products/flooring/levelling-compounds/cn_175_super",
+        "evidence": "Official product page image and exact product context."
+      },
+      "proposedTitle": "Наливной пол Ceresit CN 175 Super 20 кг",
+      "confirmedFacts": {
+        "brand": "Ceresit",
+        "package_weight": "20 кг",
+        "application_method": "Ручное и механизированное",
+        "layer_thickness": "3–60 мм",
+        "water_requirement": "около 3,6 л на 20 кг; 4,5 л на 25 кг",
+        "pot_life": "≥40 минут",
+        "application_temperature": "+5…+30 °C",
+        "consumption": "около 1,8 кг/м²/мм",
+        "compressive_strength": "≥20 МПа",
+        "walkability": "≥5 часов"
+      },
+      "omittedFacts": [
+        "Do not collapse the two official pack water calculations into one 20 kg value."
+      ],
+      "status": "READY_FOR_CORE_REVIEW"
+    },
+    {
+      "externalId": "MAT-000089",
+      "subcategory": "Стяжки Пола",
+      "currentTitle": "Стяжка пола цементная, легкая Knauf Ubo 25 кг",
+      "current": {
+        "brand": null,
+        "weight": 25,
+        "unit": "шт",
+        "category": "Смеси",
+        "subcategory": "Стяжки Пола",
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "slug": "стяжка-пола-цементная-легкая-knauf-ubo-25-кг",
+        "productImagesCount": 0,
+        "attributeCount": 0,
+        "placeholderState": "SHARED_PLACEHOLDER",
+        "price": null
+      },
+      "identity": {
+        "brand": "KNAUF",
+        "officialProduct": "KNAUF Ubo",
+        "packageWeightKg": 25,
+        "confidence": "HIGH",
+        "status": "CONFIRMED_PRIMARY"
+      },
+      "primarySource": {
+        "url": "https://www.knauf.ru/upload/iblock/dc7/dxgmyqn4icdelrl4jzevwo2w26lb633j/34_IL_KNAUF_Ubo_25_03_2025_v01_Preview.pdf",
+        "owner": "KNAUF",
+        "type": "official product information PDF",
+        "evidence": "Exact Ubo product, 25 kg bag, lightweight screed positioning and technical facts."
+      },
+      "additionalSources": [
+        "https://www.knauf.ru/upload/iblock/f14/fpvhzrlva5q9ra48tx3iajbx1aua443o/KNAUF-Katalog-produktsii-Blok-_10_03_2025_-v10-Preview.pdf"
+      ],
+      "imageCandidate": {
+        "status": "IMAGE_CONFIRMED_CANDIDATE",
+        "sourceUrl": "https://www.knauf.ru/upload/iblock/f14/fpvhzrlva5q9ra48tx3iajbx1aua443o/KNAUF-Katalog-produktsii-Blok-_10_03_2025_-v10-Preview.pdf",
+        "evidence": "Official KNAUF catalog/product media context."
+      },
+      "proposedTitle": "Легкая стяжка пола KNAUF Ubo 25 кг",
+      "confirmedFacts": {
+        "brand": "KNAUF",
+        "package_weight": "25 кг",
+        "base": "Специальный цемент и гранулы полистирола",
+        "purpose": "Легкая стяжка для слабых оснований и размещения коммуникаций",
+        "layer_thickness": "3–30 см",
+        "compressive_strength": ">1 МПа",
+        "flexural_strength": ">0,5 МПа",
+        "walkability": "48 часов",
+        "shelf_life": "12 месяцев"
+      },
+      "omittedFacts": [
+        "Do not map lightweight-screed values to generic cement screed fields without semantic review."
+      ],
+      "status": "READY_FOR_CORE_REVIEW"
+    },
+    {
+      "externalId": "MAT-000090",
+      "subcategory": "Стяжки Пола",
+      "currentTitle": "Стяжка пола Основит Стартолайн FC41 H высокопрочная, 25 кг",
+      "current": {
+        "brand": null,
+        "weight": 25,
+        "unit": "шт",
+        "category": "Смеси",
+        "subcategory": "Стяжки Пола",
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "slug": "стяжка-пола-основит-стартолайн-fc41-h-высокопрочная-25-кг",
+        "productImagesCount": 0,
+        "attributeCount": 0,
+        "placeholderState": "SHARED_PLACEHOLDER",
+        "price": null
+      },
+      "identity": {
+        "brand": "Основит",
+        "officialProduct": "Стартолайн FC41 H",
+        "packageWeightKg": 25,
+        "confidence": "MEDIUM_HIGH",
+        "status": "CONFIRMED_PRIMARY_LIMITED_TECHNICAL_SHEET"
+      },
+      "primarySource": {
+        "url": "https://osnovit.ru/articles/sravnenie-trekh-tipov-styazhek-osnovit-startolayn-legkaya-fc43-l-fc41-h-i-fc40/",
+        "owner": "Основит",
+        "type": "official manufacturer article",
+        "evidence": "Official comparison identifies FC41 H as the high-strength Startoline screed; package listing supports 25 kg."
+      },
+      "additionalSources": [
+        "https://osnovit.ru/catalog/styazhki/"
+      ],
+      "imageCandidate": {
+        "status": "IMAGE_CONFIRMED_CANDIDATE",
+        "sourceUrl": "https://osnovit.ru/catalog/styazhki/",
+        "evidence": "Official catalog/product media context; capture exact current technical sheet before apply."
+      },
+      "proposedTitle": "Стяжка пола Основит Стартолайн FC41 H 25 кг",
+      "confirmedFacts": {
+        "brand": "Основит",
+        "package_weight": "25 кг",
+        "product_type": "Высокопрочная стяжка",
+        "layer_thickness": "20–200 мм",
+        "compressive_strength": "около 30 МПа",
+        "pot_life": "40 минут",
+        "application_area": "Внутренние и наружные работы; теплый пол",
+        "walkability": "12 часов"
+      },
+      "omittedFacts": [
+        "Exact current TDS values for all numeric fields; article evidence is sufficient for identity but not a complete core source."
+      ],
+      "status": "PARTIAL",
+      "blockers": [
+        "Before a guarded core batch, capture the current exact FC41 H technical sheet and confirm the 25 kg offer against that version."
+      ]
+    }
+  ],
+  "schemaProposal": {
+    "reuseExistingDefinitions": [
+      "brand",
+      "product_type",
+      "base",
+      "purpose",
+      "package_weight",
+      "consumption_10mm",
+      "wall_layer_thickness",
+      "ceiling_layer_thickness",
+      "application_temperature",
+      "shelf_life",
+      "application_area",
+      "application_method",
+      "substrates",
+      "color",
+      "layer_thickness",
+      "water_requirement",
+      "pot_life",
+      "compressive_strength",
+      "adhesion",
+      "frost_resistance",
+      "standard",
+      "mortar_grade"
+    ],
+    "potentialNewDefinitions": [
+      {
+        "code": "consumption",
+        "type": "text",
+        "reason": "Some floor products publish a generic kg/m²/mm value or a 10 mm value with different semantics; do not force it into consumption_10mm."
+      },
+      {
+        "code": "flexural_strength",
+        "type": "number",
+        "unit": "МПа",
+        "reason": "Published by several exact floor products and absent from the current schema."
+      },
+      {
+        "code": "walkability",
+        "type": "text",
+        "reason": "Time to walk is distinct from pot life and drying."
+      },
+      {
+        "code": "flooring_installation_time",
+        "type": "text",
+        "reason": "Covering-installation windows are not equivalent to walkability."
+      },
+      {
+        "code": "minimum_layer",
+        "type": "number",
+        "unit": "мм",
+        "reason": "Only if numeric range filtering is required; otherwise preserve the range in layer_thickness."
+      },
+      {
+        "code": "maximum_layer",
+        "type": "number",
+        "unit": "мм",
+        "reason": "Only if numeric range filtering is required; otherwise preserve the range in layer_thickness."
+      },
+      {
+        "code": "operating_temperature",
+        "type": "text",
+        "reason": "Product service temperature is different from application_temperature."
+      }
+    ],
+    "definitionsCreated": false,
+    "templatesCreated": false
+  },
+  "titleNormalization": {
+    "proposalsOnly": true,
+    "changed": false,
+    "notes": [
+      "Preserve exact product identity, variant, package weight and official naming; do not normalize titles automatically."
+    ]
+  },
+  "summary": {
+    "total": 15,
+    "readyForCoreReview": [
+      "MAT-000076",
+      "MAT-000078",
+      "MAT-000079",
+      "MAT-000080",
+      "MAT-000081",
+      "MAT-000082",
+      "MAT-000083",
+      "MAT-000084",
+      "MAT-000085",
+      "MAT-000086",
+      "MAT-000087",
+      "MAT-000089"
+    ],
+    "partial": [
+      "MAT-000090"
+    ],
+    "identityUncertain": [
+      "MAT-000075"
+    ],
+    "sourceConflict": [
+      "MAT-000077"
+    ],
+    "imageConfirmedCandidates": [
+      "MAT-000076",
+      "MAT-000078",
+      "MAT-000079",
+      "MAT-000080",
+      "MAT-000081",
+      "MAT-000082",
+      "MAT-000083",
+      "MAT-000084",
+      "MAT-000085",
+      "MAT-000086",
+      "MAT-000087",
+      "MAT-000089",
+      "MAT-000090"
+    ],
+    "imagePartial": [
+      "MAT-000075",
+      "MAT-000077"
+    ],
+    "imageMissing": [],
+    "imageConflict": [],
+    "errors": [],
+    "nextStep": "Review identity/source decisions, then prepare a separate guarded core batch. No definitions, templates, titles, images or product rows were changed in discovery."
+  },
+  "masonryGuardNote": "The existing masonry core batch has pre-normalization title guards. Any future production rollout must synchronize guards or use a deterministic rollout procedure; this discovery does not modify that implementation.",
+  "safety": {
+    "productionAccess": false,
+    "productionDbChanged": false,
+    "localDbWrites": false,
+    "titlesChanged": false,
+    "attributesCreatedOrChanged": false,
+    "definitionsCreatedOrChanged": false,
+    "imagesChanged": false,
+    "importRun": false,
+    "deployRun": false
+  }
+}
