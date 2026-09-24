@@ -1,0 +1,526 @@
+{
+  "reviewType": "mix-products-image-batch1",
+  "reviewDate": "2026-09-24",
+  "scope": {
+    "targetTotal": 18,
+    "masonry": [
+      "MAT-000067",
+      "MAT-000068",
+      "MAT-000069"
+    ],
+    "floor": [
+      "MAT-000075",
+      "MAT-000076",
+      "MAT-000077",
+      "MAT-000078",
+      "MAT-000079",
+      "MAT-000080",
+      "MAT-000081",
+      "MAT-000082",
+      "MAT-000083",
+      "MAT-000084",
+      "MAT-000085",
+      "MAT-000086",
+      "MAT-000087",
+      "MAT-000089",
+      "MAT-000090"
+    ]
+  },
+  "summary": {
+    "targetTotal": 18,
+    "exactApproved": 9,
+    "imported": 9,
+    "blocked": 9,
+    "localDryRun": {
+      "total": 9,
+      "ready": 0,
+      "existingReal": 9,
+      "invalid": 0,
+      "notFound": 0,
+      "duplicates": 0,
+      "errors": 0
+    },
+    "localApply": {
+      "writes": 9,
+      "dbShaBefore": "D503F8806BF44FC9F8E7DE9215D3DD4FE4B931E8A6160CD06B871B36D3049D2E",
+      "dbShaAfter": "E37A89D0A6810CF96243BCA10F7BE464002EB78B60B4B6F7179E85F9ED49FC44"
+    },
+    "postImport": {
+      "allWebp1200": 9,
+      "whiteCorners": 9,
+      "fullFraming": 9
+    }
+  },
+  "policy": {
+    "productionAccess": false,
+    "productionApply": false,
+    "generatedImages": false,
+    "sourcePriority": [
+      "official manufacturer page",
+      "official manufacturer CDN/media",
+      "official PDF/catalog",
+      "exact reputable distributor"
+    ],
+    "previewUsesExactImporterRender": true
+  },
+  "integrity": {
+    "backup": "backend/database/matmix.db.backup-2026-09-24T12-22-04-601Z",
+    "productNonImageFieldDiffs": 0,
+    "titleBrandAttributesPricesWeightsStockContentSeoUnchanged": true,
+    "unrelatedProductsChanged": false,
+    "onlyTargetImageBindingsChanged": 9,
+    "productImagesInserted": 9
+  },
+  "rows": [
+    {
+      "externalId": "MAT-000067",
+      "product": "Кладочно - монтажная смесь цементная Евро М-200 40кг",
+      "brand": "EUROMIX",
+      "identity": "EUROMIX М-200, 40 кг",
+      "status": "IMAGE_NEEDS_EXACT_SOURCE",
+      "sourceUrl": "https://bobr.su/sukhaya-smes-m-200-euromix-kladochnaya-40kg/",
+      "confidence": "PARTIAL",
+      "decision": "Identity known from prior discovery; no clean exact authoritative packshot proven.",
+      "importedUrl": null
+    },
+    {
+      "externalId": "MAT-000068",
+      "product": "Кладочно - монтажная смесь цементная Русеан М-200 40кг",
+      "brand": "Русеан",
+      "identity": "Русеан М-200 монтажно-кладочная смесь, 40 кг",
+      "status": "IMAGE_IMPORTED",
+      "sourceUrl": "https://rusean.ru/catalog/sukhie_smesi_/sukhaya_smes_m_200_montazhno_kladochnaya_40_kg/",
+      "confidence": "EXACT",
+      "decision": "Official product page plus direct product packshot.",
+      "importedUrl": "/uploads/products/MAT-000068-18791ad479824f81.webp",
+      "imageUrl": "https://rusean.ru/upload/iblock/eb8/w34masir1etzc2wkcvjhah1jsw9n2k8l.jpg",
+      "source": {
+        "file": "product-images-batch/mix-products/source/MAT-000068-official.jpg",
+        "format": "jpeg",
+        "width": 768,
+        "height": 1024,
+        "size": 241980,
+        "sha256": "18791ad479824f811f8694b9c679ba2073dcbd9e0ac1c91e6a721c5c1f8e12a3",
+        "watermark": "none observed"
+      },
+      "importReady": {
+        "file": "product-images-batch/mix-products/import-ready/MAT-000068.jpg",
+        "format": "jpeg",
+        "width": 768,
+        "height": 1024,
+        "size": 241980,
+        "sha256": "18791ad479824f811f8694b9c679ba2073dcbd9e0ac1c91e6a721c5c1f8e12a3"
+      },
+      "preview": {
+        "file": "product-images-batch/mix-products/preview/MAT-000068.webp",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "size": 71252,
+        "sha256": "cf238451107af3f83b1aa0ef0da80374c409690336c34204621768a0a7e746e5",
+        "whiteCorners": true,
+        "framing": "full product / safe margin"
+      }
+    },
+    {
+      "externalId": "MAT-000069",
+      "product": "Кладочно - монтажная смесь цементная Вертекс М-200 40кг",
+      "brand": "VERTEX",
+      "identity": "VERTEX М-200, 40 кг",
+      "status": "IMAGE_NEEDS_EXACT_SOURCE",
+      "sourceUrl": "https://vertexproduction.ru/",
+      "confidence": "PARTIAL",
+      "decision": "Manufacturer confirms identity/weight; no clean direct exact asset exposed.",
+      "importedUrl": null
+    },
+    {
+      "externalId": "MAT-000075",
+      "product": "Наливной пол \"Unis Горизонт\" 20 кг",
+      "brand": "UNIS",
+      "identity": "UNIS Горизонт, 20 кг",
+      "status": "IMAGE_BLOCKED_IDENTITY",
+      "sourceUrl": "https://unistrom.ru/catalog/ustrojstvo-polov/nalivnye-poly/gorizont-universalnyj/",
+      "confidence": "BLOCKED",
+      "decision": "Exact Горизонт variant unresolved; Армированный image cannot be substituted.",
+      "importedUrl": null
+    },
+    {
+      "externalId": "MAT-000076",
+      "product": "Наливной пол \"Unis Горизонт\" Армированный 20 кг",
+      "brand": "UNIS",
+      "identity": "UNIS Горизонт Армированный, 20 кг",
+      "status": "IMAGE_BLOCKED_VERSION_CONFLICT",
+      "sourceUrl": "https://unistrom.ru/catalog/ustrojstvo-polov/gorizont-armirovannyj/",
+      "confidence": "BLOCKED",
+      "decision": "Captured current asset/version context was not safely proven against local SKU.",
+      "importedUrl": null
+    },
+    {
+      "externalId": "MAT-000077",
+      "product": "Наливной пол \"Старатели\" Быстрый 20 кг",
+      "brand": "Старатели",
+      "identity": "Старатели Быстрый, 20 кг",
+      "status": "IMAGE_BLOCKED_VERSION_CONFLICT",
+      "sourceUrl": "https://www.starateli.ru/nalivnoy-pol/",
+      "confidence": "BLOCKED",
+      "decision": "Local Быстрый vs current official Быстротвердеющий; equivalence not established.",
+      "importedUrl": null
+    },
+    {
+      "externalId": "MAT-000078",
+      "product": "Наливной пол \"Старатели\" Толстый 25кг",
+      "brand": "Старатели",
+      "identity": "Старатели Толстый, 25 кг",
+      "status": "IMAGE_IMPORTED",
+      "sourceUrl": "https://market.starateli.ru/products/nalivnye-poly/nalivnoj-pol-tolstyj/",
+      "confidence": "EXACT",
+      "decision": "Official manufacturer shop image in exact product context.",
+      "importedUrl": "/uploads/products/MAT-000078-2bc0525cc149295d.webp",
+      "imageUrl": "https://market.starateli.ru/media/images/products/Nalivnoj_pol_Tolstyij_25_kg_PRAV_365x365.png",
+      "source": {
+        "file": "product-images-batch/mix-products/source/MAT-000078-official.png",
+        "format": "png",
+        "width": 365,
+        "height": 365,
+        "size": 114809,
+        "sha256": "2bc0525cc149295de44f3daea9f4860cde3bf8a0c54794d5fe38c79cc354a01f",
+        "watermark": "none observed"
+      },
+      "importReady": {
+        "file": "product-images-batch/mix-products/import-ready/MAT-000078.png",
+        "format": "png",
+        "width": 365,
+        "height": 365,
+        "size": 114809,
+        "sha256": "2bc0525cc149295de44f3daea9f4860cde3bf8a0c54794d5fe38c79cc354a01f"
+      },
+      "preview": {
+        "file": "product-images-batch/mix-products/preview/MAT-000078.webp",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "size": 44210,
+        "sha256": "db2ea938b07876f1156b3ba314243ada92ff8e25a24d2d5db030a387b712b10a",
+        "whiteCorners": true,
+        "framing": "full product / safe margin"
+      }
+    },
+    {
+      "externalId": "MAT-000079",
+      "product": "Наливной пол финишный Weber Vetonit 3000 самовыравнивающийся 20 кг",
+      "brand": "Weber Vetonit",
+      "identity": "Weber Vetonit 3000, 20 кг",
+      "status": "IMAGE_IMPORTED",
+      "sourceUrl": "https://vetonit.com/product/vetonit_3000_20kg/",
+      "confidence": "EXACT",
+      "decision": "Official product page image.",
+      "importedUrl": "/uploads/products/MAT-000079-ec61b1ee064e4891.webp",
+      "imageUrl": "official Vetonit CDN image",
+      "source": {
+        "file": "product-images-batch/mix-products/source/MAT-000079-official.webp",
+        "format": "webp",
+        "width": 2000,
+        "height": 2000,
+        "size": 157664,
+        "sha256": "ec61b1ee064e4891f12da2b297784ed0e8ece738ef55ae944280e21d1c751813",
+        "watermark": "none observed"
+      },
+      "importReady": {
+        "file": "product-images-batch/mix-products/import-ready/MAT-000079.webp",
+        "format": "webp",
+        "width": 2000,
+        "height": 2000,
+        "size": 157664,
+        "sha256": "ec61b1ee064e4891f12da2b297784ed0e8ece738ef55ae944280e21d1c751813"
+      },
+      "preview": {
+        "file": "product-images-batch/mix-products/preview/MAT-000079.webp",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "size": 42370,
+        "sha256": "c874cb10d5b95bb5b14343efdd2e78146f14316a8d2d24c681584fed0570c784",
+        "whiteCorners": true,
+        "framing": "full product / safe margin"
+      }
+    },
+    {
+      "externalId": "MAT-000080",
+      "product": "Наливной пол универсальный Weber Vetonit fast 4000 20 кг",
+      "brand": "Weber Vetonit",
+      "identity": "Weber Vetonit fast 4000, 20 кг",
+      "status": "IMAGE_IMPORTED",
+      "sourceUrl": "https://vetonit.com/product/vetonit_fast_4000_20kg/",
+      "confidence": "EXACT",
+      "decision": "Official product page image.",
+      "importedUrl": "/uploads/products/MAT-000080-1bdd0d69bad4afdf.webp",
+      "imageUrl": "official Vetonit CDN image",
+      "source": {
+        "file": "product-images-batch/mix-products/source/MAT-000080-official.webp",
+        "format": "webp",
+        "width": 2000,
+        "height": 2000,
+        "size": 174576,
+        "sha256": "1bdd0d69bad4afdf31fd029b9e661c89ce18fdfa47991c26cd881d75fca0e0ab",
+        "watermark": "none observed"
+      },
+      "importReady": {
+        "file": "product-images-batch/mix-products/import-ready/MAT-000080.webp",
+        "format": "webp",
+        "width": 2000,
+        "height": 2000,
+        "size": 174576,
+        "sha256": "1bdd0d69bad4afdf31fd029b9e661c89ce18fdfa47991c26cd881d75fca0e0ab"
+      },
+      "preview": {
+        "file": "product-images-batch/mix-products/preview/MAT-000080.webp",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "size": 42876,
+        "sha256": "ef7536919615162f1c90b3ccb14af5390f2e1550813610e51b4e9e46748b32ed",
+        "whiteCorners": true,
+        "framing": "full product / safe margin"
+      }
+    },
+    {
+      "externalId": "MAT-000081",
+      "product": "Наливной пол финишный Vetonit 4100 высокопрочный 20 кг",
+      "brand": "Weber Vetonit",
+      "identity": "Weber Vetonit 4100, 20 кг",
+      "status": "IMAGE_IMPORTED",
+      "sourceUrl": "https://vetonit.com/product/vetonit_4100_20kg/",
+      "confidence": "EXACT",
+      "decision": "Official product page image.",
+      "importedUrl": "/uploads/products/MAT-000081-11f05a89cce5a535.webp",
+      "imageUrl": "official Vetonit CDN image",
+      "source": {
+        "file": "product-images-batch/mix-products/source/MAT-000081-official.webp",
+        "format": "webp",
+        "width": 2000,
+        "height": 2000,
+        "size": 171420,
+        "sha256": "11f05a89cce5a5350de33fca77eeaeb24345bdbcaeec3249ea6982ec74e788f3",
+        "watermark": "none observed"
+      },
+      "importReady": {
+        "file": "product-images-batch/mix-products/import-ready/MAT-000081.webp",
+        "format": "webp",
+        "width": 2000,
+        "height": 2000,
+        "size": 171420,
+        "sha256": "11f05a89cce5a5350de33fca77eeaeb24345bdbcaeec3249ea6982ec74e788f3"
+      },
+      "preview": {
+        "file": "product-images-batch/mix-products/preview/MAT-000081.webp",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "size": 41726,
+        "sha256": "17224461956aeeb3aa540cd5e27c7a868e2b5846b16145257505f23d0a80f737",
+        "whiteCorners": true,
+        "framing": "full product / safe margin"
+      }
+    },
+    {
+      "externalId": "MAT-000082",
+      "product": "Наливной пол первичный Weber Vetonit 5000 быстротвердеющий 25 кг",
+      "brand": "Weber Vetonit",
+      "identity": "Weber Vetonit 5000, 25 кг",
+      "status": "IMAGE_IMPORTED",
+      "sourceUrl": "https://www.vetonit.com/product/vetonit_5000_25kg/",
+      "confidence": "EXACT",
+      "decision": "Official product page image.",
+      "importedUrl": "/uploads/products/MAT-000082-d53ca909a64885ca.webp",
+      "imageUrl": "official Vetonit CDN image",
+      "source": {
+        "file": "product-images-batch/mix-products/source/MAT-000082-official.webp",
+        "format": "webp",
+        "width": 2000,
+        "height": 2000,
+        "size": 153626,
+        "sha256": "d53ca909a64885caa9a6debd9b2e9b82ea3165fa77d91541c02ae2025e7127a9",
+        "watermark": "none observed"
+      },
+      "importReady": {
+        "file": "product-images-batch/mix-products/import-ready/MAT-000082.webp",
+        "format": "webp",
+        "width": 2000,
+        "height": 2000,
+        "size": 153626,
+        "sha256": "d53ca909a64885caa9a6debd9b2e9b82ea3165fa77d91541c02ae2025e7127a9"
+      },
+      "preview": {
+        "file": "product-images-batch/mix-products/preview/MAT-000082.webp",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "size": 40830,
+        "sha256": "4b14c4c2e4cfa1807b90cccf9a3e936628740684bdf286e65f547e504b9bba69",
+        "whiteCorners": true,
+        "framing": "full product / safe margin"
+      }
+    },
+    {
+      "externalId": "MAT-000083",
+      "product": "Наливной пол Litokol LitoLiv S10 Express 20 кг",
+      "brand": "Litokol",
+      "identity": "Litokol LITOLIV S10 EXPRESS, 20 кг",
+      "status": "IMAGE_IMPORTED",
+      "sourceUrl": "https://www.litokol.ru/catalog/litoliv-s10-express/",
+      "confidence": "EXACT",
+      "decision": "Official Litokol catalog image.",
+      "importedUrl": "/uploads/products/MAT-000083-9e454ab67e2e9c49.webp",
+      "imageUrl": "https://www.litokol.ru/upload/iblock/626/LITOLIV_S10_EXPRESS_NEW.png",
+      "source": {
+        "file": "product-images-batch/mix-products/source/MAT-000083-official.png",
+        "format": "png",
+        "width": 788,
+        "height": 1000,
+        "size": 594272,
+        "sha256": "9e454ab67e2e9c49fdc3e3f13788fb5914d18f2df7d07d212dfbe220d89f6344",
+        "watermark": "none observed"
+      },
+      "importReady": {
+        "file": "product-images-batch/mix-products/import-ready/MAT-000083.png",
+        "format": "png",
+        "width": 788,
+        "height": 1000,
+        "size": 594272,
+        "sha256": "9e454ab67e2e9c49fdc3e3f13788fb5914d18f2df7d07d212dfbe220d89f6344"
+      },
+      "preview": {
+        "file": "product-images-batch/mix-products/preview/MAT-000083.webp",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "size": 69718,
+        "sha256": "3156e2a6cb425495a10c2b4275dca9d590b40ca52312d1295e68364b8f5d8017",
+        "whiteCorners": true,
+        "framing": "full product / safe margin"
+      }
+    },
+    {
+      "externalId": "MAT-000084",
+      "product": "Наливной пол универсальный Litokol Litoliv S50 самовыравнивающийся 20 кг",
+      "brand": "Litokol",
+      "identity": "Litokol LITOLIV S50 EVO, 20 кг",
+      "status": "IMAGE_IMPORTED",
+      "sourceUrl": "https://litokol-market.ru/catalog/styazhki-i-nalivnye-poly/litoliv-s50-evo/?offer=1005",
+      "confidence": "EXACT",
+      "decision": "Manufacturer shop image in exact product context.",
+      "importedUrl": "/uploads/products/MAT-000084-0484b3e59dbe222e.webp",
+      "imageUrl": "https://litokol-market.ru/upload/iblock/4be/2rhufjpjp5170qi8qeua67q3v030dq8c/litoliv_s50_2026.webp",
+      "source": {
+        "file": "product-images-batch/mix-products/source/MAT-000084-official.webp",
+        "format": "webp",
+        "width": 1500,
+        "height": 1500,
+        "size": 126854,
+        "sha256": "0484b3e59dbe222ea3aba5ef65c273f2e8e0c82f566d2c14ef3ec5225226992a",
+        "watermark": "none observed"
+      },
+      "importReady": {
+        "file": "product-images-batch/mix-products/import-ready/MAT-000084.webp",
+        "format": "webp",
+        "width": 1500,
+        "height": 1500,
+        "size": 126854,
+        "sha256": "0484b3e59dbe222ea3aba5ef65c273f2e8e0c82f566d2c14ef3ec5225226992a"
+      },
+      "preview": {
+        "file": "product-images-batch/mix-products/preview/MAT-000084.webp",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "size": 55806,
+        "sha256": "7eacee2e479bfedab954c82cea7684b6ab0b3768de4991934de05449e0bb95dc",
+        "whiteCorners": true,
+        "framing": "full product / safe margin"
+      }
+    },
+    {
+      "externalId": "MAT-000085",
+      "product": "Наливной пол Волма Нивелир Экспресс 25 кг",
+      "brand": "ВОЛМА",
+      "identity": "ВОЛМА-Нивелир Экспресс, 25 кг",
+      "status": "IMAGE_IMPORTED",
+      "sourceUrl": "https://www.volma.ru/production/catalog/mixtures-for-floor-leveling/volma-nivelir-ekspress-25kg/",
+      "confidence": "EXACT",
+      "decision": "Official VOLMA product asset.",
+      "importedUrl": "/uploads/products/MAT-000085-6f272833fe7b7600.webp",
+      "imageUrl": "https://www.volma.ru/upload/dev2fun.imagecompress/webp/iblock/c6b/h5n3bf54ecd690397qesuhx0o2bcseu5/NivelirEkspress.webp",
+      "source": {
+        "file": "product-images-batch/mix-products/source/MAT-000085-official.webp",
+        "format": "webp",
+        "width": 461,
+        "height": 600,
+        "size": 31892,
+        "sha256": "6f272833fe7b76004c96899a854cc8f62dc8d2b0b15a24a49007b9e4dd48cbcc",
+        "watermark": "none observed"
+      },
+      "importReady": {
+        "file": "product-images-batch/mix-products/import-ready/MAT-000085.webp",
+        "format": "webp",
+        "width": 461,
+        "height": 600,
+        "size": 31892,
+        "sha256": "6f272833fe7b76004c96899a854cc8f62dc8d2b0b15a24a49007b9e4dd48cbcc"
+      },
+      "preview": {
+        "file": "product-images-batch/mix-products/preview/MAT-000085.webp",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "size": 46126,
+        "sha256": "4eb681b2c55272c3d7897b34ee38af6d89b46826b57f83f99316848b709fea38",
+        "whiteCorners": true,
+        "framing": "full product / safe margin"
+      }
+    },
+    {
+      "externalId": "MAT-000086",
+      "product": "Наливной пол Основит Скорлайн FK45R самовыравнивающийся 20 кг",
+      "brand": "Основит",
+      "identity": "Основит Скорлайн FK45 R, 20 кг",
+      "status": "IMAGE_NEEDS_EXACT_SOURCE",
+      "sourceUrl": "https://www.osnovit.msk.ru/fk45r",
+      "confidence": "REJECTED",
+      "decision": "Downloaded asset was only logo/banner, not exact package.",
+      "importedUrl": null
+    },
+    {
+      "externalId": "MAT-000087",
+      "product": "Наливной пол самовыравнивающийся Ceresit CN 175 20 кг",
+      "brand": "Ceresit",
+      "identity": "Ceresit CN 175 Super, local 20 кг",
+      "status": "IMAGE_NEEDS_EXACT_SOURCE",
+      "sourceUrl": "https://www.ceresit.ru/ru/products/flooring/levelling-compounds/cn_175_super",
+      "confidence": "IDENTITY_ONLY",
+      "decision": "Official page/TDS confirm product, but available visual is PDF/brochure composite, not clean exact local 20 kg packshot.",
+      "importedUrl": null
+    },
+    {
+      "externalId": "MAT-000089",
+      "product": "Стяжка пола цементная, легкая Knauf Ubo 25 кг",
+      "brand": "KNAUF",
+      "identity": "KNAUF Ubo, 25 кг",
+      "status": "IMAGE_NEEDS_EXACT_SOURCE",
+      "sourceUrl": "https://www.knauf.ru/upload/iblock/f60/j4nqjhxo0pt9w5ltxbu8104aoux6u8i3/34-IL-KNAUF_Ubo-_25_03_2025_-v01-Preview.pdf",
+      "confidence": "IDENTITY_ONLY",
+      "decision": "Exact identity/weight proven; brochure composite is not a clean standalone packshot.",
+      "importedUrl": null
+    },
+    {
+      "externalId": "MAT-000090",
+      "product": "Стяжка пола Основит Стартолайн FC41 H высокопрочная, 25 кг",
+      "brand": "Основит",
+      "identity": "Основит Стартолайн FC41 H, local 25 кг",
+      "status": "IMAGE_NEEDS_EXACT_SOURCE",
+      "sourceUrl": "https://osnovit.ru/catalog/styazhki/",
+      "confidence": "REJECTED",
+      "decision": "Downloaded asset was generic work photo; exact FC41 H package not proven.",
+      "importedUrl": null
+    }
+  ]
+}
