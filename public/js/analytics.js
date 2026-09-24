@@ -4,7 +4,8 @@
     const EVENT_NAMES = new Set([
         "product_view", "product_click", "add_to_cart", "cart_open", "begin_checkout",
         "one_click_open", "one_click_submit", "one_click_success", "one_click_error",
-        "checkout_success", "checkout_error", "search"
+        "checkout_success", "checkout_error", "search",
+        "price_download", "request_upload", "catalog_open"
     ]);
     const SAFE_KEYS = new Set(["external_id", "title", "category", "subcategory", "product_group", "unit", "quantity", "price", "source", "query_length", "results_count", "order_source"]);
     const PII_KEYS = /phone|telephone|email|name|customer|comment|address|consent/i;
@@ -59,6 +60,36 @@
         const card = link.closest(".card");
         const source = card?.closest(".product-page-related") ? "related" : card?.closest("#featuredCatalog") ? "featured" : card?.closest("#popularGrid") ? "popular" : card?.closest("#searchDropdown") ? "search" : "catalog";
         track("product_click", { external_id: decodeURIComponent(link.getAttribute("href").split("/").pop()), title: card?.querySelector("h3")?.textContent?.trim(), source });
+    });
+
+    document.addEventListener("click", event => {
+        const link = event.target.closest("a[href]");
+        if (!link) return;
+
+        let url;
+        try {
+            url = new URL(link.href, window.location.href);
+        } catch {
+            return;
+        }
+
+        if (url.origin !== window.location.origin) return;
+
+        const targetPath = url.pathname.replace(/\/+$/, "") || "/";
+        const currentPath = window.location.pathname.replace(/\/+$/, "") || "/";
+
+        if (!["/catalog", "/catalog.html"].includes(targetPath)) return;
+        if (["/catalog", "/catalog.html"].includes(currentPath)) return;
+
+        const source = link.closest("header")
+            ? "header"
+            : link.closest("footer")
+                ? "footer"
+                : document.querySelector(".product-page")
+                    ? "product_page"
+                    : "site";
+
+        track("catalog_open", { source });
     });
 
     const trackProductView = () => {

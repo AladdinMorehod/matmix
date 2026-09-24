@@ -114,7 +114,10 @@ document.querySelectorAll("[data-upload-request-cta]").forEach(link => link.addE
     if (!uploadRequestNav) return;
     event.preventDefault();
     event.stopPropagation();
+
+    uploadRequestNav.dataset.analyticsSource = "product_card";
     uploadRequestNav.click();
+    delete uploadRequestNav.dataset.analyticsSource;
 }));
 
 document.querySelectorAll(".product-page [data-add-product]").forEach(button => button.addEventListener("click", event => { event.stopPropagation(); addProduct(button); }));

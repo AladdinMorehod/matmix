@@ -37582,6 +37582,7 @@ async function downloadPublicPrice() {
         link.download = getDownloadFileName(response, "MatMix-прайс.xlsx");
         document.body.appendChild(link);
         link.click();
+        window.matmixAnalytics?.track("price_download", { source: "catalog" });
         link.remove();
         URL.revokeObjectURL(url);
     } catch (error) {
@@ -40166,6 +40167,12 @@ openCheckoutBtn?.addEventListener("click", () => {
 function openUploadRequestMode(event) {
     event?.preventDefault();
     event?.stopPropagation();
+
+    const source = event?.currentTarget?.dataset?.analyticsSource
+        || (event?.currentTarget === uploadRequestNav ? "header" : "page_cta");
+
+    window.matmixAnalytics?.track("request_upload", { source });
+
     collapseMobileSearch({ blurInput: true, preserveQuery: true });
     closeMenu();
     setCartModalOpen(true);
