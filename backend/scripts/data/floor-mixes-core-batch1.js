@@ -33,14 +33,14 @@ const REUSABLE_DEFINITIONS = Object.freeze({
   base: { label: "Основа", dataType: "text", defaultUnit: null },
   purpose: { label: "Назначение", dataType: "text", defaultUnit: null },
   package_weight: { label: "Фасовка", dataType: "number", defaultUnit: "кг" },
-  consumption_10mm: { label: "Расход при слое 10 мм", dataType: "number", defaultUnit: "кг/м²" },
+  consumption_10mm: { label: "Расход при слое 10 мм", dataType: "text", defaultUnit: "кг/м²" },
   application_area: { label: "Область применения", dataType: "text", defaultUnit: null },
   application_method: { label: "Способ нанесения", dataType: "text", defaultUnit: null },
   substrates: { label: "Основания", dataType: "text", defaultUnit: null },
   color: { label: "Цвет", dataType: "text", defaultUnit: null },
   layer_thickness: { label: "Толщина слоя", dataType: "text", defaultUnit: null },
   water_requirement: { label: "Расход воды", dataType: "text", defaultUnit: null },
-  pot_life: { label: "Жизнеспособность раствора", dataType: "number", defaultUnit: "час" },
+  pot_life: { label: "Жизнеспособность раствора", dataType: "text", defaultUnit: null },
   application_temperature: { label: "Температура основания и воздуха", dataType: "text", defaultUnit: null },
   compressive_strength: { label: "Прочность на сжатие", dataType: "number", defaultUnit: "МПа" },
   adhesion: { label: "Адгезия", dataType: "number", defaultUnit: "МПа" },
@@ -90,7 +90,7 @@ P075.brand = ready("UNIS", sourceKeys("unisFamily"));
 P075.package_weight = ready(20, sourceKeys("unisFamily"));
 
 const P076 = commonNeeds(sourceKeys("unisArmored"));
-Object.assign(P076, { brand: ready("UNIS", sourceKeys("unisArmored")), product_type: ready("Армированный базовый ровнитель для пола", sourceKeys("unisArmored")), package_weight: ready(20, sourceKeys("unisArmored")), layer_thickness: ready("30–300 мм", sourceKeys("unisArmored")), water_requirement: ready("3,8–4,8 л на 20 кг", sourceKeys("unisArmored")), pot_life: ready(1, sourceKeys("unisArmored")), compressive_strength: ready(15, sourceKeys("unisArmored")), adhesion: ready(0.6, sourceKeys("unisArmored")), shelf_life: ready(12, sourceKeys("unisArmored")), walkability: ready("12 часов", sourceKeys("unisArmored")) });
+Object.assign(P076, { brand: ready("UNIS", sourceKeys("unisArmored")), product_type: ready("Армированный базовый ровнитель для пола", sourceKeys("unisArmored")), package_weight: ready(20, sourceKeys("unisArmored")), layer_thickness: ready("30–300 мм", sourceKeys("unisArmored")), water_requirement: ready("3,8–4,8 л на 20 кг", sourceKeys("unisArmored")), pot_life: ready("1 час", sourceKeys("unisArmored")), compressive_strength: ready(15, sourceKeys("unisArmored")), adhesion: ready(0.6, sourceKeys("unisArmored")), shelf_life: ready(12, sourceKeys("unisArmored")), walkability: ready("12 часов", sourceKeys("unisArmored")) });
 
 const P077 = commonNeeds(sourceKeys("starateliCatalog"), "Быстрый/Быстротвердеющий naming conflict is unresolved; version-dependent data is withheld.");
 Object.assign(P077, { brand: ready("Старатели", sourceKeys("starateliCatalog")), package_weight: ready(20, sourceKeys("starateliCatalog")) });
