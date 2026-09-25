@@ -7,11 +7,12 @@ const SOURCE = require("./backfill-source-reviewed-content");
 const PROD = require("./apply-source-reviewed-content-production");
 
 const targetCommit = "a".repeat(40);
-function approvedFixture() {
-    const rows = REVIEW.rows.map(expected => {
+function approvedFixture(review = REVIEW) {
+    const rows = review.rows.map(expected => {
         const attributes = [
-            ...expected.regularAdds.map(item => ({ code: item.code, value: item.value, action: item.status, typed: { code: item.code }, currentIds: [], currentValue: null, currentCount: 0, needsSource: [] })),
-            ...Object.values(expected.main).filter(item => item.status === "WILL_ADD").map(item => ({ code: item.code, value: item.proposed, action: item.status, typed: { code: item.code }, currentIds: [], currentValue: null, currentCount: 0, needsSource: [] })),
+            ...expected.regularAdds.map((item, index) => ({ code: item.code, value: item.value, action: item.status, typed: { code: item.code }, currentIds: item.status === "WILL_UPDATE" ? [7000 + index] : [], currentValue: item.status === "WILL_UPDATE" ? item.current : null, currentCount: item.status === "WILL_UPDATE" ? 1 : 0, needsSource: [] })),
+            ...(expected.existingOk || []).map((item, index) => ({ code: item.code, action: "EXISTING_OK", typed: { code: item.code }, currentIds: [8000 + index], currentValue: item.current, currentCount: 1, needsSource: [] })),
+            ...Object.values(expected.main).filter(item => ["WILL_ADD", "WILL_UPDATE"].includes(item.status)).map((item, index) => ({ code: item.code, value: item.proposed, action: item.status, typed: { code: item.code }, currentIds: item.status === "WILL_UPDATE" ? [7500 + index] : [], currentValue: item.status === "WILL_UPDATE" ? item.current : null, currentCount: item.status === "WILL_UPDATE" ? 1 : 0, needsSource: [] })),
             ...expected.conflicts.map(item => ({ code: item.code, action: "SOURCE_CONFLICT", needsSource: [] }))
         ];
         for (const item of expected.needsSource) {
@@ -57,6 +58,61 @@ function testLogicalPreflight() {
     assert.strictEqual(approved.counts.willAdd, 497);
     assert.strictEqual(approved.brandPlan.length, 57);
     assert.deepStrictEqual([...approved.reviewedSafePlan.keys()].slice(0, 1).length, 1);
+
+    const alreadyFilled = approvedFixture();
+    const existingProductType = alreadyFilled.rows.find(row => row.MAT === "MAT-000001").attributes.find(item => item.code === "product_type");
+    existingProductType.action = "EXISTING_OK";
+    existingProductType.currentValue = existingProductType.value;
+    existingProductType.currentIds = [9001];
+    existingProductType.currentCount = 1;
+    delete existingProductType.value;
+    alreadyFilled.summaries.plaster.willAdd--;
+    alreadyFilled.summaries.plaster.existingOk++;
+    const partial = PROD.validateProductionPreflight(alreadyFilled, REVIEW);
+    assert.strictEqual(partial.counts.willAdd, 496);
+    assert.strictEqual(partial.counts.existingOk, 9);
+    assert.strictEqual(partial.reviewedSafePlan.size, 496, "already matching approved value must be skipped");
+
+    const differentExisting = approvedFixture();
+    const mismatchedProductType = differentExisting.rows.find(row => row.MAT === "MAT-000001").attributes.find(item => item.code === "product_type");
+    mismatchedProductType.action = "EXISTING_OK";
+    mismatchedProductType.currentValue = "Different type";
+    mismatchedProductType.currentIds = [9002];
+    mismatchedProductType.currentCount = 1;
+    assert.throws(() => PROD.validateProductionPreflight(differentExisting, REVIEW), /Existing value differs from approved add/);
+
+    const completed = approvedFixture();
+    for (const row of completed.rows) for (const attr of row.attributes) {
+        if (attr.action === "WILL_ADD") {
+            attr.action = "EXISTING_OK";
+            attr.currentValue = attr.value;
+            attr.currentIds = [10000 + completed.rows.indexOf(row)];
+            attr.currentCount = 1;
+            delete attr.value;
+        }
+        if (row.brand.action === "SAFE_TO_FILL") {
+            row.brand.action = "EXISTING_OK";
+            row.brand.current = row.brand.proposed;
+        }
+    }
+    completed.summaries.plaster = { willAdd: 0, willUpdate: 0, existingOk: 208 };
+    completed.summaries.putty = { willAdd: 0, willUpdate: 0, existingOk: 297 };
+    completed.summaries.brand = { SAFE_TO_FILL: 0, EXISTING_OK: 58, CONFLICT: 0, IDENTITY_BLOCKED: 3, NO_REVIEWED_BRAND: 0 };
+    assert.strictEqual(PROD.validateProductionPreflight(completed, REVIEW).reviewedSafePlan.size, 0);
+    assert.strictEqual(PROD.validatePostApply(completed).existingOk, 505, "repeat validation after apply must be a no-op state");
+
+    const updateReview = JSON.parse(JSON.stringify(REVIEW));
+    const approvedUpdate = updateReview.rows.find(row => row.MAT === "MAT-000001").main.product_type;
+    approvedUpdate.status = "WILL_UPDATE";
+    approvedUpdate.current = "Old approved baseline";
+    const updateFixture = approvedFixture(updateReview);
+    updateFixture.summaries.plaster.willAdd--;
+    updateFixture.summaries.plaster.willUpdate++;
+    const updatePlan = SOURCE.validateApprovedReviewLogical(updateFixture, updateReview);
+    assert.strictEqual(updatePlan.reviewedSafePlan.get("MAT-000001|product_type").action, "WILL_UPDATE");
+    const unexpectedUpdate = approvedFixture(updateReview);
+    unexpectedUpdate.rows.find(row => row.MAT === "MAT-000001").attributes.find(item => item.code === "product_type").currentValue = "Unexpected current value";
+    assert.throws(() => SOURCE.validateApprovedReviewLogical(unexpectedUpdate, updateReview), /Approved update current value changed/);
 
     const wrongCount = approvedFixture();
     wrongCount.summaries.putty.willAdd = 296;

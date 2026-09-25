@@ -289,28 +289,72 @@ function validateApprovedReviewLogical(report, review) {
     const liveRows = new Map(report.rows.map(row => [row.MAT, row]));
     const reviewedSafePlan = new Map();
     const brandPlan = [];
+    const reviewedTotals = { WILL_ADD: 0, WILL_UPDATE: 0, EXISTING_OK: 0 };
+    const reviewedTotalsByGroup = { plaster: 0, putty: 0 };
+    const liveActionTotalsByGroup = {
+        plaster: { WILL_ADD: 0, WILL_UPDATE: 0, EXISTING_OK: 0 },
+        putty: { WILL_ADD: 0, WILL_UPDATE: 0, EXISTING_OK: 0 }
+    };
     for (const mat of FIXED_ALLOWLIST) {
         const expected = reviewRows.get(mat);
         const live = liveRows.get(mat);
         if (!expected || !live || expected.TITLE !== live.TITLE) throw new Error(`Review identity/title mismatch: ${mat}`);
         const reviewedFields = [
-            ...expected.regularAdds,
-            ...Object.values(expected.main).filter(item => item.status === "WILL_ADD").map(item => ({ code: item.code, value: item.proposed, status: item.status }))
+            ...(expected.regularAdds || []),
+            ...(expected.regularUpdates || []),
+            ...(expected.existingOk || []).map(item => ({ ...item, value: item.current, status: "EXISTING_OK" }))
         ];
-        const expectedByCode = new Map(reviewedFields.map(item => [item.code, item]));
+        const expectedByCode = new Map();
+        for (const item of reviewedFields) {
+            if (!item.code || expectedByCode.has(item.code)) throw new Error(`Duplicate or invalid reviewed field: ${mat}/${item.code}`);
+            if (!["WILL_ADD", "WILL_UPDATE", "EXISTING_OK"].includes(item.status)) throw new Error(`Unsupported approved action: ${mat}/${item.code}/${item.status}`);
+            expectedByCode.set(item.code, item);
+        }
+        for (const mainItem of Object.values(expected.main || {}).filter(item => ["WILL_ADD", "WILL_UPDATE", "EXISTING_OK"].includes(item.status))) {
+            const item = { ...mainItem, value: mainItem.proposed, current: mainItem.current, status: mainItem.status };
+            const existing = expectedByCode.get(item.code);
+            if (existing) {
+                if (existing.status !== item.status || !valuesEqual(existing.value, item.value)) throw new Error(`Reviewed main/regular field disagreement: ${mat}/${item.code}`);
+                continue;
+            }
+            expectedByCode.set(item.code, item);
+        }
+        for (const item of expectedByCode.values()) {
+            reviewedTotals[item.status]++;
+            const group = DATA.products.find(product => product.externalId === mat)?.group;
+            if (!group || !reviewedTotalsByGroup.hasOwnProperty(group)) throw new Error(`Unknown reviewed product group: ${mat}`);
+            reviewedTotalsByGroup[group]++;
+        }
         if (expected.category !== (DATA.products.find(item => item.externalId === mat)?.group === "plaster" ? "Штукатурка" : "Шпаклевка")) throw new Error(`Review category mismatch: ${mat}`);
         if (expected.disposition !== "IDENTITY_BLOCKED" && live.guardReasons.length) throw new Error(`Live identity guard failed for ${mat}: ${live.guardReasons.join(",")}`);
         for (const attr of live.attributes) {
             const approved = expectedByCode.get(attr.code);
-            if (attr.action === "WILL_ADD" || attr.action === "WILL_UPDATE") {
-                if (!approved || attr.action !== "WILL_ADD" || approved.status !== "WILL_ADD" || !valuesEqual(attr.value, approved.value)) throw new Error(`Attribute is not in approved safe preview: ${mat}/${attr.code}`);
-            }
-            if (approved && !["WILL_ADD", "WILL_UPDATE"].includes(attr.action)) throw new Error(`Approved attribute no longer matches live plan: ${mat}/${attr.code}`);
+            if (["WILL_ADD", "WILL_UPDATE", "EXISTING_OK"].includes(attr.action) && !approved) throw new Error(`Attribute is not in approved safe preview: ${mat}/${attr.code}`);
         }
         for (const [code, approved] of expectedByCode) {
             const attr = live.attributes.find(item => item.code === code);
-            if (!attr || attr.action !== approved.status || !valuesEqual(attr.value, approved.value)) throw new Error(`Reviewed safe field changed: ${mat}/${code}`);
-            reviewedSafePlan.set(`${mat}|${code}`, { action: "WILL_ADD", value: attr.value, typed: attr.typed, rowId: null, currentValue: attr.currentValue, currentCount: attr.currentCount });
+            if (!attr) throw new Error(`Reviewed safe field is missing from live plan: ${mat}/${code}`);
+            if (["WILL_ADD", "WILL_UPDATE"].includes(attr.action) && !valuesEqual(attr.value, approved.value)) throw new Error(`Reviewed safe field value changed: ${mat}/${code}`);
+            if (approved.status === "WILL_ADD") {
+                if (attr.action === "WILL_ADD") {
+                    if (attr.currentCount !== 0 || present(attr.currentValue)) throw new Error(`Approved add has an unexpected current value: ${mat}/${code}`);
+                } else if (attr.action === "EXISTING_OK") {
+                    if (!valuesEqual(attr.currentValue, approved.value)) throw new Error(`Existing value differs from approved add: ${mat}/${code}`);
+                } else throw new Error(`Approved add is neither absent nor an exact existing value: ${mat}/${code}`);
+            } else if (approved.status === "WILL_UPDATE") {
+                if (attr.action === "WILL_UPDATE") {
+                    if (!Object.prototype.hasOwnProperty.call(approved, "current") || !valuesEqual(attr.currentValue, approved.current)) throw new Error(`Approved update current value changed: ${mat}/${code}`);
+                } else if (attr.action === "EXISTING_OK") {
+                    if (!valuesEqual(attr.currentValue, approved.value)) throw new Error(`Completed approved update has a different value: ${mat}/${code}`);
+                } else throw new Error(`Approved update no longer has its guarded current row: ${mat}/${code}`);
+            } else if (attr.action !== "EXISTING_OK" || !valuesEqual(attr.currentValue, approved.value)) {
+                throw new Error(`Approved existing value changed: ${mat}/${code}`);
+            }
+            if (attr.action === "WILL_ADD" || attr.action === "WILL_UPDATE") {
+                reviewedSafePlan.set(`${mat}|${code}`, { action: attr.action, value: attr.value, typed: attr.typed, rowId: attr.currentIds?.[0] || null, currentValue: attr.currentValue, currentCount: attr.currentCount });
+            }
+            const group = DATA.products.find(product => product.externalId === mat).group;
+            liveActionTotalsByGroup[group][attr.action]++;
         }
         if (expected.disposition !== "IDENTITY_BLOCKED") {
             const expectedConflicts = expected.conflicts.map(item => item.code).sort();
@@ -321,20 +365,32 @@ function validateApprovedReviewLogical(report, review) {
             if (json(expectedNeedsSource) !== json(liveNeedsSource)) throw new Error(`NEEDS_SOURCE field set differs from review: ${mat}`);
         } else if (live.attributes.some(item => ["WILL_ADD", "WILL_UPDATE"].includes(item.action))) throw new Error(`Identity-blocked product contains an apply action: ${mat}`);
         if (expected.brand.status === "SAFE_TO_FILL") {
-            if (live.brand.action !== "SAFE_TO_FILL" || live.brand.current !== expected.brand.current || live.brand.current !== null || live.brand.proposed !== expected.brand.proposed || typeof live.brand.proposed !== "string") throw new Error(`Canonical brand no longer matches approved review: ${mat}`);
-            brandPlan.push({ MAT: mat, expectedCurrent: expected.brand.current, value: expected.brand.proposed });
+            if (live.brand.proposed !== expected.brand.proposed || typeof live.brand.proposed !== "string") throw new Error(`Canonical brand proposal differs from approved review: ${mat}`);
+            if (live.brand.action === "SAFE_TO_FILL" && live.brand.current === null && expected.brand.current === null) {
+                brandPlan.push({ MAT: mat, expectedCurrent: null, value: expected.brand.proposed });
+            } else if (live.brand.action !== "EXISTING_OK" || live.brand.current !== expected.brand.proposed) {
+                throw new Error(`Canonical brand no longer matches approved review: ${mat}`);
+            }
         } else if (live.brand.action !== expected.brand.status || live.brand.current !== expected.brand.current) {
             throw new Error(`Brand status/current value differs from review: ${mat}`);
         }
         if (expected.disposition === "IDENTITY_BLOCKED" && live.guardReasons.length === 0) throw new Error(`Identity block changed: ${mat}`);
     }
+    if (reviewedTotals.WILL_ADD + reviewedTotals.WILL_UPDATE !== EXPECTED_ADDED_ATTRIBUTES || reviewedTotals.EXISTING_OK !== 8) {
+        throw new Error(`Review artifact approved field totals differ: ${JSON.stringify(reviewedTotals)}`);
+    }
     const actualSafePlan = expectedActionMap(report);
-    if (actualSafePlan.size !== EXPECTED_ADDED_ATTRIBUTES || [...actualSafePlan.values()].some(item => item.action !== "WILL_ADD")) throw new Error(`Expected exactly ${EXPECTED_ADDED_ATTRIBUTES} safe inserts and no updates; got ${actualSafePlan.size}`);
     if (stablePlan(actualSafePlan) !== stablePlan(reviewedSafePlan)) throw new Error("Live safe attribute plan differs from human review");
-    if (brandPlan.length !== EXPECTED_BRAND_WRITES) throw new Error(`Expected exactly ${EXPECTED_BRAND_WRITES} canonical brand writes; got ${brandPlan.length}`);
-    if (report.summaries.plaster.willAdd !== 200 || report.summaries.putty.willAdd !== 297 || report.summaries.plaster.willUpdate || report.summaries.putty.willUpdate) throw new Error("Category attribute counts differ from approved preview");
-    if (report.summaries.plaster.existingOk + report.summaries.putty.existingOk !== 8 || report.summaries.brand.EXISTING_OK !== 1 || report.summaries.brand.CONFLICT !== 0 || report.summaries.brand.IDENTITY_BLOCKED !== 3) throw new Error("Existing or blocked counts differ from approved preview");
-    return { reviewedSafePlan, brandPlan };
+    if (brandPlan.length + report.summaries.brand.EXISTING_OK !== EXPECTED_BRAND_WRITES + 1 || report.summaries.brand.CONFLICT !== 0 || report.summaries.brand.IDENTITY_BLOCKED !== 3) throw new Error("Brand status totals differ from approved preview");
+    for (const group of ["plaster", "putty"]) {
+        const summary = report.summaries[group];
+        const actions = liveActionTotalsByGroup[group];
+        if (summary.willAdd !== actions.WILL_ADD || summary.willUpdate !== actions.WILL_UPDATE || summary.existingOk !== actions.EXISTING_OK
+            || summary.willAdd + summary.willUpdate + summary.existingOk !== reviewedTotalsByGroup[group]) {
+            throw new Error(`Category attribute counts differ from approved preview: ${group}`);
+        }
+    }
+    return { reviewedSafePlan, brandPlan, reviewedTotals, reviewedTotalsByGroup, liveActionTotalsByGroup };
 }
 
 async function fullValueSnapshot(db) {
@@ -480,8 +536,7 @@ async function runBatch(db, { apply = false, backup = null, brandPlan = [], appr
         const protectedBefore = { ...hashesBefore }; delete protectedBefore.product_attribute_values;
         const protectedAfter = { ...hashesAfter }; delete protectedAfter.product_attribute_values;
         if (json(protectedBefore) !== json(protectedAfter)) throw new Error("Protected products/images/SEO changed during content apply");
-        if (approvedPlan && (planned.size !== EXPECTED_ADDED_ATTRIBUTES || [...planned.values()].some(item => item.action !== "WILL_ADD"))) throw new Error(`Applied attribute plan differs from approved ${EXPECTED_ADDED_ATTRIBUTES} inserts`);
-        if (approvedPlan && brandPlan.length !== EXPECTED_BRAND_WRITES) throw new Error(`Applied brand plan differs from approved ${EXPECTED_BRAND_WRITES} writes`);
+        if (approvedPlan && stablePlan(planned) !== stablePlan(approvedPlan)) throw new Error("Applied attribute plan differs from the current approved write plan");
         if (verifyBeforeCommit) await verifyBeforeCommit(await inspect(db));
         await db.run("COMMIT");
         const afterReport = await inspect(db);
