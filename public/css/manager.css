@@ -6187,3 +6187,20 @@ a[role="button"],
         line-height: 1.2;
     }
 }
+
+.product-template-editor [data-template-row] {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+.product-template-editor [data-template-row] strong { flex: 1 1 180px; overflow-wrap: anywhere; }
+.product-template-editor [data-template-row] input:not([type="checkbox"]) { width: 100px; max-width: 100%; }
+.product-attribute-row > label { min-width: 0; overflow-wrap: anywhere; }
+.product-attribute-row > button,
+.product-template-editor [data-template-row] > button { width: 36px; justify-self: start; }
+.product-attribute-row > label > strong { display: block; margin-bottom: 6px; }
+.product-attribute-row input,
+.product-attribute-row select { box-sizing: border-box; max-width: 100%; }
+.product-attribute-main-row { grid-template-columns: minmax(0, 1fr); }

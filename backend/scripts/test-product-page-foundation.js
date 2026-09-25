@@ -97,9 +97,9 @@ async function main() {
             assert.strictEqual(schemaFrom("invalid").offers.availability, undefined);
             assert.strictEqual(page.product.brand, "Foundation Brand");
             assert.strictEqual(page.product.full_description, "Full");
-            assert.deepStrictEqual(page.attributes[0], {
+            assert.deepStrictEqual(Object.fromEntries(Object.entries(page.attributes.find(item => item.code === "layer_thickness")).filter(([key]) => ["id", "code", "label", "type", "value", "unit", "section", "sortOrder"].includes(key))), {
                 id: 1, code: "layer_thickness", label: "Толщина слоя", type: "number",
-                value: 25, unit: "мм", section: "Применение", sortOrder: 5
+                value: 25, unit: "мм", section: "Характеристики", sortOrder: 4
             });
             assert.strictEqual(page.images.length, 2);
             assert.strictEqual(page.images[0].is_primary, 1);

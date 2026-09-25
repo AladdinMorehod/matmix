@@ -114,11 +114,11 @@ function getProductPayloadFromForm(formData) {
 function getProductContentPayloadFromForm(formData) {
     const attributes = [];
     for (const definition of productContentEditor.definitions) {
+        if (definition.code === "brand") continue;
         const field = `attribute_${definition.id}`;
         if (!formData.has(field)) continue;
         const raw = formData.get(field);
-        const value = definition.dataType === "boolean" ? raw === "true" : String(raw || "").trim();
-        if (definition.dataType !== "boolean" && value === "") continue;
+        const value = raw === "" ? null : definition.dataType === "boolean" ? raw === "true" : String(raw ?? "").trim();
         attributes.push({
             definitionId: definition.id,
             value,
@@ -132,21 +132,15 @@ function getProductContentPayloadFromForm(formData) {
         fullDescription: String(formData.get("fullDescription") || "").trim(),
         seoTitle: String(formData.get("seoTitle") || "").trim(),
         seoDescription: String(formData.get("seoDescription") || "").trim(),
-        attributes
+        attributes,
+        removedDefinitionIds: productContentEditor.removedDefinitionIds || []
     };
 }
 
 function getEditorAttributeRows() {
     const content = productContentEditor.content || {};
-    const templates = content.templates || [];
-    const values = content.values || [];
-    const ids = new Set([...templates.map(item => item.definitionId), ...values.map(item => item.definitionId)]);
-    return [...ids].map(id => {
-        const definition = productContentEditor.definitions.find(item => item.id === id) || {};
-        const template = templates.find(item => item.definitionId === id) || {};
-        const value = values.find(item => item.definitionId === id) || {};
-        return { ...definition, ...template, ...value, id, definitionId: id, value: value.value ?? "" };
-    }).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0) || String(a.label).localeCompare(String(b.label), "ru"));
+    return MatMixAttributeOrder.resolve({ definitions: productContentEditor.definitions,
+        templates: content.templates || [], values: content.values || [], brand: content.product?.brand || "" });
 }
 
 function renderAttributeInput(item) {
@@ -161,21 +155,55 @@ function getAttributeDataTypeLabel(dataType) {
 
 function renderProductAttributes() {
     const rows = getEditorAttributeRows();
-    const unused = productContentEditor.definitions.filter(item => item.isActive && !rows.some(row => row.definitionId === item.id));
-    return `<div data-product-attributes>
-        <div class="product-content-toolbar">
-            <label><span>Дополнительная характеристика</span><select data-add-attribute><option value="">Выберите характеристику</option>${unused.map(item => `<option value="${item.id}">${escapeHtml(item.label)} (${escapeHtml(item.code)})</option>`).join("")}</select></label>
-            <button type="button" data-add-attribute-button>Добавить</button>
-            <button type="button" data-manage-definitions>Справочник характеристик</button>
-        </div>
-        ${rows.length ? `<div class="product-attribute-list">${rows.map(item => `<div class="product-attribute-row" data-definition-id="${item.definitionId}">
-            <label><strong>${escapeHtml(item.label || item.code)}</strong><small>${escapeHtml(item.code)} · ${escapeHtml(getAttributeDataTypeLabel(item.dataType))}${item.isRequired ? " · обязательно" : ""}</small>${renderAttributeInput(item)}</label>
-            <label><span>Единица</span><input name="attribute_unit_${item.definitionId}" maxlength="40" value="${escapeHtml(item.unit || item.defaultUnit || "")}"></label>
-            <input name="attribute_sort_${item.definitionId}" type="hidden" value="${Number(item.sortOrder) || 0}">
-            <button type="button" data-remove-attribute="${item.definitionId}" aria-label="Убрать характеристику">×</button>
-        </div>`).join("")}</div>` : `<p class="product-content-empty">Для товара пока нет характеристик.</p>`}
-        ${productContentEditor.content?.structureId ? `<div class="product-template-editor"><strong>Шаблон выбранной подкатегории</strong>${productContentEditor.definitions.filter(item => item.isActive).map(item => { const template = (productContentEditor.content.templates || []).find(row => row.definitionId === item.id); return `<label><input type="checkbox" name="templateDefinition" value="${item.id}"${template ? " checked" : ""}> ${escapeHtml(item.label)} <input name="templateSort_${item.id}" type="number" value="${template?.sortOrder ?? item.sortOrder ?? 0}" aria-label="Порядок"><input name="templateUnit_${item.id}" maxlength="40" value="${escapeHtml(template?.unit || "")}" placeholder="Другая единица"><input name="templateRequired_${item.id}" type="checkbox"${template?.isRequired ? " checked" : ""}> обязательно</label>`; }).join("")}</div>` : ""}
+    const unused = productContentEditor.definitions.filter(item => item.isActive && !MatMixAttributeOrder.isMain(item.code) && !rows.some(row => row.definitionId === item.id));
+    const renderRow = item => `<div class="product-attribute-row${item.isMain ? " product-attribute-main-row" : ""}" data-definition-id="${item.definitionId || ""}">
+        <label><strong>${escapeHtml(item.label)}</strong>${item.code === "brand" ? `<input name="brand" maxlength="160" value="${escapeHtml(item.value || "")}">` : item.definitionId ? renderAttributeInput(item) : '<input disabled placeholder="Нет определения в справочнике">'}</label>
+        ${!item.isMain && item.definitionId ? `<label><span>Единица</span><input name="attribute_unit_${item.definitionId}" maxlength="40" value="${escapeHtml(item.unit || item.defaultUnit || "")}"></label>` : ""}
+        ${item.isMain ? '<span>Основная</span>' : `<button type="button" data-remove-attribute="${item.definitionId}" aria-label="Убрать характеристику">×</button>`}
     </div>`;
+    return `<div data-product-attributes>
+        <h3>Основные характеристики</h3><div class="product-attribute-list">${rows.filter(item => item.isMain).map(renderRow).join("")}</div>
+        <h3>Характеристики</h3><div class="product-content-toolbar">
+            <label><span>Дополнительная характеристика</span><select data-add-attribute><option value="">Выберите характеристику</option>${unused.map(item => `<option value="${item.id}">${escapeHtml(item.label)}</option>`).join("")}</select></label>
+            <button type="button" data-add-attribute-button>Добавить</button><button type="button" data-manage-definitions>Справочник характеристик</button>
+        </div><div class="product-attribute-list">${rows.filter(item => !item.isMain).map(renderRow).join("")}</div>
+        ${renderAttributeTemplateEditor()}
+    </div>`;
+}
+
+function renderAttributeTemplateEditor() {
+    if (!productContentEditor.content?.structureId) return "";
+    const templates = MatMixAttributeOrder.sortTemplates((productContentEditor.content.templates || []).filter(item => !MatMixAttributeOrder.isMain(item.code)));
+    const unused = productContentEditor.definitions.filter(item => item.isActive && !MatMixAttributeOrder.isMain(item.code) && !templates.some(row => row.definitionId === item.id));
+    return `<div class="product-template-editor"><h3>Шаблон выбранной подкатегории</h3><p>Порядок применяется ко всем товарам подкатегории после сохранения.</p>
+        ${templates.map((item, index) => `<div data-template-row="${item.definitionId}"><strong>${escapeHtml(item.label)}</strong>
+            <input name="templateUnit_${item.definitionId}" maxlength="40" value="${escapeHtml(item.unit || "")}" placeholder="Единица">
+            <label><input name="templateRequired_${item.definitionId}" type="checkbox"${item.isRequired ? " checked" : ""}> обязательно</label>
+            <button type="button" data-template-move="${item.definitionId}" data-offset="-1"${index === 0 ? " disabled" : ""} aria-label="Выше">↑</button>
+            <button type="button" data-template-move="${item.definitionId}" data-offset="1"${index === templates.length - 1 ? " disabled" : ""} aria-label="Ниже">↓</button>
+            <button type="button" data-template-remove="${item.definitionId}" aria-label="Убрать из шаблона">×</button></div>`).join("")}
+        <select data-template-add><option value="">Добавить в шаблон</option>${unused.map(item => `<option value="${item.id}">${escapeHtml(item.label)}</option>`).join("")}</select><button type="button" data-template-add-button>Добавить в шаблон</button>
+    </div>`;
+}
+
+function captureAttributeEditor(formElement) {
+    const content = productContentEditor.content;
+    if (!formElement || !content) return;
+    content.values = getEditorAttributeRows().filter(row => row.definitionId);
+    for (const row of content.values) {
+        const field = formElement.elements[`attribute_${row.definitionId}`];
+        if (!field || row.code === "brand") continue;
+        row.value = field.value === "" ? null : row.dataType === "boolean" ? field.value === "true" : field.value;
+        row.unit = formElement.elements[`attribute_unit_${row.definitionId}`]?.value || "";
+    }
+    content.product = { ...content.product, brand: formElement.elements.brand?.value || "" };
+    for (const row of content.templates || []) {
+        const unit = formElement.elements[`templateUnit_${row.definitionId}`];
+        const required = formElement.elements[`templateRequired_${row.definitionId}`];
+        if (!unit || !required) continue;
+        if (row.unit !== unit.value || Boolean(row.isRequired) !== required.checked) productContentEditor.templateDirty = true;
+        row.unit = unit.value; row.isRequired = required.checked;
+    }
 }
 
 function renderProductGallery(product = {}) {
@@ -327,7 +355,7 @@ function renderProductForm(product = {}) {
                 <input name="title" type="text" maxlength="300" value="${escapeHtml(product.title || "")}" required>
             </label>
             <label><span>MAT-код</span><input type="text" value="${escapeHtml(product.externalId || "Будет назначен автоматически")}" readonly></label>
-            <label><span>Бренд</span><input name="brand" maxlength="160" value="${escapeHtml(content.brand || product.brand || "")}"></label>
+
             <label>
                 <span>Категория</span>
                 <span class="product-field-with-action">
@@ -1431,19 +1459,48 @@ async function openAttributeDefinitionManager(formElement) {
 }
 
 function setupProductAttributeControls(formElement) {
+    formElement.querySelector("[data-product-attributes]")?.addEventListener("input", () => captureAttributeEditor(formElement));
     formElement.querySelector("[data-add-attribute-button]")?.addEventListener("click", () => {
         const id = Number(formElement.querySelector("[data-add-attribute]")?.value);
         if (!id) return;
+        captureAttributeEditor(formElement);
+        productContentEditor.removedDefinitionIds = (productContentEditor.removedDefinitionIds || []).filter(value => value !== id);
         const definition = productContentEditor.definitions.find(item => item.id === id);
         productContentEditor.content.values = [...(productContentEditor.content.values || []), { ...definition, definitionId: id, value: "" }];
         refreshAttributeEditor(formElement);
     });
     formElement.querySelectorAll("[data-remove-attribute]").forEach(button => button.addEventListener("click", () => {
         const id = Number(button.dataset.removeAttribute);
+        if (MatMixAttributeOrder.isMain(productContentEditor.definitions.find(item => item.id === id)?.code)) return;
+        captureAttributeEditor(formElement);
+        productContentEditor.removedDefinitionIds = [...new Set([...(productContentEditor.removedDefinitionIds || []), id])];
         productContentEditor.content.values = (productContentEditor.content.values || []).filter(item => item.definitionId !== id);
-        productContentEditor.content.templates = (productContentEditor.content.templates || []).filter(item => item.definitionId !== id);
+
         refreshAttributeEditor(formElement);
     }));
+    const changeTemplate = operation => {
+        captureAttributeEditor(formElement);
+        const main = (productContentEditor.content.templates || []).filter(item => MatMixAttributeOrder.isMain(item.code));
+        const rows = MatMixAttributeOrder.sortTemplates((productContentEditor.content.templates || []).filter(item => !MatMixAttributeOrder.isMain(item.code)));
+        operation(rows);
+        productContentEditor.content.templates = [...main, ...rows.map((row, index) => ({ ...row, sortOrder: index }))];
+        productContentEditor.templateDirty = true;
+        refreshAttributeEditor(formElement);
+    };
+    formElement.querySelectorAll("[data-template-move]").forEach(button => button.addEventListener("click", () => changeTemplate(rows => {
+        const index = rows.findIndex(row => row.definitionId === Number(button.dataset.templateMove));
+        const target = index + Number(button.dataset.offset);
+        if (index >= 0 && target >= 0 && target < rows.length) [rows[index], rows[target]] = [rows[target], rows[index]];
+    })));
+    formElement.querySelectorAll("[data-template-remove]").forEach(button => button.addEventListener("click", () => changeTemplate(rows => {
+        const index = rows.findIndex(row => row.definitionId === Number(button.dataset.templateRemove));
+        if (index >= 0) rows.splice(index, 1);
+    })));
+    formElement.querySelector("[data-template-add-button]")?.addEventListener("click", () => {
+        const id = Number(formElement.querySelector("[data-template-add]")?.value);
+        const definition = productContentEditor.definitions.find(item => item.id === id);
+        if (definition) changeTemplate(rows => rows.push({ ...definition, definitionId: id, unit: "", isRequired: false }));
+    });
     formElement.querySelector("[data-manage-definitions]")?.addEventListener("click", () => openAttributeDefinitionManager(formElement));
 }
 
@@ -1510,6 +1567,8 @@ function setupProductFormControls(formElement, product = {}) {
         const category = getStructureCategoryByName(formElement.querySelector("select[name='category']")?.value);
         const subcategory = getStructureSubcategoryByName(category, event.target.value);
         try {
+            captureAttributeEditor(formElement);
+            productContentEditor.templateDirty = false;
             productContentEditor.content.structureId = subcategory?.id || null;
             productContentEditor.content.templates = subcategory?.id
                 ? (await CrmApi.get(`/api/products/attribute-templates/${subcategory.id}`)).templates.map(item => ({
@@ -1545,6 +1604,8 @@ async function openProductForm(product = null) {
         await loadProductStructure();
         const definitionsResponse = await CrmApi.get("/api/products/attribute-definitions");
         productContentEditor.definitions = definitionsResponse.definitions || [];
+        productContentEditor.removedDefinitionIds = [];
+        productContentEditor.templateDirty = false;
         productContentEditor.content = product?.id
             ? (await CrmApi.get(`/api/products/${product.id}/content`)).content
             : { product: {}, structureId: null, templates: [], values: [], images: [] };
@@ -1565,6 +1626,7 @@ async function openProductForm(product = null) {
 
     if (!formData) return;
 
+    captureAttributeEditor(formData.crmFormElement);
     const payload = getProductPayloadFromForm(formData);
     const contentPayload = getProductContentPayloadFromForm(formData);
     if (!payload.title) {
@@ -1589,16 +1651,10 @@ async function openProductForm(product = null) {
             await applyProductGalleryDraft(savedProduct, formData.crmFormElement);
             const category = getStructureCategoryByName(payload.category);
             const subcategory = getStructureSubcategoryByName(category, payload.subcategory);
-            if (subcategory?.id) {
-                const templates = formData.getAll("templateDefinition").map(value => {
-                    const definitionId = Number(value);
-                    return {
-                        definitionId,
-                        sortOrder: Number(formData.get(`templateSort_${definitionId}`)) || 0,
-                        unitOverride: String(formData.get(`templateUnit_${definitionId}`) || "").trim(),
-                        isRequired: formData.get(`templateRequired_${definitionId}`) === "on"
-                    };
-                });
+            if (subcategory?.id && productContentEditor.templateDirty) {
+                const templates = (productContentEditor.content.templates || []).map(row => ({
+                    definitionId: row.definitionId, sortOrder: row.sortOrder, unitOverride: row.unit || "", isRequired: row.isRequired
+                }));
                 await CrmApi.put(`/api/products/attribute-templates/${subcategory.id}`, { templates });
             }
         }
