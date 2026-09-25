@@ -21209,9 +21209,9 @@
           "code": "shelf_life",
           "label": "Срок хранения",
           "current": null,
-          "proposed": null,
+          "proposed": 18,
           "unit": "месяцев",
-          "status": "IDENTITY_BLOCKED",
+          "status": "WILL_ADD",
           "source": [
             {
               "status": "READY",
@@ -21243,7 +21243,58 @@
           ]
         }
       },
-      "regularAdds": [],
+      "regularAdds": [
+        {
+          "code": "base",
+          "label": "Основа",
+          "value": "Смешанные вяжущие; полимерная составляющая до 5% массы смеси",
+          "unit": null,
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "provenance": [
+            {
+              "status": "READY",
+              "dataset": "putties-core-content-batch2.js",
+              "sources": [
+                {
+                  "key": "volma",
+                  "title": "ВОЛМА Искрит",
+                  "url": "https://www.volma.ru/production/catalog/putty/volma-iskrit/",
+                  "note": "Официальная страница; composition note confirms mixed binders and polymer component ≤5%.",
+                  "market": null
+                }
+              ],
+              "formula": null,
+              "qualifier": null
+            }
+          ]
+        },
+        {
+          "code": "purpose",
+          "label": "Назначение",
+          "value": "Финишное выравнивание стен и потолков внутри помещений",
+          "unit": null,
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "provenance": [
+            {
+              "status": "READY",
+              "dataset": "putties-core-content-batch2.js",
+              "sources": [
+                {
+                  "key": "volma",
+                  "title": "ВОЛМА Искрит",
+                  "url": "https://www.volma.ru/production/catalog/putty/volma-iskrit/",
+                  "note": "Официальная страница; composition note confirms mixed binders and polymer component ≤5%.",
+                  "market": null
+                }
+              ],
+              "formula": null,
+              "qualifier": null
+            }
+          ]
+        }
+      ],
       "existingOk": [],
       "conflicts": [],
       "needsSource": [],
