@@ -135,7 +135,15 @@ function addProposalAggregate(product, codeRows, existingByCode, definitionByCod
             currentValue: existingMatches.length === 1 ? currentValue(existingMatches[0]) : null,
             action: "NO_WRITE"
         };
-        if (!ready.length) { attributes.push(base); continue; }
+        if (!ready.length) {
+            const unresolvedValues = [...new Set(sourceItems
+                .filter(item => item.status === "NEEDS_SOURCE" && present(item.value) && !packageWeightNeedsSource(item))
+                .map(item => json(item.value)))].map(value => JSON.parse(value));
+            if (productSafe && existingMatches.length === 1 && unresolvedValues.length === 1 && valuesEqual(base.currentValue, unresolvedValues[0])) {
+                attributes.push({ ...base, action: "EXISTING_OK", existingNonWritable: true, existingProposalValue: unresolvedValues[0] });
+            } else attributes.push(base);
+            continue;
+        }
         if (sourceValues.length > 1 || existingMatches.length > 1) {
             sourceConflictCount++;
             attributes.push({ ...base, action: "SOURCE_CONFLICT", conflictValues: sourceValues });
@@ -148,12 +156,16 @@ function addProposalAggregate(product, codeRows, existingByCode, definitionByCod
         const definition = definitionByCode.get(code);
         const typed = typedProposal(code, sourceValues[0], definition);
         if (!typed.ok) {
+            if (existingMatches.length === 1 && valuesEqual(base.currentValue, sourceValues[0])) {
+                attributes.push({ ...base, action: "EXISTING_OK", existingNonWritable: true, existingProposalValue: sourceValues[0], reason: typed.reason });
+                continue;
+            }
             schemaBlockedCount++;
             attributes.push({ ...base, action: "SCHEMA_BLOCKED", reason: typed.reason });
             continue;
         }
         const value = definition.data_type === "boolean" ? Boolean(typed.valueBoolean) : definition.data_type === "number" ? typed.valueNumber : typed.valueText;
-        if (existingMatches.length === 1 && valuesEqual(base.currentValue, value)) attributes.push({ ...base, action: "EXISTING_OK", typed });
+        if (existingMatches.length === 1 && valuesEqual(base.currentValue, value)) attributes.push({ ...base, action: "EXISTING_OK", typed, ...(nonReady.length ? { existingNonWritable: true, existingProposalValue: value } : {}) });
         else if (existingMatches.length === 1) attributes.push({ ...base, action: "WILL_UPDATE", typed, value });
         else attributes.push({ ...base, action: "WILL_ADD", typed, value });
     }
@@ -295,6 +307,7 @@ function validateApprovedReviewLogical(report, review) {
         plaster: { WILL_ADD: 0, WILL_UPDATE: 0, EXISTING_OK: 0 },
         putty: { WILL_ADD: 0, WILL_UPDATE: 0, EXISTING_OK: 0 }
     };
+    const unapprovedExistingByGroup = { plaster: 0, putty: 0 };
     for (const mat of FIXED_ALLOWLIST) {
         const expected = reviewRows.get(mat);
         const live = liveRows.get(mat);
@@ -329,7 +342,19 @@ function validateApprovedReviewLogical(report, review) {
         if (expected.disposition !== "IDENTITY_BLOCKED" && live.guardReasons.length) throw new Error(`Live identity guard failed for ${mat}: ${live.guardReasons.join(",")}`);
         for (const attr of live.attributes) {
             const approved = expectedByCode.get(attr.code);
-            if (["WILL_ADD", "WILL_UPDATE", "EXISTING_OK"].includes(attr.action) && !approved) throw new Error(`Attribute is not in approved safe preview: ${mat}/${attr.code}`);
+            if (["WILL_ADD", "WILL_UPDATE", "EXISTING_OK"].includes(attr.action) && !approved) {
+                const blockedCodes = new Set([...(expected.needsSource || []).map(item => item.code), ...(expected.schemaBlocked || []).map(item => item.code)]);
+                const hasReviewBlockedProposal = blockedCodes.has(attr.code)
+                    && !(expected.conflicts || []).some(item => item.code === attr.code);
+                if (expected.disposition !== "IDENTITY_BLOCKED" && attr.action === "EXISTING_OK" && attr.existingNonWritable === true && hasReviewBlockedProposal
+                    && attr.currentCount === 1 && valuesEqual(attr.currentValue, attr.existingProposalValue)) {
+                    const group = DATA.products.find(product => product.externalId === mat)?.group;
+                    if (!group || !Object.prototype.hasOwnProperty.call(unapprovedExistingByGroup, group)) throw new Error(`Unknown reviewed product group: ${mat}`);
+                    unapprovedExistingByGroup[group]++;
+                    continue;
+                }
+                throw new Error(`Attribute is not in approved safe preview: ${mat}/${attr.code}`);
+            }
         }
         for (const [code, approved] of expectedByCode) {
             const attr = live.attributes.find(item => item.code === code);
@@ -385,12 +410,12 @@ function validateApprovedReviewLogical(report, review) {
     for (const group of ["plaster", "putty"]) {
         const summary = report.summaries[group];
         const actions = liveActionTotalsByGroup[group];
-        if (summary.willAdd !== actions.WILL_ADD || summary.willUpdate !== actions.WILL_UPDATE || summary.existingOk !== actions.EXISTING_OK
-            || summary.willAdd + summary.willUpdate + summary.existingOk !== reviewedTotalsByGroup[group]) {
+        if (summary.willAdd !== actions.WILL_ADD || summary.willUpdate !== actions.WILL_UPDATE || summary.existingOk - unapprovedExistingByGroup[group] !== actions.EXISTING_OK
+            || summary.willAdd + summary.willUpdate + summary.existingOk - unapprovedExistingByGroup[group] !== reviewedTotalsByGroup[group]) {
             throw new Error(`Category attribute counts differ from approved preview: ${group}`);
         }
     }
-    return { reviewedSafePlan, brandPlan, reviewedTotals, reviewedTotalsByGroup, liveActionTotalsByGroup };
+    return { reviewedSafePlan, brandPlan, reviewedTotals, reviewedTotalsByGroup, liveActionTotalsByGroup, unapprovedExistingByGroup, unapprovedExistingCount: unapprovedExistingByGroup.plaster + unapprovedExistingByGroup.putty };
 }
 
 async function fullValueSnapshot(db) {
@@ -615,4 +640,4 @@ async function main(args = process.argv.slice(2)) {
 
 if (require.main === module) main().catch(error => { console.error(error.message); process.exitCode = 1; });
 
-module.exports = { CONFIRM_TOKEN, FIXED_ALLOWLIST, MAIN_CODES, EXPECTED_ADDED_ATTRIBUTES, EXPECTED_BRAND_WRITES, parseArgs, openDatabase, valuesEqual, typedProposal, inspect, protectedHashes, fullValueSnapshot, validateApprovedReview, validateApprovedReviewLogical, stablePlan, verifyValueDelta, verifyBrandDelta, createOnlineBackup, runBatch };
+module.exports = { CONFIRM_TOKEN, FIXED_ALLOWLIST, MAIN_CODES, EXPECTED_ADDED_ATTRIBUTES, EXPECTED_BRAND_WRITES, parseArgs, openDatabase, valuesEqual, typedProposal, inspect, expectedActionMap, protectedHashes, fullValueSnapshot, validateApprovedReview, validateApprovedReviewLogical, stablePlan, verifyValueDelta, verifyBrandDelta, createOnlineBackup, runBatch };

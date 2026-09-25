@@ -5,7 +5,7 @@ const crypto = require("crypto");
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
-const { FIXED_ALLOWLIST, openDatabase, inspect, fullValueSnapshot, protectedHashes, createOnlineBackup, runBatch, parseArgs } = require("./backfill-source-reviewed-content");
+const { FIXED_ALLOWLIST, openDatabase, inspect, fullValueSnapshot, protectedHashes, createOnlineBackup, runBatch, expectedActionMap, parseArgs } = require("./backfill-source-reviewed-content");
 const REVIEW = require("../../docs/product-content/plaster-putty-backfill-review.json");
 
 const SOURCE_DB = path.resolve(__dirname, "../database/matmix.db");
@@ -13,6 +13,29 @@ const digest = value => crypto.createHash("sha256").update(JSON.stringify(value)
 const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "matmix-content-backfill-test-"));
 const fixturePath = path.join(tempRoot, "fixture.db");
 fs.copyFileSync(SOURCE_DB, fixturePath);
+
+async function testExistingBlockedProposal() {
+    const isolatedPath = path.join(tempRoot, "blocked-existing-fixture.db");
+    fs.copyFileSync(SOURCE_DB, isolatedPath);
+    const db = await openDatabase(isolatedPath, false);
+    try {
+        const definition = await db.get("SELECT id FROM product_attribute_definitions WHERE code='consumption_10mm' AND is_active=1");
+        assert(definition, "fixture needs consumption_10mm definition");
+        await db.run("UPDATE product_attribute_definitions SET data_type='text' WHERE id=?", [definition.id]);
+        await insertValue(db, "MAT-000001", "consumption_10mm", "около 8,5");
+        const before = await fullValueSnapshot(db);
+        const report = await runBatch(db);
+        const row = report.rows.find(item => item.MAT === "MAT-000001");
+        const attribute = row.attributes.find(item => item.code === "consumption_10mm");
+        assert.strictEqual(attribute.action, "EXISTING_OK", "exact preexisting blocked proposal is classified as EXISTING_OK");
+        assert.strictEqual(attribute.existingNonWritable, true);
+        assert.strictEqual(attribute.currentValue, "около 8,5");
+        assert.strictEqual(expectedActionMap(report).has("MAT-000001|consumption_10mm"), false, "matching blocked value must not enter the write plan");
+        assert.deepStrictEqual(await fullValueSnapshot(db), before, "dry-run must not modify fixture values");
+    } finally {
+        await db.close();
+    }
+}
 
 async function snapshot(db) {
     return {
@@ -36,6 +59,7 @@ async function insertValue(db, mat, code, value) {
 }
 
 async function main() {
+    await testExistingBlockedProposal();
     assert.throws(() => parseArgs(["--db", fixturePath, "--apply"]), /requires --confirm/);
     assert.throws(() => parseArgs(["--db", fixturePath, "--apply", "--dry-run"]), /Choose either/);
     const db = await openDatabase(fixturePath, false);

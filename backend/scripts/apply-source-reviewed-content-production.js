@@ -87,10 +87,11 @@ function validateProductionPreflight(report, review) {
     const safeAdds = report.summaries.plaster.willAdd + report.summaries.putty.willAdd;
     const updates = report.summaries.plaster.willUpdate + report.summaries.putty.willUpdate;
     const existing = report.summaries.plaster.existingOk + report.summaries.putty.existingOk;
+    const nonApprovedExisting = approved.unapprovedExistingCount;
     const expectedTotal = approved.reviewedTotals.WILL_ADD + approved.reviewedTotals.WILL_UPDATE + approved.reviewedTotals.EXISTING_OK;
-    if (safeAdds + updates + existing !== expectedTotal || updates !== 0
-        || report.summaries.plaster.willAdd + report.summaries.plaster.willUpdate + report.summaries.plaster.existingOk !== approved.reviewedTotalsByGroup.plaster
-        || report.summaries.putty.willAdd + report.summaries.putty.willUpdate + report.summaries.putty.existingOk !== approved.reviewedTotalsByGroup.putty) {
+    if (safeAdds + updates + existing - nonApprovedExisting !== expectedTotal || updates !== 0
+        || report.summaries.plaster.willAdd + report.summaries.plaster.willUpdate + report.summaries.plaster.existingOk - approved.unapprovedExistingByGroup.plaster !== approved.reviewedTotalsByGroup.plaster
+        || report.summaries.putty.willAdd + report.summaries.putty.willUpdate + report.summaries.putty.existingOk - approved.unapprovedExistingByGroup.putty !== approved.reviewedTotalsByGroup.putty) {
         throw new Error(`Attribute logical preflight mismatch: add=${safeAdds}, update=${updates}, existing=${existing}`);
     }
     const brands = report.summaries.brand;
@@ -100,21 +101,23 @@ function validateProductionPreflight(report, review) {
     const blocked = sorted(report.rows.filter(row => row.brand.action === "IDENTITY_BLOCKED").map(row => row.MAT));
     assertEqual(blocked, sorted(EXPECTED_IDENTITY_BLOCKS), "Identity-blocked MAT list");
     assertEqual(sourceConflictFields(report), EXPECTED_CONFLICTS, "Source-conflict field list");
-    return { ...approved, counts: { willAdd: safeAdds, willUpdate: updates, existingOk: existing, reviewedApprovedTotal: expectedTotal, plasterWillAdd: report.summaries.plaster.willAdd, puttyWillAdd: report.summaries.putty.willAdd, brandSafeToFill: brands.SAFE_TO_FILL, brandExistingOk: brands.EXISTING_OK, brandConflict: brands.CONFLICT, brandIdentityBlocked: brands.IDENTITY_BLOCKED } };
+    return { ...approved, counts: { willAdd: safeAdds, willUpdate: updates, existingOk: existing - nonApprovedExisting, existingReviewedBlockedProposal: nonApprovedExisting, reviewedApprovedTotal: expectedTotal, plasterWillAdd: report.summaries.plaster.willAdd, puttyWillAdd: report.summaries.putty.willAdd, brandSafeToFill: brands.SAFE_TO_FILL, brandExistingOk: brands.EXISTING_OK, brandConflict: brands.CONFLICT, brandIdentityBlocked: brands.IDENTITY_BLOCKED } };
 }
 
-function validatePostApply(report) {
+function validatePostApply(report, review) {
     const willAdd = report.summaries.plaster.willAdd + report.summaries.putty.willAdd;
     const willUpdate = report.summaries.plaster.willUpdate + report.summaries.putty.willUpdate;
     const existingOk = report.summaries.plaster.existingOk + report.summaries.putty.existingOk;
+    const reviewed = SOURCE.validateApprovedReviewLogical(report, review);
+    const reviewedExistingOk = existingOk - reviewed.unapprovedExistingCount;
     const brand = report.summaries.brand;
-    if (willAdd !== 0 || willUpdate !== 0 || existingOk !== 505 || brand.EXISTING_OK !== 58 || brand.SAFE_TO_FILL !== 0 || brand.CONFLICT !== 0 || brand.IDENTITY_BLOCKED !== 3) {
+    if (willAdd !== 0 || willUpdate !== 0 || reviewedExistingOk !== 505 || brand.EXISTING_OK !== 58 || brand.SAFE_TO_FILL !== 0 || brand.CONFLICT !== 0 || brand.IDENTITY_BLOCKED !== 3) {
         throw new Error(`Post-apply logical state mismatch: add=${willAdd}, update=${willUpdate}, existing=${existingOk}, brand=${JSON.stringify(brand)}`);
     }
     const blocked = sorted(report.rows.filter(row => row.brand.action === "IDENTITY_BLOCKED").map(row => row.MAT));
     assertEqual(blocked, sorted(EXPECTED_IDENTITY_BLOCKS), "Post-apply identity-blocked MAT list");
     assertEqual(sourceConflictFields(report), EXPECTED_CONFLICTS, "Post-apply source-conflict field list");
-    return { willAdd, willUpdate, existingOk, brand };
+    return { willAdd, willUpdate, existingOk: reviewedExistingOk, existingReviewedBlockedProposal: reviewed.unapprovedExistingCount, brand };
 }
 
 async function runProduction(db, { apply = false, review, backup = null } = {}) {
@@ -124,7 +127,7 @@ async function runProduction(db, { apply = false, review, backup = null } = {}) 
     const integrity = await db.get("PRAGMA integrity_check");
     if (integrity?.integrity_check !== "ok") throw new Error(`Production DB integrity check failed: ${integrity?.integrity_check}`);
     if (approved.reviewedSafePlan.size === 0 && approved.brandPlan.length === 0) {
-        const repeatSummary = validatePostApply(report);
+        const repeatSummary = validatePostApply(report, review);
         return { mode: "apply-no-changes", status: "NO_CHANGES", attributeAdded: 0, attributeUpdated: 0, brandAdded: 0, backup: null, repeatSummary };
     }
     const applied = await SOURCE.runBatch(db, {
@@ -140,13 +143,13 @@ async function runProduction(db, { apply = false, review, backup = null } = {}) 
             }
         },
         verifyBeforeCommit: postApplyReport => {
-            const post = validatePostApply(postApplyReport);
+            const post = validatePostApply(postApplyReport, review);
             if (postApplyReport.rows.some(row => row.attributes.some(item => item.action === "WILL_UPDATE"))) throw new Error("Product attribute updates are not allowed in this rollout");
         }
     });
     if (applied.attributeAdded !== approved.reviewedSafePlan.size || applied.attributeUpdated !== 0 || applied.brandAdded !== approved.brandPlan.length) throw new Error("Applied write counts differ from the current approved production plan");
     const repeated = await SOURCE.inspect(db);
-    const repeatSummary = validatePostApply(repeated);
+    const repeatSummary = validatePostApply(repeated, review);
     return { mode: "applied", status: "APPLIED", attributeAdded: applied.attributeAdded, attributeUpdated: applied.attributeUpdated, brandAdded: applied.brandAdded, backup: applied.backup, repeatSummary };
 }
 

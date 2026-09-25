@@ -73,6 +73,51 @@ function testLogicalPreflight() {
     assert.strictEqual(partial.counts.existingOk, 9);
     assert.strictEqual(partial.reviewedSafePlan.size, 496, "already matching approved value must be skipped");
 
+    const existingBlockedProposal = approvedFixture();
+    const consumption = existingBlockedProposal.rows.find(row => row.MAT === "MAT-000001").attributes.find(item => item.code === "consumption_10mm");
+    assert(consumption, "fixture must include the reviewed non-writable consumption field");
+    consumption.action = "EXISTING_OK";
+    consumption.currentValue = "около 8,5";
+    consumption.currentIds = [9101];
+    consumption.currentCount = 1;
+    consumption.existingNonWritable = true;
+    consumption.existingProposalValue = "около 8,5";
+    existingBlockedProposal.summaries.plaster.existingOk++;
+    const blockedProposalPreflight = PROD.validateProductionPreflight(existingBlockedProposal, REVIEW);
+    assert.strictEqual(blockedProposalPreflight.counts.existingReviewedBlockedProposal, 1);
+    assert.strictEqual(blockedProposalPreflight.reviewedSafePlan.size, 497, "matching blocked proposal must not enter the write plan");
+
+    const absentBlockedProposal = approvedFixture();
+    assert.strictEqual(SOURCE.expectedActionMap(absentBlockedProposal).has("MAT-000001|consumption_10mm"), false, "NEEDS_SOURCE fields must not enter the write plan when absent");
+
+    const changedBlockedProposal = approvedFixture();
+    const changedConsumption = changedBlockedProposal.rows.find(row => row.MAT === "MAT-000001").attributes.find(item => item.code === "consumption_10mm");
+    changedConsumption.action = "EXISTING_OK";
+    changedConsumption.currentValue = "8,5";
+    changedConsumption.currentCount = 1;
+    changedConsumption.existingNonWritable = true;
+    changedConsumption.existingProposalValue = "около 8,5";
+    changedBlockedProposal.summaries.plaster.existingOk++;
+    assert.throws(() => PROD.validateProductionPreflight(changedBlockedProposal, REVIEW), /Attribute is not in approved safe preview/);
+
+    const identityBlockedExisting = approvedFixture();
+    identityBlockedExisting.rows.find(row => row.MAT === "MAT-000027").attributes.push({
+        code: "consumption_10mm", action: "EXISTING_OK", currentValue: "8–9", currentCount: 1,
+        existingNonWritable: true, existingProposalValue: "8–9", needsSource: []
+    });
+    identityBlockedExisting.summaries.plaster.existingOk++;
+    assert.throws(() => PROD.validateProductionPreflight(identityBlockedExisting, REVIEW), /Attribute is not in approved safe preview/);
+
+    const conflictingExisting = approvedFixture();
+    const conflict = conflictingExisting.rows.find(row => row.MAT === "MAT-000006").attributes.find(item => item.action === "SOURCE_CONFLICT");
+    conflict.action = "EXISTING_OK";
+    conflict.currentValue = "Гипсовая";
+    conflict.currentCount = 1;
+    conflict.existingNonWritable = true;
+    conflict.existingProposalValue = "Гипсовая";
+    conflictingExisting.summaries.plaster.existingOk++;
+    assert.throws(() => PROD.validateProductionPreflight(conflictingExisting, REVIEW), /Attribute is not in approved safe preview|Conflict field set differs/);
+
     const differentExisting = approvedFixture();
     const mismatchedProductType = differentExisting.rows.find(row => row.MAT === "MAT-000001").attributes.find(item => item.code === "product_type");
     mismatchedProductType.action = "EXISTING_OK";
@@ -99,7 +144,7 @@ function testLogicalPreflight() {
     completed.summaries.putty = { willAdd: 0, willUpdate: 0, existingOk: 297 };
     completed.summaries.brand = { SAFE_TO_FILL: 0, EXISTING_OK: 58, CONFLICT: 0, IDENTITY_BLOCKED: 3, NO_REVIEWED_BRAND: 0 };
     assert.strictEqual(PROD.validateProductionPreflight(completed, REVIEW).reviewedSafePlan.size, 0);
-    assert.strictEqual(PROD.validatePostApply(completed).existingOk, 505, "repeat validation after apply must be a no-op state");
+    assert.strictEqual(PROD.validatePostApply(completed, REVIEW).existingOk, 505, "repeat validation after apply must be a no-op state");
 
     const updateReview = JSON.parse(JSON.stringify(REVIEW));
     const approvedUpdate = updateReview.rows.find(row => row.MAT === "MAT-000001").main.product_type;
@@ -142,15 +187,24 @@ function testLogicalPreflight() {
 function testPostApplyGuard() {
     const report = approvedFixture();
     for (const row of report.rows) {
-        for (const attr of row.attributes) if (attr.action === "WILL_ADD") attr.action = "EXISTING_OK";
-        if (row.brand.action === "SAFE_TO_FILL") row.brand.action = "EXISTING_OK";
+        for (const attr of row.attributes) if (attr.action === "WILL_ADD") {
+            attr.action = "EXISTING_OK";
+            attr.currentValue = attr.value;
+            attr.currentIds = [12000 + row.attributes.indexOf(attr)];
+            attr.currentCount = 1;
+            delete attr.value;
+        }
+        if (row.brand.action === "SAFE_TO_FILL") {
+            row.brand.action = "EXISTING_OK";
+            row.brand.current = row.brand.proposed;
+        }
     }
     report.summaries.plaster = { willAdd: 0, willUpdate: 0, existingOk: 208 };
     report.summaries.putty = { willAdd: 0, willUpdate: 0, existingOk: 297 };
     report.summaries.brand = { SAFE_TO_FILL: 0, EXISTING_OK: 58, CONFLICT: 0, IDENTITY_BLOCKED: 3, NO_REVIEWED_BRAND: 0 };
-    assert.strictEqual(PROD.validatePostApply(report).existingOk, 505);
+    assert.strictEqual(PROD.validatePostApply(report, REVIEW).existingOk, 505);
     report.summaries.putty.existingOk = 296;
-    assert.throws(() => PROD.validatePostApply(report), /Post-apply logical state mismatch/);
+    assert.throws(() => PROD.validatePostApply(report, REVIEW), /Post-apply logical state mismatch|Category attribute counts differ/);
 }
 
 testArgsAndHostGuards();
