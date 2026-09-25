@@ -21293,6 +21293,31 @@
               "qualifier": null
             }
           ]
+        },
+        {
+          "code": "application_temperature",
+          "label": "Температура основания и воздуха",
+          "value": "от +5 до +30 °C",
+          "unit": null,
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "provenance": [
+            {
+              "status": "READY",
+              "dataset": "putties-core-content-batch2.js",
+              "sources": [
+                {
+                  "key": "volma",
+                  "title": "ВОЛМА Искрит",
+                  "url": "https://www.volma.ru/production/catalog/putty/volma-iskrit/",
+                  "note": "Официальная страница; composition note confirms mixed binders and polymer component ≤5%.",
+                  "market": null
+                }
+              ],
+              "formula": null,
+              "qualifier": null
+            }
+          ]
         }
       ],
       "existingOk": [],
