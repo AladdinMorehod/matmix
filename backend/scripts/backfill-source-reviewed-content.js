@@ -73,7 +73,7 @@ function valuesEqual(left, right) {
 }
 
 function attributeValuesEqual(left, right, dataType) {
-    if (dataType !== "number" || !present(left) || !present(right)) return valuesEqual(left, right);
+    if (!present(left) || !present(right)) return valuesEqual(left, right);
     const asNumber = value => {
         if (typeof value === "number") return Number.isFinite(value) ? value : null;
         if (typeof value !== "string") return null;
@@ -82,6 +82,15 @@ function attributeValuesEqual(left, right, dataType) {
         const numeric = Number(normalized.replace(",", "."));
         return Number.isFinite(numeric) ? numeric : null;
     };
+    if (typeof left === "number" && typeof right === "string") {
+        const rightNumber = asNumber(right);
+        return rightNumber !== null && Number.isFinite(left) && left === rightNumber;
+    }
+    if (typeof right === "number" && typeof left === "string") {
+        const leftNumber = asNumber(left);
+        return leftNumber !== null && Number.isFinite(right) && leftNumber === right;
+    }
+    if (dataType !== "number") return valuesEqual(left, right);
     const leftNumber = asNumber(left);
     const rightNumber = asNumber(right);
     return leftNumber !== null && rightNumber !== null && leftNumber === rightNumber;

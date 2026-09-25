@@ -61,17 +61,30 @@ function testLogicalPreflight() {
     assert.strictEqual(approved.brandPlan.length, 57);
     assert.deepStrictEqual([...approved.reviewedSafePlan.keys()].slice(0, 1).length, 1);
 
-    assert.strictEqual(SOURCE.attributeValuesEqual("8,5", 8.5, "number"), true);
-    assert.strictEqual(SOURCE.attributeValuesEqual("19,5", 19.5, "number"), true);
-    assert.strictEqual(SOURCE.attributeValuesEqual("8,5", 8.5, "text"), false, "text attributes retain text comparison behavior");
+    assert.strictEqual(SOURCE.attributeValuesEqual("8,5", 8.5, "text"), true);
+    assert.strictEqual(SOURCE.attributeValuesEqual("8.5", 8.5, "text"), true);
+    assert.strictEqual(SOURCE.attributeValuesEqual("19,5", 19.5, "text"), true);
+    assert.strictEqual(SOURCE.attributeValuesEqual("около 8,5", 8.5, "text"), false, "approximate values keep their qualifier and remain blocked");
+    assert.strictEqual(SOURCE.attributeValuesEqual("8,5", 9, "text"), false, "different numeric values remain a mismatch");
+    assert.strictEqual(SOURCE.attributeValuesEqual("Гипсовая", "Цементная", "text"), false, "different ordinary text values remain a mismatch");
     const decimalCommaExisting = approvedFixture();
     const mat2Consumption = decimalCommaExisting.rows.find(row => row.MAT === "MAT-000002").attributes.find(item => item.code === "consumption_10mm");
     assert(mat2Consumption, "review fixture must include MAT-000002/consumption_10mm");
-    mat2Consumption.dataType = "number";
+    mat2Consumption.dataType = "text";
     mat2Consumption.currentValue = "8,5";
     const decimalCommaPreflight = PROD.validateProductionPreflight(decimalCommaExisting, REVIEW);
     assert.strictEqual(mat2Consumption.action, "EXISTING_OK");
     assert.strictEqual(decimalCommaPreflight.reviewedSafePlan.has("MAT-000002|consumption_10mm"), false, "numerically equal existing value must not be written");
+
+    const approximateExisting = approvedFixture();
+    approximateExisting.rows.find(row => row.MAT === "MAT-000002").attributes.find(item => item.code === "consumption_10mm").currentValue = "около 8,5";
+    assert.throws(() => PROD.validateProductionPreflight(approximateExisting, REVIEW), /Approved existing value changed/);
+
+    const mismatchReview = JSON.parse(JSON.stringify(REVIEW));
+    mismatchReview.rows.find(row => row.MAT === "MAT-000002").existingOk.find(item => item.code === "consumption_10mm").current = 9;
+    const mismatchedDecimal = approvedFixture(mismatchReview);
+    mismatchedDecimal.rows.find(row => row.MAT === "MAT-000002").attributes.find(item => item.code === "consumption_10mm").currentValue = "8,5";
+    assert.throws(() => PROD.validateProductionPreflight(mismatchedDecimal, mismatchReview), /Approved existing value changed/);
 
     const alreadyFilled = approvedFixture();
     const existingProductType = alreadyFilled.rows.find(row => row.MAT === "MAT-000001").attributes.find(item => item.code === "product_type");
@@ -247,6 +260,9 @@ async function testDecimalCommaDatabaseFixture() {
     fs.copyFileSync(path.resolve(__dirname, "../database/matmix.db"), fixturePath);
     const db = await SOURCE.openDatabase(fixturePath, false);
     try {
+        const definitionUpdate = await db.run(`UPDATE product_attribute_definitions SET data_type='text'
+            WHERE code='consumption_10mm' AND is_active=1`);
+        assert.strictEqual(definitionUpdate.changes, 1, "fixture must model a production text definition");
         const update = await db.run(`UPDATE product_attribute_values SET value_text='8,5', value_number=NULL
             WHERE id=(SELECT v.id FROM product_attribute_values v JOIN products p ON p.id=v.product_id
                 JOIN product_attribute_definitions d ON d.id=v.attribute_definition_id
@@ -255,7 +271,7 @@ async function testDecimalCommaDatabaseFixture() {
         const report = await SOURCE.inspect(db);
         const attribute = report.rows.find(row => row.MAT === "MAT-000002").attributes.find(item => item.code === "consumption_10mm");
         assert.strictEqual(attribute.currentValue, "8,5");
-        assert.strictEqual(attribute.dataType, "number");
+        assert.strictEqual(attribute.dataType, "text");
         assert.strictEqual(attribute.action, "EXISTING_OK");
         const preflight = PROD.validateProductionPreflight(report, REVIEW);
         assert.strictEqual(preflight.reviewedSafePlan.has("MAT-000002|consumption_10mm"), false, "equivalent numeric representation must produce no write");
