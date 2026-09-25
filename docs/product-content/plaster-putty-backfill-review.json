@@ -21154,8 +21154,8 @@
       "MAT": "MAT-000060",
       "TITLE": "Шпаклевка полимерная финишная Волма Искрит, белоснежная мех. 19 кг",
       "category": "Шпаклевка",
-      "status": "IDENTITY_UNCERTAIN",
-      "disposition": "IDENTITY_BLOCKED",
+      "status": "PARTIAL",
+      "disposition": "PARTIAL_SAFE_TO_APPLY",
       "identityGuard": {
         "safe": true,
         "reasons": [],
@@ -21184,9 +21184,9 @@
           "code": "product_type",
           "label": "Тип продукта",
           "current": null,
-          "proposed": null,
+          "proposed": "Финишная шпаклевка",
           "unit": null,
-          "status": "IDENTITY_BLOCKED",
+          "status": "WILL_ADD",
           "source": [
             {
               "status": "READY",
