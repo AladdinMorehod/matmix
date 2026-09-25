@@ -72,6 +72,21 @@ function valuesEqual(left, right) {
     return String(left).trim().replace(/\s+/g, " ") === String(right).trim().replace(/\s+/g, " ");
 }
 
+function attributeValuesEqual(left, right, dataType) {
+    if (dataType !== "number" || !present(left) || !present(right)) return valuesEqual(left, right);
+    const asNumber = value => {
+        if (typeof value === "number") return Number.isFinite(value) ? value : null;
+        if (typeof value !== "string") return null;
+        const normalized = value.trim();
+        if (!/^[+-]?(?:\d+(?:[.,]\d+)?|[.,]\d+)(?:e[+-]?\d+)?$/i.test(normalized)) return null;
+        const numeric = Number(normalized.replace(",", "."));
+        return Number.isFinite(numeric) ? numeric : null;
+    };
+    const leftNumber = asNumber(left);
+    const rightNumber = asNumber(right);
+    return leftNumber !== null && rightNumber !== null && leftNumber === rightNumber;
+}
+
 function proposalSources(source) {
     const sources = Array.isArray(source.proposal.sources) ? source.proposal.sources : [];
     const invalid = sources.filter(key => !source.sourceMap || !Object.prototype.hasOwnProperty.call(source.sourceMap, key));
@@ -133,13 +148,14 @@ function addProposalAggregate(product, codeRows, existingByCode, definitionByCod
             currentCount: existingMatches.length,
             currentIds: existingMatches.map(item => item.id),
             currentValue: existingMatches.length === 1 ? currentValue(existingMatches[0]) : null,
+            dataType: definitionByCode.get(code)?.data_type || null,
             action: "NO_WRITE"
         };
         if (!ready.length) {
             const unresolvedValues = [...new Set(sourceItems
                 .filter(item => item.status === "NEEDS_SOURCE" && present(item.value) && !packageWeightNeedsSource(item))
                 .map(item => json(item.value)))].map(value => JSON.parse(value));
-            if (productSafe && existingMatches.length === 1 && unresolvedValues.length === 1 && valuesEqual(base.currentValue, unresolvedValues[0])) {
+            if (productSafe && existingMatches.length === 1 && unresolvedValues.length === 1 && attributeValuesEqual(base.currentValue, unresolvedValues[0], base.dataType)) {
                 attributes.push({ ...base, action: "EXISTING_OK", existingNonWritable: true, existingProposalValue: unresolvedValues[0] });
             } else attributes.push(base);
             continue;
@@ -156,7 +172,7 @@ function addProposalAggregate(product, codeRows, existingByCode, definitionByCod
         const definition = definitionByCode.get(code);
         const typed = typedProposal(code, sourceValues[0], definition);
         if (!typed.ok) {
-            if (existingMatches.length === 1 && valuesEqual(base.currentValue, sourceValues[0])) {
+            if (existingMatches.length === 1 && attributeValuesEqual(base.currentValue, sourceValues[0], definition.data_type)) {
                 attributes.push({ ...base, action: "EXISTING_OK", existingNonWritable: true, existingProposalValue: sourceValues[0], reason: typed.reason });
                 continue;
             }
@@ -165,7 +181,7 @@ function addProposalAggregate(product, codeRows, existingByCode, definitionByCod
             continue;
         }
         const value = definition.data_type === "boolean" ? Boolean(typed.valueBoolean) : definition.data_type === "number" ? typed.valueNumber : typed.valueText;
-        if (existingMatches.length === 1 && valuesEqual(base.currentValue, value)) attributes.push({ ...base, action: "EXISTING_OK", typed, ...(nonReady.length ? { existingNonWritable: true, existingProposalValue: value } : {}) });
+        if (existingMatches.length === 1 && attributeValuesEqual(base.currentValue, value, definition.data_type)) attributes.push({ ...base, action: "EXISTING_OK", typed, ...(nonReady.length ? { existingNonWritable: true, existingProposalValue: value } : {}) });
         else if (existingMatches.length === 1) attributes.push({ ...base, action: "WILL_UPDATE", typed, value });
         else attributes.push({ ...base, action: "WILL_ADD", typed, value });
     }
@@ -331,7 +347,8 @@ function validateApprovedReviewLogical(report, review) {
             const item = { ...mainItem, value: mainItem.proposed, current: mainItem.current, status: mainItem.status };
             const existing = expectedByCode.get(item.code);
             if (existing) {
-                if (existing.status !== item.status || !valuesEqual(existing.value, item.value)) throw new Error(`Reviewed main/regular field disagreement: ${mat}/${item.code}`);
+                const attr = live.attributes.find(attribute => attribute.code === item.code);
+                if (existing.status !== item.status || !attributeValuesEqual(existing.value, item.value, attr?.dataType)) throw new Error(`Reviewed main/regular field disagreement: ${mat}/${item.code}`);
                 continue;
             }
             expectedByCode.set(item.code, item);
@@ -351,7 +368,7 @@ function validateApprovedReviewLogical(report, review) {
                 const hasReviewBlockedProposal = blockedCodes.has(attr.code)
                     && !(expected.conflicts || []).some(item => item.code === attr.code);
                 if (expected.disposition !== "IDENTITY_BLOCKED" && attr.action === "EXISTING_OK" && attr.existingNonWritable === true && hasReviewBlockedProposal) {
-                    if (attr.currentCount !== 1 || !valuesEqual(attr.currentValue, attr.existingProposalValue)) throw new Error(`Existing blocked proposal value differs: ${mat}/${attr.code}`);
+                    if (attr.currentCount !== 1 || !attributeValuesEqual(attr.currentValue, attr.existingProposalValue, attr.dataType)) throw new Error(`Existing blocked proposal value differs: ${mat}/${attr.code}`);
                     const group = DATA.products.find(product => product.externalId === mat)?.group;
                     if (!group || !Object.prototype.hasOwnProperty.call(unapprovedExistingByGroup, group)) throw new Error(`Unknown reviewed product group: ${mat}`);
                     unapprovedExistingByGroup[group]++;
@@ -372,20 +389,20 @@ function validateApprovedReviewLogical(report, review) {
         for (const [code, approved] of expectedByCode) {
             const attr = live.attributes.find(item => item.code === code);
             if (!attr) throw new Error(`Reviewed safe field is missing from live plan: ${mat}/${code}`);
-            if (["WILL_ADD", "WILL_UPDATE"].includes(attr.action) && !valuesEqual(attr.value, approved.value)) throw new Error(`Reviewed safe field value changed: ${mat}/${code}`);
+            if (["WILL_ADD", "WILL_UPDATE"].includes(attr.action) && !attributeValuesEqual(attr.value, approved.value, attr.dataType)) throw new Error(`Reviewed safe field value changed: ${mat}/${code}`);
             if (approved.status === "WILL_ADD") {
                 if (attr.action === "WILL_ADD") {
                     if (attr.currentCount !== 0 || present(attr.currentValue)) throw new Error(`Approved add has an unexpected current value: ${mat}/${code}`);
                 } else if (attr.action === "EXISTING_OK") {
-                    if (!valuesEqual(attr.currentValue, approved.value)) throw new Error(`Existing value differs from approved add: ${mat}/${code}`);
+                    if (!attributeValuesEqual(attr.currentValue, approved.value, attr.dataType)) throw new Error(`Existing value differs from approved add: ${mat}/${code}`);
                 } else throw new Error(`Approved add is neither absent nor an exact existing value: ${mat}/${code}`);
             } else if (approved.status === "WILL_UPDATE") {
                 if (attr.action === "WILL_UPDATE") {
-                    if (!Object.prototype.hasOwnProperty.call(approved, "current") || !valuesEqual(attr.currentValue, approved.current)) throw new Error(`Approved update current value changed: ${mat}/${code}`);
+                    if (!Object.prototype.hasOwnProperty.call(approved, "current") || !attributeValuesEqual(attr.currentValue, approved.current, attr.dataType)) throw new Error(`Approved update current value changed: ${mat}/${code}`);
                 } else if (attr.action === "EXISTING_OK") {
-                    if (!valuesEqual(attr.currentValue, approved.value)) throw new Error(`Completed approved update has a different value: ${mat}/${code}`);
+                    if (!attributeValuesEqual(attr.currentValue, approved.value, attr.dataType)) throw new Error(`Completed approved update has a different value: ${mat}/${code}`);
                 } else throw new Error(`Approved update no longer has its guarded current row: ${mat}/${code}`);
-            } else if (attr.action !== "EXISTING_OK" || !valuesEqual(attr.currentValue, approved.value)) {
+            } else if (attr.action !== "EXISTING_OK" || !attributeValuesEqual(attr.currentValue, approved.value, attr.dataType)) {
                 throw new Error(`Approved existing value changed: ${mat}/${code}`);
             }
             if (attr.action === "WILL_ADD" || attr.action === "WILL_UPDATE") {
@@ -670,4 +687,4 @@ async function main(args = process.argv.slice(2)) {
 
 if (require.main === module) main().catch(error => { console.error(error.message); process.exitCode = 1; });
 
-module.exports = { CONFIRM_TOKEN, FIXED_ALLOWLIST, MAIN_CODES, EXPECTED_ADDED_ATTRIBUTES, EXPECTED_BRAND_WRITES, parseArgs, openDatabase, valuesEqual, typedProposal, inspect, expectedActionMap, protectedHashes, fullValueSnapshot, validateApprovedReview, validateApprovedReviewLogical, stablePlan, verifyValueDelta, verifyBrandDelta, createOnlineBackup, runBatch };
+module.exports = { CONFIRM_TOKEN, FIXED_ALLOWLIST, MAIN_CODES, EXPECTED_ADDED_ATTRIBUTES, EXPECTED_BRAND_WRITES, parseArgs, openDatabase, valuesEqual, attributeValuesEqual, typedProposal, inspect, expectedActionMap, protectedHashes, fullValueSnapshot, validateApprovedReview, validateApprovedReviewLogical, stablePlan, verifyValueDelta, verifyBrandDelta, createOnlineBackup, runBatch };

@@ -1,6 +1,8 @@
 "use strict";
 
 const assert = require("assert");
+const fs = require("fs");
+const os = require("os");
 const path = require("path");
 const REVIEW = require("../../docs/product-content/plaster-putty-backfill-review.json");
 const SOURCE = require("./backfill-source-reviewed-content");
@@ -10,8 +12,8 @@ const targetCommit = "a".repeat(40);
 function approvedFixture(review = REVIEW) {
     const rows = review.rows.map(expected => {
         const attributes = [
-            ...expected.regularAdds.map((item, index) => ({ code: item.code, value: item.value, action: item.status, typed: { code: item.code }, currentIds: item.status === "WILL_UPDATE" ? [7000 + index] : [], currentValue: item.status === "WILL_UPDATE" ? item.current : null, currentCount: item.status === "WILL_UPDATE" ? 1 : 0, needsSource: [] })),
-            ...(expected.existingOk || []).map((item, index) => ({ code: item.code, action: "EXISTING_OK", typed: { code: item.code }, currentIds: [8000 + index], currentValue: item.current, currentCount: 1, needsSource: [] })),
+            ...expected.regularAdds.map((item, index) => ({ code: item.code, value: item.value, action: item.status, typed: { code: item.code }, dataType: item.code === "consumption_10mm" ? "number" : null, currentIds: item.status === "WILL_UPDATE" ? [7000 + index] : [], currentValue: item.status === "WILL_UPDATE" ? item.current : null, currentCount: item.status === "WILL_UPDATE" ? 1 : 0, needsSource: [] })),
+            ...(expected.existingOk || []).map((item, index) => ({ code: item.code, action: "EXISTING_OK", typed: { code: item.code }, dataType: item.code === "consumption_10mm" ? "number" : null, currentIds: [8000 + index], currentValue: item.current, currentCount: 1, needsSource: [] })),
             ...Object.values(expected.main).filter(item => ["WILL_ADD", "WILL_UPDATE"].includes(item.status)).map((item, index) => ({ code: item.code, value: item.proposed, action: item.status, typed: { code: item.code }, currentIds: item.status === "WILL_UPDATE" ? [7500 + index] : [], currentValue: item.status === "WILL_UPDATE" ? item.current : null, currentCount: item.status === "WILL_UPDATE" ? 1 : 0, needsSource: [] })),
             ...expected.conflicts.map(item => ({ code: item.code, action: "SOURCE_CONFLICT", needsSource: [] }))
         ];
@@ -58,6 +60,18 @@ function testLogicalPreflight() {
     assert.strictEqual(approved.counts.willAdd, 497);
     assert.strictEqual(approved.brandPlan.length, 57);
     assert.deepStrictEqual([...approved.reviewedSafePlan.keys()].slice(0, 1).length, 1);
+
+    assert.strictEqual(SOURCE.attributeValuesEqual("8,5", 8.5, "number"), true);
+    assert.strictEqual(SOURCE.attributeValuesEqual("19,5", 19.5, "number"), true);
+    assert.strictEqual(SOURCE.attributeValuesEqual("8,5", 8.5, "text"), false, "text attributes retain text comparison behavior");
+    const decimalCommaExisting = approvedFixture();
+    const mat2Consumption = decimalCommaExisting.rows.find(row => row.MAT === "MAT-000002").attributes.find(item => item.code === "consumption_10mm");
+    assert(mat2Consumption, "review fixture must include MAT-000002/consumption_10mm");
+    mat2Consumption.dataType = "number";
+    mat2Consumption.currentValue = "8,5";
+    const decimalCommaPreflight = PROD.validateProductionPreflight(decimalCommaExisting, REVIEW);
+    assert.strictEqual(mat2Consumption.action, "EXISTING_OK");
+    assert.strictEqual(decimalCommaPreflight.reviewedSafePlan.has("MAT-000002|consumption_10mm"), false, "numerically equal existing value must not be written");
 
     const alreadyFilled = approvedFixture();
     const existingProductType = alreadyFilled.rows.find(row => row.MAT === "MAT-000001").attributes.find(item => item.code === "product_type");
@@ -227,8 +241,37 @@ function testPostApplyGuard() {
     assert.throws(() => PROD.validatePostApply(report, REVIEW), /Post-apply logical state mismatch|Category attribute counts differ/);
 }
 
-testArgsAndHostGuards();
-testLogicalPreflight();
-testPostApplyGuard();
-console.log(JSON.stringify({ success: true, explicitDryRunAndConfirm: true, exactProductionPath: true, expectedCommitAndCleanTrackedTree: true,
-    hostnameGuard: true, exact61ProductLogicalReview: true, exactCountsAndBlockedFields: true, postApplyCounts: true }, null, 2));
+async function testDecimalCommaDatabaseFixture() {
+    const fixtureRoot = fs.mkdtempSync(path.join(os.tmpdir(), "matmix-decimal-comma-preflight-"));
+    const fixturePath = path.join(fixtureRoot, "fixture.db");
+    fs.copyFileSync(path.resolve(__dirname, "../database/matmix.db"), fixturePath);
+    const db = await SOURCE.openDatabase(fixturePath, false);
+    try {
+        const update = await db.run(`UPDATE product_attribute_values SET value_text='8,5', value_number=NULL
+            WHERE id=(SELECT v.id FROM product_attribute_values v JOIN products p ON p.id=v.product_id
+                JOIN product_attribute_definitions d ON d.id=v.attribute_definition_id
+                WHERE p.external_id='MAT-000002' AND d.code='consumption_10mm')`);
+        assert.strictEqual(update.changes, 1, "fixture must replace exactly MAT-000002/consumption_10mm representation");
+        const report = await SOURCE.inspect(db);
+        const attribute = report.rows.find(row => row.MAT === "MAT-000002").attributes.find(item => item.code === "consumption_10mm");
+        assert.strictEqual(attribute.currentValue, "8,5");
+        assert.strictEqual(attribute.dataType, "number");
+        assert.strictEqual(attribute.action, "EXISTING_OK");
+        const preflight = PROD.validateProductionPreflight(report, REVIEW);
+        assert.strictEqual(preflight.reviewedSafePlan.has("MAT-000002|consumption_10mm"), false, "equivalent numeric representation must produce no write");
+    } finally {
+        await db.close();
+        fs.rmSync(fixtureRoot, { recursive: true, force: true });
+    }
+}
+
+async function main() {
+    testArgsAndHostGuards();
+    testLogicalPreflight();
+    testPostApplyGuard();
+    await testDecimalCommaDatabaseFixture();
+    console.log(JSON.stringify({ success: true, explicitDryRunAndConfirm: true, exactProductionPath: true, expectedCommitAndCleanTrackedTree: true,
+        hostnameGuard: true, exact61ProductLogicalReview: true, exactCountsAndBlockedFields: true, postApplyCounts: true, decimalCommaNumericExistingOk: true }, null, 2));
+}
+
+main().catch(error => { console.error(error); process.exitCode = 1; });

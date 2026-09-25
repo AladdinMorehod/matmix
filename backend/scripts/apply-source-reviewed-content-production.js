@@ -72,6 +72,7 @@ function sourceConflictFields(report) {
 }
 
 function validateProductionPreflight(report, review) {
+    // Use the same data_type-aware numeric equivalence as the live source planner.
     const approved = SOURCE.validateApprovedReviewLogical(report, review);
     if (approved.reviewedTotals.WILL_ADD !== SOURCE.EXPECTED_ADDED_ATTRIBUTES || approved.reviewedTotals.WILL_UPDATE !== 0) {
         throw new Error("Production rollout review must authorize 497 inserts and no attribute updates");
