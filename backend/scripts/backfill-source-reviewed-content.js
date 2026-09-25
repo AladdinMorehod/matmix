@@ -10,8 +10,8 @@ const DATA = require("./data/source-reviewed-content-backfill");
 const CONFIRM_TOKEN = "APPLY_SOURCE_REVIEWED_CONTENT_VALUES";
 const REVIEW_PATH = path.resolve(__dirname, "../../docs/product-content/plaster-putty-backfill-review.json");
 const APPLY_AUDIT_PATH = path.resolve(__dirname, "../../docs/product-content/plaster-putty-backfill-apply-audit.json");
-const EXPECTED_ADDED_ATTRIBUTES = 497;
-const EXPECTED_BRAND_WRITES = 57;
+const EXPECTED_ADDED_ATTRIBUTES = 508;
+const EXPECTED_BRAND_WRITES = 58;
 const FIXED_ALLOWLIST = DATA.products.map(product => product.externalId);
 const MAIN_CODES = new Set(DATA.mainCodes);
 const PROTECTED_TABLES = Object.freeze(["products", "product_images"]);
@@ -445,7 +445,7 @@ function validateApprovedReviewLogical(report, review) {
     }
     const actualSafePlan = expectedActionMap(report);
     if (stablePlan(actualSafePlan) !== stablePlan(reviewedSafePlan)) throw new Error("Live safe attribute plan differs from human review");
-    if (brandPlan.length + report.summaries.brand.EXISTING_OK !== EXPECTED_BRAND_WRITES + 1 || report.summaries.brand.CONFLICT !== 0 || report.summaries.brand.IDENTITY_BLOCKED !== 3) throw new Error("Brand status totals differ from approved preview");
+    if (brandPlan.length + report.summaries.brand.EXISTING_OK !== EXPECTED_BRAND_WRITES + 1 || report.summaries.brand.CONFLICT !== 0 || report.summaries.brand.IDENTITY_BLOCKED !== 2) throw new Error("Brand status totals differ from approved preview");
     for (const group of ["plaster", "putty"]) {
         const summary = report.summaries[group];
         const actions = liveActionTotalsByGroup[group];
@@ -680,7 +680,7 @@ async function main(args = process.argv.slice(2)) {
                 productsBrandBefore: report.brandsBefore,
                 productsBrandAfter: report.brandsAfter,
                 afterApplySummaries: report.summaries,
-                repeatDryRunExpected: { attributeWillAdd: 0, attributeWillUpdate: 0, safeAttributesExistOk: EXPECTED_ADDED_ATTRIBUTES, brandSafeToFill: 0, brandExistingOk: 58, identityBlocked: 3 }
+                repeatDryRunExpected: { attributeWillAdd: 0, attributeWillUpdate: 0, safeAttributesExistOk: EXPECTED_ADDED_ATTRIBUTES, brandSafeToFill: 0, brandExistingOk: 59, identityBlocked: 2 }
             };
             await fs.promises.writeFile(APPLY_AUDIT_PATH, `${JSON.stringify(audit, null, 2)}\n`, { flag: "wx" });
             console.log(JSON.stringify({ applyAudit: APPLY_AUDIT_PATH, counts: audit.counts, backup: report.backup, protectedHashesBefore: report.protectedHashesBefore, protectedHashesAfter: report.protectedHashesAfter }));

@@ -10,7 +10,7 @@ const CONFIRM_TOKEN = "APPLY_SOURCE_REVIEWED_CONTENT_PRODUCTION";
 const PRODUCTION_DB = "/var/lib/matmix/matmix.db";
 const PRODUCTION_HOST = "matmix-prod-01";
 const REVIEW_PATH = path.resolve(__dirname, "../../docs/product-content/plaster-putty-backfill-review.json");
-const EXPECTED_IDENTITY_BLOCKS = Object.freeze(["MAT-000027", "MAT-000028", "MAT-000060"]);
+const EXPECTED_IDENTITY_BLOCKS = Object.freeze(["MAT-000027", "MAT-000028"]);
 const EXPECTED_CONFLICTS = Object.freeze({
     "MAT-000006": ["base", "wall_layer_thickness"],
     "MAT-000007": ["base"],
@@ -75,7 +75,7 @@ function validateProductionPreflight(report, review) {
     // Use the same data_type-aware numeric equivalence as the live source planner.
     const approved = SOURCE.validateApprovedReviewLogical(report, review);
     if (approved.reviewedTotals.WILL_ADD !== SOURCE.EXPECTED_ADDED_ATTRIBUTES || approved.reviewedTotals.WILL_UPDATE !== 0) {
-        throw new Error("Production rollout review must authorize 497 inserts and no attribute updates");
+        throw new Error("Production rollout review must authorize 508 inserts and no attribute updates");
     }
     if (report.allowlistCount !== 61 || report.rows.length !== 61 || new Set(report.rows.map(row => row.MAT)).size !== 61) throw new Error("Production preflight requires the exact unique 61-MAT allowlist");
     const reviewByMat = new Map(review.rows.map(row => [row.MAT, row]));
@@ -100,7 +100,7 @@ function validateProductionPreflight(report, review) {
         throw new Error(`Attribute logical preflight mismatch: add=${safeAdds}, update=${updates}, existing=${existing}`);
     }
     const brands = report.summaries.brand;
-    if (brands.SAFE_TO_FILL + brands.EXISTING_OK !== 58 || brands.CONFLICT !== 0 || brands.IDENTITY_BLOCKED !== 3 || brands.NO_REVIEWED_BRAND !== 0) {
+    if (brands.SAFE_TO_FILL + brands.EXISTING_OK !== 59 || brands.CONFLICT !== 0 || brands.IDENTITY_BLOCKED !== 2 || brands.NO_REVIEWED_BRAND !== 0) {
         throw new Error(`Brand logical preflight mismatch: ${JSON.stringify(brands)}`);
     }
     const blocked = sorted(report.rows.filter(row => row.brand.action === "IDENTITY_BLOCKED").map(row => row.MAT));
@@ -118,7 +118,7 @@ function validatePostApply(report, review) {
     const willUpdate = rawWillUpdate - reviewed.excludedBlockedActionsByGroup.plaster.WILL_UPDATE - reviewed.excludedBlockedActionsByGroup.putty.WILL_UPDATE;
     const reviewedExistingOk = existingOk - reviewed.excludedBlockedActionsByGroup.plaster.EXISTING_OK - reviewed.excludedBlockedActionsByGroup.putty.EXISTING_OK;
     const brand = report.summaries.brand;
-    if (willAdd !== 0 || willUpdate !== 0 || reviewedExistingOk !== 505 || brand.EXISTING_OK !== 58 || brand.SAFE_TO_FILL !== 0 || brand.CONFLICT !== 0 || brand.IDENTITY_BLOCKED !== 3) {
+    if (willAdd !== 0 || willUpdate !== 0 || reviewedExistingOk !== 516 || brand.EXISTING_OK !== 59 || brand.SAFE_TO_FILL !== 0 || brand.CONFLICT !== 0 || brand.IDENTITY_BLOCKED !== 2) {
         throw new Error(`Post-apply logical state mismatch: add=${willAdd}, update=${willUpdate}, existing=${existingOk}, brand=${JSON.stringify(brand)}`);
     }
     const blocked = sorted(report.rows.filter(row => row.brand.action === "IDENTITY_BLOCKED").map(row => row.MAT));

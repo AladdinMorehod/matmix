@@ -34,8 +34,8 @@ function approvedFixture(review = REVIEW) {
         mode: "dry-run", allowlistCount: 61, rows,
         summaries: {
             plaster: { willAdd: 200, willUpdate: 0, existingOk: 8 },
-            putty: { willAdd: 297, willUpdate: 0, existingOk: 0 },
-            brand: { SAFE_TO_FILL: 57, EXISTING_OK: 1, CONFLICT: 0, IDENTITY_BLOCKED: 3, NO_REVIEWED_BRAND: 0 }
+            putty: { willAdd: 308, willUpdate: 0, existingOk: 0 },
+            brand: { SAFE_TO_FILL: 58, EXISTING_OK: 1, CONFLICT: 0, IDENTITY_BLOCKED: 2, NO_REVIEWED_BRAND: 0 }
         }
     };
 }
@@ -57,8 +57,17 @@ function testArgsAndHostGuards() {
 function testLogicalPreflight() {
     const report = approvedFixture();
     const approved = PROD.validateProductionPreflight(report, REVIEW);
-    assert.strictEqual(approved.counts.willAdd, 497);
-    assert.strictEqual(approved.brandPlan.length, 57);
+    assert.strictEqual(approved.counts.willAdd, 508);
+    assert.strictEqual(approved.brandPlan.length, 58);
+    const mat060 = REVIEW.rows.find(row => row.MAT === "MAT-000060");
+    const mat060Codes = [...mat060.regularAdds.map(item => item.code), ...Object.values(mat060.main).filter(item => item.status === "WILL_ADD").map(item => item.code)];
+    assert.strictEqual(mat060.counts.willAddSafeAttributes, 11);
+    assert.strictEqual(mat060Codes.includes("package_weight"), false, "unconfirmed package weight must not be approved");
+    assert.deepStrictEqual(mat060Codes.sort(), ["application_area", "application_method", "application_temperature", "base", "color", "consumption", "layer_thickness", "product_type", "purpose", "shelf_life", "substrates"].sort());
+    assert.strictEqual(approved.reviewedTotalsByGroup.putty, 308, "putty total includes the 11 safe MAT-000060 fields");
+    assert.strictEqual(approved.reviewedSafePlan.has("MAT-000060|package_weight"), false);
+    assert.strictEqual(approved.brandPlan.filter(item => item.MAT === "MAT-000060").length, 1);
+    assert.deepStrictEqual(report.rows.filter(row => row.brand.action === "IDENTITY_BLOCKED").map(row => row.MAT).sort(), ["MAT-000027", "MAT-000028"]);
     assert.deepStrictEqual([...approved.reviewedSafePlan.keys()].slice(0, 1).length, 1);
 
     assert.strictEqual(SOURCE.attributeValuesEqual("8,5", 8.5, "text"), true);
@@ -96,9 +105,9 @@ function testLogicalPreflight() {
     alreadyFilled.summaries.plaster.willAdd--;
     alreadyFilled.summaries.plaster.existingOk++;
     const partial = PROD.validateProductionPreflight(alreadyFilled, REVIEW);
-    assert.strictEqual(partial.counts.willAdd, 496);
+    assert.strictEqual(partial.counts.willAdd, 507);
     assert.strictEqual(partial.counts.existingOk, 9);
-    assert.strictEqual(partial.reviewedSafePlan.size, 496, "already matching approved value must be skipped");
+    assert.strictEqual(partial.reviewedSafePlan.size, 507, "already matching approved value must be skipped");
 
     const existingBlockedProposal = approvedFixture();
     const consumption = existingBlockedProposal.rows.find(row => row.MAT === "MAT-000001").attributes.find(item => item.code === "consumption_10mm");
@@ -112,7 +121,7 @@ function testLogicalPreflight() {
     existingBlockedProposal.summaries.plaster.existingOk++;
     const blockedProposalPreflight = PROD.validateProductionPreflight(existingBlockedProposal, REVIEW);
     assert.strictEqual(blockedProposalPreflight.counts.existingReviewedBlockedProposal, 1);
-    assert.strictEqual(blockedProposalPreflight.reviewedSafePlan.size, 497, "matching blocked proposal must not enter the write plan");
+    assert.strictEqual(blockedProposalPreflight.reviewedSafePlan.size, 508, "matching blocked proposal must not enter the write plan");
 
     const absentBlockedProposal = approvedFixture();
     assert.strictEqual(SOURCE.expectedActionMap(absentBlockedProposal).has("MAT-000001|consumption_10mm"), false, "NEEDS_SOURCE fields must not enter the write plan when absent");
@@ -125,7 +134,7 @@ function testLogicalPreflight() {
     unresolvedLiveAdd.currentCount = 0;
     liveCandidateBlockedField.summaries.plaster.willAdd++;
     const unresolvedPreflight = PROD.validateProductionPreflight(liveCandidateBlockedField, REVIEW);
-    assert.strictEqual(unresolvedPreflight.counts.willAdd, 497, "unreviewed live candidate must be excluded from approved counts");
+    assert.strictEqual(unresolvedPreflight.counts.willAdd, 508, "unreviewed live candidate must be excluded from approved counts");
     assert.strictEqual(unresolvedPreflight.reviewedSafePlan.has("MAT-000001|consumption_10mm"), false, "NEEDS_SOURCE candidate must not enter the approved write plan");
     assert.strictEqual(unresolvedPreflight.excludedBlockedActionsByGroup.plaster.WILL_ADD, 1);
 
@@ -188,10 +197,10 @@ function testLogicalPreflight() {
         }
     }
     completed.summaries.plaster = { willAdd: 0, willUpdate: 0, existingOk: 208 };
-    completed.summaries.putty = { willAdd: 0, willUpdate: 0, existingOk: 297 };
-    completed.summaries.brand = { SAFE_TO_FILL: 0, EXISTING_OK: 58, CONFLICT: 0, IDENTITY_BLOCKED: 3, NO_REVIEWED_BRAND: 0 };
+    completed.summaries.putty = { willAdd: 0, willUpdate: 0, existingOk: 308 };
+    completed.summaries.brand = { SAFE_TO_FILL: 0, EXISTING_OK: 59, CONFLICT: 0, IDENTITY_BLOCKED: 2, NO_REVIEWED_BRAND: 0 };
     assert.strictEqual(PROD.validateProductionPreflight(completed, REVIEW).reviewedSafePlan.size, 0);
-    assert.strictEqual(PROD.validatePostApply(completed, REVIEW).existingOk, 505, "repeat validation after apply must be a no-op state");
+    assert.strictEqual(PROD.validatePostApply(completed, REVIEW).existingOk, 516, "repeat validation after apply must be a no-op state");
 
     const updateReview = JSON.parse(JSON.stringify(REVIEW));
     const approvedUpdate = updateReview.rows.find(row => row.MAT === "MAT-000001").main.product_type;
@@ -227,7 +236,7 @@ function testLogicalPreflight() {
     assert.throws(() => PROD.validateProductionPreflight(wrongBrand, REVIEW), /Brand logical preflight mismatch/);
 
     const wrongIdentity = approvedFixture();
-    wrongIdentity.rows.find(row => row.MAT === "MAT-000060").brand.action = "SAFE_TO_FILL";
+    wrongIdentity.rows.find(row => row.MAT === "MAT-000027").brand.action = "SAFE_TO_FILL";
     assert.throws(() => PROD.validateProductionPreflight(wrongIdentity, REVIEW), /Brand status\/current value differs|Brand logical preflight mismatch|Identity-blocked MAT list mismatch/);
 }
 
@@ -247,9 +256,9 @@ function testPostApplyGuard() {
         }
     }
     report.summaries.plaster = { willAdd: 0, willUpdate: 0, existingOk: 208 };
-    report.summaries.putty = { willAdd: 0, willUpdate: 0, existingOk: 297 };
-    report.summaries.brand = { SAFE_TO_FILL: 0, EXISTING_OK: 58, CONFLICT: 0, IDENTITY_BLOCKED: 3, NO_REVIEWED_BRAND: 0 };
-    assert.strictEqual(PROD.validatePostApply(report, REVIEW).existingOk, 505);
+    report.summaries.putty = { willAdd: 0, willUpdate: 0, existingOk: 308 };
+    report.summaries.brand = { SAFE_TO_FILL: 0, EXISTING_OK: 59, CONFLICT: 0, IDENTITY_BLOCKED: 2, NO_REVIEWED_BRAND: 0 };
+    assert.strictEqual(PROD.validatePostApply(report, REVIEW).existingOk, 516);
     report.summaries.putty.existingOk = 296;
     assert.throws(() => PROD.validatePostApply(report, REVIEW), /Post-apply logical state mismatch|Category attribute counts differ/);
 }
@@ -260,6 +269,12 @@ async function testDecimalCommaDatabaseFixture() {
     fs.copyFileSync(path.resolve(__dirname, "../database/matmix.db"), fixturePath);
     const db = await SOURCE.openDatabase(fixturePath, false);
     try {
+        const titleCorrection = await db.run(`UPDATE products SET title=?
+            WHERE external_id='MAT-000060' AND title=?`, [
+            "Шпаклевка полимерная финишная Волма Искрит, белоснежная мех. 19 кг",
+            "Шпаклевка полимерная финишная Волма Искрит для внутренних и наружных работ, белоснежная мех. 19 кг"
+        ]);
+        assert.strictEqual(titleCorrection.changes, 1, "isolated fixture must model the separately approved MAT-000060 title correction");
         const definitionUpdate = await db.run(`UPDATE product_attribute_definitions SET data_type='text'
             WHERE code='consumption_10mm' AND is_active=1`);
         assert.strictEqual(definitionUpdate.changes, 1, "fixture must model a production text definition");

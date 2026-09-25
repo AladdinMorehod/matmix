@@ -21236,7 +21236,7 @@
           "current": null,
           "proposed": null,
           "unit": "кг",
-          "status": "IDENTITY_BLOCKED",
+          "status": "NEEDS_SOURCE",
           "source": [],
           "reason": [
             "Фасовка взята только из локального title; источник localTitle прямо не подтверждает свойства товара."
@@ -21343,12 +21343,186 @@
               "qualifier": null
             }
           ]
+        },
+        {
+          "code": "application_area",
+          "label": "Область применения",
+          "value": "Внутри помещений с нормальной относительной влажностью",
+          "unit": null,
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "provenance": [
+            {
+              "status": "READY",
+              "dataset": "putties-core-content-batch2.js",
+              "sources": [
+                {
+                  "key": "volma",
+                  "title": "ВОЛМА Искрит",
+                  "url": "https://www.volma.ru/production/catalog/putty/volma-iskrit/",
+                  "note": "Официальная страница; composition note confirms mixed binders and polymer component ≤5%.",
+                  "market": null
+                }
+              ],
+              "formula": null,
+              "qualifier": null
+            }
+          ]
+        },
+        {
+          "code": "application_method",
+          "label": "Способ нанесения",
+          "value": "Ручное и машинное",
+          "unit": null,
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "provenance": [
+            {
+              "status": "READY",
+              "dataset": "putties-core-content-batch2.js",
+              "sources": [
+                {
+                  "key": "volma",
+                  "title": "ВОЛМА Искрит",
+                  "url": "https://www.volma.ru/production/catalog/putty/volma-iskrit/",
+                  "note": "Официальная страница; composition note confirms mixed binders and polymer component ≤5%.",
+                  "market": null
+                }
+              ],
+              "formula": null,
+              "qualifier": null
+            }
+          ]
+        },
+        {
+          "code": "substrates",
+          "label": "Применимые основания",
+          "value": "стены, потолки и прочие недеформирующиеся основания",
+          "unit": null,
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "provenance": [
+            {
+              "status": "READY",
+              "dataset": "putties-core-content-batch2.js",
+              "sources": [
+                {
+                  "key": "volma",
+                  "title": "ВОЛМА Искрит",
+                  "url": "https://www.volma.ru/production/catalog/putty/volma-iskrit/",
+                  "note": "Официальная страница; composition note confirms mixed binders and polymer component ≤5%.",
+                  "market": null
+                }
+              ],
+              "formula": null,
+              "qualifier": null
+            }
+          ]
+        },
+        {
+          "code": "layer_thickness",
+          "label": "Толщина слоя",
+          "value": "0,2–3 мм",
+          "unit": null,
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "provenance": [
+            {
+              "status": "READY",
+              "dataset": "putties-core-content-batch2.js",
+              "sources": [
+                {
+                  "key": "volma",
+                  "title": "ВОЛМА Искрит",
+                  "url": "https://www.volma.ru/production/catalog/putty/volma-iskrit/",
+                  "note": "Официальная страница; composition note confirms mixed binders and polymer component ≤5%.",
+                  "market": null
+                }
+              ],
+              "formula": null,
+              "qualifier": null
+            }
+          ]
+        },
+        {
+          "code": "consumption",
+          "label": "Расход",
+          "value": "1,0–1,1 кг/м² при слое 1 мм",
+          "unit": null,
+          "status": "WILL_ADD",
+          "sourceStatus": "READY",
+          "provenance": [
+            {
+              "status": "READY",
+              "dataset": "putties-core-content-batch2.js",
+              "sources": [
+                {
+                  "key": "volma",
+                  "title": "ВОЛМА Искрит",
+                  "url": "https://www.volma.ru/production/catalog/putty/volma-iskrit/",
+                  "note": "Официальная страница; composition note confirms mixed binders and polymer component ≤5%.",
+                  "market": null
+                }
+              ],
+              "formula": null,
+              "qualifier": null
+            }
+          ]
         }
       ],
       "existingOk": [],
       "conflicts": [],
-      "needsSource": [],
-      "schemaBlocked": [],
+      "needsSource": [
+        {
+          "code": "package_weight",
+          "label": "Фасовка",
+          "status": "NEEDS_SOURCE",
+          "reason": "Фасовка взята только из локального title; источник localTitle прямо не подтверждает свойства товара.",
+          "dataset": "putties-core-content-batch2.js",
+          "sources": [
+            {
+              "key": "localTitle",
+              "title": "Локальная карточка MatMix",
+              "url": null,
+              "note": "Only identity/weight guard; not a technical source.",
+              "market": null
+            }
+          ]
+        },
+        {
+          "code": "drying_time",
+          "label": "Время высыхания",
+          "status": "NEEDS_SOURCE",
+          "reason": "Числовое время высыхания exact SKU не подтверждено.",
+          "dataset": "putties-core-content-batch2.js",
+          "sources": [
+            {
+              "key": "volma",
+              "title": "ВОЛМА Искрит",
+              "url": "https://www.volma.ru/production/catalog/putty/volma-iskrit/",
+              "note": "Официальная страница; composition note confirms mixed binders and polymer component ≤5%.",
+              "market": null
+            }
+          ]
+        }
+      ],
+      "schemaBlocked": [
+        {
+          "code": "form",
+          "reason": "MISSING_OR_INACTIVE_DEFINITION",
+          "label": "form"
+        },
+        {
+          "code": "consumption_basis",
+          "reason": "MISSING_OR_INACTIVE_DEFINITION",
+          "label": "consumption_basis"
+        },
+        {
+          "code": "pot_life",
+          "reason": "UNREPRESENTABLE_NUMBER:pot_life",
+          "label": "Жизнеспособность раствора"
+        }
+      ],
       "brand": {
         "current": null,
         "proposed": "ВОЛМА",
@@ -21374,16 +21548,16 @@
             ]
           }
         ],
-        "status": "IDENTITY_BLOCKED",
-        "writePlanned": false
+        "status": "SAFE_TO_FILL",
+        "writePlanned": true
       },
       "counts": {
         "currentAttributes": 0,
-        "willAddSafeAttributes": 0,
+        "willAddSafeAttributes": 11,
         "existingOk": 0,
-        "needsSource": 0,
+        "needsSource": 2,
         "conflicts": 0,
-        "schemaBlocked": 0
+        "schemaBlocked": 3
       }
     },
     {
@@ -23434,6 +23608,7 @@
       "MAT-000057",
       "MAT-000058",
       "MAT-000059",
+      "MAT-000060",
       "MAT-000061",
       "MAT-000062",
       "MAT-000063",
@@ -23689,12 +23864,6 @@
         "reasons": [
           "SOURCE_IDENTITY_BLOCKED"
         ]
-      },
-      {
-        "MAT": "MAT-000060",
-        "reasons": [
-          "TITLE_MISMATCH"
-        ]
       }
     ],
     "NO_SAFE_VALUES": [
@@ -23838,10 +24007,10 @@
     "putty": {
       "total": 33,
       "safeProducts": 0,
-      "partialProducts": 30,
-      "blockedProducts": 1,
-      "willAddSafeAttributes": 297,
-      "needsSource": 107,
+      "partialProducts": 31,
+      "blockedProducts": 0,
+      "willAddSafeAttributes": 308,
+      "needsSource": 109,
       "conflicts": 0,
       "safeMatList": [],
       "partialMatList": [
@@ -23870,6 +24039,7 @@
         "MAT-000057",
         "MAT-000058",
         "MAT-000059",
+        "MAT-000060",
         "MAT-000061",
         "MAT-000062",
         "MAT-000063",
@@ -23877,14 +24047,7 @@
         "MAT-000065"
       ],
       "sourceConflictBlockedMatList": [],
-      "identityBlockedMatList": [
-        {
-          "MAT": "MAT-000060",
-          "reasons": [
-            "TITLE_MISMATCH"
-          ]
-        }
-      ],
+      "identityBlockedMatList": [],
       "noSafeValuesProducts": 2,
       "noSafeValuesMatList": [
         {
@@ -23937,13 +24100,13 @@
     },
     "brand": {
       "EXISTING_OK": 1,
-      "SAFE_TO_FILL": 57,
+      "SAFE_TO_FILL": 58,
       "CONFLICT": 0,
-      "IDENTITY_BLOCKED": 3,
+      "IDENTITY_BLOCKED": 2,
       "NO_REVIEWED_BRAND": 0
     },
-    "safeBrandWrites": 57,
-    "blockedBrandWrites": 3,
+    "safeBrandWrites": 58,
+    "blockedBrandWrites": 2,
     "actualBrandWritesExecuted": 0
   }
 }
