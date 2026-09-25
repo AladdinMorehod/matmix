@@ -21157,10 +21157,8 @@
       "status": "IDENTITY_UNCERTAIN",
       "disposition": "IDENTITY_BLOCKED",
       "identityGuard": {
-        "safe": false,
-        "reasons": [
-          "TITLE_MISMATCH"
-        ],
+        "safe": true,
+        "reasons": [],
         "currentTitle": "Шпаклевка полимерная финишная Волма Искрит, белоснежная мех. 19 кг",
         "expectedTitles": [
           "Шпаклевка полимерная финишная Волма Искрит, белоснежная мех. 19 кг"
