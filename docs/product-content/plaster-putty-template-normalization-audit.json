@@ -1,0 +1,284 @@
+{
+  "operation": "single explicitly authorized value-row deletion",
+  "database": "backend/database/matmix.db",
+  "backup": "backend/database/matmix-attribute-templates-2026-09-25T14-44-00-385Z-a9675074.backup",
+  "deleted": {
+    "product_id": 2,
+    "external_id": "MAT-000002",
+    "value_id": 29,
+    "definition_id": 7,
+    "code": "coverage_30kg_10mm",
+    "value_text": null,
+    "value_number": 3.5,
+    "value_boolean": null,
+    "sort_order": 6
+  },
+  "coverageRowsAfter": 0,
+  "mat2OtherRowsBefore": [
+    {
+      "id": 23,
+      "code": "brand",
+      "value_text": "KNAUF",
+      "value_number": null,
+      "value_boolean": null,
+      "sort_order": 0
+    },
+    {
+      "id": 24,
+      "code": "product_type",
+      "value_text": "Универсальная гипсовая штукатурка",
+      "value_number": null,
+      "value_boolean": null,
+      "sort_order": 1
+    },
+    {
+      "id": 25,
+      "code": "base",
+      "value_text": "Гипсовое вяжущее с модифицирующими добавками",
+      "value_number": null,
+      "value_boolean": null,
+      "sort_order": 2
+    },
+    {
+      "id": 26,
+      "code": "purpose",
+      "value_text": "Ручное выравнивание стен и потолков внутри помещений",
+      "value_number": null,
+      "value_boolean": null,
+      "sort_order": 3
+    },
+    {
+      "id": 27,
+      "code": "package_weight",
+      "value_text": null,
+      "value_number": 30,
+      "value_boolean": null,
+      "sort_order": 4
+    },
+    {
+      "id": 28,
+      "code": "consumption_10mm",
+      "value_text": null,
+      "value_number": 8.5,
+      "value_boolean": null,
+      "sort_order": 5
+    },
+    {
+      "id": 30,
+      "code": "wall_layer_thickness",
+      "value_text": "5–50 мм; локально до 100 мм",
+      "value_number": null,
+      "value_boolean": null,
+      "sort_order": 7
+    },
+    {
+      "id": 31,
+      "code": "ceiling_layer_thickness",
+      "value_text": "5–15 мм",
+      "value_number": null,
+      "value_boolean": null,
+      "sort_order": 8
+    },
+    {
+      "id": 32,
+      "code": "application_temperature",
+      "value_text": "+5…+30 °C",
+      "value_number": null,
+      "value_boolean": null,
+      "sort_order": 9
+    },
+    {
+      "id": 33,
+      "code": "shelf_life",
+      "value_text": null,
+      "value_number": 6,
+      "value_boolean": null,
+      "sort_order": 10
+    }
+  ],
+  "mat2OtherRowsAfter": [
+    {
+      "id": 23,
+      "code": "brand",
+      "value_text": "KNAUF",
+      "value_number": null,
+      "value_boolean": null,
+      "sort_order": 0
+    },
+    {
+      "id": 24,
+      "code": "product_type",
+      "value_text": "Универсальная гипсовая штукатурка",
+      "value_number": null,
+      "value_boolean": null,
+      "sort_order": 1
+    },
+    {
+      "id": 25,
+      "code": "base",
+      "value_text": "Гипсовое вяжущее с модифицирующими добавками",
+      "value_number": null,
+      "value_boolean": null,
+      "sort_order": 2
+    },
+    {
+      "id": 26,
+      "code": "purpose",
+      "value_text": "Ручное выравнивание стен и потолков внутри помещений",
+      "value_number": null,
+      "value_boolean": null,
+      "sort_order": 3
+    },
+    {
+      "id": 27,
+      "code": "package_weight",
+      "value_text": null,
+      "value_number": 30,
+      "value_boolean": null,
+      "sort_order": 4
+    },
+    {
+      "id": 28,
+      "code": "consumption_10mm",
+      "value_text": null,
+      "value_number": 8.5,
+      "value_boolean": null,
+      "sort_order": 5
+    },
+    {
+      "id": 30,
+      "code": "wall_layer_thickness",
+      "value_text": "5–50 мм; локально до 100 мм",
+      "value_number": null,
+      "value_boolean": null,
+      "sort_order": 7
+    },
+    {
+      "id": 31,
+      "code": "ceiling_layer_thickness",
+      "value_text": "5–15 мм",
+      "value_number": null,
+      "value_boolean": null,
+      "sort_order": 8
+    },
+    {
+      "id": 32,
+      "code": "application_temperature",
+      "value_text": "+5…+30 °C",
+      "value_number": null,
+      "value_boolean": null,
+      "sort_order": 9
+    },
+    {
+      "id": 33,
+      "code": "shelf_life",
+      "value_text": null,
+      "value_number": 6,
+      "value_boolean": null,
+      "sort_order": 10
+    }
+  ],
+  "otherProductAttributeValuesUnchanged": true,
+  "protectedHashesBefore": {
+    "products": "23e3c3de6bceb1df64f2f196dff8ff0f6d741f5cf3e06b1c0197cbb4afd84a4c",
+    "product_attribute_values": "8eeb1bc24225c40ceddfc4e0b4326769b5bb8bcb35c185d4d073532801c68160",
+    "product_images": "13327c33f91a0b919df0bc66e44ace4bb1562b3d06177ce404aba71d1f613d3c",
+    "seo": "46173b1c7cf70b8dc33bf2664a698906d5702ec01e2563001ac25c42b85a548b"
+  },
+  "protectedHashesAfter": {
+    "products": "23e3c3de6bceb1df64f2f196dff8ff0f6d741f5cf3e06b1c0197cbb4afd84a4c",
+    "product_attribute_values": "846538f36c5b5dc883105e2c67f23b43bcd414e0daff88217a0de76c0b3870b0",
+    "product_images": "13327c33f91a0b919df0bc66e44ace4bb1562b3d06177ce404aba71d1f613d3c",
+    "seo": "46173b1c7cf70b8dc33bf2664a698906d5702ec01e2563001ac25c42b85a548b"
+  },
+  "productsChanged": false,
+  "imagesChanged": false,
+  "seoChanged": false,
+  "templateNormalization": {
+    "status": "EXISTING_OK / NO_CHANGES",
+    "expectedTotal": 53,
+    "countsByStructure": {
+      "2": 9,
+      "4": 9,
+      "5": 16,
+      "7": 13,
+      "8": 6
+    },
+    "mainTemplateMemberships": 0,
+    "coverageValueRowsAfter": 0,
+    "canonicalCodesByStructure": {
+      "2": [
+        "base",
+        "purpose",
+        "application_method",
+        "substrates",
+        "color",
+        "wall_layer_thickness",
+        "ceiling_layer_thickness",
+        "consumption_10mm",
+        "application_temperature"
+      ],
+      "4": [
+        "base",
+        "purpose",
+        "application_area",
+        "application_method",
+        "substrates",
+        "color",
+        "layer_thickness",
+        "consumption",
+        "application_temperature"
+      ],
+      "5": [
+        "base",
+        "purpose",
+        "application_area",
+        "application_method",
+        "substrates",
+        "color",
+        "layer_thickness",
+        "consumption_10mm",
+        "water_requirement",
+        "pot_life",
+        "application_temperature",
+        "compressive_strength",
+        "adhesion",
+        "frost_resistance",
+        "mortar_grade",
+        "standard"
+      ],
+      "7": [
+        "base",
+        "application_area",
+        "application_method",
+        "substrates",
+        "layer_thickness",
+        "consumption",
+        "water_requirement",
+        "pot_life",
+        "application_temperature",
+        "walkability",
+        "compressive_strength",
+        "flexural_strength",
+        "adhesion"
+      ],
+      "8": [
+        "base",
+        "purpose",
+        "application_area",
+        "layer_thickness",
+        "walkability",
+        "flexural_strength"
+      ]
+    },
+    "protectedHashesAfterNormalization": {
+      "products": "23e3c3de6bceb1df64f2f196dff8ff0f6d741f5cf3e06b1c0197cbb4afd84a4c",
+      "product_attribute_values": "846538f36c5b5dc883105e2c67f23b43bcd414e0daff88217a0de76c0b3870b0",
+      "product_images": "13327c33f91a0b919df0bc66e44ace4bb1562b3d06177ce404aba71d1f613d3c",
+      "seo": "46173b1c7cf70b8dc33bf2664a698906d5702ec01e2563001ac25c42b85a548b"
+    },
+    "protectedHashesUnchangedDuringDryRun": true,
+    "globalMembershipTotal": 53,
+    "orphanTemplateRows": 0
+  }
+}
