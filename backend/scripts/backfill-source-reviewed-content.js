@@ -214,6 +214,7 @@ async function inspect(db) {
                     : product.brand === brandValues[0] ? "EXISTING_OK" : "SAFE_TO_FILL";
         rows.push({
             MAT: sourceProduct.externalId, TITLE: product?.title || expectedTitles[0] || null,
+            category: product?.category || null, subcategory: product?.subcategory || null,
             datasetSources: [...new Set(sourceProduct.records.map(item => item.moduleName))],
             sourceIdentity: identityStatuses.length ? identityStatuses : ["no identity status"],
             currentAttributeCount: currentCount,
@@ -278,6 +279,10 @@ async function productBrandSnapshot(db) {
 
 function validateApprovedReview(report, review, databaseHash) {
     if (databaseHash.toLowerCase() !== String(review.databaseSha256Before || "").toLowerCase()) throw new Error("Local DB hash differs from the reviewed baseline; refusing apply");
+    return validateApprovedReviewLogical(report, review);
+}
+
+function validateApprovedReviewLogical(report, review) {
     if (review.rows?.length !== 61 || review.constraints?.applyExecuted !== false) throw new Error("Review artifact is missing or is not review-only");
     if (report.rows.length !== 61 || report.allowlistCount !== 61) throw new Error("Exact 61-MAT allowlist check failed");
     const reviewRows = new Map(review.rows.map(row => [row.MAT, row]));
@@ -426,7 +431,7 @@ async function applyReport(db, initialReport) {
     throw new Error("applyReport requires the guarded runBatch entry point with an online backup callback");
 }
 
-async function runBatch(db, { apply = false, backup = null, brandPlan = [], approvedPlan = null } = {}) {
+async function runBatch(db, { apply = false, backup = null, brandPlan = [], approvedPlan = null, verifyBeforeWrites = null, verifyBeforeCommit = null } = {}) {
     const beforeReport = await inspect(db);
     if (!apply) return beforeReport;
     const planned = expectedActionMap(beforeReport);
@@ -438,6 +443,7 @@ async function runBatch(db, { apply = false, backup = null, brandPlan = [], appr
     try {
         const currentReport = await inspect(db);
         if (stablePlan(expectedActionMap(currentReport)) !== stablePlan(planned)) throw new Error("Target values changed after dry-run; refusing apply");
+        if (verifyBeforeWrites) await verifyBeforeWrites(currentReport);
         const hashesBefore = await protectedHashes(db);
         const valuesBefore = await fullValueSnapshot(db);
         const brandsBefore = await productBrandSnapshot(db);
@@ -476,6 +482,7 @@ async function runBatch(db, { apply = false, backup = null, brandPlan = [], appr
         if (json(protectedBefore) !== json(protectedAfter)) throw new Error("Protected products/images/SEO changed during content apply");
         if (approvedPlan && (planned.size !== EXPECTED_ADDED_ATTRIBUTES || [...planned.values()].some(item => item.action !== "WILL_ADD"))) throw new Error(`Applied attribute plan differs from approved ${EXPECTED_ADDED_ATTRIBUTES} inserts`);
         if (approvedPlan && brandPlan.length !== EXPECTED_BRAND_WRITES) throw new Error(`Applied brand plan differs from approved ${EXPECTED_BRAND_WRITES} writes`);
+        if (verifyBeforeCommit) await verifyBeforeCommit(await inspect(db));
         await db.run("COMMIT");
         const afterReport = await inspect(db);
         return { ...afterReport, mode: "applied", backup: backupResult, protectedHashesBefore: hashesBefore, protectedHashesAfter: hashesAfter, valuesBefore, valuesAfter, brandsBefore, brandsAfter, attributeAdded: valuesAfter.length - valuesBefore.length, attributeUpdated: [...planned.values()].filter(item => item.action === "WILL_UPDATE").length, brandAdded: brandPlan.length, brandPlan };
@@ -553,4 +560,4 @@ async function main(args = process.argv.slice(2)) {
 
 if (require.main === module) main().catch(error => { console.error(error.message); process.exitCode = 1; });
 
-module.exports = { CONFIRM_TOKEN, FIXED_ALLOWLIST, MAIN_CODES, EXPECTED_ADDED_ATTRIBUTES, EXPECTED_BRAND_WRITES, parseArgs, openDatabase, valuesEqual, typedProposal, inspect, protectedHashes, fullValueSnapshot, validateApprovedReview, verifyValueDelta, verifyBrandDelta, createOnlineBackup, runBatch };
+module.exports = { CONFIRM_TOKEN, FIXED_ALLOWLIST, MAIN_CODES, EXPECTED_ADDED_ATTRIBUTES, EXPECTED_BRAND_WRITES, parseArgs, openDatabase, valuesEqual, typedProposal, inspect, protectedHashes, fullValueSnapshot, validateApprovedReview, validateApprovedReviewLogical, stablePlan, verifyValueDelta, verifyBrandDelta, createOnlineBackup, runBatch };

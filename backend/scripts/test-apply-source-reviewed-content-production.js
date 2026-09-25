@@ -1,0 +1,104 @@
+"use strict";
+
+const assert = require("assert");
+const path = require("path");
+const REVIEW = require("../../docs/product-content/plaster-putty-backfill-review.json");
+const SOURCE = require("./backfill-source-reviewed-content");
+const PROD = require("./apply-source-reviewed-content-production");
+
+const targetCommit = "a".repeat(40);
+function approvedFixture() {
+    const rows = REVIEW.rows.map(expected => {
+        const attributes = [
+            ...expected.regularAdds.map(item => ({ code: item.code, value: item.value, action: item.status, typed: { code: item.code }, currentIds: [], currentValue: null, currentCount: 0, needsSource: [] })),
+            ...Object.values(expected.main).filter(item => item.status === "WILL_ADD").map(item => ({ code: item.code, value: item.proposed, action: item.status, typed: { code: item.code }, currentIds: [], currentValue: null, currentCount: 0, needsSource: [] })),
+            ...expected.conflicts.map(item => ({ code: item.code, action: "SOURCE_CONFLICT", needsSource: [] }))
+        ];
+        for (const item of expected.needsSource) {
+            const existing = attributes.find(attribute => attribute.code === item.code);
+            if (existing) existing.needsSource.push(item);
+            else attributes.push({ code: item.code, action: "NEEDS_SOURCE", needsSource: [item] });
+        }
+        return {
+            MAT: expected.MAT, TITLE: expected.TITLE, category: "Смеси",
+            subcategory: expected.category === "Штукатурка" ? "Штукатурка" : "Шпаклевка",
+            guardReasons: expected.disposition === "IDENTITY_BLOCKED" ? [...expected.identityGuard.reasons] : [],
+            attributes,
+            brand: { action: expected.brand.status, current: expected.brand.current, proposed: expected.brand.proposed }
+        };
+    });
+    return {
+        mode: "dry-run", allowlistCount: 61, rows,
+        summaries: {
+            plaster: { willAdd: 200, willUpdate: 0, existingOk: 8 },
+            putty: { willAdd: 297, willUpdate: 0, existingOk: 0 },
+            brand: { SAFE_TO_FILL: 57, EXISTING_OK: 1, CONFLICT: 0, IDENTITY_BLOCKED: 3, NO_REVIEWED_BRAND: 0 }
+        }
+    };
+}
+
+function testArgsAndHostGuards() {
+    const opts = PROD.parseArgs(["--db", PROD.PRODUCTION_DB, "--expected-commit", targetCommit]);
+    assert.strictEqual(opts.apply, false, "dry-run is default");
+    assert.throws(() => PROD.parseArgs(["--db", PROD.PRODUCTION_DB]), /expected-commit/);
+    assert.throws(() => PROD.parseArgs(["--db", PROD.PRODUCTION_DB, "--expected-commit", targetCommit, "--apply"]), /Apply requires --confirm/);
+    assert.throws(() => PROD.assertProductionTarget("/tmp/matmix.db"), /must be exactly/);
+    assert.doesNotThrow(() => PROD.assertProductionTarget(PROD.PRODUCTION_DB));
+    const git = (_bin, args) => args[0] === "rev-parse" ? `${targetCommit}\n` : "";
+    assert.strictEqual(PROD.checkReleaseEnvironment({ expectedCommit: targetCommit, repoDir: path.resolve(__dirname, "../.."), git, hostname: "matmix-prod-01", apply: true }).trackedWorktree, "clean");
+    assert.throws(() => PROD.checkReleaseEnvironment({ expectedCommit: "b".repeat(40), repoDir: process.cwd(), git, hostname: "matmix-prod-01" }), /differs from/);
+    assert.throws(() => PROD.checkReleaseEnvironment({ expectedCommit: targetCommit, repoDir: process.cwd(), git: (_bin, args) => args[0] === "rev-parse" ? `${targetCommit}\n` : " M tracked.js", hostname: "matmix-prod-01" }), /not clean/);
+    assert.throws(() => PROD.checkReleaseEnvironment({ expectedCommit: targetCommit, repoDir: process.cwd(), git, hostname: "developer-laptop", apply: true }), /restricted to hostname/);
+}
+
+function testLogicalPreflight() {
+    const report = approvedFixture();
+    const approved = PROD.validateProductionPreflight(report, REVIEW);
+    assert.strictEqual(approved.counts.willAdd, 497);
+    assert.strictEqual(approved.brandPlan.length, 57);
+    assert.deepStrictEqual([...approved.reviewedSafePlan.keys()].slice(0, 1).length, 1);
+
+    const wrongCount = approvedFixture();
+    wrongCount.summaries.putty.willAdd = 296;
+    assert.throws(() => PROD.validateProductionPreflight(wrongCount, REVIEW), /Attribute logical preflight mismatch|Category attribute counts differ/);
+
+    const wrongTitle = approvedFixture();
+    wrongTitle.rows[0].TITLE = "Different product";
+    assert.throws(() => PROD.validateProductionPreflight(wrongTitle, REVIEW), /identity\/title mismatch/);
+
+    const wrongCategory = approvedFixture();
+    wrongCategory.rows[0].subcategory = "Шпаклевка";
+    assert.throws(() => PROD.validateProductionPreflight(wrongCategory, REVIEW), /category\/subcategory guard/);
+
+    const wrongConflict = approvedFixture();
+    wrongConflict.rows.find(row => row.MAT === "MAT-000007").attributes.find(item => item.action === "SOURCE_CONFLICT").code = "purpose";
+    assert.throws(() => PROD.validateProductionPreflight(wrongConflict, REVIEW), /Conflict field set differs|Source-conflict field list mismatch|Approved attribute no longer matches live plan/);
+
+    const wrongBrand = approvedFixture();
+    wrongBrand.summaries.brand.SAFE_TO_FILL = 56;
+    assert.throws(() => PROD.validateProductionPreflight(wrongBrand, REVIEW), /Brand logical preflight mismatch/);
+
+    const wrongIdentity = approvedFixture();
+    wrongIdentity.rows.find(row => row.MAT === "MAT-000060").brand.action = "SAFE_TO_FILL";
+    assert.throws(() => PROD.validateProductionPreflight(wrongIdentity, REVIEW), /Brand status\/current value differs|Brand logical preflight mismatch|Identity-blocked MAT list mismatch/);
+}
+
+function testPostApplyGuard() {
+    const report = approvedFixture();
+    for (const row of report.rows) {
+        for (const attr of row.attributes) if (attr.action === "WILL_ADD") attr.action = "EXISTING_OK";
+        if (row.brand.action === "SAFE_TO_FILL") row.brand.action = "EXISTING_OK";
+    }
+    report.summaries.plaster = { willAdd: 0, willUpdate: 0, existingOk: 208 };
+    report.summaries.putty = { willAdd: 0, willUpdate: 0, existingOk: 297 };
+    report.summaries.brand = { SAFE_TO_FILL: 0, EXISTING_OK: 58, CONFLICT: 0, IDENTITY_BLOCKED: 3, NO_REVIEWED_BRAND: 0 };
+    assert.strictEqual(PROD.validatePostApply(report).existingOk, 505);
+    report.summaries.putty.existingOk = 296;
+    assert.throws(() => PROD.validatePostApply(report), /Post-apply logical state mismatch/);
+}
+
+testArgsAndHostGuards();
+testLogicalPreflight();
+testPostApplyGuard();
+console.log(JSON.stringify({ success: true, explicitDryRunAndConfirm: true, exactProductionPath: true, expectedCommitAndCleanTrackedTree: true,
+    hostnameGuard: true, exact61ProductLogicalReview: true, exactCountsAndBlockedFields: true, postApplyCounts: true }, null, 2));
