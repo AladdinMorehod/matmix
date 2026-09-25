@@ -89,6 +89,26 @@ function testLogicalPreflight() {
 
     const absentBlockedProposal = approvedFixture();
     assert.strictEqual(SOURCE.expectedActionMap(absentBlockedProposal).has("MAT-000001|consumption_10mm"), false, "NEEDS_SOURCE fields must not enter the write plan when absent");
+    const liveCandidateBlockedField = approvedFixture();
+    const unresolvedLiveAdd = liveCandidateBlockedField.rows.find(row => row.MAT === "MAT-000001").attributes.find(item => item.code === "consumption_10mm");
+    unresolvedLiveAdd.action = "WILL_ADD";
+    unresolvedLiveAdd.value = "около 8,5";
+    unresolvedLiveAdd.typed = { valueText: "около 8,5", valueNumber: null, valueBoolean: null };
+    unresolvedLiveAdd.currentValue = null;
+    unresolvedLiveAdd.currentCount = 0;
+    liveCandidateBlockedField.summaries.plaster.willAdd++;
+    const unresolvedPreflight = PROD.validateProductionPreflight(liveCandidateBlockedField, REVIEW);
+    assert.strictEqual(unresolvedPreflight.counts.willAdd, 497, "unreviewed live candidate must be excluded from approved counts");
+    assert.strictEqual(unresolvedPreflight.reviewedSafePlan.has("MAT-000001|consumption_10mm"), false, "NEEDS_SOURCE candidate must not enter the approved write plan");
+    assert.strictEqual(unresolvedPreflight.excludedBlockedActionsByGroup.plaster.WILL_ADD, 1);
+
+    const missingSchemaReviewField = approvedFixture();
+    missingSchemaReviewField.rows.find(row => row.MAT === "MAT-000001").attributes.push({
+        code: "drying_time", action: "WILL_ADD", value: 24, typed: { valueNumber: 24 }, currentIds: [], currentValue: null, currentCount: 0, needsSource: []
+    });
+    missingSchemaReviewField.summaries.plaster.willAdd++;
+    const schemaBlockedPreflight = PROD.validateProductionPreflight(missingSchemaReviewField, REVIEW);
+    assert.strictEqual(schemaBlockedPreflight.reviewedSafePlan.has("MAT-000001|drying_time"), false, "schema-blocked drying_time must stay out of the approved write plan");
 
     const changedBlockedProposal = approvedFixture();
     const changedConsumption = changedBlockedProposal.rows.find(row => row.MAT === "MAT-000001").attributes.find(item => item.code === "consumption_10mm");
@@ -98,7 +118,7 @@ function testLogicalPreflight() {
     changedConsumption.existingNonWritable = true;
     changedConsumption.existingProposalValue = "около 8,5";
     changedBlockedProposal.summaries.plaster.existingOk++;
-    assert.throws(() => PROD.validateProductionPreflight(changedBlockedProposal, REVIEW), /Attribute is not in approved safe preview/);
+    assert.throws(() => PROD.validateProductionPreflight(changedBlockedProposal, REVIEW), /Existing blocked proposal value differs/);
 
     const identityBlockedExisting = approvedFixture();
     identityBlockedExisting.rows.find(row => row.MAT === "MAT-000027").attributes.push({

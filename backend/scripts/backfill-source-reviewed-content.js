@@ -308,6 +308,10 @@ function validateApprovedReviewLogical(report, review) {
         putty: { WILL_ADD: 0, WILL_UPDATE: 0, EXISTING_OK: 0 }
     };
     const unapprovedExistingByGroup = { plaster: 0, putty: 0 };
+    const excludedBlockedActionsByGroup = {
+        plaster: { WILL_ADD: 0, WILL_UPDATE: 0, EXISTING_OK: 0 },
+        putty: { WILL_ADD: 0, WILL_UPDATE: 0, EXISTING_OK: 0 }
+    };
     for (const mat of FIXED_ALLOWLIST) {
         const expected = reviewRows.get(mat);
         const live = liveRows.get(mat);
@@ -346,11 +350,20 @@ function validateApprovedReviewLogical(report, review) {
                 const blockedCodes = new Set([...(expected.needsSource || []).map(item => item.code), ...(expected.schemaBlocked || []).map(item => item.code)]);
                 const hasReviewBlockedProposal = blockedCodes.has(attr.code)
                     && !(expected.conflicts || []).some(item => item.code === attr.code);
-                if (expected.disposition !== "IDENTITY_BLOCKED" && attr.action === "EXISTING_OK" && attr.existingNonWritable === true && hasReviewBlockedProposal
-                    && attr.currentCount === 1 && valuesEqual(attr.currentValue, attr.existingProposalValue)) {
+                if (expected.disposition !== "IDENTITY_BLOCKED" && attr.action === "EXISTING_OK" && attr.existingNonWritable === true && hasReviewBlockedProposal) {
+                    if (attr.currentCount !== 1 || !valuesEqual(attr.currentValue, attr.existingProposalValue)) throw new Error(`Existing blocked proposal value differs: ${mat}/${attr.code}`);
                     const group = DATA.products.find(product => product.externalId === mat)?.group;
                     if (!group || !Object.prototype.hasOwnProperty.call(unapprovedExistingByGroup, group)) throw new Error(`Unknown reviewed product group: ${mat}`);
                     unapprovedExistingByGroup[group]++;
+                    excludedBlockedActionsByGroup[group].EXISTING_OK++;
+                    continue;
+                }
+                if (expected.disposition !== "IDENTITY_BLOCKED" && hasReviewBlockedProposal) {
+                    const group = DATA.products.find(product => product.externalId === mat)?.group;
+                    if (!group || !Object.prototype.hasOwnProperty.call(excludedBlockedActionsByGroup, group)) throw new Error(`Unknown reviewed product group: ${mat}`);
+                    excludedBlockedActionsByGroup[group][attr.action]++;
+                    attr.blockedLiveAction = attr.action;
+                    attr.action = "BLOCKED";
                     continue;
                 }
                 throw new Error(`Attribute is not in approved safe preview: ${mat}/${attr.code}`);
@@ -410,12 +423,17 @@ function validateApprovedReviewLogical(report, review) {
     for (const group of ["plaster", "putty"]) {
         const summary = report.summaries[group];
         const actions = liveActionTotalsByGroup[group];
-        if (summary.willAdd !== actions.WILL_ADD || summary.willUpdate !== actions.WILL_UPDATE || summary.existingOk - unapprovedExistingByGroup[group] !== actions.EXISTING_OK
-            || summary.willAdd + summary.willUpdate + summary.existingOk - unapprovedExistingByGroup[group] !== reviewedTotalsByGroup[group]) {
+        if (summary.willAdd - excludedBlockedActionsByGroup[group].WILL_ADD !== actions.WILL_ADD
+            || summary.willUpdate - excludedBlockedActionsByGroup[group].WILL_UPDATE !== actions.WILL_UPDATE
+            || summary.existingOk - excludedBlockedActionsByGroup[group].EXISTING_OK !== actions.EXISTING_OK
+            || summary.willAdd + summary.willUpdate + summary.existingOk
+                - excludedBlockedActionsByGroup[group].WILL_ADD
+                - excludedBlockedActionsByGroup[group].WILL_UPDATE
+                - excludedBlockedActionsByGroup[group].EXISTING_OK !== reviewedTotalsByGroup[group]) {
             throw new Error(`Category attribute counts differ from approved preview: ${group}`);
         }
     }
-    return { reviewedSafePlan, brandPlan, reviewedTotals, reviewedTotalsByGroup, liveActionTotalsByGroup, unapprovedExistingByGroup, unapprovedExistingCount: unapprovedExistingByGroup.plaster + unapprovedExistingByGroup.putty };
+    return { reviewedSafePlan, brandPlan, reviewedTotals, reviewedTotalsByGroup, liveActionTotalsByGroup, unapprovedExistingByGroup, unapprovedExistingCount: unapprovedExistingByGroup.plaster + unapprovedExistingByGroup.putty, excludedBlockedActionsByGroup };
 }
 
 async function fullValueSnapshot(db) {
@@ -432,6 +450,16 @@ function expectedActionMap(report) {
         planned.set(`${row.MAT}|${attribute.code}`, { action: attribute.action, value: attribute.value, typed: def, rowId: attribute.currentIds[0] || null, currentValue: attribute.currentValue, currentCount: attribute.currentCount });
     }
     return planned;
+}
+
+function assertApprovedPlanStillPresent(report, approvedPlan) {
+    const livePlan = expectedActionMap(report);
+    const liveApprovedSubset = new Map();
+    for (const key of approvedPlan.keys()) {
+        if (!livePlan.has(key)) throw new Error(`Approved attribute plan entry is no longer writable: ${key.replace("|", "/")}`);
+        liveApprovedSubset.set(key, livePlan.get(key));
+    }
+    if (stablePlan(liveApprovedSubset) !== stablePlan(approvedPlan)) throw new Error("Fresh apply plan differs from approved safe subset; refusing apply");
 }
 
 function stablePlan(plan) {
@@ -515,15 +543,17 @@ async function applyReport(db, initialReport) {
 async function runBatch(db, { apply = false, backup = null, brandPlan = [], approvedPlan = null, verifyBeforeWrites = null, verifyBeforeCommit = null } = {}) {
     const beforeReport = await inspect(db);
     if (!apply) return beforeReport;
-    const planned = expectedActionMap(beforeReport);
-    if (approvedPlan && stablePlan(planned) !== stablePlan(approvedPlan)) throw new Error("Fresh apply plan differs from preflight review; refusing apply");
+    const discoveredPlan = expectedActionMap(beforeReport);
+    if (approvedPlan) assertApprovedPlanStillPresent(beforeReport, approvedPlan);
+    const planned = approvedPlan ? new Map(approvedPlan) : discoveredPlan;
     if (!planned.size && !brandPlan.length) return { ...beforeReport, mode: "apply-no-changes", backup: null };
     if (typeof backup !== "function") throw new Error("Apply requires a verified SQLite online backup callback");
     const backupResult = await backup();
     await db.run("BEGIN IMMEDIATE");
     try {
         const currentReport = await inspect(db);
-        if (stablePlan(expectedActionMap(currentReport)) !== stablePlan(planned)) throw new Error("Target values changed after dry-run; refusing apply");
+        if (approvedPlan) assertApprovedPlanStillPresent(currentReport, planned);
+        else if (stablePlan(expectedActionMap(currentReport)) !== stablePlan(planned)) throw new Error("Target values changed after dry-run; refusing apply");
         if (verifyBeforeWrites) await verifyBeforeWrites(currentReport);
         const hashesBefore = await protectedHashes(db);
         const valuesBefore = await fullValueSnapshot(db);

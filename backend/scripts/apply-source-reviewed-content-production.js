@@ -84,14 +84,18 @@ function validateProductionPreflight(report, review) {
         const expectedSubcategory = reviewByMat.get(row.MAT)?.category;
         if (row.category !== "Смеси" || row.subcategory !== expectedSubcategory) throw new Error(`Exact live category/subcategory guard failed: ${row.MAT}`);
     }
-    const safeAdds = report.summaries.plaster.willAdd + report.summaries.putty.willAdd;
-    const updates = report.summaries.plaster.willUpdate + report.summaries.putty.willUpdate;
-    const existing = report.summaries.plaster.existingOk + report.summaries.putty.existingOk;
-    const nonApprovedExisting = approved.unapprovedExistingCount;
+    const safeAdds = report.summaries.plaster.willAdd + report.summaries.putty.willAdd
+        - approved.excludedBlockedActionsByGroup.plaster.WILL_ADD - approved.excludedBlockedActionsByGroup.putty.WILL_ADD;
+    const updates = report.summaries.plaster.willUpdate + report.summaries.putty.willUpdate
+        - approved.excludedBlockedActionsByGroup.plaster.WILL_UPDATE - approved.excludedBlockedActionsByGroup.putty.WILL_UPDATE;
+    const existing = report.summaries.plaster.existingOk + report.summaries.putty.existingOk
+        - approved.excludedBlockedActionsByGroup.plaster.EXISTING_OK - approved.excludedBlockedActionsByGroup.putty.EXISTING_OK;
     const expectedTotal = approved.reviewedTotals.WILL_ADD + approved.reviewedTotals.WILL_UPDATE + approved.reviewedTotals.EXISTING_OK;
-    if (safeAdds + updates + existing - nonApprovedExisting !== expectedTotal || updates !== 0
-        || report.summaries.plaster.willAdd + report.summaries.plaster.willUpdate + report.summaries.plaster.existingOk - approved.unapprovedExistingByGroup.plaster !== approved.reviewedTotalsByGroup.plaster
-        || report.summaries.putty.willAdd + report.summaries.putty.willUpdate + report.summaries.putty.existingOk - approved.unapprovedExistingByGroup.putty !== approved.reviewedTotalsByGroup.putty) {
+    if (safeAdds + updates + existing !== expectedTotal || updates !== 0
+        || report.summaries.plaster.willAdd + report.summaries.plaster.willUpdate + report.summaries.plaster.existingOk
+            - approved.excludedBlockedActionsByGroup.plaster.WILL_ADD - approved.excludedBlockedActionsByGroup.plaster.WILL_UPDATE - approved.excludedBlockedActionsByGroup.plaster.EXISTING_OK !== approved.reviewedTotalsByGroup.plaster
+        || report.summaries.putty.willAdd + report.summaries.putty.willUpdate + report.summaries.putty.existingOk
+            - approved.excludedBlockedActionsByGroup.putty.WILL_ADD - approved.excludedBlockedActionsByGroup.putty.WILL_UPDATE - approved.excludedBlockedActionsByGroup.putty.EXISTING_OK !== approved.reviewedTotalsByGroup.putty) {
         throw new Error(`Attribute logical preflight mismatch: add=${safeAdds}, update=${updates}, existing=${existing}`);
     }
     const brands = report.summaries.brand;
@@ -101,15 +105,17 @@ function validateProductionPreflight(report, review) {
     const blocked = sorted(report.rows.filter(row => row.brand.action === "IDENTITY_BLOCKED").map(row => row.MAT));
     assertEqual(blocked, sorted(EXPECTED_IDENTITY_BLOCKS), "Identity-blocked MAT list");
     assertEqual(sourceConflictFields(report), EXPECTED_CONFLICTS, "Source-conflict field list");
-    return { ...approved, counts: { willAdd: safeAdds, willUpdate: updates, existingOk: existing - nonApprovedExisting, existingReviewedBlockedProposal: nonApprovedExisting, reviewedApprovedTotal: expectedTotal, plasterWillAdd: report.summaries.plaster.willAdd, puttyWillAdd: report.summaries.putty.willAdd, brandSafeToFill: brands.SAFE_TO_FILL, brandExistingOk: brands.EXISTING_OK, brandConflict: brands.CONFLICT, brandIdentityBlocked: brands.IDENTITY_BLOCKED } };
+    return { ...approved, counts: { willAdd: safeAdds, willUpdate: updates, existingOk: existing, existingReviewedBlockedProposal: approved.unapprovedExistingCount, excludedBlockedWillAdd: approved.excludedBlockedActionsByGroup.plaster.WILL_ADD + approved.excludedBlockedActionsByGroup.putty.WILL_ADD, excludedBlockedWillUpdate: approved.excludedBlockedActionsByGroup.plaster.WILL_UPDATE + approved.excludedBlockedActionsByGroup.putty.WILL_UPDATE, reviewedApprovedTotal: expectedTotal, plasterWillAdd: report.summaries.plaster.willAdd - approved.excludedBlockedActionsByGroup.plaster.WILL_ADD, puttyWillAdd: report.summaries.putty.willAdd - approved.excludedBlockedActionsByGroup.putty.WILL_ADD, brandSafeToFill: brands.SAFE_TO_FILL, brandExistingOk: brands.EXISTING_OK, brandConflict: brands.CONFLICT, brandIdentityBlocked: brands.IDENTITY_BLOCKED } };
 }
 
 function validatePostApply(report, review) {
-    const willAdd = report.summaries.plaster.willAdd + report.summaries.putty.willAdd;
-    const willUpdate = report.summaries.plaster.willUpdate + report.summaries.putty.willUpdate;
+    const rawWillAdd = report.summaries.plaster.willAdd + report.summaries.putty.willAdd;
+    const rawWillUpdate = report.summaries.plaster.willUpdate + report.summaries.putty.willUpdate;
     const existingOk = report.summaries.plaster.existingOk + report.summaries.putty.existingOk;
     const reviewed = SOURCE.validateApprovedReviewLogical(report, review);
-    const reviewedExistingOk = existingOk - reviewed.unapprovedExistingCount;
+    const willAdd = rawWillAdd - reviewed.excludedBlockedActionsByGroup.plaster.WILL_ADD - reviewed.excludedBlockedActionsByGroup.putty.WILL_ADD;
+    const willUpdate = rawWillUpdate - reviewed.excludedBlockedActionsByGroup.plaster.WILL_UPDATE - reviewed.excludedBlockedActionsByGroup.putty.WILL_UPDATE;
+    const reviewedExistingOk = existingOk - reviewed.excludedBlockedActionsByGroup.plaster.EXISTING_OK - reviewed.excludedBlockedActionsByGroup.putty.EXISTING_OK;
     const brand = report.summaries.brand;
     if (willAdd !== 0 || willUpdate !== 0 || reviewedExistingOk !== 505 || brand.EXISTING_OK !== 58 || brand.SAFE_TO_FILL !== 0 || brand.CONFLICT !== 0 || brand.IDENTITY_BLOCKED !== 3) {
         throw new Error(`Post-apply logical state mismatch: add=${willAdd}, update=${willUpdate}, existing=${existingOk}, brand=${JSON.stringify(brand)}`);
