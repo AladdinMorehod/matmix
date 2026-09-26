@@ -121,7 +121,7 @@ function productPage(config, pageData) {
     for (const item of attributes) {
         const value = item.type === "boolean" ? (item.value === true ? "Да" : item.value === false ? "Нет" : "") : String(item.value ?? "").trim();
         if (!value) continue;
-        const section = String(item.section || "Характеристики").trim() || "Характеристики";
+        const section = item.section === "Основные характеристики" ? item.section : "Характеристики";
         if (!groupedAttributes.has(section)) groupedAttributes.set(section, []);
         groupedAttributes.get(section).push({ ...item, displayValue: value });
     }

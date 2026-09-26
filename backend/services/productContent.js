@@ -1,6 +1,8 @@
 const { get, all, withTransaction } = require("../database");
 const { hasProductImageReference } = require("./productImageReferences");
 
+const { resolve, getOrderingContext, isMain } = require("./productAttributeOrder");
+
 const LIMITS = Object.freeze({
     brand: 160,
     shortDescription: 500,
@@ -143,7 +145,7 @@ async function updateDefinition(idValue, input, database = { get, withTransactio
 
 async function getTemplates(structureIdValue, database = { all }) {
     const structureId = positiveId(structureIdValue, "structureId");
-    return database.all(`SELECT t.id,t.structure_id,t.attribute_definition_id,t.sort_order,t.is_required,t.unit_override,
+    return database.all(`SELECT t.id,t.structure_id,t.attribute_definition_id,t.section,t.sort_order,t.is_required,t.unit_override,
             d.code,d.label,d.data_type,d.default_unit,d.default_section,d.is_active
         FROM product_attribute_templates t JOIN product_attribute_definitions d ON d.id=t.attribute_definition_id
         WHERE t.structure_id=? ORDER BY t.sort_order,d.sort_order,d.label`, [structureId]);
@@ -156,15 +158,30 @@ async function replaceTemplates(structureIdValue, items, database = { get, all, 
     if (!structure || structure.type !== "subcategory") throw contentError(400, "Templates назначаются только подкатегории.", "INVALID_TEMPLATE_STRUCTURE");
     const ids = items.map(item => positiveId(item.definitionId ?? item.attributeDefinitionId, "definitionId"));
     if (new Set(ids).size !== ids.length) throw contentError(409, "Definition нельзя назначить дважды.", "DUPLICATE_TEMPLATE_DEFINITION");
-    const definitions = ids.length ? await database.all(`SELECT id,is_active FROM product_attribute_definitions WHERE id IN (${ids.map(() => "?").join(",")})`, ids) : [];
+    const definitions = ids.length ? await database.all(`SELECT id,code,default_section,is_active FROM product_attribute_definitions WHERE id IN (${ids.map(() => "?").join(",")})`, ids) : [];
     if (definitions.length !== ids.length || definitions.some(item => !item.is_active)) throw contentError(400, "Выбрана отсутствующая или неактивная definition.", "INVALID_TEMPLATE_DEFINITION");
+    const definitionById = new Map(definitions.map(item => [Number(item.id), item]));
+    for (const item of items) {
+        if (item.section !== undefined && !["main", "regular"].includes(item.section)) throw contentError(400, "Section должен быть main или regular.", "INVALID_TEMPLATE_SECTION");
+    }
     return database.withTransaction(async transaction => {
-        await transaction.run("DELETE FROM product_attribute_templates WHERE structure_id=?", [structureId]);
+        const previous = await transaction.all("SELECT attribute_definition_id,section FROM product_attribute_templates WHERE structure_id=?", [structureId]);
+        const previousById = new Map(previous.map(row => [Number(row.attribute_definition_id), row.section]));
+        for (const row of previous) {
+            if (!ids.includes(row.attribute_definition_id)) await transaction.run("DELETE FROM product_attribute_templates WHERE structure_id=? AND attribute_definition_id=?", [structureId, row.attribute_definition_id]);
+        }
         const now = new Date().toISOString();
         for (const [index, item] of items.entries()) {
+            const definition = definitionById.get(ids[index]);
+            const suggestion = String(definition.default_section || "").trim().toLowerCase();
+            const fallbackSection = previousById.get(ids[index])
+                || (suggestion === "main" || suggestion === "regular" ? suggestion : isMain(definition.code) ? "main" : "regular");
+            const section = item.section || fallbackSection;
             await transaction.run(`INSERT INTO product_attribute_templates
-                (structure_id,attribute_definition_id,sort_order,is_required,unit_override,created_at,updated_at) VALUES(?,?,?,?,?,?,?)`,
-            [structureId, ids[index], integer(item.sortOrder, "Sort order", index), flag(item.isRequired), text(item.unitOverride, LIMITS.unit, "Unit"), now, now]);
+                (structure_id,attribute_definition_id,section,sort_order,is_required,unit_override,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)
+                ON CONFLICT(structure_id,attribute_definition_id) DO UPDATE SET sort_order=excluded.sort_order,
+                    section=excluded.section,is_required=excluded.is_required,unit_override=excluded.unit_override,updated_at=excluded.updated_at`,
+            [structureId, ids[index], section, integer(item.sortOrder, "Sort order", index), flag(item.isRequired), text(item.unitOverride, LIMITS.unit, "Unit"), now, now]);
         }
         return getTemplates(structureId, transaction);
     });
@@ -182,9 +199,10 @@ async function getProductContent(productIdValue, database = { get, all }) {
     const values = await database.all(`SELECT v.id,v.attribute_definition_id,v.value_text,v.value_number,v.value_boolean,v.unit_override,v.sort_order,
             d.code,d.label,d.data_type,d.default_unit,d.default_section,d.is_active
         FROM product_attribute_values v JOIN product_attribute_definitions d ON d.id=v.attribute_definition_id
-        WHERE v.product_id=? ORDER BY v.sort_order,d.sort_order,d.label`, [productId]);
+        WHERE v.product_id=? ORDER BY d.id`, [productId]);
     const images = await database.all(`SELECT id,image_url,alt_text,sort_order,is_primary FROM product_images
         WHERE product_id=? ORDER BY is_primary DESC,sort_order,id`, [productId]);
+    const orderingContext = await getOrderingContext(product, database);
     return {
         product: {
             id: product.id, externalId: product.external_id, brand: product.brand || "",
@@ -195,29 +213,29 @@ async function getProductContent(productIdValue, database = { get, all }) {
         structureId: structure?.id || null,
         templates: templateRows.map(row => ({
             definitionId: row.attribute_definition_id, code: row.code, label: row.label, dataType: row.data_type,
-            unit: row.unit_override || row.default_unit || "", section: row.default_section || "",
+            unit: row.unit_override || row.default_unit || "", unitOverride: row.unit_override || "", section: row.section || "regular",
             sortOrder: Number(row.sort_order) || 0, isRequired: Boolean(row.is_required), isActive: Boolean(row.is_active)
         })),
-        values: values.map(row => ({
+        values: resolve({ ...orderingContext, brand: product.brand || "", values: values.map(row => ({
             id: row.id, definitionId: row.attribute_definition_id, code: row.code, label: row.label, dataType: row.data_type,
-            value: row.data_type === "text" ? row.value_text : row.data_type === "number" ? row.value_number : Boolean(row.value_boolean),
-            unit: row.unit_override || row.default_unit || "", section: row.default_section || "", sortOrder: Number(row.sort_order) || 0,
+            value: row.data_type === "text" ? row.value_text : row.data_type === "number" ? row.value_number : row.value_boolean === null ? null : Boolean(row.value_boolean),
+            unit: row.unit_override || row.default_unit || "", unitOverride: row.unit_override || "", section: row.section || "regular", sortOrder: Number(row.sort_order) || 0,
             isActive: Boolean(row.is_active)
-        })),
+        })) }),
         images: images.map(row => ({ id: row.id, imageUrl: row.image_url, altText: row.alt_text || "", sortOrder: Number(row.sort_order) || 0, isPrimary: Boolean(row.is_primary) }))
     };
 }
 
 async function updateProductContent(productIdValue, input = {}, database = { get, all, withTransaction }) {
     const productId = positiveId(productIdValue, "productId");
-    const existing = await database.get("SELECT id FROM products WHERE id=? AND deleted_at IS NULL", [productId]);
+    const existing = await database.get("SELECT * FROM products WHERE id=? AND deleted_at IS NULL", [productId]);
     if (!existing) throw contentError(404, "Товар не найден.", "PRODUCT_NOT_FOUND");
     const fields = {
-        brand: text(input.brand, LIMITS.brand, "Brand"),
-        shortDescription: text(input.shortDescription ?? input.short_description, LIMITS.shortDescription, "Короткое описание"),
-        fullDescription: text(input.fullDescription ?? input.full_description, LIMITS.fullDescription, "Полное описание"),
-        seoTitle: text(input.seoTitle ?? input.seo_title, LIMITS.seoTitle, "SEO title"),
-        seoDescription: text(input.seoDescription ?? input.seo_description, LIMITS.seoDescription, "SEO description")
+        brand: text(input.brand === undefined ? existing.brand : input.brand, LIMITS.brand, "Brand"),
+        shortDescription: text(input.shortDescription ?? input.short_description ?? existing.short_description, LIMITS.shortDescription, "Короткое описание"),
+        fullDescription: text(input.fullDescription ?? input.full_description ?? existing.full_description, LIMITS.fullDescription, "Полное описание"),
+        seoTitle: text(input.seoTitle ?? input.seo_title ?? existing.seo_title, LIMITS.seoTitle, "SEO title"),
+        seoDescription: text(input.seoDescription ?? input.seo_description ?? existing.seo_description, LIMITS.seoDescription, "SEO description")
     };
     const valuesInput = input.attributes ?? input.values ?? [];
     if (!Array.isArray(valuesInput) || valuesInput.length > 300) throw contentError(400, "Некорректный список характеристик.", "INVALID_ATTRIBUTE_VALUES");
@@ -226,16 +244,36 @@ async function updateProductContent(productIdValue, input = {}, database = { get
     const definitions = ids.length ? await database.all(`SELECT * FROM product_attribute_definitions WHERE id IN (${ids.map(() => "?").join(",")})`, ids) : [];
     if (definitions.length !== ids.length) throw contentError(400, "Неизвестная definition.", "INVALID_ATTRIBUTE_DEFINITION");
     const byId = new Map(definitions.map(item => [item.id, item]));
-    const values = valuesInput.map(item => normalizeValue(byId.get(Number(item.definitionId)), item)).filter(Boolean);
+    const values = valuesInput.map(item => ({ definition: byId.get(Number(item.definitionId)), value: normalizeValue(byId.get(Number(item.definitionId)), item) }));
+    const removedIds = input.removedDefinitionIds ?? [];
+    if (!Array.isArray(removedIds)) throw contentError(400, "Некорректный список удалений.", "INVALID_ATTRIBUTE_VALUES");
+    const removals = [...new Set(removedIds.map(id => positiveId(id, "definitionId")))];
+    const removedDefinitions = removals.length ? await database.all(`SELECT id,code FROM product_attribute_definitions WHERE id IN (${removals.map(() => "?").join(",")})`, removals) : [];
+    if (removals.some(id => ids.includes(id))) throw contentError(400, "Характеристика одновременно изменена и удалена.", "INVALID_ATTRIBUTE_VALUES");
     return database.withTransaction(async transaction => {
         const now = new Date().toISOString();
         await transaction.run(`UPDATE products SET brand=?,short_description=?,full_description=?,seo_title=?,seo_description=?,updated_at=? WHERE id=?`,
             [fields.brand, fields.shortDescription, fields.fullDescription, fields.seoTitle, fields.seoDescription, now, productId]);
-        await transaction.run("DELETE FROM product_attribute_values WHERE product_id=?", [productId]);
-        for (const value of values) {
-            await transaction.run(`INSERT INTO product_attribute_values
-                (product_id,attribute_definition_id,value_text,value_number,value_boolean,unit_override,sort_order,created_at,updated_at)
-                VALUES(?,?,?,?,?,?,?,?,?)`, [productId, value.definitionId, value.valueText, value.valueNumber, value.valueBoolean, value.unitOverride, value.sortOrder, now, now]);
+        // Only explicit user removals/clears delete individual rows. Omitted values are preserved.
+        for (const id of removals) await transaction.run("DELETE FROM product_attribute_values WHERE product_id=? AND attribute_definition_id=?", [productId, id]);
+        for (const { definition, value } of values) {
+            // Legacy brand rows remain untouched; products.brand is the sole writable source.
+            if (definition.code === "brand") continue;
+            if (!value) {
+                await transaction.run("DELETE FROM product_attribute_values WHERE product_id=? AND attribute_definition_id=?", [productId, definition.id]);
+                continue;
+            }
+            const stored = await transaction.get("SELECT * FROM product_attribute_values WHERE product_id=? AND attribute_definition_id=?", [productId, value.definitionId]);
+            if (stored) {
+                if (stored.unit_override === null && value.unitOverride === definition.default_unit) value.unitOverride = null;
+                if (stored.value_text === value.valueText && stored.value_number === value.valueNumber && stored.value_boolean === value.valueBoolean && stored.unit_override === value.unitOverride) continue;
+                await transaction.run(`UPDATE product_attribute_values SET value_text=?,value_number=?,value_boolean=?,unit_override=?,updated_at=? WHERE product_id=? AND attribute_definition_id=?`,
+                    [value.valueText, value.valueNumber, value.valueBoolean, value.unitOverride, now, productId, value.definitionId]);
+            } else {
+                await transaction.run(`INSERT INTO product_attribute_values
+                    (product_id,attribute_definition_id,value_text,value_number,value_boolean,unit_override,sort_order,created_at,updated_at)
+                    VALUES(?,?,?,?,?,?,?,?,?)`, [productId, value.definitionId, value.valueText, value.valueNumber, value.valueBoolean, value.unitOverride, value.sortOrder, now, now]);
+            }
         }
         return getProductContent(productId, transaction);
     });

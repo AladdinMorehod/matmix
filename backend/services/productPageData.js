@@ -1,6 +1,8 @@
+const { resolve, getOrderingContext, isMain } = require("./productAttributeOrder");
+
 function attributeValue(row) {
     if (row.data_type === "number") return row.value_number;
-    if (row.data_type === "boolean") return Boolean(row.value_boolean);
+    if (row.data_type === "boolean") return row.value_boolean === null ? null : Boolean(row.value_boolean);
     return row.value_text;
 }
 
@@ -20,15 +22,16 @@ async function getProductPageDataByExternalId(externalId, executor = null) {
 
     const [attributeRows, imageRows] = await Promise.all([
         database.all(`SELECT
-            value.id, definition.code, definition.label, definition.data_type,
+            value.id, definition.id AS definition_id, definition.is_active, definition.code, definition.label, definition.data_type,
             CASE WHEN value.unit_override IS NOT NULL THEN value.unit_override ELSE definition.default_unit END AS unit,
+            value.unit_override,
             definition.default_section AS section,
             value.value_text, value.value_number, value.value_boolean,
             value.sort_order, definition.sort_order AS definition_sort_order
             FROM product_attribute_values value
             JOIN product_attribute_definitions definition ON definition.id=value.attribute_definition_id
-            WHERE value.product_id=? AND definition.is_active=1
-            ORDER BY value.sort_order, definition.sort_order, definition.id`, [product.id]),
+            WHERE value.product_id=?
+            ORDER BY definition.id`, [product.id]),
         database.all(`SELECT id, image_url, alt_text, sort_order, is_primary, created_at, updated_at
             FROM product_images
             WHERE product_id=?
@@ -47,18 +50,23 @@ async function getProductPageDataByExternalId(externalId, executor = null) {
         });
     }
 
+    const orderingContext = await getOrderingContext(product, database);
     return {
         product,
-        attributes: attributeRows.map(row => ({
+        attributes: resolve({ ...orderingContext, brand: product.brand || "", includeEmptyMain: false, values: attributeRows.filter(row => row.is_active
+            || orderingContext.templates.some(template => Number(template.definitionId) === Number(row.definition_id) && template.section === "main")
+            || (!orderingContext.templates.some(template => Number(template.definitionId) === Number(row.definition_id)) && isMain(row.code))).map(row => ({
             id: row.id,
+            definitionId: row.definition_id,
             code: row.code,
             label: row.label,
             type: row.data_type,
             value: attributeValue(row),
             unit: row.unit || "",
+            unitOverride: row.unit_override || "",
             section: row.section || "",
             sortOrder: Number(row.sort_order) || 0
-        })),
+        })) }).map(row => ({ ...row, type: row.type || row.dataType })),
         images
     };
 }

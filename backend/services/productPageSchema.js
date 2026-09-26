@@ -46,6 +46,7 @@ async function ensureProductPageSchema(db) {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         structure_id INTEGER NOT NULL,
         attribute_definition_id INTEGER NOT NULL,
+        section TEXT NOT NULL DEFAULT 'regular' CHECK (section IN ('main','regular')),
         sort_order INTEGER NOT NULL DEFAULT 0 CHECK (typeof(sort_order) = 'integer'),
         is_required INTEGER NOT NULL DEFAULT 0 CHECK (is_required IN (0,1)),
         unit_override TEXT CHECK (unit_override IS NULL OR length(trim(unit_override)) BETWEEN 1 AND 40),
