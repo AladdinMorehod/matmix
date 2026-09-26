@@ -36,6 +36,23 @@ async function main() {
             { definitionId: 6, section: "regular", sortOrder: 1 },
             { definitionId: 7, section: "regular", sortOrder: 0 }
         ], db);
+        const moveMembershipBefore = await db.get("SELECT id FROM product_attribute_templates WHERE structure_id=2 AND attribute_definition_id=5");
+        await replaceTemplates(2, [
+            ...[1, 2, 3, 4].map((definitionId, sortOrder) => ({ definitionId, section: "main", sortOrder })),
+            { definitionId: 5, section: "main", sortOrder: 4 },
+            { definitionId: 6, section: "regular", sortOrder: 0 },
+            { definitionId: 7, section: "regular", sortOrder: 1 }
+        ], db);
+        assert.deepStrictEqual(await db.get("SELECT id,section FROM product_attribute_templates WHERE structure_id=2 AND attribute_definition_id=5"),
+            { id: moveMembershipBefore.id, section: "main" }, "moving to main must update the existing membership row");
+        await replaceTemplates(2, [
+            ...[1, 2, 3, 4].map((definitionId, sortOrder) => ({ definitionId, section: "main", sortOrder })),
+            { definitionId: 5, section: "regular", sortOrder: 2 },
+            { definitionId: 6, section: "regular", sortOrder: 1 },
+            { definitionId: 7, section: "regular", sortOrder: 0 }
+        ], db);
+        assert.deepStrictEqual(await db.get("SELECT id,section FROM product_attribute_templates WHERE structure_id=2 AND attribute_definition_id=5"),
+            { id: moveMembershipBefore.id, section: "regular" }, "moving back to regular must retain the same membership ID");
         for (const productId of [1, 2]) for (const [id, value, order] of [[1, "Legacy brand attribute value", 999], [2, "Old product type", 300], [3, "12 months", 400], [4, "25 kg", 500], [5, "A", 999], [6, "B", -90], [7, "C", -100]]) {
             await db.run("INSERT INTO product_attribute_values(product_id,attribute_definition_id,value_text,sort_order,created_at) VALUES(?,?,?,?, 'original')", [productId, id, value, order]);
         }
@@ -56,6 +73,12 @@ async function main() {
         assert(html.indexOf("<dt>Бренд</dt>") < html.indexOf("<dt>Срок хранения</dt>"));
         const empty = resolve({ brand: "", includeEmptyMain: false });
         assert.strictEqual(empty.length, 0);
+        const fallbackDefinitions = codes.map((code, index) => ({ id: index + 1, code, label: code, dataType: "text", sortOrder: index, isActive: true }));
+        const legacyFallback = resolve({ definitions: fallbackDefinitions, templates: [], values: [
+            { definitionId: 5, code: "alpha", value: "legacy fallback" }
+        ], brand: "Legacy brand" });
+        assert.deepStrictEqual(legacyFallback.filter(item => item.isMain).map(item => item.code), MAIN_ATTRIBUTES.map(item => item.code));
+        assert(legacyFallback.some(item => item.code === "alpha" && !item.isMain), "empty template must retain the legacy global-definition fallback");
         assert(!productPage(seoConfig({}), { ...page, product: { ...page.product, brand: "" }, attributes: empty }).html.includes("Основные характеристики"));
 
         const original = await db.all("SELECT * FROM product_attribute_values ORDER BY id");
@@ -112,12 +135,13 @@ async function main() {
         const updatedTemplate = await db.get("SELECT * FROM product_attribute_templates WHERE structure_id=2 AND attribute_definition_id=5");
         assert.strictEqual(updatedTemplate.id, originalTemplate.id);
         assert.strictEqual(updatedTemplate.sort_order, 2);
-        assert.deepStrictEqual((await getProductContent(2, db)).values.slice(4).map(item => item.code), ["beta", "alpha", "gamma"]);
+        const noMainMembershipContent = await getProductContent(2, db);
+        assert(noMainMembershipContent.values.every(item => !item.isMain), "with a partial template, only main memberships may enter the main section");
+        assert.deepStrictEqual(noMainMembershipContent.values.filter(item => ["alpha", "beta", "gamma"].includes(item.code)).map(item => item.code), ["beta", "alpha", "gamma"]);
         assert.deepStrictEqual(await db.all("SELECT * FROM product_attribute_values WHERE product_id=2 ORDER BY id"), original.filter(row => row.product_id === 2));
         await updateProductContent(1, { brand: "", attributes: [{ definitionId: 2, value: null }, { definitionId: 4, value: null }] }, db);
         const allMainCleared = await getProductContent(1, db);
-        assert.strictEqual(allMainCleared.values.filter(item => item.isMain).length, 4);
-        assert(allMainCleared.values.filter(item => item.isMain).every(item => item.value === ""));
+        assert.strictEqual(allMainCleared.values.filter(item => item.isMain).length, 0);
         const noMainPage = await getProductPageDataByExternalId("MAT-TEST-1", db);
         assert(!noMainPage.attributes.some(item => item.isMain));
         assert(!productPage(seoConfig({}), noMainPage).html.includes("<h3>Основные характеристики</h3>"));

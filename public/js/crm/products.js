@@ -154,14 +154,27 @@ function renderProductAttributes() {
     const hasProductValue = row => row.code === "brand" ? MatMixAttributeOrder.hasValue(productContentEditor.content?.product?.brand) : MatMixAttributeOrder.hasValue(row.value) || row.showEmpty;
     const mainRows = rows.filter(item => item.isMain && (hasProductValue(item) || item.code === "brand"));
     const regularRows = rows.filter(item => !item.isMain && hasProductValue(item));
-    const mainUnused = rows.filter(item => item.isMain && item.code !== "brand" && !hasProductValue(item) && item.isActive && item.definitionId);
-    const usedIds = new Set(rows.filter(hasProductValue).map(item => Number(item.definitionId)));
-    const regularUnused = productContentEditor.definitions.filter(item => item.isActive && item.code !== "brand" && !usedIds.has(Number(item.id))
-        && !rows.some(row => Number(row.definitionId) === Number(item.id) && row.isMain));
+    const templates = productContentEditor.content?.templates || [];
+    const hasTemplate = templates.length > 0;
+    const valuesById = new Map((productContentEditor.content?.values || []).map(item => [Number(item.definitionId), item]));
+    const hasValueForDefinition = definition => definition.code === "brand"
+        ? MatMixAttributeOrder.hasValue(productContentEditor.content?.product?.brand)
+        : MatMixAttributeOrder.hasValue(valuesById.get(Number(definition.id))?.value)
+            || Boolean(valuesById.get(Number(definition.id))?.showEmpty);
+    const definitionsById = new Map(productContentEditor.definitions.map(item => [Number(item.id), item]));
+    const mainUnused = hasTemplate
+        ? templates.filter(item => item.section === "main").map(item => definitionsById.get(Number(item.definitionId)))
+            .filter(item => item && item.isActive && item.code !== "brand" && !hasValueForDefinition(item))
+        : rows.filter(item => item.isMain && item.code !== "brand" && !hasProductValue(item) && item.isActive && item.definitionId);
+    const regularUnused = hasTemplate
+        ? templates.filter(item => item.section === "regular").map(item => definitionsById.get(Number(item.definitionId)))
+            .filter(item => item && item.isActive && item.code !== "brand" && !hasValueForDefinition(item))
+        : productContentEditor.definitions.filter(item => item.isActive && item.code !== "brand" && !hasValueForDefinition(item)
+            && !rows.some(row => Number(row.definitionId) === Number(item.id) && row.isMain));
     const renderRow = item => `<div class="product-attribute-row${item.isMain ? " product-attribute-main-row" : ""}" data-definition-id="${item.definitionId || ""}">
         <strong class="product-attribute-label">${escapeHtml(item.label)}</strong>
         <label class="product-attribute-value">${item.code === "brand" ? `<input name="brand" maxlength="160" aria-label="Бренд" value="${escapeHtml(item.value || "")}">` : item.definitionId ? renderAttributeInput(item) : '<input disabled aria-label="Значение характеристики" placeholder="Нет определения в справочнике">'}</label>
-        ${item.code !== "brand" && item.definitionId ? `<details class="product-attribute-unit"><summary>${escapeHtml(item.unit || "Единица +")}</summary><input name="attribute_unit_${item.definitionId}" maxlength="40" aria-label="Единица для ${escapeHtml(item.label)}" value="${escapeHtml(item.unitOverride || "")}" placeholder="${escapeHtml(item.unit || item.defaultUnit || "Единица")}"></details>` : ""}
+        ${item.code !== "brand" && item.definitionId ? `<details class="product-attribute-unit"><summary aria-label="Единица для ${escapeHtml(item.label)}">${escapeHtml(item.unit || "⋯")}</summary><input name="attribute_unit_${item.definitionId}" maxlength="40" aria-label="Единица для ${escapeHtml(item.label)}" value="${escapeHtml(item.unitOverride || "")}" placeholder="${escapeHtml(item.unit || item.defaultUnit || "Единица")}"></details>` : ""}
         ${item.definitionId ? `<button class="product-attribute-remove" type="button" data-remove-attribute="${item.definitionId}" aria-label="Удалить значение ${escapeHtml(item.label)}">×</button>` : ""}
     </div>`;
     const subcategoryName = productContentEditor.selectedSubcategoryName || "";
@@ -198,46 +211,61 @@ function renderAttributeTemplateRows(rows, section) {
         const defaultUnit = item.defaultUnit || "";
         const effectiveUnit = String(item.unitOverride || "").trim() || defaultUnit || "По умолчанию";
         return `<div class="product-template-row${item.included ? "" : " is-excluded"}" data-template-row="${item.definitionId}">
-            <button class="product-template-drag-handle" type="button" draggable="${item.included ? "true" : "false"}" data-template-drag-handle="${item.definitionId}" aria-label="Перетащить ${escapeHtml(item.label)}" title="Перетащите, чтобы изменить порядок">⠿</button>
-            <label class="product-template-inclusion"><input type="checkbox" data-template-enabled="${item.definitionId}"${item.included ? " checked" : ""}><span>В шаблоне</span></label>
+            <button class="product-template-drag-handle" type="button" draggable="true" data-template-drag-handle="${item.definitionId}" aria-label="Перетащить ${escapeHtml(item.label)}" title="Перетащите, чтобы изменить порядок">⠿</button>
             <strong class="product-template-label">${escapeHtml(item.label)}</strong>
-            <label class="product-template-section"><span class="visually-hidden">Раздел</span><select data-template-section="${item.definitionId}"${item.included ? "" : " disabled"}><option value="main"${section === "main" ? " selected" : ""}>Основная</option><option value="regular"${section === "regular" ? " selected" : ""}>Обычная</option></select></label>
-            <label class="product-template-required"><input type="checkbox" data-template-required="${item.definitionId}"${item.isRequired ? " checked" : ""}${item.included ? "" : " disabled"}><span>Обязательно</span></label>
-            <details class="product-template-unit"><summary>${escapeHtml(item.unitOverride || defaultUnit || "Единица +")}</summary><input type="text" maxlength="40" data-template-unit="${item.definitionId}" value="${escapeHtml(item.unitOverride || "")}" placeholder="${escapeHtml(defaultUnit ? `По умолчанию: ${defaultUnit}` : "По умолчанию")}"${item.included ? "" : " disabled"}><small>Сейчас: ${escapeHtml(effectiveUnit)}</small></details>
-            <div class="product-template-move-actions" aria-label="Изменить порядок"><button type="button" data-template-move="${item.definitionId}" data-offset="-1"${index === 0 ? " disabled" : ""} aria-label="Поднять ${escapeHtml(item.label)}">↑</button><button type="button" data-template-move="${item.definitionId}" data-offset="1"${index === rows.length - 1 ? " disabled" : ""} aria-label="Опустить ${escapeHtml(item.label)}">↓</button></div>
+            <div class="product-template-row-meta">
+                <label class="product-template-required"><input type="checkbox" data-template-required="${item.definitionId}"${item.isRequired ? " checked" : ""}><span>Обязательно</span></label>
+                <details class="product-template-unit"><summary aria-label="Единица для ${escapeHtml(item.label)}">${escapeHtml(item.unitOverride || defaultUnit || "⋯")}</summary><input type="text" maxlength="40" data-template-unit="${item.definitionId}" value="${escapeHtml(item.unitOverride || "")}" placeholder="${escapeHtml(defaultUnit ? `По умолчанию: ${defaultUnit}` : "По умолчанию")}"><small>Сейчас: ${escapeHtml(effectiveUnit)}</small></details>
+            </div>
+            <div class="product-template-row-actions">
+                <div class="product-template-move-actions" aria-label="Изменить порядок"><button type="button" data-template-move="${item.definitionId}" data-offset="-1"${index === 0 ? " disabled" : ""} aria-label="Поднять ${escapeHtml(item.label)}" title="Поднять">↑</button><button type="button" data-template-move="${item.definitionId}" data-offset="1"${index === rows.length - 1 ? " disabled" : ""} aria-label="Опустить ${escapeHtml(item.label)}" title="Опустить">↓</button></div>
+                <button type="button" class="product-template-section-move" data-template-section-move="${item.definitionId}" aria-label="Переместить ${escapeHtml(item.label)} в ${section === "main" ? "характеристики" : "основные характеристики"}">Переместить в ${section === "main" ? "характеристики" : "основные"}</button>
+                <button type="button" class="product-template-remove" data-template-remove="${item.definitionId}" aria-label="Убрать ${escapeHtml(item.label)} из шаблона" title="Убрать из шаблона">×</button>
+            </div>
         </div>`;
     }).join("");
 }
 
-function renderAttributeTemplateManagerContent(rows, definitions) {
-    const available = definitions.filter(item => item.isActive && !rows.some(row => row.definitionId === item.id));
+function renderTemplatePickerResults(section, rows, definitions, query) {
+    const normalizedQuery = String(query || "").trim().toLocaleLowerCase("ru");
+    const available = definitions.filter(item => item.isActive && !rows.some(row => row.included && row.definitionId === item.id)
+        && (!normalizedQuery || `${item.label} ${item.code}`.toLocaleLowerCase("ru").includes(normalizedQuery)));
+    if (!available.length) return '<p class="product-template-picker-empty">Ничего не найдено.</p>';
+    return available.slice(0, 40).map(item => `<button type="button" class="product-template-picker-option" data-template-pick="${section}" data-definition-id="${item.id}">${escapeHtml(item.label)}</button>`).join("");
+}
+
+function renderAttributeTemplateManagerContent(rows, definitions, pickerState = { main: false, regular: false, query: { main: "", regular: "" } }) {
     const renderSection = section => {
-        const sectionRows = MatMixAttributeOrder.sortTemplates(rows.filter(row => row.section === section));
+        const sectionRows = MatMixAttributeOrder.sortTemplates(rows.filter(row => row.included && row.section === section));
         const heading = section === "main" ? "Основные характеристики" : "Характеристики";
-        const addText = section === "main" ? "Добавить в основные" : "Добавить в характеристики";
+        const addText = section === "main" ? "Добавить основную характеристику" : "Добавить характеристику";
         return `<section class="product-template-section-panel" data-template-section-panel="${section}"><h3>${heading}</h3>
             <div class="product-template-list" data-template-list="${section}">${renderAttributeTemplateRows(sectionRows, section)}</div>
-            <div class="product-template-add-row"><label><span>Выбрать характеристику</span><select data-template-add="${section}"><option value="">Выберите характеристику</option>${available.map(item => `<option value="${item.id}">${escapeHtml(item.label)}</option>`).join("")}</select></label><button type="button" data-template-add-button="${section}">${addText}</button></div>
+            <div class="product-template-add-row"><button type="button" data-template-picker-toggle="${section}" aria-expanded="${pickerState[section] ? "true" : "false"}">＋ ${addText}</button>
+                <div class="product-template-picker" data-template-picker="${section}"${pickerState[section] ? "" : " hidden"}>
+                    <label><span>Поиск по справочнику</span><input type="search" data-template-search="${section}" value="${escapeHtml(pickerState.query?.[section] || "")}" placeholder="Начните вводить название"></label>
+                    <div class="product-template-picker-results" data-template-picker-results="${section}" role="listbox">${renderTemplatePickerResults(section, rows, definitions, pickerState.query?.[section])}</div>
+                </div>
+            </div>
         </section>`;
     };
     return `<div class="product-template-manager">
         <div class="product-template-manager-note"><strong>Этот шаблон влияет на всю подкатегорию.</strong><span>Он задаёт разделы, состав и порядок; значения самого товара сохраняются отдельно.</span></div>
-        <p class="product-template-order-hint">Перетаскивайте строки внутри раздела или между разделами. На телефоне используйте кнопки ↑/↓ и переключатель «Основная / Обычная».</p>
+        <p class="product-template-order-hint">Порядок меняется кнопками ↑/↓. Раздел меняется отдельной кнопкой у строки. Можно также перетащить строку.</p>
         ${renderSection("main")}${renderSection("regular")}
     </div>`;
 }
 
-function updateAttributeTemplateManager(formElement, rows, definitions) {
+function updateAttributeTemplateManager(formElement, rows, definitions, pickerState) {
     for (const section of ["main", "regular"]) {
         const list = formElement.querySelector(`[data-template-list="${section}"]`);
-        if (list) list.innerHTML = renderAttributeTemplateRows(MatMixAttributeOrder.sortTemplates(rows.filter(row => row.section === section)), section);
-        const select = formElement.querySelector(`[data-template-add="${section}"]`);
-        if (select) {
-            const selected = select.value;
-            const available = definitions.filter(item => item.isActive && !rows.some(row => row.definitionId === item.id));
-            select.innerHTML = `<option value="">Выберите характеристику</option>${available.map(item => `<option value="${item.id}">${escapeHtml(item.label)}</option>`).join("")}`;
-            if (available.some(item => String(item.id) === selected)) select.value = selected;
-        }
+        if (list) list.innerHTML = renderAttributeTemplateRows(MatMixAttributeOrder.sortTemplates(rows.filter(row => row.included && row.section === section)), section);
+        const picker = formElement.querySelector(`[data-template-picker="${section}"]`);
+        if (picker) picker.hidden = !pickerState[section];
+        const toggle = formElement.querySelector(`[data-template-picker-toggle="${section}"]`);
+        if (toggle) toggle.setAttribute("aria-expanded", pickerState[section] ? "true" : "false");
+        const results = formElement.querySelector(`[data-template-picker-results="${section}"]`);
+        if (results) results.innerHTML = renderTemplatePickerResults(section, rows, definitions, pickerState.query[section]);
     }
 }
 
@@ -272,6 +300,7 @@ async function openAttributeTemplateManager(formElement) {
         return notifyError(error, "Не удалось загрузить шаблон подкатегории.");
     }
     const definitions = productContentEditor.definitions;
+    const pickerState = { main: false, regular: false, query: { main: "", regular: "" } };
     const allTemplates = (response.templates || []).map(item => ({
         definitionId: Number(item.attribute_definition_id), code: item.code, label: item.label, dataType: item.data_type,
         defaultUnit: item.default_unit || "", unitOverride: item.unit_override || "", sortOrder: Number(item.sort_order) || 0,
@@ -282,13 +311,21 @@ async function openAttributeTemplateManager(formElement) {
     const result = await CrmModal.form({
         title: `Шаблон подкатегории: ${subcategoryName}`,
         description: "Настройки состава, единиц и порядка характеристик подкатегории.",
-        content: renderAttributeTemplateManagerContent(draftRows, definitions),
+        content: renderAttributeTemplateManagerContent(draftRows, definitions, pickerState),
         submitText: "Сохранить шаблон",
         cancelText: "Отмена",
         onReady: ({ formElement: templateForm }) => {
             const manager = templateForm.querySelector(".product-template-manager");
             let draggedId = null;
             manager?.addEventListener("input", event => {
+                const search = event.target.closest("[data-template-search]");
+                if (search) {
+                    const section = search.dataset.templateSearch;
+                    pickerState.query[section] = search.value;
+                    const results = templateForm.querySelector(`[data-template-picker-results="${section}"]`);
+                    if (results) results.innerHTML = renderTemplatePickerResults(section, draftRows, definitions, search.value);
+                    return;
+                }
                 const row = draftRows.find(item => item.definitionId === Number(event.target.closest("[data-template-row]")?.dataset.templateRow));
                 if (row && event.target.matches("[data-template-unit]")) row.unitOverride = event.target.value;
                 const unitDetails = event.target.closest("[data-template-row]")?.querySelector(".product-template-unit");
@@ -301,17 +338,56 @@ async function openAttributeTemplateManager(formElement) {
             manager?.addEventListener("change", event => {
                 const row = draftRows.find(item => item.definitionId === Number(event.target.closest("[data-template-row]")?.dataset.templateRow));
                 if (!row) return;
-                if (event.target.matches("[data-template-enabled]")) {
-                    row.included = event.target.checked;
-                    updateAttributeTemplateManager(templateForm, draftRows, definitions);
-                } else if (event.target.matches("[data-template-required]")) row.isRequired = event.target.checked;
-                else if (event.target.matches("[data-template-section]")) {
-                    row.section = event.target.value;
-                    reindexTemplateDraft(draftRows);
-                    updateAttributeTemplateManager(templateForm, draftRows, definitions);
-                }
+                if (event.target.matches("[data-template-required]")) row.isRequired = event.target.checked;
             });
             manager?.addEventListener("click", event => {
+                const pickerToggle = event.target.closest("[data-template-picker-toggle]");
+                if (pickerToggle) {
+                    const section = pickerToggle.dataset.templatePickerToggle;
+                    pickerState[section] = !pickerState[section];
+                    updateAttributeTemplateManager(templateForm, draftRows, definitions, pickerState);
+                    if (pickerState[section]) templateForm.querySelector(`[data-template-search="${section}"]`)?.focus();
+                    return;
+                }
+                const pickButton = event.target.closest("[data-template-pick]");
+                if (pickButton) {
+                    const section = pickButton.dataset.templatePick;
+                    const id = Number(pickButton.dataset.definitionId);
+                    const definition = definitions.find(item => Number(item.id) === id && item.isActive);
+                    if (!definition) return;
+                    const existing = draftRows.find(item => item.definitionId === id);
+                    if (existing) {
+                        existing.included = true;
+                        existing.section = section;
+                    } else {
+                        draftRows.push({ definitionId: id, code: definition.code, label: definition.label, dataType: definition.dataType,
+                            defaultUnit: definition.defaultUnit || "", unitOverride: "", sortOrder: 0, section, isRequired: false,
+                            isActive: true, included: true });
+                    }
+                    pickerState[section] = false;
+                    pickerState.query[section] = "";
+                    reindexTemplateDraft(draftRows);
+                    updateAttributeTemplateManager(templateForm, draftRows, definitions, pickerState);
+                    return;
+                }
+                const removeButton = event.target.closest("[data-template-remove]");
+                if (removeButton) {
+                    const row = draftRows.find(item => item.definitionId === Number(removeButton.dataset.templateRemove));
+                    if (!row || !window.confirm("Убрать характеристику из шаблона подкатегории? Значения товаров не будут удалены.")) return;
+                    row.included = false;
+                    reindexTemplateDraft(draftRows);
+                    updateAttributeTemplateManager(templateForm, draftRows, definitions, pickerState);
+                    return;
+                }
+                const sectionButton = event.target.closest("[data-template-section-move]");
+                if (sectionButton) {
+                    const row = draftRows.find(item => item.definitionId === Number(sectionButton.dataset.templateSectionMove));
+                    if (!row) return;
+                    row.section = row.section === "main" ? "regular" : "main";
+                    reindexTemplateDraft(draftRows);
+                    updateAttributeTemplateManager(templateForm, draftRows, definitions, pickerState);
+                    return;
+                }
                 const button = event.target.closest("[data-template-move]");
                 if (!button) return;
                 const row = draftRows.find(item => item.definitionId === Number(button.dataset.templateMove));
@@ -323,7 +399,7 @@ async function openAttributeTemplateManager(formElement) {
                 const secondIndex = draftRows.indexOf(siblings[target]);
                 [draftRows[firstIndex], draftRows[secondIndex]] = [draftRows[secondIndex], draftRows[firstIndex]];
                 reindexTemplateDraft(draftRows);
-                updateAttributeTemplateManager(templateForm, draftRows, definitions);
+                updateAttributeTemplateManager(templateForm, draftRows, definitions, pickerState);
             });
             manager?.addEventListener("dragstart", event => {
                 const row = event.target.closest("[data-template-row]");
@@ -355,19 +431,8 @@ async function openAttributeTemplateManager(formElement) {
                 const afterTarget = Boolean(target && event.clientY > box.top + box.height / 2);
                 reorderTemplateDraft(draftRows, draggedId, target?.dataset.templateRow, panel.dataset.templateSectionPanel, afterTarget);
                 draggedId = null;
-                updateAttributeTemplateManager(templateForm, draftRows, definitions);
+                updateAttributeTemplateManager(templateForm, draftRows, definitions, pickerState);
             });
-            templateForm.querySelectorAll("[data-template-add-button]").forEach(button => button.addEventListener("click", () => {
-                const section = button.dataset.templateAddButton;
-                const id = Number(templateForm.querySelector(`[data-template-add="${section}"]`)?.value);
-                const definition = definitions.find(item => Number(item.id) === id && item.isActive);
-                if (!definition || draftRows.some(item => item.definitionId === id)) return;
-                draftRows.push({ definitionId: id, code: definition.code, label: definition.label, dataType: definition.dataType,
-                    defaultUnit: definition.defaultUnit || "", unitOverride: "", sortOrder: 0, section, isRequired: false,
-                    isActive: true, included: true });
-                reindexTemplateDraft(draftRows);
-                updateAttributeTemplateManager(templateForm, draftRows, definitions);
-            }));
         },
         onSubmit: async (_formData, { setBusy }) => {
             reindexTemplateDraft(draftRows);

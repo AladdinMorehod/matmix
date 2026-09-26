@@ -164,11 +164,18 @@ async function main() {
         const beforeLegacyMigration = await openDatabase(legacyTemplateFile);
         const beforeProducts = await beforeLegacyMigration.all("SELECT * FROM products ORDER BY id");
         const beforeValues = await beforeLegacyMigration.all("SELECT * FROM product_attribute_values ORDER BY id");
+        const beforeTemplateIdentityAndOrder = await beforeLegacyMigration.all(`SELECT id,attribute_definition_id,sort_order
+            FROM product_attribute_templates ORDER BY id`);
         await beforeLegacyMigration.close();
         const v11Migration = await migrateDatabase(legacyTemplateFile, { dryRun: false });
         assert.deepStrictEqual({ from: v11Migration.fromVersion, to: v11Migration.toVersion }, { from: 10, to: 11 });
         const afterLegacyMigration = await openDatabase(legacyTemplateFile);
         try {
+            assert.deepStrictEqual(await afterLegacyMigration.all(`SELECT id,attribute_definition_id,sort_order
+                FROM product_attribute_templates ORDER BY id`), beforeTemplateIdentityAndOrder,
+            "v10->v11 must preserve each template membership ID, definition ID, and sort_order");
+            assert.strictEqual(await afterLegacyMigration.get("SELECT COUNT(*) AS count FROM product_attribute_templates").then(row => row.count),
+                beforeTemplateIdentityAndOrder.length, "v10->v11 must preserve template membership count");
             assert.deepStrictEqual(await afterLegacyMigration.all(`SELECT d.code,t.section FROM product_attribute_templates t
                 JOIN product_attribute_definitions d ON d.id=t.attribute_definition_id ORDER BY t.id`), [
                 { code: "product_type", section: "main" }, { code: "base", section: "regular" }

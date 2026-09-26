@@ -22,7 +22,7 @@ function makeFixture() {
     const beta = { id: 30, code: "beta", label: "Бета", dataType: "text", defaultUnit: "кг", isActive: true, sortOrder: 30 };
     const gamma = { id: 31, code: "gamma", label: "Гамма", dataType: "text", defaultUnit: "", isActive: true, sortOrder: 31 };
     const definitions = main.concat(regular, beta, gamma);
-    const templateRows = [2, 3].map((id, index) => ({
+    const templateRows = [1, 2, 3, 4].map((id, index) => ({
         attribute_definition_id: id, code: definitions.find(item => item.id === id).code,
         label: definitions.find(item => item.id === id).label, data_type: "text", default_unit: null, unit_override: null,
         section: "main", sort_order: index, is_required: Number(id === 2), is_active: 1
@@ -101,6 +101,12 @@ async function dragTemplateRow(page, sourceId, targetId, afterTarget = false) {
             assert((await page.locator("[data-template-settings]").textContent()).includes("Штукатурка"));
             assert(await page.locator('[data-add-attribute="main"] option[value="3"]').count());
             assert(await page.locator('[data-add-attribute="regular"] option[value="5"]').count());
+            assert.strictEqual(await page.locator('[data-add-attribute="main"] option[value="30"]').count(), 0,
+                "product main Add must exclude definitions outside this subcategory's main memberships");
+            assert.strictEqual(await page.locator('[data-add-attribute="regular"] option[value="31"]').count(), 0,
+                "product Add must exclude definitions outside the regular template");
+            assert.strictEqual(await page.locator(".product-attribute-unit summary").filter({ hasText: "Единица +" }).count(), 0,
+                "unitless text attributes should not show the old noisy unit action");
             await page.locator('[name="attribute_2"]').fill("Введённый тип продукта");
             await page.locator('[name="brand"]').fill("Test Brand B");
             await page.locator('[data-add-attribute="main"]').selectOption("3");
@@ -138,7 +144,7 @@ async function dragTemplateRow(page, sourceId, targetId, afterTarget = false) {
                 const topElement = document.elementsFromPoint(bounds.left + bounds.width / 2, bounds.top + bounds.height / 2).find(element => element.closest(".crm-modal"));
                 return topElement?.closest(".crm-modal")?.innerText || "";
             });
-            assert(topDialogText.includes("Перетаскивайте строки"), "template modal must be visually top; got: " + topDialogText.slice(0, 90));
+            assert(topDialogText.includes("Порядок меняется кнопками"), "template modal must be visually top; got: " + topDialogText.slice(0, 90));
             assert(await page.locator('[role="dialog"] .crm-modal-primary').isVisible());
             assert(await page.locator('[role="dialog"] .crm-modal-secondary').isVisible());
             await page.locator('[role="dialog"] .crm-modal-secondary').click();
@@ -146,9 +152,12 @@ async function dragTemplateRow(page, sourceId, targetId, afterTarget = false) {
             assert.strictEqual(await page.evaluate(() => window.__templatePut), null);
             await page.locator("[data-template-settings]").click();
             await page.locator('[role="dialog"] h2').filter({ hasText: "Шаблон подкатегории: Штукатурка" }).waitFor();
-            assert.strictEqual(await page.locator('[role="dialog"] [data-template-row]').count(), 27);
-            assert.strictEqual(await page.locator('[role="dialog"] [data-template-list="main"] [data-template-row]').count(), 2);
+            assert.strictEqual(await page.locator('[role="dialog"] [data-template-row]').count(), 29);
+            assert.strictEqual(await page.locator('[role="dialog"] [data-template-list="main"] [data-template-row]').count(), 4);
             assert.strictEqual(await page.locator('[role="dialog"] [data-template-list="regular"] [data-template-row]').count(), 25);
+            assert.strictEqual(await page.locator('[role="dialog"] [data-template-add="main"]').count(), 0,
+                "template editor must not show a native select for the global definition list");
+            assert.strictEqual(await page.locator('[role="dialog"] [data-template-picker-toggle="main"]').count(), 1);
             assert.strictEqual(await page.locator('[role="dialog"] input[type="number"]').count(), 0);
             assert.strictEqual(await page.locator('[role="dialog"] [data-template-unit="5"]').getAttribute("placeholder"), "По умолчанию: мм");
             assert(await page.locator('[role="dialog"] .crm-modal-content').evaluate(element => element.scrollHeight > element.clientHeight));
@@ -167,22 +176,31 @@ async function dragTemplateRow(page, sourceId, targetId, afterTarget = false) {
                 await page.screenshot({ path: path.join(process.argv[2], "attribute-template-modal-" + width + ".png"), fullPage: false });
             }
 
-            await page.locator('[role="dialog"] [data-template-enabled="6"]').uncheck();
-            assert(await page.locator('[role="dialog"] [data-template-row="6"]').evaluate(element => element.classList.contains("is-excluded")));
-            await page.locator('[role="dialog"] [data-template-add="main"]').selectOption("30");
-            await page.locator('[role="dialog"] [data-template-add-button="main"]').click();
-            await page.locator('[role="dialog"] [data-template-add="regular"]').selectOption("31");
-            await page.locator('[role="dialog"] [data-template-add-button="regular"]').click();
+            page.on("dialog", dialog => dialog.accept());
+            await page.locator('[role="dialog"] [data-template-remove="6"]').click();
+            assert.strictEqual(await page.locator('[role="dialog"] [data-template-row="6"]').count(), 0,
+                "removing a template row should remove only draft membership");
+            await page.locator('[role="dialog"] [data-template-picker-toggle="main"]').click();
+            assert.strictEqual(await page.locator('[role="dialog"] [data-template-picker-results="main"] [data-definition-id="2"]').count(), 0,
+                "picker must not show definitions already in the template");
+            assert.strictEqual(await page.locator('[role="dialog"] [data-template-picker-results="main"] [data-definition-id="6"]').count(), 1,
+                "picker should offer the definition removed from this draft template");
+            await page.locator('[role="dialog"] [data-template-search="main"]').fill("Бета");
+            await page.locator('[role="dialog"] [data-template-pick="main"][data-definition-id="30"]').click();
+            await page.locator('[role="dialog"] [data-template-picker-toggle="regular"]').click();
+            await page.locator('[role="dialog"] [data-template-search="regular"]').fill("Гамма");
+            await page.locator('[role="dialog"] [data-template-pick="regular"][data-definition-id="31"]').click();
             await page.locator('[role="dialog"] [data-template-row="5"] .product-template-unit summary').click();
             await page.locator('[role="dialog"] [data-template-unit="5"]').fill("см");
             await page.locator('[role="dialog"] [data-template-required="5"]').check();
-            await dragTemplateRow(page, 30, 5, true);
+            await page.locator('[role="dialog"] [data-template-section-move="30"]').click();
             assert.strictEqual(await page.locator('[role="dialog"] [data-template-section-panel="regular"] [data-template-row="30"]').count(), 1,
-                "drag from main to regular must move the existing membership");
+                "explicit section action must move an existing draft membership main to regular");
             await page.locator('[role="dialog"] [data-template-move="30"][data-offset="-1"]').click();
-            await dragTemplateRow(page, 31, 3);
+            await page.locator('[role="dialog"] [data-template-section-move="31"]').click();
             assert.strictEqual(await page.locator('[role="dialog"] [data-template-section-panel="main"] [data-template-row="31"]').count(), 1,
-                "drag from regular to main must move the existing membership");
+                "explicit section action must move an existing draft membership regular to main");
+            await dragTemplateRow(page, 30, 5, true);
             await page.locator('[role="dialog"] .crm-modal-primary').click();
             await page.locator('[role="dialog"] h2').waitFor({ state: "detached" });
             const saved = await page.evaluate(() => window.__templatePut);

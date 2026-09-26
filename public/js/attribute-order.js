@@ -23,7 +23,9 @@
             const id = Number(value.definitionId);
             const definition = byId.get(id) || {};
             const template = templateById.get(id);
-            const main = template ? template.section === "main" : isMain(value.code || definition.code);
+            const main = templates.length
+                ? Boolean(template && template.section === "main")
+                : isMain(value.code || definition.code);
             return { ...definition, ...value, definitionId: id,
                 sortOrder: Number(template ? template.sortOrder : definition.sortOrder) || 0,
                 unit: value.unitOverride || template?.unitOverride || value.unit || definition.unit || definition.defaultUnit || "",
@@ -40,15 +42,6 @@
                     unitOverride: value.unitOverride ?? "", unit: value.unitOverride || template.unitOverride || value.unit || definition.unit || definition.defaultUnit || "",
                     sortOrder: Number(template.sortOrder) || 0,
                     section: "Основные характеристики", isMain: true };
-                }),
-                ...MAIN_ATTRIBUTES.filter(item => {
-                    const definition = definitions.find(row => row.code === item.code);
-                    return definition && !templateById.has(Number(definition.id));
-                }).map(item => {
-                    const definition = definitions.find(row => row.code === item.code) || {};
-                    const value = rows.find(row => row.code === item.code) || {};
-                    return { ...definition, ...value, ...item, definitionId: definition.id ?? value.definitionId ?? null,
-                        value: item.code === "brand" ? brand : value.value ?? "", section: "Основные характеристики", isMain: true };
                 })
             ]
             : MAIN_ATTRIBUTES.map(item => {
