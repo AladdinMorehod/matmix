@@ -23,20 +23,45 @@
             const id = Number(value.definitionId);
             const definition = byId.get(id) || {};
             const template = templateById.get(id);
+            const main = template ? template.section === "main" : isMain(value.code || definition.code);
             return { ...definition, ...value, definitionId: id,
                 sortOrder: Number(template ? template.sortOrder : definition.sortOrder) || 0,
-                section: "Характеристики" };
+                unit: value.unitOverride || template?.unitOverride || value.unit || definition.unit || definition.defaultUnit || "",
+                section: main ? "Основные характеристики" : "Характеристики", isMain: main };
         });
-        const main = MAIN_ATTRIBUTES.map(item => {
-            const definition = definitions.find(row => row.code === item.code) || {};
-            const value = rows.find(row => row.code === item.code) || {};
-            return { ...definition, ...value, ...item, definitionId: definition.id ?? value.definitionId ?? null,
-                dataType: definition.dataType || value.dataType || "text",
-                value: item.code === "brand" ? brand : value.value ?? "",
-                section: "Основные характеристики", isMain: true };
-        }).filter(item => includeEmptyMain || hasValue(item.value));
-        const regular = rows.filter(item => !isMain(item.code)).sort(compare);
-        return [...main, ...regular];
+        const templatesAreAvailable = templates.length > 0;
+        const main = templatesAreAvailable
+            ? [
+                ...templates.filter(item => item.section === "main").map(template => {
+                const definition = byId.get(Number(template.definitionId)) || {};
+                const value = rows.find(row => Number(row.definitionId) === Number(template.definitionId)) || {};
+                return { ...definition, ...value, definitionId: Number(template.definitionId),
+                    value: (definition.code || value.code) === "brand" ? brand : value.value ?? "",
+                    unitOverride: value.unitOverride ?? "", unit: value.unitOverride || template.unitOverride || value.unit || definition.unit || definition.defaultUnit || "",
+                    sortOrder: Number(template.sortOrder) || 0,
+                    section: "Основные характеристики", isMain: true };
+                }),
+                ...MAIN_ATTRIBUTES.filter(item => {
+                    const definition = definitions.find(row => row.code === item.code);
+                    return definition && !templateById.has(Number(definition.id));
+                }).map(item => {
+                    const definition = definitions.find(row => row.code === item.code) || {};
+                    const value = rows.find(row => row.code === item.code) || {};
+                    return { ...definition, ...value, ...item, definitionId: definition.id ?? value.definitionId ?? null,
+                        value: item.code === "brand" ? brand : value.value ?? "", section: "Основные характеристики", isMain: true };
+                })
+            ]
+            : MAIN_ATTRIBUTES.map(item => {
+                const definition = definitions.find(row => row.code === item.code) || {};
+                const value = rows.find(row => row.code === item.code) || {};
+                return { ...definition, ...value, ...item, definitionId: definition.id ?? value.definitionId ?? null,
+                    dataType: definition.dataType || value.dataType || "text",
+                    value: item.code === "brand" ? brand : value.value ?? "",
+                    section: "Основные характеристики", isMain: true };
+            });
+        const visibleMain = includeEmptyMain ? main : main.filter(item => hasValue(item.value));
+        const regular = rows.filter(item => !item.isMain).sort(compare);
+        return [...visibleMain, ...regular];
     }
     return Object.freeze({ MAIN_ATTRIBUTES, isMain, hasValue, resolve, sortTemplates });
 });

@@ -1,5 +1,4 @@
 const crypto = require("crypto");
-const { isMain } = require("./productAttributeOrder");
 const { formatMoneyValue } = require("../utils/numberFormat");
 
 const SITE_NAME = String(process.env.SITE_NAME || "MatMix").trim().slice(0, 80) || "MatMix";
@@ -122,7 +121,7 @@ function productPage(config, pageData) {
     for (const item of attributes) {
         const value = item.type === "boolean" ? (item.value === true ? "Да" : item.value === false ? "Нет" : "") : String(item.value ?? "").trim();
         if (!value) continue;
-        const section = isMain(item.code) ? "Основные характеристики" : "Характеристики";
+        const section = item.section === "Основные характеристики" ? item.section : "Характеристики";
         if (!groupedAttributes.has(section)) groupedAttributes.set(section, []);
         groupedAttributes.get(section).push({ ...item, displayValue: value });
     }

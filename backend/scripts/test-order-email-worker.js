@@ -95,13 +95,13 @@ async function row(db, orderId) {
 }
 
 async function main() {
-    assert.strictEqual(CURRENT_SCHEMA_VERSION, 10);
+    assert.strictEqual(CURRENT_SCHEMA_VERSION, 11);
     const root = await fs.promises.mkdtemp(path.join(os.tmpdir(), "matmix-order-email-worker-"));
     const databasePath = await setupDatabase(root);
     const db = await openDatabase(databasePath);
     try {
         const version = Number((await db.get("PRAGMA user_version")).user_version);
-        assert.strictEqual(version, 9);
+        assert.strictEqual(version, 11);
 
         const config = loadOrderEmailConfig({
             MATMIX_ORDER_EMAIL_SMTP_HOST: "smtp.example.test",
@@ -363,7 +363,7 @@ async function main() {
 
         console.log(JSON.stringify({
             success: true,
-            schemaVersion: 10,
+            schemaVersion: 11,
             successSend: true,
             retryAndMaxAttempts: true,
             concurrentClaim: true,

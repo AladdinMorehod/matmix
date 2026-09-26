@@ -5,6 +5,12 @@
         return modalStack[modalStack.length - 1] || null;
     }
 
+    function mountModal(overlay, modal) {
+        modalStack.push(modal);
+        overlay.style.zIndex = String(1100 + modalStack.length);
+        document.body.appendChild(overlay);
+    }
+
     function closeModal(result = false, force = false) {
         const activeModal = getActiveModal();
         if (!activeModal) return;
@@ -74,8 +80,7 @@
             `;
 
             const modal = { overlay, previousFocus, resolve, overlayPointerStarted: false, locked: false };
-            modalStack.push(modal);
-            document.body.appendChild(overlay);
+            mountModal(overlay, modal);
 
             const dialog = overlay.querySelector(".crm-modal");
             const closeButton = overlay.querySelector(".crm-modal-close");
@@ -116,8 +121,7 @@
             `;
 
             const modal = { overlay, previousFocus, resolve, overlayPointerStarted: false, locked: false };
-            modalStack.push(modal);
-            document.body.appendChild(overlay);
+            mountModal(overlay, modal);
 
             const dialog = overlay.querySelector(".crm-modal");
             const formElement = overlay.querySelector(".crm-modal-form");

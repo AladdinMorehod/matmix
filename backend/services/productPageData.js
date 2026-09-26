@@ -24,6 +24,7 @@ async function getProductPageDataByExternalId(externalId, executor = null) {
         database.all(`SELECT
             value.id, definition.id AS definition_id, definition.is_active, definition.code, definition.label, definition.data_type,
             CASE WHEN value.unit_override IS NOT NULL THEN value.unit_override ELSE definition.default_unit END AS unit,
+            value.unit_override,
             definition.default_section AS section,
             value.value_text, value.value_number, value.value_boolean,
             value.sort_order, definition.sort_order AS definition_sort_order
@@ -52,7 +53,9 @@ async function getProductPageDataByExternalId(externalId, executor = null) {
     const orderingContext = await getOrderingContext(product, database);
     return {
         product,
-        attributes: resolve({ ...orderingContext, brand: product.brand || "", includeEmptyMain: false, values: attributeRows.filter(row => row.is_active || isMain(row.code)).map(row => ({
+        attributes: resolve({ ...orderingContext, brand: product.brand || "", includeEmptyMain: false, values: attributeRows.filter(row => row.is_active
+            || orderingContext.templates.some(template => Number(template.definitionId) === Number(row.definition_id) && template.section === "main")
+            || (!orderingContext.templates.some(template => Number(template.definitionId) === Number(row.definition_id)) && isMain(row.code))).map(row => ({
             id: row.id,
             definitionId: row.definition_id,
             code: row.code,
@@ -60,6 +63,7 @@ async function getProductPageDataByExternalId(externalId, executor = null) {
             type: row.data_type,
             value: attributeValue(row),
             unit: row.unit || "",
+            unitOverride: row.unit_override || "",
             section: row.section || "",
             sortOrder: Number(row.sort_order) || 0
         })) }).map(row => ({ ...row, type: row.type || row.dataType })),
