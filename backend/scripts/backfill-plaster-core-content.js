@@ -74,6 +74,7 @@ async function planProduct(db, config) {
     const state = await loadState(db, config.externalId);
     const { product, values, definitions } = state;
     if (product.title !== config.expectedTitle) throw new Error(`Identity mismatch: expected exact title "${config.expectedTitle}"`);
+    if (config.dedicatedCorrectionOnly) return { externalId: config.externalId, title: product.title, productId: product.id, identityStatus: config.identityStatus, status: "DELEGATED_TO_DEDICATED_CORRECTION", sourceKeys: config.sourceKeys, notes: ["This MAT is writable only through its exact guarded corrective script."] };
     if (values.some(v => !v.code)) throw new Error("Orphan attribute value");
     const byCode = new Map();
     for (const v of values) {
@@ -129,7 +130,7 @@ async function inspectBatch(db, { only, data = DATA } = {}) {
         if (!config) { rows.push({ externalId: id, status: "ERROR", error: `Unknown MAT: ${id}` }); continue; }
         try { rows.push(await planProduct(db, config)); } catch (error) { rows.push({ externalId: id, status: "ERROR", error: error.message }); }
     }
-    const summary = { total: rows.length, ready: rows.filter(r => r.status === "READY").length, partial: rows.filter(r => r.status === "PARTIAL").length, blocked: rows.filter(r => r.status === "BLOCKED_IDENTITY").length, errors: rows.filter(r => r.status === "ERROR").length, needsSource: rows.reduce((n,r) => n + (r.summary?.needsSource || 0), 0) };
+    const summary = { total: rows.length, ready: rows.filter(r => r.status === "READY").length, partial: rows.filter(r => r.status === "PARTIAL").length, blocked: rows.filter(r => r.status === "BLOCKED_IDENTITY").length, delegated: rows.filter(r => r.status === "DELEGATED_TO_DEDICATED_CORRECTION").length, errors: rows.filter(r => r.status === "ERROR").length, needsSource: rows.reduce((n,r) => n + (r.summary?.needsSource || 0), 0) };
     const consumptionDefinition = await db.get("SELECT code,data_type,default_unit FROM product_attribute_definitions WHERE code='consumption_10mm'");
     return { mode: "dry-run", rows, summary, schema: { consumption_10mm: { currentDataType: consumptionDefinition?.data_type || null, proposedDataType: "text", unit: consumptionDefinition?.default_unit || "кг/м²", migration: "Existing numeric values are copied to value_text with comma decimal display, value_number is cleared, and the canonical definition is changed to text during explicit apply." } }, sources: data.SOURCES };
 }
@@ -150,7 +151,7 @@ async function applyBatch(db, dbPath, options, data = DATA) {
     let writes = 0;
     try {
         const now = new Date().toISOString();
-        const shouldMigrate = preflight.rows.some(row => row.status !== "BLOCKED_IDENTITY" && row.specs?.some(item => ["WILL_ADD", "WILL_FIX"].includes(item.status)));
+        const shouldMigrate = preflight.rows.some(row => !["BLOCKED_IDENTITY", "DELEGATED_TO_DEDICATED_CORRECTION"].includes(row.status) && row.specs?.some(item => ["WILL_ADD", "WILL_FIX"].includes(item.status)));
         const consumptionDefinition = await db.get("SELECT * FROM product_attribute_definitions WHERE code='consumption_10mm'");
         if (!consumptionDefinition) throw new Error("Missing canonical consumption_10mm definition");
         if (shouldMigrate && consumptionDefinition.data_type === "number") {
@@ -160,7 +161,7 @@ async function applyBatch(db, dbPath, options, data = DATA) {
             writes += numericRows.length + 1;
         } else if (shouldMigrate && consumptionDefinition.data_type !== "text") throw new Error("Incompatible consumption_10mm definition type");
         for (const row of preflight.rows) {
-            if (row.status === "BLOCKED_IDENTITY") continue;
+            if (["BLOCKED_IDENTITY", "DELEGATED_TO_DEDICATED_CORRECTION"].includes(row.status)) continue;
             const brand = row.brand;
             if (brand.status === "EXISTING_OK" && brand.currentId) await db.run("UPDATE product_attribute_values SET sort_order=0 WHERE id=? AND sort_order<>0", [brand.currentId]);
             if (brand.status === "WILL_ADD" || brand.status === "WILL_FIX") {
