@@ -1,0 +1,2956 @@
+{
+  "mode": "dry-run",
+  "rows": [
+    {
+      "externalId": "MAT-000067",
+      "productId": 64,
+      "title": "Кладочно-монтажная смесь EUROmix М-200 40 кг",
+      "status": "READY",
+      "currentShortDescription": null,
+      "currentFullDescription": null,
+      "proposedShortDescription": "Кладочно-монтажная смесь EUROMIX М-200 в фасовке 40 кг.",
+      "proposedFullDescription": "EUROMIX М-200 — сухая кладочно-монтажная смесь. Фасовка — 40 кг, марка раствора — М-200.",
+      "shortDescriptionCharacterCount": 55,
+      "fullDescriptionCharacterCount": 88,
+      "sourceKeys": [
+        "ownerEuromix",
+        "euromixSecondary"
+      ],
+      "sourceMetadata": {
+        "ownerEuromix": {
+          "owner": "MatMix owner identity",
+          "title": "Owner-confirmed EUROMIX M-200 identity",
+          "url": "",
+          "evidence": "Owner-confirmed EUROMIX/EUROmix M-200 cement dry masonry/installation mix, 40 kg. Identity source only; technical fields remain unresolved."
+        },
+        "euromixSecondary": {
+          "owner": "Bobrёнок",
+          "title": "Сухая смесь М-200 Euromix Кладочная (40 кг)",
+          "url": "https://bobr.su/sukhaya-smes-m-200-euromix-kladochnaya-40kg/",
+          "evidence": "Exact product/pack context from a secondary listing; not used for unverified technical specifications."
+        }
+      },
+      "factsUsed": [
+        {
+          "code": "brand",
+          "value": "EUROMIX",
+          "sourceKeys": [
+            "ownerEuromix"
+          ]
+        },
+        {
+          "code": "product_type",
+          "value": "Кладочно-монтажная смесь",
+          "sourceKeys": [
+            "ownerEuromix"
+          ]
+        },
+        {
+          "code": "package_weight",
+          "value": 40,
+          "sourceKeys": [
+            "ownerEuromix",
+            "euromixSecondary"
+          ]
+        },
+        {
+          "code": "mortar_grade",
+          "value": "М-200",
+          "sourceKeys": [
+            "ownerEuromix",
+            "euromixSecondary"
+          ]
+        }
+      ],
+      "factsOmitted": [
+        {
+          "code": "base",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact product source does not confirm this field."
+        },
+        {
+          "code": "purpose",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact product source does not confirm this field."
+        },
+        {
+          "code": "application_area",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact product source does not confirm this field."
+        },
+        {
+          "code": "application_method",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact product source does not confirm this field."
+        },
+        {
+          "code": "substrates",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact product source does not confirm this field."
+        },
+        {
+          "code": "color",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact product source does not confirm this field."
+        },
+        {
+          "code": "layer_thickness",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact product source does not confirm this field."
+        },
+        {
+          "code": "consumption_10mm",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact product source does not confirm this field."
+        },
+        {
+          "code": "water_requirement",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact product source does not confirm this field."
+        },
+        {
+          "code": "pot_life",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact product source does not confirm this field."
+        },
+        {
+          "code": "application_temperature",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact product source does not confirm this field."
+        },
+        {
+          "code": "compressive_strength",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact product source does not confirm this field."
+        },
+        {
+          "code": "adhesion",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact product source does not confirm this field."
+        },
+        {
+          "code": "frost_resistance",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact product source does not confirm this field."
+        },
+        {
+          "code": "shelf_life",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact product source does not confirm this field."
+        },
+        {
+          "code": "standard",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact product source does not confirm this field."
+        },
+        {
+          "reason": "Other technical characteristics are not confirmed for this product identity."
+        }
+      ],
+      "conflictingFields": [],
+      "immutableSnapshot": {
+        "id": 64,
+        "external_id": "MAT-000067",
+        "title": "Кладочно-монтажная смесь EUROmix М-200 40 кг",
+        "slug": "кладочно-монтажная-смесь-цементная-евро-м-200-40кг",
+        "category": "Смеси",
+        "subcategory": "Кладочные Смеси",
+        "price": null,
+        "weight": 40,
+        "unit": "шт",
+        "image": "",
+        "description": "",
+        "is_active": 1,
+        "sort_order": 1,
+        "source": "excel",
+        "last_imported_at": "2026-07-15T13:44:51.601Z",
+        "created_at": "2026-07-08T17:22:48.872Z",
+        "updated_at": "2026-07-15T13:44:51.601Z",
+        "deleted_at": null,
+        "deleted_by_id": null,
+        "deleted_by_name": null,
+        "product_group": "",
+        "image_url": null,
+        "brand": "EUROMIX",
+        "seo_title": "EUROMIX М-200 40 кг — купить кладочную смесь в Москве",
+        "seo_description": "Кладочно-монтажная смесь EUROMIX М-200, фасовка 40 кг. Закажите материал в MatMix с доставкой по Москве и МО.",
+        "stock_status": "unknown"
+      }
+    },
+    {
+      "externalId": "MAT-000068",
+      "productId": 65,
+      "title": "Кладочно-монтажная смесь Русеан М-200 40 кг",
+      "status": "READY",
+      "currentShortDescription": null,
+      "currentFullDescription": null,
+      "proposedShortDescription": "Сухая смесь «Русеан» М-200 для кладки кирпича и монтажа бетонных блоков. Фасовка — 40 кг.",
+      "proposedFullDescription": "Смесь «Русеан» М-200 на основе портландцемента и сухого фракционного песка предназначена для кладки кирпича и монтажа бетонных блоков. Её также применяют для ремонта кирпичных и бетонных стен и полов, укладки тротуарной плитки и брусчатки. Подходит для внутренних и наружных работ. Фасовка — 40 кг.",
+      "shortDescriptionCharacterCount": 89,
+      "fullDescriptionCharacterCount": 298,
+      "sourceKeys": [
+        "ruseanM200"
+      ],
+      "sourceMetadata": {
+        "ruseanM200": {
+          "owner": "Русеан",
+          "title": "Сухая смесь М-200 монтажно-кладочная, 40 кг",
+          "url": "https://rusean.ru/catalog/sukhie_smesi_/sukhaya_smes_m_200_montazhno_kladochnaya_40_kg/",
+          "evidence": "Official product page with exact 40 kg identity and specification table."
+        }
+      },
+      "factsUsed": [
+        {
+          "code": "brand",
+          "value": "Русеан",
+          "sourceKeys": [
+            "ruseanM200"
+          ]
+        },
+        {
+          "code": "product_type",
+          "value": "Сухая монтажно-кладочная смесь",
+          "sourceKeys": [
+            "ruseanM200"
+          ]
+        },
+        {
+          "code": "base",
+          "value": "Портландцемент и сухой фракционный песок",
+          "sourceKeys": [
+            "ruseanM200"
+          ]
+        },
+        {
+          "code": "purpose",
+          "value": "Кладка кирпича, монтаж бетонных блоков, укладка тротуарной плитки и брусчатки, ремонт кирпичных и бетонных стен и полов, заделка швов, трещин, выбоин и углублений, фиксация металлических элементов и конструкций",
+          "sourceKeys": [
+            "ruseanM200"
+          ]
+        },
+        {
+          "code": "application_area",
+          "value": "Внутренние и наружные работы",
+          "sourceKeys": [
+            "ruseanM200"
+          ]
+        },
+        {
+          "code": "package_weight",
+          "value": 40,
+          "sourceKeys": [
+            "ruseanM200"
+          ]
+        },
+        {
+          "code": "mortar_grade",
+          "value": "М-200",
+          "sourceKeys": [
+            "ruseanM200"
+          ]
+        }
+      ],
+      "factsOmitted": [
+        {
+          "code": "application_method",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "substrates",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "color",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "layer_thickness",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "consumption_10mm",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "water_requirement",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "pot_life",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "application_temperature",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "compressive_strength",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "adhesion",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "frost_resistance",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "shelf_life",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "standard",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "reason": "Расход, количество воды и остальные числовые параметры оставлены в характеристиках карточки."
+        }
+      ],
+      "conflictingFields": [],
+      "immutableSnapshot": {
+        "id": 65,
+        "external_id": "MAT-000068",
+        "title": "Кладочно-монтажная смесь Русеан М-200 40 кг",
+        "slug": "кладочно-монтажная-смесь-цементная-русеан-м-200-40кг",
+        "category": "Смеси",
+        "subcategory": "Кладочные Смеси",
+        "price": 346.5,
+        "weight": 40,
+        "unit": "шт",
+        "image": "",
+        "description": "",
+        "is_active": 1,
+        "sort_order": 2,
+        "source": "excel",
+        "last_imported_at": "2026-07-15T13:44:51.601Z",
+        "created_at": "2026-07-08T17:22:48.872Z",
+        "updated_at": "2026-09-24 12:22:05",
+        "deleted_at": null,
+        "deleted_by_id": null,
+        "deleted_by_name": null,
+        "product_group": "",
+        "image_url": "/uploads/products/MAT-000068-18791ad479824f81.webp",
+        "brand": "Русеан",
+        "seo_title": "Русеан М-200 40 кг — кладочная смесь, купить в Москве",
+        "seo_description": "Сухая монтажно-кладочная смесь Русеан М-200 40 кг для кладки кирпича и бетонных блоков, ремонта стен и полов, заделки швов. Закажите с доставкой по Москве и МО.",
+        "stock_status": "unknown"
+      }
+    },
+    {
+      "externalId": "MAT-000069",
+      "productId": 66,
+      "title": "Кладочно-монтажная смесь VERTEX М-200 40 кг",
+      "status": "READY",
+      "currentShortDescription": null,
+      "currentFullDescription": null,
+      "proposedShortDescription": "Монтажно-кладочная смесь VERTEX М-200 на основе цемента и специальных добавок. Фасовка — 40 кг.",
+      "proposedFullDescription": "Сухая монтажно-кладочная смесь VERTEX М-200 изготовлена на основе цемента и специальных добавок. Её применяют для кладки кирпича, монтажа бетонных блоков и укладки тротуарной плитки и брусчатки. Смесь подходит для внутренних и наружных работ. Фасовка — 40 кг.",
+      "shortDescriptionCharacterCount": 95,
+      "fullDescriptionCharacterCount": 259,
+      "sourceKeys": [
+        "vertexM200"
+      ],
+      "sourceMetadata": {
+        "vertexM200": {
+          "owner": "VERTEX.production",
+          "title": "VERTEX.production M-200",
+          "url": "https://vertexproduction.ru/",
+          "evidence": "Official manufacturer page identifies M-200 as a 40 kg cement-based dry masonry/installation mix for internal and external work."
+        }
+      },
+      "factsUsed": [
+        {
+          "code": "brand",
+          "value": "VERTEX",
+          "sourceKeys": [
+            "vertexM200"
+          ]
+        },
+        {
+          "code": "product_type",
+          "value": "Сухая монтажно-кладочная смесь",
+          "sourceKeys": [
+            "vertexM200"
+          ]
+        },
+        {
+          "code": "base",
+          "value": "Цемент и специальные добавки",
+          "sourceKeys": [
+            "vertexM200"
+          ]
+        },
+        {
+          "code": "purpose",
+          "value": "Кладка стен из кирпича, монтаж бетонных блоков, укладка тротуарной плитки и брусчатки, устройство стяжек, ремонт кирпичных и бетонных стен, полов и фундаментов, заделка швов, трещин, выбоин и углублений, монтаж и крепление металлических элементов и конструкций",
+          "sourceKeys": [
+            "vertexM200"
+          ]
+        },
+        {
+          "code": "application_area",
+          "value": "Внутренние и наружные работы",
+          "sourceKeys": [
+            "vertexM200"
+          ]
+        },
+        {
+          "code": "package_weight",
+          "value": 40,
+          "sourceKeys": [
+            "vertexM200"
+          ]
+        },
+        {
+          "code": "mortar_grade",
+          "value": "М-200",
+          "sourceKeys": [
+            "vertexM200"
+          ]
+        }
+      ],
+      "factsOmitted": [
+        {
+          "code": "application_method",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact product source does not confirm this field."
+        },
+        {
+          "code": "color",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact product source does not confirm this field."
+        },
+        {
+          "code": "layer_thickness",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact product source does not confirm this field."
+        },
+        {
+          "code": "consumption_10mm",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact product source does not confirm this field."
+        },
+        {
+          "code": "water_requirement",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact product source does not confirm this field."
+        },
+        {
+          "code": "pot_life",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact product source does not confirm this field."
+        },
+        {
+          "code": "application_temperature",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact product source does not confirm this field."
+        },
+        {
+          "code": "compressive_strength",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact product source does not confirm this field."
+        },
+        {
+          "code": "adhesion",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact product source does not confirm this field."
+        },
+        {
+          "code": "frost_resistance",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact product source does not confirm this field."
+        },
+        {
+          "code": "shelf_life",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact product source does not confirm this field."
+        },
+        {
+          "code": "standard",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact product source does not confirm this field."
+        },
+        {
+          "code": "substrates",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "reason": "Подробные числовые характеристики не включены: exact source-backed values are not available in this reviewed record."
+        }
+      ],
+      "conflictingFields": [],
+      "immutableSnapshot": {
+        "id": 66,
+        "external_id": "MAT-000069",
+        "title": "Кладочно-монтажная смесь VERTEX М-200 40 кг",
+        "slug": "кладочно-монтажная-смесь-цементная-вертекс-м-200-40кг",
+        "category": "Смеси",
+        "subcategory": "Кладочные Смеси",
+        "price": 241.5,
+        "weight": 40,
+        "unit": "шт",
+        "image": "",
+        "description": "",
+        "is_active": 1,
+        "sort_order": 3,
+        "source": "excel",
+        "last_imported_at": "2026-07-15T13:44:51.601Z",
+        "created_at": "2026-07-08T17:22:48.872Z",
+        "updated_at": "2026-07-15T13:44:51.601Z",
+        "deleted_at": null,
+        "deleted_by_id": null,
+        "deleted_by_name": null,
+        "product_group": "",
+        "image_url": null,
+        "brand": "VERTEX",
+        "seo_title": "VERTEX М-200 40 кг — купить кладочную смесь в Москве",
+        "seo_description": "Монтажно-кладочная смесь VERTEX М-200 40 кг для кладки кирпича и бетонных блоков, устройства стяжек и ремонта кирпичных и бетонных оснований. Закажите с доставкой.",
+        "stock_status": "unknown"
+      }
+    },
+    {
+      "externalId": "MAT-000076",
+      "productId": 71,
+      "title": "Наливной пол UNIS Горизонт Армированный 20 кг",
+      "status": "READY",
+      "currentShortDescription": null,
+      "currentFullDescription": null,
+      "proposedShortDescription": "Армированный базовый ровнитель UNIS Горизонт для пола. Фасовка — 20 кг.",
+      "proposedFullDescription": "UNIS Горизонт Армированный — базовый ровнитель для пола в фасовке 20 кг. Смесь наносят слоем 30–300 мм; для затворения требуется 3,8–4,8 л воды на мешок. Возможность хождения по покрытию — через 12 часов.",
+      "shortDescriptionCharacterCount": 71,
+      "fullDescriptionCharacterCount": 204,
+      "sourceKeys": [
+        "unisArmored"
+      ],
+      "sourceMetadata": {
+        "unisArmored": {
+          "title": "UNIS Горизонт Армированный",
+          "owner": "UNIS",
+          "url": "https://unistrom.ru/catalog/ustrojstvo-polov/gorizont-armirovannyj/"
+        }
+      },
+      "factsUsed": [
+        {
+          "code": "brand",
+          "value": "UNIS",
+          "sourceKeys": [
+            "unisArmored"
+          ]
+        },
+        {
+          "code": "product_type",
+          "value": "Армированный базовый ровнитель для пола",
+          "sourceKeys": [
+            "unisArmored"
+          ]
+        },
+        {
+          "code": "package_weight",
+          "value": 20,
+          "sourceKeys": [
+            "unisArmored"
+          ]
+        },
+        {
+          "code": "layer_thickness",
+          "value": "30–300 мм",
+          "sourceKeys": [
+            "unisArmored"
+          ]
+        },
+        {
+          "code": "water_requirement",
+          "value": "3,8–4,8 л на 20 кг",
+          "sourceKeys": [
+            "unisArmored"
+          ]
+        },
+        {
+          "code": "walkability",
+          "value": "12 часов",
+          "sourceKeys": [
+            "unisArmored"
+          ]
+        }
+      ],
+      "factsOmitted": [
+        {
+          "code": "base",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "purpose",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "application_area",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "application_method",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "substrates",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "color",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "consumption_10mm",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "pot_life",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "application_temperature",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "compressive_strength",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "adhesion",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "frost_resistance",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "shelf_life",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "standard",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "mortar_grade",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "consumption",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "flexural_strength",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "reason": "consumption: NEEDS_SOURCE; deliberately omitted because the latest reviewed source does not confirm it for this SKU."
+        }
+      ],
+      "conflictingFields": [],
+      "immutableSnapshot": {
+        "id": 71,
+        "external_id": "MAT-000076",
+        "title": "Наливной пол UNIS Горизонт Армированный 20 кг",
+        "slug": "наливной-пол-unis-горизонт-армированный-20-кг",
+        "category": "Смеси",
+        "subcategory": "Наливной Пол",
+        "price": null,
+        "weight": 20,
+        "unit": "шт",
+        "image": "",
+        "description": "",
+        "is_active": 1,
+        "sort_order": 2,
+        "source": "excel",
+        "last_imported_at": "2026-07-15T13:44:51.601Z",
+        "created_at": "2026-07-08T17:22:48.872Z",
+        "updated_at": "2026-07-15T13:44:51.601Z",
+        "deleted_at": null,
+        "deleted_by_id": null,
+        "deleted_by_name": null,
+        "product_group": "Unis",
+        "image_url": null,
+        "brand": "UNIS",
+        "seo_title": "UNIS Горизонт Армированный 20 кг — ровнитель купить в Москве",
+        "seo_description": "Армированный базовый ровнитель для пола UNIS Горизонт 20 кг. Слой 30–300 мм, возможность хождения через 12 часов. Закажите с доставкой по Москве и МО.",
+        "stock_status": "unknown"
+      }
+    },
+    {
+      "externalId": "MAT-000078",
+      "productId": 73,
+      "title": "Наливной пол Старатели Толстый 25 кг",
+      "status": "READY",
+      "currentShortDescription": null,
+      "currentFullDescription": null,
+      "proposedShortDescription": "Цементная смесь «Старатели» Толстый 25 кг для внутренних и наружных работ.",
+      "proposedFullDescription": "Наливной пол «Старатели» Толстый — цементная смесь для внутренних и наружных работ, в том числе при нормальной и высокой влажности. Её можно наносить вручную и механизированно слоем 30–100 мм. Для затворения требуется 5–6 л воды на 25 кг; возможность хождения — через 24 часа.",
+      "shortDescriptionCharacterCount": 74,
+      "fullDescriptionCharacterCount": 276,
+      "sourceKeys": [
+        "starateliThick"
+      ],
+      "sourceMetadata": {
+        "starateliThick": {
+          "title": "Старатели Толстый",
+          "owner": "Старатели",
+          "url": "https://market.starateli.ru/products/nalivnye-poly/nalivnoj-pol-tolstyj/"
+        }
+      },
+      "factsUsed": [
+        {
+          "code": "brand",
+          "value": "Старатели",
+          "sourceKeys": [
+            "starateliThick"
+          ]
+        },
+        {
+          "code": "base",
+          "value": "Цементное вяжущее",
+          "sourceKeys": [
+            "starateliThick"
+          ]
+        },
+        {
+          "code": "package_weight",
+          "value": 25,
+          "sourceKeys": [
+            "starateliThick"
+          ]
+        },
+        {
+          "code": "application_area",
+          "value": "Внутренние и наружные работы; нормальная и высокая влажность",
+          "sourceKeys": [
+            "starateliThick"
+          ]
+        },
+        {
+          "code": "application_method",
+          "value": "Ручное и механизированное",
+          "sourceKeys": [
+            "starateliThick"
+          ]
+        },
+        {
+          "code": "layer_thickness",
+          "value": "30–100 мм",
+          "sourceKeys": [
+            "starateliThick"
+          ]
+        },
+        {
+          "code": "water_requirement",
+          "value": "5–6 л на 25 кг",
+          "sourceKeys": [
+            "starateliThick"
+          ]
+        },
+        {
+          "code": "walkability",
+          "value": "24 часа",
+          "sourceKeys": [
+            "starateliThick"
+          ]
+        }
+      ],
+      "factsOmitted": [
+        {
+          "code": "product_type",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "purpose",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "substrates",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "color",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "consumption_10mm",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "pot_life",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "application_temperature",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "compressive_strength",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "adhesion",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "frost_resistance",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "shelf_life",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "standard",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "mortar_grade",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "consumption",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "flexural_strength",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "reason": "Расход и прочность не включены в видимый текст, чтобы не перегружать описание характеристиками."
+        }
+      ],
+      "conflictingFields": [],
+      "immutableSnapshot": {
+        "id": 73,
+        "external_id": "MAT-000078",
+        "title": "Наливной пол Старатели Толстый 25 кг",
+        "slug": "наливной-пол-старатели-толстый-25кг",
+        "category": "Смеси",
+        "subcategory": "Наливной Пол",
+        "price": null,
+        "weight": 25,
+        "unit": "шт",
+        "image": "",
+        "description": "",
+        "is_active": 1,
+        "sort_order": 4,
+        "source": "excel",
+        "last_imported_at": "2026-07-15T13:44:51.601Z",
+        "created_at": "2026-07-08T17:22:48.872Z",
+        "updated_at": "2026-09-24 12:22:05",
+        "deleted_at": null,
+        "deleted_by_id": null,
+        "deleted_by_name": null,
+        "product_group": "Старатели",
+        "image_url": "/uploads/products/MAT-000078-2bc0525cc149295d.webp",
+        "brand": "Старатели",
+        "seo_title": "Старатели Толстый 25 кг — купить наливной пол в Москве",
+        "seo_description": "Наливной пол «Старатели Толстый» 25 кг для внутренних и наружных работ. Ручное или механизированное нанесение слоем 30–100 мм. Закажите с доставкой.",
+        "stock_status": "unknown"
+      }
+    },
+    {
+      "externalId": "MAT-000079",
+      "productId": 74,
+      "title": "Наливной пол Weber Vetonit 3000 20 кг",
+      "status": "READY",
+      "currentShortDescription": null,
+      "currentFullDescription": null,
+      "proposedShortDescription": "Финишный самовыравнивающийся пол Weber Vetonit 3000 для ручного нанесения слоем 1–5 мм. Фасовка — 20 кг.",
+      "proposedFullDescription": "Weber Vetonit 3000 — финишный самовыравнивающийся состав для пола. Смесь наносят вручную слоем 1–5 мм. Расход составляет 1,5 кг/м² на каждый миллиметр слоя; возможность хождения — через 3–4 часа. Фасовка — 20 кг.",
+      "shortDescriptionCharacterCount": 104,
+      "fullDescriptionCharacterCount": 212,
+      "sourceKeys": [
+        "vetonit3000"
+      ],
+      "sourceMetadata": {
+        "vetonit3000": {
+          "title": "Vetonit 3000",
+          "owner": "Vetonit",
+          "url": "https://vetonit.com/product/vetonit_3000_20kg/"
+        }
+      },
+      "factsUsed": [
+        {
+          "code": "brand",
+          "value": "Weber Vetonit",
+          "sourceKeys": [
+            "vetonit3000"
+          ]
+        },
+        {
+          "code": "product_type",
+          "value": "Финишный самовыравнивающийся пол",
+          "sourceKeys": [
+            "vetonit3000"
+          ]
+        },
+        {
+          "code": "package_weight",
+          "value": 20,
+          "sourceKeys": [
+            "vetonit3000"
+          ]
+        },
+        {
+          "code": "application_method",
+          "value": "Ручное нанесение",
+          "sourceKeys": [
+            "vetonit3000"
+          ]
+        },
+        {
+          "code": "layer_thickness",
+          "value": "1–5 мм",
+          "sourceKeys": [
+            "vetonit3000"
+          ]
+        },
+        {
+          "code": "consumption",
+          "value": "1,5 кг/м²/мм",
+          "sourceKeys": [
+            "vetonit3000"
+          ]
+        },
+        {
+          "code": "walkability",
+          "value": "3–4 часа",
+          "sourceKeys": [
+            "vetonit3000"
+          ]
+        }
+      ],
+      "factsOmitted": [
+        {
+          "code": "base",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "purpose",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "application_area",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "substrates",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "color",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "consumption_10mm",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "water_requirement",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "pot_life",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "application_temperature",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "compressive_strength",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "adhesion",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "frost_resistance",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "shelf_life",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "standard",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "mortar_grade",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "flexural_strength",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "reason": "Прочностные показатели не включены в короткое описание карточки."
+        }
+      ],
+      "conflictingFields": [],
+      "immutableSnapshot": {
+        "id": 74,
+        "external_id": "MAT-000079",
+        "title": "Наливной пол Weber Vetonit 3000 20 кг",
+        "slug": "наливной-пол-финишный-weber-vetonit-3000-самовыравнивающийся-20-кг",
+        "category": "Смеси",
+        "subcategory": "Наливной Пол",
+        "price": 1039.5,
+        "weight": 20,
+        "unit": "шт",
+        "image": "",
+        "description": "",
+        "is_active": 1,
+        "sort_order": 5,
+        "source": "excel",
+        "last_imported_at": "2026-07-15T13:44:51.601Z",
+        "created_at": "2026-07-08T17:22:48.872Z",
+        "updated_at": "2026-09-24 12:22:05",
+        "deleted_at": null,
+        "deleted_by_id": null,
+        "deleted_by_name": null,
+        "product_group": "Vetonit",
+        "image_url": "/uploads/products/MAT-000079-ec61b1ee064e4891.webp",
+        "brand": "Weber Vetonit",
+        "seo_title": "Weber Vetonit 3000 20 кг — купить наливной пол в Москве",
+        "seo_description": "Финишный самовыравнивающийся пол Weber Vetonit 3000, фасовка 20 кг. Наносится слоем 1–5 мм; возможность хождения через 3–4 часа. Закажите в MatMix.",
+        "stock_status": "unknown"
+      }
+    },
+    {
+      "externalId": "MAT-000080",
+      "productId": 75,
+      "title": "Наливной пол Weber Vetonit fast 4000 20 кг",
+      "status": "READY",
+      "currentShortDescription": null,
+      "currentFullDescription": null,
+      "proposedShortDescription": "Универсальная смесь Weber Vetonit Fast 4000 для сухих и влажных помещений. Фасовка — 20 кг.",
+      "proposedFullDescription": "Weber Vetonit Fast 4000 — универсальная смесь для устройства наливного пола в сухих и влажных помещениях. Её можно наносить вручную и механизированно слоем 3–80 мм. Для затворения 20 кг смеси требуется 5,2–5,4 л воды; возможность хождения — через 4 часа.",
+      "shortDescriptionCharacterCount": 91,
+      "fullDescriptionCharacterCount": 254,
+      "sourceKeys": [
+        "vetonitFast4000"
+      ],
+      "sourceMetadata": {
+        "vetonitFast4000": {
+          "title": "Vetonit fast 4000",
+          "owner": "Vetonit",
+          "url": "https://vetonit.com/product/vetonit_fast_4000_20kg/"
+        }
+      },
+      "factsUsed": [
+        {
+          "code": "brand",
+          "value": "Weber Vetonit",
+          "sourceKeys": [
+            "vetonitFast4000"
+          ]
+        },
+        {
+          "code": "package_weight",
+          "value": 20,
+          "sourceKeys": [
+            "vetonitFast4000"
+          ]
+        },
+        {
+          "code": "application_area",
+          "value": "Сухие и влажные помещения",
+          "sourceKeys": [
+            "vetonitFast4000"
+          ]
+        },
+        {
+          "code": "application_method",
+          "value": "Ручное и механизированное",
+          "sourceKeys": [
+            "vetonitFast4000"
+          ]
+        },
+        {
+          "code": "layer_thickness",
+          "value": "3–80 мм",
+          "sourceKeys": [
+            "vetonitFast4000"
+          ]
+        },
+        {
+          "code": "water_requirement",
+          "value": "5,2–5,4 л на 20 кг",
+          "sourceKeys": [
+            "vetonitFast4000"
+          ]
+        },
+        {
+          "code": "walkability",
+          "value": "4 часа",
+          "sourceKeys": [
+            "vetonitFast4000"
+          ]
+        }
+      ],
+      "factsOmitted": [
+        {
+          "code": "product_type",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "base",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "purpose",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "substrates",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "color",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "consumption_10mm",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "pot_life",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "application_temperature",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "compressive_strength",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "adhesion",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "frost_resistance",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "shelf_life",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "standard",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "mortar_grade",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "consumption",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "flexural_strength",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "reason": "Температурные и прочностные характеристики оставлены в соответствующих полях карточки."
+        }
+      ],
+      "conflictingFields": [],
+      "immutableSnapshot": {
+        "id": 75,
+        "external_id": "MAT-000080",
+        "title": "Наливной пол Weber Vetonit fast 4000 20 кг",
+        "slug": "наливной-пол-универсальный-weber-vetonit-fast-4000-20-кг",
+        "category": "Смеси",
+        "subcategory": "Наливной Пол",
+        "price": 504,
+        "weight": 20,
+        "unit": "шт",
+        "image": "",
+        "description": "",
+        "is_active": 1,
+        "sort_order": 6,
+        "source": "excel",
+        "last_imported_at": "2026-07-15T13:44:51.601Z",
+        "created_at": "2026-07-08T17:22:48.872Z",
+        "updated_at": "2026-09-24 12:22:05",
+        "deleted_at": null,
+        "deleted_by_id": null,
+        "deleted_by_name": null,
+        "product_group": "Vetonit",
+        "image_url": "/uploads/products/MAT-000080-1bdd0d69bad4afdf.webp",
+        "brand": "Weber Vetonit",
+        "seo_title": "Weber Vetonit fast 4000 20 кг — купить наливной пол в Москве",
+        "seo_description": "Weber Vetonit fast 4000 20 кг для сухих и влажных помещений. Ручное или механизированное нанесение слоем 3–80 мм. Заказ в MatMix с доставкой по Москве и МО.",
+        "stock_status": "unknown"
+      }
+    },
+    {
+      "externalId": "MAT-000081",
+      "productId": 76,
+      "title": "Наливной пол Weber Vetonit 4100 20 кг",
+      "status": "READY",
+      "currentShortDescription": null,
+      "currentFullDescription": null,
+      "proposedShortDescription": "Финишный высокопрочный наливной пол Weber Vetonit 4100, 20 кг. Для ручного и механизированного нанесения.",
+      "proposedFullDescription": "Weber Vetonit 4100 — финишная высокопрочная смесь для наливного пола. Её наносят вручную или механизированно слоем 2–30 мм. Расход — 1,6 кг/м² на каждый миллиметр слоя; возможность хождения — через 3–4 часа. Фасовка — 20 кг.",
+      "shortDescriptionCharacterCount": 105,
+      "fullDescriptionCharacterCount": 224,
+      "sourceKeys": [
+        "vetonit4100"
+      ],
+      "sourceMetadata": {
+        "vetonit4100": {
+          "title": "Vetonit 4100",
+          "owner": "Vetonit",
+          "url": "https://vetonit.com/product/vetonit_4100_20kg/"
+        }
+      },
+      "factsUsed": [
+        {
+          "code": "brand",
+          "value": "Weber Vetonit",
+          "sourceKeys": [
+            "vetonit4100"
+          ]
+        },
+        {
+          "code": "package_weight",
+          "value": 20,
+          "sourceKeys": [
+            "vetonit4100"
+          ]
+        },
+        {
+          "code": "application_method",
+          "value": "Ручное и механизированное",
+          "sourceKeys": [
+            "vetonit4100"
+          ]
+        },
+        {
+          "code": "layer_thickness",
+          "value": "2–30 мм",
+          "sourceKeys": [
+            "vetonit4100"
+          ]
+        },
+        {
+          "code": "consumption",
+          "value": "1,6 кг/м²/мм",
+          "sourceKeys": [
+            "vetonit4100"
+          ]
+        },
+        {
+          "code": "walkability",
+          "value": "3–4 часа",
+          "sourceKeys": [
+            "vetonit4100"
+          ]
+        }
+      ],
+      "factsOmitted": [
+        {
+          "code": "product_type",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "base",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "purpose",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "application_area",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "substrates",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "color",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "consumption_10mm",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "water_requirement",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "pot_life",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "application_temperature",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "compressive_strength",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "adhesion",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "frost_resistance",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "shelf_life",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "standard",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "mortar_grade",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "flexural_strength",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "reason": "Температура применения и прочностные показатели не дублируются в видимом описании."
+        }
+      ],
+      "conflictingFields": [],
+      "immutableSnapshot": {
+        "id": 76,
+        "external_id": "MAT-000081",
+        "title": "Наливной пол Weber Vetonit 4100 20 кг",
+        "slug": "наливной-пол-финишный-vetonit-4100-высокопрочный-20-кг",
+        "category": "Смеси",
+        "subcategory": "Наливной Пол",
+        "price": 1018.5,
+        "weight": 20,
+        "unit": "шт",
+        "image": "",
+        "description": "",
+        "is_active": 1,
+        "sort_order": 7,
+        "source": "excel",
+        "last_imported_at": "2026-07-15T13:44:51.601Z",
+        "created_at": "2026-07-08T17:22:48.872Z",
+        "updated_at": "2026-09-24 12:22:05",
+        "deleted_at": null,
+        "deleted_by_id": null,
+        "deleted_by_name": null,
+        "product_group": "Vetonit",
+        "image_url": "/uploads/products/MAT-000081-11f05a89cce5a535.webp",
+        "brand": "Weber Vetonit",
+        "seo_title": "Weber Vetonit 4100 20 кг — купить наливной пол в Москве",
+        "seo_description": "Наливной пол Weber Vetonit 4100 20 кг. Ручное или механизированное нанесение слоем 2–30 мм, расход 1,6 кг/м²/мм. Доставка по Москве и МО.",
+        "stock_status": "unknown"
+      }
+    },
+    {
+      "externalId": "MAT-000082",
+      "productId": 77,
+      "title": "Наливной пол Weber Vetonit 5000 25 кг",
+      "status": "READY",
+      "currentShortDescription": null,
+      "currentFullDescription": null,
+      "proposedShortDescription": "Быстротвердеющий наливной пол Weber Vetonit 5000 для сухих и влажных помещений. Фасовка — 25 кг.",
+      "proposedFullDescription": "Weber Vetonit 5000 — быстротвердеющая смесь для первичного выравнивания пола в сухих и влажных помещениях. Состав наносят вручную слоем 5–50 мм, локально — до 80 мм. Для затворения 25 кг требуется 3–3,5 л воды; возможность хождения — через 3–4 часа.",
+      "shortDescriptionCharacterCount": 96,
+      "fullDescriptionCharacterCount": 249,
+      "sourceKeys": [
+        "vetonit5000"
+      ],
+      "sourceMetadata": {
+        "vetonit5000": {
+          "title": "Vetonit 5000",
+          "owner": "Vetonit",
+          "url": "https://www.vetonit.com/product/vetonit_5000_25kg/"
+        }
+      },
+      "factsUsed": [
+        {
+          "code": "brand",
+          "value": "Weber Vetonit",
+          "sourceKeys": [
+            "vetonit5000"
+          ]
+        },
+        {
+          "code": "package_weight",
+          "value": 25,
+          "sourceKeys": [
+            "vetonit5000"
+          ]
+        },
+        {
+          "code": "application_area",
+          "value": "Внутренние сухие и влажные помещения",
+          "sourceKeys": [
+            "vetonit5000"
+          ]
+        },
+        {
+          "code": "application_method",
+          "value": "Ручное нанесение",
+          "sourceKeys": [
+            "vetonit5000"
+          ]
+        },
+        {
+          "code": "layer_thickness",
+          "value": "5–50 мм; локально до 80 мм",
+          "sourceKeys": [
+            "vetonit5000"
+          ]
+        },
+        {
+          "code": "water_requirement",
+          "value": "3–3,5 л на 25 кг",
+          "sourceKeys": [
+            "vetonit5000"
+          ]
+        },
+        {
+          "code": "walkability",
+          "value": "3–4 часа",
+          "sourceKeys": [
+            "vetonit5000"
+          ]
+        }
+      ],
+      "factsOmitted": [
+        {
+          "code": "product_type",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "base",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "purpose",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "substrates",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "color",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "consumption_10mm",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "pot_life",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "application_temperature",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "compressive_strength",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "adhesion",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "frost_resistance",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "shelf_life",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "standard",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "mortar_grade",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "consumption",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "flexural_strength",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "reason": "Расход и прочностные показатели не перечисляются в видимом тексте."
+        }
+      ],
+      "conflictingFields": [],
+      "immutableSnapshot": {
+        "id": 77,
+        "external_id": "MAT-000082",
+        "title": "Наливной пол Weber Vetonit 5000 25 кг",
+        "slug": "наливной-пол-первичный-weber-vetonit-5000-быстротвердеющий-25-кг",
+        "category": "Смеси",
+        "subcategory": "Наливной Пол",
+        "price": 1029,
+        "weight": 25,
+        "unit": "шт",
+        "image": "",
+        "description": "",
+        "is_active": 1,
+        "sort_order": 8,
+        "source": "excel",
+        "last_imported_at": "2026-07-15T13:44:51.601Z",
+        "created_at": "2026-07-08T17:22:48.872Z",
+        "updated_at": "2026-09-24 12:22:05",
+        "deleted_at": null,
+        "deleted_by_id": null,
+        "deleted_by_name": null,
+        "product_group": "Vetonit",
+        "image_url": "/uploads/products/MAT-000082-d53ca909a64885ca.webp",
+        "brand": "Weber Vetonit",
+        "seo_title": "Weber Vetonit 5000 25 кг — купить наливной пол в Москве",
+        "seo_description": "Наливной пол Weber Vetonit 5000 25 кг для сухих и влажных помещений. Ручное нанесение слоем 5–50 мм, локально до 80 мм. Закажите в MatMix.",
+        "stock_status": "unknown"
+      }
+    },
+    {
+      "externalId": "MAT-000083",
+      "productId": 78,
+      "title": "Наливной пол Litokol LITOLIV S10 EXPRESS 20 кг",
+      "status": "READY",
+      "currentShortDescription": null,
+      "currentFullDescription": null,
+      "proposedShortDescription": "Тонкослойный самовыравнивающийся состав Litokol LitoLiv S10 Express для внутренних помещений и тёплого пола. Фасовка — 20 кг.",
+      "proposedFullDescription": "Litokol LitoLiv S10 Express — тонкослойный самовыравнивающийся состав для внутренних помещений, включая системы тёплого пола. Он предназначен для бетонных оснований и цементных или гипсовых стяжек; толщина нанесения — 1–10 мм. Фасовка — 20 кг.",
+      "shortDescriptionCharacterCount": 125,
+      "fullDescriptionCharacterCount": 243,
+      "sourceKeys": [
+        "litokolS10"
+      ],
+      "sourceMetadata": {
+        "litokolS10": {
+          "title": "Litokol LITOLIV S10 EXPRESS",
+          "owner": "Litokol",
+          "url": "https://www.litokol.ru/catalog/litoliv-s10-express/"
+        }
+      },
+      "factsUsed": [
+        {
+          "code": "brand",
+          "value": "Litokol",
+          "sourceKeys": [
+            "litokolS10"
+          ]
+        },
+        {
+          "code": "product_type",
+          "value": "Тонкослойный самовыравнивающийся состав",
+          "sourceKeys": [
+            "litokolS10"
+          ]
+        },
+        {
+          "code": "package_weight",
+          "value": 20,
+          "sourceKeys": [
+            "litokolS10"
+          ]
+        },
+        {
+          "code": "application_area",
+          "value": "Внутренние помещения, включая теплый пол",
+          "sourceKeys": [
+            "litokolS10"
+          ]
+        },
+        {
+          "code": "substrates",
+          "value": "Бетонные и цементные/гипсовые стяжки",
+          "sourceKeys": [
+            "litokolS10"
+          ]
+        },
+        {
+          "code": "layer_thickness",
+          "value": "1–10 мм",
+          "sourceKeys": [
+            "litokolS10"
+          ]
+        }
+      ],
+      "factsOmitted": [
+        {
+          "code": "base",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "purpose",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "application_method",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "color",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "consumption_10mm",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "water_requirement",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "pot_life",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "application_temperature",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "compressive_strength",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "adhesion",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "frost_resistance",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "shelf_life",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "standard",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "mortar_grade",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "consumption",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "flexural_strength",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "walkability",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "reason": "Подготовка основания и расход не включены: reviewed record не содержит подтверждённых значений для этих полей."
+        }
+      ],
+      "conflictingFields": [],
+      "immutableSnapshot": {
+        "id": 78,
+        "external_id": "MAT-000083",
+        "title": "Наливной пол Litokol LITOLIV S10 EXPRESS 20 кг",
+        "slug": "наливной-пол-litokol-litoliv-s10-express-20-кг",
+        "category": "Смеси",
+        "subcategory": "Наливной Пол",
+        "price": null,
+        "weight": 20,
+        "unit": "шт",
+        "image": "",
+        "description": "",
+        "is_active": 1,
+        "sort_order": 9,
+        "source": "excel",
+        "last_imported_at": "2026-07-15T13:44:51.601Z",
+        "created_at": "2026-07-08T17:22:48.872Z",
+        "updated_at": "2026-09-24 12:22:05",
+        "deleted_at": null,
+        "deleted_by_id": null,
+        "deleted_by_name": null,
+        "product_group": "Litokol",
+        "image_url": "/uploads/products/MAT-000083-9e454ab67e2e9c49.webp",
+        "brand": "Litokol",
+        "seo_title": "Litokol LITOLIV S10 EXPRESS 20 кг — купить наливной пол",
+        "seo_description": "Тонкослойный самовыравнивающийся состав Litokol LITOLIV S10 EXPRESS 20 кг для внутренних помещений, включая тёплый пол. Слой 1–10 мм. Закажите с доставкой.",
+        "stock_status": "unknown"
+      }
+    },
+    {
+      "externalId": "MAT-000084",
+      "productId": 79,
+      "title": "Наливной пол Litokol LITOLIV S50 EVO 20 кг",
+      "status": "READY",
+      "currentShortDescription": null,
+      "currentFullDescription": null,
+      "proposedShortDescription": "Универсальный самовыравнивающийся пол Litokol Litoliv S50, 20 кг. Толщина слоя — 2–100 мм.",
+      "proposedFullDescription": "Litokol Litoliv S50 — универсальная смесь для устройства самовыравнивающегося пола. Её наносят слоем 2–100 мм; для затворения 20 кг требуется 4,2–4,6 л воды. Работы проводят при температуре от +5 до +35 °C. Возможность хождения — через 2–4 часа.",
+      "shortDescriptionCharacterCount": 90,
+      "fullDescriptionCharacterCount": 245,
+      "sourceKeys": [
+        "litokolS50"
+      ],
+      "sourceMetadata": {
+        "litokolS50": {
+          "title": "Litokol LITOLIV S50 EVO",
+          "owner": "Litokol",
+          "url": "https://litokol-market.ru/catalog/styazhki-i-nalivnye-poly/litoliv-s50-evo/?offer=1005"
+        }
+      },
+      "factsUsed": [
+        {
+          "code": "brand",
+          "value": "Litokol",
+          "sourceKeys": [
+            "litokolS50"
+          ]
+        },
+        {
+          "code": "package_weight",
+          "value": 20,
+          "sourceKeys": [
+            "litokolS50"
+          ]
+        },
+        {
+          "code": "layer_thickness",
+          "value": "2–100 мм",
+          "sourceKeys": [
+            "litokolS50"
+          ]
+        },
+        {
+          "code": "water_requirement",
+          "value": "4,2–4,6 л на 20 кг",
+          "sourceKeys": [
+            "litokolS50"
+          ]
+        },
+        {
+          "code": "application_temperature",
+          "value": "от +5 до +35 °C",
+          "sourceKeys": [
+            "litokolS50"
+          ]
+        },
+        {
+          "code": "walkability",
+          "value": "2–4 часа",
+          "sourceKeys": [
+            "litokolS50"
+          ]
+        }
+      ],
+      "factsOmitted": [
+        {
+          "code": "product_type",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "base",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "purpose",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "application_area",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "application_method",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "substrates",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "color",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "consumption_10mm",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "pot_life",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "compressive_strength",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "adhesion",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "frost_resistance",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "shelf_life",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "standard",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "mortar_grade",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "consumption",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "flexural_strength",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "reason": "Область применения и перечень оснований не указаны: exact facts are not confirmed in the reviewed record."
+        }
+      ],
+      "conflictingFields": [],
+      "immutableSnapshot": {
+        "id": 79,
+        "external_id": "MAT-000084",
+        "title": "Наливной пол Litokol LITOLIV S50 EVO 20 кг",
+        "slug": "наливной-пол-универсальный-litokol-litoliv-s50-самовыравнивающийся-20-кг",
+        "category": "Смеси",
+        "subcategory": "Наливной Пол",
+        "price": 409.5,
+        "weight": 20,
+        "unit": "шт",
+        "image": "",
+        "description": "",
+        "is_active": 1,
+        "sort_order": 10,
+        "source": "excel",
+        "last_imported_at": "2026-07-15T13:44:51.601Z",
+        "created_at": "2026-07-08T17:22:48.872Z",
+        "updated_at": "2026-09-24 12:22:05",
+        "deleted_at": null,
+        "deleted_by_id": null,
+        "deleted_by_name": null,
+        "product_group": "Litokol",
+        "image_url": "/uploads/products/MAT-000084-0484b3e59dbe222e.webp",
+        "brand": "Litokol",
+        "seo_title": "Litokol LITOLIV S50 EVO 20 кг — купить наливной пол в Москве",
+        "seo_description": "Наливной пол Litokol LITOLIV S50 EVO 20 кг. Толщина слоя 2–100 мм, температура основания и воздуха от +5 до +35 °C. Оформите заказ в MatMix.",
+        "stock_status": "unknown"
+      }
+    },
+    {
+      "externalId": "MAT-000085",
+      "productId": 80,
+      "title": "Наливной пол ВОЛМА-Нивелир Экспресс 25 кг",
+      "status": "READY",
+      "currentShortDescription": null,
+      "currentFullDescription": null,
+      "proposedShortDescription": "Смесь ВОЛМА-Нивелир Экспресс для выравнивания пола. Фасовка — 25 кг.",
+      "proposedFullDescription": "ВОЛМА-Нивелир Экспресс — смесь для выравнивания пола в фасовке 25 кг. Толщина слоя составляет 2–100 мм. Расход воды — 0,29–0,34 л на килограмм смеси; возможность хождения — через 3 часа.",
+      "shortDescriptionCharacterCount": 68,
+      "fullDescriptionCharacterCount": 186,
+      "sourceKeys": [
+        "volmaExpress"
+      ],
+      "sourceMetadata": {
+        "volmaExpress": {
+          "title": "ВОЛМА-Нивелир Экспресс",
+          "owner": "ВОЛМА",
+          "url": "https://www.volma.ru/production/catalog/mixtures-for-floor-leveling/volma-nivelir-ekspress-25kg/"
+        }
+      },
+      "factsUsed": [
+        {
+          "code": "brand",
+          "value": "ВОЛМА",
+          "sourceKeys": [
+            "volmaExpress"
+          ]
+        },
+        {
+          "code": "package_weight",
+          "value": 25,
+          "sourceKeys": [
+            "volmaExpress"
+          ]
+        },
+        {
+          "code": "layer_thickness",
+          "value": "2–100 мм",
+          "sourceKeys": [
+            "volmaExpress"
+          ]
+        },
+        {
+          "code": "water_requirement",
+          "value": "0,29–0,34 л/кг",
+          "sourceKeys": [
+            "volmaExpress"
+          ]
+        },
+        {
+          "code": "walkability",
+          "value": "3 часа",
+          "sourceKeys": [
+            "volmaExpress"
+          ]
+        }
+      ],
+      "factsOmitted": [
+        {
+          "code": "product_type",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "base",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "purpose",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "application_area",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "application_method",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "substrates",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "color",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "consumption_10mm",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "pot_life",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "application_temperature",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "compressive_strength",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "adhesion",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "frost_resistance",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "shelf_life",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "standard",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "mortar_grade",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "consumption",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "flexural_strength",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "reason": "Не добавлены сведения о помещениях и основании: reviewed record не подтверждает эти факты."
+        }
+      ],
+      "conflictingFields": [],
+      "immutableSnapshot": {
+        "id": 80,
+        "external_id": "MAT-000085",
+        "title": "Наливной пол ВОЛМА-Нивелир Экспресс 25 кг",
+        "slug": "наливной-пол-волма-нивелир-экспресс-25-кг",
+        "category": "Смеси",
+        "subcategory": "Наливной Пол",
+        "price": 399,
+        "weight": 25,
+        "unit": "шт",
+        "image": "",
+        "description": "",
+        "is_active": 1,
+        "sort_order": 11,
+        "source": "excel",
+        "last_imported_at": "2026-07-15T13:44:51.601Z",
+        "created_at": "2026-07-08T17:22:48.872Z",
+        "updated_at": "2026-09-24 12:22:05",
+        "deleted_at": null,
+        "deleted_by_id": null,
+        "deleted_by_name": null,
+        "product_group": "Волма",
+        "image_url": "/uploads/products/MAT-000085-6f272833fe7b7600.webp",
+        "brand": "ВОЛМА",
+        "seo_title": "ВОЛМА-Нивелир Экспресс 25 кг — купить наливной пол",
+        "seo_description": "Наливной пол ВОЛМА-Нивелир Экспресс 25 кг. Толщина слоя 2–100 мм; температура основания и воздуха от +5 до +30 °C. Выберите товар в MatMix.",
+        "stock_status": "unknown"
+      }
+    },
+    {
+      "externalId": "MAT-000086",
+      "productId": 81,
+      "title": "Наливной пол Основит Скорлайн FK45 R 20 кг",
+      "status": "READY",
+      "currentShortDescription": null,
+      "currentFullDescription": null,
+      "proposedShortDescription": "Самовыравнивающийся пол Основит Скорлайн FK45 R для сухих и влажных помещений. Фасовка — 20 кг.",
+      "proposedFullDescription": "Основит Скорлайн FK45 R применяют для выравнивания пола во внутренних сухих и влажных помещениях. Смесь можно наносить вручную и механизированно по бетону, гипсовым и цементно-песчаным основаниям слоем 2–100 мм. Для затворения требуется 0,26–0,27 л воды на килограмм смеси; возможность хождения — через 4 часа. Фасовка — 20 кг.",
+      "shortDescriptionCharacterCount": 95,
+      "fullDescriptionCharacterCount": 327,
+      "sourceKeys": [
+        "osnovitFk45"
+      ],
+      "sourceMetadata": {
+        "osnovitFk45": {
+          "title": "Основит Скорлайн FK45 R",
+          "owner": "Основит",
+          "url": "https://www.osnovit.msk.ru/fk45r"
+        }
+      },
+      "factsUsed": [
+        {
+          "code": "brand",
+          "value": "Основит",
+          "sourceKeys": [
+            "osnovitFk45"
+          ]
+        },
+        {
+          "code": "package_weight",
+          "value": 20,
+          "sourceKeys": [
+            "osnovitFk45"
+          ]
+        },
+        {
+          "code": "application_area",
+          "value": "Внутренние сухие и влажные помещения",
+          "sourceKeys": [
+            "osnovitFk45"
+          ]
+        },
+        {
+          "code": "application_method",
+          "value": "Ручное и механизированное",
+          "sourceKeys": [
+            "osnovitFk45"
+          ]
+        },
+        {
+          "code": "substrates",
+          "value": "Бетон, гипсовые и цементно-песчаные основания",
+          "sourceKeys": [
+            "osnovitFk45"
+          ]
+        },
+        {
+          "code": "layer_thickness",
+          "value": "2–100 мм",
+          "sourceKeys": [
+            "osnovitFk45"
+          ]
+        },
+        {
+          "code": "water_requirement",
+          "value": "0,26–0,27 л/кг",
+          "sourceKeys": [
+            "osnovitFk45"
+          ]
+        },
+        {
+          "code": "walkability",
+          "value": "4 часа",
+          "sourceKeys": [
+            "osnovitFk45"
+          ]
+        }
+      ],
+      "factsOmitted": [
+        {
+          "code": "product_type",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "base",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "purpose",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "color",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "consumption_10mm",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "pot_life",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "application_temperature",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "compressive_strength",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "adhesion",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "frost_resistance",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "shelf_life",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "standard",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "mortar_grade",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "consumption",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "flexural_strength",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "reason": "Температурные показатели и срок хранения не включены в публичный текст."
+        }
+      ],
+      "conflictingFields": [],
+      "immutableSnapshot": {
+        "id": 81,
+        "external_id": "MAT-000086",
+        "title": "Наливной пол Основит Скорлайн FK45 R 20 кг",
+        "slug": "наливной-пол-основит-скорлайн-fk45r-самовыравнивающийся-20-кг",
+        "category": "Смеси",
+        "subcategory": "Наливной Пол",
+        "price": 493.5,
+        "weight": 20,
+        "unit": "шт",
+        "image": "",
+        "description": "",
+        "is_active": 1,
+        "sort_order": 12,
+        "source": "excel",
+        "last_imported_at": "2026-07-15T13:44:51.601Z",
+        "created_at": "2026-07-08T17:22:48.872Z",
+        "updated_at": "2026-07-15T13:44:51.601Z",
+        "deleted_at": null,
+        "deleted_by_id": null,
+        "deleted_by_name": null,
+        "product_group": "Основит",
+        "image_url": null,
+        "brand": "Основит",
+        "seo_title": "Основит Скорлайн FK45 R 20 кг — купить наливной пол",
+        "seo_description": "Наливной пол Основит Скорлайн FK45 R 20 кг для сухих и влажных помещений. Ручное или механизированное нанесение слоем 2–100 мм. Закажите с доставкой.",
+        "stock_status": "unknown"
+      }
+    },
+    {
+      "externalId": "MAT-000087",
+      "productId": 82,
+      "title": "Наливной пол Ceresit CN 175 Super 20 кг",
+      "status": "READY",
+      "currentShortDescription": null,
+      "currentFullDescription": null,
+      "proposedShortDescription": "Самовыравнивающийся пол Ceresit CN 175 Super, 20 кг. Толщина слоя — 3–60 мм.",
+      "proposedFullDescription": "Ceresit CN 175 Super — самовыравнивающаяся смесь для пола. Её можно наносить вручную и механизированно слоем 3–60 мм. Для затворения упаковки 20 кг требуется около 3,6 л воды; возможность хождения — не ранее чем через 5 часов. Фасовка — 20 кг.",
+      "shortDescriptionCharacterCount": 76,
+      "fullDescriptionCharacterCount": 243,
+      "sourceKeys": [
+        "ceresitCn175"
+      ],
+      "sourceMetadata": {
+        "ceresitCn175": {
+          "title": "Ceresit CN 175 Super",
+          "owner": "Ceresit/Henkel",
+          "url": "https://www.ceresit.ru/ru/products/flooring/levelling-compounds/cn_175_super",
+          "tds": "https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-CN175-"
+        }
+      },
+      "factsUsed": [
+        {
+          "code": "brand",
+          "value": "Ceresit",
+          "sourceKeys": [
+            "ceresitCn175"
+          ]
+        },
+        {
+          "code": "package_weight",
+          "value": 20,
+          "sourceKeys": [
+            "ceresitCn175"
+          ]
+        },
+        {
+          "code": "application_method",
+          "value": "Ручное и механизированное",
+          "sourceKeys": [
+            "ceresitCn175"
+          ]
+        },
+        {
+          "code": "layer_thickness",
+          "value": "3–60 мм",
+          "sourceKeys": [
+            "ceresitCn175"
+          ]
+        },
+        {
+          "code": "water_requirement",
+          "value": "около 3,6 л на 20 кг; 4,5 л на 25 кг",
+          "sourceKeys": [
+            "ceresitCn175"
+          ]
+        },
+        {
+          "code": "walkability",
+          "value": "не менее 5 часов",
+          "sourceKeys": [
+            "ceresitCn175"
+          ]
+        }
+      ],
+      "factsOmitted": [
+        {
+          "code": "product_type",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "base",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "purpose",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "application_area",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "substrates",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "color",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "consumption_10mm",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "pot_life",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "application_temperature",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "compressive_strength",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "adhesion",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "frost_resistance",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "shelf_life",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "standard",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "mortar_grade",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "consumption",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "flexural_strength",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "reason": "consumption: reviewed multi-pack source confirms approximately 1.8 kg/m²/mm, but it is intentionally omitted from this customer-facing text."
+        }
+      ],
+      "conflictingFields": [],
+      "immutableSnapshot": {
+        "id": 82,
+        "external_id": "MAT-000087",
+        "title": "Наливной пол Ceresit CN 175 Super 20 кг",
+        "slug": "наливной-пол-самовыравнивающийся-ceresit-cn-175-20-кг",
+        "category": "Смеси",
+        "subcategory": "Наливной Пол",
+        "price": null,
+        "weight": 20,
+        "unit": "шт",
+        "image": "",
+        "description": "",
+        "is_active": 1,
+        "sort_order": 13,
+        "source": "excel",
+        "last_imported_at": "2026-07-15T13:44:51.601Z",
+        "created_at": "2026-07-08T17:22:48.872Z",
+        "updated_at": "2026-07-15T13:44:51.601Z",
+        "deleted_at": null,
+        "deleted_by_id": null,
+        "deleted_by_name": null,
+        "product_group": "Ceresit",
+        "image_url": null,
+        "brand": "Ceresit",
+        "seo_title": "Ceresit CN 175 Super 20 кг — купить наливной пол в Москве",
+        "seo_description": "Наливной пол Ceresit CN 175 Super 20 кг. Ручное или механизированное нанесение слоем 3–60 мм; расход около 1,8 кг/м²/мм. Доставка по Москве и МО.",
+        "stock_status": "unknown"
+      }
+    },
+    {
+      "externalId": "MAT-000089",
+      "productId": 83,
+      "title": "Легкая стяжка пола KNAUF Ubo 25 кг",
+      "status": "READY",
+      "currentShortDescription": null,
+      "currentFullDescription": null,
+      "proposedShortDescription": "Лёгкая стяжка пола KNAUF Ubo для слабых оснований и размещения коммуникаций. Фасовка — 25 кг.",
+      "proposedFullDescription": "KNAUF Ubo — лёгкая стяжка пола на основе специального цемента и гранул полистирола. Смесь предназначена для слабых оснований и размещения коммуникаций; толщина слоя — 3–30 см. Возможность хождения — через 48 часов. Фасовка — 25 кг.",
+      "shortDescriptionCharacterCount": 93,
+      "fullDescriptionCharacterCount": 231,
+      "sourceKeys": [
+        "knaufUbo"
+      ],
+      "sourceMetadata": {
+        "knaufUbo": {
+          "title": "KNAUF Ubo",
+          "owner": "KNAUF",
+          "url": "https://www.knauf.ru/upload/iblock/dc7/dxgmyqn4icdelrl4jzevwo2w26lb633j/34_IL_KNAUF_Ubo_25_03_2025_v01_Preview.pdf",
+          "catalog": "https://www.knauf.ru/upload/iblock/f14/fpvhzrlva5q9ra48tx3iajbx1aua443o/KNAUF-Katalog-produktsii-Blok-_10_03_2025_-v10-Preview.pdf"
+        }
+      },
+      "factsUsed": [
+        {
+          "code": "brand",
+          "value": "KNAUF",
+          "sourceKeys": [
+            "knaufUbo"
+          ]
+        },
+        {
+          "code": "base",
+          "value": "Специальный цемент и гранулы полистирола",
+          "sourceKeys": [
+            "knaufUbo"
+          ]
+        },
+        {
+          "code": "purpose",
+          "value": "Легкая стяжка для слабых оснований и размещения коммуникаций",
+          "sourceKeys": [
+            "knaufUbo"
+          ]
+        },
+        {
+          "code": "package_weight",
+          "value": 25,
+          "sourceKeys": [
+            "knaufUbo"
+          ]
+        },
+        {
+          "code": "layer_thickness",
+          "value": "3–30 см",
+          "sourceKeys": [
+            "knaufUbo"
+          ]
+        },
+        {
+          "code": "walkability",
+          "value": "48 часов",
+          "sourceKeys": [
+            "knaufUbo"
+          ]
+        }
+      ],
+      "factsOmitted": [
+        {
+          "code": "product_type",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "application_area",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "application_method",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "substrates",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "color",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "consumption_10mm",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "water_requirement",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "pot_life",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "application_temperature",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "compressive_strength",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "adhesion",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "frost_resistance",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "shelf_life",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "code": "standard",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "mortar_grade",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "consumption",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        {
+          "code": "flexural_strength",
+          "status": "READY",
+          "reason": "Reviewed fact intentionally omitted from public copy."
+        },
+        {
+          "reason": "Технические параметры, отсутствующие в reviewed record, не добавлены."
+        }
+      ],
+      "conflictingFields": [],
+      "immutableSnapshot": {
+        "id": 83,
+        "external_id": "MAT-000089",
+        "title": "Легкая стяжка пола KNAUF Ubo 25 кг",
+        "slug": "стяжка-пола-цементная-легкая-knauf-ubo-25-кг",
+        "category": "Смеси",
+        "subcategory": "Стяжки Пола",
+        "price": null,
+        "weight": 25,
+        "unit": "шт",
+        "image": "",
+        "description": "",
+        "is_active": 1,
+        "sort_order": 1,
+        "source": "excel",
+        "last_imported_at": "2026-07-15T13:44:51.601Z",
+        "created_at": "2026-07-08T17:22:48.872Z",
+        "updated_at": "2026-07-15T13:44:51.601Z",
+        "deleted_at": null,
+        "deleted_by_id": null,
+        "deleted_by_name": null,
+        "product_group": "",
+        "image_url": null,
+        "brand": "KNAUF",
+        "seo_title": "KNAUF Ubo 25 кг — купить лёгкую стяжку в Москве",
+        "seo_description": "Лёгкая стяжка пола KNAUF Ubo 25 кг для слабых оснований и размещения коммуникаций. Толщина слоя 3–30 см, хождение через 48 часов. Закажите в MatMix.",
+        "stock_status": "unknown"
+      }
+    },
+    {
+      "externalId": "MAT-000090",
+      "productId": 84,
+      "title": "Стяжка пола Основит Стартолайн FC41 H высокопрочная, 25 кг",
+      "status": "READY",
+      "currentShortDescription": null,
+      "currentFullDescription": null,
+      "proposedShortDescription": "Высокопрочная стяжка пола Основит Стартолайн FC41 H для внутренних и наружных работ. Фасовка — 25 кг.",
+      "proposedFullDescription": "Основит Стартолайн FC41 H — высокопрочная смесь для устройства стяжки пола. Её применяют для внутренних и наружных работ, включая устройство тёплого пола. Фасовка — 25 кг.",
+      "shortDescriptionCharacterCount": 101,
+      "fullDescriptionCharacterCount": 171,
+      "sourceKeys": [
+        "osnovitFc41"
+      ],
+      "sourceMetadata": {
+        "osnovitFc41": {
+          "title": "Основит Стартолайн FC41 H",
+          "owner": "Основит",
+          "url": "https://osnovit.ru/articles/sravnenie-trekh-tipov-styazhek-osnovit-startolayn-legkaya-fc43-l-fc41-h-i-fc40/",
+          "catalog": "https://osnovit.ru/catalog/styazhki/"
+        }
+      },
+      "factsUsed": [
+        {
+          "code": "brand",
+          "value": "Основит",
+          "sourceKeys": [
+            "osnovitFc41"
+          ]
+        },
+        {
+          "code": "product_type",
+          "value": "Высокопрочная стяжка",
+          "sourceKeys": [
+            "osnovitFc41"
+          ]
+        },
+        {
+          "code": "package_weight",
+          "value": 25,
+          "sourceKeys": [
+            "osnovitFc41"
+          ]
+        },
+        {
+          "code": "application_area",
+          "value": "Внутренние и наружные работы; тёплый пол",
+          "sourceKeys": [
+            "osnovitFc41"
+          ]
+        }
+      ],
+      "factsOmitted": [
+        {
+          "code": "base",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact current FC41 H TDS is required for this technical field."
+        },
+        {
+          "code": "purpose",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact current FC41 H TDS is required for this technical field."
+        },
+        {
+          "code": "application_method",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact current FC41 H TDS is required for this technical field."
+        },
+        {
+          "code": "substrates",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact current FC41 H TDS is required for this technical field."
+        },
+        {
+          "code": "color",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact current FC41 H TDS is required for this technical field."
+        },
+        {
+          "code": "layer_thickness",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact current FC41 H TDS is required for this technical field."
+        },
+        {
+          "code": "consumption_10mm",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact current FC41 H TDS is required for this technical field."
+        },
+        {
+          "code": "water_requirement",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact current FC41 H TDS is required for this technical field."
+        },
+        {
+          "code": "pot_life",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact current FC41 H TDS is required for this technical field."
+        },
+        {
+          "code": "application_temperature",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact current FC41 H TDS is required for this technical field."
+        },
+        {
+          "code": "compressive_strength",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact current FC41 H TDS is required for this technical field."
+        },
+        {
+          "code": "adhesion",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact current FC41 H TDS is required for this technical field."
+        },
+        {
+          "code": "frost_resistance",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact current FC41 H TDS is required for this technical field."
+        },
+        {
+          "code": "shelf_life",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact current FC41 H TDS is required for this technical field."
+        },
+        {
+          "code": "standard",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact current FC41 H TDS is required for this technical field."
+        },
+        {
+          "code": "mortar_grade",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact current FC41 H TDS is required for this technical field."
+        },
+        {
+          "code": "consumption",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact current FC41 H TDS is required for this technical field."
+        },
+        {
+          "code": "flexural_strength",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact current FC41 H TDS is required for this technical field."
+        },
+        {
+          "code": "walkability",
+          "status": "NEEDS_SOURCE",
+          "reason": "Exact current FC41 H TDS is required for this technical field."
+        },
+        {
+          "reason": "Параметры слоя, расхода и времени хождения не указаны, поскольку exact значения не подтверждены в reviewed record."
+        }
+      ],
+      "conflictingFields": [],
+      "immutableSnapshot": {
+        "id": 84,
+        "external_id": "MAT-000090",
+        "title": "Стяжка пола Основит Стартолайн FC41 H высокопрочная, 25 кг",
+        "slug": "стяжка-пола-основит-стартолайн-fc41-h-высокопрочная-25-кг",
+        "category": "Смеси",
+        "subcategory": "Стяжки Пола",
+        "price": null,
+        "weight": 25,
+        "unit": "шт",
+        "image": "",
+        "description": "",
+        "is_active": 1,
+        "sort_order": 2,
+        "source": "excel",
+        "last_imported_at": "2026-07-15T13:44:51.601Z",
+        "created_at": "2026-07-08T17:22:48.872Z",
+        "updated_at": "2026-07-15T13:44:51.601Z",
+        "deleted_at": null,
+        "deleted_by_id": null,
+        "deleted_by_name": null,
+        "product_group": "",
+        "image_url": null,
+        "brand": "Основит",
+        "seo_title": "Основит Стартолайн FC41 H 25 кг — купить стяжку в Москве",
+        "seo_description": "Высокопрочная стяжка пола Основит Стартолайн FC41 H 25 кг для внутренних и наружных работ, включая тёплый пол. Оформите заказ в MatMix с доставкой по Москве и МО.",
+        "stock_status": "unknown"
+      }
+    }
+  ],
+  "summary": {
+    "total": 16,
+    "ready": 16,
+    "existingOk": 0,
+    "blocked": 0,
+    "errors": 0,
+    "duplicateShortDescriptions": 0,
+    "duplicateFullDescriptions": 0,
+    "forbiddenPublicMarkers": 0
+  },
+  "duplicateShortDescriptions": [],
+  "duplicateFullDescriptions": [],
+  "forbiddenPublicMarkers": []
+}
