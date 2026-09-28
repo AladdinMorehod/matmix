@@ -69,12 +69,23 @@ async function fixture(file, { firstExisting = true } = {}) {
     const applyFile = tempFile("apply.db");
     await fixture(applyFile, { firstExisting: false });
     const applyDb = await RUNNER.openDatabase(applyFile, true);
+    const customBackupDir = path.join(path.dirname(applyFile), "custom-approved-backups");
+    const applyOptions = RUNNER.parseArgs([
+        "--db", applyFile,
+        "--only", exact.join(","),
+        "--apply",
+        "--confirm", RUNNER.CONFIRM,
+        "--backup-dir", customBackupDir
+    ]);
+    assert.equal(applyOptions.backupDir, customBackupDir, "--backup-dir is parsed into options.backupDir");
     const tableCountsBefore = {
         attributes: (await applyDb.get("SELECT COUNT(*) AS count FROM product_attribute_values")).count,
         images: (await applyDb.get("SELECT COUNT(*) AS count FROM product_images")).count
     };
-    const applied = await RUNNER.applyBatch(applyDb, applyFile, { only: exact, confirm: RUNNER.CONFIRM, backupDir: path.dirname(applyFile) });
+    const applied = await RUNNER.applyBatch(applyDb, applyFile, applyOptions);
     assert.equal(applied.writes, 18);
+    assert.equal(path.dirname(applied.backup), customBackupDir, "apply writes backup to the explicit custom directory");
+    assert.ok(fs.existsSync(applied.backup), "custom backup file exists");
     const after = await applyDb.all("SELECT * FROM products ORDER BY id");
     for (const row of after) {
         const config = DATA.PRODUCTS.find(item => item.externalId === row.external_id);

@@ -65,7 +65,8 @@ function parseArgs(args) {
         if (!["--db", "--only", "--confirm", "--backup-dir", "--review"].includes(key)) throw new Error(`Unknown option: ${key}`);
         const value = tail.length ? tail.join("=") : args[++i];
         if (!value || value.startsWith("--")) throw new Error(`Value required: ${key}`);
-        out[key.slice(2)] = value;
+        const optionName = key.slice(2).replace(/-([a-z])/gu, (_, letter) => letter.toUpperCase());
+        out[optionName] = value;
     }
     if (seen.has("--apply") && seen.has("--dry-run")) throw new Error("Choose either --dry-run or --apply");
     if (!out.db || out.db === ":memory:") throw new Error("Explicit --db path is required");
