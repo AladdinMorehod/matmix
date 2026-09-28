@@ -1,0 +1,71 @@
+{
+  "task": "MAT-000076 UNIS Горизонт Армированный corrective",
+  "status": "READY_FOR_GUARDED_CORRECTION",
+  "productionAccessed": false,
+  "externalId": "MAT-000076",
+  "identity": {
+    "confirmedByOwner": true,
+    "brand": "UNIS",
+    "product": "Горизонт Армированный",
+    "packageWeightKg": 25,
+    "newTitle": "Наливной пол UNIS Горизонт Армированный 25 кг"
+  },
+  "sources": {
+    "unisArmoredCurrent": {
+      "owner": "UNIS",
+      "type": "official current manufacturer product page",
+      "url": "https://unistrom.ru/catalog/ustrojstvo-polov/gorizont-armirovannyj/",
+      "tdsUrl": "https://unistrom.ru/upload/iblock/112/q1w1m0wsq0d9yzebod4boxlbzsayelji.pdf",
+      "provenanceNote": "The current official product page is canonical for proposed current values. The official TDS says compressive strength 25–30 MPa depending on production site and water 2.75–4 l per 25 kg; its introductory bullet says 10–100 mm while its technical table says 10–200 mm. The current page says 30 MPa, 2.75–3.75 l per 25 kg, and 10–200 mm. Differences are recorded and not averaged."
+    },
+    "unisArmoredTds": {
+      "owner": "UNIS",
+      "type": "official technical data sheet",
+      "url": "https://unistrom.ru/upload/iblock/112/q1w1m0wsq0d9yzebod4boxlbzsayelji.pdf",
+      "usedFor": ["application_temperature: от +5 до +30 °C"]
+    },
+    "fieldSourceMapping": "Current product page: identity and all confirmed fields except application_temperature. Official TDS: application_temperature; it also provides version-conflict context for compressive strength and water, where the current page remains canonical.",
+    "ownerIdentityEvidence": "Owner-confirmed product identity from the MAT-000076 product photo: Горизонт Армированный, high-strength base floor leveler, 25 kg bag."
+  },
+  "fields": {
+    "products": {
+      "title": { "from": "Наливной пол UNIS Горизонт Армированный 20 кг", "to": "Наливной пол UNIS Горизонт Армированный 25 кг" },
+      "weight": { "from": 20, "to": 25 },
+      "short_description": { "from": "Армированный базовый ровнитель UNIS Горизонт для пола. Фасовка — 20 кг.", "to": "UNIS Горизонт Армированный — высокопрочный базовый ровнитель для пола. Фасовка — 25 кг." },
+      "full_description": { "from": "UNIS Горизонт Армированный — базовый ровнитель для пола в фасовке 20 кг. Смесь наносят слоем 30–300 мм; для затворения требуется 3,8–4,8 л воды на мешок. Возможность хождения по покрытию — через 12 часов.", "to": "UNIS Горизонт Армированный — высокопрочный армированный базовый ровнитель для пола в фасовке 25 кг. Материал предназначен для подготовки прочных ровных оснований под напольные покрытия и финишные ровнители. Толщина слоя — 10–200 мм, расход — 1,8 кг/м² на каждый миллиметр слоя. Возможность хождения — через 12 часов." },
+      "seo_title": { "from": "UNIS Горизонт Армированный 20 кг — ровнитель купить в Москве", "to": "UNIS Горизонт Армированный 25 кг — ровнитель купить в Москве" },
+      "seo_description": { "from": "Армированный базовый ровнитель для пола UNIS Горизонт 20 кг. Слой 30–300 мм, возможность хождения через 12 часов. Закажите с доставкой по Москве и МО.", "to": "Высокопрочный армированный базовый ровнитель UNIS Горизонт Армированный 25 кг. Слой 10–200 мм, расход 1,8 кг/м²/мм. Закажите с доставкой по Москве и МО." }
+    },
+    "attributes": {
+      "product_type": { "from": "Армированный базовый ровнитель для пола", "to": "Высокопрочный армированный базовый ровнитель для пола" },
+      "package_weight": { "from": 20, "to": 25, "unit": "кг" },
+      "purpose": { "from": null, "to": "Подготовка прочных ровных оснований и стяжек под напольные покрытия и финишные ровнители" },
+      "application_area": { "from": null, "to": "Внутренние и наружные работы; сухие и влажные помещения" },
+      "substrates": { "from": null, "to": "Бетонные и цементно-песчаные недеформирующиеся основания" },
+      "layer_thickness": { "from": "30–300 мм", "to": "10–200 мм" },
+      "consumption_10mm": { "from": null, "to": "18", "unit": "кг/м²" },
+      "water_requirement": { "from": "3,8–4,8 л на 20 кг", "to": "2,75–3,75 л на 25 кг" },
+      "pot_life": { "from": "1 час", "to": "2 часа" },
+      "application_temperature": { "from": null, "to": "от +5 до +30 °C" },
+      "compressive_strength": { "from": 15, "to": 30, "unit": "МПа" },
+      "adhesion": { "from": 0.6, "to": 0.3, "unit": "МПа" },
+      "frost_resistance": { "from": null, "to": "50 циклов" },
+      "shelf_life": { "from": 12, "to": 12, "unit": "месяцев", "status": "EXISTING_OK" },
+      "consumption": { "from": "около 1,8 кг/м²/мм", "to": "1,8 кг/м²/мм", "note": "Same confirmed consumption, qualifier normalized; no deletion." },
+      "flexural_strength": { "from": null, "to": "4 МПа" },
+      "walkability": { "from": "12 часов", "to": "12 часов", "status": "EXISTING_OK" }
+    }
+  },
+  "immutableProductFields": ["external_id", "slug", "price", "unit", "category", "subcategory", "product_group", "brand", "image", "image_url", "stock_status", "is_active", "deleted_at", "updated_at"],
+  "nonTargetProducts": ["MAT-000075", "MAT-000077", "MAT-000002"],
+  "writePolicy": {
+    "defaultMode": "OPEN_READONLY dry-run",
+    "only": ["MAT-000076"],
+    "confirmToken": "FIX_MAT000076_UNIS_ARMORED",
+    "applyRequiresExplicitDbAndBackupDir": true,
+    "definitionsAndTemplatesWritable": false,
+    "productionApplyPerformed": false
+  },
+  "syntheticDryRun": { "total": 1, "status": "READY", "productFieldsToFix": 6, "attributeValuesToFix": 15, "existingOk": 2, "blockers": 0, "errors": 0, "databaseHashUnchanged": true },
+  "sourceAuditValidation": { "checkpoint": "c330cf1c8d516b7e0438d68f3cbc9a00baeede05", "fixtureOnly": true, "MAT-000076": { "status": "SOURCE_OPTIONAL_GAPS", "provenanceAnomalies": 0 }, "MAT-000075": "SOURCE_BLOCKED", "MAT-000077": "SOURCE_BLOCKED" }
+}

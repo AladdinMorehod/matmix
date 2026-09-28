@@ -10,7 +10,8 @@ const CONFIRMED_MATS = Object.freeze(DISCOVERY.scope.externalIds);
 const READY_MATS = Object.freeze(DISCOVERY.summary.readyForCoreReview);
 
 const SOURCES = Object.freeze({
-  unisArmored: { title: "UNIS Горизонт Армированный", owner: "UNIS", url: "https://unistrom.ru/catalog/ustrojstvo-polov/gorizont-armirovannyj/" },
+  unisArmoredCurrent: { title: "UNIS Горизонт Армированный — текущая карточка производителя", owner: "UNIS", url: "https://unistrom.ru/catalog/ustrojstvo-polov/gorizont-armirovannyj/", provenanceNote: "Для canonical current значений приоритет у текущей карточки производителя. Официальный TDS той же линейки указывает 25–30 МПа (в зависимости от площадки) и верхнюю границу воды 4 л; в его вводном списке слоя также есть 10–100 мм при 10–200 мм в таблице. Текущая карточка указывает 30 МПа, 2,75–3,75 л на 25 кг и 10–200 мм. Различия сохранены и не усредняются." },
+  unisArmoredTds: { title: "UNIS Горизонт Армированный — официальный технический лист", owner: "UNIS", url: "https://unistrom.ru/upload/iblock/112/q1w1m0wsq0d9yzebod4boxlbzsayelji.pdf", provenanceNote: "Используется для диапазона температуры выполнения работ от +5 до +30 °C. Для compressive strength и воды текущая карточка производителя имеет приоритет; различия версии явно описаны у unisArmoredCurrent." },
   starateliCatalog: { title: "Старатели — наливные полы", owner: "Старатели", url: "https://www.starateli.ru/nalivnoy-pol/" },
   starateliThick: { title: "Старатели Толстый", owner: "Старатели", url: "https://market.starateli.ru/products/nalivnye-poly/nalivnoj-pol-tolstyj/" },
   vetonit3000: { title: "Vetonit 3000", owner: "Vetonit", url: "https://vetonit.com/product/vetonit_3000_20kg/" },
@@ -89,8 +90,27 @@ const P075 = commonNeeds(sourceKeys("unisFamily"), "Exact Горизонт varia
 P075.brand = ready("UNIS", sourceKeys("unisFamily"));
 P075.package_weight = ready(20, sourceKeys("unisFamily"));
 
-const P076 = commonNeeds(sourceKeys("unisArmored"));
-Object.assign(P076, { brand: ready("UNIS", sourceKeys("unisArmored")), product_type: ready("Армированный базовый ровнитель для пола", sourceKeys("unisArmored")), package_weight: ready(20, sourceKeys("unisArmored")), layer_thickness: ready("30–300 мм", sourceKeys("unisArmored")), water_requirement: ready("3,8–4,8 л на 20 кг", sourceKeys("unisArmored")), pot_life: ready("1 час", sourceKeys("unisArmored")), compressive_strength: ready(15, sourceKeys("unisArmored")), adhesion: ready(0.6, sourceKeys("unisArmored")), shelf_life: ready(12, sourceKeys("unisArmored")), walkability: ready("12 часов", sourceKeys("unisArmored")) });
+const P076 = commonNeeds(sourceKeys("unisArmoredCurrent"), "Текущая карточка UNIS подтверждает identity Горизонт Армированный; неуказанные на ней поля оставлены NEEDS_SOURCE.");
+Object.assign(P076, {
+  brand: ready("UNIS", sourceKeys("unisArmoredCurrent")),
+  product_type: ready("Высокопрочный армированный базовый ровнитель для пола", sourceKeys("unisArmoredCurrent")),
+  purpose: ready("Подготовка прочных ровных оснований и стяжек под напольные покрытия и финишные ровнители", sourceKeys("unisArmoredCurrent")),
+  package_weight: ready(25, sourceKeys("unisArmoredCurrent")),
+  application_area: ready("Внутренние и наружные работы; сухие и влажные помещения", sourceKeys("unisArmoredCurrent")),
+  substrates: ready("Бетонные и цементно-песчаные недеформирующиеся основания", sourceKeys("unisArmoredCurrent")),
+  layer_thickness: ready("10–200 мм", sourceKeys("unisArmoredCurrent")),
+  consumption_10mm: ready("18", sourceKeys("unisArmoredCurrent")),
+  water_requirement: ready("2,75–3,75 л на 25 кг", sourceKeys("unisArmoredCurrent")),
+  pot_life: ready("2 часа", sourceKeys("unisArmoredCurrent")),
+  application_temperature: ready("от +5 до +30 °C", sourceKeys("unisArmoredTds")),
+  compressive_strength: ready(30, sourceKeys("unisArmoredCurrent")),
+  adhesion: ready(0.3, sourceKeys("unisArmoredCurrent")),
+  frost_resistance: ready("50 циклов", sourceKeys("unisArmoredCurrent")),
+  shelf_life: ready(12, sourceKeys("unisArmoredCurrent")),
+  consumption: ready("1,8 кг/м²/мм", sourceKeys("unisArmoredCurrent")),
+  flexural_strength: ready("4 МПа", sourceKeys("unisArmoredCurrent")),
+  walkability: ready("12 часов", sourceKeys("unisArmoredCurrent"))
+});
 
 const P077 = commonNeeds(sourceKeys("starateliCatalog"), "Быстрый/Быстротвердеющий naming conflict is unresolved; version-dependent data is withheld.");
 Object.assign(P077, { brand: ready("Старатели", sourceKeys("starateliCatalog")), package_weight: ready(20, sourceKeys("starateliCatalog")) });
@@ -133,7 +153,7 @@ Object.assign(P090, { brand: ready("Основит", sourceKeys("osnovitFc41")),
 
 const PRODUCTS = Object.freeze([
   product("MAT-000075", "UNIS", "IDENTITY_UNCERTAIN", ["unisFamily"], "Наливной пол UNIS Горизонт 20 кг", P075),
-  product("MAT-000076", "UNIS", "READY_FOR_CORE_REVIEW", ["unisArmored"], "Наливной пол UNIS Горизонт Армированный 20 кг", P076),
+  product("MAT-000076", "UNIS", "READY_FOR_CORE_REVIEW", ["unisArmoredCurrent"], "Наливной пол UNIS Горизонт Армированный 25 кг", P076),
   product("MAT-000077", "Старатели", "SOURCE_CONFLICT", ["starateliCatalog"], "Наливной пол Старатели Быстротвердеющий 20 кг", P077),
   product("MAT-000078", "Старатели", "READY_FOR_CORE_REVIEW", ["starateliThick"], "Наливной пол Старатели Толстый 25 кг", P078),
   product("MAT-000079", "Weber Vetonit", "READY_FOR_CORE_REVIEW", ["vetonit3000"], "Наливной пол Weber Vetonit 3000 20 кг", P079),
