@@ -6,7 +6,7 @@ const sqlite3 = require("sqlite3").verbose();
 const DATA = require("./data/floor-mixes-core-batch1");
 
 const CONFIRM = "NORMALIZE_FLOOR_MIXES_TITLES_BATCH1";
-const PRODUCTS = Object.freeze(DATA.PRODUCTS.filter(item => item.identityStatus === "READY_FOR_CORE_REVIEW"));
+const PRODUCTS = Object.freeze(DATA.PRODUCTS.filter(item => item.identityStatus === "READY_FOR_CORE_REVIEW" && !item.dedicatedCorrectionOnly));
 const ALL_MATS = Object.freeze(PRODUCTS.map(item => item.externalId));
 
 function openDatabase(file, writable = false) {

@@ -1,0 +1,899 @@
+{
+  "task": "floor-mixes identity/source correction for MAT-000075 and MAT-000077",
+  "preparedAt": "2026-09-28",
+  "productionAccessed": false,
+  "productionApply": false,
+  "exactBatch": [
+    "MAT-000075",
+    "MAT-000077"
+  ],
+  "confirmToken": "FIX_FLOOR_075_077_IDENTITY",
+  "guards": {
+    "titleAndSlugWritable": false,
+    "productsWritableFields": [
+      "short_description",
+      "full_description",
+      "seo_title",
+      "seo_description"
+    ],
+    "attributeValueCodes": [
+      "product_type",
+      "shelf_life",
+      "base",
+      "application_area",
+      "application_method",
+      "substrates",
+      "layer_thickness",
+      "consumption",
+      "water_requirement",
+      "pot_life",
+      "application_temperature",
+      "walkability",
+      "adhesion",
+      "flexural_strength"
+    ],
+    "definitionsWritable": false,
+    "templatesWritable": false,
+    "allOrNothing": true
+  },
+  "syntheticDryRun": {
+    "mode": "dry-run",
+    "total": 2,
+    "ready": 2,
+    "existingOk": 0,
+    "blocked": 0,
+    "errors": 0,
+    "attributesToAdd": 27,
+    "productUpdateStatements": 2,
+    "definitionsToCreate": 0,
+    "templateWrites": 0,
+    "fixtureDbHashUnchanged": true
+  },
+  "applyRehearsal": {
+    "database": "synthetic temporary fixture only",
+    "sqlWrites": 29,
+    "backupBeforeBeginImmediate": true,
+    "rollbackInjectedFailure": "PASS",
+    "idempotentSecondApply": {
+      "status": "EXISTING_OK",
+      "writes": 0
+    },
+    "immutableSnapshots": "PASS"
+  },
+  "auditFixture": {
+    "sourceClassifierCommit": "c330cf1c8d516b7e0438d68f3cbc9a00baeede05",
+    "MAT000075": "not SOURCE_BLOCKED; no source anomalies",
+    "MAT000076": "no source blocker/anomaly after using baseline unchanged dataset",
+    "MAT000077": "not SOURCE_BLOCKED; no source anomalies",
+    "categoryAggregate": "not run; fixture only covers affected products plus MAT-000076, not the full production category dataset"
+  },
+  "sources": {
+    "unisArmoredCurrent": {
+      "title": "UNIS Горизонт Армированный — текущая карточка производителя",
+      "owner": "UNIS",
+      "url": "https://unistrom.ru/catalog/ustrojstvo-polov/gorizont-armirovannyj/",
+      "provenanceNote": "Для canonical current значений приоритет у текущей карточки производителя. Официальный TDS той же линейки указывает 25–30 МПа (в зависимости от площадки) и верхнюю границу воды 4 л; в его вводном списке слоя также есть 10–100 мм при 10–200 мм в таблице. Текущая карточка указывает 30 МПа, 2,75–3,75 л на 25 кг и 10–200 мм. Различия сохранены и не усредняются."
+    },
+    "unisArmoredTds": {
+      "title": "UNIS Горизонт Армированный — официальный технический лист",
+      "owner": "UNIS",
+      "url": "https://unistrom.ru/upload/iblock/112/q1w1m0wsq0d9yzebod4boxlbzsayelji.pdf",
+      "provenanceNote": "Используется для диапазона температуры выполнения работ от +5 до +30 °C. Для compressive strength и воды текущая карточка производителя имеет приоритет; различия версии явно описаны у unisArmoredCurrent."
+    },
+    "unisM45OwnerPack": {
+      "title": "Owner-provided MAT-000075 package image",
+      "owner": "Owner supplied",
+      "kind": "owner-identity-evidence",
+      "url": null,
+      "provenanceNote": "На упаковке указаны UNIS, ГОРИЗОНТ УНИВЕРСАЛЬНЫЙ М-45, наливной пол армированный быстротвердеющий и ГОСТ 31358-2019. Подтверждает точный 20 кг вариант/маркировку; не является источником технических параметров."
+    },
+    "unisM45Current": {
+      "title": "UNIS Горизонт Универсальный М-45 — current official product page",
+      "owner": "UNIS",
+      "url": "https://unistrom.ru/catalog/ustrojstvo-polov/nalivnye-poly/gorizont-universalnyj/",
+      "market": "RU",
+      "provenanceNote": "Текущая карточка называет продукт Горизонт Универсальный М-45; объясняет переименование прежней линейки Горизонт Универсальный / F-45 без изменения формулы. Перечисляет фасовки 20/25 кг, состав, область, применение и технические параметры."
+    },
+    "unisM45Tds": {
+      "title": "UNIS Горизонт Универсальный М-45 — official technical sheet",
+      "owner": "UNIS",
+      "url": "https://unistrom.ru/upload/iblock/7c4/qwogsbpzwhq3wvfbor2cxgtb0ddfzwvh.pdf",
+      "market": "RU",
+      "provenanceNote": "Официальный TDS с точной маркировкой М-45. Указывает 0,17–0,22 л/кг, слой 3–100 мм, расход 15–17 кг/м² при 10 мм, жизнеспособность не менее 40 минут, температуру +5…+30 °C, хождение 2–3 часа, адгезию не менее 0,7 МПа и хранение 12 месяцев. Прочность на сжатие дана диапазоном/по площадкам и не записывается в числовое поле."
+    },
+    "unisM45OwnerIdentity": {
+      "title": "Owner decision on legacy MAT-000075 title",
+      "owner": "Owner supplied",
+      "kind": "owner-identity-and-write-policy",
+      "url": null,
+      "provenanceNote": "Текущий title и slug сохраняются; legacy title используется только как точный guard и не служит техническим источником."
+    },
+    "starateliCatalog": {
+      "title": "Старатели — наливные полы",
+      "owner": "Старатели",
+      "url": "https://www.starateli.ru/nalivnoy-pol/"
+    },
+    "starateli77OwnerPack": {
+      "title": "Owner-provided MAT-000077 package image",
+      "owner": "Owner supplied",
+      "kind": "owner-identity-evidence",
+      "url": null,
+      "provenanceNote": "На упаковке указаны Старатели, НАЛИВНОЙ ПОЛ, БЫСТРОТВЕРДЕЮЩИЙ, САМОНИВЕЛИРУЮЩИЙСЯ, 20 кг и ГОСТ 31358-2019. Подтверждает точный 20 кг SKU; слово «Быстрый» из legacy title не является техническим источником."
+    },
+    "starateli77Official": {
+      "title": "Старатели — Наливной пол Быстротвердеющий 20 кг",
+      "owner": "Старатели",
+      "url": "https://www.starateli.ru/nalivnoi_pol_bistrodeistvuyushiy/",
+      "market": "RU",
+      "provenanceNote": "Официальная текущая страница производителя. Явно перечисляет 20/25 кг, состав, назначение, применения/основания, ручной и механизированный способ, слой 3–100 мм, расход, воду на 20 кг, жизнеспособность, температуру, хождение, адгезию и срок хранения."
+    },
+    "starateli77OwnerIdentity": {
+      "title": "Owner decision on legacy MAT-000077 title",
+      "owner": "Owner supplied",
+      "kind": "owner-identity-and-write-policy",
+      "url": null,
+      "provenanceNote": "Текущий title и slug сохраняются; слово «Быстрый» остаётся только в exact guard и не переносится в новые характеристики, описания или SEO."
+    },
+    "starateliThick": {
+      "title": "Старатели Толстый",
+      "owner": "Старатели",
+      "url": "https://market.starateli.ru/products/nalivnye-poly/nalivnoj-pol-tolstyj/"
+    },
+    "vetonit3000": {
+      "title": "Vetonit 3000",
+      "owner": "Vetonit",
+      "url": "https://vetonit.com/product/vetonit_3000_20kg/"
+    },
+    "vetonitFast4000": {
+      "title": "Vetonit fast 4000",
+      "owner": "Vetonit",
+      "url": "https://vetonit.com/product/vetonit_fast_4000_20kg/"
+    },
+    "vetonit4100": {
+      "title": "Vetonit 4100",
+      "owner": "Vetonit",
+      "url": "https://vetonit.com/product/vetonit_4100_20kg/"
+    },
+    "vetonit5000": {
+      "title": "Vetonit 5000",
+      "owner": "Vetonit",
+      "url": "https://www.vetonit.com/product/vetonit_5000_25kg/"
+    },
+    "litokolS10": {
+      "title": "Litokol LITOLIV S10 EXPRESS",
+      "owner": "Litokol",
+      "url": "https://www.litokol.ru/catalog/litoliv-s10-express/"
+    },
+    "litokolS50": {
+      "title": "Litokol LITOLIV S50 EVO",
+      "owner": "Litokol",
+      "url": "https://litokol-market.ru/catalog/styazhki-i-nalivnye-poly/litoliv-s50-evo/?offer=1005"
+    },
+    "volmaExpress": {
+      "title": "ВОЛМА-Нивелир Экспресс",
+      "owner": "ВОЛМА",
+      "url": "https://www.volma.ru/production/catalog/mixtures-for-floor-leveling/volma-nivelir-ekspress-25kg/"
+    },
+    "osnovitFk45": {
+      "title": "Основит Скорлайн FK45 R",
+      "owner": "Основит",
+      "url": "https://www.osnovit.msk.ru/fk45r"
+    },
+    "ceresitCn175": {
+      "title": "Ceresit CN 175 Super",
+      "owner": "Ceresit/Henkel",
+      "url": "https://www.ceresit.ru/ru/products/flooring/levelling-compounds/cn_175_super",
+      "tds": "https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-CN175-"
+    },
+    "knaufUbo": {
+      "title": "KNAUF Ubo",
+      "owner": "KNAUF",
+      "url": "https://www.knauf.ru/upload/iblock/dc7/dxgmyqn4icdelrl4jzevwo2w26lb633j/34_IL_KNAUF_Ubo_25_03_2025_v01_Preview.pdf",
+      "catalog": "https://www.knauf.ru/upload/iblock/f14/fpvhzrlva5q9ra48tx3iajbx1aua443o/KNAUF-Katalog-produktsii-Blok-_10_03_2025_-v10-Preview.pdf"
+    },
+    "osnovitFc41": {
+      "title": "Основит Стартолайн FC41 H",
+      "owner": "Основит",
+      "url": "https://osnovit.ru/articles/sravnenie-trekh-tipov-styazhek-osnovit-startolayn-legkaya-fc43-l-fc41-h-i-fc40/",
+      "catalog": "https://osnovit.ru/catalog/styazhki/"
+    },
+    "unisFamily": {
+      "title": "UNIS Горизонт family",
+      "owner": "UNIS",
+      "url": "https://unistrom.ru/catalog/ustrojstvo-polov/nalivnye-poly/gorizont-universalnyj/",
+      "variant": "https://unistrom.ru/catalog/ustrojstvo-polov/nalivnye-poly/gorizont-universalnyj-monolit/"
+    }
+  },
+  "products": [
+    {
+      "externalId": "MAT-000075",
+      "identityStatus": "READY_FOR_CORE_REVIEW",
+      "exactTitleGuard": "Наливной пол \"Unis Горизонт\" 20 кг",
+      "exactSlugGuard": "наливной-пол-unis-горизонт-20-кг",
+      "currentProduct": {
+        "title": "Наливной пол \"Unis Горизонт\" 20 кг",
+        "slug": "наливной-пол-unis-горизонт-20-кг",
+        "brand": "UNIS",
+        "weight": 20,
+        "unit": "шт",
+        "category": "Смеси",
+        "subcategory": "Наливной Пол",
+        "price": 345,
+        "short_description": null,
+        "full_description": null,
+        "seo_title": "UNIS Горизонт 20 кг — купить наливной пол в Москве",
+        "seo_description": "Наливной пол «Unis Горизонт» 20 кг. Закажите материал в каталоге MatMix с доставкой по Москве и Московской области.",
+        "image_url": "/uploads/products/MAT-000075-7584c202645c34c1.webp",
+        "stock_status": "unknown",
+        "is_active": 1,
+        "deleted_at": null
+      },
+      "proposedProduct": {
+        "short_description": "UNIS Горизонт Универсальный М-45 — армированный быстротвердеющий наливной пол. Фасовка — 20 кг.",
+        "full_description": "UNIS Горизонт Универсальный М-45 — армированный быстротвердеющий наливной пол для базового и финишного выравнивания оснований. Материал подходит для бетонных, цементно-песчаных и гипсовых оснований, систем «Тёплый пол» и «Плавающий пол». Толщина слоя — 3–100 мм, расход — 15–17 кг/м² при слое 10 мм, возможность хождения — через 2–3 часа.",
+        "seo_title": "UNIS Горизонт Универсальный М-45 20 кг — купить в Москве",
+        "seo_description": "Армированный быстротвердеющий наливной пол UNIS Горизонт Универсальный М-45 20 кг. Слой 3–100 мм, хождение через 2–3 часа. Доставка по Москве и МО."
+      },
+      "currentAttributesGuarded": {
+        "brand": "UNIS",
+        "package_weight": "20 кг"
+      },
+      "proposedAttributes": {
+        "product_type": {
+          "value": "Армированный быстротвердеющий наливной пол",
+          "sourceKeys": [
+            "unisM45OwnerPack",
+            "unisM45Current",
+            "unisM45Tds"
+          ],
+          "note": ""
+        },
+        "shelf_life": {
+          "value": 12,
+          "sourceKeys": [
+            "unisM45Tds"
+          ],
+          "note": ""
+        },
+        "base": {
+          "value": "Композиционное вяжущее, мелкофракционные наполнители, модифицирующие добавки, армирующие волокна",
+          "sourceKeys": [
+            "unisM45Current",
+            "unisM45Tds"
+          ],
+          "note": ""
+        },
+        "application_area": {
+          "value": "Внутренние отапливаемые помещения с умеренной и повышенной влажностью; системы «Тёплый пол» и «Плавающий пол»",
+          "sourceKeys": [
+            "unisM45Current",
+            "unisM45Tds"
+          ],
+          "note": ""
+        },
+        "application_method": {
+          "value": "Ручное и машинное",
+          "sourceKeys": [
+            "unisM45Current",
+            "unisM45Tds"
+          ],
+          "note": ""
+        },
+        "substrates": {
+          "value": "Бетонные, цементно-песчаные, гипсовые и другие недеформирующиеся основания",
+          "sourceKeys": [
+            "unisM45Current",
+            "unisM45Tds"
+          ],
+          "note": ""
+        },
+        "layer_thickness": {
+          "value": "3–100 мм",
+          "sourceKeys": [
+            "unisM45Current",
+            "unisM45Tds"
+          ],
+          "note": ""
+        },
+        "consumption": {
+          "value": "15–17 кг/м² при 10 мм",
+          "sourceKeys": [
+            "unisM45Current",
+            "unisM45Tds"
+          ],
+          "note": ""
+        },
+        "water_requirement": {
+          "value": "0,17–0,22 л/кг",
+          "sourceKeys": [
+            "unisM45Tds"
+          ],
+          "note": ""
+        },
+        "pot_life": {
+          "value": "не менее 40 минут",
+          "sourceKeys": [
+            "unisM45Current",
+            "unisM45Tds"
+          ],
+          "note": ""
+        },
+        "application_temperature": {
+          "value": "от +5 до +30 °C",
+          "sourceKeys": [
+            "unisM45Current",
+            "unisM45Tds"
+          ],
+          "note": ""
+        },
+        "walkability": {
+          "value": "2–3 часа",
+          "sourceKeys": [
+            "unisM45Current",
+            "unisM45Tds"
+          ],
+          "note": ""
+        },
+        "adhesion": {
+          "value": 0.7,
+          "sourceKeys": [
+            "unisM45Current",
+            "unisM45Tds"
+          ],
+          "note": "Official source qualifies this number as not less than; qualifier retained here because the canonical attribute definition is numeric."
+        }
+      },
+      "sourceFactsNotStoredAsAttributes": {
+        "purpose": {
+          "status": "READY",
+          "value": "Ручное и машинное выравнивание бетонных полов и цементных стяжек, устранение перепадов под последующую укладку напольных покрытий; системы «Тёплый пол» и «Плавающий пол»",
+          "sources": [
+            "unisM45Current",
+            "unisM45Tds"
+          ]
+        },
+        "compressive_strength": {
+          "status": "NEEDS_SOURCE",
+          "sourceRange": "16–20 МПа (производственная площадка влияет на минимум)",
+          "reason": "Range cannot be represented faithfully by the numeric canonical attribute; no scalar will be invented."
+        }
+      },
+      "sourceKeys": [
+        "unisM45OwnerPack",
+        "unisM45Current",
+        "unisM45Tds",
+        "unisM45OwnerIdentity"
+      ],
+      "sourceFacts": {
+        "product_type": {
+          "status": "READY",
+          "value": "Армированный быстротвердеющий наливной пол",
+          "sources": [
+            "unisM45OwnerPack",
+            "unisM45Current",
+            "unisM45Tds"
+          ]
+        },
+        "base": {
+          "status": "READY",
+          "value": "Композиционное вяжущее, мелкофракционные наполнители, модифицирующие добавки, армирующие волокна",
+          "sources": [
+            "unisM45Current",
+            "unisM45Tds"
+          ]
+        },
+        "purpose": {
+          "status": "READY",
+          "value": "Ручное и машинное выравнивание бетонных полов и цементных стяжек, устранение перепадов под последующую укладку напольных покрытий; системы «Тёплый пол» и «Плавающий пол»",
+          "sources": [
+            "unisM45Current",
+            "unisM45Tds"
+          ]
+        },
+        "package_weight": {
+          "status": "READY",
+          "value": 20,
+          "sources": [
+            "unisM45OwnerPack",
+            "unisM45Current",
+            "unisM45Tds"
+          ]
+        },
+        "application_area": {
+          "status": "READY",
+          "value": "Внутренние отапливаемые помещения с умеренной и повышенной влажностью; системы «Тёплый пол» и «Плавающий пол»",
+          "sources": [
+            "unisM45Current",
+            "unisM45Tds"
+          ]
+        },
+        "application_method": {
+          "status": "READY",
+          "value": "Ручное и машинное",
+          "sources": [
+            "unisM45Current",
+            "unisM45Tds"
+          ]
+        },
+        "substrates": {
+          "status": "READY",
+          "value": "Бетонные, цементно-песчаные, гипсовые и другие недеформирующиеся основания",
+          "sources": [
+            "unisM45Current",
+            "unisM45Tds"
+          ]
+        },
+        "color": {
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "unisM45OwnerPack",
+            "unisM45Current",
+            "unisM45Tds"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        "layer_thickness": {
+          "status": "READY",
+          "value": "3–100 мм",
+          "sources": [
+            "unisM45Current",
+            "unisM45Tds"
+          ]
+        },
+        "consumption_10mm": {
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "unisM45OwnerPack",
+            "unisM45Current",
+            "unisM45Tds"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        "water_requirement": {
+          "status": "READY",
+          "value": "0,17–0,22 л/кг",
+          "sources": [
+            "unisM45Tds"
+          ]
+        },
+        "pot_life": {
+          "status": "READY",
+          "value": "не менее 40 минут",
+          "sources": [
+            "unisM45Current",
+            "unisM45Tds"
+          ]
+        },
+        "application_temperature": {
+          "status": "READY",
+          "value": "от +5 до +30 °C",
+          "sources": [
+            "unisM45Current",
+            "unisM45Tds"
+          ]
+        },
+        "compressive_strength": {
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "unisM45Current",
+            "unisM45Tds"
+          ],
+          "reason": "Официальный источник даёт диапазон 16–20 МПа/зависимость от производственной площадки; текущее числовое поле не может сохранить этот факт без искажения."
+        },
+        "adhesion": {
+          "status": "READY",
+          "value": 0.7,
+          "sources": [
+            "unisM45Current",
+            "unisM45Tds"
+          ]
+        },
+        "frost_resistance": {
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "unisM45OwnerPack",
+            "unisM45Current",
+            "unisM45Tds"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        "shelf_life": {
+          "status": "READY",
+          "value": 12,
+          "sources": [
+            "unisM45Tds"
+          ]
+        },
+        "standard": {
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "unisM45OwnerPack",
+            "unisM45Current",
+            "unisM45Tds"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        "mortar_grade": {
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "unisM45OwnerPack",
+            "unisM45Current",
+            "unisM45Tds"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        "consumption": {
+          "status": "READY",
+          "value": "15–17 кг/м² при 10 мм",
+          "sources": [
+            "unisM45Current",
+            "unisM45Tds"
+          ]
+        },
+        "flexural_strength": {
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "unisM45OwnerPack",
+            "unisM45Current",
+            "unisM45Tds"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        "walkability": {
+          "status": "READY",
+          "value": "2–3 часа",
+          "sources": [
+            "unisM45Current",
+            "unisM45Tds"
+          ]
+        },
+        "brand": {
+          "status": "READY",
+          "value": "UNIS",
+          "sources": [
+            "unisM45OwnerPack",
+            "unisM45Current"
+          ]
+        }
+      }
+    },
+    {
+      "externalId": "MAT-000077",
+      "identityStatus": "READY_FOR_CORE_REVIEW",
+      "exactTitleGuard": "Наливной пол \"Старатели\" Быстрый 20 кг",
+      "exactSlugGuard": "наливной-пол-старатели-быстрый-20-кг",
+      "currentProduct": {
+        "title": "Наливной пол \"Старатели\" Быстрый 20 кг",
+        "slug": "наливной-пол-старатели-быстрый-20-кг",
+        "brand": "Старатели",
+        "weight": 20,
+        "unit": "шт",
+        "category": "Смеси",
+        "subcategory": "Наливной Пол",
+        "price": 365,
+        "short_description": null,
+        "full_description": null,
+        "seo_title": "Старатели Быстрый 20 кг — купить наливной пол в Москве",
+        "seo_description": "Наливной пол «Старатели» «Быстрый» 20 кг. Выберите материал в каталоге MatMix и оформите доставку по Москве и Московской области.",
+        "image_url": "/uploads/products/MAT-000077-a2ff7cd16c732bb5.webp",
+        "stock_status": "unknown",
+        "is_active": 1,
+        "deleted_at": null
+      },
+      "proposedProduct": {
+        "short_description": "Старатели Быстротвердеющий — самонивелирующийся наливной пол для внутренних работ. Фасовка — 20 кг.",
+        "full_description": "Наливной пол «Старатели Быстротвердеющий» в фасовке 20 кг предназначен для базового и финишного выравнивания бетонных, цементно-песчаных, гипсовых и ангидридных оснований. Подходит для системы «Тёплый пол» и ручного или механизированного нанесения. Толщина слоя — 3–100 мм, расход — около 14,5 кг/м² при слое 10 мм, возможность хождения — через 4 часа.",
+        "seo_title": "Старатели Быстротвердеющий 20 кг — купить наливной пол",
+        "seo_description": "Самонивелирующийся наливной пол Старатели Быстротвердеющий 20 кг. Слой 3–100 мм, расход около 14,5 кг/м² при 10 мм. Доставка по Москве и МО."
+      },
+      "currentAttributesGuarded": {
+        "brand": "Старатели",
+        "package_weight": "20 кг"
+      },
+      "proposedAttributes": {
+        "product_type": {
+          "value": "Самонивелирующийся быстротвердеющий наливной пол",
+          "sourceKeys": [
+            "starateli77OwnerPack",
+            "starateli77Official"
+          ],
+          "note": ""
+        },
+        "shelf_life": {
+          "value": 12,
+          "sourceKeys": [
+            "starateli77Official"
+          ],
+          "note": ""
+        },
+        "base": {
+          "value": "Комплексное минеральное вяжущее на основе гипса и цемента, фракционированный песок и модифицирующие добавки",
+          "sourceKeys": [
+            "starateli77Official"
+          ],
+          "note": ""
+        },
+        "application_area": {
+          "value": "Внутренние работы; помещения с нормальной влажностью; система «Тёплый пол»; стяжка на разделительном слое",
+          "sourceKeys": [
+            "starateli77Official"
+          ],
+          "note": ""
+        },
+        "application_method": {
+          "value": "Ручное и механизированное",
+          "sourceKeys": [
+            "starateli77Official"
+          ],
+          "note": ""
+        },
+        "substrates": {
+          "value": "Бетон, цементные стяжки, гипсовые и ангидридные основания",
+          "sourceKeys": [
+            "starateli77Official"
+          ],
+          "note": ""
+        },
+        "layer_thickness": {
+          "value": "3–100 мм",
+          "sourceKeys": [
+            "starateli77Official"
+          ],
+          "note": ""
+        },
+        "consumption": {
+          "value": "около 14,5 кг/м² при 10 мм",
+          "sourceKeys": [
+            "starateli77Official"
+          ],
+          "note": ""
+        },
+        "water_requirement": {
+          "value": "5,0–6,0 л на 20 кг",
+          "sourceKeys": [
+            "starateli77Official"
+          ],
+          "note": ""
+        },
+        "pot_life": {
+          "value": "не менее 40 минут",
+          "sourceKeys": [
+            "starateli77Official"
+          ],
+          "note": ""
+        },
+        "application_temperature": {
+          "value": "от +5 до +30 °C",
+          "sourceKeys": [
+            "starateli77Official"
+          ],
+          "note": ""
+        },
+        "walkability": {
+          "value": "4 часа",
+          "sourceKeys": [
+            "starateli77Official"
+          ],
+          "note": ""
+        },
+        "adhesion": {
+          "value": 0.8,
+          "sourceKeys": [
+            "starateli77Official"
+          ],
+          "note": "Official source qualifies this number as not less than; qualifier retained here because the canonical attribute definition is numeric."
+        },
+        "flexural_strength": {
+          "value": "не менее 4 МПа",
+          "sourceKeys": [
+            "starateli77Official"
+          ],
+          "note": "Official source states not less than 4 MPa; qualifier is retained in text."
+        }
+      },
+      "sourceFactsNotStoredAsAttributes": {
+        "purpose": {
+          "status": "READY",
+          "value": "Базовое и финишное выравнивание оснований под последующую укладку напольных покрытий; система «Тёплый пол» и устройство стяжки на разделительном слое",
+          "sources": [
+            "starateli77Official"
+          ]
+        },
+        "compressive_strength": {
+          "status": "NEEDS_SOURCE",
+          "sourceRange": "16–20 МПа",
+          "reason": "Range cannot be represented faithfully by the numeric canonical attribute; no scalar will be invented."
+        }
+      },
+      "sourceKeys": [
+        "starateli77OwnerPack",
+        "starateli77Official",
+        "starateli77OwnerIdentity"
+      ],
+      "sourceFacts": {
+        "product_type": {
+          "status": "READY",
+          "value": "Самонивелирующийся быстротвердеющий наливной пол",
+          "sources": [
+            "starateli77OwnerPack",
+            "starateli77Official"
+          ]
+        },
+        "base": {
+          "status": "READY",
+          "value": "Комплексное минеральное вяжущее на основе гипса и цемента, фракционированный песок и модифицирующие добавки",
+          "sources": [
+            "starateli77Official"
+          ]
+        },
+        "purpose": {
+          "status": "READY",
+          "value": "Базовое и финишное выравнивание оснований под последующую укладку напольных покрытий; система «Тёплый пол» и устройство стяжки на разделительном слое",
+          "sources": [
+            "starateli77Official"
+          ]
+        },
+        "package_weight": {
+          "status": "READY",
+          "value": 20,
+          "sources": [
+            "starateli77OwnerPack",
+            "starateli77Official"
+          ]
+        },
+        "application_area": {
+          "status": "READY",
+          "value": "Внутренние работы; помещения с нормальной влажностью; система «Тёплый пол»; стяжка на разделительном слое",
+          "sources": [
+            "starateli77Official"
+          ]
+        },
+        "application_method": {
+          "status": "READY",
+          "value": "Ручное и механизированное",
+          "sources": [
+            "starateli77Official"
+          ]
+        },
+        "substrates": {
+          "status": "READY",
+          "value": "Бетон, цементные стяжки, гипсовые и ангидридные основания",
+          "sources": [
+            "starateli77Official"
+          ]
+        },
+        "color": {
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "starateli77OwnerPack",
+            "starateli77Official"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        "layer_thickness": {
+          "status": "READY",
+          "value": "3–100 мм",
+          "sources": [
+            "starateli77Official"
+          ]
+        },
+        "consumption_10mm": {
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "starateli77OwnerPack",
+            "starateli77Official"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        "water_requirement": {
+          "status": "READY",
+          "value": "5,0–6,0 л на 20 кг",
+          "sources": [
+            "starateli77Official"
+          ]
+        },
+        "pot_life": {
+          "status": "READY",
+          "value": "не менее 40 минут",
+          "sources": [
+            "starateli77Official"
+          ]
+        },
+        "application_temperature": {
+          "status": "READY",
+          "value": "от +5 до +30 °C",
+          "sources": [
+            "starateli77Official"
+          ]
+        },
+        "compressive_strength": {
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "starateli77Official"
+          ],
+          "reason": "Официальный источник даёт диапазон 16–20 МПа; текущее числовое поле не может сохранить диапазон без искажения."
+        },
+        "adhesion": {
+          "status": "READY",
+          "value": 0.8,
+          "sources": [
+            "starateli77Official"
+          ]
+        },
+        "frost_resistance": {
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "starateli77OwnerPack",
+            "starateli77Official"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        "shelf_life": {
+          "status": "READY",
+          "value": 12,
+          "sources": [
+            "starateli77Official"
+          ]
+        },
+        "standard": {
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "starateli77OwnerPack",
+            "starateli77Official"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        "mortar_grade": {
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "sources": [
+            "starateli77OwnerPack",
+            "starateli77Official"
+          ],
+          "reason": "Exact source does not confirm this field for the local SKU."
+        },
+        "consumption": {
+          "status": "READY",
+          "value": "около 14,5 кг/м² при 10 мм",
+          "sources": [
+            "starateli77Official"
+          ]
+        },
+        "flexural_strength": {
+          "status": "READY",
+          "value": "не менее 4 МПа",
+          "sources": [
+            "starateli77Official"
+          ]
+        },
+        "walkability": {
+          "status": "READY",
+          "value": "4 часа",
+          "sources": [
+            "starateli77Official"
+          ]
+        },
+        "brand": {
+          "status": "READY",
+          "value": "Старатели",
+          "sources": [
+            "starateli77OwnerPack",
+            "starateli77Official"
+          ]
+        }
+      }
+    }
+  ]
+}

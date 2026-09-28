@@ -12,7 +12,14 @@ const READY_MATS = Object.freeze(DISCOVERY.summary.readyForCoreReview);
 const SOURCES = Object.freeze({
   unisArmoredCurrent: { title: "UNIS Горизонт Армированный — текущая карточка производителя", owner: "UNIS", url: "https://unistrom.ru/catalog/ustrojstvo-polov/gorizont-armirovannyj/", provenanceNote: "Для canonical current значений приоритет у текущей карточки производителя. Официальный TDS той же линейки указывает 25–30 МПа (в зависимости от площадки) и верхнюю границу воды 4 л; в его вводном списке слоя также есть 10–100 мм при 10–200 мм в таблице. Текущая карточка указывает 30 МПа, 2,75–3,75 л на 25 кг и 10–200 мм. Различия сохранены и не усредняются." },
   unisArmoredTds: { title: "UNIS Горизонт Армированный — официальный технический лист", owner: "UNIS", url: "https://unistrom.ru/upload/iblock/112/q1w1m0wsq0d9yzebod4boxlbzsayelji.pdf", provenanceNote: "Используется для диапазона температуры выполнения работ от +5 до +30 °C. Для compressive strength и воды текущая карточка производителя имеет приоритет; различия версии явно описаны у unisArmoredCurrent." },
+  unisM45OwnerPack: { title: "Owner-provided MAT-000075 package image", owner: "Owner supplied", kind: "owner-identity-evidence", url: null, provenanceNote: "На упаковке указаны UNIS, ГОРИЗОНТ УНИВЕРСАЛЬНЫЙ М-45, наливной пол армированный быстротвердеющий и ГОСТ 31358-2019. Подтверждает точный 20 кг вариант/маркировку; не является источником технических параметров." },
+  unisM45Current: { title: "UNIS Горизонт Универсальный М-45 — current official product page", owner: "UNIS", url: "https://unistrom.ru/catalog/ustrojstvo-polov/nalivnye-poly/gorizont-universalnyj/", market: "RU", provenanceNote: "Текущая карточка называет продукт Горизонт Универсальный М-45; объясняет переименование прежней линейки Горизонт Универсальный / F-45 без изменения формулы. Перечисляет фасовки 20/25 кг, состав, область, применение и технические параметры." },
+  unisM45Tds: { title: "UNIS Горизонт Универсальный М-45 — official technical sheet", owner: "UNIS", url: "https://unistrom.ru/upload/iblock/7c4/qwogsbpzwhq3wvfbor2cxgtb0ddfzwvh.pdf", market: "RU", provenanceNote: "Официальный TDS с точной маркировкой М-45. Указывает 0,17–0,22 л/кг, слой 3–100 мм, расход 15–17 кг/м² при 10 мм, жизнеспособность не менее 40 минут, температуру +5…+30 °C, хождение 2–3 часа, адгезию не менее 0,7 МПа и хранение 12 месяцев. Прочность на сжатие дана диапазоном/по площадкам и не записывается в числовое поле." },
+  unisM45OwnerIdentity: { title: "Owner decision on legacy MAT-000075 title", owner: "Owner supplied", kind: "owner-identity-and-write-policy", url: null, provenanceNote: "Текущий title и slug сохраняются; legacy title используется только как точный guard и не служит техническим источником." },
   starateliCatalog: { title: "Старатели — наливные полы", owner: "Старатели", url: "https://www.starateli.ru/nalivnoy-pol/" },
+  starateli77OwnerPack: { title: "Owner-provided MAT-000077 package image", owner: "Owner supplied", kind: "owner-identity-evidence", url: null, provenanceNote: "На упаковке указаны Старатели, НАЛИВНОЙ ПОЛ, БЫСТРОТВЕРДЕЮЩИЙ, САМОНИВЕЛИРУЮЩИЙСЯ, 20 кг и ГОСТ 31358-2019. Подтверждает точный 20 кг SKU; слово «Быстрый» из legacy title не является техническим источником." },
+  starateli77Official: { title: "Старатели — Наливной пол Быстротвердеющий 20 кг", owner: "Старатели", url: "https://www.starateli.ru/nalivnoi_pol_bistrodeistvuyushiy/", market: "RU", provenanceNote: "Официальная текущая страница производителя. Явно перечисляет 20/25 кг, состав, назначение, применения/основания, ручной и механизированный способ, слой 3–100 мм, расход, воду на 20 кг, жизнеспособность, температуру, хождение, адгезию и срок хранения." },
+  starateli77OwnerIdentity: { title: "Owner decision on legacy MAT-000077 title", owner: "Owner supplied", kind: "owner-identity-and-write-policy", url: null, provenanceNote: "Текущий title и slug сохраняются; слово «Быстрый» остаётся только в exact guard и не переносится в новые характеристики, описания или SEO." },
   starateliThick: { title: "Старатели Толстый", owner: "Старатели", url: "https://market.starateli.ru/products/nalivnye-poly/nalivnoj-pol-tolstyj/" },
   vetonit3000: { title: "Vetonit 3000", owner: "Vetonit", url: "https://vetonit.com/product/vetonit_3000_20kg/" },
   vetonitFast4000: { title: "Vetonit fast 4000", owner: "Vetonit", url: "https://vetonit.com/product/vetonit_fast_4000_20kg/" },
@@ -78,17 +85,34 @@ function localState(externalId) { return discoveryById.get(externalId)?.current;
 function commonNeeds(sourceKeysForReason, reason = "Exact source does not confirm this field for the local SKU.") {
   return Object.fromEntries(CORE_ORDER.filter(code => code !== "brand").map(code => [code, need(reason, sourceKeysForReason)]));
 }
-function product(externalId, brand, identityStatus, sources, titleCandidate, core) {
+function product(externalId, brand, identityStatus, sources, titleCandidate, core, dedicatedCorrectionOnly = false) {
   const local = localState(externalId);
   if (!local || local.category !== EXPECTED_CATEGORY || !EXPECTED_SUBCATEGORIES.includes(local.subcategory)) throw new Error(`Discovery scope mismatch for ${externalId}`);
   const currentTitle = expectedTitle(externalId);
   const acceptedTitles = identityStatus === "READY_FOR_CORE_REVIEW" && titleCandidate !== currentTitle ? [currentTitle, titleCandidate] : [currentTitle];
-  return { externalId, expectedTitle: currentTitle, acceptedTitles, expectedCategory: expectedCategory(externalId), expectedSubcategory: expectedSubcategory(externalId), brand, identityStatus, sourceKeys: sources, titleCandidate, core };
+  return { externalId, expectedTitle: currentTitle, acceptedTitles, expectedCategory: expectedCategory(externalId), expectedSubcategory: expectedSubcategory(externalId), brand, identityStatus, sourceKeys: sources, titleCandidate, core, ...(dedicatedCorrectionOnly ? { dedicatedCorrectionOnly: true } : {}) };
 }
 
-const P075 = commonNeeds(sourceKeys("unisFamily"), "Exact Горизонт variant is unresolved; variant-dependent data is intentionally withheld.");
-P075.brand = ready("UNIS", sourceKeys("unisFamily"));
-P075.package_weight = ready(20, sourceKeys("unisFamily"));
+const P075 = commonNeeds(sourceKeys("unisM45OwnerPack", "unisM45Current", "unisM45Tds"));
+Object.assign(P075, {
+  brand: ready("UNIS", sourceKeys("unisM45OwnerPack", "unisM45Current")),
+  product_type: ready("Армированный быстротвердеющий наливной пол", sourceKeys("unisM45OwnerPack", "unisM45Current", "unisM45Tds")),
+  base: ready("Композиционное вяжущее, мелкофракционные наполнители, модифицирующие добавки, армирующие волокна", sourceKeys("unisM45Current", "unisM45Tds")),
+  purpose: ready("Ручное и машинное выравнивание бетонных полов и цементных стяжек, устранение перепадов под последующую укладку напольных покрытий; системы «Тёплый пол» и «Плавающий пол»", sourceKeys("unisM45Current", "unisM45Tds")),
+  package_weight: ready(20, sourceKeys("unisM45OwnerPack", "unisM45Current", "unisM45Tds")),
+  application_area: ready("Внутренние отапливаемые помещения с умеренной и повышенной влажностью; системы «Тёплый пол» и «Плавающий пол»", sourceKeys("unisM45Current", "unisM45Tds")),
+  application_method: ready("Ручное и машинное", sourceKeys("unisM45Current", "unisM45Tds")),
+  substrates: ready("Бетонные, цементно-песчаные, гипсовые и другие недеформирующиеся основания", sourceKeys("unisM45Current", "unisM45Tds")),
+  layer_thickness: ready("3–100 мм", sourceKeys("unisM45Current", "unisM45Tds")),
+  consumption: ready("15–17 кг/м² при 10 мм", sourceKeys("unisM45Current", "unisM45Tds")),
+  water_requirement: ready("0,17–0,22 л/кг", sourceKeys("unisM45Tds")),
+  pot_life: ready("не менее 40 минут", sourceKeys("unisM45Current", "unisM45Tds")),
+  application_temperature: ready("от +5 до +30 °C", sourceKeys("unisM45Current", "unisM45Tds")),
+  adhesion: ready(0.7, sourceKeys("unisM45Current", "unisM45Tds")),
+  shelf_life: ready(12, sourceKeys("unisM45Tds")),
+  walkability: ready("2–3 часа", sourceKeys("unisM45Current", "unisM45Tds")),
+  compressive_strength: need("Официальный источник даёт диапазон 16–20 МПа/зависимость от производственной площадки; текущее числовое поле не может сохранить этот факт без искажения.", sourceKeys("unisM45Current", "unisM45Tds"))
+});
 
 const P076 = commonNeeds(sourceKeys("unisArmoredCurrent"), "Текущая карточка UNIS подтверждает identity Горизонт Армированный; неуказанные на ней поля оставлены NEEDS_SOURCE.");
 Object.assign(P076, {
@@ -112,8 +136,27 @@ Object.assign(P076, {
   walkability: ready("12 часов", sourceKeys("unisArmoredCurrent"))
 });
 
-const P077 = commonNeeds(sourceKeys("starateliCatalog"), "Быстрый/Быстротвердеющий naming conflict is unresolved; version-dependent data is withheld.");
-Object.assign(P077, { brand: ready("Старатели", sourceKeys("starateliCatalog")), package_weight: ready(20, sourceKeys("starateliCatalog")) });
+const P077 = commonNeeds(sourceKeys("starateli77OwnerPack", "starateli77Official"));
+Object.assign(P077, {
+  brand: ready("Старатели", sourceKeys("starateli77OwnerPack", "starateli77Official")),
+  product_type: ready("Самонивелирующийся быстротвердеющий наливной пол", sourceKeys("starateli77OwnerPack", "starateli77Official")),
+  base: ready("Комплексное минеральное вяжущее на основе гипса и цемента, фракционированный песок и модифицирующие добавки", sourceKeys("starateli77Official")),
+  purpose: ready("Базовое и финишное выравнивание оснований под последующую укладку напольных покрытий; система «Тёплый пол» и устройство стяжки на разделительном слое", sourceKeys("starateli77Official")),
+  package_weight: ready(20, sourceKeys("starateli77OwnerPack", "starateli77Official")),
+  application_area: ready("Внутренние работы; помещения с нормальной влажностью; система «Тёплый пол»; стяжка на разделительном слое", sourceKeys("starateli77Official")),
+  application_method: ready("Ручное и механизированное", sourceKeys("starateli77Official")),
+  substrates: ready("Бетон, цементные стяжки, гипсовые и ангидридные основания", sourceKeys("starateli77Official")),
+  layer_thickness: ready("3–100 мм", sourceKeys("starateli77Official")),
+  consumption: ready("около 14,5 кг/м² при 10 мм", sourceKeys("starateli77Official")),
+  water_requirement: ready("5,0–6,0 л на 20 кг", sourceKeys("starateli77Official")),
+  pot_life: ready("не менее 40 минут", sourceKeys("starateli77Official")),
+  application_temperature: ready("от +5 до +30 °C", sourceKeys("starateli77Official")),
+  adhesion: ready(0.8, sourceKeys("starateli77Official")),
+  flexural_strength: ready("не менее 4 МПа", sourceKeys("starateli77Official")),
+  shelf_life: ready(12, sourceKeys("starateli77Official")),
+  walkability: ready("4 часа", sourceKeys("starateli77Official")),
+  compressive_strength: need("Официальный источник даёт диапазон 16–20 МПа; текущее числовое поле не может сохранить диапазон без искажения.", sourceKeys("starateli77Official")),
+});
 
 const P078 = commonNeeds(sourceKeys("starateliThick"));
 Object.assign(P078, { brand: ready("Старатели", sourceKeys("starateliThick")), base: ready("Цементное вяжущее", sourceKeys("starateliThick")), package_weight: ready(25, sourceKeys("starateliThick")), application_area: ready("Внутренние и наружные работы; нормальная и высокая влажность", sourceKeys("starateliThick")), application_method: ready("Ручное и механизированное", sourceKeys("starateliThick")), layer_thickness: ready("30–100 мм", sourceKeys("starateliThick")), water_requirement: ready("5–6 л на 25 кг", sourceKeys("starateliThick")), consumption: ready("16–18 кг/м² при 10 мм", sourceKeys("starateliThick")), flexural_strength: ready("≥5 МПа", sourceKeys("starateliThick")), walkability: ready("24 часа", sourceKeys("starateliThick")) });
@@ -152,9 +195,9 @@ const P090 = commonNeeds(sourceKeys("osnovitFc41"), "Exact current FC41 H TDS is
 Object.assign(P090, { brand: ready("Основит", sourceKeys("osnovitFc41")), product_type: ready("Высокопрочная стяжка", sourceKeys("osnovitFc41")), package_weight: ready(25, sourceKeys("osnovitFc41")), application_area: ready("Внутренние и наружные работы; тёплый пол", sourceKeys("osnovitFc41")) });
 
 const PRODUCTS = Object.freeze([
-  product("MAT-000075", "UNIS", "IDENTITY_UNCERTAIN", ["unisFamily"], "Наливной пол UNIS Горизонт 20 кг", P075),
+  product("MAT-000075", "UNIS", "READY_FOR_CORE_REVIEW", ["unisM45OwnerPack", "unisM45Current", "unisM45Tds", "unisM45OwnerIdentity"], "Наливной пол \"Unis Горизонт\" 20 кг", P075, true),
   product("MAT-000076", "UNIS", "READY_FOR_CORE_REVIEW", ["unisArmoredCurrent"], "Наливной пол UNIS Горизонт Армированный 25 кг", P076),
-  product("MAT-000077", "Старатели", "SOURCE_CONFLICT", ["starateliCatalog"], "Наливной пол Старатели Быстротвердеющий 20 кг", P077),
+  product("MAT-000077", "Старатели", "READY_FOR_CORE_REVIEW", ["starateli77OwnerPack", "starateli77Official", "starateli77OwnerIdentity"], "Наливной пол \"Старатели\" Быстрый 20 кг", P077, true),
   product("MAT-000078", "Старатели", "READY_FOR_CORE_REVIEW", ["starateliThick"], "Наливной пол Старатели Толстый 25 кг", P078),
   product("MAT-000079", "Weber Vetonit", "READY_FOR_CORE_REVIEW", ["vetonit3000"], "Наливной пол Weber Vetonit 3000 20 кг", P079),
   product("MAT-000080", "Weber Vetonit", "READY_FOR_CORE_REVIEW", ["vetonitFast4000"], "Наливной пол Weber Vetonit fast 4000 20 кг", P080),
