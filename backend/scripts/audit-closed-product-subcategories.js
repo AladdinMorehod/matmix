@@ -15,6 +15,7 @@ const TARGET_NAMES = Object.freeze(CANONICAL_TEMPLATE.categories.map(item => ite
 const MAIN_CODES = Object.freeze(CANONICAL_TEMPLATE.mainAttributes.slice());
 const SHARED_PLACEHOLDER = "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png";
 const TEMPLATE_CODES = Object.freeze(Object.fromEntries(CANONICAL_TEMPLATE.categories.map(item => [item.name, Object.freeze(item.codes.slice())])));
+const REMOVED_CODES = Object.freeze(Object.fromEntries(CANONICAL_TEMPLATE.categories.map(item => [item.name, Object.freeze((item.removeCodes || []).slice())])));
 const TEMPLATE_STRUCTURE_IDS = Object.freeze(Object.fromEntries(CANONICAL_TEMPLATE.categories.map(item => [item.name, Number(item.structureId)])));
 const EXPECTED_MEMBERSHIPS = Object.freeze(Object.fromEntries(CANONICAL_TEMPLATE.categories.map(item => [item.name, MAIN_CODES.length + item.codes.length])));
 const SOURCE_MODULE_PRIORITY = Object.freeze({
@@ -207,12 +208,16 @@ async function inspectAttributes(db, products, schema) {
             FROM product_attribute_values v LEFT JOIN product_attribute_definitions d ON d.id=v.attribute_definition_id WHERE v.product_id=? ORDER BY v.id`, [product.id]);
         valuesByProduct.set(product.id, values);
         const templateByCode = new Map(templateRows.filter(row => row.code).map(row => [row.code, row]));
-        const valuesByCode = new Map(); const duplicates = []; const invalid = []; const inactive = []; const outOfTemplate = [];
+        const valuesByCode = new Map(); const duplicates = []; const invalid = []; const inactive = []; const outOfTemplate = []; const extraValuesOutsideTemplate = []; const explicitlyRemovedValuesPresent = [];
         for (const value of values) {
             if (valuesByCode.has(value.code)) duplicates.push(value.code); else valuesByCode.set(value.code, value);
             const issue = valueValidity(value); if (issue) invalid.push({ code: value.code, issue });
             if (Number(value.definition_active) !== 1) inactive.push(value.code);
-            if (!templateByCode.has(value.code)) outOfTemplate.push(value.code);
+            if (!templateByCode.has(value.code)) {
+                outOfTemplate.push(value.code);
+                if ((REMOVED_CODES[product.auditedSubcategory] || []).includes(value.code)) explicitlyRemovedValuesPresent.push({ code: value.code, issue: "EXPLICITLY_REMOVED_TEMPLATE_VALUE" });
+                else if (!issue && Number(value.definition_active) === 1) extraValuesOutsideTemplate.push({ code: value.code, issue: "EXTRA_VALUE_OUTSIDE_TEMPLATE" });
+            }
         }
         const canonicalPresent = (template, value) => template.code === "brand" ? hasValue(product.brand) : Boolean(value && (hasValue(value.value_text) || value.value_number !== null && value.value_number !== undefined || value.value_boolean !== null && value.value_boolean !== undefined));
         const missing = templateRows.filter(template => !canonicalPresent(template, valuesByCode.get(template.code))).map(template => template.code);
@@ -226,9 +231,9 @@ async function inspectAttributes(db, products, schema) {
         const brandAttr = brandValue ? (brandValue.value_text ?? brandValue.value_number ?? brandValue.value_boolean) : null;
         const brandMismatch = brandValue && hasValue(product.brand) && key(brandAttr) !== key(product.brand);
         const mainCanonical = Object.fromEntries(MAIN_CODES.map(code => [code, code === "brand" ? hasValue(product.brand) : present.includes(code)]));
-        const anomalies = [...invalid, ...inactive.map(code => ({ code, issue: "INACTIVE_DEFINITION" })), ...duplicates.map(code => ({ code, issue: "DUPLICATE" })), ...outOfTemplate.map(code => ({ code, issue: "NOT_IN_TEMPLATE" })), ...(brandMismatch ? [{ code: "brand", issue: "CANONICAL_BRAND_ATTRIBUTE_MISMATCH", productsBrand: product.brand, attributeBrand: brandAttr }] : [])];
+        const anomalies = [...invalid, ...inactive.map(code => ({ code, issue: "INACTIVE_DEFINITION" })), ...duplicates.map(code => ({ code, issue: "DUPLICATE" })), ...explicitlyRemovedValuesPresent, ...(brandMismatch ? [{ code: "brand", issue: "CANONICAL_BRAND_ATTRIBUTE_MISMATCH", productsBrand: product.brand, attributeBrand: brandAttr }] : [])];
         const attributeStatus = anomalies.length ? "ATTR_ANOMALY" : requiredMissing.length ? "ATTR_REQUIRED_MISSING" : missing.length ? "ATTR_PARTIAL" : "ATTR_OK";
-        rows.push({ externalId: product.external_id, title: product.title, totalTemplateAttributes: templateRows.length, presentCount: present.length, present, missing, requiredMissing, mainPresent: schema.templateSectionAvailable ? mainTemplate.filter(row => present.includes(row.code) || row.code === "brand" && hasValue(product.brand)).map(row => row.code) : null, mainMissing, regularPresent: schema.templateSectionAvailable ? regularTemplate.filter(row => present.includes(row.code)).map(row => row.code) : null, regularMissing, mainCanonical, outOfTemplate, inactiveDefinitions: inactive, anomalies, brand: { productsBrand: product.brand || null, attributeBrand: brandAttr || null, canonicalSource: "products.brand; runtime injects it into main brand rendering", mismatch: Boolean(brandMismatch) }, attributeStatus });
+        rows.push({ externalId: product.external_id, title: product.title, totalTemplateAttributes: templateRows.length, presentCount: present.length, present, missing, requiredMissing, mainPresent: schema.templateSectionAvailable ? mainTemplate.filter(row => present.includes(row.code) || row.code === "brand" && hasValue(product.brand)).map(row => row.code) : null, mainMissing, regularPresent: schema.templateSectionAvailable ? regularTemplate.filter(row => present.includes(row.code)).map(row => row.code) : null, regularMissing, mainCanonical, outOfTemplate, extraValuesOutsideTemplate, explicitlyRemovedValuesPresent, inactiveDefinitions: inactive, anomalies, brand: { productsBrand: product.brand || null, attributeBrand: brandAttr || null, canonicalSource: "products.brand; runtime injects it into main brand rendering", mismatch: Boolean(brandMismatch) }, attributeStatus });
     }
     return { rows, valuesByProduct };
 }
@@ -249,7 +254,7 @@ function sourceEntries(externalId) {
             const localTitleOnlyPackageWeight = proposal.code === "package_weight" && Array.isArray(proposal.proposal?.sources) && proposal.proposal.sources.length > 0 && proposal.proposal.sources.every(sourceKey => sourceKey === "localTitle");
             const sourceKeys = proposal.proposal?.sources || [];
             const status = localTitleOnlyPackageWeight ? "NEEDS_SOURCE" : proposal.proposal?.status || "NEEDS_SOURCE";
-            entries.push({ code: proposal.code, moduleName, priority: SOURCE_MODULE_PRIORITY[moduleName] || 0, status, value: proposal.proposal?.value, reason: localTitleOnlyPackageWeight ? "Package weight appears only in local title metadata; no product source confirms it." : proposal.proposal?.reason || null, sourceKeys, sourceRefsValid: status !== "READY" || sourceReferencesValid(sourceKeys, proposal.sourceMap) });
+            entries.push({ code: proposal.code, moduleName, priority: SOURCE_MODULE_PRIORITY[moduleName] || 0, status, value: proposal.proposal?.value, reason: localTitleOnlyPackageWeight ? "Package weight appears only in local title metadata; no product source confirms it." : proposal.proposal?.reason || null, sourceKeys, sourceRefsValid: status !== "READY" || sourceReferencesValid(sourceKeys, proposal.sourceMap), catalogMetadataOnly: localTitleOnlyPackageWeight });
         }
     }
     for (const [moduleName, data] of Object.entries(SOURCE_DATASETS)) {
@@ -282,6 +287,63 @@ function currentAttributeValue(row) {
     return null;
 }
 
+function strictTitlePackageKg(title) {
+    const text = normalize(title);
+    const matches = [...text.matchAll(/(\d+(?:[.,]\d+)?)\s*(кг|kg)(?=\s|$)/giu)];
+    if (matches.length !== 1 || !/(\d+(?:[.,]\d+)?)\s*(кг|kg)$/iu.test(text)) return null;
+    const value = Number(matches[0][1].replace(",", "."));
+    return Number.isFinite(value) && value > 0 ? value : null;
+}
+
+function strictPackageValueKg(value, unit) {
+    if (unit && key(unit) !== key("кг") && key(unit) !== "kg") return null;
+    if (typeof value === "number" && Number.isFinite(value) && value > 0) return value;
+    const text = normalize(value);
+    const match = text.match(/^(\d+(?:[.,]\d+)?)\s*(кг|kg)?$/iu);
+    if (!match || (unit && match[2] && key(unit) !== key(match[2]))) return null;
+    const number = Number(match[1].replace(",", "."));
+    return Number.isFinite(number) && number > 0 ? number : null;
+}
+
+function confirmCatalogPackageWeight(product, values, entry) {
+    if (!entry?.catalogMetadataOnly || entry.code !== "package_weight") return null;
+    const packageRows = values.filter(row => row.code === "package_weight");
+    if (packageRows.length !== 1) return null;
+    const packageRow = packageRows[0];
+    const currentPackageKg = strictPackageValueKg(currentAttributeValue(packageRow), packageRow.unit_override || packageRow.default_unit || null);
+    const titleKg = strictTitlePackageKg(product.title);
+    const proposedKg = strictPackageValueKg(entry.value, "кг");
+    if (currentPackageKg === null || titleKg === null || proposedKg === null || currentPackageKg !== titleKg || titleKg !== proposedKg) return null;
+    // For putty SKUs, the core backfill guards products.weight against package_weight.
+    // When operational weight is expressed per item (unit=шт), require that third value to agree too.
+    if (product.auditedSubcategory === "Шпаклевка" && key(product.unit) === key("шт") && Number(product.weight) !== titleKg) return null;
+    return { value: titleKg, evidence: ["products.title", "product_attribute_values.package_weight", ...(product.auditedSubcategory === "Шпаклевка" && key(product.unit) === key("шт") ? ["products.weight"] : [])] };
+}
+
+function resolveExactPackClause(product, values, code, value) {
+    if (code !== "water_requirement" || typeof value !== "string" || !value.includes(";")) return null;
+    const packageRows = values.filter(row => row.code === "package_weight");
+    if (packageRows.length !== 1) return null;
+    const packageRow = packageRows[0];
+    const packageKg = strictPackageValueKg(currentAttributeValue(packageRow), packageRow.unit_override || packageRow.default_unit || null);
+    const titleKg = strictTitlePackageKg(product.title);
+    if (packageKg === null || titleKg === null || packageKg !== titleKg) return null;
+    const clauses = value.split(";").map(normalize);
+    const parsed = clauses.map(clause => {
+        const match = clause.match(/^(.+?)\s+на\s+(\d+(?:[.,]\d+)?)\s*кг$/iu);
+        return match ? { clause, kg: Number(match[2].replace(",", ".")) } : null;
+    });
+    if (parsed.some(item => !item) || new Set(parsed.map(item => item.kg)).size !== parsed.length) return null;
+    const selected = parsed.filter(item => item.kg === packageKg);
+    return selected.length === 1 ? { value: selected[0].clause, sourceValue: value, packageKg } : null;
+}
+
+function approvedSourceCodes(product) {
+    const subcategory = product.auditedSubcategory;
+    if (!subcategory || !TEMPLATE_CODES[subcategory]) return null;
+    return new Set([...MAIN_CODES, ...TEMPLATE_CODES[subcategory], ...(REMOVED_CODES[subcategory] || [])]);
+}
+
 function reconcileSourceState(product, values = [], source = { entries: [], identity: [] }) {
     const { entries, identity } = source;
     const valuesByCode = new Map();
@@ -296,7 +358,8 @@ function reconcileSourceState(product, values = [], source = { entries: [], iden
         if (!current || entry.priority > current.priority) latestByCode.set(entry.code, { priority: entry.priority, candidates: [entry] });
         else if (entry.priority === current.priority) current.candidates.push(entry);
     }
-    const facts = []; const anomalies = []; const needsSource = []; const superseded = [];
+    const facts = []; const anomalies = []; const needsSource = []; const superseded = []; const sourceFactsOutsideApprovedTemplate = [];
+    const approvedCodes = approvedSourceCodes(product);
     for (const [code, resolution] of latestByCode) {
         const candidates = resolution.candidates;
         const readyCandidates = candidates.filter(item => item.status === "READY" && item.value !== null && item.value !== undefined && item.value !== "");
@@ -307,22 +370,28 @@ function reconcileSourceState(product, values = [], source = { entries: [], iden
         const conflictingLatestStatuses = new Set(candidates.map(item => item.status)).size > 1;
         if (conflictingLatestStatuses && readyValues.length <= 1) anomalies.push({ code, issue: "CONFLICTING_LATEST_SOURCE_STATUSES", datasets: candidates.map(item => item.moduleName), statuses: candidates.map(item => item.status) });
         const chosen = candidates[candidates.length - 1];
-        const status = readyValues.length > 1 || conflictingLatestStatuses || invalidReadyReferences.length ? "SOURCE_CONFLICT" : chosen.status;
         const current = valuesByCode.get(code) || [];
-        if (candidates.some(item => item.status === "NEEDS_SOURCE")) needsSource.push(code);
+        const catalogConfirmation = confirmCatalogPackageWeight(product, values, chosen);
+        const packClause = chosen.status === "READY" ? resolveExactPackClause(product, values, code, chosen.value) : null;
+        const resolvedValue = catalogConfirmation ? catalogConfirmation.value : packClause ? packClause.value : chosen.value;
+        const status = readyValues.length > 1 || conflictingLatestStatuses || invalidReadyReferences.length ? "SOURCE_CONFLICT" : (catalogConfirmation || chosen.status === "READY") ? "READY" : chosen.status;
+        if (status === "NEEDS_SOURCE") needsSource.push(code);
         if (candidates.length > 1 || entries.some(item => item.code === code && item.priority < resolution.priority)) {
             superseded.push({ code, latestDataset: chosen.moduleName, prior: entries.filter(item => item.code === code && item.priority < resolution.priority).map(item => ({ dataset: item.moduleName, status: item.status })) });
         }
+        const outsideApprovedTemplate = approvedCodes && !approvedCodes.has(code);
         if (status === "READY") {
-            if (current.length === 0) anomalies.push({ code, issue: "CONFIRMED_SOURCE_VALUE_MISSING_IN_DB", dataset: chosen.moduleName, expected: chosen.value });
+            const outsideFactMatchesDb = current.length === 0 || current.length === 1 && normalizeComparableValue(current[0].value) === normalizeComparableValue(resolvedValue);
+            if (outsideApprovedTemplate && outsideFactMatchesDb) sourceFactsOutsideApprovedTemplate.push({ code, dataset: chosen.moduleName, value: resolvedValue, currentValue: current.length === 1 ? current[0].value : null });
+            if (current.length === 0 && !outsideApprovedTemplate) anomalies.push({ code, issue: "CONFIRMED_SOURCE_VALUE_MISSING_IN_DB", dataset: chosen.moduleName, expected: resolvedValue });
             else if (current.length > 1) anomalies.push({ code, issue: "MULTIPLE_DB_VALUES_FOR_SOURCE_CODE", count: current.length });
-            else if (normalizeComparableValue(current[0].value) !== normalizeComparableValue(chosen.value)) anomalies.push({ code, issue: "DB_VALUE_DIFFERS_FROM_LATEST_CONFIRMED_SOURCE", dataset: chosen.moduleName, expected: chosen.value, actual: current[0].value });
+            else if (current.length === 1 && normalizeComparableValue(current[0].value) !== normalizeComparableValue(resolvedValue)) anomalies.push({ code, issue: "DB_VALUE_DIFFERS_FROM_LATEST_CONFIRMED_SOURCE", dataset: chosen.moduleName, expected: resolvedValue, actual: current[0].value });
         } else if (status === "NEEDS_SOURCE" && current.length) {
             anomalies.push({ code, issue: "DB_VALUE_EXISTS_WHILE_LATEST_SOURCE_IS_NEEDS_SOURCE", dataset: chosen.moduleName, actual: current.map(item => item.value) });
         } else if (status === "ABSENT_BY_DESIGN" && current.length) {
             anomalies.push({ code, issue: "DB_VALUE_EXISTS_WHILE_LATEST_SOURCE_IS_ABSENT_BY_DESIGN", dataset: chosen.moduleName, actual: current.map(item => item.value) });
         }
-        facts.push({ code, status, latestDataset: chosen.moduleName, sourceKeys: chosen.sourceKeys, value: status === "READY" ? chosen.value : null, reason: chosen.reason || null, currentValue: current.length === 1 ? current[0].value : current.length ? current.map(item => item.value) : null });
+        facts.push({ code, status, latestDataset: chosen.moduleName, sourceKeys: catalogConfirmation ? catalogConfirmation.evidence : chosen.sourceKeys, value: status === "READY" ? resolvedValue : null, sourceValue: packClause?.sourceValue || null, resolution: catalogConfirmation ? "CATALOG_METADATA_CONSENSUS" : packClause ? "EXACT_SKU_PACKAGE_CLAUSE" : null, reason: chosen.reason || null, currentValue: current.length === 1 ? current[0].value : current.length ? current.map(item => item.value) : null, outsideApprovedTemplate: Boolean(outsideApprovedTemplate) });
     }
     const identityPriority = identity.length ? Math.max(...identity.map(item => item.priority)) : null;
     const identityStatuses = identity.filter(item => item.priority === identityPriority);
@@ -333,7 +402,7 @@ function reconcileSourceState(product, values = [], source = { entries: [], iden
     else if (latestBrand && normalizeComparableValue(product.brand) !== normalizeComparableValue(latestBrand.value)) anomalies.push({ code: "brand", issue: "PRODUCTS_BRAND_DIFFERS_FROM_LATEST_CONFIRMED_SOURCE", dataset: latestBrand.moduleName, expected: latestBrand.value, actual: product.brand });
     const sourceConflict = facts.some(item => item.status === "SOURCE_CONFLICT");
     const status = blockedIdentityStatuses.length || sourceConflict ? "SOURCE_BLOCKED" : anomalies.length ? "SOURCE_PROVENANCE_ANOMALY" : needsSource.length || !entries.length ? "SOURCE_OPTIONAL_GAPS" : "SOURCE_OK";
-    return { externalId: product.external_id, status, reviewAvailable: entries.length > 0, identityStatuses: identityStatuses.map(item => ({ dataset: item.moduleName, status: item.status })), unresolvedIdentity: blockedIdentityStatuses.map(item => ({ dataset: item.moduleName, status: item.status })), needsSource: [...new Set(needsSource)].sort(), facts, superseded, anomalies };
+    return { externalId: product.external_id, status, reviewAvailable: entries.length > 0, identityStatuses: identityStatuses.map(item => ({ dataset: item.moduleName, status: item.status })), unresolvedIdentity: blockedIdentityStatuses.map(item => ({ dataset: item.moduleName, status: item.status })), needsSource: [...new Set(needsSource)].sort(), sourceFactsOutsideApprovedTemplate, relevantSourceAnomalies: anomalies.length, facts, superseded, anomalies };
 }
 
 function reconcileSourceProduct(product, values = []) {
@@ -441,16 +510,16 @@ function buildMarkdown(report) {
     for (const row of report.templates) lines.push(`| ${row.subcategory} | ${row.activeStructureMatches}/${row.structureMatches} | ${row.actualMemberships}/${row.expectedMemberships} | ${row.sectionAvailable ? "yes" : "no"} | ${row.mainOrder.join(", ") || "—"} | ${row.issues.map(issue => issue.code).join(", ") || "—"} | ${row.status} |`);
     lines.push("", "## Per-product reconciliation", "", "| MAT | Title | Attr | Missing | Required missing | SEO | Image | Source | Public/Data | Flags |", "|---|---|---|---:|---:|---|---|---|---|---|");
     for (const row of report.products) lines.push(`| ${row.externalId} | ${String(row.title || "").split("|").join("\\|")} | ${row.attributeStatus} | ${row.missing.length} | ${row.requiredMissing.length} | ${row.seoStatus} | ${row.imageStatus} | ${row.sourceStatus} | ${row.publicDataStatus} | ${row.flags.join(", ") || "—"} |`);
-    lines.push("", "## Attribute coverage", "", "The audit distinguishes present, missing, required missing, invalid, out-of-template and inactive-definition values. Optional missing values are reported and are not automatically treated as source blockers.", "", "| MAT | Template total | Present | Missing | Main present/missing | Regular present/missing | Out-of-template | Anomalies |", "|---|---:|---:|---:|---|---|---|---|");
-    for (const row of report.attributeCoverage) lines.push(`| ${row.externalId} | ${row.totalTemplateAttributes} | ${row.presentCount} | ${row.missing.length} | ${row.mainPresent === null ? "unavailable" : `${row.mainPresent.length}/${row.mainMissing.length}`} | ${row.regularPresent === null ? "unavailable" : `${row.regularPresent.length}/${row.regularMissing.length}`} | ${row.outOfTemplate.join(", ") || "—"} | ${row.anomalies.map(item => `${item.code}:${item.issue}`).join(", ") || "—"} |`);
+    lines.push("", "## Attribute coverage", "", "The audit distinguishes present, missing, required missing, invalid, out-of-template and inactive-definition values. Valid active values outside the approved template are informational unless the canonical template explicitly removed that code; explicit removed-code values are blockers. Optional missing values are not source blockers by themselves.", "", `Finding counts: ${JSON.stringify(report.sourceProvenance.findingCounts)}.`, "", "| MAT | Template total | Present | Missing | Main present/missing | Regular present/missing | Extra outside template (info) | Explicitly removed (blocker) | Other anomalies |", "|---|---:|---:|---:|---|---|---|---|---|");
+    for (const row of report.attributeCoverage) lines.push(`| ${row.externalId} | ${row.totalTemplateAttributes} | ${row.presentCount} | ${row.missing.length} | ${row.mainPresent === null ? "unavailable" : `${row.mainPresent.length}/${row.mainMissing.length}`} | ${row.regularPresent === null ? "unavailable" : `${row.regularPresent.length}/${row.regularMissing.length}`} | ${row.extraValuesOutsideTemplate.map(item => item.code).join(", ") || "—"} | ${row.explicitlyRemovedValuesPresent.map(item => item.code).join(", ") || "—"} | ${row.anomalies.filter(item => item.issue !== "EXPLICITLY_REMOVED_TEMPLATE_VALUE").map(item => `${item.code}:${item.issue}`).join(", ") || "—"} |`);
     lines.push("", "## Main attribute coverage", "", "Canonical brand source in the current runtime is `products.brand`; `attribute-order` injects it into the main brand row. Any raw attribute brand value is compared and reported separately.", "", "| MAT | products.brand | attribute brand | Product type | Shelf life | Package weight | Mismatch |", "|---|---|---|---|---|---|---|");
     for (const row of report.attributeCoverage) lines.push(`| ${row.externalId} | ${row.brand.productsBrand || "—"} | ${row.brand.attributeBrand || "—"} | ${row.present.includes("product_type") ? "present" : "missing"} | ${row.present.includes("shelf_life") ? "present" : "missing"} | ${row.present.includes("package_weight") ? "present" : "missing"} | ${row.brand.mismatch ? "yes" : "no"} |`);
     lines.push("", "## SEO verification", "", "Effective title uses `seo_title` with the existing product title fallback. Effective meta description uses `seo_description`, then short/legacy description, then the existing code/catalog fallback. Visible product description uses `full_description`, then legacy `description`.", "", "| MAT | seo_title | seo_description | short | full | legacy description | Effective title/meta/visible | Status |", "|---|---|---|---|---|---|---|---|");
     for (const row of report.seo.rows) lines.push(`| ${row.externalId} | ${row.seo_title ? "yes" : "no"} | ${row.seo_description ? "yes" : "no"} | ${row.short_description ? "yes" : "no"} | ${row.full_description ? "yes" : "no"} | ${row.description ? "yes" : "no"} | ${row.effectiveTitle ? "title" : ""}/${row.effectiveMetaDescription ? "meta" : ""}/${row.visibleDescriptionPresent ? "visible" : ""} | ${row.status} |`);
     lines.push("", "### Mix SEO batch production verification", "", `Exact comparison: **${report.mixSeo.exactComparisonStatus}**. Commit presence is not used as evidence. **${report.mixSeo.productionApplyEvidence}**`, "", "| MAT | SEO pair present | Matches prepared data |", "|---|---|---|");
     for (const row of report.mixSeo.rows) lines.push(`| ${row.externalId} | ${row.present ? "yes" : "no"} | ${row.matchesPrepared === null ? "not comparable" : row.matchesPrepared ? "yes" : "no"} |`);
-    lines.push("", "## Source provenance reconciliation", "", `Datasets: ${report.sourceProvenance.modules.join(", ")}. Per-code resolution uses the explicit repository order in JSON; a later READY replaces an earlier NEEDS_SOURCE. NEEDS_SOURCE fields without identity conflict are informational optional gaps unless the DB contradicts them.`, "", "| MAT | Status | Identity | NEEDS_SOURCE codes | Latest confirmed/missing or mismatch | Provenance anomalies |", "|---|---|---|---|---|---|");
-    for (const row of report.sourceProvenance.rows) lines.push(`| ${row.externalId} | ${row.status} | ${row.identityStatuses.map(item => `${item.dataset}:${item.status}`).join(", ") || "no source identity status"} | ${row.needsSource.join(", ") || "—"} | ${row.facts.filter(item => item.status === "READY" && (item.currentValue === null || normalizeComparableValue(item.currentValue) !== normalizeComparableValue(item.value))).map(item => item.code).join(", ") || "—"} | ${row.anomalies.map(item => `${item.code}:${item.issue}`).join(", ") || "—"} |`);
+    lines.push("", "## Source provenance reconciliation", "", `Datasets: ${report.sourceProvenance.modules.join(", ")}. Per-code resolution uses the explicit repository order in JSON; a later READY replaces an earlier NEEDS_SOURCE. NEEDS_SOURCE fields without identity conflict are informational optional gaps unless the DB contradicts them. Confirmed facts outside the approved template/main/remove-code scope are listed as informational and do not produce a missing-value blocker. A local-title-only package size is accepted only when exact title mass, existing package_weight, proposal and (for putty unit=шт) operational products.weight agree. Pack-specific water clauses are selected only from a semicolon-separated source whose every clause explicitly identifies a unique kg pack size.`, "", "| MAT | Status | Identity | NEEDS_SOURCE codes | Facts outside approved template (info) | Provenance anomalies |", "|---|---|---|---|---|---|");
+    for (const row of report.sourceProvenance.rows) lines.push(`| ${row.externalId} | ${row.status} | ${row.identityStatuses.map(item => `${item.dataset}:${item.status}`).join(", ") || "no source identity status"} | ${row.needsSource.join(", ") || "—"} | ${row.sourceFactsOutsideApprovedTemplate.map(item => item.code).join(", ") || "—"} | ${row.anomalies.map(item => `${item.code}:${item.issue}`).join(", ") || "—"} |`);
     lines.push("", "## Image verification", "", "Catalog/API cards use normalized local `products.image_url`. SSR product pages use the first `product_images` row ordered by primary, sort order and ID; if there are no gallery rows, SSR falls back to `products.image_url`. `products.image` is legacy text/symbol data, not an image URL. HTTP(S) gallery URLs are rendered by SSR and reported as remote/not checked. Visual status remains **VISUAL_REVIEW_REQUIRED**; DB/file audit does not establish visual quality.", "", "| MAT | products.image | products.image_url | Catalog image | Product-page image/source | Gallery rows | Primary rows | Status | Physical check |", "|---|---|---|---|---|---:|---:|---|---|");
     for (const row of report.images.rows) lines.push(`| ${row.externalId} | ${row.productsImage || "—"} | ${row.productsImageUrl || "—"} | ${row.catalogImageUrl || "—"} | ${row.productPageImageUrl || "—"} (${row.productPageSource || "none"}) | ${row.productImagesCount} | ${row.primaryCount} | ${row.status} | ${row.physical.length ? row.physical.map(item => item.status).join(", ") : "not run"} |`);
     lines.push("", "## Upload file verification", "", `Uploads audit mode: ${report.uploads.status}. No files were modified.`, "", "## Data anomalies", "", `Duplicate external_id values: ${report.duplicateExternalIds.length ? report.duplicateExternalIds.map(row => `${row.external_id} (${row.count})`).join(", ") : "none"}.`, `Global duplicate image URLs: ${report.images.globalDuplicateUrls.length}. Foreign-key violations: ${report.schema.foreignKeyViolations}. Integrity check: ${report.schema.integrity}.`);
@@ -474,20 +543,26 @@ async function auditDatabase(options) {
         if (uploadsPath) { try { uploadDirectory = fs.statSync(uploadsPath).isDirectory(); } catch { uploadDirectory = false; } }
         const uploads = { status: !uploadsPath ? "NOT_REQUESTED" : uploadDirectory ? "CHECKED_READ_ONLY" : "PATH_NOT_FOUND_OR_NOT_DIRECTORY", path: uploadsPath || null };
         const sourceCounts = Object.fromEntries(["SOURCE_OK", "SOURCE_OPTIONAL_GAPS", "SOURCE_BLOCKED", "SOURCE_PROVENANCE_ANOMALY"].map(status => [status, sourceRows.filter(row => row.status === status).length]));
+        const findingCounts = {
+            extraValuesOutsideTemplate: attributeCoverage.reduce((total, row) => total + row.extraValuesOutsideTemplate.length, 0),
+            explicitlyRemovedValuesPresent: attributeCoverage.reduce((total, row) => total + row.explicitlyRemovedValuesPresent.length, 0),
+            sourceFactsOutsideApprovedTemplate: sourceRows.reduce((total, row) => total + row.sourceFactsOutsideApprovedTemplate.length, 0),
+            relevantSourceAnomalies: sourceRows.reduce((total, row) => total + row.relevantSourceAnomalies, 0)
+        };
         const summary = structures.map(item => { const rows = productRows.filter(row => row.subcategory === item.name); const attrs = rows.map(row => row.attributeStatus); const seos = rows.map(row => row.seoStatus); const imgs = rows.map(row => row.imageStatus); const blockers = rows.filter(row => row.flags.some(flag => /^(ANOMALY|SEO_MISSING|IMAGE_|CARD_REVIEW|STRUCTURAL_|SOURCE_BLOCKED|SOURCE_PROVENANCE_ANOMALY)/.test(flag))).length; const template = templates.find(row => row.subcategory === item.name); const status = schema.productionTemplateAuditAvailable && uploads.status === "CHECKED_READ_ONLY" && !template.issues.length && blockers === 0 ? "DATA_CLOSED" : "NOT_CLOSED"; return { subcategory: item.name, products: rows.length, attrOk: attrs.filter(value => value === "ATTR_OK").length, attrPartial: attrs.filter(value => value === "ATTR_PARTIAL").length, seoOk: seos.filter(value => value === "SEO_OK").length, seoIssues: seos.filter(value => value !== "SEO_OK").length, imageOk: imgs.filter(value => value === "IMAGE_OK").length, imageIssues: imgs.filter(value => value !== "IMAGE_OK").length, sourceOk: rows.filter(row => row.sourceStatus === "SOURCE_OK").length, sourceOptionalGaps: rows.filter(row => row.sourceStatus === "SOURCE_OPTIONAL_GAPS").length, sourceBlocked: rows.filter(row => row.sourceStatus === "SOURCE_BLOCKED").length, sourceAnomalies: rows.filter(row => row.sourceStatus === "SOURCE_PROVENANCE_ANOMALY").length, blockers, status }; });
         const subcategoryConclusions = structures.map(item => { const rows = productRows.filter(row => row.subcategory === item.name); const blockerRows = rows.filter(row => row.flags.length > 0); const template = templates.find(row => row.subcategory === item.name); const blockers = [...blockerRows.map(row => row.externalId), ...(template.issues.length ? ["TEMPLATE_INTEGRITY"] : []), ...(uploads.status !== "CHECKED_READ_ONLY" ? ["UPLOADS_NOT_CHECKED"] : [])]; return { subcategory: item.name, status: schema.productionTemplateAuditAvailable && uploads.status === "CHECKED_READ_ONLY" && blockers.length === 0 ? "CLOSED" : "NOT CLOSED", blockingMats: [...new Set(blockers.filter(value => !["TEMPLATE_INTEGRITY", "UPLOADS_NOT_CHECKED"].includes(value)))] }; });
         const blockingIssues = []; if (!schema.productionTemplateAuditAvailable) blockingIssues.push(`Schema ${schema.userVersion} is not production-compatible schema ${EXPECTED_SCHEMA_VERSION}; template section/order conclusion withheld.`); if (uploads.status !== "CHECKED_READ_ONLY") blockingIssues.push(`Upload physical checks are required for final closure; status=${uploads.status}.`); if (duplicateIds.length) blockingIssues.push(`Duplicate external_id values: ${json(duplicateIds)}`); for (const row of templates) for (const issue of row.issues.filter(item => item.code !== "SECTION_UNAVAILABLE_IN_SCHEMA")) blockingIssues.push(`${row.subcategory}: ${issue.code}`); for (const row of productRows.filter(row => row.flags.length)) blockingIssues.push(`${row.externalId}: ${row.flags.join(", ")}`);
-        return { readOnly: true, deterministic: true, database: path.resolve(options.db), schema, scope, duplicateExternalIds: duplicateIds, templates, products: productRows, attributeCoverage, sourceProvenance: { modules: SOURCE_DATASET_NAMES, precedence: SOURCE_MODULE_PRIORITY, counts: sourceCounts, rows: sourceRows }, mainAttributeCodes: [...MAIN_CODES], seo, mixSeo: { expectedSourceDataAvailable: mixSeo.expectedSourceAvailable, exactComparisonStatus: mixSeo.exactComparisonStatus, productionApplyEvidence: mixSeo.productionApplyEvidence, rows: mixSeo.rows, absent: mixSeo.absent, mismatched: mixSeo.mismatched }, images, uploads, summary, subcategoryConclusions, blockingIssues };
+        return { readOnly: true, deterministic: true, database: path.resolve(options.db), schema, scope, duplicateExternalIds: duplicateIds, templates, products: productRows, attributeCoverage, sourceProvenance: { modules: SOURCE_DATASET_NAMES, precedence: SOURCE_MODULE_PRIORITY, counts: sourceCounts, findingCounts, rows: sourceRows }, mainAttributeCodes: [...MAIN_CODES], seo, mixSeo: { expectedSourceDataAvailable: mixSeo.expectedSourceAvailable, exactComparisonStatus: mixSeo.exactComparisonStatus, productionApplyEvidence: mixSeo.productionApplyEvidence, rows: mixSeo.rows, absent: mixSeo.absent, mismatched: mixSeo.mismatched }, images, uploads, summary, subcategoryConclusions, blockingIssues };
     } finally { await db.close(); }
 }
 
 async function main(args = process.argv.slice(2)) {
     const options = parseArgs(args);
     const report = await auditDatabase(options); if (options.writeReport) { const dir = path.resolve(options.reportDir); fs.mkdirSync(dir, { recursive: true }); await fs.promises.writeFile(path.join(dir, "closed-subcategories-final-audit.json"), `${JSON.stringify(report, null, 2)}\n`, { encoding: "utf8" }); await fs.promises.writeFile(path.join(dir, "closed-subcategories-final-audit.md"), buildMarkdown(report), { encoding: "utf8" }); }
-    console.log(JSON.stringify({ readOnly: report.readOnly, schema: report.schema, summary: report.summary, sourceProvenance: report.sourceProvenance.counts, mixSeo: { expectedSourceDataAvailable: report.mixSeo.expectedSourceDataAvailable, exactComparisonStatus: report.mixSeo.exactComparisonStatus, productionApplyEvidence: report.mixSeo.productionApplyEvidence }, conclusions: report.subcategoryConclusions, reportsWritten: options.writeReport }, null, 2));
+    console.log(JSON.stringify({ readOnly: report.readOnly, schema: report.schema, summary: report.summary, sourceProvenance: report.sourceProvenance.counts, findings: report.sourceProvenance.findingCounts, mixSeo: { expectedSourceDataAvailable: report.mixSeo.expectedSourceDataAvailable, exactComparisonStatus: report.mixSeo.exactComparisonStatus, productionApplyEvidence: report.mixSeo.productionApplyEvidence }, conclusions: report.subcategoryConclusions, reportsWritten: options.writeReport }, null, 2));
     return report;
 }
 
 if (require.main === module) main().catch(error => { console.error(`CLOSED SUBCATEGORY AUDIT ABORTED: ${error.message}`); process.exitCode = 1; });
 
-module.exports = { CANONICAL_TEMPLATE, EXPECTED_SCHEMA_VERSION, EXPECTED_MEMBERSHIPS, HISTORICAL_SCOPE, MAIN_CODES, MIX_BATCH, SOURCE_DATASET_NAMES, TEMPLATE_CODES, TEMPLATE_STRUCTURE_IDS, buildMarkdown, auditDatabase, inspectAttributes, inspectImages, normalize, openReadOnly, parseArgs, readiness, reconcileSourceProduct, reconcileSourceState, resolveCanonicalImages };
+module.exports = { CANONICAL_TEMPLATE, EXPECTED_SCHEMA_VERSION, EXPECTED_MEMBERSHIPS, HISTORICAL_SCOPE, MAIN_CODES, MIX_BATCH, REMOVED_CODES, SOURCE_DATASET_NAMES, TEMPLATE_CODES, TEMPLATE_STRUCTURE_IDS, approvedSourceCodes, buildMarkdown, auditDatabase, confirmCatalogPackageWeight, inspectAttributes, inspectImages, normalize, openReadOnly, parseArgs, readiness, reconcileSourceProduct, reconcileSourceState, resolveCanonicalImages, resolveExactPackClause, sourceEntries, strictPackageValueKg, strictTitlePackageKg };

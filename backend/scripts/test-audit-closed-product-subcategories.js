@@ -32,7 +32,7 @@ async function createFixture(file) {
         const structures = audit.TEMPLATE_CODES;
         const ids = audit.TEMPLATE_STRUCTURE_IDS;
         for (const [name, id] of Object.entries(ids)) await run(db, "INSERT INTO catalog_structure VALUES (?,?,?,?,?,?,?,?,?,?,?)", [id, "subcategory", name, name.toLowerCase(), 1, 0, 1, now, now, `SUB-${String(id).padStart(6, "0")}`, 0]);
-        const allCodes = [...new Set([...audit.MAIN_CODES, ...Object.values(structures).flat()])];
+        const allCodes = [...new Set([...audit.MAIN_CODES, ...Object.values(structures).flat(), ...Object.values(audit.REMOVED_CODES).flat(), "historical_extra_code"])];
         let definitionId = 1;
         for (const code of allCodes) {
             const main = audit.MAIN_CODES.includes(code);
@@ -122,14 +122,52 @@ async function createFixture(file) {
         const sourceOk = audit.reconcileSourceState(product, [{ code: "color", value_text: "Белый" }, { code: "brand", value_text: "Brand A" }], sourceWithPrecedence); assert.strictEqual(sourceOk.status, "SOURCE_OK"); assert.deepStrictEqual(sourceOk.needsSource, []); assert.strictEqual(sourceOk.superseded.find(item => item.code === "color").latestDataset, "latest");
         const sourceGap = audit.reconcileSourceState(product, [], { identity: [], entries: [{ code: "pot_life", moduleName: "latest", priority: 1, status: "NEEDS_SOURCE", value: null }] }); assert.strictEqual(sourceGap.status, "SOURCE_OPTIONAL_GAPS"); assert.deepStrictEqual(sourceGap.needsSource, ["pot_life"]);
         const sourceAnomaly = audit.reconcileSourceState(product, [{ code: "pot_life", value_text: "2 часа" }], { identity: [], entries: [{ code: "pot_life", moduleName: "latest", priority: 1, status: "NEEDS_SOURCE", value: null }] }); assert.strictEqual(sourceAnomaly.status, "SOURCE_PROVENANCE_ANOMALY");
+        const confirmedMissing = audit.reconcileSourceState({ ...product, auditedSubcategory: "Штукатурка" }, [], { identity: [], entries: [{ code: "color", moduleName: "latest", priority: 1, status: "READY", value: "Белый", sourceKeys: ["official"] }] }); assert.strictEqual(confirmedMissing.status, "SOURCE_PROVENANCE_ANOMALY"); assert(confirmedMissing.anomalies.some(item => item.issue === "CONFIRMED_SOURCE_VALUE_MISSING_IN_DB"));
         const identityBlocked = audit.reconcileSourceState(product, [], { identity: [{ moduleName: "latest", priority: 1, status: "IDENTITY_UNCERTAIN" }], entries: [] }); assert.strictEqual(identityBlocked.status, "SOURCE_BLOCKED");
         const sourceConflict = audit.reconcileSourceState(product, [], { identity: [], entries: [{ code: "color", moduleName: "a", priority: 1, status: "READY", value: "Белый" }, { code: "color", moduleName: "b", priority: 1, status: "READY", value: "Серый" }] }); assert.strictEqual(sourceConflict.status, "SOURCE_BLOCKED");
         const invalidSourceRef = audit.reconcileSourceState(product, [], { identity: [], entries: [{ code: "color", moduleName: "broken-reference", priority: 1, status: "READY", value: "Белый", sourceRefsValid: false, sourceKeys: ["missing"] }] }); assert.strictEqual(invalidSourceRef.status, "SOURCE_BLOCKED"); assert(invalidSourceRef.anomalies.some(item => item.issue === "CONFIRMED_SOURCE_REFERENCE_INVALID"));
+        const outsideScopeFact = audit.reconcileSourceState({ ...product, auditedSubcategory: "Штукатурка" }, [], { identity: [], entries: [{ code: "historical_extra_code", moduleName: "older-approved-source", priority: 1, status: "READY", value: "есть", sourceKeys: ["official"] }] }); assert.strictEqual(outsideScopeFact.status, "SOURCE_OK"); assert.deepStrictEqual(outsideScopeFact.sourceFactsOutsideApprovedTemplate.map(item => item.code), ["historical_extra_code"]); assert.deepStrictEqual(outsideScopeFact.anomalies, []);
+        const outsideScopeMismatch = audit.reconcileSourceState({ ...product, auditedSubcategory: "Штукатурка" }, [{ code: "historical_extra_code", value_text: "другое" }], { identity: [], entries: [{ code: "historical_extra_code", moduleName: "older-approved-source", priority: 1, status: "READY", value: "есть", sourceKeys: ["official"] }] }); assert.strictEqual(outsideScopeMismatch.status, "SOURCE_PROVENANCE_ANOMALY"); assert.strictEqual(outsideScopeMismatch.sourceFactsOutsideApprovedTemplate.length, 0);
+        const packageRows = [{ code: "package_weight", value_number: 20, value_text: null, value_boolean: null, default_unit: "кг", unit_override: null }];
+        const packageProduct = { external_id: "MAT-TEST-PACK", auditedSubcategory: "Шпаклевка", title: "Шпаклевка полимерная 20 кг", weight: 20, unit: "шт", brand: "Brand A" };
+        const titleOnlyPackage = audit.reconcileSourceState(packageProduct, packageRows, { identity: [], entries: [{ code: "package_weight", moduleName: "putty-core", priority: 1, status: "NEEDS_SOURCE", value: 20, catalogMetadataOnly: true, sourceKeys: ["localTitle"] }] });
+        assert.strictEqual(titleOnlyPackage.status, "SOURCE_OK"); assert.strictEqual(titleOnlyPackage.facts[0].resolution, "CATALOG_METADATA_CONSENSUS"); assert.deepStrictEqual(titleOnlyPackage.facts[0].sourceKeys, ["products.title", "product_attribute_values.package_weight", "products.weight"]);
+        const actualLocalTitleCandidate = audit.sourceEntries("MAT-000034").entries.find(item => item.code === "package_weight"); assert.strictEqual(actualLocalTitleCandidate.status, "NEEDS_SOURCE"); assert.strictEqual(actualLocalTitleCandidate.catalogMetadataOnly, true);
+        const loadedCandidate = audit.reconcileSourceState({ ...packageProduct, external_id: "MAT-000034", title: "Шпаклевка гипсовая Knauf Унифлот 5 кг", weight: 5 }, [{ ...packageRows[0], value_number: 5 }], { identity: [], entries: [actualLocalTitleCandidate] }); assert.strictEqual(loadedCandidate.status, "SOURCE_OK"); assert.strictEqual(loadedCandidate.facts[0].value, 5);
+        const packageMismatch = audit.reconcileSourceState({ ...packageProduct, weight: 19 }, packageRows, { identity: [], entries: [{ code: "package_weight", moduleName: "putty-core", priority: 1, status: "NEEDS_SOURCE", value: 20, catalogMetadataOnly: true }] }); assert.strictEqual(packageMismatch.status, "SOURCE_PROVENANCE_ANOMALY"); assert(packageMismatch.anomalies.some(item => item.issue === "DB_VALUE_EXISTS_WHILE_LATEST_SOURCE_IS_NEEDS_SOURCE"));
+        const ambiguousPackage = audit.reconcileSourceState({ ...packageProduct, title: "Шпаклевка 5 кг и 20 кг" }, packageRows, { identity: [], entries: [{ code: "package_weight", moduleName: "putty-core", priority: 1, status: "NEEDS_SOURCE", value: 20, catalogMetadataOnly: true }] }); assert.strictEqual(ambiguousPackage.status, "SOURCE_PROVENANCE_ANOMALY");
+        const floorSource = require("./data/floor-mixes-core-batch1");
+        const mat087 = floorSource.PRODUCTS.find(item => item.externalId === "MAT-000087");
+        assert.strictEqual(mat087.core.water_requirement.value, "около 3,6 л на 20 кг; 4,5 л на 25 кг");
+        const mat087WaterSource = audit.sourceEntries("MAT-000087").entries.find(item => item.code === "water_requirement");
+        const mat087Resolved = audit.reconcileSourceState({ external_id: "MAT-000087", auditedSubcategory: "Наливной Пол", title: "Наливной пол Ceresit CN 175 Super 20 кг", brand: "Ceresit" }, [...packageRows, { code: "water_requirement", value_text: "около 3,6 л на 20 кг", default_unit: null }], { identity: [], entries: [mat087WaterSource] });
+        assert.strictEqual(mat087Resolved.status, "SOURCE_OK"); assert.strictEqual(mat087Resolved.facts[0].value, "около 3,6 л на 20 кг"); assert.strictEqual(mat087Resolved.facts[0].sourceValue, mat087.core.water_requirement.value); assert.strictEqual(mat087Resolved.facts[0].resolution, "EXACT_SKU_PACKAGE_CLAUSE");
+        const mat076 = floorSource.PRODUCTS.find(item => item.externalId === "MAT-000076"); assert.strictEqual(mat076.core.consumption.status, "NEEDS_SOURCE");
+        const mat076Conflict = audit.reconcileSourceState({ external_id: "MAT-000076", auditedSubcategory: "Наливной Пол", title: mat076.expectedTitle }, [{ code: "consumption", value_text: "около 1,8 кг/м²/мм" }], { identity: [], entries: [{ code: "consumption", moduleName: "floor-mixes-core-batch1", priority: 1, status: "NEEDS_SOURCE", value: null }] }); assert.strictEqual(mat076Conflict.status, "SOURCE_PROVENANCE_ANOMALY"); assert(mat076Conflict.anomalies.some(item => item.issue === "DB_VALUE_EXISTS_WHILE_LATEST_SOURCE_IS_NEEDS_SOURCE"));
         assert.strictEqual(audit.reconcileSourceProduct({ external_id: "MAT-000027", brand: null }, []).status, "SOURCE_BLOCKED");
         assert.strictEqual(audit.reconcileSourceProduct({ external_id: "MAT-000028", brand: null }, []).status, "SOURCE_BLOCKED");
+        assert.strictEqual(audit.reconcileSourceProduct({ external_id: "MAT-000075", brand: "Кладочные смеси" }, []).status, "SOURCE_BLOCKED");
         assert.strictEqual(audit.reconcileSourceProduct({ external_id: "MAT-000077", brand: "Старатели" }, []).status, "SOURCE_BLOCKED");
         assert(audit.reconcileSourceProduct({ external_id: "MAT-000022", brand: "ВОЛМА" }, []).needsSource.includes("consumption_10mm"));
         assert(audit.readiness({ external_id: "MAT-TEST", slug: "test", title: "Test", category: "Другая", is_active: 1 }, { attributeStatus: "ATTR_OK", mainCanonical: { brand: true } }, { status: "SEO_OK" }, { status: "IMAGE_OK", issues: [] }, { status: "SOURCE_OK" }).flags.includes("CARD_REVIEW:CATEGORY_MISMATCH"));
         console.log("PASS source provenance status, explicit precedence, optional gaps, unresolved identity, and DB/source anomalies");
+
+        const mutationDb = open(dbPath);
+        try {
+            const removedDefinition = await new Promise((resolve, reject) => mutationDb.get("SELECT id FROM product_attribute_definitions WHERE code='coverage_30kg_10mm'", (error, row) => error ? reject(error) : resolve(row)));
+            const extraDefinition = await new Promise((resolve, reject) => mutationDb.get("SELECT id FROM product_attribute_definitions WHERE code='historical_extra_code'", (error, row) => error ? reject(error) : resolve(row)));
+            await run(mutationDb, "INSERT INTO product_attribute_values VALUES (?,?,?,?,?,?,?,?,?,?)", [99001, 1, removedDefinition.id, "ложное legacy value", null, null, null, 0, now, now]);
+            await run(mutationDb, "INSERT INTO product_attribute_values VALUES (?,?,?,?,?,?,?,?,?,?)", [99002, 2, extraDefinition.id, "корректное extra value", null, null, null, 0, now, now]);
+            await run(mutationDb, "INSERT INTO product_attribute_values VALUES (?,?,?,?,?,?,?,?,?,?)", [99003, 3, extraDefinition.id, "x".repeat(2001), null, null, null, 0, now, now]);
+        } finally { await close(mutationDb); }
+        const exceptionReport = await audit.auditDatabase({ db: dbPath, uploads });
+        const plasterFinding = exceptionReport.attributeCoverage.find(row => row.externalId === "TEST-2");
+        const puttyFinding = exceptionReport.attributeCoverage.find(row => row.externalId === "TEST-4");
+        const invalidExtraFinding = exceptionReport.attributeCoverage.find(row => row.externalId === "TEST-5");
+        assert(plasterFinding.anomalies.some(item => item.issue === "EXPLICITLY_REMOVED_TEMPLATE_VALUE" && item.code === "coverage_30kg_10mm"));
+        assert.notStrictEqual(puttyFinding.attributeStatus, "ATTR_ANOMALY"); assert.deepStrictEqual(puttyFinding.extraValuesOutsideTemplate.map(item => item.code), ["historical_extra_code"]);
+        assert.strictEqual(invalidExtraFinding.attributeStatus, "ATTR_ANOMALY"); assert(invalidExtraFinding.anomalies.some(item => item.issue === "VALUE_TEXT_INVALID")); assert.deepStrictEqual(invalidExtraFinding.extraValuesOutsideTemplate, []);
+        assert.strictEqual(exceptionReport.sourceProvenance.findingCounts.explicitlyRemovedValuesPresent, 1); assert.strictEqual(exceptionReport.sourceProvenance.findingCounts.extraValuesOutsideTemplate, 1);
+        console.log("PASS valid extra value is informational; explicitly removed template value remains a blocker");
     } finally { fs.rmSync(root, { recursive: true, force: true }); }
 })().catch(error => { console.error(error); process.exitCode = 1; });
