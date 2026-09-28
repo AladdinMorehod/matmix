@@ -43,7 +43,7 @@ async function createFixture(file) {
         const defByCode = new Map(defRows.map(row => [row.code, row.id]));
         let templateId = 1;
         for (const [name, structureId] of Object.entries(ids)) {
-            for (const [sortOrder, code] of audit.MAIN_CODES.entries()) await run(db, "INSERT INTO product_attribute_templates VALUES (?,?,?,?,?,?,?,?,?)", [templateId++, structureId, defByCode.get(code), "main", sortOrder, code === "brand" ? 1 : 0, null, now, now]);
+            for (const [sortOrder, code] of audit.MAIN_CODES.entries()) await run(db, "INSERT INTO product_attribute_templates VALUES (?,?,?,?,?,?,?,?,?)", [templateId++, structureId, defByCode.get(code), "main", sortOrder, 0, null, now, now]);
             for (const [sortOrder, code] of structures[name].entries()) await run(db, "INSERT INTO product_attribute_templates VALUES (?,?,?,?,?,?,?,?,?)", [templateId++, structureId, defByCode.get(code), "regular", sortOrder, 0, null, now, now]);
         }
         let productId = 1;

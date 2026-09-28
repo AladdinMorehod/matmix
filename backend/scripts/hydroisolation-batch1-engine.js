@@ -2,6 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const crypto = require("crypto");
 const sqlite3 = require("sqlite3").verbose();
 const DATA = require("./data/hydroisolation-core-batch1");
 
@@ -52,6 +53,14 @@ function dbOpen(file, readonly = true) {
         get(sql, p = []) { return new Promise((res, rej) => raw.get(sql, p, (e, row) => e ? rej(e) : res(row))); },
         all(sql, p = []) { return new Promise((res, rej) => raw.all(sql, p, (e, rows) => e ? rej(e) : res(rows))); },
         run(sql, p = []) { return new Promise((res, rej) => raw.run(sql, p, function cb(e) { e ? rej(e) : res({ id: this.lastID, changes: this.changes }); })); },
+        backup(target) { return new Promise((res, rej) => {
+          let operation;
+          try { operation = raw.backup(target); } catch (error) { rej(error); return; }
+          operation.step(-1, stepError => operation.finish(finishError => {
+            const error = stepError || finishError;
+            if (error) rej(error); else res();
+          }));
+        }); },
         close() { return new Promise((res, rej) => raw.close(e => e ? rej(e) : res())); }
       };
       Promise.resolve().then(async () => { await db.run("PRAGMA foreign_keys=ON"); if (readonly) await db.run("PRAGMA query_only=ON"); resolve(db); }).catch(reject);
@@ -94,7 +103,7 @@ async function templateState(db) {
   const memberships = await db.all("SELECT t.*,d.code,d.data_type,d.default_unit,d.is_active AS definition_active FROM product_attribute_templates t LEFT JOIN product_attribute_definitions d ON d.id=t.attribute_definition_id WHERE t.structure_id=? ORDER BY t.section,t.sort_order,t.id", [DATA.TEMPLATE.structureId]);
   const expectedCodes = DATA.ALL_CODES; const currentCodes = memberships.map(x => x.code); const count = DATA.ALL_CODES.length;
   const baseline = memberships.length === 0;
-  const exact = memberships.length === count && DATA.TEMPLATE.mainCodes.every((code,i) => { const x = memberships.find(r => r.code === code); return x && x.section === "main" && Number(x.sort_order) === i; }) && DATA.TEMPLATE.regularCodes.every((code,i) => { const x = memberships.find(r => r.code === code); return x && x.section === "regular" && Number(x.sort_order) === i; }) && new Set(currentCodes).size === count && currentCodes.every(code => expectedCodes.includes(code));
+  const exact = memberships.length === count && DATA.TEMPLATE.mainCodes.every((code,i) => { const rows = memberships.filter(r => r.code === code); return rows.length === 1 && rows[0].section === "main" && Number(rows[0].sort_order) === i && rows[0].is_required === 0 && rows[0].unit_override === null; }) && DATA.TEMPLATE.regularCodes.every((code,i) => { const rows = memberships.filter(r => r.code === code); return rows.length === 1 && rows[0].section === "regular" && Number(rows[0].sort_order) === i && rows[0].is_required === 0 && rows[0].unit_override === null; }) && new Set(currentCodes).size === count && currentCodes.every(code => expectedCodes.includes(code));
   if (!baseline && !exact) throw new Error("Hydro template memberships must be exactly baseline 0 or exact final ordered 23");
   for (const code of DATA.ALL_CODES) {
     const d = by.get(code); if (!d) continue;
@@ -150,7 +159,7 @@ async function inspectCore(db) {
 }
 async function applyCore(db, dbPath, backupDir) {
   const before=await snapshots(db); const plan=await inspectCore(db); if(plan.summary.errors||plan.rows.length!==9) throw new Error("H2 preflight failed");
-  const backup=backupDatabase(dbPath,backupDir); await db.run("BEGIN IMMEDIATE"); let writes=0;
+  const backup=await backupDatabase(db,dbPath,backupDir); await db.run("BEGIN IMMEDIATE"); let writes=0;
   try {
     const lockedPlan = await inspectCore(db);
     if (lockedPlan.rows.length !== DATA.ALL_MATS.length) throw new Error("H2 locked preflight changed");
@@ -170,19 +179,31 @@ async function applyCore(db, dbPath, backupDir) {
     await integrity(db); await db.run("COMMIT"); return {...post,mode:"apply",writes,backup};
   }catch(e){try{await db.run("ROLLBACK");}catch{} throw e;}
 }
-function backupDatabase(dbPath,dir){const targetDir=path.resolve(dir);fs.mkdirSync(targetDir,{recursive:true});const name=`matmix-hydroisolation-${new Date().toISOString().replace(/[:.]/g,"-")}.db`;const target=path.join(targetDir,name);fs.copyFileSync(path.resolve(dbPath),target);return target;}
+async function backupDatabase(db,dbPath,dir){
+  const source=path.resolve(dbPath);const targetDir=path.resolve(dir||path.dirname(source));await fs.promises.mkdir(targetDir,{recursive:true});
+  let target=null;let reservation=null;
+  for(let attempt=0;attempt<8;attempt+=1){const stamp=new Date().toISOString().replace(/[:.]/g,"-");const candidate=path.join(targetDir,`matmix-hydroisolation-${stamp}-${crypto.randomBytes(6).toString("hex")}.db`);try{reservation=fs.openSync(candidate,"wx");fs.closeSync(reservation);reservation=null;target=candidate;break;}catch(error){if(reservation!==null){try{fs.closeSync(reservation);}catch{}reservation=null;}if(error.code!=="EEXIST")throw error;}}
+  if(!target)throw new Error("Unable to reserve a unique SQLite backup path");
+  await db.backup(target);
+  const stat=await fs.promises.stat(target);if(stat.size<1024)throw new Error(`Online SQLite backup is unexpectedly small: ${target}`);
+  const sha256=await new Promise((resolve,reject)=>{const hash=crypto.createHash("sha256");const stream=fs.createReadStream(target);stream.on("error",reject);stream.on("data",chunk=>hash.update(chunk));stream.on("end",()=>resolve(hash.digest("hex")));});
+  const verification=await dbOpen(target,true);
+  try{const integrity=await verification.get("PRAGMA integrity_check");if(integrity?.integrity_check!=="ok")throw new Error(`Online backup integrity_check failed: ${JSON.stringify(integrity)}`);const version=Number((await verification.get("PRAGMA user_version"))?.user_version||0);if(version!==11)throw new Error(`Online backup has unexpected schema version: ${version}`);const foreignKeys=await verification.all("PRAGMA foreign_key_check");if(foreignKeys.length)throw new Error(`Online backup foreign_key_check rows=${foreignKeys.length}`);}
+  finally{await verification.close();}
+  return{path:target,size:stat.size,sha256,source};
+}
 async function integrity(db){const i=await db.get("PRAGMA integrity_check");if(i.integrity_check!=="ok")throw new Error(`integrity_check=${i.integrity_check}`);const fk=await db.all("PRAGMA foreign_key_check");if(fk.length)throw new Error(`foreign_key_check rows=${fk.length}`);}
 
 function copyValue(config, field) { const names = { short_description:"shortDescription", full_description:"fullDescription", seo_title:"seoTitle", seo_description:"seoDescription" }; return config.copy[names[field]]; }
 async function inspectVisible(db){const core=await inspectCore(db);if(core.rows.some(r=>r.status!=="EXISTING_OK"))throw new Error("H3 requires exact completed H2 state");const {products}=await productStates(db);const out=[];for(const {config,product:p}of products){const fields=Object.fromEntries(MUTABLE_VISIBLE.map(f=>[f,p[f]??null]));for(const f of MUTABLE_VISIBLE)if(fields[f]!==null&&fields[f]!==""&&fields[f]!==copyValue(config,f))throw new Error(`VISIBLE_VALUE_CONFLICT ${config.externalId}/${f}`);out.push({externalId:config.externalId,title:p.title,slug:p.slug,status:MUTABLE_VISIBLE.every(f=>fields[f]===copyValue(config,f))?"EXISTING_OK":"READY",fields,proposed:config.copy});}return{stage:"H3",mode:"dry-run",rows:out,summary:{total:out.length,ready:out.filter(r=>r.status==="READY").length,existingOk:out.filter(r=>r.status==="EXISTING_OK").length,blocked:0,errors:0},writableSurface:MUTABLE_VISIBLE};}
-async function applyVisible(db,dbPath,backupDir){const before=await snapshots(db);const plan=await inspectVisible(db);const backup=backupDatabase(dbPath,backupDir);await db.run("BEGIN IMMEDIATE");let writes=0;try{await inspectVisible(db);const {products}=await productStates(db);for(const{config,product:p}of products){const set=[];const vals=[];for(const f of MUTABLE_VISIBLE)if((p[f]??null)!==copyValue(config,f)){set.push(`${f}=?`);vals.push(copyValue(config,f));}if(set.length){vals.push(p.id,config.externalId);const result=await db.run(`UPDATE products SET ${set.join(",")} WHERE id=? AND external_id=?`,vals);if(result.changes!==1)throw new Error(`H3 exact update failed ${config.externalId}`);writes+=1;}}
+async function applyVisible(db,dbPath,backupDir){const before=await snapshots(db);const plan=await inspectVisible(db);const backup=await backupDatabase(db,dbPath,backupDir);await db.run("BEGIN IMMEDIATE");let writes=0;try{await inspectVisible(db);const {products}=await productStates(db);for(const{config,product:p}of products){const set=[];const vals=[];for(const f of MUTABLE_VISIBLE)if((p[f]??null)!==copyValue(config,f)){set.push(`${f}=?`);vals.push(copyValue(config,f));}if(set.length){vals.push(p.id,config.externalId);const result=await db.run(`UPDATE products SET ${set.join(",")} WHERE id=? AND external_id=?`,vals);if(result.changes!==1)throw new Error(`H3 exact update failed ${config.externalId}`);writes+=1;}}
   const after=await snapshots(db);compareFiltered(before.products,after.products,p=>!DATA.ALL_MATS.includes(p.external_id),"non-target products");for(const config of DATA.PRODUCTS){const a=before.products.find(p=>p.external_id===config.externalId),b=after.products.find(p=>p.external_id===config.externalId);if(stable(immutableProduct(a))!==stable(immutableProduct(b))||a.brand!==b.brand)throw new Error(`H3 immutable product fields changed ${config.externalId}`);}
   for(const t of ["product_attribute_definitions","product_attribute_templates","product_attribute_values","product_images"])compareFiltered(before[t],after[t],()=>true,t);const post=await inspectVisible(db);if(post.rows.some(r=>r.status!=="EXISTING_OK"))throw new Error("H3 postcheck failed");await integrity(db);await db.run("COMMIT");return{...post,mode:"apply",writes,backup};
  }catch(e){try{await db.run("ROLLBACK");}catch{}throw e;}}
 async function applyTemplate(db, dbPath, backupDir) {
   const before = await snapshots(db);
   await inspectTemplate(db);
-  const backup = backupDatabase(dbPath, backupDir);
+  const backup = await backupDatabase(db, dbPath, backupDir);
   await db.run("BEGIN IMMEDIATE");
   let writes = 0;
   try {
@@ -204,7 +225,7 @@ async function applyTemplate(db, dbPath, backupDir) {
       const now = new Date().toISOString();
       for (const [section, codes] of [["main", DATA.TEMPLATE.mainCodes], ["regular", DATA.TEMPLATE.regularCodes]]) {
         for (const [sortOrder, code] of codes.entries()) {
-          await db.run("INSERT INTO product_attribute_templates(structure_id,attribute_definition_id,section,sort_order,is_required,unit_override,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)", [DATA.TEMPLATE.structureId, idByCode.get(code), section, sortOrder, code === "brand" ? 1 : 0, null, now, now]);
+          await db.run("INSERT INTO product_attribute_templates(structure_id,attribute_definition_id,section,sort_order,is_required,unit_override,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)", [DATA.TEMPLATE.structureId, idByCode.get(code), section, sortOrder, 0, null, now, now]);
           writes += 1;
         }
       }
@@ -231,4 +252,4 @@ async function applyTemplate(db, dbPath, backupDir) {
 }
 
 async function run(stage,args=process.argv.slice(2)){const opts=parseArgs(args,stage);const db=await dbOpen(opts.db,!opts.apply);try{let report;if(stage==="template")report=opts.apply?await applyTemplate(db,opts.db,opts.backupDir):await inspectTemplate(db);if(stage==="core")report=opts.apply?await applyCore(db,opts.db,opts.backupDir):await inspectCore(db);if(stage==="visible")report=opts.apply?await applyVisible(db,opts.db,opts.backupDir):await inspectVisible(db);console.log(JSON.stringify(report,null,2));return report;}finally{await db.close();}}
-module.exports={DATA,STAGES,MUTABLE_CORE,MUTABLE_VISIBLE,EXPECTED_DEFINITIONS,assertExactOnly,parseArgs,dbOpen,inspectTemplate,inspectCore,inspectVisible,applyTemplate,applyCore,applyVisible,run,integrity};
+module.exports={DATA,STAGES,MUTABLE_CORE,MUTABLE_VISIBLE,EXPECTED_DEFINITIONS,assertExactOnly,parseArgs,dbOpen,inspectTemplate,inspectCore,inspectVisible,applyTemplate,applyCore,applyVisible,backupDatabase,run,integrity};

@@ -526,7 +526,7 @@ Attributes (current values empty; production attribute_count pre-state 0):
 | drying_time | 4–5 часов между слоями; около 5 суток до укладки покрытия | READY | mapeiRu |
 | application_temperature | от +5 до +35 °C | READY | mapeiRu |
 | compressive_strength | — | NEEDS_SOURCE | mapeiRu; Не является сохранённым подтверждённым полем для этого продукта в RU TDS. |
-| adhesion | 1 | READY | mapeiRu; 1,0 МПа после 28 суток по EN 1542; не смешивать с тестами EN 14891. |
+| adhesion | 0.9 | READY | mapeiRu; российский технический лист: сцепление с бетонным основанием через 28 суток — 0,9 МПа; 0,5 МПа относится к отдельному испытанию после выдерживания в воде; 1,0 МПа из отдельной таблицы EN 1504 не используется. |
 | frost_resistance | — | NEEDS_SOURCE | mapeiRu; Значение из отдельного покрытия/стандарта не переносится без совпадающего тест-контекста. |
 | waterproofness | W20 | READY | mapeiRu |
 | crack_bridging | Трещиностойкость 0,75 мм через 28 суток | READY | mapeiRu |
