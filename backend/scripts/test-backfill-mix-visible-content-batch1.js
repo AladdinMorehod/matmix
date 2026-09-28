@@ -9,6 +9,15 @@ const sqlite3 = require("sqlite3").verbose();
 const RUNNER = require("./backfill-mix-visible-content-batch1");
 const DATA = require("./data/mix-visible-content-batch1");
 
+const CORRECTED_VISIBLE_COPY = Object.freeze({
+    "MAT-000080": ["Weber Vetonit fast 4000, 20 кг, для сухих и влажных помещений. Ручное и механизированное нанесение.", "Weber Vetonit fast 4000 в фасовке 20 кг применяют в сухих и влажных помещениях. Материал наносят вручную или механизированно слоем 3–80 мм. Для затворения 20 кг требуется 5,2–5,4 л воды; возможность хождения — через 4 часа."],
+    "MAT-000081": ["Weber Vetonit 4100, 20 кг, для ручного и механизированного нанесения слоем 2–30 мм.", "Weber Vetonit 4100 поставляется в фасовке 20 кг. Материал наносят вручную или механизированно слоем 2–30 мм. Расход составляет 1,6 кг/м² на каждый миллиметр слоя; возможность хождения — через 3–4 часа."],
+    "MAT-000082": ["Weber Vetonit 5000, 25 кг, для сухих и влажных помещений. Ручное нанесение.", "Weber Vetonit 5000 в фасовке 25 кг применяют во внутренних сухих и влажных помещениях. Материал наносят вручную слоем 5–50 мм, локально — до 80 мм. Для затворения 25 кг требуется 3–3,5 л воды; возможность хождения — через 3–4 часа."],
+    "MAT-000084": ["Litokol LITOLIV S50 EVO, 20 кг. Толщина слоя — 2–100 мм.", "Litokol LITOLIV S50 EVO поставляется в фасовке 20 кг. Материал наносят слоем 2–100 мм; для затворения 20 кг требуется 4,2–4,6 л воды. Работы проводят при температуре от +5 до +35 °C. Возможность хождения — через 2–4 часа."],
+    "MAT-000086": ["Основит Скорлайн FK45 R, 20 кг, для внутренних сухих и влажных помещений.", "Основит Скорлайн FK45 R применяют во внутренних сухих и влажных помещениях. Материал можно наносить вручную и механизированно по бетону, гипсовым и цементно-песчаным основаниям слоем 2–100 мм. Для затворения требуется 0,26–0,27 л воды на килограмм; возможность хождения — через 4 часа. Фасовка — 20 кг."],
+    "MAT-000087": ["Ceresit CN 175 Super, 20 кг. Толщина слоя — 3–60 мм.", "Ceresit CN 175 Super поставляется в фасовке 20 кг. Материал можно наносить вручную и механизированно слоем 3–60 мм. Для затворения упаковки 20 кг требуется около 3,6 л воды; возможность хождения — не ранее чем через 5 часов."]
+});
+
 const now = "2026-09-28T00:00:00.000Z";
 const MUTABLE_COLUMNS = new Set(["short_description", "full_description"]);
 function open(file) { return new sqlite3.Database(file); }
@@ -64,6 +73,15 @@ async function main() {
         assert(!RUNNER.ALL_MATS.includes("MAT-000075") && !RUNNER.ALL_MATS.includes("MAT-000077"));
         assert(!DATA.PRODUCTS.find(item => item.externalId === "MAT-000076").factsUsed.some(fact => fact.code === "consumption"));
         assert(DATA.PRODUCTS.find(item => item.externalId === "MAT-000076").factsOmitted.some(fact => fact.code === "consumption"));
+        for (const [externalId, [shortDescription, fullDescription]] of Object.entries(CORRECTED_VISIBLE_COPY)) {
+            const product = DATA.PRODUCTS.find(item => item.externalId === externalId);
+            assert(product, `corrected product exists: ${externalId}`);
+            assert.strictEqual(product.core.product_type.status, "NEEDS_SOURCE", `${externalId} product_type stays unresolved`);
+            assert.strictEqual(product.shortDescription, shortDescription, `${externalId} exact approved short copy`);
+            assert.strictEqual(product.fullDescription, fullDescription, `${externalId} exact approved full copy`);
+            assert(!/универсальн|финишн|высокопрочн|быстротвердеющ|первичн|самовыравнивающ/iu.test(`${shortDescription} ${fullDescription}`), `${externalId} excludes unsupported product-type wording`);
+        }
+        assert(!`${DATA.PRODUCTS.find(item => item.externalId === "MAT-000087").shortDescription} ${DATA.PRODUCTS.find(item => item.externalId === "MAT-000087").fullDescription}`.includes("consumption"));
         assert(DATA.PRODUCTS.every(item => item.shortDescription.length <= 500));
         assert(DATA.PRODUCTS.every(item => RUNNER.validateConfig(item).length === 0));
 
@@ -163,6 +181,7 @@ async function main() {
         console.log("PASS rollback restores the full fixture state after an injected update failure");
 
         console.log("PASS MAT-000076 consumption omitted; MAT-000075/MAT-000077 excluded; static writable surface exact");
+        console.log("PASS six exact conservative copy replacements; unresolved product_type wording excluded");
         console.log("PASS visible review includes current/proposed text, source facts, character counts, duplicates, and public markers");
         console.log("PASS synthetic SQLite only; no production or repository DB access");
     } finally {

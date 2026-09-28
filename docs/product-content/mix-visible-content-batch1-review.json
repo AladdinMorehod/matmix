@@ -1091,10 +1091,10 @@
       "status": "READY",
       "currentShortDescription": null,
       "currentFullDescription": null,
-      "proposedShortDescription": "Универсальная смесь Weber Vetonit Fast 4000 для сухих и влажных помещений. Фасовка — 20 кг.",
-      "proposedFullDescription": "Weber Vetonit Fast 4000 — универсальная смесь для устройства наливного пола в сухих и влажных помещениях. Её можно наносить вручную и механизированно слоем 3–80 мм. Для затворения 20 кг смеси требуется 5,2–5,4 л воды; возможность хождения — через 4 часа.",
-      "shortDescriptionCharacterCount": 91,
-      "fullDescriptionCharacterCount": 254,
+      "proposedShortDescription": "Weber Vetonit fast 4000, 20 кг, для сухих и влажных помещений. Ручное и механизированное нанесение.",
+      "proposedFullDescription": "Weber Vetonit fast 4000 в фасовке 20 кг применяют в сухих и влажных помещениях. Материал наносят вручную или механизированно слоем 3–80 мм. Для затворения 20 кг требуется 5,2–5,4 л воды; возможность хождения — через 4 часа.",
+      "shortDescriptionCharacterCount": 99,
+      "fullDescriptionCharacterCount": 223,
       "sourceKeys": [
         "vetonitFast4000"
       ],
@@ -1278,10 +1278,10 @@
       "status": "READY",
       "currentShortDescription": null,
       "currentFullDescription": null,
-      "proposedShortDescription": "Финишный высокопрочный наливной пол Weber Vetonit 4100, 20 кг. Для ручного и механизированного нанесения.",
-      "proposedFullDescription": "Weber Vetonit 4100 — финишная высокопрочная смесь для наливного пола. Её наносят вручную или механизированно слоем 2–30 мм. Расход — 1,6 кг/м² на каждый миллиметр слоя; возможность хождения — через 3–4 часа. Фасовка — 20 кг.",
-      "shortDescriptionCharacterCount": 105,
-      "fullDescriptionCharacterCount": 224,
+      "proposedShortDescription": "Weber Vetonit 4100, 20 кг, для ручного и механизированного нанесения слоем 2–30 мм.",
+      "proposedFullDescription": "Weber Vetonit 4100 поставляется в фасовке 20 кг. Материал наносят вручную или механизированно слоем 2–30 мм. Расход составляет 1,6 кг/м² на каждый миллиметр слоя; возможность хождения — через 3–4 часа.",
+      "shortDescriptionCharacterCount": 83,
+      "fullDescriptionCharacterCount": 201,
       "sourceKeys": [
         "vetonit4100"
       ],
@@ -1463,10 +1463,10 @@
       "status": "READY",
       "currentShortDescription": null,
       "currentFullDescription": null,
-      "proposedShortDescription": "Быстротвердеющий наливной пол Weber Vetonit 5000 для сухих и влажных помещений. Фасовка — 25 кг.",
-      "proposedFullDescription": "Weber Vetonit 5000 — быстротвердеющая смесь для первичного выравнивания пола в сухих и влажных помещениях. Состав наносят вручную слоем 5–50 мм, локально — до 80 мм. Для затворения 25 кг требуется 3–3,5 л воды; возможность хождения — через 3–4 часа.",
-      "shortDescriptionCharacterCount": 96,
-      "fullDescriptionCharacterCount": 249,
+      "proposedShortDescription": "Weber Vetonit 5000, 25 кг, для сухих и влажных помещений. Ручное нанесение.",
+      "proposedFullDescription": "Weber Vetonit 5000 в фасовке 25 кг применяют во внутренних сухих и влажных помещениях. Материал наносят вручную слоем 5–50 мм, локально — до 80 мм. Для затворения 25 кг требуется 3–3,5 л воды; возможность хождения — через 3–4 часа.",
+      "shortDescriptionCharacterCount": 75,
+      "fullDescriptionCharacterCount": 231,
       "sourceKeys": [
         "vetonit5000"
       ],
@@ -1835,10 +1835,10 @@
       "status": "READY",
       "currentShortDescription": null,
       "currentFullDescription": null,
-      "proposedShortDescription": "Универсальный самовыравнивающийся пол Litokol Litoliv S50, 20 кг. Толщина слоя — 2–100 мм.",
-      "proposedFullDescription": "Litokol Litoliv S50 — универсальная смесь для устройства самовыравнивающегося пола. Её наносят слоем 2–100 мм; для затворения 20 кг требуется 4,2–4,6 л воды. Работы проводят при температуре от +5 до +35 °C. Возможность хождения — через 2–4 часа.",
-      "shortDescriptionCharacterCount": 90,
-      "fullDescriptionCharacterCount": 245,
+      "proposedShortDescription": "Litokol LITOLIV S50 EVO, 20 кг. Толщина слоя — 2–100 мм.",
+      "proposedFullDescription": "Litokol LITOLIV S50 EVO поставляется в фасовке 20 кг. Материал наносят слоем 2–100 мм; для затворения 20 кг требуется 4,2–4,6 л воды. Работы проводят при температуре от +5 до +35 °C. Возможность хождения — через 2–4 часа.",
+      "shortDescriptionCharacterCount": 56,
+      "fullDescriptionCharacterCount": 221,
       "sourceKeys": [
         "litokolS50"
       ],
@@ -2203,10 +2203,10 @@
       "status": "READY",
       "currentShortDescription": null,
       "currentFullDescription": null,
-      "proposedShortDescription": "Самовыравнивающийся пол Основит Скорлайн FK45 R для сухих и влажных помещений. Фасовка — 20 кг.",
-      "proposedFullDescription": "Основит Скорлайн FK45 R применяют для выравнивания пола во внутренних сухих и влажных помещениях. Смесь можно наносить вручную и механизированно по бетону, гипсовым и цементно-песчаным основаниям слоем 2–100 мм. Для затворения требуется 0,26–0,27 л воды на килограмм смеси; возможность хождения — через 4 часа. Фасовка — 20 кг.",
-      "shortDescriptionCharacterCount": 95,
-      "fullDescriptionCharacterCount": 327,
+      "proposedShortDescription": "Основит Скорлайн FK45 R, 20 кг, для внутренних сухих и влажных помещений.",
+      "proposedFullDescription": "Основит Скорлайн FK45 R применяют во внутренних сухих и влажных помещениях. Материал можно наносить вручную и механизированно по бетону, гипсовым и цементно-песчаным основаниям слоем 2–100 мм. Для затворения требуется 0,26–0,27 л воды на килограмм; возможность хождения — через 4 часа. Фасовка — 20 кг.",
+      "shortDescriptionCharacterCount": 73,
+      "fullDescriptionCharacterCount": 302,
       "sourceKeys": [
         "osnovitFk45"
       ],
@@ -2392,10 +2392,10 @@
       "status": "READY",
       "currentShortDescription": null,
       "currentFullDescription": null,
-      "proposedShortDescription": "Самовыравнивающийся пол Ceresit CN 175 Super, 20 кг. Толщина слоя — 3–60 мм.",
-      "proposedFullDescription": "Ceresit CN 175 Super — самовыравнивающаяся смесь для пола. Её можно наносить вручную и механизированно слоем 3–60 мм. Для затворения упаковки 20 кг требуется около 3,6 л воды; возможность хождения — не ранее чем через 5 часов. Фасовка — 20 кг.",
-      "shortDescriptionCharacterCount": 76,
-      "fullDescriptionCharacterCount": 243,
+      "proposedShortDescription": "Ceresit CN 175 Super, 20 кг. Толщина слоя — 3–60 мм.",
+      "proposedFullDescription": "Ceresit CN 175 Super поставляется в фасовке 20 кг. Материал можно наносить вручную и механизированно слоем 3–60 мм. Для затворения упаковки 20 кг требуется около 3,6 л воды; возможность хождения — не ранее чем через 5 часов.",
+      "shortDescriptionCharacterCount": 52,
+      "fullDescriptionCharacterCount": 224,
       "sourceKeys": [
         "ceresitCn175"
       ],
