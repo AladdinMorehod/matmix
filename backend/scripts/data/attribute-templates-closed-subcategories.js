@@ -1,7 +1,8 @@
 "use strict";
 
-// Canonical template metadata for the closed subcategories audited on 2026-09-25.
-// Order and scope reflect the explicitly approved final templates.
+// Canonical template metadata for closed subcategories. Hydroisolation is a
+// planned batch: it remains NOT_CLOSED in audit results until data and images
+// have both been applied and verified.
 module.exports = Object.freeze({
     parent: Object.freeze({ id: 1, type: "category", name: "Смеси" }),
     mainAttributes: Object.freeze(["brand", "product_type", "shelf_life", "package_weight"]),
@@ -26,6 +27,11 @@ module.exports = Object.freeze({
         ]) }),
         Object.freeze({ name: "Стяжки Пола", structureId: 8, codes: Object.freeze([
             "base", "purpose", "application_area", "layer_thickness", "walkability", "flexural_strength"
+        ]) }),
+        Object.freeze({ name: "Гидроизоляция", structureId: 10, codes: Object.freeze([
+            "base", "purpose", "application_area", "application_method", "substrates", "color", "layer_thickness",
+            "consumption", "water_requirement", "mixing_ratio", "pot_life", "drying_time", "application_temperature",
+            "compressive_strength", "adhesion", "frost_resistance", "waterproofness", "crack_bridging", "standard"
         ]) })
     ])
 });

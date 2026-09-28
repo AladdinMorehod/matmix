@@ -7,7 +7,8 @@ const CANONICAL_TEMPLATE = require("./data/attribute-templates-closed-subcategor
 const SOURCE_REVIEWED = require("./data/source-reviewed-content-backfill");
 const SOURCE_DATASETS = Object.freeze({
     masonry: require("./data/masonry-mixes-core-batch1"),
-    floors: require("./data/floor-mixes-core-batch1")
+    floors: require("./data/floor-mixes-core-batch1"),
+    hydroisolation: require("./data/hydroisolation-core-batch1")
 });
 
 const EXPECTED_SCHEMA_VERSION = 11;
@@ -25,9 +26,10 @@ const SOURCE_MODULE_PRIORITY = Object.freeze({
     "putties-core-content-batch2.js": 40,
     "putties-core-content-batch3.js": 50,
     "masonry-mixes-core-batch1": 60,
-    "floor-mixes-core-batch1": 60
+    "floor-mixes-core-batch1": 60,
+    "hydroisolation-core-batch1": 60
 });
-const SOURCE_DATASET_NAMES = Object.freeze([...SOURCE_REVIEWED.modules, "masonry-mixes-core-batch1", "floor-mixes-core-batch1"]);
+const SOURCE_DATASET_NAMES = Object.freeze([...SOURCE_REVIEWED.modules, "masonry-mixes-core-batch1", "floor-mixes-core-batch1", "hydroisolation-core-batch1"]);
 const MIX_BATCH = Object.freeze([
     "MAT-000067", "MAT-000068", "MAT-000069", "MAT-000075", "MAT-000076", "MAT-000077",
     "MAT-000078", "MAT-000079", "MAT-000080", "MAT-000081", "MAT-000082", "MAT-000083",
@@ -38,7 +40,8 @@ const HISTORICAL_SCOPE = Object.freeze({
     "Шпаклевка": Object.freeze(range("MAT-000033", "MAT-000065")),
     "Кладочные Смеси": Object.freeze(range("MAT-000067", "MAT-000069")),
     "Наливной Пол": Object.freeze(range("MAT-000075", "MAT-000087")),
-    "Стяжки Пола": Object.freeze(range("MAT-000089", "MAT-000090"))
+    "Стяжки Пола": Object.freeze(range("MAT-000089", "MAT-000090")),
+    "Гидроизоляция": Object.freeze(range("MAT-000099", "MAT-000107"))
 });
 function range(first, last) {
     const start = Number(String(first).slice(-6));
@@ -258,12 +261,19 @@ function sourceEntries(externalId) {
         }
     }
     for (const [moduleName, data] of Object.entries(SOURCE_DATASETS)) {
-        const moduleLabel = moduleName === "masonry" ? "masonry-mixes-core-batch1" : "floor-mixes-core-batch1";
+        const moduleLabel = moduleName === "masonry" ? "masonry-mixes-core-batch1" : moduleName === "floors" ? "floor-mixes-core-batch1" : "hydroisolation-core-batch1";
         const record = data.PRODUCTS.find(item => item.externalId === externalId);
         if (!record) continue;
         if (record.identityStatus) identity.push({ moduleName: moduleLabel, priority: SOURCE_MODULE_PRIORITY[moduleLabel], status: record.identityStatus });
         if (hasValue(record.brand)) entries.push({ code: "brand", moduleName: moduleLabel, priority: SOURCE_MODULE_PRIORITY[moduleLabel], status: "READY", value: record.brand, sourceKeys: record.sourceKeys || [], sourceRefsValid: sourceReferencesValid(record.sourceKeys, data.SOURCES) });
-        for (const [code, proposal] of Object.entries(record.core || {})) { const sourceKeys = proposal?.sources || []; const status = proposal?.status || "NEEDS_SOURCE"; entries.push({ code, moduleName: moduleLabel, priority: SOURCE_MODULE_PRIORITY[moduleLabel], status, value: proposal?.value, reason: proposal?.reason || null, sourceKeys, sourceRefsValid: status !== "READY" || sourceReferencesValid(sourceKeys, data.SOURCES) }); }
+        for (const [code, proposal] of Object.entries(record.core || {})) {
+            const sourceKeys = proposal?.sources || [];
+            // A stored SOURCE_CONFLICT remains explicit in the hydro dataset/review, but its value is intentionally not proposed or written. The audit treats that empty slot as unresolved provenance (optional gap), not as a DB/source anomaly or product-identity blocker.
+            const retainedUnresolvedConflict = moduleLabel === "hydroisolation-core-batch1" && proposal?.status === "SOURCE_CONFLICT";
+            const status = retainedUnresolvedConflict ? "NEEDS_SOURCE" : proposal?.status || "NEEDS_SOURCE";
+            const conflictNotes = retainedUnresolvedConflict ? ` Unresolved source conflict retained in hydro review: ${(proposal.conflictingSourceFacts || []).join("; ")}.` : "";
+            entries.push({ code, moduleName: moduleLabel, priority: SOURCE_MODULE_PRIORITY[moduleLabel], status, value: proposal?.value, reason: `${proposal?.reason || ""}${conflictNotes}` || null, sourceKeys, sourceRefsValid: status !== "READY" || sourceReferencesValid(sourceKeys, data.SOURCES) });
+        }
     }
     return { entries, identity };
 }

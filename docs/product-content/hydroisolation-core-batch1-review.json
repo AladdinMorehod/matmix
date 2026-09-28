@@ -1,0 +1,3136 @@
+{
+  "generatedAt": "2026-09-28",
+  "category": {
+    "parent": "Смеси",
+    "subcategory": "Гидроизоляция",
+    "structureId": 10,
+    "externalCode": "SUB-000009",
+    "exactScope": [
+      "MAT-000099",
+      "MAT-000100",
+      "MAT-000101",
+      "MAT-000102",
+      "MAT-000103",
+      "MAT-000104",
+      "MAT-000105",
+      "MAT-000106",
+      "MAT-000107"
+    ]
+  },
+  "safety": {
+    "productionAccessed": false,
+    "databaseWritten": false,
+    "applyPerformed": false,
+    "deployPerformed": false,
+    "imagesTouched": false,
+    "titleSlugPriceWeightCategoryChanged": false,
+    "attributeDefinitionsChanged": false,
+    "reviewState": "prepared; synthetic-only verification"
+  },
+  "template": {
+    "mainCodes": [
+      "brand",
+      "product_type",
+      "shelf_life",
+      "package_weight"
+    ],
+    "regularCodes": [
+      "base",
+      "purpose",
+      "application_area",
+      "application_method",
+      "substrates",
+      "color",
+      "layer_thickness",
+      "consumption",
+      "water_requirement",
+      "mixing_ratio",
+      "pot_life",
+      "drying_time",
+      "application_temperature",
+      "compressive_strength",
+      "adhesion",
+      "frost_resistance",
+      "waterproofness",
+      "crack_bridging",
+      "standard"
+    ],
+    "memberships": 23,
+    "newDefinitions": [
+      {
+        "code": "mixing_ratio",
+        "label": "Соотношение компонентов",
+        "dataType": "text",
+        "defaultUnit": null
+      },
+      {
+        "code": "waterproofness",
+        "label": "Водонепроницаемость",
+        "dataType": "text",
+        "defaultUnit": null
+      },
+      {
+        "code": "crack_bridging",
+        "label": "Перекрытие трещин",
+        "dataType": "text",
+        "defaultUnit": null
+      }
+    ],
+    "reuseExisting": true
+  },
+  "summary": {
+    "products": 9,
+    "identityConfirmed": 9,
+    "readyCoreAttributes": 129,
+    "needsSource": 57,
+    "sourceConflict": 4,
+    "absentByDesign": 17,
+    "partialCoreProducts": 9,
+    "visibleCopyReady": 9,
+    "seoReady": 9,
+    "imagesUntouched": 9,
+    "definitionsExistingBeforeH1": 33,
+    "definitionsToCreateIfAbsent": [
+      "mixing_ratio",
+      "waterproofness",
+      "crack_bridging"
+    ],
+    "hydroTemplateMemberships": 23,
+    "postH3AuditStatusBeforePhotos": "NOT_CLOSED",
+    "postH3SeoIssues": 0,
+    "postH3ImageIssues": 9
+  },
+  "sources": {
+    "knaufPage": {
+      "title": "КНАУФ-Флэхендихт — официальный сайт",
+      "owner": "КНАУФ",
+      "kind": "manufacturer-page",
+      "url": "https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/mastika-dlya-gidroizolyatsii/knauf-flekhendikht/"
+    },
+    "knaufSheet": {
+      "title": "КНАУФ-Флэхендихт — информационный лист 03/2025",
+      "owner": "КНАУФ",
+      "kind": "manufacturer-technical-sheet",
+      "url": "https://www.knauf.ru/upload/iblock/072/sdivcslbnj7bz5q8y940f453or6b5uve/35_IL_KNAUF_Flekhendikht_25_03_2025_v01_Preview.pdf"
+    },
+    "stk774": {
+      "title": "БС-774 EURO Professional — официальный каталог СТК Профи",
+      "owner": "СТК Профи",
+      "kind": "manufacturer-page",
+      "url": "https://stkprofi.ru/shop/bs-774-gidroizolyatsiya-polimernaya-mastika-euro--professional-2/"
+    },
+    "owner100": {
+      "title": "Фото упаковки, предоставленное владельцем (идентичность MAT-000100)",
+      "owner": "MatMix owner",
+      "kind": "owner-identity-evidence",
+      "url": null
+    },
+    "masterclass": {
+      "title": "Гидроизоляция 5 кг — официальный сайт Мастер-Класс",
+      "owner": "Мастер-Класс",
+      "kind": "manufacturer-page",
+      "url": "https://mk-podolsk.ru/product/zashchitnye-sredstva-i-mastiki/gidroizolyatsiya-5-kg/"
+    },
+    "owner101": {
+      "title": "Фото упаковки, предоставленное владельцем (идентичность MAT-000101)",
+      "owner": "MatMix owner",
+      "kind": "owner-identity-evidence",
+      "url": null
+    },
+    "stk755": {
+      "title": "БС-755 PROFI — официальный каталог СТК Профи",
+      "owner": "СТК Профи",
+      "kind": "manufacturer-page",
+      "url": "https://stkprofi.ru/shop/bs-755-poliakrilovaya-mastika-gidroizolyatsiya-profi/"
+    },
+    "owner102": {
+      "title": "Фото упаковки, предоставленное владельцем (идентичность MAT-000102)",
+      "owner": "MatMix owner",
+      "kind": "owner-identity-evidence",
+      "url": null
+    },
+    "ceresit65": {
+      "title": "Церезит CR 65 — официальный сайт",
+      "owner": "Ceresit / Henkel",
+      "kind": "manufacturer-page",
+      "url": "https://www.ceresit.ru/ru/products/waterproofing/waterproofing-materials/cr_65_waterproof"
+    },
+    "ruseanNc": {
+      "title": "Гидроизоляционные смеси Русеан — материал производителя",
+      "owner": "Русеан",
+      "kind": "manufacturer-article",
+      "url": "https://rusean.ru/articles/smesi-dlya-gidroizolyatsii-articles/gidroizolyatsionnye-smesi-rusean/"
+    },
+    "ruseanRetail1": {
+      "title": "Гидроизоляционная смесь Русеан НЦ 25 кг — точная карточка продавца",
+      "owner": "ДЛЯ ПРОРАБА / Pannel",
+      "kind": "secondary-exact-product-card",
+      "url": "https://pannel.ru/product/gidroizolyacionnaya-smes-rusean-nc-25-kg"
+    },
+    "ruseanRetail2": {
+      "title": "Смесь НЦ Русеан 25 кг — точная карточка продавца",
+      "owner": "ГК Промсервис",
+      "kind": "secondary-exact-product-card",
+      "url": "https://gk-promservis.ru/tsement-nts-dlya-gidroizolyatsii-25kg-rusean/"
+    },
+    "localCatalog": {
+      "title": "Exact local MatMix package title and weight metadata",
+      "owner": "MatMix local catalog",
+      "kind": "local-catalog-metadata",
+      "url": null
+    },
+    "glims": {
+      "title": "GLIMS ВодоStop 18 кг — официальный сайт и TDS",
+      "owner": "GLIMS",
+      "kind": "manufacturer-page-and-tds",
+      "url": "https://glims.ru/catalog/gidroizolyatsiya/gidroizolyatsiya-tsementnaya-obmazochnaya-glims-vodostop-18-kg/"
+    },
+    "glimsPdf": {
+      "title": "GLIMS ВодоStop — официальный PDF",
+      "owner": "GLIMS",
+      "kind": "manufacturer-technical-sheet",
+      "url": "https://www.glims.ru/upload/iblock/95c/d49vru9wi52cjhr8txetqria7r11dza5/GLIMS%C2%AE%20%D0%92%D0%BE%D0%B4%D0%BEStop.pdf"
+    },
+    "mapeiRu": {
+      "title": "Mapelastic — официальный российский technical leaflet",
+      "owner": "Mapei Russia",
+      "kind": "manufacturer-technical-sheet",
+      "url": "https://cdnmedia.mapei.com/docs/librariesprovider50/line-technical-documentation-documents/mapei_19-mapelastic_leflet_a6.pdf?sfvrsn=97e83777_18"
+    },
+    "mapeiPage": {
+      "title": "MAPELASTIC — официальный Mapei Kazakhstan (рус.)",
+      "owner": "Mapei",
+      "kind": "manufacturer-page",
+      "url": "https://www.mapei.com/kz/ru/%D0%BC%D0%B0%D1%82%D0%B5%D1%80%D0%B8%D0%B0%D0%BB%D1%8B/%D1%81%D0%BF%D0%B8%D1%81%D0%BE%D0%BA-%D0%BC%D0%B0%D1%82%D0%B5%D1%80%D0%B8%D0%B0%D0%BB%D0%BE%D0%B2/%D0%BE%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BC%D0%B0%D1%82%D0%B5%D1%80%D0%B8%D0%B0%D0%BB%D0%B0/mapelastic"
+    },
+    "ceresit166": {
+      "title": "Церезит CR 166 — официальный сайт",
+      "owner": "Ceresit / Henkel",
+      "kind": "manufacturer-page",
+      "url": "https://www.ceresit.ru/ru/products/waterproofing/waterproofing-materials/cr-166"
+    }
+  },
+  "products": [
+    {
+      "externalId": "MAT-000099",
+      "identity": {
+        "status": "IDENTITY_CONFIRMED",
+        "brand": "KNAUF",
+        "exactTitle": "Гидроизоляция Knauf Флэхендихт 5 кг",
+        "exactSlug": "гидроизоляция-knauf-флэхендихт-5-кг",
+        "packageWeightKg": 5,
+        "packageEvidence": "manufacturer-source-and-exact-local-title"
+      },
+      "current": {
+        "id": 91,
+        "title": "Гидроизоляция Knauf Флэхендихт 5 кг",
+        "slug": "гидроизоляция-knauf-флэхендихт-5-кг",
+        "category": "Смеси",
+        "subcategory": "Гидроизоляция",
+        "weight": 5,
+        "unit": "шт",
+        "price": 2106,
+        "brand": null,
+        "attributeCount": 0,
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "productImagesCount": 1,
+        "shortDescription": null,
+        "fullDescription": null,
+        "seoTitle": null,
+        "seoDescription": null
+      },
+      "sourceStatus": "PARTIAL_SOURCE_GAPS",
+      "sources": [
+        {
+          "key": "knaufPage",
+          "title": "КНАУФ-Флэхендихт — официальный сайт",
+          "owner": "КНАУФ",
+          "kind": "manufacturer-page",
+          "url": "https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/mastika-dlya-gidroizolyatsii/knauf-flekhendikht/"
+        },
+        {
+          "key": "knaufSheet",
+          "title": "КНАУФ-Флэхендихт — информационный лист 03/2025",
+          "owner": "КНАУФ",
+          "kind": "manufacturer-technical-sheet",
+          "url": "https://www.knauf.ru/upload/iblock/072/sdivcslbnj7bz5q8y940f453or6b5uve/35_IL_KNAUF_Flekhendikht_25_03_2025_v01_Preview.pdf"
+        }
+      ],
+      "attributes": [
+        {
+          "code": "brand",
+          "label": "Бренд",
+          "status": "READY",
+          "value": "KNAUF",
+          "sources": [
+            "knaufPage"
+          ],
+          "reason": null,
+          "provenanceNote": "products.brand разрешён только H2, если NULL/empty; синхронное значение attribute brand создаётся H2."
+        },
+        {
+          "code": "product_type",
+          "label": "Тип продукта",
+          "status": "READY",
+          "value": "Готовая латексная гидроизоляционная мастика",
+          "sources": [
+            "knaufPage"
+          ]
+        },
+        {
+          "code": "shelf_life",
+          "label": "Срок хранения",
+          "status": "READY",
+          "value": 18,
+          "sources": [
+            "knaufPage"
+          ]
+        },
+        {
+          "code": "package_weight",
+          "label": "Фасовка",
+          "status": "READY",
+          "value": 5,
+          "sources": [
+            "knaufPage"
+          ],
+          "provenanceNote": "Локальный title и официальный вес упаковки совпадают."
+        },
+        {
+          "code": "base",
+          "label": "Основа",
+          "status": "READY",
+          "value": "Водная дисперсия синтетического латекса и инертные заполнители",
+          "sources": [
+            "knaufPage"
+          ]
+        },
+        {
+          "code": "purpose",
+          "label": "Назначение",
+          "status": "READY",
+          "value": "Создание водонепроницаемой эластичной гидроизоляции стен и полов перед укладкой керамической плитки или природного камня",
+          "sources": [
+            "knaufPage"
+          ]
+        },
+        {
+          "code": "application_area",
+          "label": "Область применения",
+          "status": "READY",
+          "value": "Внутренние работы; влажные помещения; системы обогреваемых полов и стен",
+          "sources": [
+            "knaufPage"
+          ]
+        },
+        {
+          "code": "application_method",
+          "label": "Способ нанесения",
+          "status": "READY",
+          "value": "Кисть, щётка или валик; минимум два слоя",
+          "sources": [
+            "knaufSheet"
+          ]
+        },
+        {
+          "code": "substrates",
+          "label": "Основания",
+          "status": "READY",
+          "value": "ГКЛ, гипсовые, известково-цементные и цементные штукатурки, цементные плиты и стяжки, бетон, пористый бетон",
+          "sources": [
+            "knaufPage"
+          ]
+        },
+        {
+          "code": "color",
+          "label": "Цвет",
+          "status": "READY",
+          "value": "Голубой",
+          "sources": [
+            "knaufPage"
+          ]
+        },
+        {
+          "code": "layer_thickness",
+          "label": "Толщина слоя",
+          "status": "READY",
+          "value": "около 1,1 мм в сыром состоянии; около 0,8 мм после высыхания",
+          "sources": [
+            "knaufPage"
+          ]
+        },
+        {
+          "code": "consumption",
+          "label": "Расход",
+          "status": "READY",
+          "value": "0,7–1,0 кг/м² для гладких оснований; 0,9–1,4 кг/м² для грубых и пористых оснований",
+          "sources": [
+            "knaufPage"
+          ]
+        },
+        {
+          "code": "water_requirement",
+          "label": "Количество воды",
+          "status": "ABSENT_BY_DESIGN",
+          "value": null,
+          "reason": "Готовая к применению мастика; затворение водой не предусмотрено.",
+          "sources": [
+            "knaufPage"
+          ]
+        },
+        {
+          "code": "mixing_ratio",
+          "label": "Соотношение компонентов",
+          "status": "ABSENT_BY_DESIGN",
+          "value": null,
+          "reason": "Однокомпонентная готовая мастика; смешивание компонентов не предусмотрено.",
+          "sources": [
+            "knaufPage"
+          ]
+        },
+        {
+          "code": "pot_life",
+          "label": "Жизнеспособность",
+          "status": "ABSENT_BY_DESIGN",
+          "value": null,
+          "reason": "Для готовой мастики время жизни затворённого раствора неприменимо.",
+          "sources": [
+            "knaufPage"
+          ]
+        },
+        {
+          "code": "drying_time",
+          "label": "Время высыхания",
+          "status": "READY",
+          "value": "Между слоями — не менее 3 часов; перед укладкой плитки — не менее 12 часов",
+          "sources": [
+            "knaufPage"
+          ]
+        },
+        {
+          "code": "application_temperature",
+          "label": "Температура применения",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Текущая карточка/TDS не задаёт температуру нанесения.",
+          "sources": [
+            "knaufPage"
+          ]
+        },
+        {
+          "code": "compressive_strength",
+          "label": "Прочность на сжатие",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Не заявлена как характеристика этого готового покрытия.",
+          "sources": [
+            "knaufPage"
+          ]
+        },
+        {
+          "code": "adhesion",
+          "label": "Адгезия",
+          "status": "READY",
+          "value": 1.5,
+          "sources": [
+            "knaufPage"
+          ],
+          "provenanceNote": "Официальная карточка: 1,5 МПа; числовое значение сохранено в MPa."
+        },
+        {
+          "code": "frost_resistance",
+          "label": "Морозостойкость",
+          "status": "READY",
+          "value": "5 циклов в неповреждённой упаковке",
+          "sources": [
+            "knaufPage"
+          ]
+        },
+        {
+          "code": "waterproofness",
+          "label": "Водонепроницаемость",
+          "status": "READY",
+          "value": "0,7 МПа (W7)",
+          "sources": [
+            "knaufPage"
+          ]
+        },
+        {
+          "code": "crack_bridging",
+          "label": "Перекрытие трещин",
+          "status": "READY",
+          "value": "до 2,5 мм",
+          "sources": [
+            "knaufPage"
+          ]
+        },
+        {
+          "code": "standard",
+          "label": "Стандарт/ТУ",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "В доступной текущей карточке применимый стандарт/ТУ не подтверждён.",
+          "sources": [
+            "knaufPage"
+          ]
+        }
+      ],
+      "counts": {
+        "READY": 17,
+        "NEEDS_SOURCE": 3,
+        "SOURCE_CONFLICT": 0,
+        "ABSENT_BY_DESIGN": 3
+      },
+      "readyAttributeCount": 17,
+      "needsSource": [
+        "application_temperature",
+        "compressive_strength",
+        "standard"
+      ],
+      "sourceConflicts": [],
+      "absentByDesign": [
+        {
+          "code": "water_requirement",
+          "reason": "Готовая к применению мастика; затворение водой не предусмотрено.",
+          "sources": [
+            "knaufPage"
+          ]
+        },
+        {
+          "code": "mixing_ratio",
+          "reason": "Однокомпонентная готовая мастика; смешивание компонентов не предусмотрено.",
+          "sources": [
+            "knaufPage"
+          ]
+        },
+        {
+          "code": "pot_life",
+          "reason": "Для готовой мастики время жизни затворённого раствора неприменимо.",
+          "sources": [
+            "knaufPage"
+          ]
+        }
+      ],
+      "factsNotStored": [],
+      "visibleCopy": {
+        "shortDescription": "KNAUF-Флэхендихт, 5 кг — готовая латексная гидроизоляционная мастика для внутренних влажных помещений.",
+        "fullDescription": "KNAUF-Флэхендихт — готовая гидроизоляционная мастика на водной дисперсии синтетического латекса с инертными заполнителями, фасовка 5 кг. Её применяют внутри зданий на стенах и полах во влажных помещениях перед облицовкой плиткой или природным камнем. Мастику наносят кистью, щёткой или валиком минимум в два слоя; между слоями выдерживают не менее 3 часов, до укладки плитки — не менее 12 часов."
+      },
+      "seo": {
+        "title": "KNAUF Флэхендихт 5 кг — купить гидроизоляцию в Москве",
+        "description": "Готовая латексная гидроизоляционная мастика KNAUF-Флэхендихт 5 кг для влажных помещений. Закажите в MatMix с доставкой по Москве и области."
+      },
+      "imageState": {
+        "status": "INTENTIONALLY_UNTOUCHED",
+        "currentUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "productImagesCount": 1,
+        "sharedPlaceholder": true,
+        "photoStageRequired": true
+      },
+      "finalStageStatus": "CORE_PARTIAL_VISIBLE_READY_IMAGE_PENDING"
+    },
+    {
+      "externalId": "MAT-000100",
+      "identity": {
+        "status": "IDENTITY_CONFIRMED",
+        "brand": "СТК Профи",
+        "exactTitle": "Гидроизоляция полимерная СТК 5кг",
+        "exactSlug": "гидроизоляция-полимерная-стк-5кг",
+        "packageWeightKg": 5,
+        "packageEvidence": "official-product-page + owner-provided packaging photo; provided filename MAT-000101 ignored"
+      },
+      "current": {
+        "id": 92,
+        "title": "Гидроизоляция полимерная СТК 5кг",
+        "slug": "гидроизоляция-полимерная-стк-5кг",
+        "category": "Смеси",
+        "subcategory": "Гидроизоляция",
+        "weight": 5,
+        "unit": "шт",
+        "price": 1458,
+        "brand": null,
+        "attributeCount": 0,
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "productImagesCount": 1,
+        "shortDescription": null,
+        "fullDescription": null,
+        "seoTitle": null,
+        "seoDescription": null
+      },
+      "sourceStatus": "PARTIAL_SOURCE_GAPS",
+      "sources": [
+        {
+          "key": "stk774",
+          "title": "БС-774 EURO Professional — официальный каталог СТК Профи",
+          "owner": "СТК Профи",
+          "kind": "manufacturer-page",
+          "url": "https://stkprofi.ru/shop/bs-774-gidroizolyatsiya-polimernaya-mastika-euro--professional-2/"
+        },
+        {
+          "key": "owner100",
+          "title": "Фото упаковки, предоставленное владельцем (идентичность MAT-000100)",
+          "owner": "MatMix owner",
+          "kind": "owner-identity-evidence",
+          "url": null
+        }
+      ],
+      "attributes": [
+        {
+          "code": "brand",
+          "label": "Бренд",
+          "status": "READY",
+          "value": "СТК Профи",
+          "sources": [
+            "stk774"
+          ],
+          "reason": null,
+          "provenanceNote": "products.brand разрешён только H2, если NULL/empty; синхронное значение attribute brand создаётся H2."
+        },
+        {
+          "code": "product_type",
+          "label": "Тип продукта",
+          "status": "READY",
+          "value": "Готовая полимерная гидроизоляционная мастика",
+          "sources": [
+            "stk774"
+          ]
+        },
+        {
+          "code": "shelf_life",
+          "label": "Срок хранения",
+          "status": "READY",
+          "value": 12,
+          "sources": [
+            "stk774"
+          ]
+        },
+        {
+          "code": "package_weight",
+          "label": "Фасовка",
+          "status": "READY",
+          "value": 5,
+          "sources": [
+            "stk774"
+          ],
+          "provenanceNote": "Позиция БС-774 5 кг подтверждена производителем; owner photo доказывает упаковку EURO Professional."
+        },
+        {
+          "code": "base",
+          "label": "Основа",
+          "status": "READY",
+          "value": "Вода, акриловая дисперсия, мраморный наполнитель, диоксид титана, функциональные добавки, консервант",
+          "sources": [
+            "stk774"
+          ]
+        },
+        {
+          "code": "purpose",
+          "label": "Назначение",
+          "status": "READY",
+          "value": "Бесшовное эластичное водонепроницаемое покрытие для придания основаниям гидроизолирующих свойств",
+          "sources": [
+            "stk774"
+          ]
+        },
+        {
+          "code": "application_area",
+          "label": "Область применения",
+          "status": "READY",
+          "value": "Стены, полы и потолки; душевые, ванные комнаты, бани и сауны",
+          "sources": [
+            "stk774"
+          ]
+        },
+        {
+          "code": "application_method",
+          "label": "Способ нанесения",
+          "status": "READY",
+          "value": "Кисть, валик или распыление",
+          "sources": [
+            "stk774"
+          ]
+        },
+        {
+          "code": "substrates",
+          "label": "Основания",
+          "status": "READY",
+          "value": "Гипсокартон, кирпич, асбестоцемент, гипсовые, полимерные и цементные основания, железобетон, дерево, фанера",
+          "sources": [
+            "stk774"
+          ]
+        },
+        {
+          "code": "color",
+          "label": "Цвет",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Цвет exact фасовки не подтверждён в официальной карточке.",
+          "sources": [
+            "stk774"
+          ]
+        },
+        {
+          "code": "layer_thickness",
+          "label": "Толщина слоя",
+          "status": "READY",
+          "value": "0,8–2,0 мм",
+          "sources": [
+            "stk774"
+          ]
+        },
+        {
+          "code": "consumption",
+          "label": "Расход",
+          "status": "READY",
+          "value": "0,3–0,4 кг/м² на однослойное покрытие",
+          "sources": [
+            "stk774"
+          ]
+        },
+        {
+          "code": "water_requirement",
+          "label": "Количество воды",
+          "status": "ABSENT_BY_DESIGN",
+          "value": null,
+          "reason": "Готовая к применению мастика.",
+          "sources": [
+            "stk774"
+          ]
+        },
+        {
+          "code": "mixing_ratio",
+          "label": "Соотношение компонентов",
+          "status": "ABSENT_BY_DESIGN",
+          "value": null,
+          "reason": "Однокомпонентная готовая мастика.",
+          "sources": [
+            "stk774"
+          ]
+        },
+        {
+          "code": "pot_life",
+          "label": "Жизнеспособность",
+          "status": "ABSENT_BY_DESIGN",
+          "value": null,
+          "reason": "Для готовой мастики время жизни затворённого раствора неприменимо.",
+          "sources": [
+            "stk774"
+          ]
+        },
+        {
+          "code": "drying_time",
+          "label": "Время высыхания",
+          "status": "READY",
+          "value": "Межслойная сушка — 12 часов при температуре выше +15 °C; полное высыхание — 24 часа при +20 °C",
+          "sources": [
+            "stk774"
+          ]
+        },
+        {
+          "code": "application_temperature",
+          "label": "Температура применения",
+          "status": "READY",
+          "value": "не ниже +5 °C",
+          "sources": [
+            "stk774"
+          ]
+        },
+        {
+          "code": "compressive_strength",
+          "label": "Прочность на сжатие",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Не заявлена для эластичного мастичного покрытия.",
+          "sources": [
+            "stk774"
+          ]
+        },
+        {
+          "code": "adhesion",
+          "label": "Адгезия",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Числовая адгезия не приводится в официальной карточке.",
+          "sources": [
+            "stk774"
+          ]
+        },
+        {
+          "code": "frost_resistance",
+          "label": "Морозостойкость",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Не подтверждена для exact SKU.",
+          "sources": [
+            "stk774"
+          ]
+        },
+        {
+          "code": "waterproofness",
+          "label": "Водонепроницаемость",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Числовой класс/давление не указаны.",
+          "sources": [
+            "stk774"
+          ]
+        },
+        {
+          "code": "crack_bridging",
+          "label": "Перекрытие трещин",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Числовой показатель не указан.",
+          "sources": [
+            "stk774"
+          ]
+        },
+        {
+          "code": "standard",
+          "label": "Стандарт/ТУ",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Применимый стандарт/ТУ не подтверждён карточкой.",
+          "sources": [
+            "stk774"
+          ]
+        }
+      ],
+      "counts": {
+        "READY": 13,
+        "NEEDS_SOURCE": 7,
+        "SOURCE_CONFLICT": 0,
+        "ABSENT_BY_DESIGN": 3
+      },
+      "readyAttributeCount": 13,
+      "needsSource": [
+        "color",
+        "compressive_strength",
+        "adhesion",
+        "frost_resistance",
+        "waterproofness",
+        "crack_bridging",
+        "standard"
+      ],
+      "sourceConflicts": [],
+      "absentByDesign": [
+        {
+          "code": "water_requirement",
+          "reason": "Готовая к применению мастика.",
+          "sources": [
+            "stk774"
+          ]
+        },
+        {
+          "code": "mixing_ratio",
+          "reason": "Однокомпонентная готовая мастика.",
+          "sources": [
+            "stk774"
+          ]
+        },
+        {
+          "code": "pot_life",
+          "reason": "Для готовой мастики время жизни затворённого раствора неприменимо.",
+          "sources": [
+            "stk774"
+          ]
+        }
+      ],
+      "factsNotStored": [],
+      "visibleCopy": {
+        "shortDescription": "СТК Профи БС-774 EURO Professional, 5 кг — готовая полимерная гидроизоляционная мастика.",
+        "fullDescription": "Готовая полимерная мастика СТК Профи БС-774 EURO Professional поставляется в ведре 5 кг. Она образует бесшовное водонепроницаемое покрытие для стен, полов и потолков во влажных помещениях. Материал наносят кистью, валиком или распылением слоем 0,8–2,0 мм; производитель указывает расход 0,3–0,4 кг/м² на однослойное покрытие."
+      },
+      "seo": {
+        "title": "СТК Профи БС-774 5 кг — купить гидроизоляцию в Москве",
+        "description": "Готовая мастика СТК Профи БС-774 EURO Professional 5 кг для влажных помещений. Закажите гидроизоляцию с доставкой по Москве и области."
+      },
+      "imageState": {
+        "status": "INTENTIONALLY_UNTOUCHED",
+        "currentUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "productImagesCount": 1,
+        "sharedPlaceholder": true,
+        "photoStageRequired": true
+      },
+      "finalStageStatus": "CORE_PARTIAL_VISIBLE_READY_IMAGE_PENDING"
+    },
+    {
+      "externalId": "MAT-000101",
+      "identity": {
+        "status": "IDENTITY_CONFIRMED",
+        "brand": "Мастер-Класс",
+        "exactTitle": "Гидроизоляция универсальная МК 5кг",
+        "exactSlug": "гидроизоляция-универсальная-мк-5кг",
+        "packageWeightKg": 5,
+        "packageEvidence": "official-product-page + owner-provided packaging photo"
+      },
+      "current": {
+        "id": 93,
+        "title": "Гидроизоляция универсальная МК 5кг",
+        "slug": "гидроизоляция-универсальная-мк-5кг",
+        "category": "Смеси",
+        "subcategory": "Гидроизоляция",
+        "weight": 5,
+        "unit": "шт",
+        "price": null,
+        "brand": null,
+        "attributeCount": 0,
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "productImagesCount": 1,
+        "shortDescription": null,
+        "fullDescription": null,
+        "seoTitle": null,
+        "seoDescription": null
+      },
+      "sourceStatus": "PARTIAL_SOURCE_GAPS",
+      "sources": [
+        {
+          "key": "masterclass",
+          "title": "Гидроизоляция 5 кг — официальный сайт Мастер-Класс",
+          "owner": "Мастер-Класс",
+          "kind": "manufacturer-page",
+          "url": "https://mk-podolsk.ru/product/zashchitnye-sredstva-i-mastiki/gidroizolyatsiya-5-kg/"
+        },
+        {
+          "key": "owner101",
+          "title": "Фото упаковки, предоставленное владельцем (идентичность MAT-000101)",
+          "owner": "MatMix owner",
+          "kind": "owner-identity-evidence",
+          "url": null
+        }
+      ],
+      "attributes": [
+        {
+          "code": "brand",
+          "label": "Бренд",
+          "status": "READY",
+          "value": "Мастер-Класс",
+          "sources": [
+            "masterclass"
+          ],
+          "reason": null,
+          "provenanceNote": "products.brand разрешён только H2, если NULL/empty; синхронное значение attribute brand создаётся H2."
+        },
+        {
+          "code": "product_type",
+          "label": "Тип продукта",
+          "status": "READY",
+          "value": "Универсальная акриловая гидроизоляционная мастика",
+          "sources": [
+            "masterclass"
+          ]
+        },
+        {
+          "code": "shelf_life",
+          "label": "Срок хранения",
+          "status": "READY",
+          "value": 12,
+          "sources": [
+            "masterclass"
+          ]
+        },
+        {
+          "code": "package_weight",
+          "label": "Фасовка",
+          "status": "READY",
+          "value": 5,
+          "sources": [
+            "masterclass"
+          ]
+        },
+        {
+          "code": "base",
+          "label": "Основа",
+          "status": "READY",
+          "value": "Акриловая",
+          "sources": [
+            "masterclass"
+          ]
+        },
+        {
+          "code": "purpose",
+          "label": "Назначение",
+          "status": "READY",
+          "value": "Придание основаниям гидроизолирующих свойств; формирование ровной эластичной водозащитной плёнки",
+          "sources": [
+            "masterclass"
+          ]
+        },
+        {
+          "code": "application_area",
+          "label": "Область применения",
+          "status": "READY",
+          "value": "Внутренние и наружные работы; душевые, ванные комнаты, бани и сауны",
+          "sources": [
+            "masterclass"
+          ]
+        },
+        {
+          "code": "application_method",
+          "label": "Способ нанесения",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Не указано в доступной официальной карточке; не заимствуется со вторичных сайтов.",
+          "sources": [
+            "masterclass"
+          ]
+        },
+        {
+          "code": "substrates",
+          "label": "Основания",
+          "status": "READY",
+          "value": "Гипсокартон, гипсолит, асбестоцемент, кирпич, бетон",
+          "sources": [
+            "masterclass"
+          ]
+        },
+        {
+          "code": "color",
+          "label": "Цвет",
+          "status": "READY",
+          "value": "Голубой",
+          "sources": [
+            "masterclass"
+          ]
+        },
+        {
+          "code": "layer_thickness",
+          "label": "Толщина слоя",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Толщина слоя не указана.",
+          "sources": [
+            "masterclass"
+          ]
+        },
+        {
+          "code": "consumption",
+          "label": "Расход",
+          "status": "READY",
+          "value": "0,25–0,35 кг/м² на однослойное покрытие",
+          "sources": [
+            "masterclass"
+          ]
+        },
+        {
+          "code": "water_requirement",
+          "label": "Количество воды",
+          "status": "ABSENT_BY_DESIGN",
+          "value": null,
+          "reason": "Готовая акриловая мастика; затворение водой не предусмотрено.",
+          "sources": [
+            "masterclass"
+          ]
+        },
+        {
+          "code": "mixing_ratio",
+          "label": "Соотношение компонентов",
+          "status": "ABSENT_BY_DESIGN",
+          "value": null,
+          "reason": "Однокомпонентная готовая мастика.",
+          "sources": [
+            "masterclass"
+          ]
+        },
+        {
+          "code": "pot_life",
+          "label": "Жизнеспособность",
+          "status": "ABSENT_BY_DESIGN",
+          "value": null,
+          "reason": "Для готовой мастики время жизни затворённого раствора неприменимо.",
+          "sources": [
+            "masterclass"
+          ]
+        },
+        {
+          "code": "drying_time",
+          "label": "Время высыхания",
+          "status": "READY",
+          "value": "24 часа при +20 °C",
+          "sources": [
+            "masterclass"
+          ]
+        },
+        {
+          "code": "application_temperature",
+          "label": "Температура применения",
+          "status": "READY",
+          "value": "не ниже +5 °C",
+          "sources": [
+            "masterclass"
+          ]
+        },
+        {
+          "code": "compressive_strength",
+          "label": "Прочность на сжатие",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Не заявлена.",
+          "sources": [
+            "masterclass"
+          ]
+        },
+        {
+          "code": "adhesion",
+          "label": "Адгезия",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Числовая адгезия не указана.",
+          "sources": [
+            "masterclass"
+          ]
+        },
+        {
+          "code": "frost_resistance",
+          "label": "Морозостойкость",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Не подтверждена.",
+          "sources": [
+            "masterclass"
+          ]
+        },
+        {
+          "code": "waterproofness",
+          "label": "Водонепроницаемость",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Числовой класс/давление не указаны.",
+          "sources": [
+            "masterclass"
+          ]
+        },
+        {
+          "code": "crack_bridging",
+          "label": "Перекрытие трещин",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Не подтверждена.",
+          "sources": [
+            "masterclass"
+          ]
+        },
+        {
+          "code": "standard",
+          "label": "Стандарт/ТУ",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Применимый стандарт/ТУ не подтверждён.",
+          "sources": [
+            "masterclass"
+          ]
+        }
+      ],
+      "counts": {
+        "READY": 12,
+        "NEEDS_SOURCE": 8,
+        "SOURCE_CONFLICT": 0,
+        "ABSENT_BY_DESIGN": 3
+      },
+      "readyAttributeCount": 12,
+      "needsSource": [
+        "application_method",
+        "layer_thickness",
+        "compressive_strength",
+        "adhesion",
+        "frost_resistance",
+        "waterproofness",
+        "crack_bridging",
+        "standard"
+      ],
+      "sourceConflicts": [],
+      "absentByDesign": [
+        {
+          "code": "water_requirement",
+          "reason": "Готовая акриловая мастика; затворение водой не предусмотрено.",
+          "sources": [
+            "masterclass"
+          ]
+        },
+        {
+          "code": "mixing_ratio",
+          "reason": "Однокомпонентная готовая мастика.",
+          "sources": [
+            "masterclass"
+          ]
+        },
+        {
+          "code": "pot_life",
+          "reason": "Для готовой мастики время жизни затворённого раствора неприменимо.",
+          "sources": [
+            "masterclass"
+          ]
+        }
+      ],
+      "factsNotStored": [],
+      "visibleCopy": {
+        "shortDescription": "Мастер-Класс, универсальная акриловая гидроизоляция 5 кг для внутренних и наружных работ.",
+        "fullDescription": "Универсальная акриловая мастика Мастер-Класс в фасовке 5 кг предназначена для придания основаниям гидроизолирующих свойств. После нанесения образует ровную эластичную водозащитную плёнку. Производитель указывает применение по гипсокартону, гипсолиту, асбестоцементу, кирпичу и бетону, в том числе во влажных помещениях, банях и саунах. Расход однослойного покрытия составляет 0,25–0,35 кг/м²; высыхание — 24 часа при +20 °C."
+      },
+      "seo": {
+        "title": "Мастер-Класс гидроизоляция 5 кг — купить в Москве",
+        "description": "Универсальная акриловая гидроизоляционная мастика Мастер-Класс 5 кг для внутренних и наружных работ. Закажите в MatMix с доставкой по Москве."
+      },
+      "imageState": {
+        "status": "INTENTIONALLY_UNTOUCHED",
+        "currentUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "productImagesCount": 1,
+        "sharedPlaceholder": true,
+        "photoStageRequired": true
+      },
+      "finalStageStatus": "CORE_PARTIAL_VISIBLE_READY_IMAGE_PENDING"
+    },
+    {
+      "externalId": "MAT-000102",
+      "identity": {
+        "status": "IDENTITY_CONFIRMED",
+        "brand": "СТК Профи",
+        "exactTitle": "Гидроизоляция универсальная PROFI 5 кг",
+        "exactSlug": "гидроизоляция-универсальная-profi-5-кг",
+        "packageWeightKg": 5,
+        "packageEvidence": "official-product-page + owner-provided packaging photo"
+      },
+      "current": {
+        "id": 94,
+        "title": "Гидроизоляция универсальная PROFI 5 кг",
+        "slug": "гидроизоляция-универсальная-profi-5-кг",
+        "category": "Смеси",
+        "subcategory": "Гидроизоляция",
+        "weight": 5,
+        "unit": "шт",
+        "price": null,
+        "brand": null,
+        "attributeCount": 0,
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "productImagesCount": 1,
+        "shortDescription": null,
+        "fullDescription": null,
+        "seoTitle": null,
+        "seoDescription": null
+      },
+      "sourceStatus": "PARTIAL_SOURCE_GAPS",
+      "sources": [
+        {
+          "key": "stk755",
+          "title": "БС-755 PROFI — официальный каталог СТК Профи",
+          "owner": "СТК Профи",
+          "kind": "manufacturer-page",
+          "url": "https://stkprofi.ru/shop/bs-755-poliakrilovaya-mastika-gidroizolyatsiya-profi/"
+        },
+        {
+          "key": "owner102",
+          "title": "Фото упаковки, предоставленное владельцем (идентичность MAT-000102)",
+          "owner": "MatMix owner",
+          "kind": "owner-identity-evidence",
+          "url": null
+        }
+      ],
+      "attributes": [
+        {
+          "code": "brand",
+          "label": "Бренд",
+          "status": "READY",
+          "value": "СТК Профи",
+          "sources": [
+            "stk755"
+          ],
+          "reason": null,
+          "provenanceNote": "products.brand разрешён только H2, если NULL/empty; синхронное значение attribute brand создаётся H2."
+        },
+        {
+          "code": "product_type",
+          "label": "Тип продукта",
+          "status": "READY",
+          "value": "Готовая полиакриловая гидроизоляционная мастика",
+          "sources": [
+            "stk755"
+          ]
+        },
+        {
+          "code": "shelf_life",
+          "label": "Срок хранения",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Срок хранения exact БС-755 не подтверждён; значение БС-774 не переносится.",
+          "sources": [
+            "stk755"
+          ]
+        },
+        {
+          "code": "package_weight",
+          "label": "Фасовка",
+          "status": "READY",
+          "value": 5,
+          "sources": [
+            "stk755"
+          ]
+        },
+        {
+          "code": "base",
+          "label": "Основа",
+          "status": "READY",
+          "value": "Полиакриловая",
+          "sources": [
+            "stk755"
+          ]
+        },
+        {
+          "code": "purpose",
+          "label": "Назначение",
+          "status": "READY",
+          "value": "Водоотталкивающая гидроизоляционная обработка жилых и нежилых помещений",
+          "sources": [
+            "stk755"
+          ]
+        },
+        {
+          "code": "application_area",
+          "label": "Область применения",
+          "status": "READY",
+          "value": "Жилые и нежилые помещения; санузлы и ванные комнаты",
+          "sources": [
+            "stk755"
+          ]
+        },
+        {
+          "code": "application_method",
+          "label": "Способ нанесения",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Способ нанесения для БС-755 не подтверждён.",
+          "sources": [
+            "stk755"
+          ]
+        },
+        {
+          "code": "substrates",
+          "label": "Основания",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Список оснований для БС-755 не подтверждён; данные БС-774 не переносятся.",
+          "sources": [
+            "stk755"
+          ]
+        },
+        {
+          "code": "color",
+          "label": "Цвет",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Цвет exact SKU не указан.",
+          "sources": [
+            "stk755"
+          ]
+        },
+        {
+          "code": "layer_thickness",
+          "label": "Толщина слоя",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Толщина слоя для БС-755 не подтверждена.",
+          "sources": [
+            "stk755"
+          ]
+        },
+        {
+          "code": "consumption",
+          "label": "Расход",
+          "status": "READY",
+          "value": "0,10–0,12 кг/м²",
+          "sources": [
+            "stk755"
+          ]
+        },
+        {
+          "code": "water_requirement",
+          "label": "Количество воды",
+          "status": "ABSENT_BY_DESIGN",
+          "value": null,
+          "reason": "Готовая к применению мастика.",
+          "sources": [
+            "stk755"
+          ]
+        },
+        {
+          "code": "mixing_ratio",
+          "label": "Соотношение компонентов",
+          "status": "ABSENT_BY_DESIGN",
+          "value": null,
+          "reason": "Однокомпонентная готовая мастика.",
+          "sources": [
+            "stk755"
+          ]
+        },
+        {
+          "code": "pot_life",
+          "label": "Жизнеспособность",
+          "status": "ABSENT_BY_DESIGN",
+          "value": null,
+          "reason": "Для готовой мастики время жизни затворённого раствора неприменимо.",
+          "sources": [
+            "stk755"
+          ]
+        },
+        {
+          "code": "drying_time",
+          "label": "Время высыхания",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Время сушки для БС-755 не подтверждено.",
+          "sources": [
+            "stk755"
+          ]
+        },
+        {
+          "code": "application_temperature",
+          "label": "Температура применения",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Температура нанесения для БС-755 не подтверждена.",
+          "sources": [
+            "stk755"
+          ]
+        },
+        {
+          "code": "compressive_strength",
+          "label": "Прочность на сжатие",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Не заявлена.",
+          "sources": [
+            "stk755"
+          ]
+        },
+        {
+          "code": "adhesion",
+          "label": "Адгезия",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Числовая адгезия не указана.",
+          "sources": [
+            "stk755"
+          ]
+        },
+        {
+          "code": "frost_resistance",
+          "label": "Морозостойкость",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Не подтверждена.",
+          "sources": [
+            "stk755"
+          ]
+        },
+        {
+          "code": "waterproofness",
+          "label": "Водонепроницаемость",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Числовое значение/класс не указан.",
+          "sources": [
+            "stk755"
+          ]
+        },
+        {
+          "code": "crack_bridging",
+          "label": "Перекрытие трещин",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Не подтверждена.",
+          "sources": [
+            "stk755"
+          ]
+        },
+        {
+          "code": "standard",
+          "label": "Стандарт/ТУ",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Применимый стандарт/ТУ не подтверждён.",
+          "sources": [
+            "stk755"
+          ]
+        }
+      ],
+      "counts": {
+        "READY": 7,
+        "NEEDS_SOURCE": 13,
+        "SOURCE_CONFLICT": 0,
+        "ABSENT_BY_DESIGN": 3
+      },
+      "readyAttributeCount": 7,
+      "needsSource": [
+        "shelf_life",
+        "application_method",
+        "substrates",
+        "color",
+        "layer_thickness",
+        "drying_time",
+        "application_temperature",
+        "compressive_strength",
+        "adhesion",
+        "frost_resistance",
+        "waterproofness",
+        "crack_bridging",
+        "standard"
+      ],
+      "sourceConflicts": [],
+      "absentByDesign": [
+        {
+          "code": "water_requirement",
+          "reason": "Готовая к применению мастика.",
+          "sources": [
+            "stk755"
+          ]
+        },
+        {
+          "code": "mixing_ratio",
+          "reason": "Однокомпонентная готовая мастика.",
+          "sources": [
+            "stk755"
+          ]
+        },
+        {
+          "code": "pot_life",
+          "reason": "Для готовой мастики время жизни затворённого раствора неприменимо.",
+          "sources": [
+            "stk755"
+          ]
+        }
+      ],
+      "factsNotStored": [],
+      "visibleCopy": {
+        "shortDescription": "СТК Профи БС-755 PROFI, 5 кг — готовая полиакриловая гидроизоляционная мастика.",
+        "fullDescription": "Готовая полиакриловая мастика СТК Профи БС-755 PROFI поставляется в ведре 5 кг. Производитель указывает её применение для обработки жилых и нежилых помещений, включая санузлы и ванные комнаты. Расход составляет 100–120 г/м². Характеристики других продуктов СТК Профи в этот текст не переносились."
+      },
+      "seo": {
+        "title": "СТК Профи PROFI 5 кг — купить гидроизоляцию в Москве",
+        "description": "Готовая полиакриловая мастика СТК Профи PROFI 5 кг, расход 100–120 г/м². Закажите гидроизоляцию с доставкой по Москве и области."
+      },
+      "imageState": {
+        "status": "INTENTIONALLY_UNTOUCHED",
+        "currentUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "productImagesCount": 1,
+        "sharedPlaceholder": true,
+        "photoStageRequired": true
+      },
+      "finalStageStatus": "CORE_PARTIAL_VISIBLE_READY_IMAGE_PENDING"
+    },
+    {
+      "externalId": "MAT-000103",
+      "identity": {
+        "status": "IDENTITY_CONFIRMED",
+        "brand": "Ceresit",
+        "exactTitle": "Гидроизоляция Ceresit CR 65 20 кг",
+        "exactSlug": "гидроизоляция-ceresit-cr-65-20-кг",
+        "packageWeightKg": 20,
+        "packageEvidence": "manufacturer-source-and-exact-local-title"
+      },
+      "current": {
+        "id": 95,
+        "title": "Гидроизоляция Ceresit CR 65 20 кг",
+        "slug": "гидроизоляция-ceresit-cr-65-20-кг",
+        "category": "Смеси",
+        "subcategory": "Гидроизоляция",
+        "weight": 20,
+        "unit": "шт",
+        "price": 1566,
+        "brand": null,
+        "attributeCount": 0,
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "productImagesCount": 1,
+        "shortDescription": null,
+        "fullDescription": null,
+        "seoTitle": null,
+        "seoDescription": null
+      },
+      "sourceStatus": "PARTIAL_SOURCE_GAPS",
+      "sources": [
+        {
+          "key": "ceresit65",
+          "title": "Церезит CR 65 — официальный сайт",
+          "owner": "Ceresit / Henkel",
+          "kind": "manufacturer-page",
+          "url": "https://www.ceresit.ru/ru/products/waterproofing/waterproofing-materials/cr_65_waterproof"
+        }
+      ],
+      "attributes": [
+        {
+          "code": "brand",
+          "label": "Бренд",
+          "status": "READY",
+          "value": "Ceresit",
+          "sources": [
+            "ceresit65"
+          ],
+          "reason": null,
+          "provenanceNote": "products.brand разрешён только H2, если NULL/empty; синхронное значение attribute brand создаётся H2."
+        },
+        {
+          "code": "product_type",
+          "label": "Тип продукта",
+          "status": "READY",
+          "value": "Цементная обмазочная гидроизоляция",
+          "sources": [
+            "ceresit65"
+          ]
+        },
+        {
+          "code": "shelf_life",
+          "label": "Срок хранения",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Срок хранения не подтверждён в доступной текущей странице.",
+          "sources": [
+            "ceresit65"
+          ]
+        },
+        {
+          "code": "package_weight",
+          "label": "Фасовка",
+          "status": "READY",
+          "value": 20,
+          "sources": [
+            "ceresit65"
+          ]
+        },
+        {
+          "code": "base",
+          "label": "Основа",
+          "status": "READY",
+          "value": "Цемент, минеральные заполнители, пигмент, модифицирующие добавки",
+          "sources": [
+            "ceresit65"
+          ]
+        },
+        {
+          "code": "purpose",
+          "label": "Назначение",
+          "status": "READY",
+          "value": "Водонепроницаемые покрытия на недеформирующихся, трещиностойких, незасоленных минеральных основаниях без гипса",
+          "sources": [
+            "ceresit65"
+          ]
+        },
+        {
+          "code": "application_area",
+          "label": "Область применения",
+          "status": "READY",
+          "value": "Внутренние и наружные работы; заглублённые сооружения; влажные помещения; небольшие бассейны и резервуары; стяжки с подогревом; защита бетонных конструкций",
+          "sources": [
+            "ceresit65"
+          ]
+        },
+        {
+          "code": "application_method",
+          "label": "Способ нанесения",
+          "status": "READY",
+          "value": "Кисть или шпатель",
+          "sources": [
+            "ceresit65"
+          ]
+        },
+        {
+          "code": "substrates",
+          "label": "Основания",
+          "status": "READY",
+          "value": "Недеформирующиеся трещиностойкие незасоленные минеральные основания без гипса",
+          "sources": [
+            "ceresit65"
+          ]
+        },
+        {
+          "code": "color",
+          "label": "Цвет",
+          "status": "READY",
+          "value": "Серо-розовый",
+          "sources": [
+            "ceresit65"
+          ]
+        },
+        {
+          "code": "layer_thickness",
+          "label": "Толщина слоя",
+          "status": "READY",
+          "value": "2–5 мм в зависимости от условий эксплуатации",
+          "sources": [
+            "ceresit65"
+          ]
+        },
+        {
+          "code": "consumption",
+          "label": "Расход",
+          "status": "READY",
+          "value": "около 3 кг/м² при 2 мм; около 4 кг/м² при 2,5 мм; около 5 кг/м² при 3 мм; до около 8 кг/м² при 5 мм",
+          "sources": [
+            "ceresit65"
+          ]
+        },
+        {
+          "code": "water_requirement",
+          "label": "Количество воды",
+          "status": "READY",
+          "value": "4,8–5,2 л на 20 кг при нанесении кистью; около 4,0 л на 20 кг при нанесении шпателем",
+          "sources": [
+            "ceresit65"
+          ]
+        },
+        {
+          "code": "mixing_ratio",
+          "label": "Соотношение компонентов",
+          "status": "ABSENT_BY_DESIGN",
+          "value": null,
+          "reason": "Однокомпонентная сухая смесь затворяется водой; соотношение компонентов A:B неприменимо.",
+          "sources": [
+            "ceresit65"
+          ]
+        },
+        {
+          "code": "pot_life",
+          "label": "Жизнеспособность",
+          "status": "READY",
+          "value": "около 2 часов",
+          "sources": [
+            "ceresit65"
+          ]
+        },
+        {
+          "code": "drying_time",
+          "label": "Время высыхания",
+          "status": "READY",
+          "value": "Крепление плитки — через 3 суток; гидравлическая нагрузка — через 5 суток",
+          "sources": [
+            "ceresit65"
+          ]
+        },
+        {
+          "code": "application_temperature",
+          "label": "Температура применения",
+          "status": "READY",
+          "value": "от +5 до +30 °C",
+          "sources": [
+            "ceresit65"
+          ]
+        },
+        {
+          "code": "compressive_strength",
+          "label": "Прочность на сжатие",
+          "status": "READY",
+          "value": 20,
+          "sources": [
+            "ceresit65"
+          ],
+          "provenanceNote": "Не менее 20,0 МПа через 28 суток; minimum qualifier retained in provenance."
+        },
+        {
+          "code": "adhesion",
+          "label": "Адгезия",
+          "status": "READY",
+          "value": 1,
+          "sources": [
+            "ceresit65"
+          ],
+          "provenanceNote": "Не менее 1,0 МПа через 28 суток; minimum qualifier retained in provenance."
+        },
+        {
+          "code": "frost_resistance",
+          "label": "Морозостойкость",
+          "status": "READY",
+          "value": "F200",
+          "sources": [
+            "ceresit65"
+          ]
+        },
+        {
+          "code": "waterproofness",
+          "label": "Водонепроницаемость",
+          "status": "READY",
+          "value": "не менее 1,0 МПа (W10)",
+          "sources": [
+            "ceresit65"
+          ]
+        },
+        {
+          "code": "crack_bridging",
+          "label": "Перекрытие трещин",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Не подтверждено для CR 65; эластичность отсылается к CR 166.",
+          "sources": [
+            "ceresit65"
+          ]
+        },
+        {
+          "code": "standard",
+          "label": "Стандарт/ТУ",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Применимый стандарт/ТУ не подтверждён карточкой.",
+          "sources": [
+            "ceresit65"
+          ]
+        }
+      ],
+      "counts": {
+        "READY": 19,
+        "NEEDS_SOURCE": 3,
+        "SOURCE_CONFLICT": 0,
+        "ABSENT_BY_DESIGN": 1
+      },
+      "readyAttributeCount": 19,
+      "needsSource": [
+        "shelf_life",
+        "crack_bridging",
+        "standard"
+      ],
+      "sourceConflicts": [],
+      "absentByDesign": [
+        {
+          "code": "mixing_ratio",
+          "reason": "Однокомпонентная сухая смесь затворяется водой; соотношение компонентов A:B неприменимо.",
+          "sources": [
+            "ceresit65"
+          ]
+        }
+      ],
+      "factsNotStored": [],
+      "visibleCopy": {
+        "shortDescription": "Ceresit CR 65, 20 кг — цементная обмазочная гидроизоляция для недеформирующихся минеральных оснований.",
+        "fullDescription": "Цементную гидроизоляцию Ceresit CR 65 применяют внутри и снаружи зданий на недеформирующихся незасоленных минеральных основаниях без гипса. Её наносят кистью или шпателем; толщина покрытия составляет 2–5 мм в зависимости от условий эксплуатации. Для затворения 20 кг требуется 4,8–5,2 л воды при нанесении кистью или около 4,0 л при нанесении шпателем. Плитку можно крепить через 3 суток, гидравлическая нагрузка допускается через 5 суток."
+      },
+      "seo": {
+        "title": "Ceresit CR 65 20 кг — купить гидроизоляцию в Москве",
+        "description": "Цементная гидроизоляция Ceresit CR 65 20 кг для внутренних и наружных работ. Нанесение кистью или шпателем, слой 2–5 мм. Доставка по Москве и области."
+      },
+      "imageState": {
+        "status": "INTENTIONALLY_UNTOUCHED",
+        "currentUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "productImagesCount": 1,
+        "sharedPlaceholder": true,
+        "photoStageRequired": true
+      },
+      "finalStageStatus": "CORE_PARTIAL_VISIBLE_READY_IMAGE_PENDING"
+    },
+    {
+      "externalId": "MAT-000104",
+      "identity": {
+        "status": "IDENTITY_CONFIRMED",
+        "brand": "Русеан",
+        "exactTitle": "Гидроизоляция минерально химическая восстановительная НЦ Русеан 25 кг",
+        "exactSlug": "гидроизоляция-минерально-химическая-восстановительная-нц-русеан-25-кг",
+        "packageWeightKg": 25,
+        "packageEvidence": "manufacturer-source-and-exact-local-title"
+      },
+      "current": {
+        "id": 96,
+        "title": "Гидроизоляция минерально химическая восстановительная НЦ Русеан 25 кг",
+        "slug": "гидроизоляция-минерально-химическая-восстановительная-нц-русеан-25-кг",
+        "category": "Смеси",
+        "subcategory": "Гидроизоляция",
+        "weight": 25,
+        "unit": "шт",
+        "price": null,
+        "brand": null,
+        "attributeCount": 0,
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "productImagesCount": 1,
+        "shortDescription": null,
+        "fullDescription": null,
+        "seoTitle": null,
+        "seoDescription": null
+      },
+      "sourceStatus": "PARTIAL_SOURCE_CONFLICT",
+      "sources": [
+        {
+          "key": "ruseanNc",
+          "title": "Гидроизоляционные смеси Русеан — материал производителя",
+          "owner": "Русеан",
+          "kind": "manufacturer-article",
+          "url": "https://rusean.ru/articles/smesi-dlya-gidroizolyatsii-articles/gidroizolyatsionnye-smesi-rusean/"
+        },
+        {
+          "key": "ruseanRetail1",
+          "title": "Гидроизоляционная смесь Русеан НЦ 25 кг — точная карточка продавца",
+          "owner": "ДЛЯ ПРОРАБА / Pannel",
+          "kind": "secondary-exact-product-card",
+          "url": "https://pannel.ru/product/gidroizolyacionnaya-smes-rusean-nc-25-kg"
+        },
+        {
+          "key": "ruseanRetail2",
+          "title": "Смесь НЦ Русеан 25 кг — точная карточка продавца",
+          "owner": "ГК Промсервис",
+          "kind": "secondary-exact-product-card",
+          "url": "https://gk-promservis.ru/tsement-nts-dlya-gidroizolyatsii-25kg-rusean/"
+        },
+        {
+          "key": "localCatalog",
+          "title": "Exact local MatMix package title and weight metadata",
+          "owner": "MatMix local catalog",
+          "kind": "local-catalog-metadata",
+          "url": null
+        }
+      ],
+      "attributes": [
+        {
+          "code": "brand",
+          "label": "Бренд",
+          "status": "READY",
+          "value": "Русеан",
+          "sources": [
+            "ruseanNc"
+          ],
+          "reason": null,
+          "provenanceNote": "products.brand разрешён только H2, если NULL/empty; синхронное значение attribute brand создаётся H2."
+        },
+        {
+          "code": "product_type",
+          "label": "Тип продукта",
+          "status": "READY",
+          "value": "Гидроизоляционная сухая смесь на основе напрягающего цемента",
+          "sources": [
+            "ruseanNc"
+          ]
+        },
+        {
+          "code": "shelf_life",
+          "label": "Срок хранения",
+          "status": "SOURCE_CONFLICT",
+          "value": null,
+          "reason": "Вторичные exact карточки противоречат друг другу: 6 и 24 месяца; без актуального официального TDS значение не выбирается.",
+          "sources": [
+            "ruseanRetail1",
+            "ruseanRetail2"
+          ],
+          "conflictingSourceFacts": [
+            "6 месяцев",
+            "24 месяца"
+          ]
+        },
+        {
+          "code": "package_weight",
+          "label": "Фасовка",
+          "status": "READY",
+          "value": 25,
+          "sources": [
+            "ruseanNc",
+            "localCatalog"
+          ],
+          "provenanceNote": "Local title/package metadata agree with exact 25 kg secondary listings; manufacturer article confirms НЦ product family."
+        },
+        {
+          "code": "base",
+          "label": "Основа",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Точный компонентный состав НЦ для этой фасовки не найден в актуальном официальном TDS.",
+          "sources": [
+            "ruseanNc"
+          ]
+        },
+        {
+          "code": "purpose",
+          "label": "Назначение",
+          "status": "READY",
+          "value": "Конструкционная гидроизоляция; производитель указывает напрягающий цемент НЦ как смесь для этого назначения.",
+          "sources": [
+            "ruseanNc"
+          ]
+        },
+        {
+          "code": "application_area",
+          "label": "Область применения",
+          "status": "READY",
+          "value": "Подземные конструкции и ёмкости; детали применения конкретного SKU требуют подтверждения актуальной техкартой.",
+          "sources": [
+            "ruseanNc"
+          ]
+        },
+        {
+          "code": "application_method",
+          "label": "Способ нанесения",
+          "status": "READY",
+          "value": "Кисть или распыление",
+          "sources": [
+            "ruseanNc"
+          ]
+        },
+        {
+          "code": "substrates",
+          "label": "Основания",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Совместимые основания конкретной смеси НЦ не подтверждены производителем в доступном документе.",
+          "sources": [
+            "ruseanNc"
+          ]
+        },
+        {
+          "code": "color",
+          "label": "Цвет",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Цвет exact 25 kg SKU не подтверждён официальным источником.",
+          "sources": [
+            "ruseanRetail1"
+          ]
+        },
+        {
+          "code": "layer_thickness",
+          "label": "Толщина слоя",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Розничные источники расходятся по применению/слоям; не выбран диапазон.",
+          "sources": [
+            "ruseanRetail1",
+            "ruseanRetail2"
+          ]
+        },
+        {
+          "code": "consumption",
+          "label": "Расход",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Не найдено согласованное официальное значение для exact 25 kg продукта.",
+          "sources": [
+            "ruseanRetail1",
+            "ruseanRetail2"
+          ]
+        },
+        {
+          "code": "water_requirement",
+          "label": "Количество воды",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Не найден актуальный официальный расход воды для exact product version.",
+          "sources": [
+            "ruseanRetail1",
+            "ruseanRetail2"
+          ]
+        },
+        {
+          "code": "mixing_ratio",
+          "label": "Соотношение компонентов",
+          "status": "ABSENT_BY_DESIGN",
+          "value": null,
+          "reason": "Однокомпонентная сухая смесь; отдельное соотношение A:B не применяется.",
+          "sources": [
+            "ruseanNc"
+          ]
+        },
+        {
+          "code": "pot_life",
+          "label": "Жизнеспособность",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Вторичные карточки не дают единого подтверждённого значения для exact версии.",
+          "sources": [
+            "ruseanRetail1",
+            "ruseanRetail2"
+          ]
+        },
+        {
+          "code": "drying_time",
+          "label": "Время высыхания",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Не найдено актуальное официальное время высыхания/нагрузки.",
+          "sources": [
+            "ruseanNc"
+          ]
+        },
+        {
+          "code": "application_temperature",
+          "label": "Температура применения",
+          "status": "SOURCE_CONFLICT",
+          "value": null,
+          "reason": "Вторичные данные расходятся: +5…+25 °C и +10…+25 °C; оставить незаполненным до exact актуального TDS.",
+          "sources": [
+            "ruseanRetail1",
+            "ruseanRetail2"
+          ],
+          "conflictingSourceFacts": [
+            "+5…+25 °C",
+            "+10…+25 °C"
+          ]
+        },
+        {
+          "code": "compressive_strength",
+          "label": "Прочность на сжатие",
+          "status": "SOURCE_CONFLICT",
+          "value": null,
+          "reason": "Вторичные exact карточки расходятся: 20 и 39,7 МПа; не выбирать значение без актуального официального TDS.",
+          "sources": [
+            "ruseanRetail1",
+            "ruseanRetail2"
+          ],
+          "conflictingSourceFacts": [
+            "20 МПа",
+            "39,7 МПа"
+          ]
+        },
+        {
+          "code": "adhesion",
+          "label": "Адгезия",
+          "status": "SOURCE_CONFLICT",
+          "value": null,
+          "reason": "Найденные вторичные значения адгезии несовместимы; актуальный официальный TDS отсутствует.",
+          "sources": [
+            "ruseanRetail1",
+            "ruseanRetail2"
+          ],
+          "conflictingSourceFacts": [
+            "conflicting secondary values"
+          ]
+        },
+        {
+          "code": "frost_resistance",
+          "label": "Морозостойкость",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "F50 встречается во вторичных карточках, но независимое согласование exact SKU не завершено.",
+          "sources": [
+            "ruseanRetail1",
+            "ruseanRetail2"
+          ]
+        },
+        {
+          "code": "waterproofness",
+          "label": "Водонепроницаемость",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Класс водонепроницаемости для exact product не удалось подтвердить первичным источником.",
+          "sources": [
+            "ruseanNc"
+          ]
+        },
+        {
+          "code": "crack_bridging",
+          "label": "Перекрытие трещин",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Не заявлено/не подтверждено.",
+          "sources": [
+            "ruseanNc"
+          ]
+        },
+        {
+          "code": "standard",
+          "label": "Стандарт/ТУ",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Применимый стандарт/ТУ exact SKU не найден.",
+          "sources": [
+            "ruseanNc"
+          ]
+        }
+      ],
+      "counts": {
+        "READY": 6,
+        "NEEDS_SOURCE": 12,
+        "SOURCE_CONFLICT": 4,
+        "ABSENT_BY_DESIGN": 1
+      },
+      "readyAttributeCount": 6,
+      "needsSource": [
+        "base",
+        "substrates",
+        "color",
+        "layer_thickness",
+        "consumption",
+        "water_requirement",
+        "pot_life",
+        "drying_time",
+        "frost_resistance",
+        "waterproofness",
+        "crack_bridging",
+        "standard"
+      ],
+      "sourceConflicts": [
+        {
+          "code": "shelf_life",
+          "reason": "Вторичные exact карточки противоречат друг другу: 6 и 24 месяца; без актуального официального TDS значение не выбирается.",
+          "conflictingSourceFacts": [
+            "6 месяцев",
+            "24 месяца"
+          ],
+          "sources": [
+            "ruseanRetail1",
+            "ruseanRetail2"
+          ]
+        },
+        {
+          "code": "application_temperature",
+          "reason": "Вторичные данные расходятся: +5…+25 °C и +10…+25 °C; оставить незаполненным до exact актуального TDS.",
+          "conflictingSourceFacts": [
+            "+5…+25 °C",
+            "+10…+25 °C"
+          ],
+          "sources": [
+            "ruseanRetail1",
+            "ruseanRetail2"
+          ]
+        },
+        {
+          "code": "compressive_strength",
+          "reason": "Вторичные exact карточки расходятся: 20 и 39,7 МПа; не выбирать значение без актуального официального TDS.",
+          "conflictingSourceFacts": [
+            "20 МПа",
+            "39,7 МПа"
+          ],
+          "sources": [
+            "ruseanRetail1",
+            "ruseanRetail2"
+          ]
+        },
+        {
+          "code": "adhesion",
+          "reason": "Найденные вторичные значения адгезии несовместимы; актуальный официальный TDS отсутствует.",
+          "conflictingSourceFacts": [
+            "conflicting secondary values"
+          ],
+          "sources": [
+            "ruseanRetail1",
+            "ruseanRetail2"
+          ]
+        }
+      ],
+      "absentByDesign": [
+        {
+          "code": "mixing_ratio",
+          "reason": "Однокомпонентная сухая смесь; отдельное соотношение A:B не применяется.",
+          "sources": [
+            "ruseanNc"
+          ]
+        }
+      ],
+      "factsNotStored": [
+        "18–19 кг/м² при 10 мм (нет подтверждения exact current source)",
+        "0,15–0,17 л/кг (нет подтверждения exact current source)",
+        "срок хранения 6/24 мес.; прочность 20/39,7 МПа; адгезия и температура расходятся"
+      ],
+      "visibleCopy": {
+        "shortDescription": "Русеан НЦ, 25 кг — гидроизоляционная сухая смесь на основе напрягающего цемента.",
+        "fullDescription": "Смесь Русеан НЦ в фасовке 25 кг основана на напрягающем цементе и предназначена для конструкционной гидроизоляции. Производитель описывает НЦ как специальную смесь для гидроизоляционных задач; доступный официальный материал допускает нанесение кистью или распылением. Технические параметры, по которым источники расходятся, в описание не включены."
+      },
+      "seo": {
+        "title": "Русеан НЦ 25 кг — купить гидроизоляционную смесь в Москве",
+        "description": "Гидроизоляционная смесь Русеан НЦ на основе напрягающего цемента, фасовка 25 кг. Закажите с доставкой по Москве и области."
+      },
+      "imageState": {
+        "status": "INTENTIONALLY_UNTOUCHED",
+        "currentUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "productImagesCount": 1,
+        "sharedPlaceholder": true,
+        "photoStageRequired": true
+      },
+      "finalStageStatus": "CORE_PARTIAL_VISIBLE_READY_IMAGE_PENDING"
+    },
+    {
+      "externalId": "MAT-000105",
+      "identity": {
+        "status": "IDENTITY_CONFIRMED",
+        "brand": "GLIMS",
+        "exactTitle": "Гидроизоляция обмазочная Глимс (Glims) водостоп 18 кг",
+        "exactSlug": "гидроизоляция-обмазочная-глимс-glims-водостоп-18-кг",
+        "packageWeightKg": 18,
+        "packageEvidence": "manufacturer-source-and-exact-local-title"
+      },
+      "current": {
+        "id": 97,
+        "title": "Гидроизоляция обмазочная Глимс (Glims) водостоп 18 кг",
+        "slug": "гидроизоляция-обмазочная-глимс-glims-водостоп-18-кг",
+        "category": "Смеси",
+        "subcategory": "Гидроизоляция",
+        "weight": 18,
+        "unit": "шт",
+        "price": 1425.6000000000001,
+        "brand": null,
+        "attributeCount": 0,
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "productImagesCount": 1,
+        "shortDescription": null,
+        "fullDescription": null,
+        "seoTitle": null,
+        "seoDescription": null
+      },
+      "sourceStatus": "PARTIAL_SOURCE_GAPS",
+      "sources": [
+        {
+          "key": "glims",
+          "title": "GLIMS ВодоStop 18 кг — официальный сайт и TDS",
+          "owner": "GLIMS",
+          "kind": "manufacturer-page-and-tds",
+          "url": "https://glims.ru/catalog/gidroizolyatsiya/gidroizolyatsiya-tsementnaya-obmazochnaya-glims-vodostop-18-kg/"
+        },
+        {
+          "key": "glimsPdf",
+          "title": "GLIMS ВодоStop — официальный PDF",
+          "owner": "GLIMS",
+          "kind": "manufacturer-technical-sheet",
+          "url": "https://www.glims.ru/upload/iblock/95c/d49vru9wi52cjhr8txetqria7r11dza5/GLIMS%C2%AE%20%D0%92%D0%BE%D0%B4%D0%BEStop.pdf"
+        }
+      ],
+      "attributes": [
+        {
+          "code": "brand",
+          "label": "Бренд",
+          "status": "READY",
+          "value": "GLIMS",
+          "sources": [
+            "glims"
+          ],
+          "reason": null,
+          "provenanceNote": "products.brand разрешён только H2, если NULL/empty; синхронное значение attribute brand создаётся H2."
+        },
+        {
+          "code": "product_type",
+          "label": "Тип продукта",
+          "status": "READY",
+          "value": "Сухая цементная обмазочная гидроизоляция",
+          "sources": [
+            "glims"
+          ]
+        },
+        {
+          "code": "shelf_life",
+          "label": "Срок хранения",
+          "status": "READY",
+          "value": 12,
+          "sources": [
+            "glims"
+          ]
+        },
+        {
+          "code": "package_weight",
+          "label": "Фасовка",
+          "status": "READY",
+          "value": 18,
+          "sources": [
+            "glims"
+          ]
+        },
+        {
+          "code": "base",
+          "label": "Основа",
+          "status": "READY",
+          "value": "Цементное вяжущее, минеральные наполнители, модифицирующие добавки",
+          "sources": [
+            "glims"
+          ]
+        },
+        {
+          "code": "purpose",
+          "label": "Назначение",
+          "status": "READY",
+          "value": "Создание бесшовного гидроизоляционного барьера на вертикальных и горизонтальных недеформируемых основаниях",
+          "sources": [
+            "glims"
+          ]
+        },
+        {
+          "code": "application_area",
+          "label": "Область применения",
+          "status": "READY",
+          "value": "Внутренние и наружные работы; фундаменты, подвалы, фасады, цоколи, террасы, балконы, резервуары, бассейны, колодцы и влажные помещения",
+          "sources": [
+            "glims"
+          ]
+        },
+        {
+          "code": "application_method",
+          "label": "Способ нанесения",
+          "status": "READY",
+          "value": "Кисть или шпатель",
+          "sources": [
+            "glims"
+          ]
+        },
+        {
+          "code": "substrates",
+          "label": "Основания",
+          "status": "READY",
+          "value": "Вертикальные и горизонтальные основания, не подверженные деформации",
+          "sources": [
+            "glims"
+          ]
+        },
+        {
+          "code": "color",
+          "label": "Цвет",
+          "status": "READY",
+          "value": "Серый",
+          "sources": [
+            "glims"
+          ]
+        },
+        {
+          "code": "layer_thickness",
+          "label": "Толщина слоя",
+          "status": "READY",
+          "value": "0,5–1 мм за слой; суммарно 1–3 мм в два слоя",
+          "sources": [
+            "glims"
+          ]
+        },
+        {
+          "code": "consumption",
+          "label": "Расход",
+          "status": "READY",
+          "value": "1,4 кг/м² при толщине 1 мм",
+          "sources": [
+            "glims"
+          ]
+        },
+        {
+          "code": "water_requirement",
+          "label": "Количество воды",
+          "status": "READY",
+          "value": "0,33–0,34 л/кг сухой смеси",
+          "sources": [
+            "glims"
+          ]
+        },
+        {
+          "code": "mixing_ratio",
+          "label": "Соотношение компонентов",
+          "status": "ABSENT_BY_DESIGN",
+          "value": null,
+          "reason": "Однокомпонентная сухая смесь затворяется водой; соотношение компонентов A:B неприменимо.",
+          "sources": [
+            "glims"
+          ]
+        },
+        {
+          "code": "pot_life",
+          "label": "Жизнеспособность",
+          "status": "READY",
+          "value": "не менее 240 минут",
+          "sources": [
+            "glims"
+          ]
+        },
+        {
+          "code": "drying_time",
+          "label": "Время высыхания",
+          "status": "READY",
+          "value": "Контакт с водой — через 3 суток",
+          "sources": [
+            "glims"
+          ]
+        },
+        {
+          "code": "application_temperature",
+          "label": "Температура применения",
+          "status": "READY",
+          "value": "от +5 до +35 °C",
+          "sources": [
+            "glims"
+          ]
+        },
+        {
+          "code": "compressive_strength",
+          "label": "Прочность на сжатие",
+          "status": "READY",
+          "value": 6,
+          "sources": [
+            "glims"
+          ],
+          "provenanceNote": "Не менее 6 МПа через 28 суток; minimum qualifier retained in provenance."
+        },
+        {
+          "code": "adhesion",
+          "label": "Адгезия",
+          "status": "READY",
+          "value": 1,
+          "sources": [
+            "glims"
+          ],
+          "provenanceNote": "Не менее 1 МПа; minimum qualifier retained in provenance."
+        },
+        {
+          "code": "frost_resistance",
+          "label": "Морозостойкость",
+          "status": "READY",
+          "value": "Fкз75",
+          "sources": [
+            "glims"
+          ]
+        },
+        {
+          "code": "waterproofness",
+          "label": "Водонепроницаемость",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Официальная страница показывает raw 8/2 MPa, однако направление/единица требуют проверки TDS; не нормализовано и не записывается.",
+          "sources": [
+            "glims"
+          ]
+        },
+        {
+          "code": "crack_bridging",
+          "label": "Перекрытие трещин",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Не заявлено для жёсткой гидроизоляции.",
+          "sources": [
+            "glims"
+          ]
+        },
+        {
+          "code": "standard",
+          "label": "Стандарт/ТУ",
+          "status": "READY",
+          "value": "ТУ 5745-010-40397319-2003 № 0430/1",
+          "sources": [
+            "glims"
+          ]
+        }
+      ],
+      "counts": {
+        "READY": 20,
+        "NEEDS_SOURCE": 2,
+        "SOURCE_CONFLICT": 0,
+        "ABSENT_BY_DESIGN": 1
+      },
+      "readyAttributeCount": 20,
+      "needsSource": [
+        "waterproofness",
+        "crack_bridging"
+      ],
+      "sourceConflicts": [],
+      "absentByDesign": [
+        {
+          "code": "mixing_ratio",
+          "reason": "Однокомпонентная сухая смесь затворяется водой; соотношение компонентов A:B неприменимо.",
+          "sources": [
+            "glims"
+          ]
+        }
+      ],
+      "factsNotStored": [
+        "raw official waterproofness=8/2 MPa; semantics/units appear ambiguous, not normalized"
+      ],
+      "visibleCopy": {
+        "shortDescription": "GLIMS ВодоStop, 18 кг — цементная обмазочная гидроизоляция для недеформируемых оснований.",
+        "fullDescription": "GLIMS ВодоStop — сухая цементная гидроизоляция в упаковке 18 кг для вертикальных и горизонтальных оснований, не подверженных деформации. Материал наносят кистью или шпателем в один или два слоя общей толщиной 1–3 мм. Для затворения требуется 0,33–0,34 л воды на 1 кг смеси; расход — 1,4 кг/м² при слое 1 мм. Производитель указывает контакт с водой через 3 суток."
+      },
+      "seo": {
+        "title": "GLIMS ВодоStop 18 кг — купить гидроизоляцию в Москве",
+        "description": "Цементная гидроизоляция GLIMS ВодоStop 18 кг для недеформируемых оснований. Расход 1,4 кг/м² на 1 мм слоя. Доставка по Москве и области."
+      },
+      "imageState": {
+        "status": "INTENTIONALLY_UNTOUCHED",
+        "currentUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "productImagesCount": 1,
+        "sharedPlaceholder": true,
+        "photoStageRequired": true
+      },
+      "finalStageStatus": "CORE_PARTIAL_VISIBLE_READY_IMAGE_PENDING"
+    },
+    {
+      "externalId": "MAT-000106",
+      "identity": {
+        "status": "IDENTITY_CONFIRMED",
+        "brand": "Mapei",
+        "exactTitle": "Гидроизоляция Mapei Mapelastic двухкомп. компл. (А+Б) 32 кг",
+        "exactSlug": "гидроизоляция-mapei-mapelastic-двухкомп-компл-а-б-32-кг",
+        "packageWeightKg": 32,
+        "packageEvidence": "manufacturer-source-and-exact-local-title"
+      },
+      "current": {
+        "id": 98,
+        "title": "Гидроизоляция Mapei Mapelastic двухкомп. компл. (А+Б) 32 кг",
+        "slug": "гидроизоляция-mapei-mapelastic-двухкомп-компл-а-б-32-кг",
+        "category": "Смеси",
+        "subcategory": "Гидроизоляция",
+        "weight": 32,
+        "unit": "шт",
+        "price": null,
+        "brand": null,
+        "attributeCount": 0,
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "productImagesCount": 1,
+        "shortDescription": null,
+        "fullDescription": null,
+        "seoTitle": null,
+        "seoDescription": null
+      },
+      "sourceStatus": "PARTIAL_SOURCE_GAPS",
+      "sources": [
+        {
+          "key": "mapeiRu",
+          "title": "Mapelastic — официальный российский technical leaflet",
+          "owner": "Mapei Russia",
+          "kind": "manufacturer-technical-sheet",
+          "url": "https://cdnmedia.mapei.com/docs/librariesprovider50/line-technical-documentation-documents/mapei_19-mapelastic_leflet_a6.pdf?sfvrsn=97e83777_18"
+        },
+        {
+          "key": "mapeiPage",
+          "title": "MAPELASTIC — официальный Mapei Kazakhstan (рус.)",
+          "owner": "Mapei",
+          "kind": "manufacturer-page",
+          "url": "https://www.mapei.com/kz/ru/%D0%BC%D0%B0%D1%82%D0%B5%D1%80%D0%B8%D0%B0%D0%BB%D1%8B/%D1%81%D0%BF%D0%B8%D1%81%D0%BE%D0%BA-%D0%BC%D0%B0%D1%82%D0%B5%D1%80%D0%B8%D0%B0%D0%BB%D0%BE%D0%B2/%D0%BE%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BC%D0%B0%D1%82%D0%B5%D1%80%D0%B8%D0%B0%D0%BB%D0%B0/mapelastic"
+        }
+      ],
+      "attributes": [
+        {
+          "code": "brand",
+          "label": "Бренд",
+          "status": "READY",
+          "value": "Mapei",
+          "sources": [
+            "mapeiRu"
+          ],
+          "reason": null,
+          "provenanceNote": "products.brand разрешён только H2, если NULL/empty; синхронное значение attribute brand создаётся H2."
+        },
+        {
+          "code": "product_type",
+          "label": "Тип продукта",
+          "status": "READY",
+          "value": "Двухкомпонентный эластичный цементный гидроизоляционный состав",
+          "sources": [
+            "mapeiRu"
+          ]
+        },
+        {
+          "code": "shelf_life",
+          "label": "Срок хранения",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Срок хранения различается по компонентам A/B (12/24 месяца); одно числовое значение было бы потерей смысла.",
+          "sources": [
+            "mapeiRu",
+            "mapeiPage"
+          ]
+        },
+        {
+          "code": "package_weight",
+          "label": "Фасовка",
+          "status": "READY",
+          "value": 32,
+          "sources": [
+            "mapeiRu",
+            "mapeiPage"
+          ],
+          "provenanceNote": "Официальный источник подтверждает комплект A+B 32 кг; products.weight/title не меняются."
+        },
+        {
+          "code": "base",
+          "label": "Основа",
+          "status": "READY",
+          "value": "Цементное вяжущее, мелкофракционные заполнители, специальные добавки и синтетические полимеры в водной дисперсии",
+          "sources": [
+            "mapeiRu"
+          ]
+        },
+        {
+          "code": "purpose",
+          "label": "Назначение",
+          "status": "READY",
+          "value": "Гидроизоляция балконов, террас, ванных комнат и бассейнов; защита бетонных конструкций",
+          "sources": [
+            "mapeiRu"
+          ]
+        },
+        {
+          "code": "application_area",
+          "label": "Область применения",
+          "status": "READY",
+          "value": "Внутренние и наружные работы",
+          "sources": [
+            "mapeiRu"
+          ]
+        },
+        {
+          "code": "application_method",
+          "label": "Способ нанесения",
+          "status": "READY",
+          "value": "Шпатель или распыление",
+          "sources": [
+            "mapeiRu"
+          ]
+        },
+        {
+          "code": "substrates",
+          "label": "Основания",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Полный список совместимых оснований не перенесён без точного сверенного фрагмента TDS.",
+          "sources": [
+            "mapeiRu"
+          ]
+        },
+        {
+          "code": "color",
+          "label": "Цвет",
+          "status": "READY",
+          "value": "Серый",
+          "sources": [
+            "mapeiRu"
+          ]
+        },
+        {
+          "code": "layer_thickness",
+          "label": "Толщина слоя",
+          "status": "READY",
+          "value": "не менее 2 мм в два слоя",
+          "sources": [
+            "mapeiRu"
+          ]
+        },
+        {
+          "code": "consumption",
+          "label": "Расход",
+          "status": "READY",
+          "value": "около 1,7 кг/м² на 1 мм при нанесении шпателем; около 2,2 кг/м² на 1 мм при распылении",
+          "sources": [
+            "mapeiRu"
+          ]
+        },
+        {
+          "code": "water_requirement",
+          "label": "Количество воды",
+          "status": "ABSENT_BY_DESIGN",
+          "value": null,
+          "reason": "Жидкий компонент B участвует в смешивании; добавление воды в состав не задаётся.",
+          "sources": [
+            "mapeiRu"
+          ]
+        },
+        {
+          "code": "mixing_ratio",
+          "label": "Соотношение компонентов",
+          "status": "READY",
+          "value": "Компонент A : компонент B = 3 : 1",
+          "sources": [
+            "mapeiRu"
+          ]
+        },
+        {
+          "code": "pot_life",
+          "label": "Жизнеспособность",
+          "status": "READY",
+          "value": "около 1 часа",
+          "sources": [
+            "mapeiRu"
+          ]
+        },
+        {
+          "code": "drying_time",
+          "label": "Время высыхания",
+          "status": "READY",
+          "value": "4–5 часов между слоями; около 5 суток до укладки покрытия",
+          "sources": [
+            "mapeiRu"
+          ]
+        },
+        {
+          "code": "application_temperature",
+          "label": "Температура применения",
+          "status": "READY",
+          "value": "от +5 до +35 °C",
+          "sources": [
+            "mapeiRu"
+          ]
+        },
+        {
+          "code": "compressive_strength",
+          "label": "Прочность на сжатие",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Не является сохранённым подтверждённым полем для этого продукта в RU TDS.",
+          "sources": [
+            "mapeiRu"
+          ]
+        },
+        {
+          "code": "adhesion",
+          "label": "Адгезия",
+          "status": "READY",
+          "value": 1,
+          "sources": [
+            "mapeiRu"
+          ],
+          "provenanceNote": "1,0 МПа после 28 суток по EN 1542; не смешивать с тестами EN 14891."
+        },
+        {
+          "code": "frost_resistance",
+          "label": "Морозостойкость",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Значение из отдельного покрытия/стандарта не переносится без совпадающего тест-контекста.",
+          "sources": [
+            "mapeiRu"
+          ]
+        },
+        {
+          "code": "waterproofness",
+          "label": "Водонепроницаемость",
+          "status": "READY",
+          "value": "W20",
+          "sources": [
+            "mapeiRu"
+          ]
+        },
+        {
+          "code": "crack_bridging",
+          "label": "Перекрытие трещин",
+          "status": "READY",
+          "value": "Трещиностойкость 0,75 мм через 28 суток",
+          "sources": [
+            "mapeiRu"
+          ]
+        },
+        {
+          "code": "standard",
+          "label": "Стандарт/ТУ",
+          "status": "READY",
+          "value": "EN 1504-2; EN 14891; ГОСТ 32016-2012; ГОСТ 32017-2012",
+          "sources": [
+            "mapeiRu"
+          ]
+        }
+      ],
+      "counts": {
+        "READY": 18,
+        "NEEDS_SOURCE": 4,
+        "SOURCE_CONFLICT": 0,
+        "ABSENT_BY_DESIGN": 1
+      },
+      "readyAttributeCount": 18,
+      "needsSource": [
+        "shelf_life",
+        "substrates",
+        "compressive_strength",
+        "frost_resistance"
+      ],
+      "sourceConflicts": [],
+      "absentByDesign": [
+        {
+          "code": "water_requirement",
+          "reason": "Жидкий компонент B участвует в смешивании; добавление воды в состав не задаётся.",
+          "sources": [
+            "mapeiRu"
+          ]
+        }
+      ],
+      "factsNotStored": [],
+      "visibleCopy": {
+        "shortDescription": "Mapei Mapelastic, комплект A+B 32 кг — двухкомпонентная эластичная цементная гидроизоляция.",
+        "fullDescription": "Mapei Mapelastic — двухкомпонентный эластичный цементный гидроизоляционный состав; комплект A+B имеет фасовку 32 кг. Его применяют для гидроизоляции балконов, террас, ванных комнат и бассейнов, а также для защиты бетонных конструкций. Компоненты смешивают в соотношении A:B = 3:1; состав наносят шпателем или распылением, формируя слой не менее 2 мм в два прохода."
+      },
+      "seo": {
+        "title": "Mapei Mapelastic A+B 32 кг — купить гидроизоляцию в Москве",
+        "description": "Двухкомпонентная гидроизоляция Mapei Mapelastic, комплект A+B 32 кг, для балконов, террас, ванных комнат и бассейнов. Доставка по Москве и области."
+      },
+      "imageState": {
+        "status": "INTENTIONALLY_UNTOUCHED",
+        "currentUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "productImagesCount": 1,
+        "sharedPlaceholder": true,
+        "photoStageRequired": true
+      },
+      "finalStageStatus": "CORE_PARTIAL_VISIBLE_READY_IMAGE_PENDING"
+    },
+    {
+      "externalId": "MAT-000107",
+      "identity": {
+        "status": "IDENTITY_CONFIRMED",
+        "brand": "Ceresit",
+        "exactTitle": "Гидроизоляция цементная Ceresit CR 166 двухкомп. компл. (А+Б) 32 кг",
+        "exactSlug": "гидроизоляция-цементная-ceresit-cr-166-двухкомп-компл-а-б-32-кг",
+        "packageWeightKg": 32,
+        "packageEvidence": "manufacturer-source-and-exact-local-title"
+      },
+      "current": {
+        "id": 99,
+        "title": "Гидроизоляция цементная Ceresit CR 166 двухкомп. компл. (А+Б) 32 кг",
+        "slug": "гидроизоляция-цементная-ceresit-cr-166-двухкомп-компл-а-б-32-кг",
+        "category": "Смеси",
+        "subcategory": "Гидроизоляция",
+        "weight": 32,
+        "unit": "шт",
+        "price": null,
+        "brand": null,
+        "attributeCount": 0,
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "productImagesCount": 1,
+        "shortDescription": null,
+        "fullDescription": null,
+        "seoTitle": null,
+        "seoDescription": null
+      },
+      "sourceStatus": "PARTIAL_SOURCE_GAPS",
+      "sources": [
+        {
+          "key": "ceresit166",
+          "title": "Церезит CR 166 — официальный сайт",
+          "owner": "Ceresit / Henkel",
+          "kind": "manufacturer-page",
+          "url": "https://www.ceresit.ru/ru/products/waterproofing/waterproofing-materials/cr-166"
+        }
+      ],
+      "attributes": [
+        {
+          "code": "brand",
+          "label": "Бренд",
+          "status": "READY",
+          "value": "Ceresit",
+          "sources": [
+            "ceresit166"
+          ],
+          "reason": null,
+          "provenanceNote": "products.brand разрешён только H2, если NULL/empty; синхронное значение attribute brand создаётся H2."
+        },
+        {
+          "code": "product_type",
+          "label": "Тип продукта",
+          "status": "READY",
+          "value": "Двухкомпонентная эластичная цементно-полимерная гидроизоляция",
+          "sources": [
+            "ceresit166"
+          ]
+        },
+        {
+          "code": "shelf_life",
+          "label": "Срок хранения",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Единый срок хранения комплекта не подтверждён; компонентные сроки не сведены.",
+          "sources": [
+            "ceresit166"
+          ]
+        },
+        {
+          "code": "package_weight",
+          "label": "Фасовка",
+          "status": "READY",
+          "value": 32,
+          "sources": [
+            "ceresit166"
+          ],
+          "provenanceNote": "Локальная фасовка 32 кг сохраняется; официальный комплект описан как 24 кг компонента A + 8 л компонента B; литры не конвертируются в килограммы."
+        },
+        {
+          "code": "base",
+          "label": "Основа",
+          "status": "READY",
+          "value": "Компонент A: цемент, минеральные заполнители и модифицирующие добавки; компонент B: водная дисперсия полимера",
+          "sources": [
+            "ceresit166"
+          ]
+        },
+        {
+          "code": "purpose",
+          "label": "Назначение",
+          "status": "READY",
+          "value": "Эластичная гидроизоляция незасоленных минеральных оснований без гипса, в том числе подверженных деформациям",
+          "sources": [
+            "ceresit166"
+          ]
+        },
+        {
+          "code": "application_area",
+          "label": "Область применения",
+          "status": "READY",
+          "value": "Внутренние и наружные работы; фундаменты, гидротехнические сооружения, террасы, балконы, бассейны и резервуары; защита бетона и железобетона",
+          "sources": [
+            "ceresit166"
+          ]
+        },
+        {
+          "code": "application_method",
+          "label": "Способ нанесения",
+          "status": "READY",
+          "value": "Шпатель, кисть или механизированное нанесение",
+          "sources": [
+            "ceresit166"
+          ]
+        },
+        {
+          "code": "substrates",
+          "label": "Основания",
+          "status": "READY",
+          "value": "Незасоленные минеральные основания без гипса, в том числе подверженные деформациям",
+          "sources": [
+            "ceresit166"
+          ]
+        },
+        {
+          "code": "color",
+          "label": "Цвет",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Цвет не подтверждён для точной упаковки.",
+          "sources": [
+            "ceresit166"
+          ]
+        },
+        {
+          "code": "layer_thickness",
+          "label": "Толщина слоя",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Точное общее ограничение слоя не подтверждено.",
+          "sources": [
+            "ceresit166"
+          ]
+        },
+        {
+          "code": "consumption",
+          "label": "Расход",
+          "status": "READY",
+          "value": "1,5–1,7 кг/м² на 1 мм толщины",
+          "sources": [
+            "ceresit166"
+          ]
+        },
+        {
+          "code": "water_requirement",
+          "label": "Количество воды",
+          "status": "ABSENT_BY_DESIGN",
+          "value": null,
+          "reason": "Двухкомпонентная система использует жидкий компонент B вместо воды затворения.",
+          "sources": [
+            "ceresit166"
+          ]
+        },
+        {
+          "code": "mixing_ratio",
+          "label": "Соотношение компонентов",
+          "status": "READY",
+          "value": "Компонент A : компонент B = 3 : 1 по массе",
+          "sources": [
+            "ceresit166"
+          ]
+        },
+        {
+          "code": "pot_life",
+          "label": "Жизнеспособность",
+          "status": "READY",
+          "value": "около 1 часа",
+          "sources": [
+            "ceresit166"
+          ]
+        },
+        {
+          "code": "drying_time",
+          "label": "Время высыхания",
+          "status": "READY",
+          "value": "Укладка плитки — через 12 часов; гидравлическая нагрузка — через 7 суток",
+          "sources": [
+            "ceresit166"
+          ]
+        },
+        {
+          "code": "application_temperature",
+          "label": "Температура применения",
+          "status": "READY",
+          "value": "от +5 до +30 °C",
+          "sources": [
+            "ceresit166"
+          ]
+        },
+        {
+          "code": "compressive_strength",
+          "label": "Прочность на сжатие",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Не подтверждена на текущей странице.",
+          "sources": [
+            "ceresit166"
+          ]
+        },
+        {
+          "code": "adhesion",
+          "label": "Адгезия",
+          "status": "READY",
+          "value": 1,
+          "sources": [
+            "ceresit166"
+          ],
+          "provenanceNote": "Не менее 1,0 МПа после 28 суток; minimum qualifier retained in provenance."
+        },
+        {
+          "code": "frost_resistance",
+          "label": "Морозостойкость",
+          "status": "READY",
+          "value": "Fкз100",
+          "sources": [
+            "ceresit166"
+          ]
+        },
+        {
+          "code": "waterproofness",
+          "label": "Водонепроницаемость",
+          "status": "READY",
+          "value": "Позитивное давление: не менее 2,0 МПа (W20); негативное: не менее 0,2 МПа (W2)",
+          "sources": [
+            "ceresit166"
+          ]
+        },
+        {
+          "code": "crack_bridging",
+          "label": "Перекрытие трещин",
+          "status": "READY",
+          "value": "Не менее 1,25 мм при +20 °C; не менее 1,0 мм при −5 °C; не менее 0,5 мм при −20 °C",
+          "sources": [
+            "ceresit166"
+          ]
+        },
+        {
+          "code": "standard",
+          "label": "Стандарт/ТУ",
+          "status": "NEEDS_SOURCE",
+          "value": null,
+          "reason": "Применимый стандарт/ТУ не подтверждён доступной карточкой.",
+          "sources": [
+            "ceresit166"
+          ]
+        }
+      ],
+      "counts": {
+        "READY": 17,
+        "NEEDS_SOURCE": 5,
+        "SOURCE_CONFLICT": 0,
+        "ABSENT_BY_DESIGN": 1
+      },
+      "readyAttributeCount": 17,
+      "needsSource": [
+        "shelf_life",
+        "color",
+        "layer_thickness",
+        "compressive_strength",
+        "standard"
+      ],
+      "sourceConflicts": [],
+      "absentByDesign": [
+        {
+          "code": "water_requirement",
+          "reason": "Двухкомпонентная система использует жидкий компонент B вместо воды затворения.",
+          "sources": [
+            "ceresit166"
+          ]
+        }
+      ],
+      "factsNotStored": [],
+      "visibleCopy": {
+        "shortDescription": "Ceresit CR 166, комплект 32 кг по локальной карточке — двухкомпонентная эластичная гидроизоляция.",
+        "fullDescription": "Ceresit CR 166 — двухкомпонентная эластичная цементно-полимерная гидроизоляция для внутренних и наружных работ. Официальная упаковка включает компонент A — сухую смесь 24 кг — и компонент B — жидкий эластификатор 8 л; локальные title и products.weight остаются без изменений. Смесь наносят шпателем, кистью или механизированно на незасоленные минеральные основания без гипса. Плитку можно укладывать через 12 часов, гидравлическая нагрузка допускается через 7 суток."
+      },
+      "seo": {
+        "title": "Ceresit CR 166 комплект 32 кг — купить в Москве",
+        "description": "Двухкомпонентная гидроизоляция Ceresit CR 166: сухой компонент 24 кг и жидкий эластификатор 8 л. Для внутренних и наружных работ. Доставка по Москве."
+      },
+      "imageState": {
+        "status": "INTENTIONALLY_UNTOUCHED",
+        "currentUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "productImagesCount": 1,
+        "sharedPlaceholder": true,
+        "photoStageRequired": true
+      },
+      "finalStageStatus": "CORE_PARTIAL_VISIBLE_READY_IMAGE_PENDING"
+    }
+  ]
+}
