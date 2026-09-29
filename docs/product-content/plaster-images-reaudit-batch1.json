@@ -78,22 +78,22 @@
       "MAT-000024",
       "MAT-000025",
       "MAT-000026",
-      "MAT-000027"
+      "MAT-000027",
+      "MAT-000028"
     ],
     "cleanup": [],
     "rebuild": [],
-    "researchRequired": [
-      "MAT-000028"
-    ],
-    "ownerReviewRequired": [
-      "MAT-000028"
-    ],
+    "researchRequired": [],
+    "ownerReviewRequired": [],
     "readyForOwnerBatchReview": true
   },
   "importerProtectionAudit": {
     "file": "backend/scripts/import-product-images.js",
     "protectedSetLocation": "PROTECTED_MATS constant (line 10)",
-    "protectedMats": ["MAT-000002", "MAT-000005"],
+    "protectedMats": [
+      "MAT-000002",
+      "MAT-000005"
+    ],
     "runtimeRule": "planBatch marks a member PROTECTED unless allowProtectedOverwrite is true",
     "origin": "The set is present in importer introduction commit 6f5614e (add batch product image importer); that commit contains no explanatory comment.",
     "projectPurpose": "These products are designated control/reference products with existing prepared production photos; default protection prevents accidental replacement. This purpose is from the project workflow, not a code comment.",
@@ -134,9 +134,14 @@
   "artifacts": {
     "currentContactSheet": "product-images-batch\\plaster-image-reaudit-batch1\\production-current\\contact-sheet.png",
     "comparativeContactSheet": "product-images-batch\\plaster-image-reaudit-batch1\\sheets\\plaster-images-reaudit-contact-sheet.png",
-    "exceptionSheet": "product-images-batch\\plaster-image-reaudit-batch1\\sheets\\plaster-images-reaudit-exception-sheet.png",
     "workingImagesUntracked": true,
-    "committedImageBinaries": false
+    "committedImageBinaries": false,
+    "exceptionSheetHistorical": {
+      "path": "product-images-batch\\plaster-image-reaudit-batch1\\sheets\\plaster-images-reaudit-exception-sheet.png",
+      "active": false,
+      "reason": "MAT-000028 is now REFRAME; retained locally as historical, not active review artifact, not committed."
+    },
+    "finalContactSheet": "product-images-batch\\plaster-image-reaudit-batch1\\sheets\\plaster-images-reaudit-contact-sheet.png"
   },
   "products": [
     {
@@ -1453,10 +1458,10 @@
       "externalId": "MAT-000028",
       "title": "Штукатурная смесь цементная Русеан М-150 40кг",
       "brand": "Русеан",
-      "modelOrVariant": "Штукатурная смесь; title contains M-150 (source designation unresolved)",
+      "modelOrVariant": "Штукатурная смесь; current official manufacturer title omits M-150 (DATA_IDENTITY_NOTE)",
       "packageWeightKg": 40,
       "packagingForm": "мешок",
-      "visiblePackIdentity": "РУСЕАН; СУХАЯ СМЕСЬ ШТУКАТУРНАЯ; 40 кг; обозначение M-150 на пакете не видно",
+      "visiblePackIdentity": "РУСЕАН; СУХАЯ СМЕСЬ ШТУКАТУРНАЯ; 40 кг; ГОСТ 33083-2014; ручное нанесение; внутренние/наружные работы; M-150 на пакете не видно",
       "category": "Смеси",
       "subcategory": "Штукатурка",
       "currentProductionImage": {
@@ -1471,12 +1476,12 @@
         "measurement": "Largest product-pixel bbox / limiting canvas side; RGB deviation from white > 10",
         "whiteCorners": true
       },
-      "classification": "RESEARCH_REQUIRED",
-      "identityConfidence": "MEDIUM — product family and pack size align, but title’s M-150 SKU designation does not map to visible pack/source with certainty",
+      "classification": "REFRAME",
+      "identityConfidence": "HIGH for the current Rusean plaster product and 40 kg pack under owner review; M-150 remains a title-level DATA_IDENTITY_NOTE, not a visible package claim",
       "identityEvidence": {
         "publicProductUrl": "https://matmix.ru/product/MAT-000028",
         "visiblePackageText": "РУСЕАН; СУХАЯ СМЕСЬ ШТУКАТУРНАЯ; 40 кг; обозначение M-150 на пакете не видно",
-        "assessment": "Публичный title содержит M-150, но фото показывает только штукатурную смесь Русеан 40 кг. В исходном identity review есть официальный источник для модифицированной штукатурной смеси 40 кг и отмечено, что title-токен M-150 не подтверждает SKU. Нужен owner/source reconciliation до нормализации.",
+        "assessment": "Owner accepted the current image as the correct image identity for the plaster product MAT-000028: visible Rusean plaster wording, 40 kg, ГОСТ 33083-2014, manual application and indoor/outdoor use match the current official Rusean plaster product. The current manufacturer title omits M-150; several independent secondary listings historically/commercially use M-150 for the modified Rusean plaster 40 kg. Do not change the MatMix title or product fields in this image task.",
         "sources": [
           {
             "url": "https://rusean.ru/pricelist/",
@@ -1492,15 +1497,31 @@
       },
       "focusedReaudit": {
         "checkedAt": "2026-09-29",
-        "finalStatus": "OWNER_REVIEW_REQUIRED",
-        "decision": "Do not reframe or replace; retain the current production image binding and product fields pending exact continuity evidence.",
+        "finalStatus": "REFRAME",
+        "decision": "Use only the current production pixels; remove excess whitespace, proportionally scale, center, and normalize to white canvas. Owner accepts the current image identity for the plaster product MAT-000028.",
+        "dataIdentityNote": "Current official Rusean plaster naming omits M-150. Several independent secondary sources historically/commercially call modified Rusean plaster 40 kg M-150. This note does not authorize changing title, slug, attributes, SEO, price, weight, categories or external_id.",
         "currentImageIdentity": {
-          "visible": ["РУСЕАН", "СУХАЯ СМЕСЬ ШТУКАТУРНАЯ", "40 кг", "ГОСТ 33083-2014", "ручное нанесение", "стены из бетона/кирпича/ячеистого бетона", "внутренние и наружные работы"],
+          "visible": [
+            "РУСЕАН",
+            "СУХАЯ СМЕСЬ ШТУКАТУРНАЯ",
+            "40 кг",
+            "ГОСТ 33083-2014",
+            "ручное нанесение",
+            "стены из бетона/кирпича/ячеистого бетона",
+            "внутренние и наружные работы"
+          ],
           "m150Visible": false,
           "sha256": "8a218c154f633c4bcac0565be94acfb9e7f011649b34c7af75c1cfc7528f7adf"
         },
-        "identityMatches": ["manufacturer brand", "plaster family", "40 kg package", "ГОСТ 33083-2014", "manual wall-plaster use inside/outside"],
-        "identityUnresolved": ["Whether the current modified plaster 40 kg is the same commercial SKU/version previously sold or listed as Rusean M-150 plaster 40 kg; no manufacturer transition/cross-reference was found."],
+        "identityMatches": [
+          "Rusean brand",
+          "cement plaster product family",
+          "40 kg package",
+          "ГОСТ 33083-2014",
+          "manual application",
+          "indoor/outdoor wall use"
+        ],
+        "identityDecision": "Owner accepts this packshot as the current Rusean plaster product image for MAT-000028. It is not the official universal M-150 product: that current product is separately listed under ГОСТ 31357-2007 with a different application scope and technical profile.",
         "continuityEvidence": [
           {
             "url": "https://rusean.ru/catalog/shtukaturka_tsementnaya/shtukaturnaya_sukhaya_smes_modifitsirovannaya_po_40_kg/",
@@ -1540,16 +1561,58 @@
             "evidence": "40 kg Rusean cement plaster listing shows a package with ГОСТ 33083-2014 and manual wall application inside/outside, matching the current pack language; title does not identify M-150."
           }
         ],
-        "decisionRationale": "Brand, category, package weight, GOST and shared graphics suggest a lineage, but the M-150 designation is absent from the current pack, current official catalog separates M-150 products, and secondary M-150 technical profiles do not consistently match the official modified plaster. Exact SKU/version continuity remains ambiguous.",
-        "ownerOrManufacturerEvidenceNeeded": "Original supplier SKU/product passport or technical sheet tied to the exact MAT-000028 bag, or written Rusean confirmation that the current modified plaster 40 kg is the successor/rebranded package for the M-150 plaster SKU.",
-        "candidatePrepared": false,
-        "candidateSha256": null,
-        "sourceProductFillPct": null,
-        "importerPreviewFillPct": null
+        "finalCandidate": {
+          "sourcePath": "product-images-batch\\plaster-image-reaudit-batch1\\production-current\\MAT-000028.webp",
+          "sourceSha256": "8a218c154f633c4bcac0565be94acfb9e7f011649b34c7af75c1cfc7528f7adf",
+          "sourceDimensions": "1000x1000",
+          "sourceProductFillPct": 89.7,
+          "finalPath": "product-images-batch\\plaster-image-reaudit-batch1\\final-source-approved\\MAT-000028.png",
+          "format": "png",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 1053311,
+          "sha256": "3d3f19de9794d1f544c78773947b9e71b0ce750c9fa2628bed5ed4a0035bf9db",
+          "productFillPct": 95.3,
+          "bbox": {
+            "x": 227,
+            "y": 28,
+            "width": 745,
+            "height": 1144
+          },
+          "whiteCorners": true,
+          "previewPath": "product-images-batch\\plaster-image-reaudit-batch1\\preview-approved\\MAT-000028.webp",
+          "previewFormat": "webp",
+          "previewWidth": 1200,
+          "previewHeight": 1200,
+          "previewBytes": 72656,
+          "previewSha256": "18224585d8eb563187ce0c0b983bd740251467993e10dfc966a94c91c3a206a9",
+          "importerPreviewFillPct": 85.8,
+          "previewWhiteCorners": true,
+          "transform": "Trim excess near-white whitespace, proportional resize, center on white 1200x1200 canvas; current package pixels are not retouched or redrawn.",
+          "identityProminentAfterProcessing": true
+        },
+        "candidatePrepared": true
       },
-      "action": "No candidate prepared. Resolve identity/title-source discrepancy first.",
-      "proposed": null,
-      "ownerReviewRequired": true
+      "action": "Reframe the current production image only; no new packshot or package redraw.",
+      "proposed": {
+        "sourcePath": "product-images-batch\\plaster-image-reaudit-batch1\\final-source-approved\\MAT-000028.png",
+        "sourceFormat": "png",
+        "sourceWidth": 1200,
+        "sourceHeight": 1200,
+        "sourceBytes": 1053311,
+        "sourceSha256": "3d3f19de9794d1f544c78773947b9e71b0ce750c9fa2628bed5ed4a0035bf9db",
+        "sourceProductFillPct": 95.3,
+        "previewPath": "product-images-batch\\plaster-image-reaudit-batch1\\preview-approved\\MAT-000028.webp",
+        "previewFormat": "webp",
+        "previewWidth": 1200,
+        "previewHeight": 1200,
+        "previewBytes": 72656,
+        "previewProductFillPct": 85.8,
+        "previewWhiteCorners": true,
+        "status": "READY_FOR_OWNER_REVIEW",
+        "previewSha256": "18224585d8eb563187ce0c0b983bd740251467993e10dfc966a94c91c3a206a9"
+      },
+      "ownerReviewRequired": false
     }
   ]
 }
