@@ -1,102 +1,284 @@
 {
   "date": "2026-09-29",
   "category": "Смеси → Гидроизоляция",
-  "scope": ["MAT-000100", "MAT-000101", "MAT-000102"],
-  "evidenceSource": "Owner-provided production command output; Codex did not access production, SSH, or production DB.",
+  "status": "CLOSED",
+  "dataStatus": "DATA_CLOSED",
+  "scope": [
+    "MAT-000099",
+    "MAT-000100",
+    "MAT-000101",
+    "MAT-000102",
+    "MAT-000103",
+    "MAT-000104",
+    "MAT-000105",
+    "MAT-000106",
+    "MAT-000107"
+  ],
+  "evidenceSource": "Production audit, image URLs, physical WebP verification, and backups supplied and verified by the project owner. Codex did not access production, SSH, or production DB for this documentation update.",
   "importerSafetyCommit": {
     "sha": "a7878e78a7c86b4321ad8ff7a3382f55b67b3479",
     "message": "fix(product-images): harden production image importer"
   },
-  "backup": {
-    "type": "verified SQLite online backup",
-    "path": "/var/lib/matmix/matmix.db.backup-2026-09-29T11-48-35-578Z-afb4ff0cf642",
-    "sha256": "8f1c107cbdcc45dbd26a878843264db5ee31de0f0466e19a6cb9e925720d1fd2",
-    "userVersion": 11
+  "audit": {
+    "products": 9,
+    "attrOk": 0,
+    "attrPartial": 9,
+    "seoOk": 9,
+    "seoIssues": 0,
+    "imageOk": 9,
+    "imageIssues": 0,
+    "sourceOk": 0,
+    "sourceOptionalGaps": 9,
+    "sourceBlocked": 0,
+    "sourceAnomalies": 0,
+    "blockers": 0,
+    "status": "DATA_CLOSED",
+    "finalConclusion": "CLOSED",
+    "blockingMats": []
   },
-  "postApplyDatabaseHealth": {
-    "integrity": "ok",
+  "productionDatabase": {
     "userVersion": 11,
+    "integrityCheck": "ok",
     "foreignKeyViolations": 0
   },
+  "previouslyClosedSubcategories": [
+    "Штукатурка",
+    "Шпаклевка",
+    "Кладочные Смеси",
+    "Наливной Пол",
+    "Стяжки Пола"
+  ],
   "images": [
     {
-      "mat": "MAT-000100",
-      "sourcePngSha256": "9c3c1c81b02bc5ca3020ee120c7f76083ea17613b1563cd168c693a7010b445a",
-      "productionWebpUrl": "/uploads/products/MAT-000100-9c3c1c81b02bc5ca.webp",
+      "mat": "MAT-000099",
+      "finalApprovedSourcePngSha256": "32e6e3547e88aa0312c1db0cc359b8cf81e11290563b9814412167ce0e1c2874",
+      "productionImageUrl": "/uploads/products/MAT-000099-32e6e3547e88aa03.webp",
       "format": "webp",
       "width": 1200,
       "height": 1200,
+      "physicalFileVerified": true,
       "primaryCount": 1,
-      "galleryCount": 0,
+      "uniqueUrlBinding": true
+    },
+    {
+      "mat": "MAT-000100",
+      "finalApprovedSourcePngSha256": "a74bbea4a10abb7c029522f2b33b57b3fdb371f2070a06cb4ebec3a5a60978df",
+      "productionImageUrl": "/uploads/products/MAT-000100-a74bbea4a10abb7c.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 1200,
+      "physicalFileVerified": true,
+      "primaryCount": 1,
       "uniqueUrlBinding": true,
-      "postcheck": "ok",
-      "productionApply": "SUCCESS",
-      "technicalImageStatus": "IMAGE_OK",
-      "finalVisualFramingAccepted": false,
-      "OWNER_VISUAL_CORRECTION_REQUIRED": true,
-      "visualCorrectionReason": "Product occupies insufficient useful area of the catalog image; tighten framing so the product appears larger."
+      "framingCorrection": {
+        "initialApply": "SUCCESS",
+        "issue": "Initial product framing appeared too small in live catalog cards.",
+        "correctiveApply": "SUCCESS",
+        "resolved": true,
+        "ownerVisualCorrectionRequired": false,
+        "correctiveSourcePngSha256": "a74bbea4a10abb7c029522f2b33b57b3fdb371f2070a06cb4ebec3a5a60978df"
+      }
     },
     {
       "mat": "MAT-000101",
-      "sourcePngSha256": "f1b3ca958ed72dade11372b963f313d8d4feb33775b8ec4236fecd77136eee85",
-      "productionWebpUrl": "/uploads/products/MAT-000101-f1b3ca958ed72dad.webp",
+      "finalApprovedSourcePngSha256": "4f7ec6efeb39eae2405dba0d3e406c846711118b5a6ea4b6796a536a01ce68cf",
+      "productionImageUrl": "/uploads/products/MAT-000101-4f7ec6efeb39eae2.webp",
       "format": "webp",
       "width": 1200,
       "height": 1200,
+      "physicalFileVerified": true,
       "primaryCount": 1,
-      "galleryCount": 0,
       "uniqueUrlBinding": true,
-      "postcheck": "ok",
-      "productionApply": "SUCCESS",
-      "technicalImageStatus": "IMAGE_OK",
-      "finalVisualFramingAccepted": false,
-      "OWNER_VISUAL_CORRECTION_REQUIRED": true,
-      "visualCorrectionReason": "Product occupies insufficient useful area of the catalog image; tighten framing so the product appears larger."
+      "framingCorrection": {
+        "initialApply": "SUCCESS",
+        "issue": "Initial product framing appeared too small in live catalog cards.",
+        "correctiveApply": "SUCCESS",
+        "resolved": true,
+        "ownerVisualCorrectionRequired": false,
+        "correctiveSourcePngSha256": "4f7ec6efeb39eae2405dba0d3e406c846711118b5a6ea4b6796a536a01ce68cf"
+      }
     },
     {
       "mat": "MAT-000102",
-      "sourcePngSha256": "e5a5ab4919a03eecad6b578886812c60fac0a2eb6e1f6c31d952dc8a9dd236f7",
-      "productionWebpUrl": "/uploads/products/MAT-000102-e5a5ab4919a03eec.webp",
+      "finalApprovedSourcePngSha256": "08d3d138ba45a1fbdcb19aa9cf542d436abbb6699a1d5d23d69ea8864807ff5d",
+      "productionImageUrl": "/uploads/products/MAT-000102-08d3d138ba45a1fb.webp",
       "format": "webp",
       "width": 1200,
       "height": 1200,
+      "physicalFileVerified": true,
       "primaryCount": 1,
-      "galleryCount": 0,
       "uniqueUrlBinding": true,
-      "postcheck": "ok",
-      "productionApply": "SUCCESS",
-      "technicalImageStatus": "IMAGE_OK",
-      "finalVisualFramingAccepted": false,
-      "OWNER_VISUAL_CORRECTION_REQUIRED": true,
-      "visualCorrectionReason": "Product occupies insufficient useful area of the catalog image; tighten framing so the product appears larger."
+      "framingCorrection": {
+        "initialApply": "SUCCESS",
+        "issue": "Initial product framing appeared too small in live catalog cards.",
+        "correctiveApply": "SUCCESS",
+        "resolved": true,
+        "ownerVisualCorrectionRequired": false,
+        "correctiveSourcePngSha256": "08d3d138ba45a1fbdcb19aa9cf542d436abbb6699a1d5d23d69ea8864807ff5d"
+      },
+      "prominentEnglishLine": {
+        "text": "mastic the waterproofing polymeric",
+        "status": "SOURCE_CONFIRMED_AND_RETAINED",
+        "evidence": "Exact official MAT-000102 source contains the line verbatim; it is not hallucinated."
+      }
+    },
+    {
+      "mat": "MAT-000103",
+      "finalApprovedSourcePngSha256": "f25424e8c64ed2321b18b86c17bb59519ab0345b11bffb89c284ffa724833a69",
+      "productionImageUrl": "/uploads/products/MAT-000103-f25424e8c64ed232.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 1200,
+      "physicalFileVerified": true,
+      "primaryCount": 1,
+      "uniqueUrlBinding": true,
+      "ownerVisualApproved": true,
+      "similarityMetricType": "manual_visual_estimate",
+      "similarityEstimate": 91
+    },
+    {
+      "mat": "MAT-000104",
+      "finalApprovedSourcePngSha256": "dac81d61af734b983d00c5f586188132acbdcb8667f586141e57a328732bef52",
+      "productionImageUrl": "/uploads/products/MAT-000104-dac81d61af734b98.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 1200,
+      "physicalFileVerified": true,
+      "primaryCount": 1,
+      "uniqueUrlBinding": true,
+      "ownerVisualApproved": true,
+      "similarityMetricType": "manual_visual_estimate",
+      "similarityEstimate": 92
+    },
+    {
+      "mat": "MAT-000105",
+      "finalApprovedSourcePngSha256": "201747f0e09339e8cf8edb132f06923475097b4bf4793a8b6fbd8b5e175cec9a",
+      "productionImageUrl": "/uploads/products/MAT-000105-201747f0e09339e8cf.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 1200,
+      "physicalFileVerified": true,
+      "primaryCount": 1,
+      "uniqueUrlBinding": true
+    },
+    {
+      "mat": "MAT-000106",
+      "finalApprovedSourcePngSha256": "1b0ee87605183f93b2bb1512f79981f0ce7584093b770c2a9f64189c138b9a73",
+      "productionImageUrl": "/uploads/products/MAT-000106-1b0ee87605183f93.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 1200,
+      "physicalFileVerified": true,
+      "primaryCount": 1,
+      "uniqueUrlBinding": true
+    },
+    {
+      "mat": "MAT-000107",
+      "finalApprovedSourcePngSha256": "dab675d0d288ca9cceaa12d445850ed72d01e17b136d1cc6d30839833d979664",
+      "productionImageUrl": "/uploads/products/MAT-000107-dab675d0d288ca9c.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 1200,
+      "physicalFileVerified": true,
+      "primaryCount": 1,
+      "uniqueUrlBinding": true
     }
   ],
-  "closedSubcategoryAudit": {
-    "closed": ["Штукатурка", "Шпаклевка", "Кладочные Смеси", "Наливной Пол", "Стяжки Пола"],
-    "Гидроизоляция": {
-      "products": 9,
-      "attrOk": 0,
-      "attrPartial": 9,
-      "seoOk": 9,
-      "seoIssues": 0,
-      "imageOk": 3,
-      "imageIssues": 6,
-      "sourceBlocked": 0,
-      "sourceAnomalies": 0,
-      "blockers": 6,
-      "status": "NOT_CLOSED"
-    },
-    "remainingBlockingMats": ["MAT-000099", "MAT-000103", "MAT-000104", "MAT-000105", "MAT-000106", "MAT-000107"]
+  "imageVerification": {
+    "confirmedProductionImages": 9,
+    "fullyVerified": 9,
+    "allPhysicalFilesExist": true,
+    "allWebp1200x1200": true,
+    "allProductAndPrimaryBindingsMatch": true,
+    "allPrimaryCountsOne": true,
+    "allBindingsUnique": true
   },
-  "laterOwnerVisualReview": {
-    "scope": ["MAT-000100", "MAT-000101", "MAT-000102"],
-    "productionApplyAndTechnicalVerification": "SUCCESS",
-    "technicalImageStatus": "IMAGE_OK",
-    "finalVisualFramingAccepted": false,
-    "OWNER_VISUAL_CORRECTION_REQUIRED": true,
-    "reason": "Product occupies insufficient useful area of the catalog image; framing must be tightened so the product appears larger.",
-    "rollback": false,
-    "correctiveVersionsPlanned": true,
-    "visuallyClosed": false
+  "framingStandardForFutureImageAudits": {
+    "sourcePng": "1200x1200",
+    "background": "white",
+    "fullProductVisible": true,
+    "catalogFraming": "Tight commercial framing without excessive whitespace or clipping",
+    "importerPreviewProductFillPct": {
+      "minimum": 84,
+      "maximum": 88
+    },
+    "exactSkuVisualIdentity": "required",
+    "prominentText": "source-confirmed",
+    "microtext": "May be simplified when product identity is unaffected"
+  },
+  "similarityApprovals": [
+    {
+      "mat": "MAT-000103",
+      "ownerVisualApproved": true,
+      "similarityMetricType": "manual_visual_estimate",
+      "score": 91,
+      "blocksAfterOwnerApproval": false
+    },
+    {
+      "mat": "MAT-000104",
+      "ownerVisualApproved": true,
+      "similarityMetricType": "manual_visual_estimate",
+      "score": 92,
+      "blocksAfterOwnerApproval": false
+    },
+    {
+      "mat": "MAT-000107",
+      "ownerVisualApproved": true,
+      "similarityMetricType": "manual_visual_estimate",
+      "score": 94,
+      "blocksAfterOwnerApproval": false
+    }
+  ],
+  "productionBackups": [
+    {
+      "batch": "initial-MAT-000100-101-102",
+      "path": "/var/lib/matmix/matmix.db.backup-2026-09-29T11-48-35-578Z-afb4ff0cf642",
+      "sha256": "8f1c107cbdcc45dbd26a878843264db5ee31de0f0466e19a6cb9e925720d1fd2",
+      "ownerVerified": true
+    },
+    {
+      "batch": "corrective-framing-MAT-000100-101-102",
+      "path": "/var/lib/matmix/matmix.db.backup-2026-09-29T14-16-49-750Z-767ff9a6be5c",
+      "sha256": "c67eda0ed236cefae7beba3d26ffc608687e1df6bed6006dbadd4ad8b4276bec",
+      "ownerVerified": true
+    },
+    {
+      "batch": "batch2-MAT-000099-103-105",
+      "path": "/var/lib/matmix/matmix.db.backup-2026-09-29T14-25-43-687Z-01392432a5a3",
+      "sha256": "80c33b2b4743da411471f5a9b4100e8415c627eabb380afb093a8308733226f2",
+      "ownerVerified": true
+    },
+    {
+      "batch": "batch3-MAT-000106-107",
+      "path": "/var/lib/matmix/matmix.db.backup-2026-09-29T14-33-14-429Z-e246f2b66b4c",
+      "sha256": "139d0a99f7d4bd6eabffc84434977e9101af71aa9cdbecb339bc35c98d927078",
+      "ownerVerified": true
+    },
+    {
+      "batch": "batch4-MAT-000104",
+      "path": "/var/lib/matmix/matmix.db.backup-2026-09-29T14-38-39-063Z-cab1d67ddf41",
+      "sha256": "d1afa445900ec1c13cfc10ab128fdd920f5e5ab0dce93d2c9847d93ee7e680ff",
+      "ownerVerified": true
+    }
+  ],
+  "initialBatchEvidence": {
+    "scope": [
+      "MAT-000100",
+      "MAT-000101",
+      "MAT-000102"
+    ],
+    "initialApply": "SUCCESS",
+    "initialImagesReplacedByCorrectiveFraming": true,
+    "currentProductionUrlsPointToFinalCorrectiveImages": true
+  },
+  "checkpointScope": {
+    "documentationOnly": true,
+    "productionAccessedByCodex": false,
+    "sshUsed": false,
+    "deployPerformed": false,
+    "databaseWritesPerformed": false,
+    "imageBinariesCommitted": false,
+    "archivesCommitted": false,
+    "mat000001AuditStarted": false
   }
 }
