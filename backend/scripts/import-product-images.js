@@ -19,7 +19,39 @@ const OUTPUT_SIDE = 1200;
 const CONTENT_SIDE = 1080;
 
 function usage() {
-    console.log("Usage: node backend/scripts/import-product-images.js --input DIR --db FILE [--dry-run] [--apply --confirm-apply] [--allow-real-overwrite] [--allow-protected-overwrite --protected-mats MAT-000002] [--only MAT-000001,MAT-000003]");
+    console.log("Usage: node backend/scripts/import-product-images.js --input DIR --db FILE [--dry-run] [--apply --confirm-apply] [--allow-real-overwrite] [--allow-protected-overwrite --allow-protected-mats MAT-000002,MAT-000005 --only MAT-000002,MAT-000005]");
+}
+
+function parseMatList(value, optionName) {
+    const entries = value.split(",").map(item => item.trim().toUpperCase());
+    if (!entries.length || entries.some(item => !MAT_RE.test(item))) throw new Error(`${optionName} must contain comma-separated MAT-xxxxxx identifiers`);
+    const unique = new Set(entries);
+    if (unique.size !== entries.length) throw new Error(`${optionName} must not contain duplicate MAT identifiers`);
+    return unique;
+}
+
+function sortedSet(values) { return [...values].sort(); }
+function equalSets(left, right) {
+    const a = sortedSet(left), b = sortedSet(right);
+    return a.length === b.length && a.every((value, index) => value === b[index]);
+}
+
+function validateProtectedOverride({ allowProtectedOverwrite = false, allowProtectedMats = null, only = null }) {
+    const override = allowProtectedMats instanceof Set ? new Set(allowProtectedMats) : allowProtectedMats ? new Set(allowProtectedMats) : null;
+    if (allowProtectedOverwrite && !override) throw new Error("--allow-protected-overwrite requires --allow-protected-mats");
+    if (override && !allowProtectedOverwrite) throw new Error("--allow-protected-mats requires --allow-protected-overwrite");
+    if (!override) return new Set();
+    if (!override.size) throw new Error("--allow-protected-mats must not be empty");
+    if (!(only instanceof Set) || !only.size) throw new Error("protected overwrite requires a non-empty --only scope");
+    for (const mat of override) {
+        if (!MAT_RE.test(mat)) throw new Error("--allow-protected-mats must contain canonical MAT-xxxxxx identifiers");
+        if (!PROTECTED_MATS.has(mat)) throw new Error(`--allow-protected-mats contains non-protected MAT ${mat}`);
+    }
+    const protectedInOnly = new Set([...only].filter(mat => PROTECTED_MATS.has(mat)));
+    if (!equalSets(override, protectedInOnly)) {
+        throw new Error("--allow-protected-mats must exactly match protected MATs in --only");
+    }
+    return override;
 }
 
 function parseArgs(argv) {
@@ -27,8 +59,8 @@ function parseArgs(argv) {
     for (let i = 0; i < argv.length; i += 1) {
         const a = argv[i];
         if (a === "--help" || a === "-h") return { help: true };
-        if (["--input", "--db", "--uploads-dir", "--only", "--protected-mats"].includes(a)) {
-            const key = ({ "--db": "dbPath", "--uploads-dir": "uploadsDir", "--input": "input", "--only": "only", "--protected-mats": "protectedMats" })[a];
+        if (["--input", "--db", "--uploads-dir", "--only", "--allow-protected-mats"].includes(a)) {
+            const key = ({ "--db": "dbPath", "--uploads-dir": "uploadsDir", "--input": "input", "--only": "only", "--allow-protected-mats": "allowProtectedMats" })[a];
             if (Object.prototype.hasOwnProperty.call(args, key)) throw new Error(`${a} must not be repeated`);
             const value = argv[++i];
             if (!value || value.startsWith("--")) throw new Error(`${a} requires a value`);
@@ -45,14 +77,10 @@ function parseArgs(argv) {
     if (!args.input || !args.dbPath) throw new Error("--input and --db are required");
     if (args.apply && !args.confirmApply) throw new Error("--apply requires --confirm-apply");
     if (args.cleanupInput && !args.apply) throw new Error("--cleanup-input requires --apply --confirm-apply");
-    if (args.only !== undefined) {
-        const onlyEntries = args.only.split(",").map(value => value.trim().toUpperCase());
-        if (!onlyEntries.length || onlyEntries.some(value => !MAT_RE.test(value))) throw new Error("--only must contain comma-separated MAT-xxxxxx identifiers");
-        if (new Set(onlyEntries).size !== onlyEntries.length) throw new Error("--only must not contain duplicate MAT identifiers");
-        args.only = new Set(onlyEntries);
-    } else args.only = null;
+    args.only = args.only !== undefined ? parseMatList(args.only, "--only") : null;
+    args.allowProtectedMats = args.allowProtectedMats !== undefined ? parseMatList(args.allowProtectedMats, "--allow-protected-mats") : null;
     if (args.apply && args.allowRealOverwrite && !args.only) throw new Error("--allow-real-overwrite requires --only");
-    args.protectedMats = args.protectedMats ? new Set(args.protectedMats.split(",").map(v => v.trim().toUpperCase()).filter(Boolean)) : new Set(PROTECTED_MATS);
+    validateProtectedOverride(args);
     return args;
 }
 
@@ -176,7 +204,8 @@ async function assertPlanCurrent(db, plan) {
     }
 }
 
-async function planBatch({ input, dbPath, uploadsRoot = process.env.PRODUCT_UPLOADS_PATH || path.join(__dirname, "..", "..", "public", "uploads", "products"), allowRealOverwrite = false, allowProtectedOverwrite = false, protectedMats = PROTECTED_MATS, only = null }) {
+async function planBatch({ input, dbPath, uploadsRoot = process.env.PRODUCT_UPLOADS_PATH || path.join(__dirname, "..", "..", "public", "uploads", "products"), allowRealOverwrite = false, allowProtectedOverwrite = false, allowProtectedMats = null, only = null }) {
+    const protectedOverride = validateProtectedOverride({ allowProtectedOverwrite, allowProtectedMats, only });
     const files = (await fs.promises.readdir(input, { withFileTypes: true })).filter(e => e.isFile()).map(e => path.join(input, e.name)).sort();
     const candidates = files.map(file => ({ file, source: path.basename(file), ...parseImageFilename(file) }));
     const mats = candidates.filter(x => x.mat).map(x => x.mat);
@@ -201,14 +230,14 @@ async function planBatch({ input, dbPath, uploadsRoot = process.env.PRODUCT_UPLO
                 if (seenHash.has(checked.sha256)) { item.status = "DUPLICATE_FILE"; throw new Error("duplicate file content"); }
                 seenHash.add(checked.sha256);
                 item.proposed_filename = `${candidate.mat}-${checked.sha256.slice(0, 16)}.webp`;
-                if (protectedMats.has(candidate.mat) && !allowProtectedOverwrite) { item.status = "PROTECTED"; item.reason = "protected MAT requires --allow-protected-overwrite"; }
+                if (PROTECTED_MATS.has(candidate.mat) && !protectedOverride.has(candidate.mat)) { item.status = "PROTECTED"; item.reason = "protected MAT requires exact --allow-protected-overwrite authorization"; }
                 else if (candidate.position === 1 && item.classification === "real" && !allowRealOverwrite) { item.status = "REAL_IMAGE_EXISTS"; item.reason = "real primary binding requires --allow-real-overwrite"; }
                 else item.status = "READY";
             } catch (error) { if (item.status === "READY") item.status = "INVALID_FILE"; item.reason = item.reason || error.message; }
             items.push(item);
         }
         const counts = items.reduce((acc, item) => { acc.total += 1; const key = ({ READY: "ready", PROTECTED: "protected", REAL_IMAGE_EXISTS: "existingReal", INVALID_FILE: "invalid", MAT_NOT_FOUND: "notFound", DUPLICATE_MAT: "duplicates", DUPLICATE_POSITION: "duplicates", DUPLICATE_FILE: "duplicates", ERROR: "errors" })[item.status]; if (key) acc[key] += 1; return acc; }, { total: 0, ready: 0, protected: 0, existingReal: 0, invalid: 0, notFound: 0, duplicates: 0, errors: 0 });
-        return { items, summary: counts, inputRoot: path.resolve(input), uploadsRoot: path.resolve(uploadsRoot), onlyMats: only ? [...only] : null };
+        return { items, summary: counts, inputRoot: path.resolve(input), uploadsRoot: path.resolve(uploadsRoot), onlyMats: only ? sortedSet(only) : null, protectedOverrideMats: sortedSet(protectedOverride) };
     } finally { await closeDb(db); }
 }
 
@@ -216,7 +245,7 @@ function assertSafeApply(dbPath) {
     const absolute = path.resolve(dbPath); const lower = absolute.toLowerCase();
     if (lower.endsWith("matmix-prod-snapshot.db") || lower.includes(`${path.sep}.local-audit${path.sep}`)) throw new Error("--apply is forbidden for production snapshots/.local-audit paths");
 }
-async function applyPlan(plan, { dbPath, uploadsRoot = plan.uploadsRoot, cleanupInput = false }) {
+async function applyPlan(plan, { dbPath, uploadsRoot = plan.uploadsRoot, cleanupInput = false, apply = false, confirmApply = false, allowRealOverwrite = false, allowProtectedOverwrite = false, allowProtectedMats = null }) {
     if (!Array.isArray(plan.onlyMats) || plan.onlyMats.length === 0) throw new Error("apply aborted: exact --only scope is required");
     const inputMats = [...new Set(plan.items.map(item => item.mat).filter(Boolean))].sort();
     const onlyMats = [...new Set(plan.onlyMats)].sort();
@@ -226,6 +255,15 @@ async function applyPlan(plan, { dbPath, uploadsRoot = plan.uploadsRoot, cleanup
     if (plan.items.some(item => item.mat && item.position !== 1)) throw new Error("apply aborted: only primary image bindings are allowed");
     const blocked = plan.items.filter(i => !["READY", "SKIPPED"].includes(i.status));
     if (blocked.length) throw new Error("apply aborted: validation/classification contains non-READY items");
+    const readyProtected = new Set(plan.items.filter(item => item.status === "READY" && PROTECTED_MATS.has(item.mat)).map(item => item.mat));
+    if (readyProtected.size) {
+        if (!apply || !confirmApply) throw new Error("apply aborted: protected overwrite requires --apply and --confirm-apply");
+        const override = validateProtectedOverride({ allowProtectedOverwrite, allowProtectedMats, only: new Set(plan.onlyMats) });
+        if (!equalSets(readyProtected, override)) throw new Error("apply aborted: protected READY MATs must exactly match --allow-protected-mats");
+    }
+    if (plan.items.some(item => item.status === "READY" && item.classification === "real") && !allowRealOverwrite) {
+        throw new Error("apply aborted: real image overwrite requires --allow-real-overwrite");
+    }
     const stamp = new Date().toISOString().replace(/[:.]/g, "-");
     const backup = await createVerifiedBackup(dbPath);
     const manifestPath = `${path.resolve(dbPath)}.image-bindings-${stamp}.json`;
@@ -285,7 +323,7 @@ async function applyPlan(plan, { dbPath, uploadsRoot = plan.uploadsRoot, cleanup
 async function main() {
     const args = parseArgs(process.argv.slice(2)); if (args.help) return usage();
     if (args.apply) assertSafeApply(args.dbPath);
-    const plan = await planBatch({ input: path.resolve(args.input), dbPath: path.resolve(args.dbPath), uploadsRoot: args.uploadsDir ? path.resolve(args.uploadsDir) : undefined, allowRealOverwrite: args.allowRealOverwrite, allowProtectedOverwrite: args.allowProtectedOverwrite, protectedMats: args.protectedMats, only: args.only });
+    const plan = await planBatch({ input: path.resolve(args.input), dbPath: path.resolve(args.dbPath), uploadsRoot: args.uploadsDir ? path.resolve(args.uploadsDir) : undefined, allowRealOverwrite: args.allowRealOverwrite, allowProtectedOverwrite: args.allowProtectedOverwrite, allowProtectedMats: args.allowProtectedMats, only: args.only });
     plan.cleanupInput = args.cleanupInput;
     plan.inputRoot = path.resolve(args.input);
     const result = args.apply ? await applyPlan(plan, args) : plan;
@@ -293,4 +331,4 @@ async function main() {
 }
 
 if (require.main === module) main().catch(error => { console.error(`ERROR: ${error.message}`); process.exitCode = 1; });
-module.exports = { MAT_RE, PROTECTED_MATS, PLACEHOLDER_FILES, parseImageFilename, extractMat, isPlaceholder, classifyImage, validateInput, renderWebp, planBatch, applyPlan, parseArgs, assertSafeApply, createVerifiedBackup };
+module.exports = { MAT_RE, PROTECTED_MATS, PLACEHOLDER_FILES, parseImageFilename, extractMat, isPlaceholder, classifyImage, validateInput, renderWebp, planBatch, applyPlan, parseArgs, validateProtectedOverride, assertSafeApply, createVerifiedBackup };

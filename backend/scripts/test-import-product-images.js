@@ -120,6 +120,24 @@ const snapshot = async db => ({
     assert.throws(() => parseArgs(["--input", input, "--db", dbPath, "--cleanup-input"]), /requires --apply/);
     assert.throws(() => parseArgs(["--input", input, "--db", dbPath, "--apply", "--confirm-apply", "--allow-real-overwrite"]), /requires --only/);
 
+    const protectedOnly = "MAT-000002,MAT-000005";
+    const protectedArgs = ["--allow-protected-overwrite", "--allow-protected-mats", protectedOnly, "--only", protectedOnly];
+    const parsedProtected = parseArgs(["--input", input, "--db", dbPath, ...protectedArgs]);
+    assert.deepStrictEqual([...parsedProtected.allowProtectedMats].sort(), ["MAT-000002", "MAT-000005"]);
+    assert.throws(() => parseArgs(["--input", input, "--db", dbPath, "--allow-protected-overwrite", "--only", protectedOnly]), /requires --allow-protected-mats/);
+    assert.throws(() => parseArgs(["--input", input, "--db", dbPath, "--allow-protected-mats", "MAT-000002", "--only", "MAT-000002"]), /requires --allow-protected-overwrite/);
+    assert.throws(() => parseArgs(["--input", input, "--db", dbPath, "--allow-protected-overwrite", "--allow-protected-mats", "MAT-000002"]), /requires a non-empty --only/);
+    assert.throws(() => parseArgs(["--input", input, "--db", dbPath, "--allow-protected-overwrite", "--allow-protected-mats", "MAT-000003", "--only", "MAT-000003"]), /non-protected MAT/);
+    assert.throws(() => parseArgs(["--input", input, "--db", dbPath, "--allow-protected-overwrite", "--allow-protected-mats", "MAT-000002", "--only", protectedOnly]), /exactly match protected MATs/);
+    assert.throws(() => parseArgs(["--input", input, "--db", dbPath, "--allow-protected-overwrite", "--allow-protected-mats", protectedOnly, "--only", "MAT-000002"]), /exactly match protected MATs/);
+    assert.throws(() => parseArgs(["--input", input, "--db", dbPath, "--allow-protected-overwrite", "--allow-protected-mats", "MAT-000002,MAT-000005,MAT-000005", "--only", protectedOnly]), /duplicate MAT/);
+    assert.throws(() => parseArgs(["--input", input, "--db", dbPath, "--protected-mats", "MAT-000003"]), /Unknown argument/);
+    const normalizedProtectedArgs = parseArgs(["--input", input, "--db", dbPath, "--allow-protected-overwrite", "--allow-protected-mats", " mat-000005 , MAT-000002 ", "--only", "MAT-000002, mat-000005 "]);
+    assert.deepStrictEqual([...normalizedProtectedArgs.allowProtectedMats].sort(), ["MAT-000002", "MAT-000005"], "case and surrounding whitespace normalize deterministically");
+    const confirmedProtectedArgs = parseArgs(["--input", input, "--db", dbPath, "--apply", "--confirm-apply", "--allow-real-overwrite", ...protectedArgs]);
+    assert.strictEqual(confirmedProtectedArgs.apply, true);
+    assert.strictEqual(confirmedProtectedArgs.confirmApply, true);
+
     const beforeDryRun = await snapshot(db);
     const dry = await planBatch({ input, dbPath, uploadsRoot: uploads });
     assert.strictEqual(dry.summary.ready, 2);
@@ -196,8 +214,102 @@ const snapshot = async db => ({
     await fs.promises.mkdir(cleanupInput);
     await fs.promises.copyFile(path.join(primaryInput, "MAT-000003.png"), path.join(cleanupInput, "MAT-000003.png"));
     const cleanupPlan = await planBatch({ input: cleanupInput, dbPath, uploadsRoot: uploads, allowRealOverwrite: true, only: new Set(["MAT-000003"]) });
-    await applyPlan(cleanupPlan, { dbPath, uploadsRoot: uploads, cleanupInput: true });
+    await applyPlan(cleanupPlan, { dbPath, uploadsRoot: uploads, cleanupInput: true, allowRealOverwrite: true });
     assert.strictEqual(fs.existsSync(path.join(cleanupInput, "MAT-000003.png")), false);
+
+    // Protected replacement needs an exact, paired override; dry-run stays read-only.
+    const protectedInput = path.join(root, "protected-input");
+    const protectedUploads = path.join(root, "protected-uploads");
+    const protectedDbPath = path.join(root, "protected.db");
+    await fs.promises.mkdir(protectedInput);
+    await fs.promises.mkdir(protectedUploads);
+    let protectedDb = await open(protectedDbPath);
+    await run(protectedDb, "PRAGMA user_version=11");
+    await run(protectedDb, "CREATE TABLE products(id INTEGER PRIMARY KEY,external_id TEXT UNIQUE,title TEXT,image_url TEXT,updated_at TEXT)");
+    await run(protectedDb, "CREATE TABLE product_images(id INTEGER PRIMARY KEY AUTOINCREMENT,product_id INTEGER REFERENCES products(id),image_url TEXT,alt_text TEXT,sort_order INTEGER,is_primary INTEGER,created_at TEXT,updated_at TEXT)");
+    const protectedReal2 = "/uploads/products/MAT-000002-real.webp";
+    const protectedReal5 = "/uploads/products/MAT-000005-real.webp";
+    await run(protectedDb, "INSERT INTO products VALUES(1,'MAT-000002','Protected two',?,'keep-2')", [protectedReal2]);
+    await run(protectedDb, "INSERT INTO products VALUES(2,'MAT-000005','Protected five',?,'keep-5')", [protectedReal5]);
+    await run(protectedDb, "INSERT INTO products VALUES(3,'MAT-000003','Outside scope',?,'keep-3')", [placeholder]);
+    await run(protectedDb, "INSERT INTO product_images(product_id,image_url,is_primary) VALUES(1,?,1)", [protectedReal2]);
+    await run(protectedDb, "INSERT INTO product_images(product_id,image_url,is_primary) VALUES(2,?,1)", [protectedReal5]);
+    await run(protectedDb, "INSERT INTO product_images(product_id,image_url,is_primary) VALUES(3,?,1)", [placeholder]);
+    await createPng(path.join(protectedInput, "MAT-000002.png"), 400, 900, "#123456");
+    await createPng(path.join(protectedInput, "MAT-000005.png"), 500, 800, "#654321");
+    const protectedBeforeDry = await snapshot(protectedDb);
+    const defaultProtected = await planBatch({ input: protectedInput, dbPath: protectedDbPath, uploadsRoot: protectedUploads, only: new Set(["MAT-000002", "MAT-000005"]) });
+    assert.deepStrictEqual(defaultProtected.items.map(item => item.status), ["PROTECTED", "PROTECTED"], "protected products remain blocked by default");
+    await assert.rejects(() => applyPlan(defaultProtected, { dbPath: protectedDbPath, uploadsRoot: protectedUploads }), /non-READY items/);
+    const overridePlan = await planBatch({ input: protectedInput, dbPath: protectedDbPath, uploadsRoot: protectedUploads, only: new Set(["MAT-000002", "MAT-000005"]), allowProtectedOverwrite: true, allowProtectedMats: new Set(["MAT-000002", "MAT-000005"]), allowRealOverwrite: true });
+    assert.strictEqual(overridePlan.summary.ready, 2, "exact protected allowlist is accepted for dry-run planning");
+    assert.deepStrictEqual(await snapshot(protectedDb), protectedBeforeDry, "protected dry-run does not mutate DB");
+    assert.deepStrictEqual(await fs.promises.readdir(protectedUploads), [], "protected dry-run creates no files");
+    await assert.rejects(() => applyPlan(overridePlan, { dbPath: protectedDbPath, uploadsRoot: protectedUploads }), /requires --apply and --confirm-apply/);
+    await assert.rejects(() => applyPlan(overridePlan, { dbPath: protectedDbPath, uploadsRoot: protectedUploads, apply: true, confirmApply: true, allowProtectedOverwrite: true, allowProtectedMats: new Set(["MAT-000002", "MAT-000005"]) }), /allow-real-overwrite/);
+
+    // A protected override cannot unlock an unprotected MAT or bypass its real-image gate.
+    await run(protectedDb, "UPDATE products SET image_url='/uploads/products/MAT-000003-real.webp' WHERE id=3");
+    const isolatedInput = path.join(root, "unprotected-real-input");
+    await fs.promises.mkdir(isolatedInput);
+    await createPng(path.join(isolatedInput, "MAT-000003.png"));
+    const unprotectedRealPlan = await planBatch({ input: isolatedInput, dbPath: protectedDbPath, uploadsRoot: protectedUploads, only: new Set(["MAT-000003"]), allowRealOverwrite: false });
+    assert.strictEqual(unprotectedRealPlan.items[0].status, "REAL_IMAGE_EXISTS");
+    const mixedInput = path.join(root, "mixed-protected-and-unprotected-input");
+    await fs.promises.mkdir(mixedInput);
+    await fs.promises.copyFile(path.join(protectedInput, "MAT-000002.png"), path.join(mixedInput, "MAT-000002.png"));
+    await fs.promises.copyFile(path.join(isolatedInput, "MAT-000003.png"), path.join(mixedInput, "MAT-000003.png"));
+    const mixedPlan = await planBatch({ input: mixedInput, dbPath: protectedDbPath, uploadsRoot: protectedUploads, only: new Set(["MAT-000002", "MAT-000003"]), allowProtectedOverwrite: true, allowProtectedMats: new Set(["MAT-000002"]), allowRealOverwrite: false });
+    assert.strictEqual(mixedPlan.items.find(item => item.mat === "MAT-000003").status, "REAL_IMAGE_EXISTS", "protected allowlist does not bypass the separate real-image gate for unprotected MAT");
+    await run(protectedDb, "UPDATE products SET image_url=? WHERE id=3", [placeholder]);
+
+    // Exact two-MAT apply backs up before its transaction and leaves unrelated products/bindings untouched.
+    const beforeProtectedApply = await snapshot(protectedDb);
+    const protectedApplyResult = await applyPlan(overridePlan, { dbPath: protectedDbPath, uploadsRoot: protectedUploads, apply: true, confirmApply: true, allowRealOverwrite: true, allowProtectedOverwrite: true, allowProtectedMats: new Set(["MAT-000002", "MAT-000005"]) });
+    assert.ok(fs.existsSync(protectedApplyResult.backupPath));
+    assert.match(protectedApplyResult.backupSha256, /^[a-f0-9]{64}$/);
+    const protectedBackup = await open(protectedApplyResult.backupPath);
+    assert.deepStrictEqual(await snapshot(protectedBackup), beforeProtectedApply, "verified backup contains the pre-apply DB state");
+    await close(protectedBackup);
+    const afterProtectedApply = await snapshot(protectedDb);
+    assert.deepStrictEqual(afterProtectedApply.products.find(row => row.external_id === "MAT-000003"), beforeProtectedApply.products.find(row => row.external_id === "MAT-000003"), "unrelated product remains unchanged");
+    assert.deepStrictEqual(afterProtectedApply.images.find(row => row.product_id === 3), beforeProtectedApply.images.find(row => row.product_id === 3), "unrelated image binding remains unchanged");
+    for (const mat of ["MAT-000002", "MAT-000005"]) {
+        const prior = beforeProtectedApply.products.find(row => row.external_id === mat);
+        const current = afterProtectedApply.products.find(row => row.external_id === mat);
+        assert.deepStrictEqual({ ...current, image_url: prior.image_url }, prior, `${mat} product fields except image_url remain unchanged`);
+    }
+
+    // Stale protected plans abort; a second-row failure rolls back DB rows and generated files.
+    const staleProtectedPlan = await planBatch({ input: protectedInput, dbPath: protectedDbPath, uploadsRoot: protectedUploads, only: new Set(["MAT-000002", "MAT-000005"]), allowProtectedOverwrite: true, allowProtectedMats: new Set(["MAT-000002", "MAT-000005"]), allowRealOverwrite: true });
+    await run(protectedDb, "UPDATE products SET title='changed-after-plan' WHERE id=1");
+    await assert.rejects(() => applyPlan(staleProtectedPlan, { dbPath: protectedDbPath, uploadsRoot: protectedUploads, apply: true, confirmApply: true, allowRealOverwrite: true, allowProtectedOverwrite: true, allowProtectedMats: new Set(["MAT-000002", "MAT-000005"]) }), /state changed since dry-run/);
+    await run(protectedDb, "UPDATE products SET title='Protected two' WHERE id=1");
+
+    const rollbackProtectedInput = path.join(root, "rollback-protected-input");
+    const rollbackProtectedUploads = path.join(root, "rollback-protected-uploads");
+    const rollbackProtectedDbPath = path.join(root, "rollback-protected.db");
+    await fs.promises.mkdir(rollbackProtectedInput);
+    let rollbackProtectedDb = await open(rollbackProtectedDbPath);
+    await run(rollbackProtectedDb, "PRAGMA user_version=11");
+    await run(rollbackProtectedDb, "CREATE TABLE products(id INTEGER PRIMARY KEY,external_id TEXT UNIQUE,title TEXT,image_url TEXT,updated_at TEXT)");
+    await run(rollbackProtectedDb, "CREATE TABLE product_images(id INTEGER PRIMARY KEY AUTOINCREMENT,product_id INTEGER REFERENCES products(id),image_url TEXT,alt_text TEXT,sort_order INTEGER,is_primary INTEGER,created_at TEXT,updated_at TEXT)");
+    await run(rollbackProtectedDb, "INSERT INTO products VALUES(1,'MAT-000002','Protected two',?,'keep-2')", [protectedReal2]);
+    await run(rollbackProtectedDb, "INSERT INTO products VALUES(2,'MAT-000005','Protected five',?,'keep-5')", [protectedReal5]);
+    await run(rollbackProtectedDb, "INSERT INTO product_images(product_id,image_url,is_primary) VALUES(1,?,1)", [protectedReal2]);
+    await run(rollbackProtectedDb, "INSERT INTO product_images(product_id,image_url,is_primary) VALUES(2,?,1)", [protectedReal5]);
+    await run(rollbackProtectedDb, "CREATE TRIGGER fail_protected_update AFTER UPDATE ON products WHEN NEW.id=2 BEGIN SELECT RAISE(ABORT,'protected rollback probe'); END");
+    const rollbackProtectedBefore = await snapshot(rollbackProtectedDb);
+    await close(rollbackProtectedDb);
+    await fs.promises.copyFile(path.join(protectedInput, "MAT-000002.png"), path.join(rollbackProtectedInput, "MAT-000002.png"));
+    await fs.promises.copyFile(path.join(protectedInput, "MAT-000005.png"), path.join(rollbackProtectedInput, "MAT-000005.png"));
+    const rollbackProtectedPlan = await planBatch({ input: rollbackProtectedInput, dbPath: rollbackProtectedDbPath, uploadsRoot: rollbackProtectedUploads, only: new Set(["MAT-000002", "MAT-000005"]), allowProtectedOverwrite: true, allowProtectedMats: new Set(["MAT-000002", "MAT-000005"]), allowRealOverwrite: true });
+    await assert.rejects(() => applyPlan(rollbackProtectedPlan, { dbPath: rollbackProtectedDbPath, uploadsRoot: rollbackProtectedUploads, apply: true, confirmApply: true, allowRealOverwrite: true, allowProtectedOverwrite: true, allowProtectedMats: new Set(["MAT-000002", "MAT-000005"]) }), /protected rollback probe/);
+    assert.deepStrictEqual(await fs.promises.readdir(rollbackProtectedUploads), [], "rollback removes generated protected image files");
+    rollbackProtectedDb = await open(rollbackProtectedDbPath);
+    assert.deepStrictEqual(await snapshot(rollbackProtectedDb), rollbackProtectedBefore, "rollback restores all protected product and binding rows");
+    await close(rollbackProtectedDb);
+    await close(protectedDb);
 
     // A failure on the second product rolls the whole DB batch back and removes created files.
     const rollbackInput = path.join(root, "rollback-input");
