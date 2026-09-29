@@ -90,6 +90,26 @@
     ],
     "readyForOwnerBatchReview": true
   },
+  "importerProtectionAudit": {
+    "file": "backend/scripts/import-product-images.js",
+    "protectedSetLocation": "PROTECTED_MATS constant (line 10)",
+    "protectedMats": ["MAT-000002", "MAT-000005"],
+    "runtimeRule": "planBatch marks a member PROTECTED unless allowProtectedOverwrite is true",
+    "origin": "The set is present in importer introduction commit 6f5614e (add batch product image importer); that commit contains no explanatory comment.",
+    "projectPurpose": "These products are designated control/reference products with existing prepared production photos; default protection prevents accidental replacement. This purpose is from the project workflow, not a code comment.",
+    "currentOverrideAssessment": "Not an exact protected-MAT authorization contract: --allow-protected-overwrite is broad, --protected-mats is user-configurable, and --only is validated against the input batch but not against a fixed protected override allowlist.",
+    "recommendedFutureGuard": "Keep default protection. Require explicit dedicated protected-MAT override set, validate it against a hard-coded task allowlist, and require --only to equal the same complete canonical list; reject mismatches before planning and again before apply. Also require normal real-image overwrite authorization.",
+    "requiredRegressionTests": [
+      "Default dry-run protects MAT-000002 and MAT-000005.",
+      "Missing, malformed, unauthorized, or mismatched override set blocks.",
+      "Subset, superset, duplicate, and other-MAT --only scopes block in override mode.",
+      "Only the exact approved protected-MAT set can proceed.",
+      "All non-target products and image bindings remain unchanged.",
+      "Backup precedes transactional local-copy apply; injected failure rolls back DB and output files.",
+      "Second dry-run after local-copy apply is idempotent."
+    ],
+    "codeChanged": false
+  },
   "dryRun": {
     "command": "node backend/scripts/import-product-images.js --input product-images-batch/plaster-image-reaudit-batch1/dry-run-input-approved --db backend/database/matmix.db --only MAT-000001,...,MAT-000028 --dry-run",
     "mode": "dry-run; local DB only",
@@ -1469,6 +1489,63 @@
             "note": "Previous identity review maps visible Rusean 40 kg plaster packaging to modified plaster; M-150 is excluded from source facts."
           }
         ]
+      },
+      "focusedReaudit": {
+        "checkedAt": "2026-09-29",
+        "finalStatus": "OWNER_REVIEW_REQUIRED",
+        "decision": "Do not reframe or replace; retain the current production image binding and product fields pending exact continuity evidence.",
+        "currentImageIdentity": {
+          "visible": ["РУСЕАН", "СУХАЯ СМЕСЬ ШТУКАТУРНАЯ", "40 кг", "ГОСТ 33083-2014", "ручное нанесение", "стены из бетона/кирпича/ячеистого бетона", "внутренние и наружные работы"],
+          "m150Visible": false,
+          "sha256": "8a218c154f633c4bcac0565be94acfb9e7f011649b34c7af75c1cfc7528f7adf"
+        },
+        "identityMatches": ["manufacturer brand", "plaster family", "40 kg package", "ГОСТ 33083-2014", "manual wall-plaster use inside/outside"],
+        "identityUnresolved": ["Whether the current modified plaster 40 kg is the same commercial SKU/version previously sold or listed as Rusean M-150 plaster 40 kg; no manufacturer transition/cross-reference was found."],
+        "continuityEvidence": [
+          {
+            "url": "https://rusean.ru/catalog/shtukaturka_tsementnaya/shtukaturnaya_sukhaya_smes_modifitsirovannaya_po_40_kg/",
+            "sourceOwner": "Rusean manufacturer",
+            "sourceType": "official current product page",
+            "evidence": "Exact 40 kg modified hand-applied plaster; ГОСТ 33083-2014; cement/lime/fractional sand/additives; indoor/outdoor wall use. Wording/application/standard match the current pack closely, but the product page does not call it M-150.",
+            "technicalProfile": "Average 15–17 kg/m² per 10 mm; recommended 10–20 mm, locally up to 50 mm; work temperature +5…+25 °C; compressive strength up to 5 MPa."
+          },
+          {
+            "url": "https://rusean.ru/pricelist/",
+            "sourceOwner": "Rusean manufacturer",
+            "sourceType": "official current catalog/price list",
+            "evidence": "Separately lists modified plaster 40 kg, standard universal M-150 40 kg, and modified universal M-150 40 kg. Current official catalog therefore does not identify these product names as interchangeable."
+          },
+          {
+            "url": "https://rusean.ru/catalog/sukhie_smesi_/universalnaya_sukhaya_smes_m_150_modifitsirovannaya_v_mesh_po_40_kg/",
+            "sourceOwner": "Rusean manufacturer",
+            "sourceType": "official current product page",
+            "evidence": "The exact M-150 modified universal 40 kg product is under ГОСТ 31357-2007 and is designated for plastering, masonry/installation and floors; it is a distinct documented identity from the current modified plaster page."
+          },
+          {
+            "url": "https://mastersmesi.ru/catalog/sukhie-stroitelnye-smesi/shtukaturnye-smesi/shtukaturnaya-smes-rusean/shtukaturnaya-smes-rusean-m-150-dlya-mashinnogo-naneseniya/",
+            "sourceOwner": "Secondary retailer Mastersmesi",
+            "sourceType": "secondary exact-title listing",
+            "evidence": "Calls a 40 kg machine-applied plaster M-150 and lists ГОСТ 33083-2014; reports 15–20 mm and 17–18 kg/m² per 10 mm, differing from current official modified plaster page. It does not prove that the current manual-only package is its successor."
+          },
+          {
+            "url": "https://lidersmesi.ru/catalog/sukhie-stroitelnye-smesi/tsementno-peschanye-smesi/smes-rusean-m-150-shtukaturnaya-40-kg",
+            "sourceOwner": "Secondary retailer Lider Smesi",
+            "sourceType": "secondary exact-title listing with pack image",
+            "evidence": "Lists Rusean M-150 plaster 40 kg and shows an M-150-labelled bag with a related white/yellow/red graphic family. Similar graphics do not establish an official rename or same formula."
+          },
+          {
+            "url": "https://stroydwor.ru/shtukaturki/shtukaturka-cementnaya-rusean-40-kg",
+            "sourceOwner": "Secondary retailer StroyDvor",
+            "sourceType": "secondary current-style package listing",
+            "evidence": "40 kg Rusean cement plaster listing shows a package with ГОСТ 33083-2014 and manual wall application inside/outside, matching the current pack language; title does not identify M-150."
+          }
+        ],
+        "decisionRationale": "Brand, category, package weight, GOST and shared graphics suggest a lineage, but the M-150 designation is absent from the current pack, current official catalog separates M-150 products, and secondary M-150 technical profiles do not consistently match the official modified plaster. Exact SKU/version continuity remains ambiguous.",
+        "ownerOrManufacturerEvidenceNeeded": "Original supplier SKU/product passport or technical sheet tied to the exact MAT-000028 bag, or written Rusean confirmation that the current modified plaster 40 kg is the successor/rebranded package for the M-150 plaster SKU.",
+        "candidatePrepared": false,
+        "candidateSha256": null,
+        "sourceProductFillPct": null,
+        "importerPreviewFillPct": null
       },
       "action": "No candidate prepared. Resolve identity/title-source discrepancy first.",
       "proposed": null,
