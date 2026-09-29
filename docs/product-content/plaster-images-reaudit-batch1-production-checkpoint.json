@@ -1,0 +1,153 @@
+{
+  "task": "SYSTEMATIC IMAGE RE-AUDIT production checkpoint — Смеси → Штукатурка",
+  "checkpointDate": "2026-09-29",
+  "branch": "codex/plaster-image-reaudit-checkpoint",
+  "baselineCommit": "a62d5785df9956e19e55e91fdd2f5a0782662fd3",
+  "productionAccessByThisTask": false,
+  "evidenceSource": "Owner-provided production rollout and audit verification",
+  "scope": {
+    "category": "Смеси",
+    "subcategory": "Штукатурка",
+    "totalProducts": 28,
+    "keep": ["MAT-000008", "MAT-000019"],
+    "reframe": [
+      "MAT-000001", "MAT-000002", "MAT-000003", "MAT-000004", "MAT-000005", "MAT-000006",
+      "MAT-000007", "MAT-000009", "MAT-000010", "MAT-000011", "MAT-000012", "MAT-000013",
+      "MAT-000014", "MAT-000015", "MAT-000016", "MAT-000017", "MAT-000018", "MAT-000020",
+      "MAT-000021", "MAT-000022", "MAT-000023", "MAT-000024", "MAT-000025", "MAT-000026",
+      "MAT-000027", "MAT-000028"
+    ],
+    "cleanup": [],
+    "rebuild": [],
+    "researchRequired": [],
+    "ownerReviewRequired": [],
+    "blockingMats": []
+  },
+  "productionRollout": {
+    "status": "COMPLETE_AND_OWNER_VERIFIED",
+    "packageA": {
+      "name": "NORMAL_REFRAME",
+      "matCount": 24,
+      "mats": [
+        "MAT-000001", "MAT-000003", "MAT-000004", "MAT-000006", "MAT-000007", "MAT-000009",
+        "MAT-000010", "MAT-000011", "MAT-000012", "MAT-000013", "MAT-000014", "MAT-000015",
+        "MAT-000016", "MAT-000017", "MAT-000018", "MAT-000020", "MAT-000021", "MAT-000022",
+        "MAT-000023", "MAT-000024", "MAT-000025", "MAT-000026", "MAT-000027", "MAT-000028"
+      ],
+      "archive": "plaster-images-reaudit-normal-batch1.tar.gz",
+      "archiveSha256": "146b9623e65c7d0667f2911c54b5e66a2bf6e9308160b3a625932003b92785c5",
+      "preApplyBackup": {
+        "path": "/var/lib/matmix/matmix.db.backup-2026-09-29T16-26-14-612Z-e476d878cad2",
+        "sha256": "4067ea6ef5198edc20ed14a99b72ab54147938138a3f7020088281e6f0a7e72c",
+        "userVersion": 11
+      },
+      "verification": {
+        "backupShaOk": true,
+        "productChangeScopeOk": true,
+        "bindingChangeScopeOk": true,
+        "normal24ImagesOk": true,
+        "protectedAndKeepUntouchedOk": true,
+        "postApplyVerifyOk": true,
+        "productsImageUrlChanged": 24,
+        "productImageBindingsChanged": 24,
+        "unchangedMats": ["MAT-000002", "MAT-000005", "MAT-000008", "MAT-000019"]
+      }
+    },
+    "packageB": {
+      "name": "PROTECTED_REFRAME",
+      "matCount": 2,
+      "mats": ["MAT-000002", "MAT-000005"],
+      "archive": "plaster-images-reaudit-protected-batch1.tar.gz",
+      "archiveSha256": "b99e67419c50708fb5436885d4cf5ff3383c302a5fbde1faa7ec4866e8c9ca92",
+      "protectedOverride": {
+        "only": ["MAT-000002", "MAT-000005"],
+        "allowProtectedOverwrite": true,
+        "allowProtectedMats": ["MAT-000002", "MAT-000005"],
+        "allowRealOverwrite": true,
+        "usedOnlyForTheseMats": true
+      },
+      "preApplyBackup": {
+        "path": "/var/lib/matmix/matmix.db.backup-2026-09-29T16-36-52-848Z-4cc85170547f",
+        "sha256": "500963737a5fb82f223504db7e1cd84d0d05500bb57983dc7ff62eac414613ff",
+        "userVersion": 11
+      },
+      "verification": {
+        "backupShaOk": true,
+        "productChangeScopeOk": true,
+        "bindingChangeScopeOk": true,
+        "protected2ImagesOk": true,
+        "allOtherImageBindingsUnchangedOk": true,
+        "postApplyVerifyOk": true,
+        "changedProductsExactly": ["MAT-000002", "MAT-000005"],
+        "changedBindingsExactly": ["MAT-000002", "MAT-000005"],
+        "outOfScopeMutationDetected": false
+      }
+    },
+    "database": {
+      "userVersion": 11,
+      "integrity": "ok",
+      "foreignKeyViolations": 0
+    }
+  },
+  "finalProductionImageUrls": [
+    {"externalId":"MAT-000001","classification":"REFRAME","url":"/uploads/products/MAT-000001-3786d1e3c0037725.webp"},
+    {"externalId":"MAT-000002","classification":"REFRAME","url":"/uploads/products/MAT-000002-69e4c1b8ba3c2a54.webp"},
+    {"externalId":"MAT-000003","classification":"REFRAME","url":"/uploads/products/MAT-000003-3d37b272aa6bc353.webp"},
+    {"externalId":"MAT-000004","classification":"REFRAME","url":"/uploads/products/MAT-000004-b77e46123b43fce1.webp"},
+    {"externalId":"MAT-000005","classification":"REFRAME","url":"/uploads/products/MAT-000005-7523c6ac8d0c088d.webp"},
+    {"externalId":"MAT-000006","classification":"REFRAME","url":"/uploads/products/MAT-000006-005347c5f0aac89e.webp"},
+    {"externalId":"MAT-000007","classification":"REFRAME","url":"/uploads/products/MAT-000007-b244aa6219697589.webp"},
+    {"externalId":"MAT-000008","classification":"KEEP","url":"/uploads/products/MAT-000008-2da3047ac5f7454a.webp","replaced":false},
+    {"externalId":"MAT-000009","classification":"REFRAME","url":"/uploads/products/MAT-000009-8938b1737eba6c1a.webp"},
+    {"externalId":"MAT-000010","classification":"REFRAME","url":"/uploads/products/MAT-000010-3bded5a566d7b233.webp"},
+    {"externalId":"MAT-000011","classification":"REFRAME","url":"/uploads/products/MAT-000011-c0529592f8d7f274.webp"},
+    {"externalId":"MAT-000012","classification":"REFRAME","url":"/uploads/products/MAT-000012-a2d06341e7b3ec98.webp"},
+    {"externalId":"MAT-000013","classification":"REFRAME","url":"/uploads/products/MAT-000013-fffb98f9f01e9bb2.webp"},
+    {"externalId":"MAT-000014","classification":"REFRAME","url":"/uploads/products/MAT-000014-211625d90a177c40.webp"},
+    {"externalId":"MAT-000015","classification":"REFRAME","url":"/uploads/products/MAT-000015-67aa7284586eea5a.webp"},
+    {"externalId":"MAT-000016","classification":"REFRAME","url":"/uploads/products/MAT-000016-7fa2d42ff7655ca5.webp"},
+    {"externalId":"MAT-000017","classification":"REFRAME","url":"/uploads/products/MAT-000017-0761e05f64ba4edd.webp"},
+    {"externalId":"MAT-000018","classification":"REFRAME","url":"/uploads/products/MAT-000018-e1f2756d703b3fd1.webp"},
+    {"externalId":"MAT-000019","classification":"KEEP","url":"/uploads/products/MAT-000019-1b1f9d35d0e25256.webp","replaced":false},
+    {"externalId":"MAT-000020","classification":"REFRAME","url":"/uploads/products/MAT-000020-d95309b89c077753.webp"},
+    {"externalId":"MAT-000021","classification":"REFRAME","url":"/uploads/products/MAT-000021-f34e492fbcd6415d.webp"},
+    {"externalId":"MAT-000022","classification":"REFRAME","url":"/uploads/products/MAT-000022-d0675ec8bf8819ea.webp"},
+    {"externalId":"MAT-000023","classification":"REFRAME","url":"/uploads/products/MAT-000023-2439d3892d0b2f77.webp"},
+    {"externalId":"MAT-000024","classification":"REFRAME","url":"/uploads/products/MAT-000024-d5c2587cd94385cd.webp"},
+    {"externalId":"MAT-000025","classification":"REFRAME","url":"/uploads/products/MAT-000025-44734a76e537b9a5.webp"},
+    {"externalId":"MAT-000026","classification":"REFRAME","url":"/uploads/products/MAT-000026-526b6d417539ed19.webp"},
+    {"externalId":"MAT-000027","classification":"REFRAME","url":"/uploads/products/MAT-000027-c3f86be386757733.webp"},
+    {"externalId":"MAT-000028","classification":"REFRAME","url":"/uploads/products/MAT-000028-3d3f19de9794d1f5.webp"}
+  ],
+  "mat000028DataIdentityNote": "Текущая упаковка подтверждена как штукатурный продукт Русеан 40 кг. Актуальный производитель не использует M-150 в текущем официальном названии штукатурного продукта; title и product data не менялись. Это не blocker.",
+  "imageStandard": {
+    "workingReference": "Use existing production image where exact identity is reliable; avoid unnecessary re-search/rebuild.",
+    "keepWhenCompliant": true,
+    "reframeUsesExistingPixels": true,
+    "preserve": ["brand", "model", "text", "colors", "package identity"],
+    "source": "1200x1200 PNG, white background, complete product, no clipping; source bbox generally 94–97%.",
+    "importerPreview": "Approximately 84–88% product fill.",
+    "rebuildOrResearchOnlyFor": "Actual identity or quality exceptions.",
+    "reviewMode": "Owner reviews the whole subcategory via contact sheet, not each image individually."
+  },
+  "finalProductionAudit": {
+    "subcategory": "Штукатурка",
+    "products": 28,
+    "attrOk": 1,
+    "attrPartial": 27,
+    "seoOk": 28,
+    "seoIssues": 0,
+    "imageOk": 28,
+    "imageIssues": 0,
+    "sourceOk": 2,
+    "sourceOptionalGaps": 26,
+    "sourceBlocked": 0,
+    "sourceAnomalies": 0,
+    "blockers": 0,
+    "blockingMats": [],
+    "dataStatus": "DATA_CLOSED",
+    "categoryStatus": "CLOSED",
+    "otherClosedSubcategories": ["Шпаклевка", "Кладочные Смеси", "Наливной Пол", "Стяжки Пола", "Гидроизоляция"],
+    "database": {"userVersion":11,"integrity":"ok","foreignKeyViolations":0}
+  }
+}
