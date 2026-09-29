@@ -1,0 +1,102 @@
+{
+  "date": "2026-09-29",
+  "category": "Смеси → Гидроизоляция",
+  "scope": ["MAT-000100", "MAT-000101", "MAT-000102"],
+  "evidenceSource": "Owner-provided production command output; Codex did not access production, SSH, or production DB.",
+  "importerSafetyCommit": {
+    "sha": "a7878e78a7c86b4321ad8ff7a3382f55b67b3479",
+    "message": "fix(product-images): harden production image importer"
+  },
+  "backup": {
+    "type": "verified SQLite online backup",
+    "path": "/var/lib/matmix/matmix.db.backup-2026-09-29T11-48-35-578Z-afb4ff0cf642",
+    "sha256": "8f1c107cbdcc45dbd26a878843264db5ee31de0f0466e19a6cb9e925720d1fd2",
+    "userVersion": 11
+  },
+  "postApplyDatabaseHealth": {
+    "integrity": "ok",
+    "userVersion": 11,
+    "foreignKeyViolations": 0
+  },
+  "images": [
+    {
+      "mat": "MAT-000100",
+      "sourcePngSha256": "9c3c1c81b02bc5ca3020ee120c7f76083ea17613b1563cd168c693a7010b445a",
+      "productionWebpUrl": "/uploads/products/MAT-000100-9c3c1c81b02bc5ca.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 1200,
+      "primaryCount": 1,
+      "galleryCount": 0,
+      "uniqueUrlBinding": true,
+      "postcheck": "ok",
+      "productionApply": "SUCCESS",
+      "technicalImageStatus": "IMAGE_OK",
+      "finalVisualFramingAccepted": false,
+      "OWNER_VISUAL_CORRECTION_REQUIRED": true,
+      "visualCorrectionReason": "Product occupies insufficient useful area of the catalog image; tighten framing so the product appears larger."
+    },
+    {
+      "mat": "MAT-000101",
+      "sourcePngSha256": "f1b3ca958ed72dade11372b963f313d8d4feb33775b8ec4236fecd77136eee85",
+      "productionWebpUrl": "/uploads/products/MAT-000101-f1b3ca958ed72dad.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 1200,
+      "primaryCount": 1,
+      "galleryCount": 0,
+      "uniqueUrlBinding": true,
+      "postcheck": "ok",
+      "productionApply": "SUCCESS",
+      "technicalImageStatus": "IMAGE_OK",
+      "finalVisualFramingAccepted": false,
+      "OWNER_VISUAL_CORRECTION_REQUIRED": true,
+      "visualCorrectionReason": "Product occupies insufficient useful area of the catalog image; tighten framing so the product appears larger."
+    },
+    {
+      "mat": "MAT-000102",
+      "sourcePngSha256": "e5a5ab4919a03eecad6b578886812c60fac0a2eb6e1f6c31d952dc8a9dd236f7",
+      "productionWebpUrl": "/uploads/products/MAT-000102-e5a5ab4919a03eec.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 1200,
+      "primaryCount": 1,
+      "galleryCount": 0,
+      "uniqueUrlBinding": true,
+      "postcheck": "ok",
+      "productionApply": "SUCCESS",
+      "technicalImageStatus": "IMAGE_OK",
+      "finalVisualFramingAccepted": false,
+      "OWNER_VISUAL_CORRECTION_REQUIRED": true,
+      "visualCorrectionReason": "Product occupies insufficient useful area of the catalog image; tighten framing so the product appears larger."
+    }
+  ],
+  "closedSubcategoryAudit": {
+    "closed": ["Штукатурка", "Шпаклевка", "Кладочные Смеси", "Наливной Пол", "Стяжки Пола"],
+    "Гидроизоляция": {
+      "products": 9,
+      "attrOk": 0,
+      "attrPartial": 9,
+      "seoOk": 9,
+      "seoIssues": 0,
+      "imageOk": 3,
+      "imageIssues": 6,
+      "sourceBlocked": 0,
+      "sourceAnomalies": 0,
+      "blockers": 6,
+      "status": "NOT_CLOSED"
+    },
+    "remainingBlockingMats": ["MAT-000099", "MAT-000103", "MAT-000104", "MAT-000105", "MAT-000106", "MAT-000107"]
+  },
+  "laterOwnerVisualReview": {
+    "scope": ["MAT-000100", "MAT-000101", "MAT-000102"],
+    "productionApplyAndTechnicalVerification": "SUCCESS",
+    "technicalImageStatus": "IMAGE_OK",
+    "finalVisualFramingAccepted": false,
+    "OWNER_VISUAL_CORRECTION_REQUIRED": true,
+    "reason": "Product occupies insufficient useful area of the catalog image; framing must be tightened so the product appears larger.",
+    "rollback": false,
+    "correctiveVersionsPlanned": true,
+    "visuallyClosed": false
+  }
+}
