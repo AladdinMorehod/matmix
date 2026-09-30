@@ -77,7 +77,7 @@
     "candidateFill": "same measurement on 1200x1200 PNG",
     "previewFill": "same measurement on exact importer renderWebp 1200x1200 WebP",
     "qc": {
-      "checkedAt": "2026-09-30T13:06:45.005Z",
+      "checkedAt": "2026-09-30T14:00:00.000Z",
       "changedCount": 30,
       "finalFormat": "png",
       "finalDimensions": "1200x1200",
@@ -92,14 +92,14 @@
         "candidateFormat": "png",
         "candidateDimensions": "1200x1200",
         "candidateSourceDimensions": "1254x1254",
-        "candidateBytes": 1672421,
-        "candidateSha256": "891d7df5b06f34e59aa5a8ea908ef194ee46aeaf8242dd4befcbf5248dcf7f00",
+        "candidateBytes": 1782317,
+        "candidateSha256": "6b49fa68cd7f6260c488ed189d4d0a19e9046d02eddc419883273e1e42dc1952",
         "candidateFillWidthPct": 64.58,
         "candidateFillHeightPct": 94.83,
         "previewFormat": "webp",
         "previewDimensions": "1200x1200",
-        "previewBytes": 53856,
-        "previewSha256": "f23c866562528513d5261a2ecf52c1fa6ba7eff3c9cac78f175d5d87bb76e675",
+        "previewBytes": 55040,
+        "previewSha256": "5a69777800a7c1e5bf597526c7150a240c2490c18416dd83d3caa50469cfa562",
         "previewFillWidthPct": 58.17,
         "previewFillHeightPct": 85.5,
         "whiteBackgroundCornersNearWhite": [
@@ -111,8 +111,17 @@
         "fullPackageVisible": true,
         "synthetic": true,
         "officialPixelsCopiedOrTraced": false,
-        "topRightEmblemOmitted": true,
-        "rightsCleared": false
+        "rightsCleared": false,
+        "topRightCircleRetained": true,
+        "topRightInternalGraphicOmitted": true,
+        "finalBaseFile": "prepared/rebuild/MAT-000046-final-v3.png",
+        "overlay": {
+          "description": "plain green disk with white outline; no internal mark",
+          "centerX": 857,
+          "centerY": 253,
+          "outerDiameter": 88,
+          "greenDiameter": 76
+        }
       }
     }
   },
@@ -684,19 +693,19 @@
       "sourceFillWidthPct": 51.58,
       "sourceFillHeightPct": 80.33,
       "classification": "REBUILD",
-      "reason": "Exact identity is confirmed by the current official PUFAS 20 kg page and RU TDS. The selected current page-linked front media is the visual reference for a synthetic review redraw. The exact top-right emblem artwork was not reconstructed because the small reference does not support a confident faithful redraw; that emblem is omitted. No production rights clearance was obtained.",
-      "finalFile": "prepared/rebuild/MAT-000046-final-v3.png",
+      "reason": "Exact identity is confirmed by the current official PUFAS 20 kg page and RU TDS. The selected current page-linked front media is the visual reference for a synthetic review redraw. The top-right circular green mark and white outline are preserved as a neutral disk; its internal artwork remains unresolved and is intentionally omitted. No source pixels were copied; no production rights clearance was obtained.",
+      "finalFile": "prepared/rebuild/MAT-000046-final-v4.png",
       "finalWidth": 1200,
       "finalHeight": 1200,
-      "finalBytes": 1672421,
-      "finalSha256": "891d7df5b06f34e59aa5a8ea908ef194ee46aeaf8242dd4befcbf5248dcf7f00",
+      "finalBytes": 1782317,
+      "finalSha256": "6b49fa68cd7f6260c488ed189d4d0a19e9046d02eddc419883273e1e42dc1952",
       "finalFillWidthPct": 64.58,
       "finalFillHeightPct": 94.83,
-      "previewFile": "prepared/rebuild-preview/MAT-000046-final-v3.webp",
+      "previewFile": "prepared/rebuild-preview/MAT-000046-final-v4.webp",
       "previewWidth": 1200,
       "previewHeight": 1200,
-      "previewBytes": 53856,
-      "previewSha256": "f23c866562528513d5261a2ecf52c1fa6ba7eff3c9cac78f175d5d87bb76e675",
+      "previewBytes": 55040,
+      "previewSha256": "5a69777800a7c1e5bf597526c7150a240c2490c18416dd83d3caa50469cfa562",
       "previewFillWidthPct": 58.17,
       "previewFillHeightPct": 85.5,
       "packagingForm": "Мешок",
@@ -750,7 +759,7 @@
         }
       ],
       "ownerReviewRequired": true,
-      "visiblePackageIdentity": "Synthetic owner-review render showing PUFAS / Füll+Finish / Spachtel / 20 kg. Current exact page-linked design is selected; top-right emblem intentionally omitted; not an authentic package photo.",
+      "visiblePackageIdentity": "Synthetic owner-review render showing PUFAS / Füll+Finish / Spachtel / 20 kg. The reference-confirmed top-right circle is retained as a plain green disk with a simple white outline; internal artwork is omitted. Not an authentic product photograph.",
       "packageIdentityResolved": {
         "brand": "PUFAS",
         "productLine": "Füll+Finish Spachtel",
@@ -780,14 +789,15 @@
       },
       "candidateNature": "SYNTHETIC_CATALOG_REVIEW_RENDER",
       "candidateRightsStatus": "NOT_CLEARED_FOR_PRODUCTION",
-      "action": "Owner review only. One synthetic redraw follows the current official exact 20 kg/article 003007092 page-linked package media. A possible older catalog depiction has conflicting EAN and is not mixed in. The top-right emblem is omitted rather than guessed. No source pixels were reused; candidate is excluded from normal archive and is not production-rights-cleared.",
+      "action": "Owner review only. The v4 is a localized overlay on v3: retain a reference-confirmed top-right green circle and white rim while omitting unresolved internal artwork. No official source pixels were reused. Candidate remains excluded from the normal archive and is not production-rights-cleared.",
       "candidateGenerationInput": {
         "format": "png",
         "width": 1254,
         "height": 1254,
         "officialImagePixelsCopiedOrTraced": false,
         "officialVisualReferenceUsedForLayout": true,
-        "description": "synthetic redraw guided by the official current exact-SKU front reference; emblem omitted; no reference pixels copied/traced/composited"
+        "description": "v3 synthetic redraw followed the official current exact-SKU reference; v4 adds only the reference-confirmed plain green circle with white outline and no internal symbol. No reference pixels copied/traced/composited.",
+        "finalCorrection": "v4 is based on the existing 1200x1200 v3 PNG; only a neutral green circular disk with a simple white rim was composited at the reference-supported top-right position. No package framing or other artwork changed."
       },
       "selectedPackagingReference": {
         "source": "Current official PUFAS media linked from the current exact 20 kg product page",
@@ -816,9 +826,10 @@
         "previousGreenStripeCandidate": "REJECTED: detached invented stripes did not match official paired slanted information ribbons.",
         "previousSimplifiedCandidates": "REJECTED: omitted characteristic product-name hierarchy and lower package structure.",
         "previousLeafEmblemCandidate": "REJECTED: generated leaf-like emblem did not match the simple circular mark visible in official media.",
-        "selectedCandidateRationale": "One new owner-review render follows the selected current exact-page visual generation. Only evidenced primary fields, product identity, paired green ribbons, framed application panels and red footer remain. The uncertain top-right emblem and exact tiny glyphs are omitted; microcopy is neutralized.",
+        "selectedCandidateRationale": "One synthetic redraw follows the selected current exact-page visual generation. The reference-confirmed top-right circular green mark and simple white outline are retained; uncertain internal artwork and exact tiny glyphs are omitted. Microcopy is neutralized.",
         "noMixedPackagingGenerations": true,
-        "exactPackagingRevisionDateClaimed": false
+        "exactPackagingRevisionDateClaimed": false,
+        "topRightCircularMark": "Presence, approximate position/size and green-dominant color are confirmed by the official visual reference; the plain green disk with white outline is retained. Internal symbol/detail is unresolved and intentionally omitted."
       },
       "exceptionSheetFile": "product-images-batch/putty-image-reaudit-batch1/sheets/putty-images-reaudit-mat-000046-exception.png",
       "visualEvidenceMap": [
@@ -886,11 +897,11 @@
           "candidateTreatment": "Exact glyphs omitted; neutral green bullets and blurred unreadable microtext only."
         },
         {
-          "element": "Top-right circular emblem",
+          "element": "Top-right circular green mark",
           "reference": "Official current exact-SKU front media",
           "referenceUrl": "https://www.pufas.com/site/assets/files/3231/25799_256.0x1000.jpg",
-          "confidence": "HIGH that a round emblem exists; LOW for internal artwork detail",
-          "candidateTreatment": "OMITTED; prior generated leaf-like mark was rejected and no speculative replacement used."
+          "confidence": "HIGH for presence, approximate position/size and green-dominant field; LOW for internal artwork.",
+          "candidateTreatment": "Retain a neutral plain green circular disk with simple white outline at the reference-supported position; omit all unresolved internal artwork."
         },
         {
           "element": "Side information visibility",
@@ -908,10 +919,11 @@
         }
       ],
       "unsupportedElementsRemoved": [
-        "Top-right circular emblem was omitted because the internal mark cannot be recreated confidently from the reference; generated leaf-like variant rejected.",
+        "The circular mark itself is retained as a plain green disk with a simple white outline; unsupported internal artwork (leaf/globe/swirl/other symbol) is intentionally omitted.",
         "Specific tiny pictogram glyphs omitted; replaced with neutral small green bullets and unreadable microtext.",
         "All unsupported marketing/performance claims, article number, barcode, and unverified extra graphics omitted."
-      ]
+      ],
+      "exceptionSheetOwnerReview": "product-images-batch/putty-image-reaudit-batch1/owner-review/MAT-000046-exception.png"
     },
     {
       "mat": "MAT-000047",
@@ -1814,11 +1826,11 @@
         "candidateTreatment": "Exact glyphs omitted; neutral green bullets and blurred unreadable microtext only."
       },
       {
-        "element": "Top-right circular emblem",
+        "element": "Top-right circular green mark",
         "reference": "Official current exact-SKU front media",
         "referenceUrl": "https://www.pufas.com/site/assets/files/3231/25799_256.0x1000.jpg",
-        "confidence": "HIGH that a round emblem exists; LOW for internal artwork detail",
-        "candidateTreatment": "OMITTED; prior generated leaf-like mark was rejected and no speculative replacement used."
+        "confidence": "HIGH for presence, approximate position/size and green-dominant field; LOW for internal artwork",
+        "candidateTreatment": "Retained as a plain green disk with simple white outline; unresolved internal artwork is intentionally omitted."
       },
       {
         "element": "Side information visibility",
@@ -1836,33 +1848,35 @@
       }
     ],
     "unsupportedElementsRemoved": [
-      "Top-right circular emblem was omitted because the internal mark cannot be recreated confidently from the reference; generated leaf-like variant rejected.",
+      "The circular mark is retained as a plain green disk with simple white outline; unsupported internal artwork (leaf/globe/swirl/other symbol) is intentionally omitted.",
       "Specific tiny pictogram glyphs omitted; replaced with neutral small green bullets and unreadable microtext.",
       "All unsupported marketing/performance claims, article number, barcode, and unverified extra graphics omitted."
     ],
     "observedCurrentPackage": "PUFAS Füll Spachtel FSI innen, 20 kg visible — different model from local Full+Finish; official FSI TDS lists item 003007000/EAN 4007954030004.",
     "candidate": {
       "nature": "Synthetic catalog review reconstruction; reference layout-guided, no official pixels copied/traced/composited.",
-      "file": "prepared/rebuild/MAT-000046-final-v3.png",
-      "dimensions": "1200x1200 PNG; generated source 1254x1254",
-      "sha256": "891d7df5b06f34e59aa5a8ea908ef194ee46aeaf8242dd4befcbf5248dcf7f00",
+      "file": "prepared/rebuild/MAT-000046-final-v4.png",
+      "dimensions": "1200x1200 PNG; localized overlay on v3",
+      "sha256": "6b49fa68cd7f6260c488ed189d4d0a19e9046d02eddc419883273e1e42dc1952",
       "fillWidthPct": 64.58,
       "fillHeightPct": 94.83,
-      "bytes": 1672421,
-      "whiteCorners": "near-white (corners measured individually; importer preview is pure white)",
-      "topRightEmblem": "omitted"
+      "bytes": 1782317,
+      "whiteCorners": "near-white (253–255)",
+      "topRightCircularMark": "plain green disk with white outline",
+      "topRightInternalGraphic": "intentionally omitted",
+      "topRightMark": "plain green disk with white outline; internal graphic intentionally omitted"
     },
     "importerPreview": {
-      "file": "prepared/rebuild-preview/MAT-000046-final-v3.webp",
+      "file": "prepared/rebuild-preview/MAT-000046-final-v4.webp",
       "dimensions": "1200x1200 WebP",
-      "sha256": "f23c866562528513d5261a2ecf52c1fa6ba7eff3c9cac78f175d5d87bb76e675",
+      "sha256": "5a69777800a7c1e5bf597526c7150a240c2490c18416dd83d3caa50469cfa562",
       "fillWidthPct": 58.17,
       "fillHeightPct": 85.5,
-      "bytes": 53856
+      "bytes": 55040
     },
     "rights": "Official and retailer media are visual identity references only. PUFAS imprint says commercial reproduction/use of images requires prior consent; no permission obtained. Synthetic candidate is not cleared for production.",
-    "decision": "Keep MAT-000046 as REBUILD / OWNER_REVIEW_REQUIRED. Exact identity is confirmed, current official page-linked visual generation is selected, package revision date is not stated, a possible older catalog depiction remains uncertain due EAN conflict, and the top-right emblem was omitted rather than guessed.",
-    "exceptionSheet": "product-images-batch/putty-image-reaudit-batch1/sheets/putty-images-reaudit-mat-000046-exception.png"
+    "decision": "Keep MAT-000046 as REBUILD / OWNER_REVIEW_REQUIRED. Exact identity is confirmed. The v4 localized correction retains the reference-confirmed top-right circular green mark and simple white outline, while intentionally omitting unresolved internal artwork. Synthetic candidate is not rights-cleared for production.",
+    "exceptionSheet": "product-images-batch/putty-image-reaudit-batch1/owner-review/MAT-000046-exception.png"
   },
   "rollout": {
     "normalPackage": {
@@ -2359,7 +2373,7 @@
     "allMatsPresent": true,
     "mat000046PresentOnFullAndExceptionSheets": true,
     "visualFilesOpenedAndVerified": true,
-    "updatedForCandidate": "MAT-000046-final-v3",
+    "updatedForCandidate": "MAT-000046-final-v4 on owner-review page 2 and owner exception export; root full-page sheets remain historical v3 review exports",
     "ownerReviewExports": {
       "directory": "product-images-batch/putty-image-reaudit-batch1/owner-review/",
       "exactlyFour": true,
@@ -2379,8 +2393,8 @@
           "format": "png",
           "width": 1800,
           "height": 3180,
-          "bytes": 1754179,
-          "sha256": "d4634547022299a60d07d7dd6850edd37c1b626f40dcd6b08660fbbef89b09f9"
+          "bytes": 1754436,
+          "sha256": "06f17af09d3f47609d3cfea6ea05ab2483d3cb3c03d657424a325ed08628b617"
         },
         {
           "name": "putty-contact-sheet-3.png",
@@ -2397,10 +2411,12 @@
           "format": "png",
           "width": 1800,
           "height": 1360,
-          "bytes": 1049894,
-          "sha256": "1ba750ffd79f25e70026520e696aba13e439650fdc36683a6817568b04b33742"
+          "bytes": 1045681,
+          "sha256": "ee9b657808398d57b97f9b470a6ae35bdb726f2011ac34de25ef75e71e5a9bb5"
         }
-      ]
+      ],
+      "updatedForCandidate": "MAT-000046-final-v4",
+      "page1AndPage3Unchanged": true
     }
   },
   "ownerReviewRequired": [
@@ -2418,7 +2434,8 @@
     "mat000046CandidatePrepared": true,
     "mat000046ExceptionSheetCreated": true,
     "all33IncludedInFullContactSheet": true,
-    "mat000046NotIncludedInNormalArchive": true
+    "mat000046NotIncludedInNormalArchive": true,
+    "finalMat000046VisualReviewReady": true
   },
   "git": {
     "expectedCommittedFiles": [
@@ -2426,5 +2443,24 @@
       "docs/product-content/putty-images-reaudit-batch1.json"
     ],
     "binaryAssetsCommitted": false
+  },
+  "finalOwnerReview": {
+    "status": "READY_FOR_FINAL_MAT_000046_OWNER_REVIEW",
+    "ownerApprovedBatch": {
+      "KEEP": 3,
+      "REFRAME": 29
+    },
+    "remainingReviewedItem": "MAT-000046",
+    "classifications": {
+      "KEEP": 3,
+      "REFRAME": 29,
+      "CLEANUP": 0,
+      "REBUILD": 1,
+      "RESEARCH_REQUIRED": 0,
+      "OWNER_REVIEW_REQUIRED": 1
+    },
+    "page1Unchanged": true,
+    "page3Unchanged": true,
+    "normalArchiveSha256": "9a78dc6ae0ea2ff1d36fc4eadfd32836fec75edc29ff725bc41fb074bdf83e21"
   }
 }
