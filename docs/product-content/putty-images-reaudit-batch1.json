@@ -57,7 +57,7 @@
     "CLEANUP": 0,
     "REBUILD": 1,
     "RESEARCH_REQUIRED": 0,
-    "OWNER_REVIEW_REQUIRED": 1
+    "OWNER_REVIEW_REQUIRED": 0
   },
   "policy": {
     "keep": "Current image meets clean white background, complete package, identity, quality, and visual framing standard; unchanged.",
@@ -758,7 +758,7 @@
           "evidence": "An older official PUFAS catalog search-index excerpt describes a blue-background/snowflake depiction and lists article 003007092, but the associated EAN appears as 4007954030967, conflicting with current exact product EAN 4007954030974. The full PDF could not be inspected due size limits. Possible historical generation only; low exact-SKU confidence; excluded from selection and not mixed into candidate."
         }
       ],
-      "ownerReviewRequired": true,
+      "ownerReviewRequired": false,
       "visiblePackageIdentity": "Synthetic owner-review render showing PUFAS / Füll+Finish / Spachtel / 20 kg. The reference-confirmed top-right circle is retained as a plain green disk with a simple white outline; internal artwork is omitted. Not an authentic product photograph.",
       "packageIdentityResolved": {
         "brand": "PUFAS",
@@ -923,7 +923,9 @@
         "Specific tiny pictogram glyphs omitted; replaced with neutral small green bullets and unreadable microtext.",
         "All unsupported marketing/performance claims, article number, barcode, and unverified extra graphics omitted."
       ],
-      "exceptionSheetOwnerReview": "product-images-batch/putty-image-reaudit-batch1/owner-review/MAT-000046-exception.png"
+      "exceptionSheetOwnerReview": "product-images-batch/putty-image-reaudit-batch1/owner-review/MAT-000046-exception.png",
+      "ownerApproved": true,
+      "ownerApprovalStatus": "OWNER_APPROVED"
     },
     {
       "mat": "MAT-000047",
@@ -1728,7 +1730,7 @@
     "mat": "MAT-000046",
     "classification": "REBUILD",
     "researchRequired": false,
-    "ownerReviewRequired": true,
+    "ownerReviewRequired": false,
     "localTitle": "Шпаклевка гипсовая финишная, заполняющая Full+Finish Pufas / Пуфас 20 кг",
     "exactIdentity": {
       "brand": "PUFAS",
@@ -1875,8 +1877,10 @@
       "bytes": 55040
     },
     "rights": "Official and retailer media are visual identity references only. PUFAS imprint says commercial reproduction/use of images requires prior consent; no permission obtained. Synthetic candidate is not cleared for production.",
-    "decision": "Keep MAT-000046 as REBUILD / OWNER_REVIEW_REQUIRED. Exact identity is confirmed. The v4 localized correction retains the reference-confirmed top-right circular green mark and simple white outline, while intentionally omitting unresolved internal artwork. Synthetic candidate is not rights-cleared for production.",
-    "exceptionSheet": "product-images-batch/putty-image-reaudit-batch1/owner-review/MAT-000046-exception.png"
+    "decision": "MAT-000046 is visually OWNER_APPROVED as REBUILD. Exact identity remains PUFAS Füll+Finish Spachtel 20 kg; final-v4 is the frozen approved source. No production apply or production evidence is recorded.",
+    "exceptionSheet": "product-images-batch/putty-image-reaudit-batch1/owner-review/MAT-000046-exception.png",
+    "ownerApproved": true,
+    "ownerApprovalStatus": "OWNER_APPROVED"
   },
   "rollout": {
     "normalPackage": {
@@ -1905,7 +1909,6 @@
         "MAT-000049",
         "MAT-000050",
         "MAT-000051",
-        "MAT-000065",
         "MAT-000053",
         "MAT-000054",
         "MAT-000055",
@@ -1915,7 +1918,8 @@
         "MAT-000061",
         "MAT-000062",
         "MAT-000063",
-        "MAT-000064"
+        "MAT-000064",
+        "MAT-000065"
       ],
       "files": [
         {
@@ -2092,7 +2096,10 @@
           "sha256": "4f070c5fd75714e59ef214a805242bf7f162213dad000b13d4d8fe3da31367fb",
           "sizeBytes": 684259
         }
-      ]
+      ],
+      "classification": "REFRAME",
+      "classificationVerifiedAgainstApprovedReview": "All 29 manifest MAT IDs match the exact REFRAME classification list in this review. The frozen archive manifest has no per-row classification field; archive unchanged.",
+      "exactArchiveContents": "manifest.json plus 29 files under import/MAT-xxxxxx.png; no KEEP MAT and no MAT-000046."
     },
     "protectedPackage": null,
     "keepMats": [
@@ -2103,7 +2110,30 @@
     "excludedMats": [
       "MAT-000046"
     ],
-    "productionApplied": false
+    "productionApplied": false,
+    "microPackage": {
+      "task": "putty image re-audit batch1",
+      "package": "REBUILD_MAT_000046",
+      "directory": "product-images-batch/putty-image-reaudit-batch1/packages/putty-images-reaudit-mat-000046/",
+      "archivePath": "product-images-batch/putty-image-reaudit-batch1/putty-images-reaudit-mat-000046.tar.gz",
+      "archiveSha256": "72bd748c82d7b0b6bea47b6388deba277df722ed47679ca95be0cbd9810366ff",
+      "contents": [
+        "MAT-000046.png",
+        "manifest.json"
+      ],
+      "matCount": 1,
+      "mats": [
+        "MAT-000046"
+      ],
+      "classification": "REBUILD",
+      "ownerApproved": true,
+      "sourcePath": "product-images-batch/putty-image-reaudit-batch1/prepared/rebuild/MAT-000046-final-v4.png",
+      "sourceSha256": "6b49fa68cd7f6260c488ed189d4d0a19e9046d02eddc419883273e1e42dc1952",
+      "format": "png",
+      "width": 1200,
+      "height": 1200,
+      "sourceAndArchivedPngByteIdentical": true
+    }
   },
   "localDryRun": {
     "mode": "dry-run",
@@ -2359,7 +2389,51 @@
       "state": "LOCAL_DB_STATE_NOT_PRODUCTION",
       "sha256Before": "77c7d13dc6898e20f8b08af955f44b21d523bdc53e649ba8d1dd5a20093add33",
       "sha256After": "77c7d13dc6898e20f8b08af955f44b21d523bdc53e649ba8d1dd5a20093add33",
-      "shaUnchanged": true
+      "shaUnchanged": true,
+      "sidecars": [
+        {
+          "file": "matmix.db-wal",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "file": "matmix.db-shm",
+          "bytes": 32768,
+          "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb"
+        }
+      ]
+    },
+    "micro": {
+      "mode": "dry-run",
+      "input": "product-images-batch/putty-image-reaudit-batch1/rollout-mat-000046-import",
+      "onlyMats": [
+        "MAT-000046"
+      ],
+      "summary": {
+        "total": 1,
+        "ready": 1,
+        "protected": 0,
+        "existingReal": 0,
+        "invalid": 0,
+        "notFound": 0,
+        "duplicates": 0,
+        "errors": 0
+      },
+      "item": {
+        "mat": "MAT-000046",
+        "status": "READY",
+        "classification": "placeholder",
+        "title": "Шпаклевка гипсовая финишная, заполняющая Full+Finish Pufas / Пуфас 20 кг",
+        "proposedFilename": "MAT-000046-6b49fa68cd7f6260.webp"
+      },
+      "localDbState": "LOCAL_DB_STATE_NOT_PRODUCTION"
+    },
+    "session": {
+      "databaseSha256Before": "77c7d13dc6898e20f8b08af955f44b21d523bdc53e649ba8d1dd5a20093add33",
+      "databaseSha256After": "77c7d13dc6898e20f8b08af955f44b21d523bdc53e649ba8d1dd5a20093add33",
+      "walSha256BeforeAfter": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "shmSha256BeforeAfter": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+      "unchanged": true
     }
   },
   "contactSheets": {
@@ -2419,23 +2493,26 @@
       "page1AndPage3Unchanged": true
     }
   },
-  "ownerReviewRequired": [
-    "MAT-000046"
-  ],
+  "ownerReviewRequired": [],
   "productionReadiness": {
     "readyForOwnerBatchReview": true,
     "normalPackagePrepared": true,
     "productionRolloutPerformed": false,
-    "exceptionRequiresResolution": [],
-    "ownerReviewRequired": [
-      "MAT-000046"
+    "exceptionRequiresResolution": [
+      "MAT-000046: commercial rights clearance for the synthetic package image has not been obtained"
     ],
+    "ownerReviewRequired": [],
     "mat000046IdentityResolved": true,
     "mat000046CandidatePrepared": true,
     "mat000046ExceptionSheetCreated": true,
     "all33IncludedInFullContactSheet": true,
     "mat000046NotIncludedInNormalArchive": true,
-    "finalMat000046VisualReviewReady": true
+    "finalMat000046VisualReviewReady": true,
+    "ownerApprovedAll33": true,
+    "microPackagePrepared": true,
+    "localDryRunsPassed": true,
+    "localDbUnchanged": true,
+    "readyForProductionRollout": false
   },
   "git": {
     "expectedCommittedFiles": [
@@ -2445,22 +2522,30 @@
     "binaryAssetsCommitted": false
   },
   "finalOwnerReview": {
-    "status": "READY_FOR_FINAL_MAT_000046_OWNER_REVIEW",
+    "status": "OWNER_APPROVED_ALL_33",
     "ownerApprovedBatch": {
+      "all": 33,
       "KEEP": 3,
-      "REFRAME": 29
+      "REFRAME": 29,
+      "REBUILD": 1
     },
-    "remainingReviewedItem": "MAT-000046",
+    "remainingReviewedItem": null,
     "classifications": {
+      "total": 33,
       "KEEP": 3,
       "REFRAME": 29,
       "CLEANUP": 0,
       "REBUILD": 1,
       "RESEARCH_REQUIRED": 0,
-      "OWNER_REVIEW_REQUIRED": 1
+      "OWNER_REVIEW_REQUIRED": 0
     },
     "page1Unchanged": true,
     "page3Unchanged": true,
-    "normalArchiveSha256": "9a78dc6ae0ea2ff1d36fc4eadfd32836fec75edc29ff725bc41fb074bdf83e21"
+    "normalArchiveSha256": "9a78dc6ae0ea2ff1d36fc4eadfd32836fec75edc29ff725bc41fb074bdf83e21",
+    "mat000046": "OWNER_APPROVED",
+    "microArchiveSha256": "72bd748c82d7b0b6bea47b6388deba277df722ed47679ca95be0cbd9810366ff",
+    "localDbState": "LOCAL_DB_STATE_NOT_PRODUCTION",
+    "readyForProductionRollout": false,
+    "productionReadinessBlocker": "MAT-000046 is visually owner-approved, but its synthetic package image is not cleared for commercial production use."
   }
 }
