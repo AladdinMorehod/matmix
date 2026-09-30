@@ -1877,7 +1877,7 @@
       "bytes": 55040
     },
     "rights": "Official and retailer media are visual identity references only. PUFAS imprint says commercial reproduction/use of images requires prior consent; no permission obtained. Synthetic candidate is not cleared for production.",
-    "decision": "MAT-000046 is visually OWNER_APPROVED as REBUILD. Exact identity remains PUFAS Füll+Finish Spachtel 20 kg; final-v4 is the frozen approved source. No production apply or production evidence is recorded.",
+    "decision": "MAT-000046 was visually owner-approved as REBUILD; the candidate remains uncleared for commercial production. No production apply had been recorded when the pre-production review was completed. Its current production image remained untouched during Package A rollout.",
     "exceptionSheet": "product-images-batch/putty-image-reaudit-batch1/owner-review/MAT-000046-exception.png",
     "ownerApproved": true,
     "ownerApprovalStatus": "OWNER_APPROVED"
@@ -2110,7 +2110,7 @@
     "excludedMats": [
       "MAT-000046"
     ],
-    "productionApplied": false,
+    "productionApplied": true,
     "microPackage": {
       "task": "putty image re-audit batch1",
       "package": "REBUILD_MAT_000046",
@@ -2133,7 +2133,9 @@
       "width": 1200,
       "height": 1200,
       "sourceAndArchivedPngByteIdentical": true
-    }
+    },
+    "productionAppliedAt": "2026-09-30T15:52:13.231Z",
+    "productionAppliedPackage": "Package A only; Package B remains blocked"
   },
   "localDryRun": {
     "mode": "dry-run",
@@ -2512,7 +2514,8 @@
     "microPackagePrepared": true,
     "localDryRunsPassed": true,
     "localDbUnchanged": true,
-    "readyForProductionRollout": false
+    "readyForProductionRollout": false,
+    "packageAProductionApplied": true
   },
   "git": {
     "expectedCommittedFiles": [
@@ -2547,5 +2550,204 @@
     "localDbState": "LOCAL_DB_STATE_NOT_PRODUCTION",
     "readyForProductionRollout": false,
     "productionReadinessBlocker": "MAT-000046 is visually owner-approved, but its synthetic package image is not cleared for commercial production use."
+  },
+  "productionPackageA": {
+    "evidenceSource": "Owner-provided production rollout and verification report; production was not accessed for this documentation checkpoint.",
+    "status": "PRODUCTION_APPLIED_AND_VERIFIED",
+    "package": "NORMAL_REFRAME",
+    "scopeCount": 29,
+    "mats": [
+      "MAT-000033",
+      "MAT-000034",
+      "MAT-000035",
+      "MAT-000036",
+      "MAT-000037",
+      "MAT-000038",
+      "MAT-000039",
+      "MAT-000040",
+      "MAT-000041",
+      "MAT-000042",
+      "MAT-000043",
+      "MAT-000044",
+      "MAT-000045",
+      "MAT-000047",
+      "MAT-000048",
+      "MAT-000049",
+      "MAT-000050",
+      "MAT-000051",
+      "MAT-000053",
+      "MAT-000054",
+      "MAT-000055",
+      "MAT-000056",
+      "MAT-000059",
+      "MAT-000060",
+      "MAT-000061",
+      "MAT-000062",
+      "MAT-000063",
+      "MAT-000064",
+      "MAT-000065"
+    ],
+    "archivePath": "product-images-batch/putty-image-reaudit-batch1/putty-images-reaudit-normal-batch1.tar.gz",
+    "archiveSha256": "9a78dc6ae0ea2ff1d36fc4eadfd32836fec75edc29ff725bc41fb074bdf83e21",
+    "serverArchiveSha256Verified": true,
+    "preflightMarkers": [
+      "ARCHIVE_SHA_OK",
+      "EXACT_FILE_SCOPE_OK",
+      "MANIFEST_MAT_SCOPE_OK",
+      "FORBIDDEN_MATS_ABSENT_OK",
+      "PUTTY_NORMAL_29_SOURCE_FILES_OK",
+      "IMPORTER_ONLY_SCOPE_OK",
+      "PUTTY_PACKAGE_A_PREFLIGHT_OK"
+    ],
+    "dryRun": {
+      "importerBuiltFrom": "de10d8a8a2f4432e1a57f42dffaf650dfc3833fd",
+      "databasePath": "/var/lib/matmix/matmix.db",
+      "uploadsPath": "/var/lib/matmix/uploads/products",
+      "onlyScope": "exactly the 29 REFRAME MATs",
+      "summary": {
+        "total": 29,
+        "ready": 29,
+        "protected": 0,
+        "existingReal": 0,
+        "invalid": 0,
+        "notFound": 0,
+        "duplicates": 0,
+        "errors": 0
+      },
+      "allItemsClassification": "real",
+      "allItemsOverwriteRequired": true,
+      "allItemsStatus": "READY",
+      "protectedOverrideMats": [],
+      "mat000046Included": false,
+      "keepMatsIncluded": false
+    },
+    "apply": {
+      "timestamp": "2026-09-30T15:52:13.231Z",
+      "mode": "apply",
+      "backupPath": "/var/lib/matmix/matmix.db.backup-2026-09-30T15-52-08-267Z-901283fc0623",
+      "backupSizeBytes": 4141056,
+      "backupSha256": "68d1078bcdd6ead7e544d0a8b1783b6ed0dc6fc2701bff43b7b630571e835e07",
+      "backupUserVersion": 11,
+      "bindingManifestPath": "/var/lib/matmix/matmix.db.image-bindings-2026-09-30T15-52-08-266Z.json",
+      "importerAuditPath": "/var/lib/matmix/matmix.db.image-import-audit-2026-09-30T15-52-08-266Z.json"
+    },
+    "postApply": {
+      "backupShaRecheck": "BACKUP_SHA_OK",
+      "liveIntegrity": "ok",
+      "liveUserVersion": 11,
+      "liveForeignKeyViolations": 0,
+      "backupIntegrity": "ok",
+      "backupUserVersion": 11,
+      "backupForeignKeyViolations": 0,
+      "productChangeScopeVerified": true,
+      "productChangeScope": "exactly the 29 Package A MATs in products.image_url",
+      "productChangeMarker": "PRODUCT_CHANGE_SCOPE_OK",
+      "bindingChangeScopeVerified": true,
+      "bindingChangeScope": "the same 29 MATs in product_images",
+      "bindingChangeMarker": "BINDING_CHANGE_SCOPE_OK",
+      "productionWebpVerified": 29,
+      "productionWebpChecks": "all exist, WebP 1200x1200, nonzero bytes, expected products.image_url and primary binding, primaryCount=1, galleryCount=0, each URL used only by its MAT",
+      "productionWebpMarker": "PUTTY_NORMAL_29_IMAGES_OK",
+      "outOfScopeMatsVerifiedUnchanged": [
+        "MAT-000046",
+        "MAT-000052",
+        "MAT-000057",
+        "MAT-000058"
+      ],
+      "outOfScopeMarker": "MAT_000046_AND_KEEP_3_UNTOUCHED_OK",
+      "finalMarker": "PUTTY_PACKAGE_A_POST_APPLY_VERIFY_OK"
+    },
+    "appliedAt": "2026-09-30T15:52:13.231Z",
+    "backupPath": "/var/lib/matmix/matmix.db.backup-2026-09-30T15-52-08-267Z-901283fc0623",
+    "backupSizeBytes": 4141056,
+    "backupSha256": "68d1078bcdd6ead7e544d0a8b1783b6ed0dc6fc2701bff43b7b630571e835e07",
+    "backupUserVersion": 11,
+    "bindingManifestPath": "/var/lib/matmix/matmix.db.image-bindings-2026-09-30T15-52-08-266Z.json",
+    "importerAuditPath": "/var/lib/matmix/matmix.db.image-import-audit-2026-09-30T15-52-08-266Z.json",
+    "productChangeScopeVerified": true,
+    "bindingChangeScopeVerified": true,
+    "productionWebpVerified": 29,
+    "outOfScopeMatsVerifiedUnchanged": [
+      "MAT-000046",
+      "MAT-000052",
+      "MAT-000057",
+      "MAT-000058"
+    ]
+  },
+  "productionAudit": {
+    "evidenceSource": "Owner-provided final read-only audit report; not independently run in this documentation task.",
+    "schema": {
+      "userVersion": 11,
+      "expectedVersion": 11,
+      "schemaVersionCompatible": true,
+      "templateSectionAvailable": true,
+      "missingTables": [],
+      "integrity": "ok",
+      "foreignKeyViolations": 0,
+      "productionTemplateAuditAvailable": true
+    },
+    "putty": {
+      "subcategory": "Шпаклевка",
+      "status": "CLOSED",
+      "dataStatus": "DATA_CLOSED",
+      "products": 33,
+      "attrOk": 15,
+      "attrPartial": 18,
+      "seoOk": 33,
+      "seoIssues": 0,
+      "imageOk": 33,
+      "imageIssues": 0,
+      "sourceOk": 14,
+      "sourceOptionalGaps": 19,
+      "sourceBlocked": 0,
+      "sourceAnomalies": 0,
+      "blockers": 0,
+      "blockingMats": []
+    },
+    "otherClosedSubcategories": [
+      "Штукатурка",
+      "Кладочные Смеси",
+      "Наливной Пол",
+      "Стяжки Пола",
+      "Гидроизоляция"
+    ],
+    "templateExtrasAreNotBlockers": {
+      "extraValuesOutsideTemplate": 106,
+      "sourceFactsOutsideApprovedTemplate": 131,
+      "relevantSourceAnomalies": 0,
+      "blockers": 0
+    }
+  },
+  "packageB": {
+    "status": "BLOCKED_PENDING_RIGHTS_CLEARANCE",
+    "mat": "MAT-000046",
+    "visualStatus": "VISUALLY_OWNER_APPROVED",
+    "technicalStatus": "TECHNICALLY_READY",
+    "productionAuthorized": false,
+    "blockReason": "Commercial rights/permission for the synthetic reconstruction are unconfirmed.",
+    "currentProductionImageUntouched": true,
+    "sourceSha256": "6b49fa68cd7f6260c488ed189d4d0a19e9046d02eddc419883273e1e42dc1952",
+    "importerPreviewSha256": "5a69777800a7c1e5bf597526c7150a240c2490c18416dd83d3caa50469cfa562",
+    "archiveSha256": "72bd748c82d7b0b6bea47b6388deba277df722ed47679ca95be0cbd9810366ff",
+    "localDryRunSummary": {
+      "total": 1,
+      "ready": 1,
+      "protected": 0,
+      "existingReal": 0,
+      "invalid": 0,
+      "notFound": 0,
+      "duplicates": 0,
+      "errors": 0
+    }
+  },
+  "manualImageRolloutFullyClosed": false,
+  "productionCheckpoint": {
+    "recordedAt": "2026-09-30",
+    "phase": "PACKAGE_A_PRODUCTION_CHECKPOINT",
+    "packageAStatus": "PRODUCTION_APPLIED_AND_VERIFIED",
+    "packageBStatus": "BLOCKED_PENDING_RIGHTS_CLEARANCE",
+    "automatedPuttyAuditStatus": "CLOSED",
+    "manualImageRolloutFullyClosed": false,
+    "note": "Automated imageOk=33 is not commercial-rights clearance for MAT-000046."
   }
 }
