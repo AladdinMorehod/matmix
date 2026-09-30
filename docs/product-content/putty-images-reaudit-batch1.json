@@ -91,19 +91,26 @@
       "mat000046": {
         "candidateFormat": "png",
         "candidateDimensions": "1200x1200",
-        "candidateBytes": 1631613,
-        "candidateSha256": "f2529e5635c29611b85b8936e7ec935d6e498b231daa919d4cfa29614a880441",
-        "candidateFillWidthPct": 59,
-        "candidateFillHeightPct": 95.83,
+        "candidateSourceDimensions": "1254x1254",
+        "candidateBytes": 2070490,
+        "candidateSha256": "9d756eca10646d05775d5cdfa4f057de73d167cc4a1d35d742c34c23fa7b27fc",
+        "candidateFillWidthPct": 70,
+        "candidateFillHeightPct": 96.75,
         "previewFormat": "webp",
         "previewDimensions": "1200x1200",
-        "previewBytes": 42436,
-        "previewSha256": "b66193cac58b1d9b5cd18ebcc75228bc2b1f707ce54dec9cfc6d1b2a21e35ade",
-        "previewFillWidthPct": 53.08,
-        "previewFillHeightPct": 86.33,
-        "whiteCorners": true,
+        "previewBytes": 61882,
+        "previewSha256": "9d5365e0e3630d1215ce2387cd67ca5f554a61f392e16a507800bfa6ee522741",
+        "previewFillWidthPct": 63,
+        "previewFillHeightPct": 87.17,
+        "whiteBackgroundCornersNearWhite": [
+          253,
+          253,
+          253
+        ],
+        "previewWhiteCorners": true,
         "fullPackageVisible": true,
         "synthetic": true,
+        "officialPixelsUsed": false,
         "rightsCleared": false
       }
     }
@@ -676,21 +683,21 @@
       "sourceFillWidthPct": 51.58,
       "sourceFillHeightPct": 80.33,
       "classification": "REBUILD",
-      "reason": "Официальная русскоязычная страница PUFAS и RU TDS подтверждают отдельный продукт Füll+Finish 20 кг, арт. 003007092, EAN 4007954030974. Текущая фотография показывает другую линейку Füll Spachtel FSI innen (20 кг; арт. 003007000, EAN 4007954030004), поэтому является ошибочной для MAT-000046. Подготовлен синтетический catalog render только для owner review; он не использует пиксели официальных изображений и не заявляется как подлинная фотография упаковки или cleared для production.",
-      "finalFile": "prepared/rebuild/MAT-000046-final.png",
+      "reason": "Официальная текущая страница PUFAS и RU TDS подтверждают Füll+Finish 20 кг, арт. 003007092, EAN 4007954030974. Проверенная текущая official media exact 20 kg page gives a coherent package reference: white sack; red PUFAS header; yellow front label; Füll+Finish Spachtel; 20 kg; slanted green information field with yellow accent; two application panels; red curved stripe footer. Current MatMix production image visibly shows distinct Füll Spachtel FSI innen and is the wrong model. New synthetic render reproduces these major zones from a text-only visual specification; it does not reuse official pixels, does not claim to be an authentic package photo, and remains owner-review-only.",
+      "finalFile": "prepared/rebuild/MAT-000046-final-v2.png",
       "finalWidth": 1200,
       "finalHeight": 1200,
-      "finalBytes": 1631613,
-      "finalSha256": "f2529e5635c29611b85b8936e7ec935d6e498b231daa919d4cfa29614a880441",
-      "finalFillWidthPct": 59,
-      "finalFillHeightPct": 95.83,
-      "previewFile": "prepared/rebuild-preview/MAT-000046-final.webp",
+      "finalBytes": 2070490,
+      "finalSha256": "9d756eca10646d05775d5cdfa4f057de73d167cc4a1d35d742c34c23fa7b27fc",
+      "finalFillWidthPct": 70,
+      "finalFillHeightPct": 96.75,
+      "previewFile": "prepared/rebuild-preview/MAT-000046-final-v2.webp",
       "previewWidth": 1200,
       "previewHeight": 1200,
-      "previewBytes": 42436,
-      "previewSha256": "b66193cac58b1d9b5cd18ebcc75228bc2b1f707ce54dec9cfc6d1b2a21e35ade",
-      "previewFillWidthPct": 53.08,
-      "previewFillHeightPct": 86.33,
+      "previewBytes": 61882,
+      "previewSha256": "9d5365e0e3630d1215ce2387cd67ca5f554a61f392e16a507800bfa6ee522741",
+      "previewFillWidthPct": 63,
+      "previewFillHeightPct": 87.17,
       "packagingForm": "Мешок",
       "identityConfidence": "HIGH",
       "identityEvidence": "MatMix public catalog record identifies Full+Finish Pufas, 20 kg. Official PUFAS product page and Russian TDS independently identify Füll+Finish 20 kg as article 003007092 / EAN 4007954030974. Official PUFAS FSI TDS lists a distinct 20 kg item 003007000 / EAN 4007954030004, matching the incorrect current pack model. Official front/back product media were inspected only as visual references; no source pixels were used in the synthetic candidate. Package design generation/date is not established.",
@@ -711,14 +718,14 @@
           "url": "https://www.pufas.com/site/assets/files/3231/25799_256.0x1000.jpg",
           "localFile": "reference/official-pufas-product-icon-20kg-reference.jpg",
           "sha256": "46C9E7A2D8DE8E8727168DCEA7CF602C082C039AAE87538833358054075997DB",
-          "evidence": "Official current product media visually shows white sack, red PUFAS panel, yellow field, green diagonal bars, red bottom stripes and prominent Füll+Finish Spachtel text; used only for visual identity/design reference; not copied into candidate."
+          "evidence": "Current official product-page media for exact Full+Finish 20 kg: confirms the major front layout (red PUFAS header, yellow field, slanted green information panel, two framed application panels, red curved stripe footer) and prominent product identity. Visual reference only; not used as image pixels."
         },
         {
           "kind": "official_reverse_product_media_visual_reference_only",
           "url": "https://www.pufas.com/site/assets/files/3231/2648-4007954030974_7.0x1000.jpg",
           "localFile": "reference/official-pufas-full-finish-20kg-reference.jpg",
           "sha256": "32F9E33ADA82D77C541FB7C5C440BBDF06605E660B2D2D700E6A86EFB4916E08",
-          "evidence": "Official reverse-side media visibly associates article 003007092 and EAN 4007954030974 with 20 kg Full+Finish; visual reference only."
+          "evidence": "Current official reverse-side media is associated with article 003007092/EAN 4007954030974 and 20 kg; used only to support SKU association, not to copy pixels."
         },
         {
           "kind": "official_fsi_tds_for_model_difference",
@@ -762,7 +769,33 @@
       },
       "candidateNature": "SYNTHETIC_CATALOG_REVIEW_RENDER",
       "candidateRightsStatus": "NOT_CLEARED_FOR_PRODUCTION",
-      "action": "Owner review only. The synthetic catalog render used no official source pixels; it approximates the major front layout visible in official references and is not claimed to be an authentic or current dated pack photo. Excluded from the existing normal rollout archive. Production use requires owner approval and a separate rights/brand decision."
+      "action": "Owner review only. The new synthetic render follows the major visual architecture of the current official image tied to exact Full+Finish 20 kg/article 003007092; no official pixels were reused. The manufacturer does not date the package design in reviewed media. The candidate is excluded from the unchanged 29-product normal archive and is not cleared/approved for production.",
+      "candidateGenerationInput": {
+        "format": "png",
+        "width": 1254,
+        "height": 1254,
+        "officialImagePixelsUsed": false,
+        "description": "text-only specification based on verified current official product-media layout"
+      },
+      "selectedPackagingReference": {
+        "source": "Current official PUFAS media linked from the exact 20 kg / article 003007092 product page",
+        "productPageUrl": "https://www.pufas.com/org/products/filling-and-smoothing/full-finish-shpaklevka-zapolniaiushchaia-finishnaia/20kg/",
+        "frontMediaUrl": "https://www.pufas.com/site/assets/files/3231/25799_256.0x1000.jpg",
+        "reverseMediaUrl": "https://www.pufas.com/site/assets/files/3231/2648-4007954030974_7.0x1000.jpg",
+        "verifiedArticle": "003007092",
+        "verifiedEan": "4007954030974",
+        "generationDate": "NOT_STATED_BY_MANUFACTURER",
+        "otherGenerationsFoundInReviewedOfficialSources": 0,
+        "selectionRationale": "This is the only exact 20 kg Full+Finish visual reference found in the reviewed official material and it is directly associated with the exact manufacturer product page/article. No evidence of a second package generation was found in the reviewed official sources; this does not establish that no historical generation exists."
+      },
+      "visualFidelityReview": {
+        "previousGreenStripeCandidate": "REJECTED: detached invented green diagonal stripes did not reproduce the official broad slanted information banner and surrounding graphic blocks.",
+        "previousSimplifiedCandidates": "REJECTED AS FINAL: reduced the package to broad color fields and omitted characteristic application panels, information block and red curved footer.",
+        "selectedCandidateRationale": "The new render keeps a white sack; large red PUFAS header; yellow label; exact product name and 20 kg; small circular banded emblem; two framed application panels; broad filled slanted green banner with yellow accent; low-detail icon/text rows; and curved red footer with white stripes. Microtext is neutralized, and no performance claim is readable.",
+        "noInventedGreenGraphic": true,
+        "exactPackagingGenerationClaimed": false
+      },
+      "exceptionSheetFile": "product-images-batch/putty-image-reaudit-batch1/sheets/putty-images-reaudit-mat-000046-exception.png"
     },
     {
       "mat": "MAT-000047",
@@ -1565,27 +1598,52 @@
   ],
   "exception": {
     "mat": "MAT-000046",
-    "classification": "RESEARCH_REQUIRED",
+    "classification": "REBUILD",
+    "researchRequired": false,
     "ownerReviewRequired": true,
     "localTitle": "Шпаклевка гипсовая финишная, заполняющая Full+Finish Pufas / Пуфас 20 кг",
-    "exactProductEvidence": [
-      {
-        "url": "https://www.pufas.com/org/products/filling-and-smoothing/full-finish-shpaklevka-zapolniaiushchaia-finishnaia/20kg/",
-        "product": "Füll+Finish Шпаклёвка заполняющая финишная",
-        "packWeight": "20 кг",
-        "article": "003007092",
-        "ean": "4007954030974",
-        "directImageUrl": "https://www.pufas.com/site/assets/files/3233/2649-4007954030974.0x500.jpg",
-        "rightsEvidence": "Manufacturer product page says images and advertising materials are protected and must not be used without consent."
-      },
-      {
-        "url": "https://www.pufas.com/site/assets/files/2391/tds_p_interior_filler_fsi_en-1.pdf",
-        "product": "PUFAS Füll Spachtel FSI innen",
-        "evidence": "Current image packaging model and 20 kg; manufacturer treats FSI as separate product."
-      }
-    ],
-    "decision": "Current image depicts FSI innen, not the Full+Finish model named by the exact product page. Do not reframe or include in rollout. The exact manufacturer image is not reused due explicit copyright restriction; request a rights-cleared asset or manufacturer permission.",
-    "observedCurrentPackage": "PUFAS Füll Spachtel FSI innen; 20 kg visible — DIFFERENT MODEL from local Full+Finish"
+    "exactIdentity": {
+      "brand": "PUFAS",
+      "product": "Füll+Finish Spachtel",
+      "packWeight": "20 kg",
+      "packageForm": "paper sack",
+      "article": "003007092",
+      "ean": "4007954030974"
+    },
+    "selectedReference": {
+      "source": "Current official PUFAS media linked from the exact 20 kg / article 003007092 product page",
+      "productPageUrl": "https://www.pufas.com/org/products/filling-and-smoothing/full-finish-shpaklevka-zapolniaiushchaia-finishnaia/20kg/",
+      "frontMediaUrl": "https://www.pufas.com/site/assets/files/3231/25799_256.0x1000.jpg",
+      "reverseMediaUrl": "https://www.pufas.com/site/assets/files/3231/2648-4007954030974_7.0x1000.jpg",
+      "verifiedArticle": "003007092",
+      "verifiedEan": "4007954030974",
+      "generationDate": "NOT_STATED_BY_MANUFACTURER",
+      "otherGenerationsFoundInReviewedOfficialSources": 0,
+      "selectionRationale": "This is the only exact 20 kg Full+Finish visual reference found in the reviewed official material and it is directly associated with the exact manufacturer product page/article. No evidence of a second package generation was found in the reviewed official sources; this does not establish that no historical generation exists."
+    },
+    "observedCurrentPackage": "PUFAS Füll Spachtel FSI innen; 20 kg visible — different model from local Full+Finish. Official FSI TDS lists 20 kg item 003007000 / EAN 4007954030004.",
+    "previousCandidates": {
+      "greenDiagonalStripes": "REJECTED: detached stripes did not match the official filled slanted green information panel and surrounding layout.",
+      "simplified": "REJECTED AS FINAL: omitted major package features including framed application panels and characteristic footer."
+    },
+    "candidate": {
+      "nature": "Synthetic catalog review render, generated from text only; official image pixels not used.",
+      "file": "prepared/rebuild/MAT-000046-final-v2.png",
+      "dimensions": "1200x1200; source generation 1254x1254",
+      "sha256": "9d756eca10646d05775d5cdfa4f057de73d167cc4a1d35d742c34c23fa7b27fc",
+      "fillWidthPct": 70,
+      "fillHeightPct": 96.75
+    },
+    "importerPreview": {
+      "file": "prepared/rebuild-preview/MAT-000046-final-v2.webp",
+      "dimensions": "1200x1200 WebP",
+      "sha256": "9d5365e0e3630d1215ce2387cd67ca5f554a61f392e16a507800bfa6ee522741",
+      "fillWidthPct": 63,
+      "fillHeightPct": 87.17
+    },
+    "rights": "Official image use requires prior PUFAS consent per imprint; no permission was obtained. Neither official source image nor generated render is cleared for production.",
+    "decision": "Keep MAT-000046 as REBUILD / OWNER_REVIEW_REQUIRED. Exact identity is confirmed; design date is not stated and no other generation was found in reviewed official sources. Synthetic render is for owner review only and excluded from normal archive.",
+    "exceptionSheet": "product-images-batch/putty-image-reaudit-batch1/sheets/putty-images-reaudit-mat-000046-exception.png"
   },
   "rollout": {
     "normalPackage": {
@@ -2081,7 +2139,8 @@
     "totalMats": 33,
     "allMatsPresent": true,
     "mat000046PresentOnFullAndExceptionSheets": true,
-    "visualFilesOpenedAndVerified": true
+    "visualFilesOpenedAndVerified": true,
+    "updatedForCandidate": "MAT-000046-final-v2"
   },
   "ownerReviewRequired": [
     "MAT-000046"
