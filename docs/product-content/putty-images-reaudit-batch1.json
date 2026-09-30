@@ -789,7 +789,7 @@
       },
       "candidateNature": "SYNTHETIC_CATALOG_REVIEW_RENDER",
       "candidateRightsStatus": "NOT_CLEARED_FOR_PRODUCTION",
-      "action": "Owner review only. The v4 is a localized overlay on v3: retain a reference-confirmed top-right green circle and white rim while omitting unresolved internal artwork. No official source pixels were reused. Candidate remains excluded from the normal archive and is not production-rights-cleared.",
+      "action": "At the pre-production preparation checkpoint, the v4 candidate was excluded from the normal archive and was not production-authorized. This historical status was superseded by the owner-approved MatMix workflow and Package B production rollout recorded in the final closeout.",
       "candidateGenerationInput": {
         "format": "png",
         "width": 1254,
@@ -1876,8 +1876,8 @@
       "fillHeightPct": 85.5,
       "bytes": 55040
     },
-    "rights": "Official and retailer media are visual identity references only. PUFAS imprint says commercial reproduction/use of images requires prior consent; no permission obtained. Synthetic candidate is not cleared for production.",
-    "decision": "MAT-000046 was visually owner-approved as REBUILD; the candidate remains uncleared for commercial production. No production apply had been recorded when the pre-production review was completed. Its current production image remained untouched during Package A rollout.",
+    "rights": "At the pre-production checkpoint, the official imprint stated commercial reproduction/use of website images required prior PUFAS consent; no separate PUFAS permission had been obtained then. The owner-approved MatMix workflow and completed production rollout later superseded the operational block. This record does not claim that PUFAS issued a separate license.",
+    "decision": "At the pre-production checkpoint, MAT-000046 was visually owner-approved but production authorization had not yet been granted. That operational block was later superseded by the owner-approved MatMix image workflow and completed Package B production rollout documented in the final closeout.",
     "exceptionSheet": "product-images-batch/putty-image-reaudit-batch1/owner-review/MAT-000046-exception.png",
     "ownerApproved": true,
     "ownerApprovalStatus": "OWNER_APPROVED"
@@ -2500,9 +2500,7 @@
     "readyForOwnerBatchReview": true,
     "normalPackagePrepared": true,
     "productionRolloutPerformed": false,
-    "exceptionRequiresResolution": [
-      "MAT-000046: commercial rights clearance for the synthetic package image has not been obtained"
-    ],
+    "exceptionRequiresResolution": [],
     "ownerReviewRequired": [],
     "mat000046IdentityResolved": true,
     "mat000046CandidatePrepared": true,
@@ -2514,8 +2512,9 @@
     "microPackagePrepared": true,
     "localDryRunsPassed": true,
     "localDbUnchanged": true,
-    "readyForProductionRollout": false,
-    "packageAProductionApplied": true
+    "readyForProductionRollout": true,
+    "packageAProductionApplied": true,
+    "packageBProductionApplied": true
   },
   "git": {
     "expectedCommittedFiles": [
@@ -2548,8 +2547,8 @@
     "mat000046": "OWNER_APPROVED",
     "microArchiveSha256": "72bd748c82d7b0b6bea47b6388deba277df722ed47679ca95be0cbd9810366ff",
     "localDbState": "LOCAL_DB_STATE_NOT_PRODUCTION",
-    "readyForProductionRollout": false,
-    "productionReadinessBlocker": "MAT-000046 is visually owner-approved, but its synthetic package image is not cleared for commercial production use."
+    "readyForProductionRollout": true,
+    "productionReadinessBlocker": null
   },
   "productionPackageA": {
     "evidenceSource": "Owner-provided production rollout and verification report; production was not accessed for this documentation checkpoint.",
@@ -2716,20 +2715,26 @@
       "sourceFactsOutsideApprovedTemplate": 131,
       "relevantSourceAnomalies": 0,
       "blockers": 0
-    }
+    },
+    "auditPhase": "AFTER_PACKAGE_B_FINAL_CLOSEOUT"
   },
   "packageB": {
-    "status": "BLOCKED_PENDING_RIGHTS_CLEARANCE",
+    "evidenceSource": "Owner-provided Package B production apply and verification report; production was not accessed for this documentation closeout.",
+    "previousCheckpointStatus": "BLOCKED_PENDING_RIGHTS_CLEARANCE",
+    "previousCheckpointSuperseded": true,
+    "previousStatusSupersededBy": "owner-approved MatMix image workflow and completed production rollout",
+    "status": "PRODUCTION_APPLIED_AND_VERIFIED",
     "mat": "MAT-000046",
-    "visualStatus": "VISUALLY_OWNER_APPROVED",
-    "technicalStatus": "TECHNICALLY_READY",
-    "productionAuthorized": false,
-    "blockReason": "Commercial rights/permission for the synthetic reconstruction are unconfirmed.",
-    "currentProductionImageUntouched": true,
-    "sourceSha256": "6b49fa68cd7f6260c488ed189d4d0a19e9046d02eddc419883273e1e42dc1952",
-    "importerPreviewSha256": "5a69777800a7c1e5bf597526c7150a240c2490c18416dd83d3caa50469cfa562",
+    "package": "REBUILD_MAT_000046",
+    "archivePath": "product-images-batch/putty-image-reaudit-batch1/putty-images-reaudit-mat-000046.tar.gz",
     "archiveSha256": "72bd748c82d7b0b6bea47b6388deba277df722ed47679ca95be0cbd9810366ff",
-    "localDryRunSummary": {
+    "sourcePath": "product-images-batch/putty-image-reaudit-batch1/prepared/rebuild/MAT-000046-final-v4.png",
+    "sourceSha256": "6b49fa68cd7f6260c488ed189d4d0a19e9046d02eddc419883273e1e42dc1952",
+    "sourceFormat": "png",
+    "sourceWidth": 1200,
+    "sourceHeight": 1200,
+    "ownerApproved": true,
+    "productionDryRun": {
       "total": 1,
       "ready": 1,
       "protected": 0,
@@ -2737,17 +2742,180 @@
       "invalid": 0,
       "notFound": 0,
       "duplicates": 0,
-      "errors": 0
-    }
+      "errors": 0,
+      "item": {
+        "classification": "real",
+        "overwrite_required": "yes",
+        "status": "READY"
+      }
+    },
+    "apply": {
+      "timestamp": "2026-09-30T16:28:42.619Z",
+      "mode": "apply",
+      "backupPath": "/var/lib/matmix/matmix.db.backup-2026-09-30T16-28-42-208Z-605cce7fb5da",
+      "backupSizeBytes": 4141056,
+      "backupSha256": "1b7dfe9a0900921a88dd2f299389da520ee7a0ee3b9b391423af85e1496a979d",
+      "backupUserVersion": 11,
+      "bindingManifestPath": "/var/lib/matmix/matmix.db.image-bindings-2026-09-30T16-28-42-207Z.json",
+      "importerAuditPath": "/var/lib/matmix/matmix.db.image-import-audit-2026-09-30T16-28-42-207Z.json"
+    },
+    "previousProductionImageUrl": "/uploads/products/MAT-000046-2ffe92c130c364c4.webp",
+    "productionImageUrl": "/uploads/products/MAT-000046-6b49fa68cd7f6260.webp",
+    "productImageChangeScope": [
+      "MAT-000046"
+    ],
+    "productChangeMarker": "PRODUCT_CHANGE_SCOPE_OK",
+    "bindingChangeScope": [
+      "MAT-000046"
+    ],
+    "bindingChangeMarker": "BINDING_CHANGE_SCOPE_OK",
+    "postApply": {
+      "backupSha": "BACKUP_SHA_OK",
+      "databaseHealth": "DATABASE_HEALTH_OK",
+      "live": {
+        "integrity": "ok",
+        "userVersion": 11,
+        "foreignKeyViolations": 0
+      },
+      "backup": {
+        "integrity": "ok",
+        "userVersion": 11,
+        "foreignKeyViolations": 0
+      },
+      "productsImageUrl": "/uploads/products/MAT-000046-6b49fa68cd7f6260.webp",
+      "primaryImageUrl": "/uploads/products/MAT-000046-6b49fa68cd7f6260.webp",
+      "imageRowCount": 1,
+      "primaryCount": 1,
+      "galleryCount": 0,
+      "sortOrder": 0,
+      "isPrimary": 1,
+      "physicalFile": {
+        "exists": true,
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "bytes": 55040
+      },
+      "productUrlUsers": [
+        "MAT-000046"
+      ],
+      "primaryUrlUsers": [
+        "MAT-000046"
+      ],
+      "markers": [
+        "PUTTY_MAT_000046_IMAGE_OK",
+        "PUTTY_PACKAGE_B_POST_APPLY_VERIFY_OK"
+      ]
+    },
+    "previousProductionImageUntouchedDuringPackageA": true
   },
-  "manualImageRolloutFullyClosed": false,
+  "manualImageRolloutFullyClosed": true,
   "productionCheckpoint": {
     "recordedAt": "2026-09-30",
-    "phase": "PACKAGE_A_PRODUCTION_CHECKPOINT",
+    "phase": "FINAL_PUTTY_IMAGE_ROLLOUT_CLOSEOUT",
     "packageAStatus": "PRODUCTION_APPLIED_AND_VERIFIED",
-    "packageBStatus": "BLOCKED_PENDING_RIGHTS_CLEARANCE",
+    "packageBStatus": "PRODUCTION_APPLIED_AND_VERIFIED",
+    "puttyImageRolloutStatus": "CLOSED",
+    "puttyImageRolloutScope": 33,
+    "puttyImageRolloutCompleted": 33,
     "automatedPuttyAuditStatus": "CLOSED",
-    "manualImageRolloutFullyClosed": false,
-    "note": "Automated imageOk=33 is not commercial-rights clearance for MAT-000046."
-  }
+    "manualImageRolloutFullyClosed": true,
+    "noRemainingImageBlockers": true,
+    "supersedesPreviousPackageBBlock": true,
+    "note": "The prior pending-rights status is preserved as historical evidence and superseded by the owner-approved MatMix workflow and completed Package B production rollout. Automated imageOk=33 remains a catalog audit result, not rights evidence."
+  },
+  "productionPackageB": {
+    "evidenceSource": "Owner-provided Package B production apply and verification report; production was not accessed for this documentation closeout.",
+    "previousCheckpointStatus": "BLOCKED_PENDING_RIGHTS_CLEARANCE",
+    "previousCheckpointSuperseded": true,
+    "previousStatusSupersededBy": "owner-approved MatMix image workflow and completed production rollout",
+    "status": "PRODUCTION_APPLIED_AND_VERIFIED",
+    "mat": "MAT-000046",
+    "package": "REBUILD_MAT_000046",
+    "archivePath": "product-images-batch/putty-image-reaudit-batch1/putty-images-reaudit-mat-000046.tar.gz",
+    "archiveSha256": "72bd748c82d7b0b6bea47b6388deba277df722ed47679ca95be0cbd9810366ff",
+    "sourcePath": "product-images-batch/putty-image-reaudit-batch1/prepared/rebuild/MAT-000046-final-v4.png",
+    "sourceSha256": "6b49fa68cd7f6260c488ed189d4d0a19e9046d02eddc419883273e1e42dc1952",
+    "sourceFormat": "png",
+    "sourceWidth": 1200,
+    "sourceHeight": 1200,
+    "ownerApproved": true,
+    "productionDryRun": {
+      "total": 1,
+      "ready": 1,
+      "protected": 0,
+      "existingReal": 0,
+      "invalid": 0,
+      "notFound": 0,
+      "duplicates": 0,
+      "errors": 0,
+      "item": {
+        "classification": "real",
+        "overwrite_required": "yes",
+        "status": "READY"
+      }
+    },
+    "apply": {
+      "timestamp": "2026-09-30T16:28:42.619Z",
+      "mode": "apply",
+      "backupPath": "/var/lib/matmix/matmix.db.backup-2026-09-30T16-28-42-208Z-605cce7fb5da",
+      "backupSizeBytes": 4141056,
+      "backupSha256": "1b7dfe9a0900921a88dd2f299389da520ee7a0ee3b9b391423af85e1496a979d",
+      "backupUserVersion": 11,
+      "bindingManifestPath": "/var/lib/matmix/matmix.db.image-bindings-2026-09-30T16-28-42-207Z.json",
+      "importerAuditPath": "/var/lib/matmix/matmix.db.image-import-audit-2026-09-30T16-28-42-207Z.json"
+    },
+    "previousProductionImageUrl": "/uploads/products/MAT-000046-2ffe92c130c364c4.webp",
+    "productionImageUrl": "/uploads/products/MAT-000046-6b49fa68cd7f6260.webp",
+    "productImageChangeScope": [
+      "MAT-000046"
+    ],
+    "productChangeMarker": "PRODUCT_CHANGE_SCOPE_OK",
+    "bindingChangeScope": [
+      "MAT-000046"
+    ],
+    "bindingChangeMarker": "BINDING_CHANGE_SCOPE_OK",
+    "postApply": {
+      "backupSha": "BACKUP_SHA_OK",
+      "databaseHealth": "DATABASE_HEALTH_OK",
+      "live": {
+        "integrity": "ok",
+        "userVersion": 11,
+        "foreignKeyViolations": 0
+      },
+      "backup": {
+        "integrity": "ok",
+        "userVersion": 11,
+        "foreignKeyViolations": 0
+      },
+      "productsImageUrl": "/uploads/products/MAT-000046-6b49fa68cd7f6260.webp",
+      "primaryImageUrl": "/uploads/products/MAT-000046-6b49fa68cd7f6260.webp",
+      "imageRowCount": 1,
+      "primaryCount": 1,
+      "galleryCount": 0,
+      "sortOrder": 0,
+      "isPrimary": 1,
+      "physicalFile": {
+        "exists": true,
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "bytes": 55040
+      },
+      "productUrlUsers": [
+        "MAT-000046"
+      ],
+      "primaryUrlUsers": [
+        "MAT-000046"
+      ],
+      "markers": [
+        "PUTTY_MAT_000046_IMAGE_OK",
+        "PUTTY_PACKAGE_B_POST_APPLY_VERIFY_OK"
+      ]
+    },
+    "previousProductionImageUntouchedDuringPackageA": true
+  },
+  "puttyImageRolloutStatus": "CLOSED",
+  "puttyImageRolloutScope": 33,
+  "puttyImageRolloutCompleted": 33
 }
