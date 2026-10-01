@@ -4298,6 +4298,7 @@
           "https://www.miraxstroy.ru/bystrotverdeyushchiy-nalivnoy-pol-yunis-gorizont-universalnyy-meshok-20kg/",
           "https://www.miraxstroy.ru/upload/iblock/705/705a66758af13cca2b64e76997a5d214.jpg",
           "https://www.vseinstrumenti.ru/product/nalivnoj-pol-unis-gorizont-universalnyj-bystroverdeyuschij-3-100-mm-20-kg-4607005181664-2937182/",
+          "https://cdn.vseinstrumenti.ru/images/goods/stroitelnye-materialy/stroitelnye-smesi/2937182/1200x800/64621458.jpg",
           "https://yaroslavl.petrovich.ru/product/170427/"
         ],
         "currentProductionMismatch": "Current production image is a 30 kg M-45 package, wrong weight; preserve only as a negative family reference, never as target artwork.",
@@ -4400,8 +4401,8 @@
     "archiveVerification": {
       "status": "PASS",
       "archivePath": "product-images-batch/mix-images-reaudit-final3-batch1/chatgpt-rebuild-handoff.tar.gz",
-      "archiveBytes": 2988225,
-      "archiveSha256": "fb71c199c9889744083aaf6488bf155133a39f24e52292eb2aa84183571b24a2",
+      "archiveBytes": 2988552,
+      "archiveSha256": "15723e5ac095d197185c4f3d51170f4a69eb803cba7bdf64ea6d773649fedfe4",
       "archiveFileCount": 42,
       "archiveEntryCount": 51,
       "archiveFileList": [
@@ -4617,7 +4618,9 @@
         "sha256": "d84ac566d445db42fd6fbc8e6c925c25d3826c24db4d4f80f10c78ee6e8e9c57",
         "visuallyVerified": true,
         "generationReady": true,
-        "qualification": "The exact 20 kg legacy-facing Горизонт Универсальный pack is visible; M-45 is not printed on that artwork and must not be added."
+        "qualification": "The exact 20 kg legacy-facing Горизонт Универсальный pack is visible; M-45 is not printed on that artwork and must not be added.",
+        "unverifiedCandidateUrl": "https://cdn.vseinstrumenti.ru/images/goods/stroitelnye-materialy/stroitelnye-smesi/2937182/1200x800/64621458.jpg",
+        "unverifiedCandidateDisposition": "Not downloaded or visually checked in this repair; excluded. The Petrovich direct image was downloaded and visually rejected as a 1 L container."
       },
       "MAT087": {
         "sourcePageUrl": "https://psp-spb.ru/katalog-kompanii-psp/ceresit/nalivnyie-polyi/kopiya-nalivnoj-pol-universalnyij-ceresit-cn173-samovyiravnivayushhijsya-20-kg.html",

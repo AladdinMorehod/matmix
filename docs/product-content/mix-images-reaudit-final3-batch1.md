@@ -380,7 +380,7 @@ Generation readiness: MAT-000068=true; MAT-000075=true; MAT-000076=true; MAT-000
 | MAT-000075 | `MAT-000075/references/unis-horizon-universal-m45-20kg-mirax.jpg` | [Mirax 20 kg listing](https://www.miraxstroy.ru/bystrotverdeyushchiy-nalivnoy-pol-yunis-gorizont-universalnyy-meshok-20kg/) | [JPG](https://www.miraxstroy.ru/upload/iblock/705/705a66758af13cca2b64e76997a5d214.jpg) | JPEG, 800×800, 124033 bytes | `d84ac566d445db42fd6fbc8e6c925c25d3826c24db4d4f80f10c78ee6e8e9c57` | UNIS Горизонт Универсальный sack with visible 20 kg. Legacy-facing art does not show M-45; prompt forbids adding it. |
 | MAT-000087 | `MAT-000087/references/ceresit-cn-175-super-20kg-psp.png` | [PSP exact 20 kg listing](https://psp-spb.ru/katalog-kompanii-psp/ceresit/nalivnyie-polyi/kopiya-nalivnoj-pol-universalnyij-ceresit-cn173-samovyiravnivayushhijsya-20-kg.html) | [PNG](https://psp-spb.ru/uploads/images/products/2518/big2/cn-175-20kg.png) | PNG, 500×500, 96335 bytes | `77de258ac1cc25c4bd90cc8204d620b7c46d920c727ba9bcca231a67e419596e` | Visible Церезит / CN 175 / SUPER / 20 kg. Official identity and pack sizes also supported by [Henkel TDS](https://dm.henkel-dam.com/is/content/henkel/tds-ru-ceresit-cn175pdf). |
 
-The VseInstrumenti and Petrovich image candidates for MAT-000075 were rejected after download: both showed a UNIS 1 L container, not the required 20 kg sack. They are excluded from the handoff. The 30 kg production image for MAT-000075 and 25 kg production image for MAT-000087 remain negative-only references.
+The Petrovich direct image was downloaded and rejected because it showed a UNIS 1 L container, not the required sack. VseInstrumenti is retained as exact listing identity context; its associated CDN image was not downloaded or visually verified in this repair and is excluded from the handoff. The 30 kg production image for MAT-000075 and 25 kg production image for MAT-000087 remain negative-only references.
 
 ### Final markers
 
@@ -399,7 +399,7 @@ The VseInstrumenti and Petrovich image candidates for MAT-000075 were rejected a
 ### Archive validation
 
 - Archive: `product-images-batch/mix-images-reaudit-final3-batch1/chatgpt-rebuild-handoff.tar.gz`
-- Size: 2,988,225 bytes; SHA256: `fb71c199c9889744083aaf6488bf155133a39f24e52292eb2aa84183571b24a2`.
+- Size: 2,988,552 bytes; SHA256: `15723e5ac095d197185c4f3d51170f4a69eb803cba7bdf64ea6d773649fedfe4`.
 - Exactly 42 files, one manifest and exactly four MAT directories; no Package A files or unrelated MAT. All archive paths are relative and contain no parent traversal.
 - All manifest-listed references exist in the archive. All 20 image files decode with Sharp; dimensions, format, byte size and SHA256 match the archive manifest.
 
