@@ -1,0 +1,807 @@
+{
+  "reviewType": "mix-images-reaudit-final3-batch1",
+  "generatedDate": "2026-10-01",
+  "branch": "codex/mix-images-reaudit-final3-batch1",
+  "baseOriginMain": "3d3dbccdc83422c1dc937c7dc7c673128234705f",
+  "scope": {
+    "targetTotal": 18,
+    "masonryMixes": [
+      "MAT-000067",
+      "MAT-000068",
+      "MAT-000069"
+    ],
+    "selfLevelingFloor": [
+      "MAT-000075",
+      "MAT-000076",
+      "MAT-000077",
+      "MAT-000078",
+      "MAT-000079",
+      "MAT-000080",
+      "MAT-000081",
+      "MAT-000082",
+      "MAT-000083",
+      "MAT-000084",
+      "MAT-000085",
+      "MAT-000086",
+      "MAT-000087"
+    ],
+    "floorScreeds": [
+      "MAT-000089",
+      "MAT-000090"
+    ]
+  },
+  "auditGate": {
+    "status": "PRODUCTION_VISUAL_SOURCE_REQUIRED",
+    "final3ImageAuditComplete": false,
+    "readyForVisualReview": false,
+    "stopBeforeImagePreparation": true,
+    "reason": "The task requires current production image identity and visual inspection. Repository evidence contains no current production image snapshot/binding for these 18 MATs. SSH/production access is prohibited."
+  },
+  "evidenceReviewed": [
+    {
+      "path": "docs/product-content/mix-products-image-batch1-review.json",
+      "scope": "Local discovery/preparation and local SQLite import only.",
+      "limitation": "The prior report explicitly says production was not accessed. Its importedUrl values refer to the local database/import workflow and cannot establish current production truth."
+    },
+    {
+      "path": "product-images-batch/mix-products/",
+      "scope": "Untracked local source/import-ready/preview assets, where present.",
+      "limitation": "These are local working artifacts; no evidence proves they match currently bound production image bytes."
+    },
+    {
+      "path": "reports/product-content/closed-subcategories-final-audit.json",
+      "scope": "Local snapshot audit.",
+      "limitation": "The database path in the report is the local schema-v4 database, not production image state."
+    }
+  ],
+  "summary": {
+    "total": 18,
+    "KEEP": 0,
+    "REFRAME": 0,
+    "REBUILD": 0,
+    "RESEARCH_REQUIRED": 18,
+    "OWNER_REVIEW_REQUIRED": 0,
+    "bySubcategory": {
+      "Кладочные Смеси": {
+        "total": 3,
+        "KEEP": 0,
+        "REFRAME": 0,
+        "REBUILD": 0,
+        "RESEARCH_REQUIRED": 3,
+        "OWNER_REVIEW_REQUIRED": 0
+      },
+      "Наливной Пол": {
+        "total": 13,
+        "KEEP": 0,
+        "REFRAME": 0,
+        "REBUILD": 0,
+        "RESEARCH_REQUIRED": 13,
+        "OWNER_REVIEW_REQUIRED": 0
+      },
+      "Стяжки Пола": {
+        "total": 2,
+        "KEEP": 0,
+        "REFRAME": 0,
+        "REBUILD": 0,
+        "RESEARCH_REQUIRED": 2,
+        "OWNER_REVIEW_REQUIRED": 0
+      }
+    },
+    "identityMismatchesFound": null,
+    "note": "Identity mismatches are unassessed, not zero: the current production images were unavailable."
+  },
+  "records": [
+    {
+      "externalId": "MAT-000067",
+      "titleLastRecordedInLocalReview": "Кладочно - монтажная смесь цементная Евро М-200 40кг",
+      "subcategory": "Кладочные Смеси",
+      "currentProductionImageUrl": null,
+      "currentProductionImageEvidence": "Not present in repository evidence; no production access permitted.",
+      "identityStatus": "NOT_ASSESSABLE_WITHOUT_CURRENT_PRODUCTION_IMAGE",
+      "classification": "RESEARCH_REQUIRED",
+      "reason": "Cannot match the currently bound production image to this exact product identity or assess framing/background without the current production image bytes and binding evidence. Local batch sources and local-import URLs are not production truth.",
+      "priorLocalReview": {
+        "reviewPath": "docs/product-content/mix-products-image-batch1-review.json",
+        "reviewDate": "2026-09-24",
+        "identity": "EUROMIX М-200, 40 кг",
+        "sourceUrl": "https://bobr.su/sukhaya-smes-m-200-euromix-kladochnaya-40kg/",
+        "priorImageStatus": "IMAGE_NEEDS_EXACT_SOURCE",
+        "priorDecision": "Identity known from prior discovery; no clean exact authoritative packshot proven.",
+        "priorLocalImportUrl": null,
+        "evidenceScope": "Historical local discovery/preparation only; does not establish current production image URL, bytes, checksum, dimensions, or appearance."
+      },
+      "imageTechnicalFacts": {
+        "productionFileExists": null,
+        "format": null,
+        "width": null,
+        "height": null,
+        "sha256": null,
+        "productBoundingBox": null,
+        "productFillPercent": null,
+        "background": null,
+        "cropping": null
+      },
+      "proposedAction": "STOP before image preparation. Obtain a permitted read-only export of the current production image bytes and image binding metadata, then resume identity-first visual audit.",
+      "preparedSourcePath": null,
+      "preparedPreviewPath": null,
+      "sourceSha256": null,
+      "previewSha256": null,
+      "blockers": [
+        "PRODUCTION_VISUAL_SOURCE_REQUIRED"
+      ]
+    },
+    {
+      "externalId": "MAT-000068",
+      "titleLastRecordedInLocalReview": "Кладочно - монтажная смесь цементная Русеан М-200 40кг",
+      "subcategory": "Кладочные Смеси",
+      "currentProductionImageUrl": null,
+      "currentProductionImageEvidence": "Not present in repository evidence; no production access permitted.",
+      "identityStatus": "NOT_ASSESSABLE_WITHOUT_CURRENT_PRODUCTION_IMAGE",
+      "classification": "RESEARCH_REQUIRED",
+      "reason": "Cannot match the currently bound production image to this exact product identity or assess framing/background without the current production image bytes and binding evidence. Local batch sources and local-import URLs are not production truth.",
+      "priorLocalReview": {
+        "reviewPath": "docs/product-content/mix-products-image-batch1-review.json",
+        "reviewDate": "2026-09-24",
+        "identity": "Русеан М-200 монтажно-кладочная смесь, 40 кг",
+        "sourceUrl": "https://rusean.ru/catalog/sukhie_smesi_/sukhaya_smes_m_200_montazhno_kladochnaya_40_kg/",
+        "priorImageStatus": "IMAGE_IMPORTED",
+        "priorDecision": "Official product page plus direct product packshot.",
+        "priorLocalImportUrl": "/uploads/products/MAT-000068-18791ad479824f81.webp",
+        "evidenceScope": "Historical local discovery/preparation only; does not establish current production image URL, bytes, checksum, dimensions, or appearance."
+      },
+      "imageTechnicalFacts": {
+        "productionFileExists": null,
+        "format": null,
+        "width": null,
+        "height": null,
+        "sha256": null,
+        "productBoundingBox": null,
+        "productFillPercent": null,
+        "background": null,
+        "cropping": null
+      },
+      "proposedAction": "STOP before image preparation. Obtain a permitted read-only export of the current production image bytes and image binding metadata, then resume identity-first visual audit.",
+      "preparedSourcePath": null,
+      "preparedPreviewPath": null,
+      "sourceSha256": null,
+      "previewSha256": null,
+      "blockers": [
+        "PRODUCTION_VISUAL_SOURCE_REQUIRED"
+      ]
+    },
+    {
+      "externalId": "MAT-000069",
+      "titleLastRecordedInLocalReview": "Кладочно - монтажная смесь цементная Вертекс М-200 40кг",
+      "subcategory": "Кладочные Смеси",
+      "currentProductionImageUrl": null,
+      "currentProductionImageEvidence": "Not present in repository evidence; no production access permitted.",
+      "identityStatus": "NOT_ASSESSABLE_WITHOUT_CURRENT_PRODUCTION_IMAGE",
+      "classification": "RESEARCH_REQUIRED",
+      "reason": "Cannot match the currently bound production image to this exact product identity or assess framing/background without the current production image bytes and binding evidence. Local batch sources and local-import URLs are not production truth.",
+      "priorLocalReview": {
+        "reviewPath": "docs/product-content/mix-products-image-batch1-review.json",
+        "reviewDate": "2026-09-24",
+        "identity": "VERTEX М-200, 40 кг",
+        "sourceUrl": "https://vertexproduction.ru/",
+        "priorImageStatus": "IMAGE_NEEDS_EXACT_SOURCE",
+        "priorDecision": "Manufacturer confirms identity/weight; no clean direct exact asset exposed.",
+        "priorLocalImportUrl": null,
+        "evidenceScope": "Historical local discovery/preparation only; does not establish current production image URL, bytes, checksum, dimensions, or appearance."
+      },
+      "imageTechnicalFacts": {
+        "productionFileExists": null,
+        "format": null,
+        "width": null,
+        "height": null,
+        "sha256": null,
+        "productBoundingBox": null,
+        "productFillPercent": null,
+        "background": null,
+        "cropping": null
+      },
+      "proposedAction": "STOP before image preparation. Obtain a permitted read-only export of the current production image bytes and image binding metadata, then resume identity-first visual audit.",
+      "preparedSourcePath": null,
+      "preparedPreviewPath": null,
+      "sourceSha256": null,
+      "previewSha256": null,
+      "blockers": [
+        "PRODUCTION_VISUAL_SOURCE_REQUIRED"
+      ]
+    },
+    {
+      "externalId": "MAT-000075",
+      "titleLastRecordedInLocalReview": "Наливной пол \"Unis Горизонт\" 20 кг",
+      "subcategory": "Наливной Пол",
+      "currentProductionImageUrl": null,
+      "currentProductionImageEvidence": "Not present in repository evidence; no production access permitted.",
+      "identityStatus": "NOT_ASSESSABLE_WITHOUT_CURRENT_PRODUCTION_IMAGE",
+      "classification": "RESEARCH_REQUIRED",
+      "reason": "Cannot match the currently bound production image to this exact product identity or assess framing/background without the current production image bytes and binding evidence. Local batch sources and local-import URLs are not production truth.",
+      "priorLocalReview": {
+        "reviewPath": "docs/product-content/mix-products-image-batch1-review.json",
+        "reviewDate": "2026-09-24",
+        "identity": "UNIS Горизонт, 20 кг",
+        "sourceUrl": "https://unistrom.ru/catalog/ustrojstvo-polov/nalivnye-poly/gorizont-universalnyj/",
+        "priorImageStatus": "IMAGE_BLOCKED_IDENTITY",
+        "priorDecision": "Exact Горизонт variant unresolved; Армированный image cannot be substituted.",
+        "priorLocalImportUrl": null,
+        "evidenceScope": "Historical local discovery/preparation only; does not establish current production image URL, bytes, checksum, dimensions, or appearance."
+      },
+      "imageTechnicalFacts": {
+        "productionFileExists": null,
+        "format": null,
+        "width": null,
+        "height": null,
+        "sha256": null,
+        "productBoundingBox": null,
+        "productFillPercent": null,
+        "background": null,
+        "cropping": null
+      },
+      "proposedAction": "STOP before image preparation. Obtain a permitted read-only export of the current production image bytes and image binding metadata, then resume identity-first visual audit.",
+      "preparedSourcePath": null,
+      "preparedPreviewPath": null,
+      "sourceSha256": null,
+      "previewSha256": null,
+      "blockers": [
+        "PRODUCTION_VISUAL_SOURCE_REQUIRED"
+      ]
+    },
+    {
+      "externalId": "MAT-000076",
+      "titleLastRecordedInLocalReview": "Наливной пол \"Unis Горизонт\" Армированный 20 кг",
+      "subcategory": "Наливной Пол",
+      "currentProductionImageUrl": null,
+      "currentProductionImageEvidence": "Not present in repository evidence; no production access permitted.",
+      "identityStatus": "NOT_ASSESSABLE_WITHOUT_CURRENT_PRODUCTION_IMAGE",
+      "classification": "RESEARCH_REQUIRED",
+      "reason": "Cannot match the currently bound production image to this exact product identity or assess framing/background without the current production image bytes and binding evidence. Local batch sources and local-import URLs are not production truth.",
+      "priorLocalReview": {
+        "reviewPath": "docs/product-content/mix-products-image-batch1-review.json",
+        "reviewDate": "2026-09-24",
+        "identity": "UNIS Горизонт Армированный, 20 кг",
+        "sourceUrl": "https://unistrom.ru/catalog/ustrojstvo-polov/gorizont-armirovannyj/",
+        "priorImageStatus": "IMAGE_BLOCKED_VERSION_CONFLICT",
+        "priorDecision": "Captured current asset/version context was not safely proven against local SKU.",
+        "priorLocalImportUrl": null,
+        "evidenceScope": "Historical local discovery/preparation only; does not establish current production image URL, bytes, checksum, dimensions, or appearance."
+      },
+      "imageTechnicalFacts": {
+        "productionFileExists": null,
+        "format": null,
+        "width": null,
+        "height": null,
+        "sha256": null,
+        "productBoundingBox": null,
+        "productFillPercent": null,
+        "background": null,
+        "cropping": null
+      },
+      "proposedAction": "STOP before image preparation. Obtain a permitted read-only export of the current production image bytes and image binding metadata, then resume identity-first visual audit.",
+      "preparedSourcePath": null,
+      "preparedPreviewPath": null,
+      "sourceSha256": null,
+      "previewSha256": null,
+      "blockers": [
+        "PRODUCTION_VISUAL_SOURCE_REQUIRED"
+      ]
+    },
+    {
+      "externalId": "MAT-000077",
+      "titleLastRecordedInLocalReview": "Наливной пол \"Старатели\" Быстрый 20 кг",
+      "subcategory": "Наливной Пол",
+      "currentProductionImageUrl": null,
+      "currentProductionImageEvidence": "Not present in repository evidence; no production access permitted.",
+      "identityStatus": "NOT_ASSESSABLE_WITHOUT_CURRENT_PRODUCTION_IMAGE",
+      "classification": "RESEARCH_REQUIRED",
+      "reason": "Cannot match the currently bound production image to this exact product identity or assess framing/background without the current production image bytes and binding evidence. Local batch sources and local-import URLs are not production truth.",
+      "priorLocalReview": {
+        "reviewPath": "docs/product-content/mix-products-image-batch1-review.json",
+        "reviewDate": "2026-09-24",
+        "identity": "Старатели Быстрый, 20 кг",
+        "sourceUrl": "https://www.starateli.ru/nalivnoy-pol/",
+        "priorImageStatus": "IMAGE_BLOCKED_VERSION_CONFLICT",
+        "priorDecision": "Local Быстрый vs current official Быстротвердеющий; equivalence not established.",
+        "priorLocalImportUrl": null,
+        "evidenceScope": "Historical local discovery/preparation only; does not establish current production image URL, bytes, checksum, dimensions, or appearance."
+      },
+      "imageTechnicalFacts": {
+        "productionFileExists": null,
+        "format": null,
+        "width": null,
+        "height": null,
+        "sha256": null,
+        "productBoundingBox": null,
+        "productFillPercent": null,
+        "background": null,
+        "cropping": null
+      },
+      "proposedAction": "STOP before image preparation. Obtain a permitted read-only export of the current production image bytes and image binding metadata, then resume identity-first visual audit.",
+      "preparedSourcePath": null,
+      "preparedPreviewPath": null,
+      "sourceSha256": null,
+      "previewSha256": null,
+      "blockers": [
+        "PRODUCTION_VISUAL_SOURCE_REQUIRED"
+      ]
+    },
+    {
+      "externalId": "MAT-000078",
+      "titleLastRecordedInLocalReview": "Наливной пол \"Старатели\" Толстый 25кг",
+      "subcategory": "Наливной Пол",
+      "currentProductionImageUrl": null,
+      "currentProductionImageEvidence": "Not present in repository evidence; no production access permitted.",
+      "identityStatus": "NOT_ASSESSABLE_WITHOUT_CURRENT_PRODUCTION_IMAGE",
+      "classification": "RESEARCH_REQUIRED",
+      "reason": "Cannot match the currently bound production image to this exact product identity or assess framing/background without the current production image bytes and binding evidence. Local batch sources and local-import URLs are not production truth.",
+      "priorLocalReview": {
+        "reviewPath": "docs/product-content/mix-products-image-batch1-review.json",
+        "reviewDate": "2026-09-24",
+        "identity": "Старатели Толстый, 25 кг",
+        "sourceUrl": "https://market.starateli.ru/products/nalivnye-poly/nalivnoj-pol-tolstyj/",
+        "priorImageStatus": "IMAGE_IMPORTED",
+        "priorDecision": "Official manufacturer shop image in exact product context.",
+        "priorLocalImportUrl": "/uploads/products/MAT-000078-2bc0525cc149295d.webp",
+        "evidenceScope": "Historical local discovery/preparation only; does not establish current production image URL, bytes, checksum, dimensions, or appearance."
+      },
+      "imageTechnicalFacts": {
+        "productionFileExists": null,
+        "format": null,
+        "width": null,
+        "height": null,
+        "sha256": null,
+        "productBoundingBox": null,
+        "productFillPercent": null,
+        "background": null,
+        "cropping": null
+      },
+      "proposedAction": "STOP before image preparation. Obtain a permitted read-only export of the current production image bytes and image binding metadata, then resume identity-first visual audit.",
+      "preparedSourcePath": null,
+      "preparedPreviewPath": null,
+      "sourceSha256": null,
+      "previewSha256": null,
+      "blockers": [
+        "PRODUCTION_VISUAL_SOURCE_REQUIRED"
+      ]
+    },
+    {
+      "externalId": "MAT-000079",
+      "titleLastRecordedInLocalReview": "Наливной пол финишный Weber Vetonit 3000 самовыравнивающийся 20 кг",
+      "subcategory": "Наливной Пол",
+      "currentProductionImageUrl": null,
+      "currentProductionImageEvidence": "Not present in repository evidence; no production access permitted.",
+      "identityStatus": "NOT_ASSESSABLE_WITHOUT_CURRENT_PRODUCTION_IMAGE",
+      "classification": "RESEARCH_REQUIRED",
+      "reason": "Cannot match the currently bound production image to this exact product identity or assess framing/background without the current production image bytes and binding evidence. Local batch sources and local-import URLs are not production truth.",
+      "priorLocalReview": {
+        "reviewPath": "docs/product-content/mix-products-image-batch1-review.json",
+        "reviewDate": "2026-09-24",
+        "identity": "Weber Vetonit 3000, 20 кг",
+        "sourceUrl": "https://vetonit.com/product/vetonit_3000_20kg/",
+        "priorImageStatus": "IMAGE_IMPORTED",
+        "priorDecision": "Official product page image.",
+        "priorLocalImportUrl": "/uploads/products/MAT-000079-ec61b1ee064e4891.webp",
+        "evidenceScope": "Historical local discovery/preparation only; does not establish current production image URL, bytes, checksum, dimensions, or appearance."
+      },
+      "imageTechnicalFacts": {
+        "productionFileExists": null,
+        "format": null,
+        "width": null,
+        "height": null,
+        "sha256": null,
+        "productBoundingBox": null,
+        "productFillPercent": null,
+        "background": null,
+        "cropping": null
+      },
+      "proposedAction": "STOP before image preparation. Obtain a permitted read-only export of the current production image bytes and image binding metadata, then resume identity-first visual audit.",
+      "preparedSourcePath": null,
+      "preparedPreviewPath": null,
+      "sourceSha256": null,
+      "previewSha256": null,
+      "blockers": [
+        "PRODUCTION_VISUAL_SOURCE_REQUIRED"
+      ]
+    },
+    {
+      "externalId": "MAT-000080",
+      "titleLastRecordedInLocalReview": "Наливной пол универсальный Weber Vetonit fast 4000 20 кг",
+      "subcategory": "Наливной Пол",
+      "currentProductionImageUrl": null,
+      "currentProductionImageEvidence": "Not present in repository evidence; no production access permitted.",
+      "identityStatus": "NOT_ASSESSABLE_WITHOUT_CURRENT_PRODUCTION_IMAGE",
+      "classification": "RESEARCH_REQUIRED",
+      "reason": "Cannot match the currently bound production image to this exact product identity or assess framing/background without the current production image bytes and binding evidence. Local batch sources and local-import URLs are not production truth.",
+      "priorLocalReview": {
+        "reviewPath": "docs/product-content/mix-products-image-batch1-review.json",
+        "reviewDate": "2026-09-24",
+        "identity": "Weber Vetonit fast 4000, 20 кг",
+        "sourceUrl": "https://vetonit.com/product/vetonit_fast_4000_20kg/",
+        "priorImageStatus": "IMAGE_IMPORTED",
+        "priorDecision": "Official product page image.",
+        "priorLocalImportUrl": "/uploads/products/MAT-000080-1bdd0d69bad4afdf.webp",
+        "evidenceScope": "Historical local discovery/preparation only; does not establish current production image URL, bytes, checksum, dimensions, or appearance."
+      },
+      "imageTechnicalFacts": {
+        "productionFileExists": null,
+        "format": null,
+        "width": null,
+        "height": null,
+        "sha256": null,
+        "productBoundingBox": null,
+        "productFillPercent": null,
+        "background": null,
+        "cropping": null
+      },
+      "proposedAction": "STOP before image preparation. Obtain a permitted read-only export of the current production image bytes and image binding metadata, then resume identity-first visual audit.",
+      "preparedSourcePath": null,
+      "preparedPreviewPath": null,
+      "sourceSha256": null,
+      "previewSha256": null,
+      "blockers": [
+        "PRODUCTION_VISUAL_SOURCE_REQUIRED"
+      ]
+    },
+    {
+      "externalId": "MAT-000081",
+      "titleLastRecordedInLocalReview": "Наливной пол финишный Vetonit 4100 высокопрочный 20 кг",
+      "subcategory": "Наливной Пол",
+      "currentProductionImageUrl": null,
+      "currentProductionImageEvidence": "Not present in repository evidence; no production access permitted.",
+      "identityStatus": "NOT_ASSESSABLE_WITHOUT_CURRENT_PRODUCTION_IMAGE",
+      "classification": "RESEARCH_REQUIRED",
+      "reason": "Cannot match the currently bound production image to this exact product identity or assess framing/background without the current production image bytes and binding evidence. Local batch sources and local-import URLs are not production truth.",
+      "priorLocalReview": {
+        "reviewPath": "docs/product-content/mix-products-image-batch1-review.json",
+        "reviewDate": "2026-09-24",
+        "identity": "Weber Vetonit 4100, 20 кг",
+        "sourceUrl": "https://vetonit.com/product/vetonit_4100_20kg/",
+        "priorImageStatus": "IMAGE_IMPORTED",
+        "priorDecision": "Official product page image.",
+        "priorLocalImportUrl": "/uploads/products/MAT-000081-11f05a89cce5a535.webp",
+        "evidenceScope": "Historical local discovery/preparation only; does not establish current production image URL, bytes, checksum, dimensions, or appearance."
+      },
+      "imageTechnicalFacts": {
+        "productionFileExists": null,
+        "format": null,
+        "width": null,
+        "height": null,
+        "sha256": null,
+        "productBoundingBox": null,
+        "productFillPercent": null,
+        "background": null,
+        "cropping": null
+      },
+      "proposedAction": "STOP before image preparation. Obtain a permitted read-only export of the current production image bytes and image binding metadata, then resume identity-first visual audit.",
+      "preparedSourcePath": null,
+      "preparedPreviewPath": null,
+      "sourceSha256": null,
+      "previewSha256": null,
+      "blockers": [
+        "PRODUCTION_VISUAL_SOURCE_REQUIRED"
+      ]
+    },
+    {
+      "externalId": "MAT-000082",
+      "titleLastRecordedInLocalReview": "Наливной пол первичный Weber Vetonit 5000 быстротвердеющий 25 кг",
+      "subcategory": "Наливной Пол",
+      "currentProductionImageUrl": null,
+      "currentProductionImageEvidence": "Not present in repository evidence; no production access permitted.",
+      "identityStatus": "NOT_ASSESSABLE_WITHOUT_CURRENT_PRODUCTION_IMAGE",
+      "classification": "RESEARCH_REQUIRED",
+      "reason": "Cannot match the currently bound production image to this exact product identity or assess framing/background without the current production image bytes and binding evidence. Local batch sources and local-import URLs are not production truth.",
+      "priorLocalReview": {
+        "reviewPath": "docs/product-content/mix-products-image-batch1-review.json",
+        "reviewDate": "2026-09-24",
+        "identity": "Weber Vetonit 5000, 25 кг",
+        "sourceUrl": "https://www.vetonit.com/product/vetonit_5000_25kg/",
+        "priorImageStatus": "IMAGE_IMPORTED",
+        "priorDecision": "Official product page image.",
+        "priorLocalImportUrl": "/uploads/products/MAT-000082-d53ca909a64885ca.webp",
+        "evidenceScope": "Historical local discovery/preparation only; does not establish current production image URL, bytes, checksum, dimensions, or appearance."
+      },
+      "imageTechnicalFacts": {
+        "productionFileExists": null,
+        "format": null,
+        "width": null,
+        "height": null,
+        "sha256": null,
+        "productBoundingBox": null,
+        "productFillPercent": null,
+        "background": null,
+        "cropping": null
+      },
+      "proposedAction": "STOP before image preparation. Obtain a permitted read-only export of the current production image bytes and image binding metadata, then resume identity-first visual audit.",
+      "preparedSourcePath": null,
+      "preparedPreviewPath": null,
+      "sourceSha256": null,
+      "previewSha256": null,
+      "blockers": [
+        "PRODUCTION_VISUAL_SOURCE_REQUIRED"
+      ]
+    },
+    {
+      "externalId": "MAT-000083",
+      "titleLastRecordedInLocalReview": "Наливной пол Litokol LitoLiv S10 Express 20 кг",
+      "subcategory": "Наливной Пол",
+      "currentProductionImageUrl": null,
+      "currentProductionImageEvidence": "Not present in repository evidence; no production access permitted.",
+      "identityStatus": "NOT_ASSESSABLE_WITHOUT_CURRENT_PRODUCTION_IMAGE",
+      "classification": "RESEARCH_REQUIRED",
+      "reason": "Cannot match the currently bound production image to this exact product identity or assess framing/background without the current production image bytes and binding evidence. Local batch sources and local-import URLs are not production truth.",
+      "priorLocalReview": {
+        "reviewPath": "docs/product-content/mix-products-image-batch1-review.json",
+        "reviewDate": "2026-09-24",
+        "identity": "Litokol LITOLIV S10 EXPRESS, 20 кг",
+        "sourceUrl": "https://www.litokol.ru/catalog/litoliv-s10-express/",
+        "priorImageStatus": "IMAGE_IMPORTED",
+        "priorDecision": "Official Litokol catalog image.",
+        "priorLocalImportUrl": "/uploads/products/MAT-000083-9e454ab67e2e9c49.webp",
+        "evidenceScope": "Historical local discovery/preparation only; does not establish current production image URL, bytes, checksum, dimensions, or appearance."
+      },
+      "imageTechnicalFacts": {
+        "productionFileExists": null,
+        "format": null,
+        "width": null,
+        "height": null,
+        "sha256": null,
+        "productBoundingBox": null,
+        "productFillPercent": null,
+        "background": null,
+        "cropping": null
+      },
+      "proposedAction": "STOP before image preparation. Obtain a permitted read-only export of the current production image bytes and image binding metadata, then resume identity-first visual audit.",
+      "preparedSourcePath": null,
+      "preparedPreviewPath": null,
+      "sourceSha256": null,
+      "previewSha256": null,
+      "blockers": [
+        "PRODUCTION_VISUAL_SOURCE_REQUIRED"
+      ]
+    },
+    {
+      "externalId": "MAT-000084",
+      "titleLastRecordedInLocalReview": "Наливной пол универсальный Litokol Litoliv S50 самовыравнивающийся 20 кг",
+      "subcategory": "Наливной Пол",
+      "currentProductionImageUrl": null,
+      "currentProductionImageEvidence": "Not present in repository evidence; no production access permitted.",
+      "identityStatus": "NOT_ASSESSABLE_WITHOUT_CURRENT_PRODUCTION_IMAGE",
+      "classification": "RESEARCH_REQUIRED",
+      "reason": "Cannot match the currently bound production image to this exact product identity or assess framing/background without the current production image bytes and binding evidence. Local batch sources and local-import URLs are not production truth.",
+      "priorLocalReview": {
+        "reviewPath": "docs/product-content/mix-products-image-batch1-review.json",
+        "reviewDate": "2026-09-24",
+        "identity": "Litokol LITOLIV S50 EVO, 20 кг",
+        "sourceUrl": "https://litokol-market.ru/catalog/styazhki-i-nalivnye-poly/litoliv-s50-evo/?offer=1005",
+        "priorImageStatus": "IMAGE_IMPORTED",
+        "priorDecision": "Manufacturer shop image in exact product context.",
+        "priorLocalImportUrl": "/uploads/products/MAT-000084-0484b3e59dbe222e.webp",
+        "evidenceScope": "Historical local discovery/preparation only; does not establish current production image URL, bytes, checksum, dimensions, or appearance."
+      },
+      "imageTechnicalFacts": {
+        "productionFileExists": null,
+        "format": null,
+        "width": null,
+        "height": null,
+        "sha256": null,
+        "productBoundingBox": null,
+        "productFillPercent": null,
+        "background": null,
+        "cropping": null
+      },
+      "proposedAction": "STOP before image preparation. Obtain a permitted read-only export of the current production image bytes and image binding metadata, then resume identity-first visual audit.",
+      "preparedSourcePath": null,
+      "preparedPreviewPath": null,
+      "sourceSha256": null,
+      "previewSha256": null,
+      "blockers": [
+        "PRODUCTION_VISUAL_SOURCE_REQUIRED"
+      ]
+    },
+    {
+      "externalId": "MAT-000085",
+      "titleLastRecordedInLocalReview": "Наливной пол Волма Нивелир Экспресс 25 кг",
+      "subcategory": "Наливной Пол",
+      "currentProductionImageUrl": null,
+      "currentProductionImageEvidence": "Not present in repository evidence; no production access permitted.",
+      "identityStatus": "NOT_ASSESSABLE_WITHOUT_CURRENT_PRODUCTION_IMAGE",
+      "classification": "RESEARCH_REQUIRED",
+      "reason": "Cannot match the currently bound production image to this exact product identity or assess framing/background without the current production image bytes and binding evidence. Local batch sources and local-import URLs are not production truth.",
+      "priorLocalReview": {
+        "reviewPath": "docs/product-content/mix-products-image-batch1-review.json",
+        "reviewDate": "2026-09-24",
+        "identity": "ВОЛМА-Нивелир Экспресс, 25 кг",
+        "sourceUrl": "https://www.volma.ru/production/catalog/mixtures-for-floor-leveling/volma-nivelir-ekspress-25kg/",
+        "priorImageStatus": "IMAGE_IMPORTED",
+        "priorDecision": "Official VOLMA product asset.",
+        "priorLocalImportUrl": "/uploads/products/MAT-000085-6f272833fe7b7600.webp",
+        "evidenceScope": "Historical local discovery/preparation only; does not establish current production image URL, bytes, checksum, dimensions, or appearance."
+      },
+      "imageTechnicalFacts": {
+        "productionFileExists": null,
+        "format": null,
+        "width": null,
+        "height": null,
+        "sha256": null,
+        "productBoundingBox": null,
+        "productFillPercent": null,
+        "background": null,
+        "cropping": null
+      },
+      "proposedAction": "STOP before image preparation. Obtain a permitted read-only export of the current production image bytes and image binding metadata, then resume identity-first visual audit.",
+      "preparedSourcePath": null,
+      "preparedPreviewPath": null,
+      "sourceSha256": null,
+      "previewSha256": null,
+      "blockers": [
+        "PRODUCTION_VISUAL_SOURCE_REQUIRED"
+      ]
+    },
+    {
+      "externalId": "MAT-000086",
+      "titleLastRecordedInLocalReview": "Наливной пол Основит Скорлайн FK45R самовыравнивающийся 20 кг",
+      "subcategory": "Наливной Пол",
+      "currentProductionImageUrl": null,
+      "currentProductionImageEvidence": "Not present in repository evidence; no production access permitted.",
+      "identityStatus": "NOT_ASSESSABLE_WITHOUT_CURRENT_PRODUCTION_IMAGE",
+      "classification": "RESEARCH_REQUIRED",
+      "reason": "Cannot match the currently bound production image to this exact product identity or assess framing/background without the current production image bytes and binding evidence. Local batch sources and local-import URLs are not production truth.",
+      "priorLocalReview": {
+        "reviewPath": "docs/product-content/mix-products-image-batch1-review.json",
+        "reviewDate": "2026-09-24",
+        "identity": "Основит Скорлайн FK45 R, 20 кг",
+        "sourceUrl": "https://www.osnovit.msk.ru/fk45r",
+        "priorImageStatus": "IMAGE_NEEDS_EXACT_SOURCE",
+        "priorDecision": "Downloaded asset was only logo/banner, not exact package.",
+        "priorLocalImportUrl": null,
+        "evidenceScope": "Historical local discovery/preparation only; does not establish current production image URL, bytes, checksum, dimensions, or appearance."
+      },
+      "imageTechnicalFacts": {
+        "productionFileExists": null,
+        "format": null,
+        "width": null,
+        "height": null,
+        "sha256": null,
+        "productBoundingBox": null,
+        "productFillPercent": null,
+        "background": null,
+        "cropping": null
+      },
+      "proposedAction": "STOP before image preparation. Obtain a permitted read-only export of the current production image bytes and image binding metadata, then resume identity-first visual audit.",
+      "preparedSourcePath": null,
+      "preparedPreviewPath": null,
+      "sourceSha256": null,
+      "previewSha256": null,
+      "blockers": [
+        "PRODUCTION_VISUAL_SOURCE_REQUIRED"
+      ]
+    },
+    {
+      "externalId": "MAT-000087",
+      "titleLastRecordedInLocalReview": "Наливной пол самовыравнивающийся Ceresit CN 175 20 кг",
+      "subcategory": "Наливной Пол",
+      "currentProductionImageUrl": null,
+      "currentProductionImageEvidence": "Not present in repository evidence; no production access permitted.",
+      "identityStatus": "NOT_ASSESSABLE_WITHOUT_CURRENT_PRODUCTION_IMAGE",
+      "classification": "RESEARCH_REQUIRED",
+      "reason": "Cannot match the currently bound production image to this exact product identity or assess framing/background without the current production image bytes and binding evidence. Local batch sources and local-import URLs are not production truth.",
+      "priorLocalReview": {
+        "reviewPath": "docs/product-content/mix-products-image-batch1-review.json",
+        "reviewDate": "2026-09-24",
+        "identity": "Ceresit CN 175 Super, local 20 кг",
+        "sourceUrl": "https://www.ceresit.ru/ru/products/flooring/levelling-compounds/cn_175_super",
+        "priorImageStatus": "IMAGE_NEEDS_EXACT_SOURCE",
+        "priorDecision": "Official page/TDS confirm product, but available visual is PDF/brochure composite, not clean exact local 20 kg packshot.",
+        "priorLocalImportUrl": null,
+        "evidenceScope": "Historical local discovery/preparation only; does not establish current production image URL, bytes, checksum, dimensions, or appearance."
+      },
+      "imageTechnicalFacts": {
+        "productionFileExists": null,
+        "format": null,
+        "width": null,
+        "height": null,
+        "sha256": null,
+        "productBoundingBox": null,
+        "productFillPercent": null,
+        "background": null,
+        "cropping": null
+      },
+      "proposedAction": "STOP before image preparation. Obtain a permitted read-only export of the current production image bytes and image binding metadata, then resume identity-first visual audit.",
+      "preparedSourcePath": null,
+      "preparedPreviewPath": null,
+      "sourceSha256": null,
+      "previewSha256": null,
+      "blockers": [
+        "PRODUCTION_VISUAL_SOURCE_REQUIRED"
+      ]
+    },
+    {
+      "externalId": "MAT-000089",
+      "titleLastRecordedInLocalReview": "Стяжка пола цементная, легкая Knauf Ubo 25 кг",
+      "subcategory": "Стяжки Пола",
+      "currentProductionImageUrl": null,
+      "currentProductionImageEvidence": "Not present in repository evidence; no production access permitted.",
+      "identityStatus": "NOT_ASSESSABLE_WITHOUT_CURRENT_PRODUCTION_IMAGE",
+      "classification": "RESEARCH_REQUIRED",
+      "reason": "Cannot match the currently bound production image to this exact product identity or assess framing/background without the current production image bytes and binding evidence. Local batch sources and local-import URLs are not production truth.",
+      "priorLocalReview": {
+        "reviewPath": "docs/product-content/mix-products-image-batch1-review.json",
+        "reviewDate": "2026-09-24",
+        "identity": "KNAUF Ubo, 25 кг",
+        "sourceUrl": "https://www.knauf.ru/upload/iblock/f60/j4nqjhxo0pt9w5ltxbu8104aoux6u8i3/34-IL-KNAUF_Ubo-_25_03_2025_-v01-Preview.pdf",
+        "priorImageStatus": "IMAGE_NEEDS_EXACT_SOURCE",
+        "priorDecision": "Exact identity/weight proven; brochure composite is not a clean standalone packshot.",
+        "priorLocalImportUrl": null,
+        "evidenceScope": "Historical local discovery/preparation only; does not establish current production image URL, bytes, checksum, dimensions, or appearance."
+      },
+      "imageTechnicalFacts": {
+        "productionFileExists": null,
+        "format": null,
+        "width": null,
+        "height": null,
+        "sha256": null,
+        "productBoundingBox": null,
+        "productFillPercent": null,
+        "background": null,
+        "cropping": null
+      },
+      "proposedAction": "STOP before image preparation. Obtain a permitted read-only export of the current production image bytes and image binding metadata, then resume identity-first visual audit.",
+      "preparedSourcePath": null,
+      "preparedPreviewPath": null,
+      "sourceSha256": null,
+      "previewSha256": null,
+      "blockers": [
+        "PRODUCTION_VISUAL_SOURCE_REQUIRED"
+      ]
+    },
+    {
+      "externalId": "MAT-000090",
+      "titleLastRecordedInLocalReview": "Стяжка пола Основит Стартолайн FC41 H высокопрочная, 25 кг",
+      "subcategory": "Стяжки Пола",
+      "currentProductionImageUrl": null,
+      "currentProductionImageEvidence": "Not present in repository evidence; no production access permitted.",
+      "identityStatus": "NOT_ASSESSABLE_WITHOUT_CURRENT_PRODUCTION_IMAGE",
+      "classification": "RESEARCH_REQUIRED",
+      "reason": "Cannot match the currently bound production image to this exact product identity or assess framing/background without the current production image bytes and binding evidence. Local batch sources and local-import URLs are not production truth.",
+      "priorLocalReview": {
+        "reviewPath": "docs/product-content/mix-products-image-batch1-review.json",
+        "reviewDate": "2026-09-24",
+        "identity": "Основит Стартолайн FC41 H, local 25 кг",
+        "sourceUrl": "https://osnovit.ru/catalog/styazhki/",
+        "priorImageStatus": "IMAGE_NEEDS_EXACT_SOURCE",
+        "priorDecision": "Downloaded asset was generic work photo; exact FC41 H package not proven.",
+        "priorLocalImportUrl": null,
+        "evidenceScope": "Historical local discovery/preparation only; does not establish current production image URL, bytes, checksum, dimensions, or appearance."
+      },
+      "imageTechnicalFacts": {
+        "productionFileExists": null,
+        "format": null,
+        "width": null,
+        "height": null,
+        "sha256": null,
+        "productBoundingBox": null,
+        "productFillPercent": null,
+        "background": null,
+        "cropping": null
+      },
+      "proposedAction": "STOP before image preparation. Obtain a permitted read-only export of the current production image bytes and image binding metadata, then resume identity-first visual audit.",
+      "preparedSourcePath": null,
+      "preparedPreviewPath": null,
+      "sourceSha256": null,
+      "previewSha256": null,
+      "blockers": [
+        "PRODUCTION_VISUAL_SOURCE_REQUIRED"
+      ]
+    }
+  ],
+  "productionActions": {
+    "databaseRead": false,
+    "databaseWrite": false,
+    "imageRead": false,
+    "imageWrite": false,
+    "ssh": false,
+    "deploy": false,
+    "productionPackageCreated": false
+  },
+  "gitArtifactPolicy": "Reports only. No image binaries are included because the production evidence gate prevented safe classification or preparation."
+}
