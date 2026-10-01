@@ -283,7 +283,7 @@ No fake final packshots were generated. Every directory contains an exact curren
 | MAT-000076 | UNIS Горизонт Армированный, 25 кг | Production is 30 kg; local front/back 25 kg references support weight, but upstream provenance for alternate local refs is not recorded. Verify provenance/rights before production use. | product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000076/ |
 | MAT-000087 | Ceresit CN 175 Super, 20 кг | Production image is 25 kg; exact 20 kg artwork is required. Do not relabel. Exact SKU design takes precedence over assumed red/yellow accents. | product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000087/ |
 
-REBUILD_4_HANDOFF_READY=true; no candidate image or production package created.
+REBUILD_4_HANDOFF_READY=false for generation: complete handoff files exist, but exact local target visuals for MAT-000075 and MAT-000087 are not verified. No candidate image or production package created.
 
 ### Owner contact sheets
 
@@ -340,6 +340,113 @@ KEEP remains untouched: MAT-000067, MAT-000077, MAT-000078, MAT-000083, MAT-0000
 
 MAT_000077_IDENTITY_RESOLVED=true
 REFRAME_7_READY_FOR_OWNER_REVIEW=true
-REBUILD_4_HANDOFF_READY=true
+REBUILD_4_HANDOFF_READY=false
 FINAL3_READY_FOR_OWNER_VISUAL_REVIEW=true
 NO_PRODUCTION_ACTIONS=true
+
+
+## Package A — production verification checkpoint (owner-supplied evidence)
+
+Package A (REFRAME_7) was applied and independently verified by the owner/operator. This documentation update records supplied verifier output; no production systems or files were accessed during this task. Final status: **PRODUCTION_APPLIED_AND_VERIFIED**.
+
+- Exact MAT scope: MAT-000069, MAT-000079, MAT-000080, MAT-000081, MAT-000082, MAT-000089, MAT-000090.
+- Verified backup: `/var/lib/matmix/matmix.db.backup-2026-10-01T10-32-55-743Z-2d1e6034e1eb`; 4,141,056 bytes; SHA256 `eac557891010a1774b16d156f34300cd103d71a90f9cb2dac74142d68465eb2c`; SQLite user_version 11.
+- Binding manifest: `/var/lib/matmix/matmix.db.image-bindings-2026-10-01T10-32-55-743Z.json`. Apply audit: `/var/lib/matmix/matmix.db.image-import-audit-2026-10-01T10-32-55-743Z.json`.
+- Verified database health: integrity `ok`, schema version 11, foreign-key violations 0; live and backup health PASS.
+- Exact database scope: only `products.image_url` for these seven MAT rows and only the corresponding primary `product_images.image_url` bindings changed. No other product row or product_images row changed, according to supplied independent verifier.
+
+| MAT | Final production image URL | WebP | SHA256 | Bytes |
+|---|---|---|---|---:|
+| MAT-000069 | /uploads/products/MAT-000069-b8befd9f343cbbeb.webp | 1200×1200 | aacef16e3cbef44273d59047c7b502c62261a04848870af67eea8f228992ca59 | 58644 |
+| MAT-000079 | /uploads/products/MAT-000079-ecddfe7585729346.webp | 1200×1200 | 863bb26c212b2eeeb647668c4ad35093a79ac677260fc9106de472ee2908bbf1 | 44612 |
+| MAT-000080 | /uploads/products/MAT-000080-130c5da3858b8115.webp | 1200×1200 | eac20fac2841135f439ac19758a7a9bc8bffb4b6f033ff575ff4208205130191 | 45064 |
+| MAT-000081 | /uploads/products/MAT-000081-3e8f085e77743cee.webp | 1200×1200 | 28fe45a5369ccb2a878c36c6fb1681d56051814cac30ef013cc7bfd79584d27f | 42816 |
+| MAT-000082 | /uploads/products/MAT-000082-cab9ca8cf9c7eaf4.webp | 1200×1200 | 410a639d11681220e0734ca950a62bccf7266ad55958eba9f3c80f72bb1dbbc0 | 40536 |
+| MAT-000089 | /uploads/products/MAT-000089-e5c69ea86340e869.webp | 1200×1200 | 197784d884e5419fcca5865cd96c571cab9f9eeb5e73bb20c8a5cf00aee2c98d | 31482 |
+| MAT-000090 | /uploads/products/MAT-000090-6def91e51d8f8b86.webp | 1200×1200 | 1ffb471c9a2921434907f66a96af7bdc91e6dc98a926414e8341596f775755f9 | 55716 |
+
+Verifier PASS markers: `BACKUP_SHA_OK`, `LIVE_HEALTH_OK`, `integrity=ok`, `user_version=11`, `fk=0`, `BACKUP_HEALTH_OK`, `DATABASE_HEALTH_OK`, `PRODUCT_CHANGE_SCOPE_OK`, `BINDING_CHANGE_SCOPE_OK`, `IMPORTER_AUDIT_EVIDENCE_OK`, `FINAL3_PACKAGE_A_7_IMAGES_OK`, `FINAL3_PACKAGE_A_NO_OUT_OF_SCOPE_DB_CHANGES`, `FINAL3_PACKAGE_A_POST_APPLY_VERIFY_OK`, `READ_ONLY_POST_APPLY_VERIFICATION_COMPLETE`.
+
+## Package B — ChatGPT rebuild handoff
+
+Exact scope remains MAT-000068, MAT-000075, MAT-000076, MAT-000087. Handoff root: `product-images-batch/mix-images-reaudit-final3-batch1/chatgpt-rebuild-handoff/`; archive: `product-images-batch/mix-images-reaudit-final3-batch1/chatgpt-rebuild-handoff.tar.gz`. Per-MAT briefs, generation prompts, source notes, and local references are listed in the handoff manifest.
+
+Generation gate: MAT-000068=true; MAT-000075=false; MAT-000076=true; MAT-000087=false. MAT-000075 and MAT-000087 have exact 20 kg page/direct-image candidates recorded, but the image bytes could not be locally retrieved or visually/hash/dimension checked in this environment. Their existing wrong-weight production images are negative references only. Do not generate their candidates until exact target visuals are available and inspected. Therefore `FINAL3_PACKAGE_B_HANDOFF_READY=false` for generation readiness, although the structured handoff package is prepared and validated.
+
+Package B production candidates were not created. Overall final3 rollout remains **NOT CLOSED**.
+
+`FINAL3_PACKAGE_A_PRODUCTION_APPLIED_AND_VERIFIED=true`
+`FINAL3_PACKAGE_B_HANDOFF_READY=false`
+`FINAL3_PACKAGE_B_HANDOFF_ARCHIVE_VERIFY_OK=true`
+`FINAL3_ROLLOUT_CLOSED=false`
+
+
+### Archive validation record
+
+- Archive: `product-images-batch/mix-images-reaudit-final3-batch1/chatgpt-rebuild-handoff.tar.gz`; bytes: 2775573; SHA256: `1f3d62bb7c8658729ee0ebe21f89c8a0724aca14caf6650fe5f4140a67638ea9`.
+- Entries: 40 files; exactly one manifest and four MAT directories. No Package A files or unrelated product folders. Paths are safe and relative.
+- All manifest paths exist in the archive. All 18 packaged images decode with Sharp; manifest reference hashes/formats/dimensions match. Remote candidate image URLs for MAT-000075/087 are not archived/local assets; no local decode/hash is claimed for them.
+
+Image files (path — format, dimensions, bytes, SHA256):
+
+- `MAT-000087/current-production.webp` — webp, 1000x1000, 42488 bytes, `2e801d952dcfd0ac81b1d82b48a27f1dbe504c6b77a4c8071b4ae088ae6a3c78`.
+- `MAT-000087/reference-01-current-production-25kg-negative-reference.webp` — webp, 1000x1000, 42488 bytes, `2e801d952dcfd0ac81b1d82b48a27f1dbe504c6b77a4c8071b4ae088ae6a3c78`.
+- `MAT-000087/references/current-production-wrong-25kg-negative-reference.webp` — webp, 1000x1000, 42488 bytes, `2e801d952dcfd0ac81b1d82b48a27f1dbe504c6b77a4c8071b4ae088ae6a3c78`.
+- `MAT-000076/current-production.webp` — webp, 1000x1000, 37704 bytes, `af93d91aea5363720b15d62fe21c29bdaf3ad4cd6d1e4a274aa3c2ec6ca9b61e`.
+- `MAT-000076/reference-01-front-25kg.jpg` — jpeg, 1000x1000, 446998 bytes, `1ad72716940e1344e7b7ab8b2f1d7d313b0ef650a10ec69d92e6b48b07677364`.
+- `MAT-000076/reference-02-back-25kg.jpg` — jpeg, 1000x1000, 456950 bytes, `9f3b5f6e7581f8f6723c4099044027bef252f5e7280f944c5c17088f3a46e494`.
+- `MAT-000076/reference-03-official-small.jpg` — jpeg, 200x200, 8132 bytes, `8af7559c21d4dc97238ee74a74a7da13378bb9f6700f6cc4d2ebc32bf3141f76`.
+- `MAT-000076/references/current-production-wrong-30kg-negative-reference.webp` — webp, 1000x1000, 37704 bytes, `af93d91aea5363720b15d62fe21c29bdaf3ad4cd6d1e4a274aa3c2ec6ca9b61e`.
+- `MAT-000076/references/unis-armirovannyi-back-25kg.jpg` — jpeg, 1000x1000, 456950 bytes, `9f3b5f6e7581f8f6723c4099044027bef252f5e7280f944c5c17088f3a46e494`.
+- `MAT-000076/references/unis-armirovannyi-front-25kg.jpg` — jpeg, 1000x1000, 446998 bytes, `1ad72716940e1344e7b7ab8b2f1d7d313b0ef650a10ec69d92e6b48b07677364`.
+- `MAT-000076/references/unis-official-family-small.jpg` — jpeg, 200x200, 8132 bytes, `8af7559c21d4dc97238ee74a74a7da13378bb9f6700f6cc4d2ebc32bf3141f76`.
+- `MAT-000075/current-production.webp` — webp, 1000x1000, 65568 bytes, `afc7f8282f7e6c088bc9d6c872162de7cf9f01e49fde08858945f7c4b95b0dd9`.
+- `MAT-000075/reference-01-current-production-30kg-negative-reference.webp` — webp, 1000x1000, 65568 bytes, `afc7f8282f7e6c088bc9d6c872162de7cf9f01e49fde08858945f7c4b95b0dd9`.
+- `MAT-000075/references/current-production-wrong-30kg-negative-reference.webp` — webp, 1000x1000, 65568 bytes, `afc7f8282f7e6c088bc9d6c872162de7cf9f01e49fde08858945f7c4b95b0dd9`.
+- `MAT-000068/current-production.webp` — webp, 1200x1200, 71252 bytes, `cf238451107af3f83b1aa0ef0da80374c409690336c34204621768a0a7e746e5`.
+- `MAT-000068/reference-01-official-context-watermarked.jpg` — jpeg, 768x1024, 241980 bytes, `18791ad479824f811f8694b9c679ba2073dcbd9e0ac1c91e6a721c5c1f8e12a3`.
+- `MAT-000068/references/current-production-watermarked-identity-only.webp` — webp, 1200x1200, 71252 bytes, `cf238451107af3f83b1aa0ef0da80374c409690336c34204621768a0a7e746e5`.
+- `MAT-000068/references/rusean-official-context-watermarked.jpg` — jpeg, 768x1024, 241980 bytes, `18791ad479824f811f8694b9c679ba2073dcbd9e0ac1c91e6a721c5c1f8e12a3`.
+
+Complete archive file list:
+
+- `chatgpt-rebuild-handoff/manifest.json`
+- `chatgpt-rebuild-handoff/MAT-000087/brief.md`
+- `chatgpt-rebuild-handoff/MAT-000087/current-production.webp`
+- `chatgpt-rebuild-handoff/MAT-000087/generation-prompt.txt`
+- `chatgpt-rebuild-handoff/MAT-000087/reference-01-current-production-25kg-negative-reference.webp`
+- `chatgpt-rebuild-handoff/MAT-000087/references.txt`
+- `chatgpt-rebuild-handoff/MAT-000087/sources.md`
+- `chatgpt-rebuild-handoff/MAT-000087/target.txt`
+- `chatgpt-rebuild-handoff/MAT-000087/references/current-production-wrong-25kg-negative-reference.webp`
+- `chatgpt-rebuild-handoff/MAT-000076/brief.md`
+- `chatgpt-rebuild-handoff/MAT-000076/current-production.webp`
+- `chatgpt-rebuild-handoff/MAT-000076/generation-prompt.txt`
+- `chatgpt-rebuild-handoff/MAT-000076/reference-01-front-25kg.jpg`
+- `chatgpt-rebuild-handoff/MAT-000076/reference-02-back-25kg.jpg`
+- `chatgpt-rebuild-handoff/MAT-000076/reference-03-official-small.jpg`
+- `chatgpt-rebuild-handoff/MAT-000076/references.txt`
+- `chatgpt-rebuild-handoff/MAT-000076/sources.md`
+- `chatgpt-rebuild-handoff/MAT-000076/target.txt`
+- `chatgpt-rebuild-handoff/MAT-000076/references/current-production-wrong-30kg-negative-reference.webp`
+- `chatgpt-rebuild-handoff/MAT-000076/references/unis-armirovannyi-back-25kg.jpg`
+- `chatgpt-rebuild-handoff/MAT-000076/references/unis-armirovannyi-front-25kg.jpg`
+- `chatgpt-rebuild-handoff/MAT-000076/references/unis-official-family-small.jpg`
+- `chatgpt-rebuild-handoff/MAT-000075/brief.md`
+- `chatgpt-rebuild-handoff/MAT-000075/current-production.webp`
+- `chatgpt-rebuild-handoff/MAT-000075/generation-prompt.txt`
+- `chatgpt-rebuild-handoff/MAT-000075/reference-01-current-production-30kg-negative-reference.webp`
+- `chatgpt-rebuild-handoff/MAT-000075/references.txt`
+- `chatgpt-rebuild-handoff/MAT-000075/sources.md`
+- `chatgpt-rebuild-handoff/MAT-000075/target.txt`
+- `chatgpt-rebuild-handoff/MAT-000075/references/current-production-wrong-30kg-negative-reference.webp`
+- `chatgpt-rebuild-handoff/MAT-000075/references/owner-mat-identity-excerpt.json`
+- `chatgpt-rebuild-handoff/MAT-000068/brief.md`
+- `chatgpt-rebuild-handoff/MAT-000068/current-production.webp`
+- `chatgpt-rebuild-handoff/MAT-000068/generation-prompt.txt`
+- `chatgpt-rebuild-handoff/MAT-000068/reference-01-official-context-watermarked.jpg`
+- `chatgpt-rebuild-handoff/MAT-000068/references.txt`
+- `chatgpt-rebuild-handoff/MAT-000068/sources.md`
+- `chatgpt-rebuild-handoff/MAT-000068/target.txt`
+- `chatgpt-rebuild-handoff/MAT-000068/references/current-production-watermarked-identity-only.webp`
+- `chatgpt-rebuild-handoff/MAT-000068/references/rusean-official-context-watermarked.jpg`

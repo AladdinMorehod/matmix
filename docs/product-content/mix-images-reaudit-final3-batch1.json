@@ -3869,8 +3869,8 @@
     }
   },
   "packageA": {
-    "status": "READY_FOR_PRODUCTION_DRY_RUN",
-    "checkpoint": "PACKAGE_A_PREPARED",
+    "status": "PRODUCTION_APPLIED_AND_VERIFIED",
+    "checkpoint": "PACKAGE_A_PRODUCTION_APPLIED_AND_VERIFIED",
     "task": "mix images final3 package A",
     "package": "REFRAME_7",
     "matCount": 7,
@@ -4052,8 +4052,530 @@
       "MAT-000087"
     ],
     "packageBStatus": "PENDING_REBUILD_CANDIDATES",
-    "rolloutClosed": false
+    "rolloutClosed": false,
+    "preApplyStatus": "READY_FOR_PRODUCTION_DRY_RUN",
+    "preApplyCheckpoint": "PACKAGE_A_PREPARED",
+    "productionVerification": {
+      "evidenceProvidedBy": "Owner/operator-supplied independent production verifier output; not independently re-run in this documentation task.",
+      "backup": {
+        "path": "/var/lib/matmix/matmix.db.backup-2026-10-01T10-32-55-743Z-2d1e6034e1eb",
+        "bytes": 4141056,
+        "sha256": "eac557891010a1774b16d156f34300cd103d71a90f9cb2dac74142d68465eb2c",
+        "userVersion": 11
+      },
+      "bindingManifest": "/var/lib/matmix/matmix.db.image-bindings-2026-10-01T10-32-55-743Z.json",
+      "applyAudit": "/var/lib/matmix/matmix.db.image-import-audit-2026-10-01T10-32-55-743Z.json",
+      "exactMatScope": [
+        "MAT-000069",
+        "MAT-000079",
+        "MAT-000080",
+        "MAT-000081",
+        "MAT-000082",
+        "MAT-000089",
+        "MAT-000090"
+      ],
+      "dbChangeScope": {
+        "productsImageUrlChanged": [
+          "MAT-000069",
+          "MAT-000079",
+          "MAT-000080",
+          "MAT-000081",
+          "MAT-000082",
+          "MAT-000089",
+          "MAT-000090"
+        ],
+        "primaryProductImagesImageUrlChanged": [
+          "MAT-000069",
+          "MAT-000079",
+          "MAT-000080",
+          "MAT-000081",
+          "MAT-000082",
+          "MAT-000089",
+          "MAT-000090"
+        ],
+        "otherProductRowsChanged": [],
+        "otherProductImagesRowsChanged": []
+      },
+      "health": {
+        "live": "PASS",
+        "backupIntegrity": "ok",
+        "backupUserVersion": 11,
+        "backupForeignKeyViolations": 0,
+        "databaseIntegrity": "ok",
+        "databaseUserVersion": 11,
+        "databaseForeignKeyViolations": 0
+      },
+      "verifierMarkers": [
+        "BACKUP_SHA_OK",
+        "LIVE_HEALTH_OK",
+        "BACKUP_HEALTH_OK",
+        "DATABASE_HEALTH_OK",
+        "PRODUCT_CHANGE_SCOPE_OK",
+        "BINDING_CHANGE_SCOPE_OK",
+        "IMPORTER_AUDIT_EVIDENCE_OK",
+        "FINAL3_PACKAGE_A_7_IMAGES_OK",
+        "FINAL3_PACKAGE_A_NO_OUT_OF_SCOPE_DB_CHANGES",
+        "FINAL3_PACKAGE_A_POST_APPLY_VERIFY_OK",
+        "READ_ONLY_POST_APPLY_VERIFICATION_COMPLETE"
+      ],
+      "records": [
+        {
+          "MAT": "MAT-000069",
+          "url": "/uploads/products/MAT-000069-b8befd9f343cbbeb.webp",
+          "sha256": "aacef16e3cbef44273d59047c7b502c62261a04848870af67eea8f228992ca59",
+          "bytes": 58644,
+          "format": "webp",
+          "dimensions": [
+            1200,
+            1200
+          ],
+          "primaryCount": 1,
+          "galleryCount": 0
+        },
+        {
+          "MAT": "MAT-000079",
+          "url": "/uploads/products/MAT-000079-ecddfe7585729346.webp",
+          "sha256": "863bb26c212b2eeeb647668c4ad35093a79ac677260fc9106de472ee2908bbf1",
+          "bytes": 44612,
+          "format": "webp",
+          "dimensions": [
+            1200,
+            1200
+          ],
+          "primaryCount": 1,
+          "galleryCount": 0
+        },
+        {
+          "MAT": "MAT-000080",
+          "url": "/uploads/products/MAT-000080-130c5da3858b8115.webp",
+          "sha256": "eac20fac2841135f439ac19758a7a9bc8bffb4b6f033ff575ff4208205130191",
+          "bytes": 45064,
+          "format": "webp",
+          "dimensions": [
+            1200,
+            1200
+          ],
+          "primaryCount": 1,
+          "galleryCount": 0
+        },
+        {
+          "MAT": "MAT-000081",
+          "url": "/uploads/products/MAT-000081-3e8f085e77743cee.webp",
+          "sha256": "28fe45a5369ccb2a878c36c6fb1681d56051814cac30ef013cc7bfd79584d27f",
+          "bytes": 42816,
+          "format": "webp",
+          "dimensions": [
+            1200,
+            1200
+          ],
+          "primaryCount": 1,
+          "galleryCount": 0
+        },
+        {
+          "MAT": "MAT-000082",
+          "url": "/uploads/products/MAT-000082-cab9ca8cf9c7eaf4.webp",
+          "sha256": "410a639d11681220e0734ca950a62bccf7266ad55958eba9f3c80f72bb1dbbc0",
+          "bytes": 40536,
+          "format": "webp",
+          "dimensions": [
+            1200,
+            1200
+          ],
+          "primaryCount": 1,
+          "galleryCount": 0
+        },
+        {
+          "MAT": "MAT-000089",
+          "url": "/uploads/products/MAT-000089-e5c69ea86340e869.webp",
+          "sha256": "197784d884e5419fcca5865cd96c571cab9f9eeb5e73bb20c8a5cf00aee2c98d",
+          "bytes": 31482,
+          "format": "webp",
+          "dimensions": [
+            1200,
+            1200
+          ],
+          "primaryCount": 1,
+          "galleryCount": 0
+        },
+        {
+          "MAT": "MAT-000090",
+          "url": "/uploads/products/MAT-000090-6def91e51d8f8b86.webp",
+          "sha256": "1ffb471c9a2921434907f66a96af7bdc91e6dc98a926414e8341596f775755f9",
+          "bytes": 55716,
+          "format": "webp",
+          "dimensions": [
+            1200,
+            1200
+          ],
+          "primaryCount": 1,
+          "galleryCount": 0
+        }
+      ],
+      "verifiedStatus": "PRODUCTION_APPLIED_AND_VERIFIED"
+    }
   },
-  "packageBStatus": "PENDING_REBUILD_CANDIDATES",
-  "rolloutStatus": "PACKAGE_A_READY_PACKAGE_B_PENDING"
+  "packageBStatus": "PENDING_REBUILD_HANDOFF",
+  "rolloutStatus": "PACKAGE_A_PRODUCTION_APPLIED_AND_VERIFIED_PACKAGE_B_PENDING",
+  "packageB": {
+    "status": "PENDING_REBUILD_HANDOFF",
+    "exactScope": [
+      "MAT-000068",
+      "MAT-000075",
+      "MAT-000076",
+      "MAT-000087"
+    ],
+    "handoffRoot": "product-images-batch/mix-images-reaudit-final3-batch1/chatgpt-rebuild-handoff/",
+    "archivePath": "product-images-batch/mix-images-reaudit-final3-batch1/chatgpt-rebuild-handoff.tar.gz",
+    "generationReadiness": {
+      "MAT-000068": true,
+      "MAT-000075": false,
+      "MAT-000076": true,
+      "MAT-000087": false
+    },
+    "generationReadyAll": false,
+    "evidenceGap": "MAT-000075 and MAT-000087 exact remote 20 kg image candidates have source page/direct URLs, but bytes could not be downloaded or locally visually verified; do not generate until reviewed local reference assets are supplied/downloaded.",
+    "productionCandidateCreated": false,
+    "rolloutClosed": false,
+    "products": [
+      {
+        "mat": "MAT-000068",
+        "subcategory": "Смеси → Кладочные Смеси",
+        "targetIdentity": "Русеан М-200, монтажно-кладочная смесь, 40 кг",
+        "targetWeight": "40 кг",
+        "brand": "Русеан",
+        "model": "М-200",
+        "classification": "REBUILD",
+        "identityStatus": "CONFIRMED_OWNER_EVIDENCE_AND_OFFICIAL_CONTEXT",
+        "briefPath": "MAT-000068/brief.md",
+        "generationPromptPath": "MAT-000068/generation-prompt.txt",
+        "sourcesPath": "MAT-000068/sources.md",
+        "referenceFiles": [
+          "MAT-000068/references/current-production-watermarked-identity-only.webp",
+          "MAT-000068/references/rusean-official-context-watermarked.jpg"
+        ],
+        "supportingFiles": [],
+        "referenceSourceUrls": [
+          "https://rusean.ru/catalog/sukhie_smesi_/sukhaya_smes_m_200_montazhno_kladochnaya_40_kg/",
+          "https://rusean.ru/upload/iblock/eb8/w34masir1etzc2wkcvjhah1jsw9n2k8l.jpg"
+        ],
+        "currentProductionMismatch": "Current image is exact product and 40 kg, but a large third-party СТРОЙПЛАЗА.RU watermark crosses package/background; it is identity-only.",
+        "currentProductionEvidence": {
+          "path": "MAT-000068/current-production.webp",
+          "format": "webp",
+          "dimensions": "1200x1200",
+          "bytes": 71252,
+          "sha256": "cf238451107af3f83b1aa0ef0da80374c409690336c34204621768a0a7e746e5",
+          "role": "Exact product/weight identity reference with third-party watermark; never use as clean artwork."
+        },
+        "generationReady": true
+      },
+      {
+        "mat": "MAT-000075",
+        "subcategory": "Смеси → Наливной Пол",
+        "targetIdentity": "UNIS Горизонт Универсальный М-45, 20 кг",
+        "targetWeight": "20 кг",
+        "brand": "UNIS",
+        "model": "Горизонт Универсальный М-45",
+        "classification": "REBUILD",
+        "identityStatus": "CONFIRMED_OWNER_MAT_MAPPING_AND_OFFICIAL_UNIS_VARIANT",
+        "briefPath": "MAT-000075/brief.md",
+        "generationPromptPath": "MAT-000075/generation-prompt.txt",
+        "sourcesPath": "MAT-000075/sources.md",
+        "referenceFiles": [
+          "MAT-000075/references/current-production-wrong-30kg-negative-reference.webp"
+        ],
+        "supportingFiles": [
+          {
+            "path": "MAT-000075/references/owner-mat-identity-excerpt.json",
+            "sha256": "1e3122d1fcb1ee3e413ea59b27a1df7b0594dd066269d8f37c1fb8bd4e55264e",
+            "bytes": 553,
+            "type": "json_identity_evidence_excerpt"
+          }
+        ],
+        "referenceSourceUrls": [
+          "../../../../../../docs/product-content/floor-075-077-identity-review.json",
+          "https://unistrom.ru/catalog/ustrojstvo-polov/nalivnye-poly/gorizont-universalnyj/",
+          "https://www.vseinstrumenti.ru/product/nalivnoj-pol-unis-gorizont-universalnyj-bystroverdeyuschij-3-100-mm-20-kg-4607005181664-2937182/",
+          "https://cdn.vseinstrumenti.ru/images/goods/stroitelnye-materialy/stroitelnye-smesi/2937182/1200x800/64621458.jpg"
+        ],
+        "currentProductionMismatch": "Current production image is a 30 kg M-45 package, wrong weight; preserve only as a negative family reference, never as target artwork.",
+        "currentProductionEvidence": {
+          "path": "MAT-000075/current-production.webp",
+          "format": "webp",
+          "dimensions": "1000x1000",
+          "bytes": 65568,
+          "sha256": "afc7f8282f7e6c088bc9d6c872162de7cf9f01e49fde08858945f7c4b95b0dd9",
+          "role": "Wrong-weight negative reference only; do not reuse/relabel."
+        },
+        "generationReady": false
+      },
+      {
+        "mat": "MAT-000076",
+        "subcategory": "Смеси → Наливной Пол",
+        "targetIdentity": "UNIS Горизонт Армированный, 25 кг",
+        "targetWeight": "25 кг",
+        "brand": "UNIS",
+        "model": "Горизонт Армированный",
+        "classification": "REBUILD",
+        "identityStatus": "CONFIRMED_OFFICIAL_UNIS_AND_EXACT_LOCAL_FRONT_BACK",
+        "briefPath": "MAT-000076/brief.md",
+        "generationPromptPath": "MAT-000076/generation-prompt.txt",
+        "sourcesPath": "MAT-000076/sources.md",
+        "referenceFiles": [
+          "MAT-000076/references/current-production-wrong-30kg-negative-reference.webp",
+          "MAT-000076/references/unis-armirovannyi-front-25kg.jpg",
+          "MAT-000076/references/unis-armirovannyi-back-25kg.jpg",
+          "MAT-000076/references/unis-official-family-small.jpg"
+        ],
+        "supportingFiles": [],
+        "referenceSourceUrls": [
+          "https://unistrom.ru/catalog/ustrojstvo-polov/gorizont-armirovannyj/",
+          "https://unistrom.ru/catalog/ustrojstvo-polov/gorizont-armirovannyj/"
+        ],
+        "currentProductionMismatch": "Current production shows a 30 kg package. Existing exact local front/back references show 25 kg and must be preferred.",
+        "currentProductionEvidence": {
+          "path": "MAT-000076/current-production.webp",
+          "format": "webp",
+          "dimensions": "1000x1000",
+          "bytes": 37704,
+          "sha256": "af93d91aea5363720b15d62fe21c29bdaf3ad4cd6d1e4a274aa3c2ec6ca9b61e",
+          "role": "Wrong-weight negative reference only; do not reuse/relabel."
+        },
+        "generationReady": true
+      },
+      {
+        "mat": "MAT-000087",
+        "subcategory": "Смеси → Наливной Пол",
+        "targetIdentity": "Ceresit CN 175 Super, 20 кг",
+        "targetWeight": "20 кг",
+        "brand": "Ceresit",
+        "model": "CN 175 Super",
+        "classification": "REBUILD",
+        "identityStatus": "CONFIRMED_OFFICIAL_PRODUCT_AND_TDS; EXACT_VISUAL_URL_FOUND_NOT_LOCALLY_VERIFIED",
+        "briefPath": "MAT-000087/brief.md",
+        "generationPromptPath": "MAT-000087/generation-prompt.txt",
+        "sourcesPath": "MAT-000087/sources.md",
+        "referenceFiles": [
+          "MAT-000087/references/current-production-wrong-25kg-negative-reference.webp"
+        ],
+        "supportingFiles": [],
+        "referenceSourceUrls": [
+          "https://www.ceresit.ru/ru/products/flooring/levelling-compounds/cn_175_super",
+          "https://dm.henkel-dam.com/is/content/henkel/tds-ru-ceresit-cn175pdf",
+          "https://psp-spb.ru/katalog-kompanii-psp/ceresit/nalivnyie-polyi/kopiya-nalivnoj-pol-universalnyij-ceresit-cn173-samovyiravnivayushhijsya-20-kg.html",
+          "https://psp-spb.ru/uploads/images/products/2518/big2/cn-175-20kg.png",
+          "https://psp-spb.ru/uploads/images/products/2518/big2/cn-175-20kg-back.png"
+        ],
+        "currentProductionMismatch": "Current production image is CN 175 Super but shows 25 kg; never relabel or reuse it as the 20 kg package.",
+        "currentProductionEvidence": {
+          "path": "MAT-000087/current-production.webp",
+          "format": "webp",
+          "dimensions": "1000x1000",
+          "bytes": 42488,
+          "sha256": "2e801d952dcfd0ac81b1d82b48a27f1dbe504c6b77a4c8071b4ae088ae6a3c78",
+          "role": "Wrong-weight negative reference only; do not reuse/relabel."
+        },
+        "generationReady": false
+      }
+    ],
+    "archiveVerification": {
+      "status": "PASS",
+      "archivePath": "product-images-batch/mix-images-reaudit-final3-batch1/chatgpt-rebuild-handoff.tar.gz",
+      "archiveBytes": 2775573,
+      "archiveSha256": "1f3d62bb7c8658729ee0ebe21f89c8a0724aca14caf6650fe5f4140a67638ea9",
+      "archiveFileCount": 40,
+      "archiveFileList": [
+        "chatgpt-rebuild-handoff/manifest.json",
+        "chatgpt-rebuild-handoff/MAT-000087/brief.md",
+        "chatgpt-rebuild-handoff/MAT-000087/current-production.webp",
+        "chatgpt-rebuild-handoff/MAT-000087/generation-prompt.txt",
+        "chatgpt-rebuild-handoff/MAT-000087/reference-01-current-production-25kg-negative-reference.webp",
+        "chatgpt-rebuild-handoff/MAT-000087/references.txt",
+        "chatgpt-rebuild-handoff/MAT-000087/sources.md",
+        "chatgpt-rebuild-handoff/MAT-000087/target.txt",
+        "chatgpt-rebuild-handoff/MAT-000087/references/current-production-wrong-25kg-negative-reference.webp",
+        "chatgpt-rebuild-handoff/MAT-000076/brief.md",
+        "chatgpt-rebuild-handoff/MAT-000076/current-production.webp",
+        "chatgpt-rebuild-handoff/MAT-000076/generation-prompt.txt",
+        "chatgpt-rebuild-handoff/MAT-000076/reference-01-front-25kg.jpg",
+        "chatgpt-rebuild-handoff/MAT-000076/reference-02-back-25kg.jpg",
+        "chatgpt-rebuild-handoff/MAT-000076/reference-03-official-small.jpg",
+        "chatgpt-rebuild-handoff/MAT-000076/references.txt",
+        "chatgpt-rebuild-handoff/MAT-000076/sources.md",
+        "chatgpt-rebuild-handoff/MAT-000076/target.txt",
+        "chatgpt-rebuild-handoff/MAT-000076/references/current-production-wrong-30kg-negative-reference.webp",
+        "chatgpt-rebuild-handoff/MAT-000076/references/unis-armirovannyi-back-25kg.jpg",
+        "chatgpt-rebuild-handoff/MAT-000076/references/unis-armirovannyi-front-25kg.jpg",
+        "chatgpt-rebuild-handoff/MAT-000076/references/unis-official-family-small.jpg",
+        "chatgpt-rebuild-handoff/MAT-000075/brief.md",
+        "chatgpt-rebuild-handoff/MAT-000075/current-production.webp",
+        "chatgpt-rebuild-handoff/MAT-000075/generation-prompt.txt",
+        "chatgpt-rebuild-handoff/MAT-000075/reference-01-current-production-30kg-negative-reference.webp",
+        "chatgpt-rebuild-handoff/MAT-000075/references.txt",
+        "chatgpt-rebuild-handoff/MAT-000075/sources.md",
+        "chatgpt-rebuild-handoff/MAT-000075/target.txt",
+        "chatgpt-rebuild-handoff/MAT-000075/references/current-production-wrong-30kg-negative-reference.webp",
+        "chatgpt-rebuild-handoff/MAT-000075/references/owner-mat-identity-excerpt.json",
+        "chatgpt-rebuild-handoff/MAT-000068/brief.md",
+        "chatgpt-rebuild-handoff/MAT-000068/current-production.webp",
+        "chatgpt-rebuild-handoff/MAT-000068/generation-prompt.txt",
+        "chatgpt-rebuild-handoff/MAT-000068/reference-01-official-context-watermarked.jpg",
+        "chatgpt-rebuild-handoff/MAT-000068/references.txt",
+        "chatgpt-rebuild-handoff/MAT-000068/sources.md",
+        "chatgpt-rebuild-handoff/MAT-000068/target.txt",
+        "chatgpt-rebuild-handoff/MAT-000068/references/current-production-watermarked-identity-only.webp",
+        "chatgpt-rebuild-handoff/MAT-000068/references/rusean-official-context-watermarked.jpg"
+      ],
+      "exactFourMatDirectories": [
+        "MAT-000068",
+        "MAT-000075",
+        "MAT-000076",
+        "MAT-000087"
+      ],
+      "manifestExactlyOnce": true,
+      "safeRelativePaths": true,
+      "packageAExcluded": true,
+      "allReferencedFilesExistAndArchived": true,
+      "allIncludedImagesSharpDecode": true,
+      "referenceMetadataMatches": true,
+      "includedImageCount": 18,
+      "includedImages": [
+        {
+          "path": "MAT-000087/current-production.webp",
+          "format": "webp",
+          "dimensions": "1000x1000",
+          "bytes": 42488,
+          "sha256": "2e801d952dcfd0ac81b1d82b48a27f1dbe504c6b77a4c8071b4ae088ae6a3c78"
+        },
+        {
+          "path": "MAT-000087/reference-01-current-production-25kg-negative-reference.webp",
+          "format": "webp",
+          "dimensions": "1000x1000",
+          "bytes": 42488,
+          "sha256": "2e801d952dcfd0ac81b1d82b48a27f1dbe504c6b77a4c8071b4ae088ae6a3c78"
+        },
+        {
+          "path": "MAT-000087/references/current-production-wrong-25kg-negative-reference.webp",
+          "format": "webp",
+          "dimensions": "1000x1000",
+          "bytes": 42488,
+          "sha256": "2e801d952dcfd0ac81b1d82b48a27f1dbe504c6b77a4c8071b4ae088ae6a3c78"
+        },
+        {
+          "path": "MAT-000076/current-production.webp",
+          "format": "webp",
+          "dimensions": "1000x1000",
+          "bytes": 37704,
+          "sha256": "af93d91aea5363720b15d62fe21c29bdaf3ad4cd6d1e4a274aa3c2ec6ca9b61e"
+        },
+        {
+          "path": "MAT-000076/reference-01-front-25kg.jpg",
+          "format": "jpeg",
+          "dimensions": "1000x1000",
+          "bytes": 446998,
+          "sha256": "1ad72716940e1344e7b7ab8b2f1d7d313b0ef650a10ec69d92e6b48b07677364"
+        },
+        {
+          "path": "MAT-000076/reference-02-back-25kg.jpg",
+          "format": "jpeg",
+          "dimensions": "1000x1000",
+          "bytes": 456950,
+          "sha256": "9f3b5f6e7581f8f6723c4099044027bef252f5e7280f944c5c17088f3a46e494"
+        },
+        {
+          "path": "MAT-000076/reference-03-official-small.jpg",
+          "format": "jpeg",
+          "dimensions": "200x200",
+          "bytes": 8132,
+          "sha256": "8af7559c21d4dc97238ee74a74a7da13378bb9f6700f6cc4d2ebc32bf3141f76"
+        },
+        {
+          "path": "MAT-000076/references/current-production-wrong-30kg-negative-reference.webp",
+          "format": "webp",
+          "dimensions": "1000x1000",
+          "bytes": 37704,
+          "sha256": "af93d91aea5363720b15d62fe21c29bdaf3ad4cd6d1e4a274aa3c2ec6ca9b61e"
+        },
+        {
+          "path": "MAT-000076/references/unis-armirovannyi-back-25kg.jpg",
+          "format": "jpeg",
+          "dimensions": "1000x1000",
+          "bytes": 456950,
+          "sha256": "9f3b5f6e7581f8f6723c4099044027bef252f5e7280f944c5c17088f3a46e494"
+        },
+        {
+          "path": "MAT-000076/references/unis-armirovannyi-front-25kg.jpg",
+          "format": "jpeg",
+          "dimensions": "1000x1000",
+          "bytes": 446998,
+          "sha256": "1ad72716940e1344e7b7ab8b2f1d7d313b0ef650a10ec69d92e6b48b07677364"
+        },
+        {
+          "path": "MAT-000076/references/unis-official-family-small.jpg",
+          "format": "jpeg",
+          "dimensions": "200x200",
+          "bytes": 8132,
+          "sha256": "8af7559c21d4dc97238ee74a74a7da13378bb9f6700f6cc4d2ebc32bf3141f76"
+        },
+        {
+          "path": "MAT-000075/current-production.webp",
+          "format": "webp",
+          "dimensions": "1000x1000",
+          "bytes": 65568,
+          "sha256": "afc7f8282f7e6c088bc9d6c872162de7cf9f01e49fde08858945f7c4b95b0dd9"
+        },
+        {
+          "path": "MAT-000075/reference-01-current-production-30kg-negative-reference.webp",
+          "format": "webp",
+          "dimensions": "1000x1000",
+          "bytes": 65568,
+          "sha256": "afc7f8282f7e6c088bc9d6c872162de7cf9f01e49fde08858945f7c4b95b0dd9"
+        },
+        {
+          "path": "MAT-000075/references/current-production-wrong-30kg-negative-reference.webp",
+          "format": "webp",
+          "dimensions": "1000x1000",
+          "bytes": 65568,
+          "sha256": "afc7f8282f7e6c088bc9d6c872162de7cf9f01e49fde08858945f7c4b95b0dd9"
+        },
+        {
+          "path": "MAT-000068/current-production.webp",
+          "format": "webp",
+          "dimensions": "1200x1200",
+          "bytes": 71252,
+          "sha256": "cf238451107af3f83b1aa0ef0da80374c409690336c34204621768a0a7e746e5"
+        },
+        {
+          "path": "MAT-000068/reference-01-official-context-watermarked.jpg",
+          "format": "jpeg",
+          "dimensions": "768x1024",
+          "bytes": 241980,
+          "sha256": "18791ad479824f811f8694b9c679ba2073dcbd9e0ac1c91e6a721c5c1f8e12a3"
+        },
+        {
+          "path": "MAT-000068/references/current-production-watermarked-identity-only.webp",
+          "format": "webp",
+          "dimensions": "1200x1200",
+          "bytes": 71252,
+          "sha256": "cf238451107af3f83b1aa0ef0da80374c409690336c34204621768a0a7e746e5"
+        },
+        {
+          "path": "MAT-000068/references/rusean-official-context-watermarked.jpg",
+          "format": "jpeg",
+          "dimensions": "768x1024",
+          "bytes": 241980,
+          "sha256": "18791ad479824f811f8694b9c679ba2073dcbd9e0ac1c91e6a721c5c1f8e12a3"
+        }
+      ]
+    }
+  },
+  "productionActionsThisDocumentationTask": {
+    "productionAccess": false,
+    "ssh": false,
+    "deploy": false,
+    "databaseRead": false,
+    "databaseWrite": false,
+    "imageRead": false,
+    "imageWrite": false
+  }
 }
