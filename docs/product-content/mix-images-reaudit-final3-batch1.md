@@ -1,3 +1,104 @@
+# Смеси — final3 image re-audit, current closeout (2026-10-01)
+
+> CURRENT FINAL3 STATE: package prepared and local dry-run passed. This current-state block supersedes earlier open-handoff / unresolved statuses below; historical checkpoints remain preserved.
+
+## Current effective classification
+
+| MAT | Current title / identity | Effective rollout action |
+|---|---|---|
+| MAT-000067 | Кладочно-монтажная смесь EUROmix М-200 40 кг | EUROmix М-200, 40 кг | KEEP_EXISTING |
+| MAT-000068 | Кладочно-монтажная смесь Русеан М-200 40 кг | Русеан М-200 монтажно-кладочная, 40 кг | OWNER_APPROVED_FINAL |
+| MAT-000069 | Кладочно-монтажная смесь VERTEX М-200 40 кг | VERTEX PRO M-200, 40 кг | REFRAME_PREPARED |
+| MAT-000075 | Наливной пол "Unis Горизонт" 20 кг | UNIS Горизонт Универсальный М-45, 20 кг (owner-provided exact MAT-specific identity mapping) | OWNER_APPROVED_FINAL |
+| MAT-000076 | Наливной пол UNIS Горизонт Армированный 25 кг | UNIS Горизонт Армированный, 25 кг | OWNER_APPROVED_FINAL |
+| MAT-000077 | Наливной пол "Старатели" Быстрый 20 кг | Старатели Быстротвердеющий, 20 кг — exact owner-provided package evidence bound to MAT-000077 | KEEP_EXISTING |
+| MAT-000078 | Наливной пол Старатели Толстый 25 кг | Старатели Толстый, 25 кг | KEEP_EXISTING |
+| MAT-000079 | Наливной пол Weber Vetonit 3000 20 кг | Vetonit 3000, 20 кг | REFRAME_PREPARED |
+| MAT-000080 | Наливной пол Weber Vetonit fast 4000 20 кг | Vetonit fast 4000, 20 кг | REFRAME_PREPARED |
+| MAT-000081 | Наливной пол Weber Vetonit 4100 20 кг | Vetonit 4100, 20 кг | REFRAME_PREPARED |
+| MAT-000082 | Наливной пол Weber Vetonit 5000 25 кг | Vetonit 5000, 25 кг | REFRAME_PREPARED |
+| MAT-000083 | Наливной пол Litokol LITOLIV S10 EXPRESS 20 кг | LITOLIV S10 EXPRESS, 20 кг | KEEP_EXISTING |
+| MAT-000084 | Наливной пол Litokol LITOLIV S50 EVO 20 кг | LITOLIV S50 EVO, 20 кг | KEEP_EXISTING |
+| MAT-000085 | Наливной пол ВОЛМА-Нивелир Экспресс 25 кг | ВОЛМА-Нивелир Экспресс, 25 кг | KEEP_EXISTING |
+| MAT-000086 | Наливной пол Основит Скорлайн FK45 R 20 кг | Основит СКОРЛАЙН FK45 R, 20 кг | KEEP_EXISTING |
+| MAT-000087 | Наливной пол Ceresit CN 175 Super 20 кг | Ceresit CN 175 Super, 20 кг | OWNER_APPROVED_FINAL |
+| MAT-000089 | Легкая стяжка пола KNAUF Ubo 25 кг | КНАУФ-Убо, 25 кг | REFRAME_PREPARED |
+| MAT-000090 | Стяжка пола Основит Стартолайн FC41 H высокопрочная, 25 кг | Основит СТАРТОЛАЙН FC41 H, 25 кг | REFRAME_PREPARED |
+
+- Total: 18; KEEP_EXISTING: 7; REFRAME_PREPARED: 7; OWNER_APPROVED_FINAL: 4; unresolved: 0.
+- KEEP_EXISTING: MAT-000067, MAT-000077, MAT-000078, MAT-000083, MAT-000084, MAT-000085, MAT-000086. These are excluded from the overwrite package.
+- REFRAME_PREPARED: MAT-000069, MAT-000079, MAT-000080, MAT-000081, MAT-000082, MAT-000089, MAT-000090. Existing sources and previews were reused without regeneration.
+- OWNER_APPROVED_FINAL: MAT-000068, MAT-000075, MAT-000076, MAT-000087. Owner-provided finals were preserved; only canonical render previews were produced.
+- Changed-image total: 11. No out-of-scope MAT is present.
+
+## Owner-approved final PNG verification
+
+The four owner-approved files passed the exact SHA256SUMS.txt check using sha256sum -c. Sharp decoded each PNG; all are 1254×1254 with alpha, full package visible, and no clipping. Visual review of each source and canonical preview found no crop or package alteration. Bounding boxes and width/height fill percentages below are measured after flattening on white using the same non-white pixel threshold (any RGB channel below 245). The renderer used was the existing importer renderWebp(): rotate, flatten on white, contain 1080×1080, extend 60 px on all sides, WebP quality 82. No importer code was changed.
+
+| MAT | Source | Source size / SHA256 | Source bbox / fill | Canonical preview | Preview size / SHA256 | Preview bbox / fill |
+|---|---|---|---|---|---|---|
+| MAT-000068 | product-images-batch/mix-images-reaudit-final3-batch1/owner-approved/MAT-000068.png | 1254×1254 PNG; SHA256 6e778ac696688968b21a0d642c707a2f133950ec7c6579e6be147b2d5f11031a | bbox 780×1173; fill W/H 62.2%/93.5% | product-images-batch/mix-images-reaudit-final3-batch1/prepared/owner-approved-preview/MAT-000068.webp | 1200×1200 WebP; 83500 bytes; SHA256 6a5c1f97c93e8c64fcf6ea5aa0f2a3d35c734d89211da427c019a5178fdc451f | bbox 672×1012; fill W/H 56%/84.3% |
+| MAT-000075 | product-images-batch/mix-images-reaudit-final3-batch1/owner-approved/MAT-000075.png | 1254×1254 PNG; SHA256 14818cb16f61b98656268b5ae3713ebf820ea7681443c7fdda613617dd65e2b7 | bbox 702×1152; fill W/H 56%/91.9% | product-images-batch/mix-images-reaudit-final3-batch1/prepared/owner-approved-preview/MAT-000075.webp | 1200×1200 WebP; 82732 bytes; SHA256 e9edcd449935892a19d9595f118c2db570888f377984afa20c42e99276e9c8b5 | bbox 605×993; fill W/H 50.4%/82.8% |
+| MAT-000076 | product-images-batch/mix-images-reaudit-final3-batch1/owner-approved/MAT-000076.png | 1254×1254 PNG; SHA256 ba30490b6490a147fcfa28ae2f58a356394fdefae72796cae324fa83ee30c29e | bbox 744×1219; fill W/H 59.3%/97.2% | product-images-batch/mix-images-reaudit-final3-batch1/prepared/owner-approved-preview/MAT-000076.webp | 1200×1200 WebP; 76868 bytes; SHA256 618ecb5ce4b242c7eba82bf0000abc3f7293f00f8dca616d924fad18234c9f05 | bbox 632×1049; fill W/H 52.7%/87.4% |
+| MAT-000087 | product-images-batch/mix-images-reaudit-final3-batch1/owner-approved/MAT-000087.png | 1254×1254 PNG; SHA256 2a6e9f75f7b118f54400ce52f45511ce4aac098401a02b27215ccff514d92ab2 | bbox 822×1169; fill W/H 65.6%/93.2% | product-images-batch/mix-images-reaudit-final3-batch1/prepared/owner-approved-preview/MAT-000087.webp | 1200×1200 WebP; 60328 bytes; SHA256 fc80b66c7017fe89de4c3d8b8acfd9ab1ca88322c05a1450e2decee03aeb98cc | bbox 696×1006; fill W/H 58%/83.8% |
+
+MAT-000076 is treated as UNIS Горизонт Армированный, 25 кг. The historical 20 kg review value is superseded by owner-confirmed production weight; no product data was changed.
+
+## MAT-000077 resolution
+
+Current effective status: KEEP_EXISTING. Existing production evidence archive contains the currently bound 1000×1000 WebP (SHA256 8bd4d3ef56aaa9e5f28c1963ac7a2cceef4c3d11615c58f06f43766109eac1cf; binding URL /uploads/products/MAT-000077-a2ff7cd16c732bb5.webp). Its visual is full, clean, white-background and unwatermarked. MAT-specific owner evidence at docs/product-content/floor-075-077-identity-review.json#MAT-000077 maps this binding to the Старатели Быстротвердеющий 20 кг package; current official product and shop pages confirm that product and 20 kg option:
+
+- https://www.starateli.ru/nalivnoi_pol_bistrodeistvuyushiy/
+- https://market.starateli.ru/products/nalivnye-poly/nalivnoj-pol-bystrotverdeyushij-samoniveliruyushij/
+
+This resolves the image identity for this batch only. It does not claim that the legacy word Быстрый is an established alias or same-formula predecessor.
+
+## Final production package preparation
+
+- Status: READY_FOR_PRODUCTION_ROLLOUT; no production action was performed.
+- Package: product-images-batch/mix-images-final3-rollout-batch1.tar.gz
+- SHA256: 2fb789281c2df64762161c6610914ac72c1f10ac7fbbc9d7c89c59afca133367; size: 14355794 bytes.
+- Package contains one manifest plus exactly 11 primary importer PNGs: MAT-000068, MAT-000069, MAT-000075, MAT-000076, MAT-000079, MAT-000080, MAT-000081, MAT-000082, MAT-000087, MAT-000089, MAT-000090.
+- ownerApproved=true is set in the manifest for MAT-000068, MAT-000075, MAT-000076 and MAT-000087.
+- KEEP excluded: MAT-000067, MAT-000077, MAT-000078, MAT-000083, MAT-000084, MAT-000085, MAT-000086.
+- Manifest: product-images-batch/mix-images-reaudit-final3-batch1/production-package-final3/manifest.json; importer input: product-images-batch/mix-images-reaudit-final3-batch1/production-package-final3/images/.
+
+### Reused REFRAME assets
+
+| MAT | Source | Source SHA / dimensions / bbox / fill | Canonical preview | Preview SHA / dimensions / bbox / fill |
+|---|---|---|---|---|
+| MAT-000069 | product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe/MAT-000069.png | 1200×1200 PNG; SHA256 b8befd9f343cbbeb49e7ee357456dc09606fee7d070a337cd63e53401ab4f2b4; bbox 740×1132; fill W/H 61.7%/94.3 | product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe-preview/MAT-000069.webp | SHA256 aacef16e3cbef44273d59047c7b502c62261a04848870af67eea8f228992ca59; 1200×1200 WebP; bbox 667×1019; fill W/H 55.6%/84.9% |
+| MAT-000079 | product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe/MAT-000079.png | 1200×1200 PNG; SHA256 ecddfe7585729346b532574f0d6f71281d9d0ed6e0d07ebd91cfd727a078e812; bbox 583×1132; fill W/H 48.6%/94.3 | product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe-preview/MAT-000079.webp | SHA256 863bb26c212b2eeeb647668c4ad35093a79ac677260fc9106de472ee2908bbf1; 1200×1200 WebP; bbox 524×1020; fill W/H 43.7%/85% |
+| MAT-000080 | product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe/MAT-000080.png | 1200×1200 PNG; SHA256 130c5da3858b8115e6dfd1be485d5cd5a100d658172edb83ea37cc17763690ec; bbox 583×1132; fill W/H 48.6%/94.3 | product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe-preview/MAT-000080.webp | SHA256 eac20fac2841135f439ac19758a7a9bc8bffb4b6f033ff575ff4208205130191; 1200×1200 WebP; bbox 526×1020; fill W/H 43.8%/85% |
+| MAT-000081 | product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe/MAT-000081.png | 1200×1200 PNG; SHA256 3e8f085e77743cee845f8f0ebec6079c4d496cc750713772ed498affabf8470d; bbox 583×1132; fill W/H 48.6%/94.3 | product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe-preview/MAT-000081.webp | SHA256 28fe45a5369ccb2a878c36c6fb1681d56051814cac30ef013cc7bfd79584d27f; 1200×1200 WebP; bbox 525×1021; fill W/H 43.8%/85.1% |
+| MAT-000082 | product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe/MAT-000082.png | 1200×1200 PNG; SHA256 cab9ca8cf9c7eaf47e8283d87a8c534057754827e9812f08776428ddae84cdb5; bbox 551×1134; fill W/H 45.9%/94.5 | product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe-preview/MAT-000082.webp | SHA256 410a639d11681220e0734ca950a62bccf7266ad55958eba9f3c80f72bb1dbbc0; 1200×1200 WebP; bbox 496×1022; fill W/H 41.3%/85.2% |
+| MAT-000089 | product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe/MAT-000089.png | 1200×1200 PNG; SHA256 e5c69ea86340e869c124c046782e8f0478bc59c8fddc42cabf9d75eac1ca4ee0; bbox 1135×617; fill W/H 94.6%/51.4 | product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe-preview/MAT-000089.webp | SHA256 197784d884e5419fcca5865cd96c571cab9f9eeb5e73bb20c8a5cf00aee2c98d; 1200×1200 WebP; bbox 1023×557; fill W/H 85.3%/46.4% |
+| MAT-000090 | product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe/MAT-000090.png | 1200×1200 PNG; SHA256 6def91e51d8f8b8624a7da64d7dac4446ebc3fa7fc1e648ba77ce20bb9c6ae9e; bbox 662×1133; fill W/H 55.2%/94.4 | product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe-preview/MAT-000090.webp | SHA256 1ffb471c9a2921434907f66a96af7bdc91e6dc98a926414e8341596f775755f9; 1200×1200 WebP; bbox 595×1018; fill W/H 49.6%/84.8% |
+
+### Local isolated importer dry-run
+
+Command:
+
+    node backend/scripts/import-product-images.js --input product-images-batch/mix-images-reaudit-final3-batch1/production-package-final3/images --db backend/database/matmix.db --only MAT-000068,MAT-000069,MAT-000075,MAT-000076,MAT-000079,MAT-000080,MAT-000081,MAT-000082,MAT-000087,MAT-000089,MAT-000090 --dry-run --allow-real-overwrite
+
+Result: total=11, ready=11, protected=0, existingReal=0, invalid=0, notFound=0, duplicates=0, errors=0. The importer uses OPEN_READONLY in dry-run mode. Local main DB SHA256 before/after: 77c7d13dc6898e20f8b08af955f44b21d523bdc53e649ba8d1dd5a20093add33; WAL SHA256 before/after: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855; SHM SHA256 before/after: fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb. All local database hashes were unchanged. Local DB is a dry-run lookup fixture, not production truth.
+
+## Final markers
+
+- FINAL3_OWNER_APPROVED_4_VERIFIED = true
+- FINAL3_MAT_000077_RESOLVED = true
+- FINAL3_ALL_18_ROLLOUT_RESOLVED = true
+- FINAL3_PRODUCTION_PACKAGE_READY = true
+- FINAL3_LOCAL_DRY_RUN_PASS = true
+- FINAL3_READY_FOR_PRODUCTION_ROLLOUT = true
+
+No code, product data, local or production DB values, production images or deployment configuration changed. No SSH, production access, apply or deploy was used.
+
+---
+
+## Preserved historical checkpoints
+
+The sections below retain earlier audit and package handoff history. Their open rollout and REBUILD labels describe the state at those earlier checkpoints and are superseded by the current effective classification above.
 # MatMix — final3 production image re-audit
 
 Branch: codex/mix-images-reaudit-final3-batch1
