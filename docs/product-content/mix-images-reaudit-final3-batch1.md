@@ -1,3 +1,75 @@
+# FINAL3 — production rollout closed (2026-10-01)
+
+> **Current status: CLOSED.** This closeout supersedes earlier preparation/rollout-pending labels below; all prior audit and package checkpoints are retained as history. Production facts in this documentation update were supplied by the owner/operator. This task did not access production, use SSH, deploy, or apply anything.
+
+## Final effective image status
+
+Scope: 18 MAT across Кладочные Смеси, Наливной Пол, and Стяжки Пола. Counts: **7 KEEP_EXISTING_PRODUCTION_VERIFIED; 7 REFRAME_ALREADY_LIVE_AND_VERIFIED; 4 PRODUCTION_APPLIED_AND_VERIFIED; unresolved=0.**
+
+| MAT | Current title | Final status | Production image URL | Verified live image |
+|---|---|---|---|---|
+| MAT-000067 | Кладочно-монтажная смесь EUROmix М-200 40 кг | KEEP_EXISTING_PRODUCTION_VERIFIED | /uploads/products/MAT-000067-ab116f57fe81db95.webp | webp 1200×1200; SHA256 be9f2fee3ded7c8061e041365dd32de41a713e441bb40fabd21f8b96459ee860 |
+| MAT-000068 | Кладочно-монтажная смесь Русеан М-200 40 кг | PRODUCTION_APPLIED_AND_VERIFIED | /uploads/products/MAT-000068-6e778ac696688968.webp | webp 1200×1200; SHA256 6a5c1f97c93e8c64fcf6ea5aa0f2a3d35c734d89211da427c019a5178fdc451f |
+| MAT-000069 | Кладочно-монтажная смесь VERTEX М-200 40 кг | REFRAME_ALREADY_LIVE_AND_VERIFIED | /uploads/products/MAT-000069-b8b92a4712674f83.webp | webp 1200×1200; SHA256 aacef16e3cbef44273d59047c7b502c62261a04848870af67eea8f228992ca59 |
+| MAT-000075 | Наливной пол "Unis Горизонт" 20 кг | PRODUCTION_APPLIED_AND_VERIFIED | /uploads/products/MAT-000075-14818cb16f61b986.webp | webp 1200×1200; SHA256 e9edcd449935892a19d9595f118c2db570888f377984afa20c42e99276e9c8b5 |
+| MAT-000076 | Наливной пол UNIS Горизонт Армированный 25 кг | PRODUCTION_APPLIED_AND_VERIFIED | /uploads/products/MAT-000076-ba30490b6490a147.webp | webp 1200×1200; SHA256 618ecb5ce4b242c7eba82bf0000abc3f7293f00f8dca616d924fad18234c9f05 |
+| MAT-000077 | Наливной пол "Старатели" Быстрый 20 кг | KEEP_EXISTING_PRODUCTION_VERIFIED | /uploads/products/MAT-000077-a2ff7cd16c732bb5.webp | webp 1200×1200; SHA256 8bd4d3ef56aaa9e5f28c1963ac7a2cceef4c3d11615c58f06f43766109eac1cf |
+| MAT-000078 | Наливной пол Старатели Толстый 25 кг | KEEP_EXISTING_PRODUCTION_VERIFIED | /uploads/products/MAT-000078-2bc0525cc149295d.webp | webp 1200×1200; SHA256 db2ea938b07876f1156b3ba314243ada92ff8e25a24d2d5db030a387b712b10a |
+| MAT-000079 | Наливной пол Weber Vetonit 3000 20 кг | REFRAME_ALREADY_LIVE_AND_VERIFIED | /uploads/products/MAT-000079-ec61b1ee064e4891.webp | webp 1200×1200; SHA256 863bb26c212b2eeeb647668c4ad35093a79ac677260fc9106de472ee2908bbf1 |
+| MAT-000080 | Наливной пол Weber Vetonit fast 4000 20 кг | REFRAME_ALREADY_LIVE_AND_VERIFIED | /uploads/products/MAT-000080-1bdd0d69bad4afdf.webp | webp 1200×1200; SHA256 eac20fac2841135f439ac19758a7a9bc8bffb4b6f033ff575ff4208205130191 |
+| MAT-000081 | Наливной пол Weber Vetonit 4100 20 кг | REFRAME_ALREADY_LIVE_AND_VERIFIED | /uploads/products/MAT-000081-11f05a89cce5a535.webp | webp 1200×1200; SHA256 28fe45a5369ccb2a878c36c6fb1681d56051814cac30ef013cc7bfd79584d27f |
+| MAT-000082 | Наливной пол Weber Vetonit 5000 25 кг | REFRAME_ALREADY_LIVE_AND_VERIFIED | /uploads/products/MAT-000082-d53ca909a64885ca.webp | webp 1200×1200; SHA256 410a639d11681220e0734ca950a62bccf7266ad55958eba9f3c80f72bb1dbbc0 |
+| MAT-000083 | Наливной пол Litokol LITOLIV S10 EXPRESS 20 кг | KEEP_EXISTING_PRODUCTION_VERIFIED | /uploads/products/MAT-000083-9e454ab67e2e9c49.webp | webp 1200×1200; SHA256 3156e2a6cb425495a10c2b4275dca9d590b40ca52312d1295e68364b8f5d8017 |
+| MAT-000084 | Наливной пол Litokol LITOLIV S50 EVO 20 кг | KEEP_EXISTING_PRODUCTION_VERIFIED | /uploads/products/MAT-000084-0484b3e59dbe222e.webp | webp 1200×1200; SHA256 7eacee2e479bfedab954c82cea7684b6ab0b3768de4991934de05449e0bb95dc |
+| MAT-000085 | Наливной пол ВОЛМА-Нивелир Экспресс 25 кг | KEEP_EXISTING_PRODUCTION_VERIFIED | /uploads/products/MAT-000085-6f272833fe7b7600.webp | webp 1200×1200; SHA256 4eb681b2c55272c3d7897b34ee38af6d89b46826b57f83f99316848b709fea38 |
+| MAT-000086 | Наливной пол Основит Скорлайн FK45 R 20 кг | KEEP_EXISTING_PRODUCTION_VERIFIED | /uploads/products/MAT-000086-1e87031c75cddabb.webp | webp 1200×1200; SHA256 b7c292a8a412b6b12b729c27057bbf13f93ac7f48cb4b3ec135b25098d517253 |
+| MAT-000087 | Наливной пол Ceresit CN 175 Super 20 кг | PRODUCTION_APPLIED_AND_VERIFIED | /uploads/products/MAT-000087-2a6e9f75f7b118f5.webp | webp 1200×1200; SHA256 fc80b66c7017fe89de4c3d8b8acfd9ab1ca88322c05a1450e2decee03aeb98cc |
+| MAT-000089 | Легкая стяжка пола KNAUF Ubo 25 кг | REFRAME_ALREADY_LIVE_AND_VERIFIED | /uploads/products/MAT-000089-87cb5131957b411d.webp | webp 1200×1200; SHA256 197784d884e5419fcca5865cd96c571cab9f9eeb5e73bb20c8a5cf00aee2c98d |
+| MAT-000090 | Стяжка пола Основит Стартолайн FC41 H высокопрочная, 25 кг | REFRAME_ALREADY_LIVE_AND_VERIFIED | /uploads/products/MAT-000090-cb8956483c1321ae.webp | webp 1200×1200; SHA256 1ffb471c9a2921434907f66a96af7bdc91e6dc98a926414e8341596f775755f9 |
+
+The four owner-approved images were applied at 2026-10-01T14:48:54.935Z and independently verified. Backup: /var/lib/matmix/matmix.db.backup-2026-10-01T14-48-53-896Z-1db803eabb0b (4,141,056 bytes; SHA256 56ae11094553fa58c46e3fbe88473d0e080021629ed4146d9c96203f0e056f42; user_version 11). Binding manifest: /var/lib/matmix/matmix.db.image-bindings-2026-10-01T14-48-53-896Z.json. Importer audit: /var/lib/matmix/matmix.db.image-import-audit-2026-10-01T14-48-53-896Z.json.
+
+New production bindings:
+
+- MAT-000068: /uploads/products/MAT-000068-6e778ac696688968.webp; live SHA256 6a5c1f97c93e8c64fcf6ea5aa0f2a3d35c734d89211da427c019a5178fdc451f
+- MAT-000075: /uploads/products/MAT-000075-14818cb16f61b986.webp; live SHA256 e9edcd449935892a19d9595f118c2db570888f377984afa20c42e99276e9c8b5
+- MAT-000076: /uploads/products/MAT-000076-ba30490b6490a147.webp; live SHA256 618ecb5ce4b242c7eba82bf0000abc3f7293f00f8dca616d924fad18234c9f05
+- MAT-000087: /uploads/products/MAT-000087-2a6e9f75f7b118f5.webp; live SHA256 fc80b66c7017fe89de4c3d8b8acfd9ab1ca88322c05a1450e2decee03aeb98cc
+
+All four new live files and all seven already-live reframe files were verified as WebP 1200×1200 with one primary and zero gallery images. Independent canonical rendering matched the four newly applied live files byte-for-byte. Post-apply verifier markers: BACKUP_SHA_OK, DATABASE_HEALTH_OK, PRODUCT_CHANGE_SCOPE_OK, BINDING_CHANGE_SCOPE_OK, FINAL3_OWNER_APPROVED_4_IMAGES_OK, FINAL3_POST_APPLY_VERIFY_OK.
+
+## Final read-only closed-subcategory audit
+
+Schema v11 matched expected v11; template section was available, integrity was ok, foreign-key violations=0, and there were no missing tables. Marker: FINAL3_CLOSED_SUBCATEGORIES_AUDIT_PASS.
+
+| Subcategory | Products | imageOk | imageIssues | blockers | Conclusion |
+|---|---:|---:|---:|---:|---|
+| Кладочные Смеси | 3 | 3 | 0 | 0 | CLOSED |
+| Наливной Пол | 13 | 13 | 0 | 0 | CLOSED |
+| Стяжки Пола | 2 | 2 | 0 | 0 | CLOSED |
+
+Each subcategory has status DATA_CLOSED, no blocking MATs, and conclusion CLOSED.
+
+MAT-000076 current production identity is UNIS Горизонт Армированный, **25 кг**. Historical 20 kg value is superseded; product data was not changed.
+
+## Final markers
+
+- FINAL3_IMAGES_18_OF_18_COMPLETE = true
+- FINAL3_IMAGE_ROLLOUT_FULLY_CLOSED = true
+- FINAL3_CLOSEOUT_COMMIT_READY = true
+- final3ImageRolloutStatus = CLOSED
+- manualImageRolloutFullyClosed = true
+- final3Scope = 18; final3Completed = 18; unresolved = 0
+- masonryImagesClosed = true
+- selfLevelingFloorImagesClosed = true
+- floorScreedImagesClosed = true
+
+---
+
+## Preserved historical report
+
+The report below is retained as historical audit, preparation, and handoff evidence. Any prior wording such as “READY_FOR_PRODUCTION_ROLLOUT,” “package prepared,” or earlier REBUILD / REFRAME_PREPARED classifications reflects that earlier checkpoint and is superseded by the final effective status table above.
+
 # Смеси — final3 image re-audit, current closeout (2026-10-01)
 
 > CURRENT FINAL3 STATE: package prepared and local dry-run passed. This current-state block supersedes earlier open-handoff / unresolved statuses below; historical checkpoints remain preserved.

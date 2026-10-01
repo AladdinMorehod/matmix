@@ -2308,30 +2308,25 @@
   ],
   "summary": {
     "total": 18,
-    "KEEP_EXISTING": 7,
-    "REFRAME_PREPARED": 7,
-    "OWNER_APPROVED_FINAL": 4,
-    "REBUILD_REQUIRED": 0,
-    "RESEARCH_REQUIRED": 0,
-    "OWNER_REVIEW_REQUIRED": 0,
+    "KEEP_EXISTING_PRODUCTION_VERIFIED": 7,
+    "REFRAME_ALREADY_LIVE_AND_VERIFIED": 7,
+    "PRODUCTION_APPLIED_AND_VERIFIED": 4,
+    "unresolved": 0,
     "bySubcategory": {
       "Кладочные Смеси": {
         "total": 3,
-        "KEEP_EXISTING": 1,
-        "REFRAME_PREPARED": 1,
-        "OWNER_APPROVED_FINAL": 1
+        "closed": 3,
+        "unresolved": 0
       },
       "Наливной Пол": {
         "total": 13,
-        "KEEP_EXISTING": 6,
-        "REFRAME_PREPARED": 4,
-        "OWNER_APPROVED_FINAL": 3
+        "closed": 13,
+        "unresolved": 0
       },
       "Стяжки Пола": {
         "total": 2,
-        "KEEP_EXISTING": 0,
-        "REFRAME_PREPARED": 2,
-        "OWNER_APPROVED_FINAL": 0
+        "closed": 2,
+        "unresolved": 0
       }
     }
   },
@@ -2383,14 +2378,27 @@
         "centered": true
       },
       "proposedAction": "Keep verified current image; exclude from overwrite package.",
-      "effectiveRolloutAction": "KEEP_EXISTING"
+      "effectiveRolloutAction": "KEEP_EXISTING_PRODUCTION_VERIFIED",
+      "preCloseoutEffectiveRolloutAction": "KEEP_EXISTING",
+      "finalProductionStatus": "KEEP_EXISTING_PRODUCTION_VERIFIED",
+      "finalProductionVerification": {
+        "status": "KEEP_EXISTING_PRODUCTION_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000067-ab116f57fe81db95.webp",
+        "sha256": "be9f2fee3ded7c8061e041365dd32de41a713e441bb40fabd21f8b96459ee860",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0,
+        "evidenceSource": "owner/operator-supplied final production verification"
+      }
     },
     {
       "externalId": "MAT-000068",
       "subcategory": "Кладочные Смеси",
       "title": "Кладочно-монтажная смесь Русеан М-200 40 кг",
-      "currentProductionImageUrl": "/uploads/products/MAT-000068-18791ad479824f81.webp",
-      "primaryImageUrl": "/uploads/products/MAT-000068-18791ad479824f81.webp",
+      "currentProductionImageUrl": "/uploads/products/MAT-000068-6e778ac696688968.webp",
+      "primaryImageUrl": "/uploads/products/MAT-000068-6e778ac696688968.webp",
       "evidenceFile": "product-images-batch/mix-images-reaudit-final3-batch1/evidence/extracted/images/MAT-000068.webp",
       "productionSha256": "cf238451107af3f83b1aa0ef0da80374c409690336c34204621768a0a7e746e5",
       "format": "webp",
@@ -2402,7 +2410,7 @@
       "binding": {
         "primaryCount": 1,
         "galleryCount": 0,
-        "primaryImageUrl": "/uploads/products/MAT-000068-18791ad479824f81.webp"
+        "primaryImageUrl": "/uploads/products/MAT-000068-6e778ac696688968.webp"
       },
       "classification": "OWNER_APPROVED_FINAL",
       "identityStatus": "CONFIRMED",
@@ -2439,7 +2447,20 @@
         "handoffPath": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000068/"
       },
       "historicalClassification": "REBUILD",
-      "effectiveRolloutAction": "OWNER_APPROVED_FINAL"
+      "effectiveRolloutAction": "PRODUCTION_APPLIED_AND_VERIFIED",
+      "preCloseoutEffectiveRolloutAction": "OWNER_APPROVED_FINAL",
+      "finalProductionStatus": "PRODUCTION_APPLIED_AND_VERIFIED",
+      "finalProductionVerification": {
+        "status": "PRODUCTION_APPLIED_AND_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000068-6e778ac696688968.webp",
+        "sha256": "6a5c1f97c93e8c64fcf6ea5aa0f2a3d35c734d89211da427c019a5178fdc451f",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0,
+        "evidenceSource": "owner/operator-supplied final production verification"
+      }
     },
     {
       "externalId": "MAT-000069",
@@ -2526,14 +2547,27 @@
         },
         "renderFunction": "existing import-product-images.js renderWebp()"
       },
-      "effectiveRolloutAction": "REFRAME_PREPARED"
+      "effectiveRolloutAction": "REFRAME_ALREADY_LIVE_AND_VERIFIED",
+      "preCloseoutEffectiveRolloutAction": "REFRAME_PREPARED",
+      "finalProductionStatus": "REFRAME_ALREADY_LIVE_AND_VERIFIED",
+      "finalProductionVerification": {
+        "status": "REFRAME_ALREADY_LIVE_AND_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000069-b8b92a4712674f83.webp",
+        "sha256": "aacef16e3cbef44273d59047c7b502c62261a04848870af67eea8f228992ca59",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0,
+        "evidenceSource": "owner/operator-supplied final production verification"
+      }
     },
     {
       "externalId": "MAT-000075",
       "subcategory": "Наливной Пол",
       "title": "Наливной пол \"Unis Горизонт\" 20 кг",
-      "currentProductionImageUrl": "/uploads/products/MAT-000075-7584c202645c34c1.webp",
-      "primaryImageUrl": "/uploads/products/MAT-000075-7584c202645c34c1.webp",
+      "currentProductionImageUrl": "/uploads/products/MAT-000075-14818cb16f61b986.webp",
+      "primaryImageUrl": "/uploads/products/MAT-000075-14818cb16f61b986.webp",
       "evidenceFile": "product-images-batch/mix-images-reaudit-final3-batch1/evidence/extracted/images/MAT-000075.webp",
       "productionSha256": "afc7f8282f7e6c088bc9d6c872162de7cf9f01e49fde08858945f7c4b95b0dd9",
       "format": "webp",
@@ -2545,7 +2579,7 @@
       "binding": {
         "primaryCount": 1,
         "galleryCount": 0,
-        "primaryImageUrl": "/uploads/products/MAT-000075-7584c202645c34c1.webp"
+        "primaryImageUrl": "/uploads/products/MAT-000075-14818cb16f61b986.webp"
       },
       "classification": "OWNER_APPROVED_FINAL",
       "identityStatus": "CONFIRMED",
@@ -2592,14 +2626,27 @@
         "remainingPoint": "No unresolved MAT identity/variant question remains. A verified exact 20 kg package image asset is still needed; the original owner package reference is not present in this batch folder."
       },
       "historicalClassification": "REBUILD",
-      "effectiveRolloutAction": "OWNER_APPROVED_FINAL"
+      "effectiveRolloutAction": "PRODUCTION_APPLIED_AND_VERIFIED",
+      "preCloseoutEffectiveRolloutAction": "OWNER_APPROVED_FINAL",
+      "finalProductionStatus": "PRODUCTION_APPLIED_AND_VERIFIED",
+      "finalProductionVerification": {
+        "status": "PRODUCTION_APPLIED_AND_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000075-14818cb16f61b986.webp",
+        "sha256": "e9edcd449935892a19d9595f118c2db570888f377984afa20c42e99276e9c8b5",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0,
+        "evidenceSource": "owner/operator-supplied final production verification"
+      }
     },
     {
       "externalId": "MAT-000076",
       "subcategory": "Наливной Пол",
       "title": "Наливной пол UNIS Горизонт Армированный 25 кг",
-      "currentProductionImageUrl": "/uploads/products/MAT-000076-321924509b42300f.webp",
-      "primaryImageUrl": "/uploads/products/MAT-000076-321924509b42300f.webp",
+      "currentProductionImageUrl": "/uploads/products/MAT-000076-ba30490b6490a147.webp",
+      "primaryImageUrl": "/uploads/products/MAT-000076-ba30490b6490a147.webp",
       "evidenceFile": "product-images-batch/mix-images-reaudit-final3-batch1/evidence/extracted/images/MAT-000076.webp",
       "productionSha256": "af93d91aea5363720b15d62fe21c29bdaf3ad4cd6d1e4a274aa3c2ec6ca9b61e",
       "format": "webp",
@@ -2611,7 +2658,7 @@
       "binding": {
         "primaryCount": 1,
         "galleryCount": 0,
-        "primaryImageUrl": "/uploads/products/MAT-000076-321924509b42300f.webp"
+        "primaryImageUrl": "/uploads/products/MAT-000076-ba30490b6490a147.webp"
       },
       "classification": "OWNER_APPROVED_FINAL",
       "identityStatus": "CONFIRMED_OWNER_APPROVED_FINAL",
@@ -2648,11 +2695,24 @@
         "handoffPath": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000076/"
       },
       "historicalClassification": "REBUILD",
-      "effectiveRolloutAction": "OWNER_APPROVED_FINAL",
+      "effectiveRolloutAction": "PRODUCTION_APPLIED_AND_VERIFIED",
       "currentOwnerConfirmedWeightKg": 25,
       "historicalReviewWeightKg": 20,
       "historicalReviewWeightStatus": "SUPERSEDED",
-      "historicalIdentityStatus": "MISMATCH"
+      "historicalIdentityStatus": "MISMATCH",
+      "preCloseoutEffectiveRolloutAction": "OWNER_APPROVED_FINAL",
+      "finalProductionStatus": "PRODUCTION_APPLIED_AND_VERIFIED",
+      "finalProductionVerification": {
+        "status": "PRODUCTION_APPLIED_AND_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000076-ba30490b6490a147.webp",
+        "sha256": "618ecb5ce4b242c7eba82bf0000abc3f7293f00f8dca616d924fad18234c9f05",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0,
+        "evidenceSource": "owner/operator-supplied final production verification"
+      }
     },
     {
       "externalId": "MAT-000077",
@@ -2711,7 +2771,20 @@
         "scopeNote": "Evidence binds the current 20 kg Быстротвердеющий package to this MAT. It does not establish Быстрый as a formal historical alias, renamed SKU, or same-formula predecessor; no such continuity is claimed."
       },
       "blockers": [],
-      "effectiveRolloutAction": "KEEP_EXISTING"
+      "effectiveRolloutAction": "KEEP_EXISTING_PRODUCTION_VERIFIED",
+      "preCloseoutEffectiveRolloutAction": "KEEP_EXISTING",
+      "finalProductionStatus": "KEEP_EXISTING_PRODUCTION_VERIFIED",
+      "finalProductionVerification": {
+        "status": "KEEP_EXISTING_PRODUCTION_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000077-a2ff7cd16c732bb5.webp",
+        "sha256": "8bd4d3ef56aaa9e5f28c1963ac7a2cceef4c3d11615c58f06f43766109eac1cf",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0,
+        "evidenceSource": "owner/operator-supplied final production verification"
+      }
     },
     {
       "externalId": "MAT-000078",
@@ -2760,7 +2833,20 @@
         "centered": true
       },
       "proposedAction": "Keep verified current image; exclude from overwrite package.",
-      "effectiveRolloutAction": "KEEP_EXISTING"
+      "effectiveRolloutAction": "KEEP_EXISTING_PRODUCTION_VERIFIED",
+      "preCloseoutEffectiveRolloutAction": "KEEP_EXISTING",
+      "finalProductionStatus": "KEEP_EXISTING_PRODUCTION_VERIFIED",
+      "finalProductionVerification": {
+        "status": "KEEP_EXISTING_PRODUCTION_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000078-2bc0525cc149295d.webp",
+        "sha256": "db2ea938b07876f1156b3ba314243ada92ff8e25a24d2d5db030a387b712b10a",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0,
+        "evidenceSource": "owner/operator-supplied final production verification"
+      }
     },
     {
       "externalId": "MAT-000079",
@@ -2847,7 +2933,20 @@
         },
         "renderFunction": "existing import-product-images.js renderWebp()"
       },
-      "effectiveRolloutAction": "REFRAME_PREPARED"
+      "effectiveRolloutAction": "REFRAME_ALREADY_LIVE_AND_VERIFIED",
+      "preCloseoutEffectiveRolloutAction": "REFRAME_PREPARED",
+      "finalProductionStatus": "REFRAME_ALREADY_LIVE_AND_VERIFIED",
+      "finalProductionVerification": {
+        "status": "REFRAME_ALREADY_LIVE_AND_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000079-ec61b1ee064e4891.webp",
+        "sha256": "863bb26c212b2eeeb647668c4ad35093a79ac677260fc9106de472ee2908bbf1",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0,
+        "evidenceSource": "owner/operator-supplied final production verification"
+      }
     },
     {
       "externalId": "MAT-000080",
@@ -2934,7 +3033,20 @@
         },
         "renderFunction": "existing import-product-images.js renderWebp()"
       },
-      "effectiveRolloutAction": "REFRAME_PREPARED"
+      "effectiveRolloutAction": "REFRAME_ALREADY_LIVE_AND_VERIFIED",
+      "preCloseoutEffectiveRolloutAction": "REFRAME_PREPARED",
+      "finalProductionStatus": "REFRAME_ALREADY_LIVE_AND_VERIFIED",
+      "finalProductionVerification": {
+        "status": "REFRAME_ALREADY_LIVE_AND_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000080-1bdd0d69bad4afdf.webp",
+        "sha256": "eac20fac2841135f439ac19758a7a9bc8bffb4b6f033ff575ff4208205130191",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0,
+        "evidenceSource": "owner/operator-supplied final production verification"
+      }
     },
     {
       "externalId": "MAT-000081",
@@ -3021,7 +3133,20 @@
         },
         "renderFunction": "existing import-product-images.js renderWebp()"
       },
-      "effectiveRolloutAction": "REFRAME_PREPARED"
+      "effectiveRolloutAction": "REFRAME_ALREADY_LIVE_AND_VERIFIED",
+      "preCloseoutEffectiveRolloutAction": "REFRAME_PREPARED",
+      "finalProductionStatus": "REFRAME_ALREADY_LIVE_AND_VERIFIED",
+      "finalProductionVerification": {
+        "status": "REFRAME_ALREADY_LIVE_AND_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000081-11f05a89cce5a535.webp",
+        "sha256": "28fe45a5369ccb2a878c36c6fb1681d56051814cac30ef013cc7bfd79584d27f",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0,
+        "evidenceSource": "owner/operator-supplied final production verification"
+      }
     },
     {
       "externalId": "MAT-000082",
@@ -3108,7 +3233,20 @@
         },
         "renderFunction": "existing import-product-images.js renderWebp()"
       },
-      "effectiveRolloutAction": "REFRAME_PREPARED"
+      "effectiveRolloutAction": "REFRAME_ALREADY_LIVE_AND_VERIFIED",
+      "preCloseoutEffectiveRolloutAction": "REFRAME_PREPARED",
+      "finalProductionStatus": "REFRAME_ALREADY_LIVE_AND_VERIFIED",
+      "finalProductionVerification": {
+        "status": "REFRAME_ALREADY_LIVE_AND_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000082-d53ca909a64885ca.webp",
+        "sha256": "410a639d11681220e0734ca950a62bccf7266ad55958eba9f3c80f72bb1dbbc0",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0,
+        "evidenceSource": "owner/operator-supplied final production verification"
+      }
     },
     {
       "externalId": "MAT-000083",
@@ -3157,7 +3295,20 @@
         "centered": true
       },
       "proposedAction": "Keep verified current image; exclude from overwrite package.",
-      "effectiveRolloutAction": "KEEP_EXISTING"
+      "effectiveRolloutAction": "KEEP_EXISTING_PRODUCTION_VERIFIED",
+      "preCloseoutEffectiveRolloutAction": "KEEP_EXISTING",
+      "finalProductionStatus": "KEEP_EXISTING_PRODUCTION_VERIFIED",
+      "finalProductionVerification": {
+        "status": "KEEP_EXISTING_PRODUCTION_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000083-9e454ab67e2e9c49.webp",
+        "sha256": "3156e2a6cb425495a10c2b4275dca9d590b40ca52312d1295e68364b8f5d8017",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0,
+        "evidenceSource": "owner/operator-supplied final production verification"
+      }
     },
     {
       "externalId": "MAT-000084",
@@ -3206,7 +3357,20 @@
         "centered": true
       },
       "proposedAction": "Keep verified current image; exclude from overwrite package.",
-      "effectiveRolloutAction": "KEEP_EXISTING"
+      "effectiveRolloutAction": "KEEP_EXISTING_PRODUCTION_VERIFIED",
+      "preCloseoutEffectiveRolloutAction": "KEEP_EXISTING",
+      "finalProductionStatus": "KEEP_EXISTING_PRODUCTION_VERIFIED",
+      "finalProductionVerification": {
+        "status": "KEEP_EXISTING_PRODUCTION_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000084-0484b3e59dbe222e.webp",
+        "sha256": "7eacee2e479bfedab954c82cea7684b6ab0b3768de4991934de05449e0bb95dc",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0,
+        "evidenceSource": "owner/operator-supplied final production verification"
+      }
     },
     {
       "externalId": "MAT-000085",
@@ -3255,7 +3419,20 @@
         "centered": true
       },
       "proposedAction": "Keep verified current image; exclude from overwrite package.",
-      "effectiveRolloutAction": "KEEP_EXISTING"
+      "effectiveRolloutAction": "KEEP_EXISTING_PRODUCTION_VERIFIED",
+      "preCloseoutEffectiveRolloutAction": "KEEP_EXISTING",
+      "finalProductionStatus": "KEEP_EXISTING_PRODUCTION_VERIFIED",
+      "finalProductionVerification": {
+        "status": "KEEP_EXISTING_PRODUCTION_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000085-6f272833fe7b7600.webp",
+        "sha256": "4eb681b2c55272c3d7897b34ee38af6d89b46826b57f83f99316848b709fea38",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0,
+        "evidenceSource": "owner/operator-supplied final production verification"
+      }
     },
     {
       "externalId": "MAT-000086",
@@ -3304,14 +3481,27 @@
         "centered": true
       },
       "proposedAction": "Keep verified current image; exclude from overwrite package.",
-      "effectiveRolloutAction": "KEEP_EXISTING"
+      "effectiveRolloutAction": "KEEP_EXISTING_PRODUCTION_VERIFIED",
+      "preCloseoutEffectiveRolloutAction": "KEEP_EXISTING",
+      "finalProductionStatus": "KEEP_EXISTING_PRODUCTION_VERIFIED",
+      "finalProductionVerification": {
+        "status": "KEEP_EXISTING_PRODUCTION_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000086-1e87031c75cddabb.webp",
+        "sha256": "b7c292a8a412b6b12b729c27057bbf13f93ac7f48cb4b3ec135b25098d517253",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0,
+        "evidenceSource": "owner/operator-supplied final production verification"
+      }
     },
     {
       "externalId": "MAT-000087",
       "subcategory": "Наливной Пол",
       "title": "Наливной пол Ceresit CN 175 Super 20 кг",
-      "currentProductionImageUrl": "/uploads/products/MAT-000087-7a16e32aaf4c137c.webp",
-      "primaryImageUrl": "/uploads/products/MAT-000087-7a16e32aaf4c137c.webp",
+      "currentProductionImageUrl": "/uploads/products/MAT-000087-2a6e9f75f7b118f5.webp",
+      "primaryImageUrl": "/uploads/products/MAT-000087-2a6e9f75f7b118f5.webp",
       "evidenceFile": "product-images-batch/mix-images-reaudit-final3-batch1/evidence/extracted/images/MAT-000087.webp",
       "productionSha256": "2e801d952dcfd0ac81b1d82b48a27f1dbe504c6b77a4c8071b4ae088ae6a3c78",
       "format": "webp",
@@ -3323,7 +3513,7 @@
       "binding": {
         "primaryCount": 1,
         "galleryCount": 0,
-        "primaryImageUrl": "/uploads/products/MAT-000087-7a16e32aaf4c137c.webp"
+        "primaryImageUrl": "/uploads/products/MAT-000087-2a6e9f75f7b118f5.webp"
       },
       "classification": "OWNER_APPROVED_FINAL",
       "identityStatus": "CONFIRMED_OWNER_APPROVED_FINAL",
@@ -3360,8 +3550,21 @@
         "handoffPath": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000087/"
       },
       "historicalClassification": "REBUILD",
-      "effectiveRolloutAction": "OWNER_APPROVED_FINAL",
-      "historicalIdentityStatus": "MISMATCH"
+      "effectiveRolloutAction": "PRODUCTION_APPLIED_AND_VERIFIED",
+      "historicalIdentityStatus": "MISMATCH",
+      "preCloseoutEffectiveRolloutAction": "OWNER_APPROVED_FINAL",
+      "finalProductionStatus": "PRODUCTION_APPLIED_AND_VERIFIED",
+      "finalProductionVerification": {
+        "status": "PRODUCTION_APPLIED_AND_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000087-2a6e9f75f7b118f5.webp",
+        "sha256": "fc80b66c7017fe89de4c3d8b8acfd9ab1ca88322c05a1450e2decee03aeb98cc",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0,
+        "evidenceSource": "owner/operator-supplied final production verification"
+      }
     },
     {
       "externalId": "MAT-000089",
@@ -3448,7 +3651,20 @@
         },
         "renderFunction": "existing import-product-images.js renderWebp()"
       },
-      "effectiveRolloutAction": "REFRAME_PREPARED"
+      "effectiveRolloutAction": "REFRAME_ALREADY_LIVE_AND_VERIFIED",
+      "preCloseoutEffectiveRolloutAction": "REFRAME_PREPARED",
+      "finalProductionStatus": "REFRAME_ALREADY_LIVE_AND_VERIFIED",
+      "finalProductionVerification": {
+        "status": "REFRAME_ALREADY_LIVE_AND_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000089-87cb5131957b411d.webp",
+        "sha256": "197784d884e5419fcca5865cd96c571cab9f9eeb5e73bb20c8a5cf00aee2c98d",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0,
+        "evidenceSource": "owner/operator-supplied final production verification"
+      }
     },
     {
       "externalId": "MAT-000090",
@@ -3535,7 +3751,20 @@
         },
         "renderFunction": "existing import-product-images.js renderWebp()"
       },
-      "effectiveRolloutAction": "REFRAME_PREPARED"
+      "effectiveRolloutAction": "REFRAME_ALREADY_LIVE_AND_VERIFIED",
+      "preCloseoutEffectiveRolloutAction": "REFRAME_PREPARED",
+      "finalProductionStatus": "REFRAME_ALREADY_LIVE_AND_VERIFIED",
+      "finalProductionVerification": {
+        "status": "REFRAME_ALREADY_LIVE_AND_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000090-cb8956483c1321ae.webp",
+        "sha256": "1ffb471c9a2921434907f66a96af7bdc91e6dc98a926414e8341596f775755f9",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0,
+        "evidenceSource": "owner/operator-supplied final production verification"
+      }
     }
   ],
   "productionActions": {
@@ -4311,7 +4540,7 @@
     }
   },
   "packageBStatus": "RESOLVED_BY_OWNER_APPROVED_FINALS",
-  "rolloutStatus": "FINAL3_PRODUCTION_PACKAGE_PREPARED_LOCAL_DRY_RUN_PASS_READY_FOR_PRODUCTION_ROLLOUT_NO_PRODUCTION_ACTION",
+  "rolloutStatus": "CLOSED",
   "packageB": {
     "status": "OWNER_APPROVED_FINALS_VERIFIED",
     "exactScope": [
@@ -4793,10 +5022,10 @@
   },
   "currentFinal3Status": {
     "generatedDate": "2026-10-01",
-    "status": "FINAL3_PRODUCTION_PACKAGE_PREPARED",
+    "status": "CLOSED",
     "exactScopeCount": 18,
     "effectiveActions": {
-      "KEEP_EXISTING": [
+      "KEEP_EXISTING_PRODUCTION_VERIFIED": [
         "MAT-000067",
         "MAT-000077",
         "MAT-000078",
@@ -4805,7 +5034,7 @@
         "MAT-000085",
         "MAT-000086"
       ],
-      "REFRAME_PREPARED": [
+      "REFRAME_ALREADY_LIVE_AND_VERIFIED": [
         "MAT-000069",
         "MAT-000079",
         "MAT-000080",
@@ -4814,7 +5043,7 @@
         "MAT-000089",
         "MAT-000090"
       ],
-      "OWNER_APPROVED_FINAL": [
+      "PRODUCTION_APPLIED_AND_VERIFIED": [
         "MAT-000068",
         "MAT-000075",
         "MAT-000076",
@@ -4841,7 +5070,16 @@
     "productionApplyPerformed": false,
     "productionAccessUsed": false,
     "sshUsed": false,
-    "deployPerformed": false
+    "deployPerformed": false,
+    "previousPreparedStatus": "FINAL3_PRODUCTION_PACKAGE_PREPARED",
+    "final3ImageRolloutStatus": "CLOSED",
+    "manualImageRolloutFullyClosed": true,
+    "final3Scope": 18,
+    "final3Completed": 18,
+    "unresolved": 0,
+    "masonryImagesClosed": true,
+    "selfLevelingFloorImagesClosed": true,
+    "floorScreedImagesClosed": true
   },
   "mat00077Resolution": {
     "MAT": "MAT-000077",
@@ -5451,11 +5689,414 @@
     ]
   },
   "finalMarkers": {
+    "FINAL3_IMAGES_18_OF_18_COMPLETE": true,
+    "FINAL3_IMAGE_ROLLOUT_FULLY_CLOSED": true,
+    "FINAL3_CLOSEOUT_COMMIT_READY": true
+  },
+  "preProductionCloseoutSummary": {
+    "total": 18,
+    "KEEP_EXISTING": 7,
+    "REFRAME_PREPARED": 7,
+    "OWNER_APPROVED_FINAL": 4,
+    "REBUILD_REQUIRED": 0,
+    "RESEARCH_REQUIRED": 0,
+    "OWNER_REVIEW_REQUIRED": 0,
+    "bySubcategory": {
+      "Кладочные Смеси": {
+        "total": 3,
+        "KEEP_EXISTING": 1,
+        "REFRAME_PREPARED": 1,
+        "OWNER_APPROVED_FINAL": 1
+      },
+      "Наливной Пол": {
+        "total": 13,
+        "KEEP_EXISTING": 6,
+        "REFRAME_PREPARED": 4,
+        "OWNER_APPROVED_FINAL": 3
+      },
+      "Стяжки Пола": {
+        "total": 2,
+        "KEEP_EXISTING": 0,
+        "REFRAME_PREPARED": 2,
+        "OWNER_APPROVED_FINAL": 0
+      }
+    }
+  },
+  "preCloseoutRolloutStatus": "FINAL3_PRODUCTION_PACKAGE_PREPARED_LOCAL_DRY_RUN_PASS_READY_FOR_PRODUCTION_ROLLOUT_NO_PRODUCTION_ACTION",
+  "finalProductionCloseout": {
+    "generatedDate": "2026-10-01",
+    "final3ImageRolloutStatus": "CLOSED",
+    "manualImageRolloutFullyClosed": true,
+    "final3Scope": 18,
+    "final3Completed": 18,
+    "unresolved": 0,
+    "statusCounts": {
+      "KEEP_EXISTING_PRODUCTION_VERIFIED": 7,
+      "REFRAME_ALREADY_LIVE_AND_VERIFIED": 7,
+      "PRODUCTION_APPLIED_AND_VERIFIED": 4
+    },
+    "records": [
+      {
+        "externalId": "MAT-000067",
+        "subcategory": "Кладочные Смеси",
+        "title": "Кладочно-монтажная смесь EUROmix М-200 40 кг",
+        "status": "KEEP_EXISTING_PRODUCTION_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000067-ab116f57fe81db95.webp",
+        "sha256": "be9f2fee3ded7c8061e041365dd32de41a713e441bb40fabd21f8b96459ee860",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0
+      },
+      {
+        "externalId": "MAT-000068",
+        "subcategory": "Кладочные Смеси",
+        "title": "Кладочно-монтажная смесь Русеан М-200 40 кг",
+        "status": "PRODUCTION_APPLIED_AND_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000068-6e778ac696688968.webp",
+        "sha256": "6a5c1f97c93e8c64fcf6ea5aa0f2a3d35c734d89211da427c019a5178fdc451f",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0
+      },
+      {
+        "externalId": "MAT-000069",
+        "subcategory": "Кладочные Смеси",
+        "title": "Кладочно-монтажная смесь VERTEX М-200 40 кг",
+        "status": "REFRAME_ALREADY_LIVE_AND_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000069-b8b92a4712674f83.webp",
+        "sha256": "aacef16e3cbef44273d59047c7b502c62261a04848870af67eea8f228992ca59",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0
+      },
+      {
+        "externalId": "MAT-000075",
+        "subcategory": "Наливной Пол",
+        "title": "Наливной пол \"Unis Горизонт\" 20 кг",
+        "status": "PRODUCTION_APPLIED_AND_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000075-14818cb16f61b986.webp",
+        "sha256": "e9edcd449935892a19d9595f118c2db570888f377984afa20c42e99276e9c8b5",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0
+      },
+      {
+        "externalId": "MAT-000076",
+        "subcategory": "Наливной Пол",
+        "title": "Наливной пол UNIS Горизонт Армированный 25 кг",
+        "status": "PRODUCTION_APPLIED_AND_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000076-ba30490b6490a147.webp",
+        "sha256": "618ecb5ce4b242c7eba82bf0000abc3f7293f00f8dca616d924fad18234c9f05",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0
+      },
+      {
+        "externalId": "MAT-000077",
+        "subcategory": "Наливной Пол",
+        "title": "Наливной пол \"Старатели\" Быстрый 20 кг",
+        "status": "KEEP_EXISTING_PRODUCTION_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000077-a2ff7cd16c732bb5.webp",
+        "sha256": "8bd4d3ef56aaa9e5f28c1963ac7a2cceef4c3d11615c58f06f43766109eac1cf",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0
+      },
+      {
+        "externalId": "MAT-000078",
+        "subcategory": "Наливной Пол",
+        "title": "Наливной пол Старатели Толстый 25 кг",
+        "status": "KEEP_EXISTING_PRODUCTION_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000078-2bc0525cc149295d.webp",
+        "sha256": "db2ea938b07876f1156b3ba314243ada92ff8e25a24d2d5db030a387b712b10a",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0
+      },
+      {
+        "externalId": "MAT-000079",
+        "subcategory": "Наливной Пол",
+        "title": "Наливной пол Weber Vetonit 3000 20 кг",
+        "status": "REFRAME_ALREADY_LIVE_AND_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000079-ec61b1ee064e4891.webp",
+        "sha256": "863bb26c212b2eeeb647668c4ad35093a79ac677260fc9106de472ee2908bbf1",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0
+      },
+      {
+        "externalId": "MAT-000080",
+        "subcategory": "Наливной Пол",
+        "title": "Наливной пол Weber Vetonit fast 4000 20 кг",
+        "status": "REFRAME_ALREADY_LIVE_AND_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000080-1bdd0d69bad4afdf.webp",
+        "sha256": "eac20fac2841135f439ac19758a7a9bc8bffb4b6f033ff575ff4208205130191",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0
+      },
+      {
+        "externalId": "MAT-000081",
+        "subcategory": "Наливной Пол",
+        "title": "Наливной пол Weber Vetonit 4100 20 кг",
+        "status": "REFRAME_ALREADY_LIVE_AND_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000081-11f05a89cce5a535.webp",
+        "sha256": "28fe45a5369ccb2a878c36c6fb1681d56051814cac30ef013cc7bfd79584d27f",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0
+      },
+      {
+        "externalId": "MAT-000082",
+        "subcategory": "Наливной Пол",
+        "title": "Наливной пол Weber Vetonit 5000 25 кг",
+        "status": "REFRAME_ALREADY_LIVE_AND_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000082-d53ca909a64885ca.webp",
+        "sha256": "410a639d11681220e0734ca950a62bccf7266ad55958eba9f3c80f72bb1dbbc0",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0
+      },
+      {
+        "externalId": "MAT-000083",
+        "subcategory": "Наливной Пол",
+        "title": "Наливной пол Litokol LITOLIV S10 EXPRESS 20 кг",
+        "status": "KEEP_EXISTING_PRODUCTION_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000083-9e454ab67e2e9c49.webp",
+        "sha256": "3156e2a6cb425495a10c2b4275dca9d590b40ca52312d1295e68364b8f5d8017",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0
+      },
+      {
+        "externalId": "MAT-000084",
+        "subcategory": "Наливной Пол",
+        "title": "Наливной пол Litokol LITOLIV S50 EVO 20 кг",
+        "status": "KEEP_EXISTING_PRODUCTION_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000084-0484b3e59dbe222e.webp",
+        "sha256": "7eacee2e479bfedab954c82cea7684b6ab0b3768de4991934de05449e0bb95dc",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0
+      },
+      {
+        "externalId": "MAT-000085",
+        "subcategory": "Наливной Пол",
+        "title": "Наливной пол ВОЛМА-Нивелир Экспресс 25 кг",
+        "status": "KEEP_EXISTING_PRODUCTION_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000085-6f272833fe7b7600.webp",
+        "sha256": "4eb681b2c55272c3d7897b34ee38af6d89b46826b57f83f99316848b709fea38",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0
+      },
+      {
+        "externalId": "MAT-000086",
+        "subcategory": "Наливной Пол",
+        "title": "Наливной пол Основит Скорлайн FK45 R 20 кг",
+        "status": "KEEP_EXISTING_PRODUCTION_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000086-1e87031c75cddabb.webp",
+        "sha256": "b7c292a8a412b6b12b729c27057bbf13f93ac7f48cb4b3ec135b25098d517253",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0
+      },
+      {
+        "externalId": "MAT-000087",
+        "subcategory": "Наливной Пол",
+        "title": "Наливной пол Ceresit CN 175 Super 20 кг",
+        "status": "PRODUCTION_APPLIED_AND_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000087-2a6e9f75f7b118f5.webp",
+        "sha256": "fc80b66c7017fe89de4c3d8b8acfd9ab1ca88322c05a1450e2decee03aeb98cc",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0
+      },
+      {
+        "externalId": "MAT-000089",
+        "subcategory": "Стяжки Пола",
+        "title": "Легкая стяжка пола KNAUF Ubo 25 кг",
+        "status": "REFRAME_ALREADY_LIVE_AND_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000089-87cb5131957b411d.webp",
+        "sha256": "197784d884e5419fcca5865cd96c571cab9f9eeb5e73bb20c8a5cf00aee2c98d",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0
+      },
+      {
+        "externalId": "MAT-000090",
+        "subcategory": "Стяжки Пола",
+        "title": "Стяжка пола Основит Стартолайн FC41 H высокопрочная, 25 кг",
+        "status": "REFRAME_ALREADY_LIVE_AND_VERIFIED",
+        "productionImageUrl": "/uploads/products/MAT-000090-cb8956483c1321ae.webp",
+        "sha256": "1ffb471c9a2921434907f66a96af7bdc91e6dc98a926414e8341596f775755f9",
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0
+      }
+    ],
+    "productionApply": {
+      "timestamp": "2026-10-01T14:48:54.935Z",
+      "exactScope": [
+        "MAT-000068",
+        "MAT-000075",
+        "MAT-000076",
+        "MAT-000087"
+      ],
+      "backup": {
+        "path": "/var/lib/matmix/matmix.db.backup-2026-10-01T14-48-53-896Z-1db803eabb0b",
+        "bytes": 4141056,
+        "sha256": "56ae11094553fa58c46e3fbe88473d0e080021629ed4146d9c96203f0e056f42",
+        "userVersion": 11
+      },
+      "bindingManifest": "/var/lib/matmix/matmix.db.image-bindings-2026-10-01T14-48-53-896Z.json",
+      "importerAudit": "/var/lib/matmix/matmix.db.image-import-audit-2026-10-01T14-48-53-896Z.json",
+      "verifierMarkers": [
+        "BACKUP_SHA_OK",
+        "DATABASE_HEALTH_OK",
+        "PRODUCT_CHANGE_SCOPE_OK",
+        "BINDING_CHANGE_SCOPE_OK",
+        "FINAL3_OWNER_APPROVED_4_IMAGES_OK",
+        "FINAL3_POST_APPLY_VERIFY_OK"
+      ],
+      "liveVerification": {
+        "format": "webp",
+        "width": 1200,
+        "height": 1200,
+        "primaryCount": 1,
+        "galleryCount": 0,
+        "independentCanonicalRenderMatchedLiveBytes": true
+      }
+    },
+    "closedSubcategoryAudit": {
+      "schema": {
+        "userVersion": 11,
+        "expectedVersion": 11,
+        "compatible": true,
+        "templateSectionAvailable": true,
+        "missingTables": [],
+        "integrity": "ok",
+        "foreignKeyViolations": 0,
+        "productionTemplateAuditAvailable": true
+      },
+      "marker": "FINAL3_CLOSED_SUBCATEGORIES_AUDIT_PASS",
+      "subcategories": {
+        "Кладочные Смеси": {
+          "products": 3,
+          "attrOk": 1,
+          "attrPartial": 2,
+          "seoOk": 3,
+          "seoIssues": 0,
+          "imageOk": 3,
+          "imageIssues": 0,
+          "sourceOk": 1,
+          "sourceOptionalGaps": 2,
+          "sourceBlocked": 0,
+          "sourceAnomalies": 0,
+          "blockers": 0,
+          "status": "DATA_CLOSED",
+          "conclusion": "CLOSED",
+          "blockingMats": []
+        },
+        "Наливной Пол": {
+          "products": 13,
+          "attrOk": 0,
+          "attrPartial": 13,
+          "seoOk": 13,
+          "seoIssues": 0,
+          "imageOk": 13,
+          "imageIssues": 0,
+          "sourceOk": 0,
+          "sourceOptionalGaps": 13,
+          "sourceBlocked": 0,
+          "sourceAnomalies": 0,
+          "blockers": 0,
+          "status": "DATA_CLOSED",
+          "conclusion": "CLOSED",
+          "blockingMats": []
+        },
+        "Стяжки Пола": {
+          "products": 2,
+          "attrOk": 0,
+          "attrPartial": 2,
+          "seoOk": 2,
+          "seoIssues": 0,
+          "imageOk": 2,
+          "imageIssues": 0,
+          "sourceOk": 0,
+          "sourceOptionalGaps": 2,
+          "sourceBlocked": 0,
+          "sourceAnomalies": 0,
+          "blockers": 0,
+          "status": "DATA_CLOSED",
+          "conclusion": "CLOSED",
+          "blockingMats": []
+        }
+      }
+    },
+    "provenance": "Production facts supplied by owner/operator; this documentation-only closeout did not access or independently re-check production.",
+    "MAT000076CurrentProductionIdentity": {
+      "product": "UNIS Горизонт Армированный",
+      "packageWeightKg": 25,
+      "historicalWeightKg": 20,
+      "superseded": true,
+      "productDataChanged": false
+    },
+    "thisDocumentationTask": {
+      "productionAccessUsed": false,
+      "sshUsed": false,
+      "deployPerformed": false,
+      "productionApplyPerformed": false,
+      "codeChanged": false,
+      "productDataChanged": false,
+      "binaryAssetsChanged": false
+    }
+  },
+  "preCloseoutFinalMarkers": {
     "FINAL3_OWNER_APPROVED_4_VERIFIED": true,
     "FINAL3_MAT_000077_RESOLVED": true,
     "FINAL3_ALL_18_ROLLOUT_RESOLVED": true,
     "FINAL3_PRODUCTION_PACKAGE_READY": true,
     "FINAL3_LOCAL_DRY_RUN_PASS": true,
-    "FINAL3_READY_FOR_PRODUCTION_ROLLOUT": true
+    "FINAL3_READY_FOR_PRODUCTION_ROLLOUT": true,
+    "FINAL3_IMAGES_18_OF_18_COMPLETE": true,
+    "FINAL3_IMAGE_ROLLOUT_FULLY_CLOSED": true,
+    "FINAL3_CLOSEOUT_COMMIT_READY": true
   }
 }
