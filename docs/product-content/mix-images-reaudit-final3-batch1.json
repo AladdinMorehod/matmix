@@ -2031,6 +2031,205 @@
           }
         }
       ]
+    },
+    {
+      "status": "PACKAGE_A_PREPARED",
+      "preparedAt": "2026-10-01",
+      "summary": {
+        "package": "REFRAME_7",
+        "matCount": 7,
+        "status": "READY_FOR_PRODUCTION_DRY_RUN",
+        "archivePath": "product-images-batch/mix-images-reaudit-final3-batch1/mix-images-final3-reframe-package-a.tar.gz",
+        "archiveSha256": "104ddb3f1d484da22ccc8eecdd194e5cf9b7ce478cbcbeadf977907b438538e0",
+        "archiveBytes": 5509842,
+        "archiveFileCount": 8
+      },
+      "packageA": {
+        "status": "READY_FOR_PRODUCTION_DRY_RUN",
+        "checkpoint": "PACKAGE_A_PREPARED",
+        "task": "mix images final3 package A",
+        "package": "REFRAME_7",
+        "matCount": 7,
+        "mats": [
+          "MAT-000069",
+          "MAT-000079",
+          "MAT-000080",
+          "MAT-000081",
+          "MAT-000082",
+          "MAT-000089",
+          "MAT-000090"
+        ],
+        "workingDirectory": "product-images-batch/mix-images-reaudit-final3-batch1/production-package-a/",
+        "imageInputDirectory": "product-images-batch/mix-images-reaudit-final3-batch1/production-package-a/images/",
+        "manifestPath": "product-images-batch/mix-images-reaudit-final3-batch1/production-package-a/manifest.json",
+        "archivePath": "product-images-batch/mix-images-reaudit-final3-batch1/mix-images-final3-reframe-package-a.tar.gz",
+        "archiveSha256": "104ddb3f1d484da22ccc8eecdd194e5cf9b7ce478cbcbeadf977907b438538e0",
+        "archiveBytes": 5509842,
+        "archiveFileCount": 8,
+        "archiveFileList": [
+          "production-package-a/manifest.json",
+          "production-package-a/images/MAT-000069.png",
+          "production-package-a/images/MAT-000079.png",
+          "production-package-a/images/MAT-000080.png",
+          "production-package-a/images/MAT-000081.png",
+          "production-package-a/images/MAT-000082.png",
+          "production-package-a/images/MAT-000089.png",
+          "production-package-a/images/MAT-000090.png"
+        ],
+        "manifest": {
+          "task": "mix images final3 package A",
+          "package": "REFRAME_7",
+          "matCount": 7,
+          "orderedMats": [
+            "MAT-000069",
+            "MAT-000079",
+            "MAT-000080",
+            "MAT-000081",
+            "MAT-000082",
+            "MAT-000089",
+            "MAT-000090"
+          ],
+          "importerInputDirectory": "images/",
+          "imageFilesOnlyInImporterInput": true
+        },
+        "validation": {
+          "sourceCopySha": "PASS",
+          "sourcePng1200x1200": "PASS",
+          "sharpDecode": "PASS",
+          "canonicalRenderWebpShaMatch": "PASS",
+          "archiveOpens": "PASS",
+          "safePaths": "PASS",
+          "manifestExactlyOnce": "PASS",
+          "exactSevenMatScope": "PASS",
+          "exactSevenImageFiles": "PASS",
+          "noExtraImages": "PASS",
+          "productionActions": "NOT_RUN_BY_DESIGN"
+        },
+        "records": [
+          {
+            "MAT": "MAT-000069",
+            "sourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe/MAT-000069.png",
+            "packageSourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/production-package-a/images/MAT-000069.png",
+            "sourceSha256": "b8befd9f343cbbeb49e7ee357456dc09606fee7d070a337cd63e53401ab4f2b4",
+            "sourceDimensions": [
+              1200,
+              1200
+            ],
+            "sourceFormat": "png",
+            "classification": "REFRAME",
+            "canonicalPreviewSha256": "aacef16e3cbef44273d59047c7b502c62261a04848870af67eea8f228992ca59",
+            "expectedPreviewFillPercent": 84.7,
+            "validation": "PASS"
+          },
+          {
+            "MAT": "MAT-000079",
+            "sourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe/MAT-000079.png",
+            "packageSourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/production-package-a/images/MAT-000079.png",
+            "sourceSha256": "ecddfe7585729346b532574f0d6f71281d9d0ed6e0d07ebd91cfd727a078e812",
+            "sourceDimensions": [
+              1200,
+              1200
+            ],
+            "sourceFormat": "png",
+            "classification": "REFRAME",
+            "canonicalPreviewSha256": "863bb26c212b2eeeb647668c4ad35093a79ac677260fc9106de472ee2908bbf1",
+            "expectedPreviewFillPercent": 84.8,
+            "validation": "PASS"
+          },
+          {
+            "MAT": "MAT-000080",
+            "sourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe/MAT-000080.png",
+            "packageSourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/production-package-a/images/MAT-000080.png",
+            "sourceSha256": "130c5da3858b8115e6dfd1be485d5cd5a100d658172edb83ea37cc17763690ec",
+            "sourceDimensions": [
+              1200,
+              1200
+            ],
+            "sourceFormat": "png",
+            "classification": "REFRAME",
+            "canonicalPreviewSha256": "eac20fac2841135f439ac19758a7a9bc8bffb4b6f033ff575ff4208205130191",
+            "expectedPreviewFillPercent": 84.8,
+            "validation": "PASS"
+          },
+          {
+            "MAT": "MAT-000081",
+            "sourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe/MAT-000081.png",
+            "packageSourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/production-package-a/images/MAT-000081.png",
+            "sourceSha256": "3e8f085e77743cee845f8f0ebec6079c4d496cc750713772ed498affabf8470d",
+            "sourceDimensions": [
+              1200,
+              1200
+            ],
+            "sourceFormat": "png",
+            "classification": "REFRAME",
+            "canonicalPreviewSha256": "28fe45a5369ccb2a878c36c6fb1681d56051814cac30ef013cc7bfd79584d27f",
+            "expectedPreviewFillPercent": 84.8,
+            "validation": "PASS"
+          },
+          {
+            "MAT": "MAT-000082",
+            "sourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe/MAT-000082.png",
+            "packageSourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/production-package-a/images/MAT-000082.png",
+            "sourceSha256": "cab9ca8cf9c7eaf47e8283d87a8c534057754827e9812f08776428ddae84cdb5",
+            "sourceDimensions": [
+              1200,
+              1200
+            ],
+            "sourceFormat": "png",
+            "classification": "REFRAME",
+            "canonicalPreviewSha256": "410a639d11681220e0734ca950a62bccf7266ad55958eba9f3c80f72bb1dbbc0",
+            "expectedPreviewFillPercent": 84.8,
+            "validation": "PASS"
+          },
+          {
+            "MAT": "MAT-000089",
+            "sourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe/MAT-000089.png",
+            "packageSourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/production-package-a/images/MAT-000089.png",
+            "sourceSha256": "e5c69ea86340e869c124c046782e8f0478bc59c8fddc42cabf9d75eac1ca4ee0",
+            "sourceDimensions": [
+              1200,
+              1200
+            ],
+            "sourceFormat": "png",
+            "classification": "REFRAME",
+            "canonicalPreviewSha256": "197784d884e5419fcca5865cd96c571cab9f9eeb5e73bb20c8a5cf00aee2c98d",
+            "expectedPreviewFillPercent": 84.8,
+            "validation": "PASS"
+          },
+          {
+            "MAT": "MAT-000090",
+            "sourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe/MAT-000090.png",
+            "packageSourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/production-package-a/images/MAT-000090.png",
+            "sourceSha256": "6def91e51d8f8b8624a7da64d7dac4446ebc3fa7fc1e648ba77ce20bb9c6ae9e",
+            "sourceDimensions": [
+              1200,
+              1200
+            ],
+            "sourceFormat": "png",
+            "classification": "REFRAME",
+            "canonicalPreviewSha256": "1ffb471c9a2921434907f66a96af7bdc91e6dc98a926414e8341596f775755f9",
+            "expectedPreviewFillPercent": 84.8,
+            "validation": "PASS"
+          }
+        ],
+        "keepUntouched": [
+          "MAT-000067",
+          "MAT-000077",
+          "MAT-000078",
+          "MAT-000083",
+          "MAT-000084",
+          "MAT-000085",
+          "MAT-000086"
+        ],
+        "rebuildUnchanged": [
+          "MAT-000068",
+          "MAT-000075",
+          "MAT-000076",
+          "MAT-000087"
+        ],
+        "packageBStatus": "PENDING_REBUILD_CANDIDATES",
+        "rolloutClosed": false
+      }
     }
   ],
   "summary": {
@@ -3668,5 +3867,193 @@
       "rolloutPackage": false,
       "mainMerge": false
     }
-  }
+  },
+  "packageA": {
+    "status": "READY_FOR_PRODUCTION_DRY_RUN",
+    "checkpoint": "PACKAGE_A_PREPARED",
+    "task": "mix images final3 package A",
+    "package": "REFRAME_7",
+    "matCount": 7,
+    "mats": [
+      "MAT-000069",
+      "MAT-000079",
+      "MAT-000080",
+      "MAT-000081",
+      "MAT-000082",
+      "MAT-000089",
+      "MAT-000090"
+    ],
+    "workingDirectory": "product-images-batch/mix-images-reaudit-final3-batch1/production-package-a/",
+    "imageInputDirectory": "product-images-batch/mix-images-reaudit-final3-batch1/production-package-a/images/",
+    "manifestPath": "product-images-batch/mix-images-reaudit-final3-batch1/production-package-a/manifest.json",
+    "archivePath": "product-images-batch/mix-images-reaudit-final3-batch1/mix-images-final3-reframe-package-a.tar.gz",
+    "archiveSha256": "104ddb3f1d484da22ccc8eecdd194e5cf9b7ce478cbcbeadf977907b438538e0",
+    "archiveBytes": 5509842,
+    "archiveFileCount": 8,
+    "archiveFileList": [
+      "production-package-a/manifest.json",
+      "production-package-a/images/MAT-000069.png",
+      "production-package-a/images/MAT-000079.png",
+      "production-package-a/images/MAT-000080.png",
+      "production-package-a/images/MAT-000081.png",
+      "production-package-a/images/MAT-000082.png",
+      "production-package-a/images/MAT-000089.png",
+      "production-package-a/images/MAT-000090.png"
+    ],
+    "manifest": {
+      "task": "mix images final3 package A",
+      "package": "REFRAME_7",
+      "matCount": 7,
+      "orderedMats": [
+        "MAT-000069",
+        "MAT-000079",
+        "MAT-000080",
+        "MAT-000081",
+        "MAT-000082",
+        "MAT-000089",
+        "MAT-000090"
+      ],
+      "importerInputDirectory": "images/",
+      "imageFilesOnlyInImporterInput": true
+    },
+    "validation": {
+      "sourceCopySha": "PASS",
+      "sourcePng1200x1200": "PASS",
+      "sharpDecode": "PASS",
+      "canonicalRenderWebpShaMatch": "PASS",
+      "archiveOpens": "PASS",
+      "safePaths": "PASS",
+      "manifestExactlyOnce": "PASS",
+      "exactSevenMatScope": "PASS",
+      "exactSevenImageFiles": "PASS",
+      "noExtraImages": "PASS",
+      "productionActions": "NOT_RUN_BY_DESIGN"
+    },
+    "records": [
+      {
+        "MAT": "MAT-000069",
+        "sourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe/MAT-000069.png",
+        "packageSourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/production-package-a/images/MAT-000069.png",
+        "sourceSha256": "b8befd9f343cbbeb49e7ee357456dc09606fee7d070a337cd63e53401ab4f2b4",
+        "sourceDimensions": [
+          1200,
+          1200
+        ],
+        "sourceFormat": "png",
+        "classification": "REFRAME",
+        "canonicalPreviewSha256": "aacef16e3cbef44273d59047c7b502c62261a04848870af67eea8f228992ca59",
+        "expectedPreviewFillPercent": 84.7,
+        "validation": "PASS"
+      },
+      {
+        "MAT": "MAT-000079",
+        "sourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe/MAT-000079.png",
+        "packageSourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/production-package-a/images/MAT-000079.png",
+        "sourceSha256": "ecddfe7585729346b532574f0d6f71281d9d0ed6e0d07ebd91cfd727a078e812",
+        "sourceDimensions": [
+          1200,
+          1200
+        ],
+        "sourceFormat": "png",
+        "classification": "REFRAME",
+        "canonicalPreviewSha256": "863bb26c212b2eeeb647668c4ad35093a79ac677260fc9106de472ee2908bbf1",
+        "expectedPreviewFillPercent": 84.8,
+        "validation": "PASS"
+      },
+      {
+        "MAT": "MAT-000080",
+        "sourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe/MAT-000080.png",
+        "packageSourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/production-package-a/images/MAT-000080.png",
+        "sourceSha256": "130c5da3858b8115e6dfd1be485d5cd5a100d658172edb83ea37cc17763690ec",
+        "sourceDimensions": [
+          1200,
+          1200
+        ],
+        "sourceFormat": "png",
+        "classification": "REFRAME",
+        "canonicalPreviewSha256": "eac20fac2841135f439ac19758a7a9bc8bffb4b6f033ff575ff4208205130191",
+        "expectedPreviewFillPercent": 84.8,
+        "validation": "PASS"
+      },
+      {
+        "MAT": "MAT-000081",
+        "sourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe/MAT-000081.png",
+        "packageSourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/production-package-a/images/MAT-000081.png",
+        "sourceSha256": "3e8f085e77743cee845f8f0ebec6079c4d496cc750713772ed498affabf8470d",
+        "sourceDimensions": [
+          1200,
+          1200
+        ],
+        "sourceFormat": "png",
+        "classification": "REFRAME",
+        "canonicalPreviewSha256": "28fe45a5369ccb2a878c36c6fb1681d56051814cac30ef013cc7bfd79584d27f",
+        "expectedPreviewFillPercent": 84.8,
+        "validation": "PASS"
+      },
+      {
+        "MAT": "MAT-000082",
+        "sourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe/MAT-000082.png",
+        "packageSourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/production-package-a/images/MAT-000082.png",
+        "sourceSha256": "cab9ca8cf9c7eaf47e8283d87a8c534057754827e9812f08776428ddae84cdb5",
+        "sourceDimensions": [
+          1200,
+          1200
+        ],
+        "sourceFormat": "png",
+        "classification": "REFRAME",
+        "canonicalPreviewSha256": "410a639d11681220e0734ca950a62bccf7266ad55958eba9f3c80f72bb1dbbc0",
+        "expectedPreviewFillPercent": 84.8,
+        "validation": "PASS"
+      },
+      {
+        "MAT": "MAT-000089",
+        "sourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe/MAT-000089.png",
+        "packageSourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/production-package-a/images/MAT-000089.png",
+        "sourceSha256": "e5c69ea86340e869c124c046782e8f0478bc59c8fddc42cabf9d75eac1ca4ee0",
+        "sourceDimensions": [
+          1200,
+          1200
+        ],
+        "sourceFormat": "png",
+        "classification": "REFRAME",
+        "canonicalPreviewSha256": "197784d884e5419fcca5865cd96c571cab9f9eeb5e73bb20c8a5cf00aee2c98d",
+        "expectedPreviewFillPercent": 84.8,
+        "validation": "PASS"
+      },
+      {
+        "MAT": "MAT-000090",
+        "sourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe/MAT-000090.png",
+        "packageSourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/production-package-a/images/MAT-000090.png",
+        "sourceSha256": "6def91e51d8f8b8624a7da64d7dac4446ebc3fa7fc1e648ba77ce20bb9c6ae9e",
+        "sourceDimensions": [
+          1200,
+          1200
+        ],
+        "sourceFormat": "png",
+        "classification": "REFRAME",
+        "canonicalPreviewSha256": "1ffb471c9a2921434907f66a96af7bdc91e6dc98a926414e8341596f775755f9",
+        "expectedPreviewFillPercent": 84.8,
+        "validation": "PASS"
+      }
+    ],
+    "keepUntouched": [
+      "MAT-000067",
+      "MAT-000077",
+      "MAT-000078",
+      "MAT-000083",
+      "MAT-000084",
+      "MAT-000085",
+      "MAT-000086"
+    ],
+    "rebuildUnchanged": [
+      "MAT-000068",
+      "MAT-000075",
+      "MAT-000076",
+      "MAT-000087"
+    ],
+    "packageBStatus": "PENDING_REBUILD_CANDIDATES",
+    "rolloutClosed": false
+  },
+  "packageBStatus": "PENDING_REBUILD_CANDIDATES",
+  "rolloutStatus": "PACKAGE_A_READY_PACKAGE_B_PENDING"
 }

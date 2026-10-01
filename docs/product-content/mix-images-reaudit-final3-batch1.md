@@ -293,6 +293,41 @@ REBUILD_4_HANDOFF_READY=true; no candidate image or production package created.
 
 These files are local untracked review artifacts.
 
+## Package A — REFRAME_7
+
+**Checkpoint:** PACKAGE_A_PREPARED
+**Status:** READY_FOR_PRODUCTION_DRY_RUN
+**Working directory:** product-images-batch/mix-images-reaudit-final3-batch1/production-package-a/
+**Importer input directory:** production-package-a/images/ (contains exactly seven PNGs; manifest is outside this directory)
+**Archive:** product-images-batch/mix-images-reaudit-final3-batch1/mix-images-final3-reframe-package-a.tar.gz
+**Archive SHA256:** 104ddb3f1d484da22ccc8eecdd194e5cf9b7ce478cbcbeadf977907b438538e0
+**Archive size:** 5,509,842 bytes; **files:** 8 (manifest + seven images).
+
+| MAT | Package source | Source SHA256 | Canonical preview SHA256 | Preview fill |
+|---|---|---|---|---:|
+| MAT-000069 | production-package-a/images/MAT-000069.png | b8befd9f343cbbeb49e7ee357456dc09606fee7d070a337cd63e53401ab4f2b4 | aacef16e3cbef44273d59047c7b502c62261a04848870af67eea8f228992ca59 | 84.7% |
+| MAT-000079 | production-package-a/images/MAT-000079.png | ecddfe7585729346b532574f0d6f71281d9d0ed6e0d07ebd91cfd727a078e812 | 863bb26c212b2eeeb647668c4ad35093a79ac677260fc9106de472ee2908bbf1 | 84.8% |
+| MAT-000080 | production-package-a/images/MAT-000080.png | 130c5da3858b8115e6dfd1be485d5cd5a100d658172edb83ea37cc17763690ec | eac20fac2841135f439ac19758a7a9bc8bffb4b6f033ff575ff4208205130191 | 84.8% |
+| MAT-000081 | production-package-a/images/MAT-000081.png | 3e8f085e77743cee845f8f0ebec6079c4d496cc750713772ed498affabf8470d | 28fe45a5369ccb2a878c36c6fb1681d56051814cac30ef013cc7bfd79584d27f | 84.8% |
+| MAT-000082 | production-package-a/images/MAT-000082.png | cab9ca8cf9c7eaf47e8283d87a8c534057754827e9812f08776428ddae84cdb5 | 410a639d11681220e0734ca950a62bccf7266ad55958eba9f3c80f72bb1dbbc0 | 84.8% |
+| MAT-000089 | production-package-a/images/MAT-000089.png | e5c69ea86340e869c124c046782e8f0478bc59c8fddc42cabf9d75eac1ca4ee0 | 197784d884e5419fcca5865cd96c571cab9f9eeb5e73bb20c8a5cf00aee2c98d | 84.8% |
+| MAT-000090 | production-package-a/images/MAT-000090.png | 6def91e51d8f8b8624a7da64d7dac4446ebc3fa7fc1e648ba77ce20bb9c6ae9e | 1ffb471c9a2921434907f66a96af7bdc91e6dc98a926414e8341596f775755f9 | 84.8% |
+
+Manifest validation passed: task/package name, exact ordered seven-MAT scope, source path/hash, PNG 1200×1200, REFRAME classification, pixel-preserving status, prior owner-review policy, production evidence verification, source visual verification, and canonical preview SHA are recorded. Package archive validation passed: safe relative paths, one manifest, exactly seven PNGs and no extra images. Re-running the existing importer renderWebp() against all seven package copies reproduced all expected preview SHA256 values.
+
+Archive file list:
+
+- production-package-a/manifest.json
+- production-package-a/images/MAT-000069.png
+- production-package-a/images/MAT-000079.png
+- production-package-a/images/MAT-000080.png
+- production-package-a/images/MAT-000081.png
+- production-package-a/images/MAT-000082.png
+- production-package-a/images/MAT-000089.png
+- production-package-a/images/MAT-000090.png
+
+KEEP remains untouched: MAT-000067, MAT-000077, MAT-000078, MAT-000083, MAT-000084, MAT-000085, MAT-000086. Package B remains PENDING_REBUILD_CANDIDATES for MAT-000068, MAT-000075, MAT-000076, MAT-000087. This checkpoint does not close the overall final3 rollout. No production importer, dry-run, backup, upload, apply, SSH, or deploy was used.
+
 ## Validation and scope
 
 - Exact MAT scope: MAT-000067, MAT-000068, MAT-000069, MAT-000075, MAT-000076, MAT-000077, MAT-000078, MAT-000079, MAT-000080, MAT-000081, MAT-000082, MAT-000083, MAT-000084, MAT-000085, MAT-000086, MAT-000087, MAT-000089, MAT-000090 (18 total).
