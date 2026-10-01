@@ -52,7 +52,7 @@ OWNER_REVIEW_REQUIRED: none
 - **Source (manufacturer official):** [https://rusean.ru/catalog/sukhie_smesi_/sukhaya_smes_m_200_montazhno_kladochnaya_40_kg/](https://rusean.ru/catalog/sukhie_smesi_/sukhaya_smes_m_200_montazhno_kladochnaya_40_kg/) — Official Rusean listing confirms M-200 and 40 кг.
 - **Visual:** Exact pack but large third-party shop watermark crosses sack and background; do not erase it. Bbox/fill {"left":247,"top":97,"width":709,"height":1020,"fillWidthPercent":59.1,"fillHeightPercent":85,"limitingAxisFillPercent":85}; background white with watermark; watermark/mark: third-party shop watermark; package fully visible with no clipping.
 - **Action:** Clean exact image / rebuild brief.
-- **Handoff:** product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000068/README.md; no candidate generated.
+- **Handoff:** product-images-batch/mix-images-reaudit-final3-batch1/chatgpt-rebuild-handoff/MAT-000068/README.md; no candidate generated.
 
 ### MAT-000069 — REFRAME
 
@@ -76,7 +76,7 @@ OWNER_REVIEW_REQUIRED: none
 - **Target identity:** CONFIRMED by owner-provided MAT-specific exact package and identity decision: **UNIS Горизонт Универсальный М-45, 20 кг**. The official UNIS page corroborates the current M-45 identity and 20 kg option: [official page](https://unistrom.ru/catalog/ustrojstvo-polov/nalivnye-poly/gorizont-universalnyj/).
 - **Current mismatch:** Production image shows the 30 kg pack. Do not crop/relabel or substitute Армированный/another variant.
 - **Remaining point:** No identity/variant uncertainty remains. A verified exact 20 kg package image asset is still needed; the original owner package reference is not present in this batch directory.
-- **Handoff:** [README](../../product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000075/README.md); candidate not created.
+- **Handoff:** [README](../../product-images-batch/mix-images-reaudit-final3-batch1/chatgpt-rebuild-handoff/MAT-000075/README.md); candidate not created.
 
 ### MAT-000076 — REBUILD
 
@@ -88,7 +88,7 @@ OWNER_REVIEW_REQUIRED: none
 - **Source (manufacturer official):** [https://unistrom.ru/catalog/ustrojstvo-polov/gorizont-armirovannyj/](https://unistrom.ru/catalog/ustrojstvo-polov/gorizont-armirovannyj/) — Official page confirms armored 25 kg; package says 30 kg and evidence alt says 20 kg.
 - **Visual:** Wrong package weight; exact 25 kg local reference sources exist. Bbox/fill {"left":254,"top":72,"width":492,"height":855,"fillWidthPercent":49.2,"fillHeightPercent":85.5,"limitingAxisFillPercent":85.5}; background white; watermark/mark: none observed; package fully visible with no clipping.
 - **Action:** Rebuild from exact 25 kg reference.
-- **Handoff:** product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000076/README.md; no candidate generated.
+- **Handoff:** product-images-batch/mix-images-reaudit-final3-batch1/chatgpt-rebuild-handoff/MAT-000076/README.md; no candidate generated.
 
 ### MAT-000077 — KEEP
 
@@ -218,7 +218,7 @@ OWNER_REVIEW_REQUIRED: none
 - **Source (manufacturer official):** [https://www.ceresit.ru/ru/products/flooring/levelling-compounds/cn_175_super](https://www.ceresit.ru/ru/products/flooring/levelling-compounds/cn_175_super) — Official page confirms both 20 and 25 kg; package reads 25 kg.
 - **Visual:** Exact model, wrong weight; do not crop/relabel. Bbox/fill {"left":220,"top":28,"width":561,"height":939,"fillWidthPercent":56.1,"fillHeightPercent":93.9,"limitingAxisFillPercent":93.9}; background white; watermark/mark: none observed; package fully visible with no clipping.
 - **Action:** Exact 20 kg rebuild brief.
-- **Handoff:** product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000087/README.md; no candidate generated.
+- **Handoff:** product-images-batch/mix-images-reaudit-final3-batch1/chatgpt-rebuild-handoff/MAT-000087/README.md; no candidate generated.
 
 ### MAT-000089 — REFRAME
 
@@ -279,11 +279,11 @@ No fake final packshots were generated. Every directory contains an exact curren
 | MAT | Exact target | Current issue / remaining point | Handoff |
 |---|---|---|---|
 | MAT-000068 | Русеан М-200 монтажно-кладочная смесь, 40 кг | Current exact pack is crossed by a third-party СТРОЙПЛАЗА.RU watermark. Do not remove/copy it; clean exact source or controlled exact catalog image still required. | product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000068/ |
-| MAT-000075 | UNIS Горизонт Универсальный М-45, 20 кг | Target identity resolved by owner-provided MAT-specific evidence; production is 30 kg. Original exact 20 kg owner reference is not local and must be retrieved/verified. | product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000075/ |
+| MAT-000075 | UNIS Горизонт Универсальный М-45, 20 кг | Production is 30 kg and remains negative-only. Exact 20 kg legacy-facing UNIS Горизонт Универсальный visual is local and verified; the package does not visibly say M-45, so do not add that label to the artwork. | product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000075/ |
 | MAT-000076 | UNIS Горизонт Армированный, 25 кг | Production is 30 kg; local front/back 25 kg references support weight, but upstream provenance for alternate local refs is not recorded. Verify provenance/rights before production use. | product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000076/ |
-| MAT-000087 | Ceresit CN 175 Super, 20 кг | Production image is 25 kg; exact 20 kg artwork is required. Do not relabel. Exact SKU design takes precedence over assumed red/yellow accents. | product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000087/ |
+| MAT-000087 | Ceresit CN 175 Super, 20 кг | Production image is 25 kg and remains negative-only. Exact CN 175 SUPER 20 kg front visual is local and verified; do not use or relabel the 25 kg package. | product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000087/ |
 
-REBUILD_4_HANDOFF_READY=false for generation: complete handoff files exist, but exact local target visuals for MAT-000075 and MAT-000087 are not verified. No candidate image or production package created.
+REBUILD_4_HANDOFF_READY=true for generation: all four exact-scope MATs have local, decoded and visually checked target references. No synthetic candidate has been generated; production rollout remains open.
 
 ### Owner contact sheets
 
@@ -326,7 +326,7 @@ Archive file list:
 - production-package-a/images/MAT-000089.png
 - production-package-a/images/MAT-000090.png
 
-KEEP remains untouched: MAT-000067, MAT-000077, MAT-000078, MAT-000083, MAT-000084, MAT-000085, MAT-000086. Package B remains PENDING_REBUILD_CANDIDATES for MAT-000068, MAT-000075, MAT-000076, MAT-000087. This checkpoint does not close the overall final3 rollout. No production importer, dry-run, backup, upload, apply, SSH, or deploy was used.
+KEEP remains untouched: MAT-000067, MAT-000077, MAT-000078, MAT-000083, MAT-000084, MAT-000085, MAT-000086. Package B now has a complete rebuild handoff for MAT-000068, MAT-000075, MAT-000076 and MAT-000087. This checkpoint does not close the overall final3 rollout. No production importer, dry-run, backup, upload, apply, SSH, or deploy was used.
 
 ## Validation and scope
 
@@ -340,7 +340,7 @@ KEEP remains untouched: MAT-000067, MAT-000077, MAT-000078, MAT-000083, MAT-0000
 
 MAT_000077_IDENTITY_RESOLVED=true
 REFRAME_7_READY_FOR_OWNER_REVIEW=true
-REBUILD_4_HANDOFF_READY=false
+REBUILD_4_HANDOFF_READY=true
 FINAL3_READY_FOR_OWNER_VISUAL_REVIEW=true
 NO_PRODUCTION_ACTIONS=true
 
@@ -369,56 +369,61 @@ Verifier PASS markers: `BACKUP_SHA_OK`, `LIVE_HEALTH_OK`, `integrity=ok`, `user_
 
 ## Package B — ChatGPT rebuild handoff
 
-Exact scope remains MAT-000068, MAT-000075, MAT-000076, MAT-000087. Handoff root: `product-images-batch/mix-images-reaudit-final3-batch1/chatgpt-rebuild-handoff/`; archive: `product-images-batch/mix-images-reaudit-final3-batch1/chatgpt-rebuild-handoff.tar.gz`. Per-MAT briefs, generation prompts, source notes, and local references are listed in the handoff manifest.
+Exact scope: MAT-000068, MAT-000075, MAT-000076, MAT-000087. Handoff root: `product-images-batch/mix-images-reaudit-final3-batch1/chatgpt-rebuild-handoff/`; rebuilt archive: `product-images-batch/mix-images-reaudit-final3-batch1/chatgpt-rebuild-handoff.tar.gz`.
 
-Generation gate: MAT-000068=true; MAT-000075=false; MAT-000076=true; MAT-000087=false. MAT-000075 and MAT-000087 have exact 20 kg page/direct-image candidates recorded, but the image bytes could not be locally retrieved or visually/hash/dimension checked in this environment. Their existing wrong-weight production images are negative references only. Do not generate their candidates until exact target visuals are available and inspected. Therefore `FINAL3_PACKAGE_B_HANDOFF_READY=false` for generation readiness, although the structured handoff package is prepared and validated.
+Generation readiness: MAT-000068=true; MAT-000075=true; MAT-000076=true; MAT-000087=true. Both previously blocked target visuals are now local, decoded and visually inspected. Package A production verification above is unchanged. Package B remains a handoff for synthetic review candidates only; none were generated or applied, and the overall final3 rollout remains **NOT CLOSED**.
 
-Package B production candidates were not created. Overall final3 rollout remains **NOT CLOSED**.
+### Repaired references
+
+| MAT | Exact local reference | Source page | Direct asset | Format / dimensions | SHA256 | Visual identity note |
+|---|---|---|---|---|---|---|
+| MAT-000075 | `MAT-000075/references/unis-horizon-universal-m45-20kg-mirax.jpg` | [Mirax 20 kg listing](https://www.miraxstroy.ru/bystrotverdeyushchiy-nalivnoy-pol-yunis-gorizont-universalnyy-meshok-20kg/) | [JPG](https://www.miraxstroy.ru/upload/iblock/705/705a66758af13cca2b64e76997a5d214.jpg) | JPEG, 800×800, 124033 bytes | `d84ac566d445db42fd6fbc8e6c925c25d3826c24db4d4f80f10c78ee6e8e9c57` | UNIS Горизонт Универсальный sack with visible 20 kg. Legacy-facing art does not show M-45; prompt forbids adding it. |
+| MAT-000087 | `MAT-000087/references/ceresit-cn-175-super-20kg-psp.png` | [PSP exact 20 kg listing](https://psp-spb.ru/katalog-kompanii-psp/ceresit/nalivnyie-polyi/kopiya-nalivnoj-pol-universalnyij-ceresit-cn173-samovyiravnivayushhijsya-20-kg.html) | [PNG](https://psp-spb.ru/uploads/images/products/2518/big2/cn-175-20kg.png) | PNG, 500×500, 96335 bytes | `77de258ac1cc25c4bd90cc8204d620b7c46d920c727ba9bcca231a67e419596e` | Visible Церезит / CN 175 / SUPER / 20 kg. Official identity and pack sizes also supported by [Henkel TDS](https://dm.henkel-dam.com/is/content/henkel/tds-ru-ceresit-cn175pdf). |
+
+The VseInstrumenti and Petrovich image candidates for MAT-000075 were rejected after download: both showed a UNIS 1 L container, not the required 20 kg sack. They are excluded from the handoff. The 30 kg production image for MAT-000075 and 25 kg production image for MAT-000087 remain negative-only references.
+
+### Final markers
 
 `FINAL3_PACKAGE_A_PRODUCTION_APPLIED_AND_VERIFIED=true`
-`FINAL3_PACKAGE_B_HANDOFF_READY=false`
+
+`FINAL3_PACKAGE_B_MAT075_REFERENCE_READY=true`
+
+`FINAL3_PACKAGE_B_MAT087_REFERENCE_READY=true`
+
+`FINAL3_PACKAGE_B_HANDOFF_READY=true`
+
 `FINAL3_PACKAGE_B_HANDOFF_ARCHIVE_VERIFY_OK=true`
+
 `FINAL3_ROLLOUT_CLOSED=false`
 
+### Archive validation
 
-### Archive validation record
-
-- Archive: `product-images-batch/mix-images-reaudit-final3-batch1/chatgpt-rebuild-handoff.tar.gz`; bytes: 2775573; SHA256: `1f3d62bb7c8658729ee0ebe21f89c8a0724aca14caf6650fe5f4140a67638ea9`.
-- Entries: 40 files; exactly one manifest and four MAT directories. No Package A files or unrelated product folders. Paths are safe and relative.
-- All manifest paths exist in the archive. All 18 packaged images decode with Sharp; manifest reference hashes/formats/dimensions match. Remote candidate image URLs for MAT-000075/087 are not archived/local assets; no local decode/hash is claimed for them.
-
-Image files (path — format, dimensions, bytes, SHA256):
-
-- `MAT-000087/current-production.webp` — webp, 1000x1000, 42488 bytes, `2e801d952dcfd0ac81b1d82b48a27f1dbe504c6b77a4c8071b4ae088ae6a3c78`.
-- `MAT-000087/reference-01-current-production-25kg-negative-reference.webp` — webp, 1000x1000, 42488 bytes, `2e801d952dcfd0ac81b1d82b48a27f1dbe504c6b77a4c8071b4ae088ae6a3c78`.
-- `MAT-000087/references/current-production-wrong-25kg-negative-reference.webp` — webp, 1000x1000, 42488 bytes, `2e801d952dcfd0ac81b1d82b48a27f1dbe504c6b77a4c8071b4ae088ae6a3c78`.
-- `MAT-000076/current-production.webp` — webp, 1000x1000, 37704 bytes, `af93d91aea5363720b15d62fe21c29bdaf3ad4cd6d1e4a274aa3c2ec6ca9b61e`.
-- `MAT-000076/reference-01-front-25kg.jpg` — jpeg, 1000x1000, 446998 bytes, `1ad72716940e1344e7b7ab8b2f1d7d313b0ef650a10ec69d92e6b48b07677364`.
-- `MAT-000076/reference-02-back-25kg.jpg` — jpeg, 1000x1000, 456950 bytes, `9f3b5f6e7581f8f6723c4099044027bef252f5e7280f944c5c17088f3a46e494`.
-- `MAT-000076/reference-03-official-small.jpg` — jpeg, 200x200, 8132 bytes, `8af7559c21d4dc97238ee74a74a7da13378bb9f6700f6cc4d2ebc32bf3141f76`.
-- `MAT-000076/references/current-production-wrong-30kg-negative-reference.webp` — webp, 1000x1000, 37704 bytes, `af93d91aea5363720b15d62fe21c29bdaf3ad4cd6d1e4a274aa3c2ec6ca9b61e`.
-- `MAT-000076/references/unis-armirovannyi-back-25kg.jpg` — jpeg, 1000x1000, 456950 bytes, `9f3b5f6e7581f8f6723c4099044027bef252f5e7280f944c5c17088f3a46e494`.
-- `MAT-000076/references/unis-armirovannyi-front-25kg.jpg` — jpeg, 1000x1000, 446998 bytes, `1ad72716940e1344e7b7ab8b2f1d7d313b0ef650a10ec69d92e6b48b07677364`.
-- `MAT-000076/references/unis-official-family-small.jpg` — jpeg, 200x200, 8132 bytes, `8af7559c21d4dc97238ee74a74a7da13378bb9f6700f6cc4d2ebc32bf3141f76`.
-- `MAT-000075/current-production.webp` — webp, 1000x1000, 65568 bytes, `afc7f8282f7e6c088bc9d6c872162de7cf9f01e49fde08858945f7c4b95b0dd9`.
-- `MAT-000075/reference-01-current-production-30kg-negative-reference.webp` — webp, 1000x1000, 65568 bytes, `afc7f8282f7e6c088bc9d6c872162de7cf9f01e49fde08858945f7c4b95b0dd9`.
-- `MAT-000075/references/current-production-wrong-30kg-negative-reference.webp` — webp, 1000x1000, 65568 bytes, `afc7f8282f7e6c088bc9d6c872162de7cf9f01e49fde08858945f7c4b95b0dd9`.
-- `MAT-000068/current-production.webp` — webp, 1200x1200, 71252 bytes, `cf238451107af3f83b1aa0ef0da80374c409690336c34204621768a0a7e746e5`.
-- `MAT-000068/reference-01-official-context-watermarked.jpg` — jpeg, 768x1024, 241980 bytes, `18791ad479824f811f8694b9c679ba2073dcbd9e0ac1c91e6a721c5c1f8e12a3`.
-- `MAT-000068/references/current-production-watermarked-identity-only.webp` — webp, 1200x1200, 71252 bytes, `cf238451107af3f83b1aa0ef0da80374c409690336c34204621768a0a7e746e5`.
-- `MAT-000068/references/rusean-official-context-watermarked.jpg` — jpeg, 768x1024, 241980 bytes, `18791ad479824f811f8694b9c679ba2073dcbd9e0ac1c91e6a721c5c1f8e12a3`.
+- Archive: `product-images-batch/mix-images-reaudit-final3-batch1/chatgpt-rebuild-handoff.tar.gz`
+- Size: 2,988,225 bytes; SHA256: `fb71c199c9889744083aaf6488bf155133a39f24e52292eb2aa84183571b24a2`.
+- Exactly 42 files, one manifest and exactly four MAT directories; no Package A files or unrelated MAT. All archive paths are relative and contain no parent traversal.
+- All manifest-listed references exist in the archive. All 20 image files decode with Sharp; dimensions, format, byte size and SHA256 match the archive manifest.
 
 Complete archive file list:
 
-- `chatgpt-rebuild-handoff/manifest.json`
-- `chatgpt-rebuild-handoff/MAT-000087/brief.md`
-- `chatgpt-rebuild-handoff/MAT-000087/current-production.webp`
-- `chatgpt-rebuild-handoff/MAT-000087/generation-prompt.txt`
-- `chatgpt-rebuild-handoff/MAT-000087/reference-01-current-production-25kg-negative-reference.webp`
-- `chatgpt-rebuild-handoff/MAT-000087/references.txt`
-- `chatgpt-rebuild-handoff/MAT-000087/sources.md`
-- `chatgpt-rebuild-handoff/MAT-000087/target.txt`
-- `chatgpt-rebuild-handoff/MAT-000087/references/current-production-wrong-25kg-negative-reference.webp`
+- `chatgpt-rebuild-handoff/MAT-000068/brief.md`
+- `chatgpt-rebuild-handoff/MAT-000068/current-production.webp`
+- `chatgpt-rebuild-handoff/MAT-000068/generation-prompt.txt`
+- `chatgpt-rebuild-handoff/MAT-000068/reference-01-official-context-watermarked.jpg`
+- `chatgpt-rebuild-handoff/MAT-000068/references.txt`
+- `chatgpt-rebuild-handoff/MAT-000068/references/current-production-watermarked-identity-only.webp`
+- `chatgpt-rebuild-handoff/MAT-000068/references/rusean-official-context-watermarked.jpg`
+- `chatgpt-rebuild-handoff/MAT-000068/sources.md`
+- `chatgpt-rebuild-handoff/MAT-000068/target.txt`
+- `chatgpt-rebuild-handoff/MAT-000075/brief.md`
+- `chatgpt-rebuild-handoff/MAT-000075/current-production.webp`
+- `chatgpt-rebuild-handoff/MAT-000075/generation-prompt.txt`
+- `chatgpt-rebuild-handoff/MAT-000075/reference-01-current-production-30kg-negative-reference.webp`
+- `chatgpt-rebuild-handoff/MAT-000075/references.txt`
+- `chatgpt-rebuild-handoff/MAT-000075/references/current-production-wrong-30kg-negative-reference.webp`
+- `chatgpt-rebuild-handoff/MAT-000075/references/owner-mat-identity-excerpt.json`
+- `chatgpt-rebuild-handoff/MAT-000075/references/unis-horizon-universal-m45-20kg-mirax.jpg`
+- `chatgpt-rebuild-handoff/MAT-000075/sources.md`
+- `chatgpt-rebuild-handoff/MAT-000075/target.txt`
 - `chatgpt-rebuild-handoff/MAT-000076/brief.md`
 - `chatgpt-rebuild-handoff/MAT-000076/current-production.webp`
 - `chatgpt-rebuild-handoff/MAT-000076/generation-prompt.txt`
@@ -426,27 +431,21 @@ Complete archive file list:
 - `chatgpt-rebuild-handoff/MAT-000076/reference-02-back-25kg.jpg`
 - `chatgpt-rebuild-handoff/MAT-000076/reference-03-official-small.jpg`
 - `chatgpt-rebuild-handoff/MAT-000076/references.txt`
-- `chatgpt-rebuild-handoff/MAT-000076/sources.md`
-- `chatgpt-rebuild-handoff/MAT-000076/target.txt`
 - `chatgpt-rebuild-handoff/MAT-000076/references/current-production-wrong-30kg-negative-reference.webp`
 - `chatgpt-rebuild-handoff/MAT-000076/references/unis-armirovannyi-back-25kg.jpg`
 - `chatgpt-rebuild-handoff/MAT-000076/references/unis-armirovannyi-front-25kg.jpg`
 - `chatgpt-rebuild-handoff/MAT-000076/references/unis-official-family-small.jpg`
-- `chatgpt-rebuild-handoff/MAT-000075/brief.md`
-- `chatgpt-rebuild-handoff/MAT-000075/current-production.webp`
-- `chatgpt-rebuild-handoff/MAT-000075/generation-prompt.txt`
-- `chatgpt-rebuild-handoff/MAT-000075/reference-01-current-production-30kg-negative-reference.webp`
-- `chatgpt-rebuild-handoff/MAT-000075/references.txt`
-- `chatgpt-rebuild-handoff/MAT-000075/sources.md`
-- `chatgpt-rebuild-handoff/MAT-000075/target.txt`
-- `chatgpt-rebuild-handoff/MAT-000075/references/current-production-wrong-30kg-negative-reference.webp`
-- `chatgpt-rebuild-handoff/MAT-000075/references/owner-mat-identity-excerpt.json`
-- `chatgpt-rebuild-handoff/MAT-000068/brief.md`
-- `chatgpt-rebuild-handoff/MAT-000068/current-production.webp`
-- `chatgpt-rebuild-handoff/MAT-000068/generation-prompt.txt`
-- `chatgpt-rebuild-handoff/MAT-000068/reference-01-official-context-watermarked.jpg`
-- `chatgpt-rebuild-handoff/MAT-000068/references.txt`
-- `chatgpt-rebuild-handoff/MAT-000068/sources.md`
-- `chatgpt-rebuild-handoff/MAT-000068/target.txt`
-- `chatgpt-rebuild-handoff/MAT-000068/references/current-production-watermarked-identity-only.webp`
-- `chatgpt-rebuild-handoff/MAT-000068/references/rusean-official-context-watermarked.jpg`
+- `chatgpt-rebuild-handoff/MAT-000076/sources.md`
+- `chatgpt-rebuild-handoff/MAT-000076/target.txt`
+- `chatgpt-rebuild-handoff/MAT-000087/brief.md`
+- `chatgpt-rebuild-handoff/MAT-000087/current-production.webp`
+- `chatgpt-rebuild-handoff/MAT-000087/generation-prompt.txt`
+- `chatgpt-rebuild-handoff/MAT-000087/reference-01-current-production-25kg-negative-reference.webp`
+- `chatgpt-rebuild-handoff/MAT-000087/references.txt`
+- `chatgpt-rebuild-handoff/MAT-000087/references/ceresit-cn-175-super-20kg-psp.png`
+- `chatgpt-rebuild-handoff/MAT-000087/references/current-production-wrong-25kg-negative-reference.webp`
+- `chatgpt-rebuild-handoff/MAT-000087/sources.md`
+- `chatgpt-rebuild-handoff/MAT-000087/target.txt`
+- `chatgpt-rebuild-handoff/manifest.json`
+
+No Package A production data was changed by this repair. No production access, SSH, deploy, image apply or candidate generation was performed.

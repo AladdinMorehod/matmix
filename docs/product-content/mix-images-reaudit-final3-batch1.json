@@ -4214,10 +4214,10 @@
       "verifiedStatus": "PRODUCTION_APPLIED_AND_VERIFIED"
     }
   },
-  "packageBStatus": "PENDING_REBUILD_HANDOFF",
-  "rolloutStatus": "PACKAGE_A_PRODUCTION_APPLIED_AND_VERIFIED_PACKAGE_B_PENDING",
+  "packageBStatus": "HANDOFF_READY",
+  "rolloutStatus": "PACKAGE_A_PRODUCTION_APPLIED_AND_VERIFIED_PACKAGE_B_HANDOFF_READY_ROLLOUT_OPEN",
   "packageB": {
-    "status": "PENDING_REBUILD_HANDOFF",
+    "status": "HANDOFF_READY",
     "exactScope": [
       "MAT-000068",
       "MAT-000075",
@@ -4228,12 +4228,12 @@
     "archivePath": "product-images-batch/mix-images-reaudit-final3-batch1/chatgpt-rebuild-handoff.tar.gz",
     "generationReadiness": {
       "MAT-000068": true,
-      "MAT-000075": false,
+      "MAT-000075": true,
       "MAT-000076": true,
-      "MAT-000087": false
+      "MAT-000087": true
     },
-    "generationReadyAll": false,
-    "evidenceGap": "MAT-000075 and MAT-000087 exact remote 20 kg image candidates have source page/direct URLs, but bytes could not be downloaded or locally visually verified; do not generate until reviewed local reference assets are supplied/downloaded.",
+    "generationReadyAll": true,
+    "evidenceGap": null,
     "productionCandidateCreated": false,
     "rolloutClosed": false,
     "products": [
@@ -4277,12 +4277,13 @@
         "brand": "UNIS",
         "model": "Горизонт Универсальный М-45",
         "classification": "REBUILD",
-        "identityStatus": "CONFIRMED_OWNER_MAT_MAPPING_AND_OFFICIAL_UNIS_VARIANT",
+        "identityStatus": "CONFIRMED_OWNER_MAT_MAPPING_OFFICIAL_UNIS_VARIANT_AND_EXACT_20KG_VISUAL_CONTEXT",
         "briefPath": "MAT-000075/brief.md",
         "generationPromptPath": "MAT-000075/generation-prompt.txt",
         "sourcesPath": "MAT-000075/sources.md",
         "referenceFiles": [
-          "MAT-000075/references/current-production-wrong-30kg-negative-reference.webp"
+          "MAT-000075/references/current-production-wrong-30kg-negative-reference.webp",
+          "MAT-000075/references/unis-horizon-universal-m45-20kg-mirax.jpg"
         ],
         "supportingFiles": [
           {
@@ -4293,10 +4294,11 @@
           }
         ],
         "referenceSourceUrls": [
-          "../../../../../../docs/product-content/floor-075-077-identity-review.json",
           "https://unistrom.ru/catalog/ustrojstvo-polov/nalivnye-poly/gorizont-universalnyj/",
+          "https://www.miraxstroy.ru/bystrotverdeyushchiy-nalivnoy-pol-yunis-gorizont-universalnyy-meshok-20kg/",
+          "https://www.miraxstroy.ru/upload/iblock/705/705a66758af13cca2b64e76997a5d214.jpg",
           "https://www.vseinstrumenti.ru/product/nalivnoj-pol-unis-gorizont-universalnyj-bystroverdeyuschij-3-100-mm-20-kg-4607005181664-2937182/",
-          "https://cdn.vseinstrumenti.ru/images/goods/stroitelnye-materialy/stroitelnye-smesi/2937182/1200x800/64621458.jpg"
+          "https://yaroslavl.petrovich.ru/product/170427/"
         ],
         "currentProductionMismatch": "Current production image is a 30 kg M-45 package, wrong weight; preserve only as a negative family reference, never as target artwork.",
         "currentProductionEvidence": {
@@ -4307,7 +4309,15 @@
           "sha256": "afc7f8282f7e6c088bc9d6c872162de7cf9f01e49fde08858945f7c4b95b0dd9",
           "role": "Wrong-weight negative reference only; do not reuse/relabel."
         },
-        "generationReady": false
+        "generationReady": true,
+        "verifiedTargetVisual": {
+          "path": "MAT-000075/references/unis-horizon-universal-m45-20kg-mirax.jpg",
+          "sha256": "d84ac566d445db42fd6fbc8e6c925c25d3826c24db4d4f80f10c78ee6e8e9c57",
+          "bytes": 124033,
+          "why": "Exact 20 kg UNIS Горизонт Универсальный legacy-facing package visual; weight is visible.",
+          "format": "jpeg",
+          "dimensions": "800x800"
+        }
       },
       {
         "mat": "MAT-000076",
@@ -4351,12 +4361,13 @@
         "brand": "Ceresit",
         "model": "CN 175 Super",
         "classification": "REBUILD",
-        "identityStatus": "CONFIRMED_OFFICIAL_PRODUCT_AND_TDS; EXACT_VISUAL_URL_FOUND_NOT_LOCALLY_VERIFIED",
+        "identityStatus": "CONFIRMED_OFFICIAL_PRODUCT_AND_TDS_WITH_EXACT_20KG_LISTING_AND_LOCAL_VISUAL",
         "briefPath": "MAT-000087/brief.md",
         "generationPromptPath": "MAT-000087/generation-prompt.txt",
         "sourcesPath": "MAT-000087/sources.md",
         "referenceFiles": [
-          "MAT-000087/references/current-production-wrong-25kg-negative-reference.webp"
+          "MAT-000087/references/current-production-wrong-25kg-negative-reference.webp",
+          "MAT-000087/references/ceresit-cn-175-super-20kg-psp.png"
         ],
         "supportingFiles": [],
         "referenceSourceUrls": [
@@ -4375,25 +4386,44 @@
           "sha256": "2e801d952dcfd0ac81b1d82b48a27f1dbe504c6b77a4c8071b4ae088ae6a3c78",
           "role": "Wrong-weight negative reference only; do not reuse/relabel."
         },
-        "generationReady": false
+        "generationReady": true,
+        "verifiedTargetVisual": {
+          "path": "MAT-000087/references/ceresit-cn-175-super-20kg-psp.png",
+          "sha256": "77de258ac1cc25c4bd90cc8204d620b7c46d920c727ba9bcca231a67e419596e",
+          "bytes": 96335,
+          "why": "Exact CN 175 SUPER 20 kg front package visual; visible model and weight.",
+          "format": "png",
+          "dimensions": "500x500"
+        }
       }
     ],
     "archiveVerification": {
       "status": "PASS",
       "archivePath": "product-images-batch/mix-images-reaudit-final3-batch1/chatgpt-rebuild-handoff.tar.gz",
-      "archiveBytes": 2775573,
-      "archiveSha256": "1f3d62bb7c8658729ee0ebe21f89c8a0724aca14caf6650fe5f4140a67638ea9",
-      "archiveFileCount": 40,
+      "archiveBytes": 2988225,
+      "archiveSha256": "fb71c199c9889744083aaf6488bf155133a39f24e52292eb2aa84183571b24a2",
+      "archiveFileCount": 42,
+      "archiveEntryCount": 51,
       "archiveFileList": [
-        "chatgpt-rebuild-handoff/manifest.json",
-        "chatgpt-rebuild-handoff/MAT-000087/brief.md",
-        "chatgpt-rebuild-handoff/MAT-000087/current-production.webp",
-        "chatgpt-rebuild-handoff/MAT-000087/generation-prompt.txt",
-        "chatgpt-rebuild-handoff/MAT-000087/reference-01-current-production-25kg-negative-reference.webp",
-        "chatgpt-rebuild-handoff/MAT-000087/references.txt",
-        "chatgpt-rebuild-handoff/MAT-000087/sources.md",
-        "chatgpt-rebuild-handoff/MAT-000087/target.txt",
-        "chatgpt-rebuild-handoff/MAT-000087/references/current-production-wrong-25kg-negative-reference.webp",
+        "chatgpt-rebuild-handoff/MAT-000068/brief.md",
+        "chatgpt-rebuild-handoff/MAT-000068/current-production.webp",
+        "chatgpt-rebuild-handoff/MAT-000068/generation-prompt.txt",
+        "chatgpt-rebuild-handoff/MAT-000068/reference-01-official-context-watermarked.jpg",
+        "chatgpt-rebuild-handoff/MAT-000068/references.txt",
+        "chatgpt-rebuild-handoff/MAT-000068/references/current-production-watermarked-identity-only.webp",
+        "chatgpt-rebuild-handoff/MAT-000068/references/rusean-official-context-watermarked.jpg",
+        "chatgpt-rebuild-handoff/MAT-000068/sources.md",
+        "chatgpt-rebuild-handoff/MAT-000068/target.txt",
+        "chatgpt-rebuild-handoff/MAT-000075/brief.md",
+        "chatgpt-rebuild-handoff/MAT-000075/current-production.webp",
+        "chatgpt-rebuild-handoff/MAT-000075/generation-prompt.txt",
+        "chatgpt-rebuild-handoff/MAT-000075/reference-01-current-production-30kg-negative-reference.webp",
+        "chatgpt-rebuild-handoff/MAT-000075/references.txt",
+        "chatgpt-rebuild-handoff/MAT-000075/references/current-production-wrong-30kg-negative-reference.webp",
+        "chatgpt-rebuild-handoff/MAT-000075/references/owner-mat-identity-excerpt.json",
+        "chatgpt-rebuild-handoff/MAT-000075/references/unis-horizon-universal-m45-20kg-mirax.jpg",
+        "chatgpt-rebuild-handoff/MAT-000075/sources.md",
+        "chatgpt-rebuild-handoff/MAT-000075/target.txt",
         "chatgpt-rebuild-handoff/MAT-000076/brief.md",
         "chatgpt-rebuild-handoff/MAT-000076/current-production.webp",
         "chatgpt-rebuild-handoff/MAT-000076/generation-prompt.txt",
@@ -4401,30 +4431,22 @@
         "chatgpt-rebuild-handoff/MAT-000076/reference-02-back-25kg.jpg",
         "chatgpt-rebuild-handoff/MAT-000076/reference-03-official-small.jpg",
         "chatgpt-rebuild-handoff/MAT-000076/references.txt",
-        "chatgpt-rebuild-handoff/MAT-000076/sources.md",
-        "chatgpt-rebuild-handoff/MAT-000076/target.txt",
         "chatgpt-rebuild-handoff/MAT-000076/references/current-production-wrong-30kg-negative-reference.webp",
         "chatgpt-rebuild-handoff/MAT-000076/references/unis-armirovannyi-back-25kg.jpg",
         "chatgpt-rebuild-handoff/MAT-000076/references/unis-armirovannyi-front-25kg.jpg",
         "chatgpt-rebuild-handoff/MAT-000076/references/unis-official-family-small.jpg",
-        "chatgpt-rebuild-handoff/MAT-000075/brief.md",
-        "chatgpt-rebuild-handoff/MAT-000075/current-production.webp",
-        "chatgpt-rebuild-handoff/MAT-000075/generation-prompt.txt",
-        "chatgpt-rebuild-handoff/MAT-000075/reference-01-current-production-30kg-negative-reference.webp",
-        "chatgpt-rebuild-handoff/MAT-000075/references.txt",
-        "chatgpt-rebuild-handoff/MAT-000075/sources.md",
-        "chatgpt-rebuild-handoff/MAT-000075/target.txt",
-        "chatgpt-rebuild-handoff/MAT-000075/references/current-production-wrong-30kg-negative-reference.webp",
-        "chatgpt-rebuild-handoff/MAT-000075/references/owner-mat-identity-excerpt.json",
-        "chatgpt-rebuild-handoff/MAT-000068/brief.md",
-        "chatgpt-rebuild-handoff/MAT-000068/current-production.webp",
-        "chatgpt-rebuild-handoff/MAT-000068/generation-prompt.txt",
-        "chatgpt-rebuild-handoff/MAT-000068/reference-01-official-context-watermarked.jpg",
-        "chatgpt-rebuild-handoff/MAT-000068/references.txt",
-        "chatgpt-rebuild-handoff/MAT-000068/sources.md",
-        "chatgpt-rebuild-handoff/MAT-000068/target.txt",
-        "chatgpt-rebuild-handoff/MAT-000068/references/current-production-watermarked-identity-only.webp",
-        "chatgpt-rebuild-handoff/MAT-000068/references/rusean-official-context-watermarked.jpg"
+        "chatgpt-rebuild-handoff/MAT-000076/sources.md",
+        "chatgpt-rebuild-handoff/MAT-000076/target.txt",
+        "chatgpt-rebuild-handoff/MAT-000087/brief.md",
+        "chatgpt-rebuild-handoff/MAT-000087/current-production.webp",
+        "chatgpt-rebuild-handoff/MAT-000087/generation-prompt.txt",
+        "chatgpt-rebuild-handoff/MAT-000087/reference-01-current-production-25kg-negative-reference.webp",
+        "chatgpt-rebuild-handoff/MAT-000087/references.txt",
+        "chatgpt-rebuild-handoff/MAT-000087/references/ceresit-cn-175-super-20kg-psp.png",
+        "chatgpt-rebuild-handoff/MAT-000087/references/current-production-wrong-25kg-negative-reference.webp",
+        "chatgpt-rebuild-handoff/MAT-000087/sources.md",
+        "chatgpt-rebuild-handoff/MAT-000087/target.txt",
+        "chatgpt-rebuild-handoff/manifest.json"
       ],
       "exactFourMatDirectories": [
         "MAT-000068",
@@ -4434,32 +4456,69 @@
       ],
       "manifestExactlyOnce": true,
       "safeRelativePaths": true,
+      "noParentTraversal": true,
       "packageAExcluded": true,
-      "allReferencedFilesExistAndArchived": true,
+      "noUnrelatedMat": true,
+      "allManifestReferencedFilesExistAndArchived": true,
       "allIncludedImagesSharpDecode": true,
       "referenceMetadataMatches": true,
-      "includedImageCount": 18,
+      "includedImageCount": 20,
       "includedImages": [
         {
-          "path": "MAT-000087/current-production.webp",
+          "path": "MAT-000068/current-production.webp",
           "format": "webp",
-          "dimensions": "1000x1000",
-          "bytes": 42488,
-          "sha256": "2e801d952dcfd0ac81b1d82b48a27f1dbe504c6b77a4c8071b4ae088ae6a3c78"
+          "dimensions": "1200x1200",
+          "bytes": 71252,
+          "sha256": "cf238451107af3f83b1aa0ef0da80374c409690336c34204621768a0a7e746e5"
         },
         {
-          "path": "MAT-000087/reference-01-current-production-25kg-negative-reference.webp",
-          "format": "webp",
-          "dimensions": "1000x1000",
-          "bytes": 42488,
-          "sha256": "2e801d952dcfd0ac81b1d82b48a27f1dbe504c6b77a4c8071b4ae088ae6a3c78"
+          "path": "MAT-000068/reference-01-official-context-watermarked.jpg",
+          "format": "jpeg",
+          "dimensions": "768x1024",
+          "bytes": 241980,
+          "sha256": "18791ad479824f811f8694b9c679ba2073dcbd9e0ac1c91e6a721c5c1f8e12a3"
         },
         {
-          "path": "MAT-000087/references/current-production-wrong-25kg-negative-reference.webp",
+          "path": "MAT-000068/references/current-production-watermarked-identity-only.webp",
+          "format": "webp",
+          "dimensions": "1200x1200",
+          "bytes": 71252,
+          "sha256": "cf238451107af3f83b1aa0ef0da80374c409690336c34204621768a0a7e746e5"
+        },
+        {
+          "path": "MAT-000068/references/rusean-official-context-watermarked.jpg",
+          "format": "jpeg",
+          "dimensions": "768x1024",
+          "bytes": 241980,
+          "sha256": "18791ad479824f811f8694b9c679ba2073dcbd9e0ac1c91e6a721c5c1f8e12a3"
+        },
+        {
+          "path": "MAT-000075/current-production.webp",
           "format": "webp",
           "dimensions": "1000x1000",
-          "bytes": 42488,
-          "sha256": "2e801d952dcfd0ac81b1d82b48a27f1dbe504c6b77a4c8071b4ae088ae6a3c78"
+          "bytes": 65568,
+          "sha256": "afc7f8282f7e6c088bc9d6c872162de7cf9f01e49fde08858945f7c4b95b0dd9"
+        },
+        {
+          "path": "MAT-000075/reference-01-current-production-30kg-negative-reference.webp",
+          "format": "webp",
+          "dimensions": "1000x1000",
+          "bytes": 65568,
+          "sha256": "afc7f8282f7e6c088bc9d6c872162de7cf9f01e49fde08858945f7c4b95b0dd9"
+        },
+        {
+          "path": "MAT-000075/references/current-production-wrong-30kg-negative-reference.webp",
+          "format": "webp",
+          "dimensions": "1000x1000",
+          "bytes": 65568,
+          "sha256": "afc7f8282f7e6c088bc9d6c872162de7cf9f01e49fde08858945f7c4b95b0dd9"
+        },
+        {
+          "path": "MAT-000075/references/unis-horizon-universal-m45-20kg-mirax.jpg",
+          "format": "jpeg",
+          "dimensions": "800x800",
+          "bytes": 124033,
+          "sha256": "d84ac566d445db42fd6fbc8e6c925c25d3826c24db4d4f80f10c78ee6e8e9c57"
         },
         {
           "path": "MAT-000076/current-production.webp",
@@ -4518,55 +4577,59 @@
           "sha256": "8af7559c21d4dc97238ee74a74a7da13378bb9f6700f6cc4d2ebc32bf3141f76"
         },
         {
-          "path": "MAT-000075/current-production.webp",
+          "path": "MAT-000087/current-production.webp",
           "format": "webp",
           "dimensions": "1000x1000",
-          "bytes": 65568,
-          "sha256": "afc7f8282f7e6c088bc9d6c872162de7cf9f01e49fde08858945f7c4b95b0dd9"
+          "bytes": 42488,
+          "sha256": "2e801d952dcfd0ac81b1d82b48a27f1dbe504c6b77a4c8071b4ae088ae6a3c78"
         },
         {
-          "path": "MAT-000075/reference-01-current-production-30kg-negative-reference.webp",
+          "path": "MAT-000087/reference-01-current-production-25kg-negative-reference.webp",
           "format": "webp",
           "dimensions": "1000x1000",
-          "bytes": 65568,
-          "sha256": "afc7f8282f7e6c088bc9d6c872162de7cf9f01e49fde08858945f7c4b95b0dd9"
+          "bytes": 42488,
+          "sha256": "2e801d952dcfd0ac81b1d82b48a27f1dbe504c6b77a4c8071b4ae088ae6a3c78"
         },
         {
-          "path": "MAT-000075/references/current-production-wrong-30kg-negative-reference.webp",
+          "path": "MAT-000087/references/ceresit-cn-175-super-20kg-psp.png",
+          "format": "png",
+          "dimensions": "500x500",
+          "bytes": 96335,
+          "sha256": "77de258ac1cc25c4bd90cc8204d620b7c46d920c727ba9bcca231a67e419596e"
+        },
+        {
+          "path": "MAT-000087/references/current-production-wrong-25kg-negative-reference.webp",
           "format": "webp",
           "dimensions": "1000x1000",
-          "bytes": 65568,
-          "sha256": "afc7f8282f7e6c088bc9d6c872162de7cf9f01e49fde08858945f7c4b95b0dd9"
-        },
-        {
-          "path": "MAT-000068/current-production.webp",
-          "format": "webp",
-          "dimensions": "1200x1200",
-          "bytes": 71252,
-          "sha256": "cf238451107af3f83b1aa0ef0da80374c409690336c34204621768a0a7e746e5"
-        },
-        {
-          "path": "MAT-000068/reference-01-official-context-watermarked.jpg",
-          "format": "jpeg",
-          "dimensions": "768x1024",
-          "bytes": 241980,
-          "sha256": "18791ad479824f811f8694b9c679ba2073dcbd9e0ac1c91e6a721c5c1f8e12a3"
-        },
-        {
-          "path": "MAT-000068/references/current-production-watermarked-identity-only.webp",
-          "format": "webp",
-          "dimensions": "1200x1200",
-          "bytes": 71252,
-          "sha256": "cf238451107af3f83b1aa0ef0da80374c409690336c34204621768a0a7e746e5"
-        },
-        {
-          "path": "MAT-000068/references/rusean-official-context-watermarked.jpg",
-          "format": "jpeg",
-          "dimensions": "768x1024",
-          "bytes": 241980,
-          "sha256": "18791ad479824f811f8694b9c679ba2073dcbd9e0ac1c91e6a721c5c1f8e12a3"
+          "bytes": 42488,
+          "sha256": "2e801d952dcfd0ac81b1d82b48a27f1dbe504c6b77a4c8071b4ae088ae6a3c78"
         }
       ]
+    },
+    "referenceRepair": {
+      "MAT075": {
+        "sourcePageUrl": "https://www.miraxstroy.ru/bystrotverdeyushchiy-nalivnoy-pol-yunis-gorizont-universalnyy-meshok-20kg/",
+        "directAssetUrl": "https://www.miraxstroy.ru/upload/iblock/705/705a66758af13cca2b64e76997a5d214.jpg",
+        "localPath": "MAT-000075/references/unis-horizon-universal-m45-20kg-mirax.jpg",
+        "format": "jpeg",
+        "dimensions": "800x800",
+        "bytes": 124033,
+        "sha256": "d84ac566d445db42fd6fbc8e6c925c25d3826c24db4d4f80f10c78ee6e8e9c57",
+        "visuallyVerified": true,
+        "generationReady": true,
+        "qualification": "The exact 20 kg legacy-facing Горизонт Универсальный pack is visible; M-45 is not printed on that artwork and must not be added."
+      },
+      "MAT087": {
+        "sourcePageUrl": "https://psp-spb.ru/katalog-kompanii-psp/ceresit/nalivnyie-polyi/kopiya-nalivnoj-pol-universalnyij-ceresit-cn173-samovyiravnivayushhijsya-20-kg.html",
+        "directAssetUrl": "https://psp-spb.ru/uploads/images/products/2518/big2/cn-175-20kg.png",
+        "localPath": "MAT-000087/references/ceresit-cn-175-super-20kg-psp.png",
+        "format": "png",
+        "dimensions": "500x500",
+        "bytes": 96335,
+        "sha256": "77de258ac1cc25c4bd90cc8204d620b7c46d920c727ba9bcca231a67e419596e",
+        "visuallyVerified": true,
+        "generationReady": true
+      }
     }
   },
   "productionActionsThisDocumentationTask": {
