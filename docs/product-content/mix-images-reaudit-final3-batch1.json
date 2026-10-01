@@ -2,7 +2,7 @@
   "reviewType": "MatMix final3 production image visual re-audit",
   "generatedDate": "2026-10-01",
   "branch": "codex/mix-images-reaudit-final3-batch1",
-  "previousFeatureHead": "bf4945f457acb2482fbba984bb8989d1d78f5128",
+  "previousFeatureHead": "38c426d613304e08bcee9d26239e73647c5a6312",
   "baseOriginMain": "3d3dbccdc83422c1dc937c7dc7c673128234705f",
   "scope": [
     "MAT-000067",
@@ -855,10 +855,10 @@
       "targetFill": "84–88% limiting axis after importer render",
       "summary": {
         "total": 18,
-        "KEEP": 6,
+        "KEEP": 7,
         "REFRAME": 7,
         "REBUILD": 4,
-        "RESEARCH_REQUIRED": 1,
+        "RESEARCH_REQUIRED": 0,
         "OWNER_REVIEW_REQUIRED": 0,
         "bySubcategory": {
           "Кладочные Смеси": {
@@ -871,10 +871,10 @@
           },
           "Наливной Пол": {
             "total": 13,
-            "KEEP": 5,
+            "KEEP": 6,
             "REFRAME": 4,
             "REBUILD": 3,
-            "RESEARCH_REQUIRED": 1,
+            "RESEARCH_REQUIRED": 0,
             "OWNER_REVIEW_REQUIRED": 0
           },
           "Стяжки Пола": {
@@ -980,9 +980,10 @@
           },
           "proposedAction": "Clean exact image / rebuild brief.",
           "rebuild": {
-            "briefPath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/rebuild/MAT-000068-brief.md",
-            "candidateStatus": "REBUILD_BRIEF_READY",
-            "candidateCreated": false
+            "briefPath": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000068/README.md",
+            "candidateStatus": "HANDOFF_READY",
+            "candidateCreated": false,
+            "handoffPath": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000068/"
           }
         },
         {
@@ -1089,14 +1090,15 @@
             "primaryImageUrl": "/uploads/products/MAT-000075-7584c202645c34c1.webp"
           },
           "classification": "REBUILD",
-          "identityStatus": "MISMATCH",
-          "exactProductIdentity": "Package: UNIS Горизонт Универсальный М-45, 30 кг; local title: Горизонт, 20 кг",
+          "identityStatus": "CONFIRMED",
+          "exactProductIdentity": "UNIS Горизонт Универсальный М-45, 20 кг (owner-provided exact MAT-specific identity mapping)",
           "identitySource": {
-            "url": "https://unistrom.ru/catalog/ustrojstvo-polov/nalivnye-poly/gorizont-universalnyj/",
-            "evidence": "Official page identifies Universal M-45 and current 20/25 kg variants; package says 30 kg."
+            "url": "docs/product-content/floor-075-077-identity-review.json#MAT-000075",
+            "officialProductUrl": "https://unistrom.ru/catalog/ustrojstvo-polov/nalivnye-poly/gorizont-universalnyj/",
+            "evidence": "Owner-provided MAT-specific identity decision and exact package evidence bind MAT-000075 to Горизонт Универсальный М-45, 20 кг. Official UNIS material corroborates current M-45 identity and 20 kg option. Current production package reads 30 kg and remains a mismatch."
           },
           "visual": {
-            "assessment": "Weight mismatch; generic local title does not prove exact variant. Confirm intended 20 kg variant before replacement.",
+            "assessment": "Current production image is the wrong package weight (30 kg); target identity is now owner-confirmed as M-45 20 kg. Do not crop or relabel current image.",
             "bbox": {
               "left": 244,
               "top": 60,
@@ -1113,11 +1115,23 @@
             "sharpness": "adequate for catalog",
             "centered": true
           },
-          "proposedAction": "Rebuild brief ready; bind exact variant first.",
+          "proposedAction": "Rebuild exact UNIS Горизонт Универсальный М-45 20 kg package image; retrieve/use the owner-provided exact reference or a verified exact manufacturer image.",
           "rebuild": {
-            "briefPath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/rebuild/MAT-000075-brief.md",
-            "candidateStatus": "REBUILD_BRIEF_READY",
-            "candidateCreated": false
+            "briefPath": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000075/README.md",
+            "candidateStatus": "HANDOFF_READY",
+            "candidateCreated": false,
+            "handoffPath": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000075/"
+          },
+          "identityResolution": {
+            "conclusion": "Target variant resolved: UNIS Горизонт Универсальный М-45, 20 кг.",
+            "evidencePath": "docs/product-content/floor-075-077-identity-review.json#MAT-000075",
+            "evidenceKeys": [
+              "unisM45OwnerPack",
+              "unisM45OwnerIdentity",
+              "unisM45Current",
+              "unisM45Tds"
+            ],
+            "remainingPoint": "No unresolved MAT identity/variant question remains. A verified exact 20 kg package image asset is still needed; the original owner package reference is not present in this batch folder."
           }
         },
         {
@@ -1166,9 +1180,10 @@
           },
           "proposedAction": "Rebuild from exact 25 kg reference.",
           "rebuild": {
-            "briefPath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/rebuild/MAT-000076-brief.md",
-            "candidateStatus": "REBUILD_BRIEF_READY",
-            "candidateCreated": false
+            "briefPath": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000076/README.md",
+            "candidateStatus": "HANDOFF_READY",
+            "candidateCreated": false,
+            "handoffPath": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000076/"
           }
         },
         {
@@ -1190,15 +1205,15 @@
             "galleryCount": 0,
             "primaryImageUrl": "/uploads/products/MAT-000077-a2ff7cd16c732bb5.webp"
           },
-          "classification": "RESEARCH_REQUIRED",
-          "identityStatus": "RESEARCH_REQUIRED",
-          "exactProductIdentity": "Local title Быстрый, 20 кг; package Быстротвердеющий, 20 кг",
+          "classification": "KEEP",
+          "identityStatus": "IDENTITY_EQUIVALENT_CONFIRMED",
+          "exactProductIdentity": "Старатели Быстротвердеющий, 20 кг — exact owner-provided package evidence bound to MAT-000077",
           "identitySource": {
             "url": "https://market.starateli.ru/products/nalivnye-poly/nalivnoj-pol-bystrotverdeyushij-samoniveliruyushij/",
-            "evidence": "Official store lists Быстротвердеющий 20 kg but does not document Быстрый as same SKU."
+            "evidence": "The official manufacturer shop confirms the current Быстротвердеющий product and 20 kg option. Existing owner-provided identity evidence explicitly maps the exact package text (Старатели / НАЛИВНОЙ ПОЛ / БЫСТРОТВЕРДЕЮЩИЙ / 20 кг) to MAT-000077. This is MAT-specific owner evidence, not an inference from similar wording."
           },
           "visual": {
-            "assessment": "Brand/weight match; exact name/version equivalence unresolved.",
+            "assessment": "Identity is confirmed by MAT-specific owner package evidence; image is full, clean, white, unwatermarked and 85.2% limiting-axis fill.",
             "bbox": {
               "left": 205,
               "top": 73,
@@ -1215,7 +1230,19 @@
             "sharpness": "adequate for catalog",
             "centered": true
           },
-          "proposedAction": "Wait for SKU/alias evidence."
+          "proposedAction": "Keep current production image. Do not change title or product data.",
+          "identityResolution": {
+            "conclusion": "IDENTITY_EQUIVALENT_CONFIRMED for the owner-bound MAT-000077 package identity.",
+            "ownerEvidencePath": "docs/product-content/floor-075-077-identity-review.json#MAT-000077",
+            "ownerEvidenceKeys": [
+              "starateli77OwnerPack",
+              "starateli77OwnerIdentity"
+            ],
+            "officialCurrentProductUrl": "https://www.starateli.ru/nalivnoi_pol_bistrodeistvuyushiy/",
+            "officialShopUrl": "https://market.starateli.ru/products/nalivnye-poly/nalivnoj-pol-bystrotverdeyushij-samoniveliruyushij/",
+            "scopeNote": "Evidence binds the current 20 kg Быстротвердеющий package to this MAT. It does not establish Быстрый as a formal historical alias, renamed SKU, or same-formula predecessor; no such continuity is claimed."
+          },
+          "blockers": []
         },
         {
           "externalId": "MAT-000078",
@@ -1829,9 +1856,10 @@
           },
           "proposedAction": "Exact 20 kg rebuild brief.",
           "rebuild": {
-            "briefPath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/rebuild/MAT-000087-brief.md",
-            "candidateStatus": "REBUILD_BRIEF_READY",
-            "candidateCreated": false
+            "briefPath": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000087/README.md",
+            "candidateStatus": "HANDOFF_READY",
+            "candidateCreated": false,
+            "handoffPath": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000087/"
           }
         },
         {
@@ -2007,10 +2035,10 @@
   ],
   "summary": {
     "total": 18,
-    "KEEP": 6,
+    "KEEP": 7,
     "REFRAME": 7,
     "REBUILD": 4,
-    "RESEARCH_REQUIRED": 1,
+    "RESEARCH_REQUIRED": 0,
     "OWNER_REVIEW_REQUIRED": 0,
     "bySubcategory": {
       "Кладочные Смеси": {
@@ -2023,10 +2051,10 @@
       },
       "Наливной Пол": {
         "total": 13,
-        "KEEP": 5,
+        "KEEP": 6,
         "REFRAME": 4,
         "REBUILD": 3,
-        "RESEARCH_REQUIRED": 1,
+        "RESEARCH_REQUIRED": 0,
         "OWNER_REVIEW_REQUIRED": 0
       },
       "Стяжки Пола": {
@@ -2136,9 +2164,10 @@
       },
       "proposedAction": "Clean exact image / rebuild brief.",
       "rebuild": {
-        "briefPath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/rebuild/MAT-000068-brief.md",
-        "candidateStatus": "REBUILD_BRIEF_READY",
-        "candidateCreated": false
+        "briefPath": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000068/README.md",
+        "candidateStatus": "HANDOFF_READY",
+        "candidateCreated": false,
+        "handoffPath": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000068/"
       }
     },
     {
@@ -2247,16 +2276,15 @@
         "primaryImageUrl": "/uploads/products/MAT-000075-7584c202645c34c1.webp"
       },
       "classification": "REBUILD",
-      "identityStatus": "MISMATCH",
-      "exactProductIdentity": "Package: UNIS Горизонт Универсальный М-45, 30 кг; local title: Горизонт, 20 кг",
+      "identityStatus": "CONFIRMED",
+      "exactProductIdentity": "UNIS Горизонт Универсальный М-45, 20 кг (owner-provided exact MAT-specific identity mapping)",
       "identitySource": {
-        "url": "https://unistrom.ru/catalog/ustrojstvo-polov/nalivnye-poly/gorizont-universalnyj/",
-        "evidence": "Official page identifies Universal M-45 and current 20/25 kg variants; package says 30 kg.",
-        "sourceOwner": "manufacturer official",
-        "sourceType": "official"
+        "url": "docs/product-content/floor-075-077-identity-review.json#MAT-000075",
+        "officialProductUrl": "https://unistrom.ru/catalog/ustrojstvo-polov/nalivnye-poly/gorizont-universalnyj/",
+        "evidence": "Owner-provided MAT-specific identity decision and exact package evidence bind MAT-000075 to Горизонт Универсальный М-45, 20 кг. Official UNIS material corroborates current M-45 identity and 20 kg option. Current production package reads 30 kg and remains a mismatch."
       },
       "visual": {
-        "assessment": "Weight mismatch; generic local title does not prove exact variant. Confirm intended 20 kg variant before replacement.",
+        "assessment": "Current production image is the wrong package weight (30 kg); target identity is now owner-confirmed as M-45 20 kg. Do not crop or relabel current image.",
         "bbox": {
           "left": 244,
           "top": 60,
@@ -2273,11 +2301,23 @@
         "sharpness": "adequate for catalog",
         "centered": true
       },
-      "proposedAction": "Rebuild brief ready; bind exact variant first.",
+      "proposedAction": "Rebuild exact UNIS Горизонт Универсальный М-45 20 kg package image; retrieve/use the owner-provided exact reference or a verified exact manufacturer image.",
       "rebuild": {
-        "briefPath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/rebuild/MAT-000075-brief.md",
-        "candidateStatus": "REBUILD_BRIEF_READY",
-        "candidateCreated": false
+        "briefPath": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000075/README.md",
+        "candidateStatus": "HANDOFF_READY",
+        "candidateCreated": false,
+        "handoffPath": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000075/"
+      },
+      "identityResolution": {
+        "conclusion": "Target variant resolved: UNIS Горизонт Универсальный М-45, 20 кг.",
+        "evidencePath": "docs/product-content/floor-075-077-identity-review.json#MAT-000075",
+        "evidenceKeys": [
+          "unisM45OwnerPack",
+          "unisM45OwnerIdentity",
+          "unisM45Current",
+          "unisM45Tds"
+        ],
+        "remainingPoint": "No unresolved MAT identity/variant question remains. A verified exact 20 kg package image asset is still needed; the original owner package reference is not present in this batch folder."
       }
     },
     {
@@ -2328,9 +2368,10 @@
       },
       "proposedAction": "Rebuild from exact 25 kg reference.",
       "rebuild": {
-        "briefPath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/rebuild/MAT-000076-brief.md",
-        "candidateStatus": "REBUILD_BRIEF_READY",
-        "candidateCreated": false
+        "briefPath": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000076/README.md",
+        "candidateStatus": "HANDOFF_READY",
+        "candidateCreated": false,
+        "handoffPath": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000076/"
       }
     },
     {
@@ -2352,17 +2393,15 @@
         "galleryCount": 0,
         "primaryImageUrl": "/uploads/products/MAT-000077-a2ff7cd16c732bb5.webp"
       },
-      "classification": "RESEARCH_REQUIRED",
-      "identityStatus": "RESEARCH_REQUIRED",
-      "exactProductIdentity": "Local title Быстрый, 20 кг; package Быстротвердеющий, 20 кг",
+      "classification": "KEEP",
+      "identityStatus": "IDENTITY_EQUIVALENT_CONFIRMED",
+      "exactProductIdentity": "Старатели Быстротвердеющий, 20 кг — exact owner-provided package evidence bound to MAT-000077",
       "identitySource": {
         "url": "https://market.starateli.ru/products/nalivnye-poly/nalivnoj-pol-bystrotverdeyushij-samoniveliruyushij/",
-        "evidence": "Official store lists Быстротвердеющий 20 kg but does not document Быстрый as same SKU.",
-        "sourceOwner": "manufacturer official shop",
-        "sourceType": "official"
+        "evidence": "The official manufacturer shop confirms the current Быстротвердеющий product and 20 kg option. Existing owner-provided identity evidence explicitly maps the exact package text (Старатели / НАЛИВНОЙ ПОЛ / БЫСТРОТВЕРДЕЮЩИЙ / 20 кг) to MAT-000077. This is MAT-specific owner evidence, not an inference from similar wording."
       },
       "visual": {
-        "assessment": "Brand/weight match; exact name/version equivalence unresolved.",
+        "assessment": "Identity is confirmed by MAT-specific owner package evidence; image is full, clean, white, unwatermarked and 85.2% limiting-axis fill.",
         "bbox": {
           "left": 205,
           "top": 73,
@@ -2379,7 +2418,19 @@
         "sharpness": "adequate for catalog",
         "centered": true
       },
-      "proposedAction": "Wait for SKU/alias evidence."
+      "proposedAction": "Keep current production image. Do not change title or product data.",
+      "identityResolution": {
+        "conclusion": "IDENTITY_EQUIVALENT_CONFIRMED for the owner-bound MAT-000077 package identity.",
+        "ownerEvidencePath": "docs/product-content/floor-075-077-identity-review.json#MAT-000077",
+        "ownerEvidenceKeys": [
+          "starateli77OwnerPack",
+          "starateli77OwnerIdentity"
+        ],
+        "officialCurrentProductUrl": "https://www.starateli.ru/nalivnoi_pol_bistrodeistvuyushiy/",
+        "officialShopUrl": "https://market.starateli.ru/products/nalivnye-poly/nalivnoj-pol-bystrotverdeyushij-samoniveliruyushij/",
+        "scopeNote": "Evidence binds the current 20 kg Быстротвердеющий package to this MAT. It does not establish Быстрый as a formal historical alias, renamed SKU, or same-formula predecessor; no such continuity is claimed."
+      },
+      "blockers": []
     },
     {
       "externalId": "MAT-000078",
@@ -3013,9 +3064,10 @@
       },
       "proposedAction": "Exact 20 kg rebuild brief.",
       "rebuild": {
-        "briefPath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/rebuild/MAT-000087-brief.md",
-        "candidateStatus": "REBUILD_BRIEF_READY",
-        "candidateCreated": false
+        "briefPath": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000087/README.md",
+        "candidateStatus": "HANDOFF_READY",
+        "candidateCreated": false,
+        "handoffPath": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000087/"
       }
     },
     {
@@ -3207,5 +3259,414 @@
       "docs/product-content/mix-images-reaudit-final3-batch1.json"
     ],
     "allBinariesRemainUntracked": true
+  },
+  "resolutionPass": {
+    "date": "2026-10-01",
+    "mat000077": {
+      "status": "IDENTITY_EQUIVALENT_CONFIRMED",
+      "classification": "KEEP",
+      "ownerEvidence": "docs/product-content/floor-075-077-identity-review.json#MAT-000077",
+      "officialCurrentProduct": "https://www.starateli.ru/nalivnoi_pol_bistrodeistvuyushiy/",
+      "officialShop": "https://market.starateli.ru/products/nalivnye-poly/nalivnoj-pol-bystrotverdeyushij-samoniveliruyushij/",
+      "historicalAliasOrFormulaContinuityProven": false
+    },
+    "mat000075": {
+      "status": "TARGET_VARIANT_CONFIRMED",
+      "target": "UNIS Горизонт Универсальный М-45, 20 кг",
+      "ownerEvidence": "docs/product-content/floor-075-077-identity-review.json#MAT-000075",
+      "remaining": "Exact 20 kg target package image asset must be retrieved/verified; current 30 kg production image remains REBUILD."
+    },
+    "reframeVerification": {
+      "status": "PASS",
+      "count": 7,
+      "method": "Verified source/preview hashes, 1200x1200 source PNG and preview WebP, recorded bbox/fill, full package/no clipping, white corners; each preview regenerated through existing importer renderWebp() and was byte-identical. Independent production-pixel lineage reconstruction is consistent with proportional crop/resampling only; no redraw or package artwork edits.",
+      "records": [
+        {
+          "externalId": "MAT-000069",
+          "sourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe/MAT-000069.png",
+          "sourceFormat": "png",
+          "sourceDimensions": [
+            1200,
+            1200
+          ],
+          "sourceSha256": "b8befd9f343cbbeb49e7ee357456dc09606fee7d070a337cd63e53401ab4f2b4",
+          "sourceBbox": {
+            "left": 233,
+            "top": 35,
+            "width": 735,
+            "height": 1130,
+            "fillWidthPercent": 61.3,
+            "fillHeightPercent": 94.2,
+            "limitingAxisFillPercent": 94.2
+          },
+          "previewPath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe-preview/MAT-000069.webp",
+          "previewFormat": "webp",
+          "previewDimensions": [
+            1200,
+            1200,
+            "webp"
+          ],
+          "previewSha256": "aacef16e3cbef44273d59047c7b502c62261a04848870af67eea8f228992ca59",
+          "previewBbox": {
+            "left": 270,
+            "top": 92,
+            "width": 661,
+            "height": 1016,
+            "fillWidthPercent": 55.1,
+            "fillHeightPercent": 84.7,
+            "limitingAxisFillPercent": 84.7
+          },
+          "recordedFillPercent": 84.7,
+          "verified": {
+            "sourceHashDimensions": "PASS",
+            "previewHashDimensions": "PASS",
+            "bboxFill": "PASS",
+            "fullPackageNoClipping": "PASS",
+            "whiteCanvas": "PASS",
+            "packagePixelsNoRedrawOrArtworkEdits": "PASS",
+            "canonicalImporterRenderByteIdentical": "PASS",
+            "pixelLineageMeanAbsoluteRgbDifferenceUnder3Of255": "PASS"
+          }
+        },
+        {
+          "externalId": "MAT-000079",
+          "sourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe/MAT-000079.png",
+          "sourceFormat": "png",
+          "sourceDimensions": [
+            1200,
+            1200
+          ],
+          "sourceSha256": "ecddfe7585729346b532574f0d6f71281d9d0ed6e0d07ebd91cfd727a078e812",
+          "sourceBbox": {
+            "left": 311,
+            "top": 35,
+            "width": 579,
+            "height": 1130,
+            "fillWidthPercent": 48.3,
+            "fillHeightPercent": 94.2,
+            "limitingAxisFillPercent": 94.2
+          },
+          "previewPath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe-preview/MAT-000079.webp",
+          "previewFormat": "webp",
+          "previewDimensions": [
+            1200,
+            1200,
+            "webp"
+          ],
+          "previewSha256": "863bb26c212b2eeeb647668c4ad35093a79ac677260fc9106de472ee2908bbf1",
+          "previewBbox": {
+            "left": 340,
+            "top": 92,
+            "width": 521,
+            "height": 1017,
+            "fillWidthPercent": 43.4,
+            "fillHeightPercent": 84.8,
+            "limitingAxisFillPercent": 84.8
+          },
+          "recordedFillPercent": 84.8,
+          "verified": {
+            "sourceHashDimensions": "PASS",
+            "previewHashDimensions": "PASS",
+            "bboxFill": "PASS",
+            "fullPackageNoClipping": "PASS",
+            "whiteCanvas": "PASS",
+            "packagePixelsNoRedrawOrArtworkEdits": "PASS",
+            "canonicalImporterRenderByteIdentical": "PASS",
+            "pixelLineageMeanAbsoluteRgbDifferenceUnder3Of255": "PASS"
+          }
+        },
+        {
+          "externalId": "MAT-000080",
+          "sourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe/MAT-000080.png",
+          "sourceFormat": "png",
+          "sourceDimensions": [
+            1200,
+            1200
+          ],
+          "sourceSha256": "130c5da3858b8115e6dfd1be485d5cd5a100d658172edb83ea37cc17763690ec",
+          "sourceBbox": {
+            "left": 311,
+            "top": 35,
+            "width": 579,
+            "height": 1130,
+            "fillWidthPercent": 48.3,
+            "fillHeightPercent": 94.2,
+            "limitingAxisFillPercent": 94.2
+          },
+          "previewPath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe-preview/MAT-000080.webp",
+          "previewFormat": "webp",
+          "previewDimensions": [
+            1200,
+            1200,
+            "webp"
+          ],
+          "previewSha256": "eac20fac2841135f439ac19758a7a9bc8bffb4b6f033ff575ff4208205130191",
+          "previewBbox": {
+            "left": 340,
+            "top": 92,
+            "width": 521,
+            "height": 1017,
+            "fillWidthPercent": 43.4,
+            "fillHeightPercent": 84.8,
+            "limitingAxisFillPercent": 84.8
+          },
+          "recordedFillPercent": 84.8,
+          "verified": {
+            "sourceHashDimensions": "PASS",
+            "previewHashDimensions": "PASS",
+            "bboxFill": "PASS",
+            "fullPackageNoClipping": "PASS",
+            "whiteCanvas": "PASS",
+            "packagePixelsNoRedrawOrArtworkEdits": "PASS",
+            "canonicalImporterRenderByteIdentical": "PASS",
+            "pixelLineageMeanAbsoluteRgbDifferenceUnder3Of255": "PASS"
+          }
+        },
+        {
+          "externalId": "MAT-000081",
+          "sourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe/MAT-000081.png",
+          "sourceFormat": "png",
+          "sourceDimensions": [
+            1200,
+            1200
+          ],
+          "sourceSha256": "3e8f085e77743cee845f8f0ebec6079c4d496cc750713772ed498affabf8470d",
+          "sourceBbox": {
+            "left": 311,
+            "top": 35,
+            "width": 579,
+            "height": 1130,
+            "fillWidthPercent": 48.3,
+            "fillHeightPercent": 94.2,
+            "limitingAxisFillPercent": 94.2
+          },
+          "previewPath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe-preview/MAT-000081.webp",
+          "previewFormat": "webp",
+          "previewDimensions": [
+            1200,
+            1200,
+            "webp"
+          ],
+          "previewSha256": "28fe45a5369ccb2a878c36c6fb1681d56051814cac30ef013cc7bfd79584d27f",
+          "previewBbox": {
+            "left": 340,
+            "top": 92,
+            "width": 521,
+            "height": 1017,
+            "fillWidthPercent": 43.4,
+            "fillHeightPercent": 84.8,
+            "limitingAxisFillPercent": 84.8
+          },
+          "recordedFillPercent": 84.8,
+          "verified": {
+            "sourceHashDimensions": "PASS",
+            "previewHashDimensions": "PASS",
+            "bboxFill": "PASS",
+            "fullPackageNoClipping": "PASS",
+            "whiteCanvas": "PASS",
+            "packagePixelsNoRedrawOrArtworkEdits": "PASS",
+            "canonicalImporterRenderByteIdentical": "PASS",
+            "pixelLineageMeanAbsoluteRgbDifferenceUnder3Of255": "PASS"
+          }
+        },
+        {
+          "externalId": "MAT-000082",
+          "sourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe/MAT-000082.png",
+          "sourceFormat": "png",
+          "sourceDimensions": [
+            1200,
+            1200
+          ],
+          "sourceSha256": "cab9ca8cf9c7eaf47e8283d87a8c534057754827e9812f08776428ddae84cdb5",
+          "sourceBbox": {
+            "left": 326,
+            "top": 35,
+            "width": 547,
+            "height": 1131,
+            "fillWidthPercent": 45.6,
+            "fillHeightPercent": 94.3,
+            "limitingAxisFillPercent": 94.3
+          },
+          "previewPath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe-preview/MAT-000082.webp",
+          "previewFormat": "webp",
+          "previewDimensions": [
+            1200,
+            1200,
+            "webp"
+          ],
+          "previewSha256": "410a639d11681220e0734ca950a62bccf7266ad55958eba9f3c80f72bb1dbbc0",
+          "previewBbox": {
+            "left": 354,
+            "top": 91,
+            "width": 493,
+            "height": 1018,
+            "fillWidthPercent": 41.1,
+            "fillHeightPercent": 84.8,
+            "limitingAxisFillPercent": 84.8
+          },
+          "recordedFillPercent": 84.8,
+          "verified": {
+            "sourceHashDimensions": "PASS",
+            "previewHashDimensions": "PASS",
+            "bboxFill": "PASS",
+            "fullPackageNoClipping": "PASS",
+            "whiteCanvas": "PASS",
+            "packagePixelsNoRedrawOrArtworkEdits": "PASS",
+            "canonicalImporterRenderByteIdentical": "PASS",
+            "pixelLineageMeanAbsoluteRgbDifferenceUnder3Of255": "PASS"
+          }
+        },
+        {
+          "externalId": "MAT-000089",
+          "sourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe/MAT-000089.png",
+          "sourceFormat": "png",
+          "sourceDimensions": [
+            1200,
+            1200
+          ],
+          "sourceSha256": "e5c69ea86340e869c124c046782e8f0478bc59c8fddc42cabf9d75eac1ca4ee0",
+          "sourceBbox": {
+            "left": 35,
+            "top": 294,
+            "width": 1130,
+            "height": 613,
+            "fillWidthPercent": 94.2,
+            "fillHeightPercent": 51.1,
+            "limitingAxisFillPercent": 94.2
+          },
+          "previewPath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe-preview/MAT-000089.webp",
+          "previewFormat": "webp",
+          "previewDimensions": [
+            1200,
+            1200,
+            "webp"
+          ],
+          "previewSha256": "197784d884e5419fcca5865cd96c571cab9f9eeb5e73bb20c8a5cf00aee2c98d",
+          "previewBbox": {
+            "left": 91,
+            "top": 324,
+            "width": 1017,
+            "height": 552,
+            "fillWidthPercent": 84.8,
+            "fillHeightPercent": 46,
+            "limitingAxisFillPercent": 84.8
+          },
+          "recordedFillPercent": 84.8,
+          "verified": {
+            "sourceHashDimensions": "PASS",
+            "previewHashDimensions": "PASS",
+            "bboxFill": "PASS",
+            "fullPackageNoClipping": "PASS",
+            "whiteCanvas": "PASS",
+            "packagePixelsNoRedrawOrArtworkEdits": "PASS",
+            "canonicalImporterRenderByteIdentical": "PASS",
+            "pixelLineageMeanAbsoluteRgbDifferenceUnder3Of255": "PASS"
+          }
+        },
+        {
+          "externalId": "MAT-000090",
+          "sourcePath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe/MAT-000090.png",
+          "sourceFormat": "png",
+          "sourceDimensions": [
+            1200,
+            1200
+          ],
+          "sourceSha256": "6def91e51d8f8b8624a7da64d7dac4446ebc3fa7fc1e648ba77ce20bb9c6ae9e",
+          "sourceBbox": {
+            "left": 270,
+            "top": 35,
+            "width": 661,
+            "height": 1130,
+            "fillWidthPercent": 55.1,
+            "fillHeightPercent": 94.2,
+            "limitingAxisFillPercent": 94.2
+          },
+          "previewPath": "product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe-preview/MAT-000090.webp",
+          "previewFormat": "webp",
+          "previewDimensions": [
+            1200,
+            1200,
+            "webp"
+          ],
+          "previewSha256": "1ffb471c9a2921434907f66a96af7bdc91e6dc98a926414e8341596f775755f9",
+          "previewBbox": {
+            "left": 303,
+            "top": 91,
+            "width": 595,
+            "height": 1017,
+            "fillWidthPercent": 49.6,
+            "fillHeightPercent": 84.8,
+            "limitingAxisFillPercent": 84.8
+          },
+          "recordedFillPercent": 84.8,
+          "verified": {
+            "sourceHashDimensions": "PASS",
+            "previewHashDimensions": "PASS",
+            "bboxFill": "PASS",
+            "fullPackageNoClipping": "PASS",
+            "whiteCanvas": "PASS",
+            "packagePixelsNoRedrawOrArtworkEdits": "PASS",
+            "canonicalImporterRenderByteIdentical": "PASS",
+            "pixelLineageMeanAbsoluteRgbDifferenceUnder3Of255": "PASS"
+          }
+        }
+      ]
+    },
+    "rebuildHandoff": {
+      "status": "HANDOFF_READY",
+      "count": 4,
+      "candidateImagesCreated": 0,
+      "directories": [
+        {
+          "externalId": "MAT-000068",
+          "path": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000068/",
+          "readme": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000068/README.md",
+          "references": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000068/references.md",
+          "target": "Русеан М-200 монтажно-кладочная смесь, 40 кг"
+        },
+        {
+          "externalId": "MAT-000075",
+          "path": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000075/",
+          "readme": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000075/README.md",
+          "references": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000075/references.md",
+          "target": "UNIS Горизонт Универсальный М-45, 20 кг"
+        },
+        {
+          "externalId": "MAT-000076",
+          "path": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000076/",
+          "readme": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000076/README.md",
+          "references": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000076/references.md",
+          "target": "UNIS Горизонт Армированный, 25 кг"
+        },
+        {
+          "externalId": "MAT-000087",
+          "path": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000087/",
+          "readme": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000087/README.md",
+          "references": "product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000087/references.md",
+          "target": "Ceresit CN 175 Super, 20 кг"
+        }
+      ],
+      "caveats": {
+        "MAT-000068": "Only local official-context reference carries a visible third-party watermark; identity/context reference only, do not erase or copy watermark.",
+        "MAT-000075": "Exact owner package reference establishes MAT identity but is not present locally in this batch; retrieve exact 20 kg artwork.",
+        "MAT-000076": "Local 25 kg front/back references support package weight, but upstream provenance for two alternate files is not recorded; verify provenance/rights before production use.",
+        "MAT-000087": "Current production bag is 25 kg; exact 20 kg packaging artwork still required. Exact SKU art takes priority over assumed red/yellow styling."
+      }
+    },
+    "contactSheets": {
+      "reframe": "product-images-batch/mix-images-reaudit-final3-batch1/review/final3-reframe-7-contact-sheet.jpg",
+      "rebuild": "product-images-batch/mix-images-reaudit-final3-batch1/review/final3-rebuild-4-current-contact-sheet.jpg",
+      "mat000077": "product-images-batch/mix-images-reaudit-final3-batch1/review/MAT-000077-identity-review.jpg"
+    },
+    "productionActions": {
+      "productionAccess": false,
+      "ssh": false,
+      "databaseWrites": false,
+      "imageUploads": false,
+      "importerApply": false,
+      "deploy": false,
+      "rolloutPackage": false,
+      "mainMerge": false
+    }
   }
 }

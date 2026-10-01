@@ -1,7 +1,7 @@
 # MatMix — final3 production image re-audit
 
 Branch: codex/mix-images-reaudit-final3-batch1
-Previous feature HEAD: bf4945f457acb2482fbba984bb8989d1d78f5128
+Previous feature HEAD: 38c426d613304e08bcee9d26239e73647c5a6312
 Base origin/main: 3d3dbccdc83422c1dc937c7dc7c673128234705f
 
 ## Current checkpoint
@@ -17,16 +17,16 @@ The prior 18 × RESEARCH_REQUIRED checkpoint remains preserved verbatim in JSON 
 | Subcategory | Total | KEEP | REFRAME | REBUILD | RESEARCH_REQUIRED |
 |---|---:|---:|---:|---:|---:|
 | Кладочные Смеси | 3 | 1 | 1 | 1 | 0 |
-| Наливной Пол | 13 | 5 | 4 | 3 | 1 |
+| Наливной Пол | 13 | 6 | 4 | 3 | 0 |
 | Стяжки Пола | 2 | 0 | 2 | 0 | 0 |
-| **Total** | **18** | **6** | **7** | **4** | **1** |
+| **Total** | **18** | **7** | **7** | **4** | **0** |
 
 OWNER_REVIEW_REQUIRED: 0.
 
-KEEP: MAT-000067, MAT-000078, MAT-000083, MAT-000084, MAT-000085, MAT-000086
+KEEP: MAT-000067, MAT-000077, MAT-000078, MAT-000083, MAT-000084, MAT-000085, MAT-000086
 REFRAME: MAT-000069, MAT-000079, MAT-000080, MAT-000081, MAT-000082, MAT-000089, MAT-000090
 REBUILD: MAT-000068, MAT-000075, MAT-000076, MAT-000087
-RESEARCH_REQUIRED: MAT-000077
+RESEARCH_REQUIRED: none
 OWNER_REVIEW_REQUIRED: none
 
 ## Per-MAT review
@@ -52,7 +52,7 @@ OWNER_REVIEW_REQUIRED: none
 - **Source (manufacturer official):** [https://rusean.ru/catalog/sukhie_smesi_/sukhaya_smes_m_200_montazhno_kladochnaya_40_kg/](https://rusean.ru/catalog/sukhie_smesi_/sukhaya_smes_m_200_montazhno_kladochnaya_40_kg/) — Official Rusean listing confirms M-200 and 40 кг.
 - **Visual:** Exact pack but large third-party shop watermark crosses sack and background; do not erase it. Bbox/fill {"left":247,"top":97,"width":709,"height":1020,"fillWidthPercent":59.1,"fillHeightPercent":85,"limitingAxisFillPercent":85}; background white with watermark; watermark/mark: third-party shop watermark; package fully visible with no clipping.
 - **Action:** Clean exact image / rebuild brief.
-- **Rebuild brief:** product-images-batch/mix-images-reaudit-final3-batch1/prepared/rebuild/MAT-000068-brief.md — REBUILD_BRIEF_READY; no candidate generated.
+- **Handoff:** product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000068/README.md; no candidate generated.
 
 ### MAT-000069 — REFRAME
 
@@ -72,12 +72,11 @@ OWNER_REVIEW_REQUIRED: none
 - **Subcategory:** Наливной Пол
 - **Title:** Наливной пол "Unis Горизонт" 20 кг
 - **Production image URL:** /uploads/products/MAT-000075-7584c202645c34c1.webp
-- **Evidence:** product-images-batch/mix-images-reaudit-final3-batch1/evidence/extracted/images/MAT-000075.webp; 1000×1000 webp; SHA256 afc7f8282f7e6c088bc9d6c872162de7cf9f01e49fde08858945f7c4b95b0dd9
-- **Identity:** MISMATCH — Package: UNIS Горизонт Универсальный М-45, 30 кг; local title: Горизонт, 20 кг
-- **Source (manufacturer official):** [https://unistrom.ru/catalog/ustrojstvo-polov/nalivnye-poly/gorizont-universalnyj/](https://unistrom.ru/catalog/ustrojstvo-polov/nalivnye-poly/gorizont-universalnyj/) — Official page identifies Universal M-45 and current 20/25 kg variants; package says 30 kg.
-- **Visual:** Weight mismatch; generic local title does not prove exact variant. Confirm intended 20 kg variant before replacement. Bbox/fill {"left":244,"top":60,"width":510,"height":877,"fillWidthPercent":51,"fillHeightPercent":87.7,"limitingAxisFillPercent":87.7}; background white; watermark/mark: none observed; package fully visible with no clipping.
-- **Action:** Rebuild brief ready; bind exact variant first.
-- **Rebuild brief:** product-images-batch/mix-images-reaudit-final3-batch1/prepared/rebuild/MAT-000075-brief.md — REBUILD_BRIEF_READY; no candidate generated.
+- **Evidence:** 1000×1000 WebP; SHA256 afc7f8282f7e6c088bc9d6c872162de7cf9f01e49fde08858945f7c4b95b0dd9
+- **Target identity:** CONFIRMED by owner-provided MAT-specific exact package and identity decision: **UNIS Горизонт Универсальный М-45, 20 кг**. The official UNIS page corroborates the current M-45 identity and 20 kg option: [official page](https://unistrom.ru/catalog/ustrojstvo-polov/nalivnye-poly/gorizont-universalnyj/).
+- **Current mismatch:** Production image shows the 30 kg pack. Do not crop/relabel or substitute Армированный/another variant.
+- **Remaining point:** No identity/variant uncertainty remains. A verified exact 20 kg package image asset is still needed; the original owner package reference is not present in this batch directory.
+- **Handoff:** [README](../../product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000075/README.md); candidate not created.
 
 ### MAT-000076 — REBUILD
 
@@ -89,18 +88,18 @@ OWNER_REVIEW_REQUIRED: none
 - **Source (manufacturer official):** [https://unistrom.ru/catalog/ustrojstvo-polov/gorizont-armirovannyj/](https://unistrom.ru/catalog/ustrojstvo-polov/gorizont-armirovannyj/) — Official page confirms armored 25 kg; package says 30 kg and evidence alt says 20 kg.
 - **Visual:** Wrong package weight; exact 25 kg local reference sources exist. Bbox/fill {"left":254,"top":72,"width":492,"height":855,"fillWidthPercent":49.2,"fillHeightPercent":85.5,"limitingAxisFillPercent":85.5}; background white; watermark/mark: none observed; package fully visible with no clipping.
 - **Action:** Rebuild from exact 25 kg reference.
-- **Rebuild brief:** product-images-batch/mix-images-reaudit-final3-batch1/prepared/rebuild/MAT-000076-brief.md — REBUILD_BRIEF_READY; no candidate generated.
+- **Handoff:** product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000076/README.md; no candidate generated.
 
-### MAT-000077 — RESEARCH_REQUIRED
+### MAT-000077 — KEEP
 
 - **Subcategory:** Наливной Пол
-- **Title:** Наливной пол "Старатели" Быстрый 20 кг
+- **Title:** Наливной пол "Старатели" Быстрый 20 кг (title preserved; not treated as a technical source)
 - **Production image URL:** /uploads/products/MAT-000077-a2ff7cd16c732bb5.webp
-- **Evidence:** product-images-batch/mix-images-reaudit-final3-batch1/evidence/extracted/images/MAT-000077.webp; 1000×1000 webp; SHA256 8bd4d3ef56aaa9e5f28c1963ac7a2cceef4c3d11615c58f06f43766109eac1cf
-- **Identity:** RESEARCH_REQUIRED — Local title Быстрый, 20 кг; package Быстротвердеющий, 20 кг
-- **Source (manufacturer official shop):** [https://market.starateli.ru/products/nalivnye-poly/nalivnoj-pol-bystrotverdeyushij-samoniveliruyushij/](https://market.starateli.ru/products/nalivnye-poly/nalivnoj-pol-bystrotverdeyushij-samoniveliruyushij/) — Official store lists Быстротвердеющий 20 kg but does not document Быстрый as same SKU.
-- **Visual:** Brand/weight match; exact name/version equivalence unresolved. Bbox/fill {"left":205,"top":73,"width":569,"height":852,"fillWidthPercent":56.9,"fillHeightPercent":85.2,"limitingAxisFillPercent":85.2}; background white; watermark/mark: none observed; package fully visible with no clipping.
-- **Action:** Wait for SKU/alias evidence.
+- **Evidence:** product-images-batch/mix-images-reaudit-final3-batch1/evidence/extracted/images/MAT-000077.webp; 1000×1000 WebP; SHA256 8bd4d3ef56aaa9e5f28c1963ac7a2cceef4c3d11615c58f06f43766109eac1cf
+- **Identity:** IDENTITY_EQUIVALENT_CONFIRMED for the exact owner-bound MAT. Owner-provided package evidence explicitly reads Старатели / НАЛИВНОЙ ПОЛ / БЫСТРОТВЕРДЕЮЩИЙ / 20 кг and the existing MAT-specific identity review binds that package to MAT-000077. The current official manufacturer page corroborates the Быстротвердеющий product and 20 kg option: [product page](https://www.starateli.ru/nalivnoi_pol_bistrodeistvuyushiy/), [official shop](https://market.starateli.ru/products/nalivnye-poly/nalivnoj-pol-bystrotverdeyushij-samoniveliruyushij/).
+- **Identity boundary:** This evidence confirms the current package for this MAT; it does not prove that “Быстрый” was a formal historical alias/renamed SKU or that old/new formulas are continuous. No such claim is made. Owner identity record: [floor-075-077-identity-review.json](floor-075-077-identity-review.json).
+- **Visual:** Full, white, clean, no watermark/overlay, no clipping; bbox/fill {"left":205,"top":73,"width":569,"height":852,"fillWidthPercent":56.9,"fillHeightPercent":85.2,"limitingAxisFillPercent":85.2}.
+- **Action:** Keep current image; title and product data are unchanged.
 
 ### MAT-000078 — KEEP
 
@@ -219,7 +218,7 @@ OWNER_REVIEW_REQUIRED: none
 - **Source (manufacturer official):** [https://www.ceresit.ru/ru/products/flooring/levelling-compounds/cn_175_super](https://www.ceresit.ru/ru/products/flooring/levelling-compounds/cn_175_super) — Official page confirms both 20 and 25 kg; package reads 25 kg.
 - **Visual:** Exact model, wrong weight; do not crop/relabel. Bbox/fill {"left":220,"top":28,"width":561,"height":939,"fillWidthPercent":56.1,"fillHeightPercent":93.9,"limitingAxisFillPercent":93.9}; background white; watermark/mark: none observed; package fully visible with no clipping.
 - **Action:** Exact 20 kg rebuild brief.
-- **Rebuild brief:** product-images-batch/mix-images-reaudit-final3-batch1/prepared/rebuild/MAT-000087-brief.md — REBUILD_BRIEF_READY; no candidate generated.
+- **Handoff:** product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000087/README.md; no candidate generated.
 
 ### MAT-000089 — REFRAME
 
@@ -251,17 +250,48 @@ OWNER_REVIEW_REQUIRED: none
 
 Seven PNG sources use only verified production pixels: crop outer white whitespace, proportional rescale, and center on a white 1200×1200 canvas. No redraw, inpainting, color edits, or package/logo/text edits. Previews use the existing importer renderWebp() (contain 1080, extend 60 px, white canvas, WebP quality 82). Per-file SHA256, dimensions, and bbox/fill are recorded above and in JSON.
 
-Local contact sheets (untracked):
+## Resolution pass and handoff readiness
 
-- product-images-batch/mix-images-reaudit-final3-batch1/review/01-current-production-contact-sheet.jpg
-- product-images-batch/mix-images-reaudit-final3-batch1/review/02-reframe-preview-contact-sheet.jpg
-- product-images-batch/mix-images-reaudit-final3-batch1/review/03-rebuild-review-contact-sheet.jpg (current references; no generated candidates)
+### MAT-000077 identity resolution
 
-## Rebuild briefs and unresolved identity
+The current image is **KEEP**. This is based on MAT-specific owner-provided package and identity evidence for the exact 20 kg package, corroborated by the current official manufacturer page. Similar wording alone was not used. The research does **not** establish “Быстрый” as a formal historical alias or prove formula continuity; local title/product data remain unchanged.
 
-Four briefs are ready under product-images-batch/mix-images-reaudit-final3-batch1/prepared/rebuild/. No synthetic candidate was generated because this local workflow cannot guarantee exact model/weight typography and package details. MAT-000090's red ХИТ ПРОДАЖ! mark is integrated package artwork, confirmed by independent packshot references; it is REFRAME only.
+### Seven REFRAME artifacts — verification PASS
 
-MAT-000077 is the only unresolved case: the local title says Быстрый while the package and manufacturer listing say Быстротвердеющий, 20 kg. No exact SKU/alias equivalence was established. Keep the current image until product article/SKU evidence or manufacturer confirmation resolves the name.
+For every row, source PNG and preview WebP are 1200×1200; recorded SHA256 and bbox/fill matched; package is complete with no clipping; white canvas/corners verified. Each preview regenerated through the existing importer renderWebp() was byte-identical. Independent pixel-lineage comparison was consistent with proportional crop/resampling only (no redraw, inpainting, or edits to text, logos, colors, or package artwork).
+
+| MAT | Source PNG SHA256 | Preview WebP SHA256 | Preview fill | Preview path |
+|---|---|---|---:|---|
+| MAT-000069 | b8befd9f343cbbeb49e7ee357456dc09606fee7d070a337cd63e53401ab4f2b4 | aacef16e3cbef44273d59047c7b502c62261a04848870af67eea8f228992ca59 | 84.7% | product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe-preview/MAT-000069.webp |
+| MAT-000079 | ecddfe7585729346b532574f0d6f71281d9d0ed6e0d07ebd91cfd727a078e812 | 863bb26c212b2eeeb647668c4ad35093a79ac677260fc9106de472ee2908bbf1 | 84.8% | product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe-preview/MAT-000079.webp |
+| MAT-000080 | 130c5da3858b8115e6dfd1be485d5cd5a100d658172edb83ea37cc17763690ec | eac20fac2841135f439ac19758a7a9bc8bffb4b6f033ff575ff4208205130191 | 84.8% | product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe-preview/MAT-000080.webp |
+| MAT-000081 | 3e8f085e77743cee845f8f0ebec6079c4d496cc750713772ed498affabf8470d | 28fe45a5369ccb2a878c36c6fb1681d56051814cac30ef013cc7bfd79584d27f | 84.8% | product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe-preview/MAT-000081.webp |
+| MAT-000082 | cab9ca8cf9c7eaf47e8283d87a8c534057754827e9812f08776428ddae84cdb5 | 410a639d11681220e0734ca950a62bccf7266ad55958eba9f3c80f72bb1dbbc0 | 84.8% | product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe-preview/MAT-000082.webp |
+| MAT-000089 | e5c69ea86340e869c124c046782e8f0478bc59c8fddc42cabf9d75eac1ca4ee0 | 197784d884e5419fcca5865cd96c571cab9f9eeb5e73bb20c8a5cf00aee2c98d | 84.8% | product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe-preview/MAT-000089.webp |
+| MAT-000090 | 6def91e51d8f8b8624a7da64d7dac4446ebc3fa7fc1e648ba77ce20bb9c6ae9 | 1ffb471c9a2921434907f66a96af7bdc91e6dc98a926414e8341596f775755f9 | 84.8% | product-images-batch/mix-images-reaudit-final3-batch1/prepared/reframe-preview/MAT-000090.webp |
+
+REFRAME_7_READY_FOR_OWNER_REVIEW=true.
+
+### Four REBUILD handoffs
+
+No fake final packshots were generated. Every directory contains an exact current-production image copy, a brief with target identity and visual requirements, and reference notes; available local reference files are copied separately. All four require exact target artwork before a replacement can be accepted.
+
+| MAT | Exact target | Current issue / remaining point | Handoff |
+|---|---|---|---|
+| MAT-000068 | Русеан М-200 монтажно-кладочная смесь, 40 кг | Current exact pack is crossed by a third-party СТРОЙПЛАЗА.RU watermark. Do not remove/copy it; clean exact source or controlled exact catalog image still required. | product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000068/ |
+| MAT-000075 | UNIS Горизонт Универсальный М-45, 20 кг | Target identity resolved by owner-provided MAT-specific evidence; production is 30 kg. Original exact 20 kg owner reference is not local and must be retrieved/verified. | product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000075/ |
+| MAT-000076 | UNIS Горизонт Армированный, 25 кг | Production is 30 kg; local front/back 25 kg references support weight, but upstream provenance for alternate local refs is not recorded. Verify provenance/rights before production use. | product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000076/ |
+| MAT-000087 | Ceresit CN 175 Super, 20 кг | Production image is 25 kg; exact 20 kg artwork is required. Do not relabel. Exact SKU design takes precedence over assumed red/yellow accents. | product-images-batch/mix-images-reaudit-final3-batch1/rebuild-handoff/MAT-000087/ |
+
+REBUILD_4_HANDOFF_READY=true; no candidate image or production package created.
+
+### Owner contact sheets
+
+- Reframe previews: product-images-batch/mix-images-reaudit-final3-batch1/review/final3-reframe-7-contact-sheet.jpg
+- Current REBUILD production images: product-images-batch/mix-images-reaudit-final3-batch1/review/final3-rebuild-4-current-contact-sheet.jpg
+- MAT-000077 identity evidence: product-images-batch/mix-images-reaudit-final3-batch1/review/MAT-000077-identity-review.jpg
+
+These files are local untracked review artifacts.
 
 ## Validation and scope
 
@@ -269,5 +299,12 @@ MAT-000077 is the only unresolved case: the local title says Быстрый whil
 - Evidence archive SHA256 matches expected: f8e275df5ab887d04f4247672806f798eaf2c17671bfdbd1634813bf3970c05b.
 - All evidence hashes, formats, dimensions and primary bindings match manifest.
 - Generated PNG/WebPs decode; previews are 1200×1200 WebP with white corners; each reframe preview is 84.7–84.8% limiting-axis fill.
-- Only the two review documents are commit candidates. Archive, extracted images, prepared files, briefs and contact sheets remain untracked.
-- No product data, code, database, production uploads, SSH, deploy or production package changed.
+- Only the two review documents are commit candidates. Archive, extracted images, prepared files, handoff folders and contact sheets remain untracked.
+- No product data, code, database, production uploads, SSH, deploy, importer apply or production package changed.
+
+
+MAT_000077_IDENTITY_RESOLVED=true
+REFRAME_7_READY_FOR_OWNER_REVIEW=true
+REBUILD_4_HANDOFF_READY=true
+FINAL3_READY_FOR_OWNER_VISUAL_REVIEW=true
+NO_PRODUCTION_ACTIONS=true
