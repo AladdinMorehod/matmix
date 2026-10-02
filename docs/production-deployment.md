@@ -18,7 +18,7 @@ The systemd example uses the non-root account, a protected filesystem, private `
 
 ## Release sequence and rollback
 
-1. Select and record the release commit; require clean Git.
+1. Select and record the release commit. By default, `deploy/scripts/deploy-release.sh <git-commit>` uses `/home/deploy/apps/matmix` as its Git source and requires that repository to be clean. When that historical checkout must remain untouched, use `deploy/scripts/deploy-release.sh --source-repo <path> <git-commit>` with a separate clean Git repository that contains the exact target commit. The selected source repository is canonicalized, checked for `.git`, checked for a clean worktree, and used for commit resolution and `git archive`; the deploy script does not fetch or modify it.
 2. Run `npm ci` and `npm audit --omit=dev` in a build environment.
 3. Populate the protected EnvironmentFile and run `npm run production:check` and `npm run release:check -- --with-e2e`.
 4. Stop MatMix and confirm the runtime lock is absent.
@@ -28,6 +28,16 @@ The systemd example uses the non-root account, a protected filesystem, private `
 8. Begin soft launch with indexing disabled and restricted audience. Observe for 24–48 hours, then intentionally enable indexing and rerun gates.
 
 Rollback: stop the service; return to the previous immutable code release; restore the verified pre-migration backup only when schema/data rollback is required; run database health; start and repeat smoke tests. Never restore over a running process.
+
+### Immutable release source repository
+
+The default source remains `/home/deploy/apps/matmix`. To build an immutable release from a separate clean repository without changing that established checkout, create or use a separate clone/cache outside the historical worktree, ensure the intended commit is present, and run:
+
+```bash
+sudo /opt/matmix/deploy-source/deploy/scripts/deploy-release.sh --source-repo /opt/matmix/deploy-source 81098b8312649314832fdb320388ac85036ba74a
+```
+
+Replace the example path/commit only when preparing an approved deployment. The selected repository must be clean and already contain the requested commit; the deploy script performs no fetch or pull. It reads the selected repository for status, commit resolution, and `git archive`, while the release build, production backup, migration, service switch, and rollback continue through the existing immutable-release flow. Never reset, clean, stash, checkout, switch, or pull the historical production worktree to make it deployable; leave it untouched and select a separate clean source repository instead.
 
 ## Operations, logs and alerts
 

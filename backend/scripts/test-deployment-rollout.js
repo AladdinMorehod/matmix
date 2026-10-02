@@ -198,6 +198,13 @@ function assertDeploymentContracts() {
     const deploymentFlow = deploy.slice(deploy.indexOf('echo "Stopping $SERVICE before backup and migration..."'));
 
     assert(deploy.includes('source "$ENV_FILE"'));
+    assert(deploy.includes("Usage: sudo $0 [--source-repo <path>] <git-commit>"));
+    assert(deploy.includes('SOURCE_REPO="$REPO"'));
+    assert(deploy.includes('git -C "$SOURCE_REPO" status --porcelain'));
+    assert(deploy.includes('git -C "$SOURCE_REPO" rev-parse --verify'));
+    assert(deploy.includes('git -C "$SOURCE_REPO" archive "$1"'));
+    assert(!deploy.includes('git -C "$REPO" status --porcelain'));
+    assert(deploy.includes('parse_deploy_args "$@"'));
     assert(!deploy.includes("env |"));
     assert(!deploy.includes("printenv"));
     assert(deploy.includes('install -d -o "$RUNTIME_USER" -g "$RUNTIME_GROUP" -m 0750 "$ORDER_ATTACHMENTS_PATH"'));

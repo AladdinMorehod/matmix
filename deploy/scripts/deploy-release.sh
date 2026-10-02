@@ -20,8 +20,9 @@ HEALTH_URLS=(
 )
 
 usage() {
-  echo "Usage: sudo $0 <git-commit>"
+  echo "Usage: sudo $0 [--source-repo <path>] <git-commit>"
   echo "Example: sudo $0 1f14019"
+  echo "Example: sudo $0 --source-repo /opt/matmix/deploy-source 1f14019"
 }
 
 fail() {
@@ -31,6 +32,46 @@ fail() {
 
 require_root() {
   [[ "${EUID}" -eq 0 ]] || fail "Run this script with sudo."
+}
+
+parse_deploy_args() {
+  SOURCE_REPO="$REPO"
+  REQUESTED_COMMIT=""
+
+  if [[ "$#" -eq 1 && -n "$1" && "$1" != -* ]]; then
+    REQUESTED_COMMIT="$1"
+    return 0
+  fi
+
+  if [[ "$#" -eq 3 && "$1" == "--source-repo" \
+      && -n "$2" && "$2" != -* && -n "$3" && "$3" != -* ]]; then
+    SOURCE_REPO="$2"
+    REQUESTED_COMMIT="$3"
+    return 0
+  fi
+
+  return 1
+}
+
+canonicalize_source_repo() {
+  local canonical
+  canonical="$(realpath -e -- "$SOURCE_REPO")" || return 1
+  [[ -d "$canonical" && -e "$canonical/.git" ]] || return 1
+  SOURCE_REPO="$canonical"
+}
+
+ensure_source_repo_clean() {
+  local status
+  status="$(GIT_OPTIONAL_LOCKS=0 git -C "$SOURCE_REPO" status --porcelain)" || return 1
+  [[ -z "$status" ]]
+}
+
+resolve_source_commit() {
+  git -C "$SOURCE_REPO" rev-parse --verify "${REQUESTED_COMMIT}^{commit}"
+}
+
+archive_source_commit() {
+  git -C "$SOURCE_REPO" archive "$1"
 }
 
 health_check() {
@@ -175,10 +216,9 @@ recover_failed_deployment() {
 }
 
 main() {
+  parse_deploy_args "$@" || { usage; exit 2; }
   require_root
-  [[ $# -eq 1 ]] || { usage; exit 2; }
 
-  local requested_commit="$1"
   local commit
   local release_name
   local release_dir
@@ -194,20 +234,25 @@ main() {
   command -v rsync >/dev/null || fail "rsync is not installed."
   command -v curl >/dev/null || fail "curl is not installed."
   command -v runuser >/dev/null || fail "runuser is not installed."
+  command -v realpath >/dev/null || fail "realpath is not installed."
+
+  canonicalize_source_repo \
+    || fail "Selected source repository is invalid or has no .git directory: $SOURCE_REPO"
+
+  if ! ensure_source_repo_clean; then
+    fail "Selected source repository working tree is not clean: $SOURCE_REPO"
+  fi
+
+  commit="$(resolve_source_commit)" \
+    || fail "Target commit is unavailable in selected source repository: $REQUESTED_COMMIT"
 
   exec 9>"$DEPLOY_LOCK"
   flock -n 9 || fail "Another MatMix deployment is already running."
 
-  [[ -d "$REPO/.git" ]] || fail "Repository not found: $REPO"
   [[ -L "$APP_LINK" ]] || fail "$APP_LINK must be a symlink before automated deployment."
   [[ -d "$RELEASES_ROOT" ]] || fail "Releases directory not found: $RELEASES_ROOT"
 
-  if [[ -n "$(git -C "$REPO" status --porcelain)" ]]; then
-    fail "Repository working tree is not clean."
-  fi
-
-  commit="$(git -C "$REPO" rev-parse --verify "${requested_commit}^{commit}")"
-  release_name="$(git -C "$REPO" rev-parse --short=12 "$commit")"
+  release_name="$(git -C "$SOURCE_REPO" rev-parse --short=12 "$commit")"
   release_dir="$RELEASES_ROOT/$release_name"
   build_dir="$BUILD_ROOT/$release_name"
   old_target="$(readlink -f "$APP_LINK")"
@@ -226,7 +271,7 @@ main() {
     remove_build_directory "$build_dir"
     install -d -o root -g root -m 0750 "$build_dir"
 
-    git -C "$REPO" archive "$commit" | tar -x -C "$build_dir"
+    archive_source_commit "$commit" | tar -x -C "$build_dir"
     printf '%s\n' "$commit" > "$build_dir/RELEASE_COMMIT"
 
     (
@@ -340,4 +385,6 @@ main() {
   echo "ROLLBACK_BACKUP=$backup_path"
 }
 
-main "$@"
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+  main "$@"
+fi

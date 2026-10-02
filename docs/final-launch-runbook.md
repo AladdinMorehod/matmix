@@ -46,7 +46,9 @@ node --version
 npm --version
 ```
 
-Install the supported Node LTS used by CI (Node 22), place the immutable release at `/opt/matmix/app`, then verify `git rev-parse HEAD` and `git status --short`. Create `/etc/matmix/matmix.env` from `deploy/matmix.env.example`, replace every placeholder through the approved secret/configuration process, and set `root:matmix 0640`. Install the Nginx/systemd examples only after replacing `example.invalid`; run Certbot's documented Nginx/webroot flow or configure the approved external TLS terminator. Do not enable HSTS preload.
+Install the supported Node LTS used by CI (Node 22), place the immutable release at `/opt/matmix/app`, then verify its `RELEASE_COMMIT` marker. Create `/etc/matmix/matmix.env` from `deploy/matmix.env.example`, replace every placeholder through the approved secret/configuration process, and set `root:matmix 0640`. Install the Nginx/systemd examples only after replacing `example.invalid`; run Certbot's documented Nginx/webroot flow or configure the approved external TLS terminator. Do not enable HSTS preload.
+
+For deployments, the default `deploy/scripts/deploy-release.sh <git-commit>` uses `/home/deploy/apps/matmix` and requires it to be clean. If that historical production checkout must remain untouched, use the script from a separate clean source repository with `deploy/scripts/deploy-release.sh --source-repo <path> <git-commit>`. The selected repository must already contain the target commit; deployment does not fetch or pull. Never clean, reset, stash, checkout, switch, or pull the historical production worktree to make it clean.
 
 ## B. Install and validate the application
 
