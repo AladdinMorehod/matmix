@@ -248,11 +248,11 @@ async function snapshotTables(db) {
   for (const table of PROTECTED_TABLES) snapshot[table] = await db.all(`SELECT * FROM ${table} ORDER BY id`);
   return snapshot;
 }
-function expectedInsertedValues(preflight) {
+function expectedInsertedValues(preflight, data = DATA) {
   const inserts = [];
   for (const row of preflight.rows) {
-    if (row.brand.attributeStatus === "WILL_ADD") inserts.push({ productId: row.productId, code: "brand", value: row.brand.value, dataType: "text", unit: null, sortOrder: DATA.CORE_ORDER.indexOf("brand") });
-    for (const item of row.specs) if (item.status === "WILL_ADD") inserts.push({ productId: row.productId, code: item.code, value: item.value, dataType: item.dataType, unit: item.unit, sortOrder: DATA.CORE_ORDER.indexOf(item.code) });
+    if (row.brand.attributeStatus === "WILL_ADD") inserts.push({ productId: row.productId, code: "brand", value: row.brand.value, dataType: "text", unit: null, sortOrder: data.CORE_ORDER.indexOf("brand") });
+    for (const item of row.specs) if (item.status === "WILL_ADD") inserts.push({ productId: row.productId, code: item.code, value: item.value, dataType: item.dataType, unit: item.unit, sortOrder: data.CORE_ORDER.indexOf(item.code) });
   }
   return inserts;
 }
@@ -278,7 +278,7 @@ async function assertPostSnapshot(db, before, preflight, data = DATA) {
     if (stable(afterById.get(Number(original.id))) !== stable(original)) throw new Error(`Existing attribute value changed: ${original.id}`);
   }
   const additions = afterValues.filter(row => !before.product_attribute_values.some(old => Number(old.id) === Number(row.id)));
-  const expectedAdds = expectedInsertedValues(preflight);
+  const expectedAdds = expectedInsertedValues(preflight, data);
   if (additions.length !== expectedAdds.length) throw new Error(`Unexpected attribute row count: ${additions.length}/${expectedAdds.length}`);
   const defs = new Map(after.product_attribute_definitions.map(row => [Number(row.id), row]));
   for (const expected of expectedAdds) {
@@ -315,7 +315,7 @@ async function applyBatch(db, dbPath, options, data = DATA) {
   if (!options.backupDir) throw new Error("Apply requires explicit --backup-dir");
   const preflight = await inspectBatch(db, { only: options.only, data });
   if (preflight.summary.errors || preflight.summary.titleGuardBlocked || preflight.summary.valueConflict || preflight.summary.brandConflict || preflight.summary.schemaBlocked) throw new Error("Apply blocked by exact guard, schema or value conflict");
-  const targets = expectedInsertedValues(preflight);
+  const targets = expectedInsertedValues(preflight, data);
   if (!targets.length) return { ...preflight, mode: "apply", writes: 0, backup: null };
   const backup = await createOnlineBackup(db, dbPath, options.backupDir);
   const before = await snapshotTables(db);
@@ -323,7 +323,7 @@ async function applyBatch(db, dbPath, options, data = DATA) {
   let writes = 0;
   try {
     const lockedPlan = await inspectBatch(db, { only: options.only, data });
-    if (stable(lockedPlan.summary) !== stable(preflight.summary) || stable(expectedInsertedValues(lockedPlan)) !== stable(targets)) throw new Error("Database state changed after preflight/backup");
+    if (stable(lockedPlan.summary) !== stable(preflight.summary) || stable(expectedInsertedValues(lockedPlan, data)) !== stable(targets)) throw new Error("Database state changed after preflight/backup");
     const definitionMap = new Map((await db.all("SELECT id,code,data_type,default_unit,is_active FROM product_attribute_definitions", [])).map(row => [row.code, row]));
     const now = new Date().toISOString();
     for (const row of preflight.rows) {
