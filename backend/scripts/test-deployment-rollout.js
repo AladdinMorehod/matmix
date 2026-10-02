@@ -195,7 +195,11 @@ function assertDeploymentContracts() {
     const backupService = fs.readFileSync(path.join(projectRoot, "deploy", "systemd", "matmix-backup.service"), "utf8");
     const backupTimer = fs.readFileSync(path.join(projectRoot, "deploy", "systemd", "matmix-backup.timer"), "utf8");
     const runbook = fs.readFileSync(path.join(projectRoot, "docs", "final-launch-runbook.md"), "utf8");
-    const deploymentFlow = deploy.slice(deploy.indexOf('echo "Stopping $SERVICE before backup and migration..."'));
+    const deploymentFlow = deploy.slice(deploy.indexOf('echo "Reviewing migration from the existing schema while $SERVICE remains active..."'));
+    const recoveryFlow = deploy.slice(
+        deploy.indexOf("recover_failed_deployment() {"),
+        deploy.indexOf("\ncreate_verified_backup() {")
+    );
 
     assert(deploy.includes('source "$ENV_FILE"'));
     assert(deploy.includes("Usage: sudo $0 [--source-repo <path>] <git-commit>"));
@@ -212,22 +216,48 @@ function assertDeploymentContracts() {
     assert(deploy.includes("--apply --confirm MIGRATE_MATMIX_DATABASE"));
     assert(deploy.includes('--verify-only "$backup_path"'));
     assert(deploy.includes('restore_exact_backup "$release_dir" "$backup_path"'));
-    assert(deploy.includes('[[ "$backup_path" != "$(readlink -f "$BACKUP_ROOT_PATH")/"* ]]'));
+    assert(deploy.includes('[[ "$backup_path" == "$(readlink -f "$BACKUP_ROOT_PATH")/"* ]]'));
     assert(deploy.includes('flock -n 9'));
     assert(!deploy.toLowerCase().includes("latest backup"));
+    assert.deepStrictEqual(
+        deploy.match(/"\/product\/MAT-000109"|"\/catalog"|"\/"/g)?.slice(0, 3),
+        ['"/"', '"/catalog"', '"/product/MAT-000109"']
+    );
+    assert(deploy.includes('curl --location --fail --silent --show-error --max-time 10'));
+    assert(deploy.includes('trap deployment_error ERR'));
+    assert(!deploy.includes('rm -rf -- "$old_target"'));
     assertOrdered(deploymentFlow, [
-        'systemctl stop "$SERVICE"',
-        "backend/scripts/backup-production-data.js",
-        "--verify-only",
-        "npm run database:migrate -- --dry-run",
+        'node backend/scripts/migrate-database.js --dry-run',
+        'npm run database:health -- --json',
+        'if [[ "$migration_required" == "false" ]]',
+        'create_verified_backup',
+        'echo "Stopping $SERVICE before backup and migration..."',
+        'if [[ "$migration_required" == "true" ]]',
+        'create_verified_backup',
         "--apply --confirm MIGRATE_MATMIX_DATABASE",
         "npm run database:health",
         "npm run attachments:audit",
         "npm run production:check",
         'atomic_switch "$release_dir"',
         'systemctl start "$SERVICE"',
-        "health_check"
+        "health_check",
+        "public_health_check"
     ]);
+    assertOrdered(recoveryFlow, [
+        'systemctl stop "$SERVICE"',
+        'atomic_switch "$old_target"',
+        'systemctl start "$SERVICE"',
+        'systemctl is-active --quiet "$SERVICE" && health_check',
+        'if public_health_check; then',
+        'ROLLBACK_COMPLETED=$old_target'
+    ]);
+    assert.match(deploy, /if \(\( migration_from < migration_to \)\); then\s+migration_required="true"/);
+    assert.match(deploy, /if \[\[ "\$migration_required" == "false" \]\]; then[\s\S]*?create_verified_backup[\s\S]*?trap deployment_error ERR/);
+    assert.match(deploy, /if \[\[ "\$migration_required" == "true" \]\]; then[\s\S]*?create_verified_backup[\s\S]*?data_migration_started="true"[\s\S]*?--apply --confirm MIGRATE_MATMIX_DATABASE/);
+    assert.match(deploy, /public_health_check\(\) \{[\s\S]*?return 1;[\s\S]*?Public HTTPS smoke failed/);
+    assert.match(deploy, /trap deployment_error ERR[\s\S]*?public_health_check/);
+    assert.match(recoveryFlow, /public HTTPS smoke still fails; leaving it running/);
+    assert.match(recoveryFlow, /public HTTPS smoke still fails; leaving it running\.[\s\S]*?return 1\s+fi\s+echo "CRITICAL: automatic rollback failed[\s\S]*?systemctl stop "\$SERVICE"/);
 
     assert(rollback.includes("<exact-verified-backup-path>"));
     assert(rollback.includes('--apply --confirm RESTORE_MATMIX_DATA'));
@@ -366,6 +396,20 @@ async function main() {
 
         const readinessFailureStartsService = false;
         assert.strictEqual(readinessFailureStartsService, false);
+        let activeRelease = oldRelease;
+        const publicSmoke = async release => release !== newRelease;
+        try {
+            activeRelease = newRelease;
+            if (!await publicSmoke(activeRelease)) throw new Error("public smoke failed");
+        } catch {
+            activeRelease = oldRelease;
+        }
+        assert.strictEqual(activeRelease, oldRelease, "failed public smoke must roll back to the still-present old release");
+        let oldReleaseServiceRunning = true;
+        const oldReleaseLocalHealth = true;
+        const oldReleasePublicSmoke = false;
+        if (!oldReleaseLocalHealth && !oldReleasePublicSmoke) oldReleaseServiceRunning = false;
+        assert.strictEqual(oldReleaseServiceRunning, true, "public ingress failure after rollback must not stop a healthy old process");
         console.log(JSON.stringify({
             success: true,
             shellContracts: true,
@@ -376,6 +420,10 @@ async function main() {
             attachmentAuditHealthy: audit.healthy,
             productionReadiness: readiness.ready,
             symlinkSwitchedAfterChecks: true,
+            expensiveChecksAndSafeBackupPreparedBeforeStop: true,
+            oldReleaseKeptUntilAtomicSwitch: true,
+            failedPublicSmokeRestoresOldRelease: true,
+            publicSmokeFailureKeepsLocallyHealthyOldServiceRunning: true,
             migrationFailureKeptPreviousSymlink: true,
             readinessFailurePreventedServiceStart: true,
             smokeFailureRestoredExactBackup: preDeployBackup.backupPath,

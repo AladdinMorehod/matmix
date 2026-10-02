@@ -18,6 +18,11 @@ HEALTH_URLS=(
   "http://127.0.0.1:3000/catalog"
   "http://127.0.0.1:3000/login.html"
 )
+PUBLIC_SMOKE_PATHS=(
+  "/"
+  "/catalog"
+  "/product/MAT-000109"
+)
 
 usage() {
   echo "Usage: sudo $0 [--source-repo <path>] <git-commit>"
@@ -78,6 +83,25 @@ health_check() {
   local url
   for url in "${HEALTH_URLS[@]}"; do
     curl --fail --silent --show-error --max-time 10 "$url" >/dev/null
+  done
+}
+
+public_health_check() {
+  local base="${PUBLIC_BASE_URL%/}"
+  local path url status
+  [[ -n "$base" ]] || { echo "PUBLIC_BASE_URL is required for the public HTTPS smoke gate." >&2; return 1; }
+  for path in "${PUBLIC_SMOKE_PATHS[@]}"; do
+    url="$base$path"
+    if ! status="$(curl --location --fail --silent --show-error --max-time 10 \
+      --output /dev/null --write-out '%{http_code}' "$url")"; then
+      echo "Public HTTPS smoke request failed: $url" >&2
+      return 1
+    fi
+    if [[ ! "$status" =~ ^2[0-9][0-9]$ ]]; then
+      echo "Public HTTPS smoke failed: $url returned HTTP $status." >&2
+      return 1
+    fi
+    echo "PUBLIC_SMOKE_HTTP_$status $url"
   done
 }
 
@@ -202,17 +226,33 @@ recover_failed_deployment() {
   systemctl start "$SERVICE"
   sleep 3
 
-  if systemctl is-active --quiet "$SERVICE" \
-      && health_check; then
-    echo "ROLLBACK_COMPLETED=$old_target"
-    [[ -z "$backup_path" ]] || echo "ROLLBACK_BACKUP=$backup_path"
-    return 0
+  if systemctl is-active --quiet "$SERVICE" && health_check; then
+    if public_health_check; then
+      echo "ROLLBACK_COMPLETED=$old_target"
+      [[ -z "$backup_path" ]] || echo "ROLLBACK_BACKUP=$backup_path"
+      return 0
+    fi
+    echo "CRITICAL: previous release is active and locally healthy, but public HTTPS smoke still fails; leaving it running." >&2
+    systemctl status "$SERVICE" --no-pager -l
+    return 1
   fi
 
   echo "CRITICAL: automatic rollback failed; keep the failed release and exact backup for diagnosis." >&2
   systemctl stop "$SERVICE"
   systemctl status "$SERVICE" --no-pager -l
   return 1
+}
+
+create_verified_backup() {
+  local backup_output
+  backup_output="$(run_in_release "$release_dir" node backend/scripts/backup-production-data.js)"
+  printf '%s\n' "$backup_output"
+  backup_path="$(extract_backup_path "$backup_output")" \
+    || { echo "Backup command did not return an exact backup path." >&2; return 1; }
+  [[ "$backup_path" == "$(readlink -f "$BACKUP_ROOT_PATH")/"* ]] \
+    || { echo "Backup path is outside BACKUP_ROOT_PATH." >&2; return 1; }
+  run_in_release "$release_dir" node backend/scripts/backup-production-data.js \
+    --verify-only "$backup_path"
 }
 
 main() {
@@ -224,9 +264,13 @@ main() {
   local release_dir
   local build_dir
   local old_target
-  local backup_output
   local backup_path=""
   local data_migration_started="false"
+  local migration_output
+  local migration_versions
+  local migration_from
+  local migration_to
+  local migration_required="false"
 
   command -v flock >/dev/null || fail "flock is not installed."
   command -v git >/dev/null || fail "git is not installed."
@@ -312,6 +356,34 @@ main() {
     });
   "
 
+  echo "Reviewing migration from the existing schema while $SERVICE remains active..."
+  migration_output="$(run_in_release "$release_dir" node backend/scripts/migrate-database.js --dry-run)"
+  printf '%s\n' "$migration_output"
+  migration_versions="$(node -e '
+    const report = JSON.parse(process.argv[1]);
+    if (!Number.isInteger(report.fromVersion) || !Number.isInteger(report.toVersion)) {
+      throw new Error("Migration dry-run did not report integer schema versions.");
+    }
+    process.stdout.write(`${report.fromVersion} ${report.toVersion}`);
+  ' "$migration_output")"
+  read -r migration_from migration_to <<< "$migration_versions"
+  (( migration_from <= migration_to )) || fail "Database schema is newer than the selected release."
+  if (( migration_from < migration_to )); then
+    migration_required="true"
+  fi
+
+  echo "Running read-only database, attachment, and production checks while $SERVICE remains active..."
+  run_in_release "$release_dir" npm run database:health -- --json
+  run_in_release "$release_dir" npm run attachments:audit -- --check --json
+  run_in_release "$release_dir" npm run production:check
+
+  if [[ "$migration_required" == "false" ]]; then
+    echo "Creating and verifying the online rollback backup before the short service switch..."
+    create_verified_backup
+  else
+    echo "Schema migration is required; the exact rollback backup will be created after writes are quiesced."
+  fi
+
   deployment_error() {
     local exit_code=$?
     recover_failed_deployment \
@@ -331,34 +403,16 @@ main() {
     false
   fi
 
-  if ! backup_output="$(
-    run_in_release "$release_dir" node backend/scripts/backup-production-data.js
-  )"; then
-    recover_failed_deployment "$old_target" "$release_dir" "" "false" || true
-    trap - ERR
-    fail "Verified pre-deployment backup failed; migration was not started."
+  if [[ "$migration_required" == "true" ]]; then
+    echo "Creating and verifying the exact rollback backup after database writes are quiesced..."
+    create_verified_backup
+    data_migration_started="true"
+    echo "Applying schema migration with the new release..."
+    run_in_release "$release_dir" npm run database:migrate -- \
+      --apply --confirm MIGRATE_MATMIX_DATABASE
+  else
+    echo "Schema is already current; skipping the no-op migration apply."
   fi
-  printf '%s\n' "$backup_output"
-  if ! backup_path="$(extract_backup_path "$backup_output")"; then
-    recover_failed_deployment "$old_target" "$release_dir" "" "false" || true
-    trap - ERR
-    fail "Backup command did not return an exact backup path."
-  fi
-  if [[ "$backup_path" != "$(readlink -f "$BACKUP_ROOT_PATH")/"* ]]; then
-    recover_failed_deployment "$old_target" "$release_dir" "" "false" || true
-    trap - ERR
-    fail "Backup path is outside BACKUP_ROOT_PATH."
-  fi
-  run_in_release "$release_dir" node backend/scripts/backup-production-data.js \
-    --verify-only "$backup_path"
-
-  echo "Reviewing migration from the existing schema..."
-  run_in_release "$release_dir" npm run database:migrate -- --dry-run
-
-  data_migration_started="true"
-  echo "Applying schema migration with the new release..."
-  run_in_release "$release_dir" npm run database:migrate -- \
-    --apply --confirm MIGRATE_MATMIX_DATABASE
 
   echo "Verifying migrated data and runtime readiness before symlink switch..."
   run_in_release "$release_dir" npm run database:health -- --json
@@ -372,6 +426,7 @@ main() {
   sleep 3
   systemctl is-active --quiet "$SERVICE"
   health_check
+  public_health_check
 
   echo "Repeating operational checks after service startup..."
   run_in_release "$release_dir" npm run database:health -- --json
