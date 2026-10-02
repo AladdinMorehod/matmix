@@ -12,6 +12,11 @@ const DATA = require("./data/mix-sand-cement-repair-core-batch1");
 const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "mix-sand-cement-core-batch1-"));
 const now = "2026-10-02T00:00:00.000Z";
 const ALL = DATA.BATCH_MATS;
+// Captured independently from the existing production-era shared contract.
+const PRODUCTION_CANONICAL_DEFINITIONS = Object.freeze({
+  consumption_10mm: Object.freeze({ dataType: "text", unit: "кг/м²" }),
+  pot_life: Object.freeze({ dataType: "text", unit: null })
+});
 const sha = file => crypto.createHash("sha256").update(fs.readFileSync(file)).digest("hex");
 function open(file) { return new sqlite3.Database(file); }
 function run(db, sql, params = []) { return new Promise((resolve, reject) => db.run(sql, params, function onRun(error) { error ? reject(error) : resolve({ id: this.lastID, changes: this.changes }); })); }
@@ -41,8 +46,11 @@ async function createFixture(name, options = {}) {
     await run(db, "INSERT INTO catalog_structure VALUES(13,1,'subcategory','Смесь Ремонтная',1)");
     for (const [index, [code, definition]] of Object.entries(DATA.DEFINITIONS).entries()) {
       if (code === options.missingDefinition) continue;
-      const type = code === options.incompatibleDefinition ? "text" : definition.dataType;
-      const unit = code === options.incompatibleDefinition ? null : definition.unit;
+      const canonical = PRODUCTION_CANONICAL_DEFINITIONS[code] || definition;
+      const type = code === options.incompatibleDefinition ? "number" : canonical.dataType;
+      const unit = code === options.incompatibleDefinition
+        ? (code === "pot_life" ? "час" : canonical.unit)
+        : canonical.unit;
       await run(db, "INSERT INTO product_attribute_definitions(id,code,label,data_type,default_unit,is_active,sort_order) VALUES(?,?,?,?,?,1,?)", [index + 1, code, code, type, unit, index]);
     }
     for (const [index, config] of DATA.PRODUCTS.entries()) {
@@ -99,6 +107,8 @@ async function main() {
 
   assert.deepStrictEqual(RUNNER.ALL_MATS, ["MAT-000109", "MAT-000117", "MAT-000118"]);
   assert.deepStrictEqual(DATA.PRODUCTS.map(item => item.externalId), RUNNER.ALL_MATS);
+  assert.deepStrictEqual(DATA.DEFINITIONS.consumption_10mm, { dataType: "text", unit: "кг/м²" });
+  assert.deepStrictEqual(DATA.DEFINITIONS.pot_life, { dataType: "text", unit: null });
   assert.throws(() => RUNNER.assertExactBatch(["MAT-000109"]), /Exact batch required/);
   assert.throws(() => RUNNER.assertExactBatch([...ALL, "MAT-000113"]), /Exact batch required/);
   assert.throws(() => RUNNER.assertExactBatch([ALL[0], ALL[1], ALL[1]]), /Exact batch required/);
@@ -120,6 +130,11 @@ async function main() {
   pass("exact three-MAT scope, exclusions, source conflicts and non-collapsed classifications");
 
   const dryFile = await createFixture("dry"); const dryDb = await RUNNER.openDatabase(dryFile, false);
+  for (const [code, expected] of Object.entries(PRODUCTION_CANONICAL_DEFINITIONS)) {
+    assert.deepStrictEqual(await dryDb.get("SELECT data_type,default_unit FROM product_attribute_definitions WHERE code=?", [code]), {
+      data_type: expected.dataType, default_unit: expected.unit
+    });
+  }
   const beforeDry = await snapshot(dryDb); const dryHash = sha(dryFile);
   const dry = await RUNNER.inspectBatch(dryDb, { only: ALL });
   assert.equal(dry.summary.total, 3); assert.equal(dry.summary.errors, 0); assert.equal(dry.summary.titleGuardBlocked, 0);
@@ -154,8 +169,11 @@ async function main() {
   const weight = await RUNNER.inspectBatch(weightDb, { only: ALL }); assert.equal(row(weight, "MAT-000118").status, "TITLE_GUARD_BLOCKED"); assert.match(row(weight, "MAT-000118").guardReason, /weight\/unit mismatch/); await weightDb.close();
   const missingFile = await createFixture("missing-definition", { missingDefinition: "base" }); const missingDb = await RUNNER.openDatabase(missingFile, false);
   await assert.rejects(() => RUNNER.inspectBatch(missingDb, { only: ALL }), /Missing\/incompatible existing canonical definitions: base/); await missingDb.close();
-  const schemaFile = await createFixture("incompatible-definition", { incompatibleDefinition: "pot_life" }); const schemaDb = await RUNNER.openDatabase(schemaFile, false);
-  await assert.rejects(() => RUNNER.inspectBatch(schemaDb, { only: ALL }), /Missing\/incompatible existing canonical definitions: pot_life/); await schemaDb.close();
+  for (const code of Object.keys(PRODUCTION_CANONICAL_DEFINITIONS)) {
+    const schemaFile = await createFixture(`incompatible-${code}`, { incompatibleDefinition: code }); const schemaDb = await RUNNER.openDatabase(schemaFile, false);
+    await assert.rejects(() => RUNNER.inspectBatch(schemaDb, { only: ALL }), new RegExp(`Missing/incompatible existing canonical definitions: ${code}`)); await schemaDb.close();
+  }
+  pass("production canonical text definitions are independent fixture inputs; numeric reusable definitions are rejected");
   const membershipFile = await createFixture("unexpected-membership", { membership: true }); const membershipDb = await RUNNER.openDatabase(membershipFile, false);
   const membership = await RUNNER.inspectBatch(membershipDb, { only: ALL }); assert.equal(row(membership, "MAT-000117").status, "ERROR"); assert.match(row(membership, "MAT-000117").error, /Template assumption changed/); await membershipDb.close();
   pass("exact title, local weight/unit identity, existing definition compatibility and empty-template fallback guards");
@@ -174,12 +192,19 @@ async function main() {
   pass("existing conflicting values or brand block apply without overwrite");
 
   const applyFile = await createFixture("apply"); const applyDb = await RUNNER.openDatabase(applyFile, true);
+  const applyProducts = DATA.PRODUCTS.map(product => ({ ...product, core: { ...product.core } }));
+  const ceresit = applyProducts.find(product => product.externalId === "MAT-000117");
+  ceresit.core.pot_life = { status: "READY", value: "около 30 минут", sources: ["ceresitCn83RuTds"], context: "Synthetic storage regression for the established text contract." };
+  const applyData = { ...DATA, PRODUCTS: applyProducts };
   const beforeApply = await snapshot(applyDb);
-  const applied = await RUNNER.applyBatch(applyDb, applyFile, { only: ALL, confirm: RUNNER.CONFIRM, backupDir: path.join(tempRoot, "verified-backups") });
+  const applied = await RUNNER.applyBatch(applyDb, applyFile, { only: ALL, confirm: RUNNER.CONFIRM, backupDir: path.join(tempRoot, "verified-backups") }, applyData);
   assert.equal(applied.summary.errors, 0); assert.equal(applied.summary.valueConflict, 0); assert.equal(applied.summary.willAdd, 0);
   assert.equal(applied.backup.verified, true); assert.equal(fs.existsSync(applied.backup.path), true);
   assert.equal(applied.writes, applied.summary.existingOk - beforeApply.product_attribute_values.length + DATA.PRODUCTS.length);
   const afterApply = await snapshot(applyDb);
+  const potLifeDefinition = afterApply.product_attribute_definitions.find(definition => definition.code === "pot_life");
+  const potLifeValue = afterApply.product_attribute_values.find(value => value.product_id === 101 && value.attribute_definition_id === potLifeDefinition.id);
+  assert.equal(potLifeValue.value_text, "около 30 минут"); assert.equal(potLifeValue.value_number, null);
   assert.equal(afterApply.products.find(p => p.external_id === "MAT-OTHER").brand, "Keep");
   assert.deepStrictEqual(afterApply.product_attribute_definitions, beforeApply.product_attribute_definitions);
   assert.deepStrictEqual(afterApply.product_attribute_templates, beforeApply.product_attribute_templates);
@@ -190,7 +215,7 @@ async function main() {
     const expected = { ...original, brand: config.brand };
     assert.deepStrictEqual(current, expected, `only brand may change for ${config.externalId}`);
   }
-  const repeated = await RUNNER.applyBatch(applyDb, applyFile, { only: ALL, confirm: RUNNER.CONFIRM, backupDir: path.join(tempRoot, "verified-backups") });
+  const repeated = await RUNNER.applyBatch(applyDb, applyFile, { only: ALL, confirm: RUNNER.CONFIRM, backupDir: path.join(tempRoot, "verified-backups") }, applyData);
   assert.equal(repeated.writes, 0); assert.equal(repeated.backup, null); assert.equal(repeated.summary.willAdd, 0);
   assert.deepStrictEqual(await snapshot(applyDb), afterApply);
   pass("apply writes only permitted brand/core values, verifies online backup, and is idempotent");
@@ -212,7 +237,17 @@ async function main() {
 
   console.log(JSON.stringify({ success: true, exactScope: true, sourceConflictPreserved: true, mappingLimitationsPreserved: true,
     genericTemplateFallbackGuarded: true, definitionsAndTemplatesNeverWritten: true, dryRunImmutable: true, applyTransactional: true,
-    onlineBackupVerified: true, rollback: true, idempotent: true }, null, 2));
+    onlineBackupVerified: true, rollback: true, idempotent: true,
+    dryRunSummary: {
+      total: dry.summary.total, logicalSlots: dry.summary.logicalSlots, ready: dry.summary.ready,
+      readyProducts: dry.summary.readyProducts, partialProducts: dry.summary.partialProducts,
+      willAdd: dry.summary.willAdd, existingOk: dry.summary.existingOk,
+      sourceConflict: dry.summary.sourceConflict, needsMapping: dry.summary.needsMapping,
+      notAvailable: dry.summary.notAvailable, plannedBrandUpdates: dry.rows.filter(item => item.brand?.productColumnStatus === "WILL_ADD").length,
+      schemaBlocked: dry.summary.schemaBlocked, valueConflict: dry.summary.valueConflict,
+      brandConflict: dry.summary.brandConflict, titleGuardBlocked: dry.summary.titleGuardBlocked,
+      blockedProducts: dry.summary.blockedProducts, errors: dry.summary.errors
+    } }, null, 2));
 }
 
 main().catch(error => { console.error(error.stack || error); process.exitCode = 1; }).finally(() => fs.rmSync(tempRoot, { recursive: true, force: true }));
