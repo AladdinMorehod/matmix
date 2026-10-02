@@ -7,7 +7,7 @@ const path = require("path");
 const sqlite3 = require("sqlite3").verbose();
 const CANONICAL = require("./data/attribute-templates-closed-subcategories");
 const { MAIN_ATTRIBUTES } = require("../services/productAttributeOrder");
-const { CONFIRM_TOKEN, EXPECTED_ROW_COUNT, parseArgs, openDatabase, hashProtectedTables, buildPlan, hasChanges, createOnlineBackup, runBatch } = require("./backfill-attribute-templates-closed-subcategories");
+const { CONFIRM_TOKEN, CLOSED_STRUCTURE_IDS, EXPECTED_ROW_COUNT, parseArgs, openDatabase, hashProtectedTables, buildPlan, hasChanges, createOnlineBackup, runBatch } = require("./backfill-attribute-templates-closed-subcategories");
 
 const allCodes = [...new Set(CANONICAL.categories.flatMap(category => [...category.codes, ...(category.removeCodes || [])]))];
 const codes = [...allCodes, ...MAIN_ATTRIBUTES.map(item => item.code)];
@@ -19,14 +19,14 @@ function rawRun(db, sql, params = []) {
 function rawExec(db, sql) { return new Promise((resolve, reject) => db.exec(sql, error => error ? reject(error) : resolve())); }
 function rawClose(db) { return new Promise((resolve, reject) => db.close(error => error ? reject(error) : resolve())); }
 
-async function createFixture(name, { missingDefinition = null, wrongStructure = false, orphanTemplate = false, triggerInsert = false } = {}) {
+async function createFixture(name, { missingDefinition = null, wrongStructure = false, orphanTemplate = false, triggerInsert = false, schemaVersion11 = true } = {}) {
     const file = path.join(tempRoot, `${name}.db`);
     const raw = new sqlite3.Database(file);
     try {
         await rawExec(raw, `
             CREATE TABLE catalog_structure(id INTEGER PRIMARY KEY,parent_id INTEGER,type TEXT,name TEXT,is_active INTEGER);
             CREATE TABLE product_attribute_definitions(id INTEGER PRIMARY KEY,code TEXT,is_active INTEGER);
-            CREATE TABLE product_attribute_templates(id INTEGER PRIMARY KEY AUTOINCREMENT,structure_id INTEGER,attribute_definition_id INTEGER,sort_order INTEGER NOT NULL DEFAULT 0,is_required INTEGER NOT NULL DEFAULT 0,unit_override TEXT,created_at TEXT,updated_at TEXT);
+            CREATE TABLE product_attribute_templates(id INTEGER PRIMARY KEY AUTOINCREMENT,structure_id INTEGER,attribute_definition_id INTEGER,${schemaVersion11 ? "section TEXT NOT NULL DEFAULT 'regular'," : ""}sort_order INTEGER NOT NULL DEFAULT 0,is_required INTEGER NOT NULL DEFAULT 0,unit_override TEXT,created_at TEXT,updated_at TEXT);
             CREATE TABLE products(id INTEGER PRIMARY KEY,external_id TEXT,title TEXT,brand TEXT,seo_title TEXT,seo_description TEXT,short_description TEXT,full_description TEXT,description TEXT);
             CREATE TABLE product_attribute_values(id INTEGER PRIMARY KEY,product_id INTEGER,attribute_definition_id INTEGER,value_text TEXT,value_number REAL,value_boolean INTEGER,sort_order INTEGER);
             CREATE TABLE product_images(id INTEGER PRIMARY KEY,product_id INTEGER,image_url TEXT,sort_order INTEGER);
@@ -44,9 +44,31 @@ async function createFixture(name, { missingDefinition = null, wrongStructure = 
         await rawRun(raw, "INSERT INTO products VALUES(1,'MAT-FIXTURE-1','Тест','KNAUF','SEO title','SEO description','short','full','legacy')");
         await rawRun(raw, "INSERT INTO product_attribute_values VALUES(1,1,?,'value',NULL,NULL,77)", [ids.get("base") || 1]);
         await rawRun(raw, "INSERT INTO product_images VALUES(1,1,'/fixture.webp',1)");
-        await rawRun(raw, "INSERT INTO product_attribute_templates(id,structure_id,attribute_definition_id,sort_order) VALUES(777,2,?,77)", [ids.get("base") || 1]);
-        if (ids.has("coverage_30kg_10mm")) await rawRun(raw, "INSERT INTO product_attribute_templates(id,structure_id,attribute_definition_id,sort_order) VALUES(778,2,?,6)", [ids.get("coverage_30kg_10mm")]);
-        if (orphanTemplate) await rawRun(raw, "INSERT INTO product_attribute_templates(structure_id,attribute_definition_id,sort_order) VALUES(2,9999,0)");
+        let templateId = 1;
+        for (const category of CANONICAL.categories) {
+            if (schemaVersion11) {
+                for (const [sortOrder, item] of MAIN_ATTRIBUTES.entries()) {
+                    await rawRun(raw, "INSERT INTO product_attribute_templates(id,structure_id,attribute_definition_id,section,sort_order) VALUES(?,?,?,'main',?)", [templateId++, category.structureId, ids.get(item.code), sortOrder]);
+                }
+            }
+            for (const [sortOrder, code] of category.codes.entries()) {
+                if (category.structureId === 2) continue;
+                await rawRun(raw, schemaVersion11
+                    ? "INSERT INTO product_attribute_templates(id,structure_id,attribute_definition_id,section,sort_order) VALUES(?,?,?,'regular',?)"
+                    : "INSERT INTO product_attribute_templates(id,structure_id,attribute_definition_id,sort_order) VALUES(?,?,?,?)",
+                [templateId++, category.structureId, ids.get(code) || 1, sortOrder]);
+            }
+        }
+        await rawRun(raw, schemaVersion11
+            ? "INSERT INTO product_attribute_templates(id,structure_id,attribute_definition_id,section,sort_order) VALUES(777,2,?,'regular',77)"
+            : "INSERT INTO product_attribute_templates(id,structure_id,attribute_definition_id,sort_order) VALUES(777,2,?,77)", [ids.get("base") || 1]);
+        if (ids.has("coverage_30kg_10mm")) await rawRun(raw, schemaVersion11
+            ? "INSERT INTO product_attribute_templates(id,structure_id,attribute_definition_id,section,sort_order) VALUES(778,2,?,'regular',6)"
+            : "INSERT INTO product_attribute_templates(id,structure_id,attribute_definition_id,sort_order) VALUES(778,2,?,6)", [ids.get("coverage_30kg_10mm")]);
+        if (schemaVersion11) await rawRun(raw, "UPDATE product_attribute_templates SET is_required=1,unit_override='custom-unit' WHERE structure_id=2 AND attribute_definition_id=?", [ids.get("brand")]);
+        if (orphanTemplate) await rawRun(raw, schemaVersion11
+            ? "INSERT INTO product_attribute_templates(structure_id,attribute_definition_id,section,sort_order) VALUES(2,9999,'regular',0)"
+            : "INSERT INTO product_attribute_templates(structure_id,attribute_definition_id,sort_order) VALUES(2,9999,0)");
         if (triggerInsert) await rawRun(raw, "CREATE TRIGGER reject_template_add BEFORE INSERT ON product_attribute_templates BEGIN SELECT RAISE(ABORT,'fixture rollback'); END");
     } finally { await rawClose(raw); }
     return file;
@@ -61,8 +83,9 @@ async function expectReject(operation, pattern) {
 
 async function main() {
     assert.strictEqual(EXPECTED_ROW_COUNT, 53);
-    assert.deepStrictEqual(CANONICAL.categories.map(item => item.structureId), [2, 4, 5, 7, 8]);
-    assert.deepStrictEqual(CANONICAL.categories.map(item => item.name), ["Штукатурка", "Шпаклевка", "Кладочные Смеси", "Наливной Пол", "Стяжки Пола"]);
+    assert.deepStrictEqual(CLOSED_STRUCTURE_IDS, [2, 4, 5, 7, 8]);
+    assert.deepStrictEqual(CANONICAL.categories.map(item => item.structureId), [2, 4, 5, 7, 8, 10]);
+    assert.strictEqual(CANONICAL.categories.find(item => item.structureId === 10).codes.length, 19);
     assert(CANONICAL.categories.every(category => category.codes.every(code => !MAIN_ATTRIBUTES.some(item => item.code === code))));
     assert.strictEqual(parseArgs(["--db", "fixture.db"]).apply, false, "dry-run is the default");
     assert.throws(() => parseArgs(["--db", "fixture.db", "--apply"]), /Apply requires --confirm/);
@@ -70,10 +93,15 @@ async function main() {
 
     const successfulFile = await createFixture("success");
     const readOnly = await openDatabase(successfulFile, true);
+    const untouchedMainBefore = await readOnly.all("SELECT * FROM product_attribute_templates WHERE section='main' ORDER BY id");
+    const hydroBefore = await readOnly.all("SELECT * FROM product_attribute_templates WHERE structure_id=10 ORDER BY id");
     const dryBefore = await hashProtectedTables(readOnly);
     const dry = await runBatch(readOnly);
     const dryAfter = await hashProtectedTables(readOnly);
     assert.strictEqual(dry.status, "CHANGES_REQUIRED");
+    assert.deepStrictEqual(dry.plan.categories.map(item => item.structureId), CLOSED_STRUCTURE_IDS, "closed-subcategories consumer must exclude structure 10");
+    assert.strictEqual(dry.plan.expectedRowCount, 53);
+    assert.strictEqual(dry.plan.expectedMainMembershipCount, 20);
     assert(hasChanges(dry.plan));
     assert.deepStrictEqual(dryAfter, dryBefore, "dry-run must be immutable");
     await readOnly.close();
@@ -86,16 +114,24 @@ async function main() {
     assert.strictEqual(applied.status, "APPLIED");
     assert.strictEqual(applied.plan.expectedRowCount, EXPECTED_ROW_COUNT);
     assert.deepStrictEqual(applied.protectedHashesAfter, applied.protectedHashesBefore);
-    const mainRows = await writable.all(`SELECT d.code FROM product_attribute_templates t JOIN product_attribute_definitions d ON d.id=t.attribute_definition_id WHERE d.code IN (${MAIN_ATTRIBUTES.map(() => "?").join(",")})`, MAIN_ATTRIBUTES.map(item => item.code));
-    assert.deepStrictEqual(mainRows, [], "main attributes must never enter templates");
+    const mainRows = await writable.all(`SELECT t.structure_id,d.code,t.section,t.sort_order FROM product_attribute_templates t JOIN product_attribute_definitions d ON d.id=t.attribute_definition_id WHERE d.code IN (${MAIN_ATTRIBUTES.map(() => "?").join(",")}) ORDER BY t.structure_id,t.sort_order`, MAIN_ATTRIBUTES.map(item => item.code));
+    assert.strictEqual(mainRows.length, 24, "four main memberships for each of six canonical structures must remain");
+    assert.deepStrictEqual(await writable.all("SELECT * FROM product_attribute_templates WHERE section='main' ORDER BY id"), untouchedMainBefore, "main tuples and their metadata must remain byte-for-byte unchanged");
+    for (const structureId of CLOSED_STRUCTURE_IDS) {
+        assert.deepStrictEqual(mainRows.filter(row => row.structure_id === structureId).map(({ code, section, sort_order }) => ({ code, section, sort_order })),
+            MAIN_ATTRIBUTES.map((item, sort_order) => ({ code: item.code, section: "main", sort_order })), "main section/order must remain exact and untouched");
+    }
     const rows = await writable.all("SELECT id,sort_order FROM product_attribute_templates WHERE structure_id=2 AND attribute_definition_id=(SELECT id FROM product_attribute_definitions WHERE code='base')");
     assert.deepStrictEqual(rows, [{ id: 777, sort_order: 0 }], "existing template row ID must survive order update");
     const removedCoverage = await writable.all("SELECT id FROM product_attribute_templates WHERE id=778");
     assert.deepStrictEqual(removedCoverage, [], "only explicitly approved obsolete coverage template row must be removed");
     for (const category of CANONICAL.categories) {
-        const actual = await writable.all(`SELECT d.code,t.sort_order FROM product_attribute_templates t JOIN product_attribute_definitions d ON d.id=t.attribute_definition_id WHERE t.structure_id=? ORDER BY t.sort_order`, [category.structureId]);
-        assert.deepStrictEqual(actual, category.codes.map((code, sortOrder) => ({ code, sort_order: sortOrder })), `canonical order mismatch for ${category.name}`);
+        const actual = await writable.all(`SELECT d.code,t.sort_order FROM product_attribute_templates t JOIN product_attribute_definitions d ON d.id=t.attribute_definition_id WHERE t.structure_id=? AND t.section='regular' ORDER BY t.sort_order`, [category.structureId]);
+        assert.deepStrictEqual(actual, category.codes.map((code, sort_order) => ({ code, sort_order })), `canonical regular order mismatch for ${category.name}`);
     }
+    const hydroRows = await writable.all("SELECT * FROM product_attribute_templates WHERE structure_id=10 ORDER BY id");
+    assert.strictEqual(hydroRows.length, 23, "Hydroisolation memberships must remain outside the closed backfill scope");
+    assert.deepStrictEqual(hydroRows, hydroBefore, "Hydroisolation structure 10 template rows must remain unchanged");
     const beforeIdempotent = await hashProtectedTables(writable);
     const secondDryRun = await runBatch(writable);
     assert.strictEqual(secondDryRun.status, "EXISTING_OK / NO_CHANGES");
@@ -104,6 +140,15 @@ async function main() {
     assert.strictEqual(secondApply.status, "EXISTING_OK / NO_CHANGES");
     assert.deepStrictEqual(await hashProtectedTables(writable), beforeIdempotent);
     await writable.close();
+
+    const legacyFile = await createFixture("schema-v4", { schemaVersion11: false });
+    const legacyDb = await openDatabase(legacyFile, true);
+    try {
+        const legacyPlan = await buildPlan(legacyDb);
+        assert.strictEqual(legacyPlan.sectionColumn, false, "legacy schema-v4 shape must work without section");
+        assert.strictEqual(legacyPlan.categories.length, 5);
+        assert.strictEqual(legacyPlan.expectedMainMembershipCount, null);
+    } finally { await legacyDb.close(); }
 
     const rollbackFile = await createFixture("rollback", { triggerInsert: true });
     const rollbackDb = await openDatabase(rollbackFile, false);
@@ -129,7 +174,8 @@ async function main() {
     await expectReject(() => buildPlan(wrongDb), /Exact structure ID\/name guard failed/);
     await wrongDb.close();
 
-    console.log(JSON.stringify({ success: true, exactScope: true, expectedRowCount: EXPECTED_ROW_COUNT, mainAttributesExcluded: true,
+    console.log(JSON.stringify({ success: true, exactScope: true, closedStructureIds: CLOSED_STRUCTURE_IDS, expectedRowCount: EXPECTED_ROW_COUNT,
+        mainMembershipsPreserved: 20, allCanonicalMainMembershipsPresent: 24, hydroStructure10ExcludedFromMutation: true, schemaV4Compatibility: true,
         canonicalOrdering: true, existingRowIdsPreserved: true, explicitCoverageTemplateRemoval: true, dryRunImmutable: true, idempotent: true, rollback: true,
         missingDefinitionGuard: true, unknownDefinitionGuard: true, wrongStructureGuard: true,
         productsValuesImagesSeoHashesUnchanged: true, verifiedOnlineBackup: true }, null, 2));

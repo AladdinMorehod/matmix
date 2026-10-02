@@ -8,7 +8,14 @@ const CANONICAL = require("./data/attribute-templates-closed-subcategories");
 const { MAIN_ATTRIBUTES } = require("../services/productAttributeOrder");
 
 const CONFIRM_TOKEN = "APPLY_CLOSED_ATTRIBUTE_TEMPLATES";
-const EXPECTED_ROW_COUNT = CANONICAL.categories.reduce((sum, category) => sum + category.codes.length, 0);
+const CLOSED_STRUCTURE_IDS = Object.freeze([2, 4, 5, 7, 8]);
+const CLOSED_STRUCTURE_NAMES = Object.freeze(["Штукатурка", "Шпаклевка", "Кладочные Смеси", "Наливной Пол", "Стяжки Пола"]);
+const CLOSED_CATEGORIES = Object.freeze(CLOSED_STRUCTURE_IDS.map(id => {
+    const category = CANONICAL.categories.find(item => Number(item.structureId) === id);
+    if (!category) throw new Error(`Canonical closed structure is missing: ${id}`);
+    return category;
+}));
+const EXPECTED_ROW_COUNT = CLOSED_CATEGORIES.reduce((sum, category) => sum + category.codes.length, 0);
 const PROTECTED_TABLES = Object.freeze(["products", "product_attribute_values", "product_images"]);
 const signature = value => JSON.stringify(value);
 const sha256 = value => crypto.createHash("sha256").update(JSON.stringify(value)).digest("hex");
@@ -75,11 +82,14 @@ async function buildPlan(db, canonical = CANONICAL) {
     if (signature(canonical.mainAttributes) !== signature(MAIN_ATTRIBUTES.map(item => item.code))) {
         throw new Error("MAIN_ATTRIBUTES guard differs from the canonical resolver");
     }
-    if (!Array.isArray(canonical.categories) || canonical.categories.length !== 5) throw new Error("Canonical scope must contain exactly five subcategories");
-    const names = canonical.categories.map(item => item.name);
-    if (new Set(names).size !== names.length || signature([...names].sort()) !== signature(["Штукатурка", "Шпаклевка", "Кладочные Смеси", "Наливной Пол", "Стяжки Пола"].sort())) {
-        throw new Error("Canonical subcategory allowlist mismatch");
+    if (!Array.isArray(canonical.categories)) throw new Error("Canonical categories must be an array");
+    const canonicalIds = canonical.categories.map(item => Number(item.structureId));
+    if (new Set(canonicalIds).size !== canonicalIds.length) throw new Error("Canonical structure IDs must be unique");
+    const scopedCategories = CLOSED_STRUCTURE_IDS.map(id => canonical.categories.find(item => Number(item.structureId) === id));
+    if (scopedCategories.some((item, index) => !item || item.name !== CLOSED_STRUCTURE_NAMES[index])) {
+        throw new Error("Canonical closed-subcategory allowlist mismatch");
     }
+    const sectionColumn = (await db.all("PRAGMA table_info(product_attribute_templates)")).some(column => column.name === "section");
     const parent = await db.get("SELECT id,type,name,is_active FROM catalog_structure WHERE id=?", [canonical.parent.id]);
     if (!parent || parent.type !== canonical.parent.type || parent.name !== canonical.parent.name || Number(parent.is_active) !== 1) {
         throw new Error("Canonical parent structure guard failed");
@@ -92,7 +102,7 @@ async function buildPlan(db, canonical = CANONICAL) {
     }
     const mainCodes = new Set(canonical.mainAttributes);
     const plan = [];
-    for (const category of canonical.categories) {
+    for (const category of scopedCategories) {
         if (!Array.isArray(category.codes) || new Set(category.codes).size !== category.codes.length) throw new Error(`Invalid code list: ${category.name}`);
         const removeCodes = category.removeCodes || [];
         if (!Array.isArray(removeCodes) || new Set(removeCodes).size !== removeCodes.length || removeCodes.some(code => category.codes.includes(code))) throw new Error(`Invalid explicit removals: ${category.name}`);
@@ -107,13 +117,35 @@ async function buildPlan(db, canonical = CANONICAL) {
             if (!definition || Number(definition.is_active) !== 1) throw new Error(`Missing or inactive definition code: ${code}`);
             desired.push({ code, definitionId: definition.id, sortOrder });
         }
-        const current = await db.all(`SELECT t.id,t.attribute_definition_id,t.sort_order,d.code
+        const current = await db.all(`SELECT t.id,t.attribute_definition_id,t.sort_order,${sectionColumn ? "t.section,t.is_required,t.unit_override,t.created_at,t.updated_at" : "'regular' AS section"},d.code
             FROM product_attribute_templates t LEFT JOIN product_attribute_definitions d ON d.id=t.attribute_definition_id
             WHERE t.structure_id=? ORDER BY t.id`, [category.structureId]);
+        const mainContract = [];
+        if (sectionColumn) {
+            for (const [sortOrder, code] of canonical.mainAttributes.entries()) {
+                const matching = current.filter(row => row.code === code);
+                if (matching.length !== 1 || matching[0].section !== "main" || Number(matching[0].sort_order) !== sortOrder) {
+                    throw new Error(`Main template contract mismatch: ${category.name}/${code}`);
+                }
+                mainContract.push({ code, rowId: matching[0].id, definitionId: matching[0].attribute_definition_id,
+                    section: matching[0].section, sortOrder: Number(matching[0].sort_order), isRequired: matching[0].is_required,
+                    unitOverride: matching[0].unit_override ?? null, createdAt: matching[0].created_at ?? null, updatedAt: matching[0].updated_at ?? null });
+            }
+            for (const row of current) {
+                if (row.section === "main" && !canonical.mainAttributes.includes(row.code)) {
+                    throw new Error(`Unlisted main template membership: ${category.name}/${row.code}`);
+                }
+                if (canonical.mainAttributes.includes(row.code) && row.section !== "main") {
+                    throw new Error(`Main attribute has wrong section: ${category.name}/${row.code}`);
+                }
+            }
+        }
         const currentCodes = new Set();
         for (const row of current) {
             if (!row.code) throw new Error(`Unknown definition membership in ${category.name}: ${row.attribute_definition_id}`);
+            if (mainCodes.has(row.code) && sectionColumn && row.section === "main") continue;
             if (mainCodes.has(row.code)) throw new Error(`MAIN_ATTRIBUTE template membership found: ${category.name}/${row.code}`);
+            if (sectionColumn && row.section !== "regular") throw new Error(`Invalid template section: ${category.name}/${row.code}/${row.section}`);
             if (!category.codes.includes(row.code) && !removeCodes.includes(row.code)) throw new Error(`Unlisted template membership requires explicit canonical removal: ${category.name}/${row.code}`);
             if (currentCodes.has(row.code)) throw new Error(`Duplicate template membership: ${category.name}/${row.code}`);
             currentCodes.add(row.code);
@@ -128,11 +160,11 @@ async function buildPlan(db, canonical = CANONICAL) {
             const existing = currentByCode.get(code);
             if (existing) items.push({ code, definitionId: existing.attribute_definition_id, sortOrder: null, action: "REMOVE_EXPLICIT", rowId: existing.id, desired: false });
         }
-        plan.push({ name: category.name, structureId: category.structureId, items });
+        plan.push({ name: category.name, structureId: category.structureId, mainContract, items });
     }
     const rowCount = plan.reduce((sum, category) => sum + category.items.filter(item => item.desired).length, 0);
     if (rowCount !== EXPECTED_ROW_COUNT) throw new Error(`Canonical row count mismatch: ${rowCount}/${EXPECTED_ROW_COUNT}`);
-    return { expectedRowCount: rowCount, categories: plan };
+    return { expectedRowCount: rowCount, expectedMainMembershipCount: sectionColumn ? scopedCategories.length * canonical.mainAttributes.length : null, sectionColumn, categories: plan };
 }
 
 function hasChanges(plan) {
@@ -174,7 +206,10 @@ async function runBatch(db, { apply = false, backup = null, canonical = CANONICA
         for (const category of transactionPlan.categories) {
             for (const item of category.items) {
                 if (item.action === "ADD") {
-                    const inserted = await db.run("INSERT INTO product_attribute_templates(structure_id,attribute_definition_id,sort_order) VALUES(?,?,?)", [category.structureId, item.definitionId, item.sortOrder]);
+                    const insertSql = transactionPlan.sectionColumn
+                        ? "INSERT INTO product_attribute_templates(structure_id,attribute_definition_id,section,sort_order) VALUES(?,?,'regular',?)"
+                        : "INSERT INTO product_attribute_templates(structure_id,attribute_definition_id,sort_order) VALUES(?,?,?)";
+                    const inserted = await db.run(insertSql, [category.structureId, item.definitionId, item.sortOrder]);
                     if (inserted.changes !== 1) throw new Error(`Template insert did not affect one row: ${category.name}/${item.code}`);
                 }
                 if (item.action === "UPDATE_ORDER") {
@@ -189,6 +224,10 @@ async function runBatch(db, { apply = false, backup = null, canonical = CANONICA
         }
         const finalPlan = await buildPlan(db, canonical);
         if (hasChanges(finalPlan)) throw new Error("Post-apply idempotency check failed");
+        if (signature(finalPlan.categories.map(category => category.mainContract))
+            !== signature(transactionPlan.categories.map(category => category.mainContract))) {
+            throw new Error("Main template memberships changed during closed-subcategory apply");
+        }
         const after = await hashProtectedTables(db);
         if (signature(before) !== signature(after)) throw new Error("Protected table hash changed during template apply");
         await db.run("COMMIT");
@@ -213,4 +252,4 @@ async function main(args = process.argv.slice(2)) {
 
 if (require.main === module) main().catch(error => { console.error(error.message); process.exitCode = 1; });
 
-module.exports = { CONFIRM_TOKEN, EXPECTED_ROW_COUNT, PROTECTED_TABLES, parseArgs, openDatabase, hashProtectedTables, buildPlan, hasChanges, createOnlineBackup, runBatch };
+module.exports = { CONFIRM_TOKEN, CLOSED_STRUCTURE_IDS, CLOSED_STRUCTURE_NAMES, EXPECTED_ROW_COUNT, PROTECTED_TABLES, parseArgs, openDatabase, hashProtectedTables, buildPlan, hasChanges, createOnlineBackup, runBatch };

@@ -79,6 +79,40 @@ function desiredMemberships(category, mainCodes) {
     ];
 }
 
+function validateCanonical(canonical) {
+    const resolverMainCodes = MAIN_ATTRIBUTES.map(item => item.code);
+    if (!Array.isArray(canonical.mainAttributes) || signature(canonical.mainAttributes) !== signature(resolverMainCodes)
+        || new Set(canonical.mainAttributes).size !== canonical.mainAttributes.length) {
+        throw new Error("Canonical main-attribute list differs from the product attribute resolver");
+    }
+    if (!Array.isArray(canonical.categories) || canonical.categories.length === 0) throw new Error("Canonical categories must be a non-empty array");
+    const structureIds = canonical.categories.map(category => Number(category.structureId));
+    const names = canonical.categories.map(category => category.name);
+    if (structureIds.some(id => !Number.isInteger(id) || id <= 0) || new Set(structureIds).size !== structureIds.length) {
+        throw new Error("Canonical structure IDs must be unique positive integers");
+    }
+    if (names.some(name => typeof name !== "string" || !name.trim()) || new Set(names).size !== names.length) {
+        throw new Error("Canonical structure names must be unique non-empty strings");
+    }
+    const membershipTuples = new Set();
+    for (const category of canonical.categories) {
+        if (!Array.isArray(category.codes) || new Set(category.codes).size !== category.codes.length) {
+            throw new Error(`Invalid canonical code list: ${category.name}`);
+        }
+        if (category.codes.some(code => canonical.mainAttributes.includes(code))) throw new Error(`Main/regular code overlap: ${category.name}`);
+        for (const [section, codes] of [["main", canonical.mainAttributes], ["regular", category.codes]]) {
+            codes.forEach((code, sortOrder) => {
+                if (typeof code !== "string" || !code.trim()) throw new Error(`Invalid ${section} code: ${category.name}`);
+                const tuple = `${category.structureId}\0${section}\0${code}`;
+                if (membershipTuples.has(tuple)) throw new Error(`Duplicate canonical membership: ${category.name}/${section}/${code}`);
+                membershipTuples.add(tuple);
+                if (!Number.isInteger(sortOrder)) throw new Error(`Invalid ${section} ordering: ${category.name}`);
+            });
+        }
+    }
+    return membershipTuples.size;
+}
+
 async function buildPlan(db, canonical = CANONICAL) {
     const issues = [];
     const version = Number((await db.get("PRAGMA user_version"))?.user_version || 0);
@@ -87,15 +121,7 @@ async function buildPlan(db, canonical = CANONICAL) {
     for (const column of ["section", "sort_order", "is_required", "unit_override"]) {
         if (!templateColumns.has(column)) throw new Error(`Missing product_attribute_templates.${column}`);
     }
-    if (signature(canonical.mainAttributes) !== signature(MAIN_ATTRIBUTES.map(item => item.code))) {
-        throw new Error("Canonical main-attribute list differs from the product attribute resolver");
-    }
-    if (!Array.isArray(canonical.categories) || canonical.categories.length !== 5) throw new Error("Canonical scope must contain exactly five subcategories");
-    const expectedNames = ["Штукатурка", "Шпаклевка", "Кладочные Смеси", "Наливной Пол", "Стяжки Пола"];
-    const names = canonical.categories.map(item => item.name);
-    if (new Set(names).size !== names.length || signature([...names].sort()) !== signature([...expectedNames].sort())) {
-        throw new Error("Canonical subcategory allowlist mismatch");
-    }
+    const expectedMembershipCount = validateCanonical(canonical);
     const parent = await db.get("SELECT id,type,name,is_active FROM catalog_structure WHERE id=?", [canonical.parent.id]);
     if (!parent || parent.type !== canonical.parent.type || parent.name !== canonical.parent.name || Number(parent.is_active) !== 1) {
         throw new Error("Canonical parent structure guard failed");
@@ -158,11 +184,11 @@ async function buildPlan(db, canonical = CANONICAL) {
             ])) });
     }
     const desiredCount = canonical.categories.reduce((sum, category) => sum + category.codes.length + mainCodes.length, 0);
-    if (desiredCount !== EXPECTED_MEMBERSHIP_COUNT) throw new Error(`Canonical membership count mismatch: ${desiredCount}/${EXPECTED_MEMBERSHIP_COUNT}; issues=${JSON.stringify(issues)}`);
+    if (desiredCount !== expectedMembershipCount) throw new Error(`Canonical membership count mismatch: ${desiredCount}/${expectedMembershipCount}; issues=${JSON.stringify(issues)}`);
     const willAdd = categories.reduce((sum, category) => sum + category.items.filter(item => item.action === "ADD").length, 0);
     const willUpdate = categories.reduce((sum, category) => sum + category.items.filter(item => item.action === "UPDATE").length, 0);
     const existingOk = categories.reduce((sum, category) => sum + category.items.filter(item => item.action === "EXISTING_OK").length, 0);
-    return { schemaVersion: version, expectedMembershipCount: EXPECTED_MEMBERSHIP_COUNT, willAdd, willUpdate, existingOk, issues, categories };
+    return { schemaVersion: version, expectedMembershipCount, willAdd, willUpdate, existingOk, issues, categories };
 }
 
 function hasChanges(plan) { return plan.willAdd > 0 || plan.willUpdate > 0; }
@@ -248,5 +274,5 @@ async function main(args = process.argv.slice(2)) {
 
 if (require.main === module) main().catch(error => { console.error(error.message); process.exitCode = 1; });
 
-module.exports = { CONFIRM_TOKEN, EXPECTED_MEMBERSHIP_COUNT, PROTECTED_TABLES, parseArgs, openDatabase, hashProtectedTables,
+module.exports = { CONFIRM_TOKEN, EXPECTED_MEMBERSHIP_COUNT, PROTECTED_TABLES, parseArgs, openDatabase, hashProtectedTables, validateCanonical,
     desiredMemberships, buildPlan, hasChanges, blockingIssues, needsReview, createOnlineBackup, runBatch };
