@@ -1,0 +1,1029 @@
+{
+  "reviewedAt": "2026-10-03",
+  "category": "Смеси",
+  "subcategories": [
+    "Пескобетон",
+    "Цемент"
+  ],
+  "scope": [
+    "MAT-000110",
+    "MAT-000111",
+    "MAT-000113",
+    "MAT-000114",
+    "MAT-000115"
+  ],
+  "localDatabase": {
+    "path": "backend/database/matmix.db",
+    "schemaVersion": 4,
+    "readOnly": true,
+    "productionEvidence": false,
+    "importFile": "MatMix_catalog.xlsx",
+    "importFileSha256": "c6cef3a4bd206521e79a10132160fde24f782711fe6019b292f85d331c161f60",
+    "updatedWorkbook": "backend/imported-excel/MatMix_catalog-updated-2026-07-15-16-45-04.xlsx",
+    "matRows": [
+      {
+        "externalId": "MAT-000110",
+        "title": "Пескобетон Tex Pro М-300 ГОСТ 40 кг",
+        "category": "Смеси",
+        "subcategory": "Пескобетон",
+        "brand": null,
+        "weight": 40,
+        "unit": "шт",
+        "price": 225.75,
+        "source": "excel",
+        "supplierSku": null,
+        "manufacturerArticle": null,
+        "gtinEan": null,
+        "sourceUrl": null,
+        "productAttributeValues": 0,
+        "productImageRows": 0,
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "description": null,
+        "shortDescription": null,
+        "fullDescription": null,
+        "seoTitle": null,
+        "seoDescription": null,
+        "identityStatus": "OWNER_CONFIRMED",
+        "ownerIdentity": "Пескобетон VERTEX М-300, 40 кг",
+        "blocker": "Official catalog has several M-300 variants; no SKU/GTIN/package mapping selects one technical version.",
+        "id": 101,
+        "slug": "пескобетон-tex-pro-м-300-гост-40-кг",
+        "productGroup": "Пескобетон",
+        "sortOrder": 2,
+        "createdAt": "2026-07-08T17:22:48.872Z",
+        "updatedAt": "2026-07-15T13:44:51.601Z",
+        "lastImportedAt": "2026-07-15T13:44:51.601Z",
+        "image": "",
+        "isActive": true,
+        "deletedAt": null,
+        "stockStatus": "unknown"
+      },
+      {
+        "externalId": "MAT-000111",
+        "title": "Пескобетон Евро М-300 ГОСТ 40кг",
+        "category": "Смеси",
+        "subcategory": "Пескобетон",
+        "brand": null,
+        "weight": 40,
+        "unit": "шт",
+        "price": 246.75,
+        "source": "excel",
+        "supplierSku": null,
+        "manufacturerArticle": null,
+        "gtinEan": null,
+        "sourceUrl": null,
+        "productAttributeValues": 0,
+        "productImageRows": 0,
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "description": null,
+        "shortDescription": null,
+        "fullDescription": null,
+        "seoTitle": null,
+        "seoDescription": null,
+        "identityStatus": "OWNER_CONFIRMED",
+        "ownerIdentity": "Пескобетон EUROMIX/EUROmix М-300, 40 кг",
+        "blocker": "Identity maps to the official unqualified M-300 40 kg catalog entry; three fields remain SOURCE_CONFLICT because the manufacturer does not publish them.",
+        "id": 102,
+        "slug": "пескобетон-евро-м-300-гост-40кг",
+        "productGroup": "Пескобетон",
+        "sortOrder": 3,
+        "createdAt": "2026-07-08T17:22:48.872Z",
+        "updatedAt": "2026-07-15T13:44:51.601Z",
+        "lastImportedAt": "2026-07-15T13:44:51.601Z",
+        "image": "",
+        "isActive": true,
+        "deletedAt": null,
+        "stockStatus": "unknown"
+      },
+      {
+        "externalId": "MAT-000113",
+        "title": "Цемент \"Цементум\" 40кг",
+        "category": "Смеси",
+        "subcategory": "Цемент",
+        "brand": null,
+        "weight": 40,
+        "unit": "шт",
+        "price": 498.75,
+        "source": "excel",
+        "supplierSku": null,
+        "manufacturerArticle": null,
+        "gtinEan": null,
+        "sourceUrl": null,
+        "productAttributeValues": 0,
+        "productImageRows": 0,
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "description": null,
+        "shortDescription": null,
+        "fullDescription": null,
+        "seoTitle": null,
+        "seoDescription": null,
+        "identityStatus": "IDENTITY_PARTIAL",
+        "ownerIdentity": null,
+        "blocker": "No exact ExtraCEM model, plant, SKU or GTIN mapping.",
+        "id": 103,
+        "slug": "цемент-цементум-40кг",
+        "productGroup": "Цемент",
+        "sortOrder": 1,
+        "createdAt": "2026-07-08T17:22:48.872Z",
+        "updatedAt": "2026-07-15T13:44:51.601Z",
+        "lastImportedAt": "2026-07-15T13:44:51.601Z",
+        "image": "",
+        "isActive": true,
+        "deletedAt": null,
+        "stockStatus": "unknown"
+      },
+      {
+        "externalId": "MAT-000114",
+        "title": "Цемент \"РосЦемент\" 50кг",
+        "category": "Смеси",
+        "subcategory": "Цемент",
+        "brand": null,
+        "weight": 50,
+        "unit": "шт",
+        "price": 514.5,
+        "source": "excel",
+        "supplierSku": null,
+        "manufacturerArticle": null,
+        "gtinEan": null,
+        "sourceUrl": null,
+        "productAttributeValues": 0,
+        "productImageRows": 0,
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "description": null,
+        "shortDescription": null,
+        "fullDescription": null,
+        "seoTitle": null,
+        "seoDescription": null,
+        "identityStatus": "IDENTITY_BLOCKED",
+        "ownerIdentity": null,
+        "blocker": "Roscement is a multi-source seller; factory and grade are unknown.",
+        "id": 104,
+        "slug": "цемент-росцемент-50кг",
+        "productGroup": "Цемент",
+        "sortOrder": 2,
+        "createdAt": "2026-07-08T17:22:48.872Z",
+        "updatedAt": "2026-07-15T13:44:51.601Z",
+        "lastImportedAt": "2026-07-15T13:44:51.601Z",
+        "image": "",
+        "isActive": true,
+        "deletedAt": null,
+        "stockStatus": "unknown"
+      },
+      {
+        "externalId": "MAT-000115",
+        "title": "Цемент \"Русеан\" 40кг",
+        "category": "Смеси",
+        "subcategory": "Цемент",
+        "brand": null,
+        "weight": 40,
+        "unit": "шт",
+        "price": null,
+        "source": "excel",
+        "supplierSku": null,
+        "manufacturerArticle": null,
+        "gtinEan": null,
+        "sourceUrl": null,
+        "productAttributeValues": 0,
+        "productImageRows": 0,
+        "imageUrl": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "description": null,
+        "shortDescription": null,
+        "fullDescription": null,
+        "seoTitle": null,
+        "seoDescription": null,
+        "identityStatus": "IDENTITY_PARTIAL",
+        "ownerIdentity": null,
+        "blocker": "Rusean candidate page lists two possible plants; no MAT-to-candidate mapping.",
+        "id": 105,
+        "slug": "цемент-русеан-40кг",
+        "productGroup": "Цемент",
+        "sortOrder": 3,
+        "createdAt": "2026-07-08T17:22:48.872Z",
+        "updatedAt": "2026-07-15T13:44:51.601Z",
+        "lastImportedAt": "2026-07-15T13:44:51.601Z",
+        "image": "",
+        "isActive": true,
+        "deletedAt": null,
+        "stockStatus": "unknown"
+      }
+    ],
+    "notes": [
+      "Vendor SKU, manufacturer article, barcode/GTIN, supplier URL and import source-mapping fields are empty in the five rows.",
+      "MAT-000108, MAT-000112 and MAT-000116 are absent from local products.",
+      "All five use the same shared placeholder; product_images has zero rows; no product attributes; descriptions and SEO are null.",
+      "Historical repo search found import context but no product-specific source mapping."
+    ]
+  },
+  "ownerConfirmations": {
+    "MAT-000110": "Пескобетон VERTEX М-300, 40 кг",
+    "MAT-000111": "Пескобетон EUROMIX/EUROmix М-300, 40 кг; applies only to MAT-000111"
+  },
+  "sourceReferences": [
+    {
+      "key": "ownerMat110",
+      "owner": "MatMix project owner",
+      "title": "Owner-confirmed identity for MAT-000110",
+      "url": null,
+      "evidence": "Owner confirms this exact local MAT is Пескобетон VERTEX М-300, 40 кг. This confirms the stated identity only; it does not authorize transferring technical data from an unmapped VERTEX variant."
+    },
+    {
+      "key": "vertexCatalog",
+      "owner": "ООО «Вертекс Продакшн»",
+      "title": "Официальный каталог сухих смесей VERTEX.production",
+      "url": "https://vertexproduction.ru/",
+      "evidence": "Official manufacturer lists M-300, M-300 Крупнозернистый, and M-300 Эконом separately, each as пескобетон 40 kg, ГОСТ 31358-2007, with the same stated applications including indoor and outdoor use. Those shared identity-agnostic catalog facts support purpose, application area, and standard. No exact-version composition, substrate list, or layer thickness is published; variant-specific technical values are not inferred."
+    },
+    {
+      "key": "ownerMat111",
+      "owner": "MatMix project owner",
+      "title": "Owner-confirmed identity for MAT-000111",
+      "url": null,
+      "evidence": "Owner confirms this exact local MAT is Пескобетон EUROMIX/EUROmix М-300, 40 кг. This confirmation applies only to MAT-000111."
+    },
+    {
+      "key": "euromixCatalog",
+      "owner": "ООО «ЕВРОМИКС СМ»",
+      "title": "Официальный каталог EUROmix — пескобетон М-300",
+      "url": "https://www.xn----ctbiokkmpo.xn--p1ai/%D0%BA%D0%B0%D1%82%D0%B0%D0%BB%D0%BE%D0%B3",
+      "evidence": "Manufacturer site identifies ООО «ЕВРОМИКС СМ» in Коломна and lists EUROmix Пескобетон М-300, ГОСТ 31357-2007, 40 kg. Its exact M-300 listing and repeated Premium/M-300 catalog entries state the same 10–50 mm layer, 0.5 MPa adhesion, and six-month shelf life. The local title's M-300/ГОСТ/40 kg plus owner confirmation map to the manufacturer M-300 listing. Manufacturer values take precedence over secondary listings that provide no revision/SKU discriminator."
+    },
+    {
+      "key": "euromixRetailA",
+      "owner": "Бетоныч",
+      "title": "Пескобетон М-300 EUROMIX, 40 кг",
+      "url": "https://betonych.com/product/peskobeton-m-300-euromix-40-kg-2",
+      "evidence": "Exact-name/40 kg secondary listing reports layer 10-100 mm, consumption 18 kg/m² at 10 mm, adhesion 0.3 MPa, water 7-8 l/bag, pot life 120 min, F50, and 24 h setting; some facts conflict with the current manufacturer catalog."
+    },
+    {
+      "key": "euromixRetailB",
+      "owner": "Filtrakt",
+      "title": "Пескобетон М300 40кг Euromix",
+      "url": "https://filtrakt.ru/catalog/peskobeton/76987/",
+      "evidence": "Exact-name/40 kg secondary listing reports consumption 22-25 kg/m² at 10 mm, layer 10-50 mm, adhesion not stated, water 0.17-0.20 l/kg, pot life 120-180 min, and 12 months shelf life. Treated as secondary candidate evidence only."
+    },
+    {
+      "key": "cementumExtraCem",
+      "owner": "ЦЕМЕНТУМ",
+      "title": "ExtraCEM 500 40 kg official product page",
+      "url": "https://cementum.ru/catalog/extracem-500-40/",
+      "relevance": "Exact candidate only, no local mapping."
+    },
+    {
+      "key": "cementumTds",
+      "owner": "ЦЕМЕНТУМ",
+      "title": "ExtraCEM 500 official TDS",
+      "url": "https://cementum.ru/upload/uf/fb3/6vjoxdd41fy2rdjqk9y2g05kpkzp5bu2/%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%BB%D0%B8%D1%81%D1%82%20%D0%A6%D0%B5%D0%BC%D0%B5%D0%BD%D1%82%20ExtraCEM500.pdf",
+      "relevance": "Exact candidate only."
+    },
+    {
+      "key": "cementumCementCatalog",
+      "owner": "ЦЕМЕНТУМ",
+      "title": "Official cement catalog",
+      "url": "https://cementum.ru/catalog/obshchestroitelnye-tsementy/",
+      "relevance": "Multiple product lines."
+    },
+    {
+      "key": "roscementCatalog",
+      "owner": "Росцемент / ТСК РУСЦЕМ",
+      "title": "Official seller cement catalog",
+      "url": "https://roscement.ru/cement/",
+      "relevance": "Multiple products and grades, no MAT mapping."
+    },
+    {
+      "key": "roscementDealer",
+      "owner": "Росцемент / ТСК РУСЦЕМ",
+      "title": "Official seller ordering page",
+      "url": "https://roscement.ru/kak-zakazat/",
+      "relevance": "Multiple factory/dealer sources."
+    },
+    {
+      "key": "ruseanCemCandidate",
+      "owner": "Русеан",
+      "title": "Official catalog ЦЕМ I 42,5Н 40 kg",
+      "url": "https://rusean.ru/catalog/tsement/tsement_tsem_i_42_5n_v_meshkakh_po_40kg/",
+      "relevance": "Candidate only; lists two possible plants."
+    },
+    {
+      "key": "ruseanPriceList",
+      "owner": "Русеан",
+      "title": "Official price list",
+      "url": "https://rusean.ru/pricelist/",
+      "relevance": "Candidate listing only."
+    },
+    {
+      "key": "euromixRetailC",
+      "owner": "Rem-Market",
+      "title": "Пескобетон М-300 Евромикс 40кг",
+      "url": "https://rem-market.ru/stroitelnie-smesi/peskobeton/peskobeton-m-300-evromiks-40kg",
+      "relevance": "Exact-name/40 kg secondary listing reports layer 30-200 mm, conflicting with official catalog and other seller listing.",
+      "evidence": "Exact-name/40 kg secondary listing reports recommended layer 30-200 mm, conflicting with the manufacturer catalog and other retail listing."
+    }
+  ],
+  "productCore": [
+    {
+      "externalId": "MAT-000110",
+      "title": "Пескобетон Tex Pro М-300 ГОСТ 40 кг",
+      "identityStatus": "OWNER_CONFIRMED",
+      "identity": "Owner confirms VERTEX M-300, 40 kg. Official manufacturer lists multiple M-300 variants and 40 kg packaging, but no SKU/GTIN/package mapping establishes which technical variant this MAT represents.",
+      "sourceKeys": [
+        "ownerMat110",
+        "vertexCatalog"
+      ],
+      "core": {
+        "brand": {
+          "status": "READY",
+          "value": "VERTEX",
+          "sources": [
+            "ownerMat110",
+            "vertexCatalog"
+          ],
+          "sourceValue": "VERTEX",
+          "sourceUnit": null,
+          "context": "Owner-confirmed identity; official manufacturer is ООО «Вертекс Продакшн»."
+        },
+        "product_type": {
+          "status": "READY",
+          "value": "Пескобетон",
+          "sources": [
+            "ownerMat110",
+            "vertexCatalog"
+          ],
+          "sourceValue": "Пескобетон",
+          "sourceUnit": null,
+          "context": "Owner-confirmed identity and official manufacturer product title."
+        },
+        "base": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "vertexCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No exact-version composition is assigned without a SKU/package mapping.",
+          "context": null
+        },
+        "purpose": {
+          "status": "READY",
+          "value": "Устройство стяжек пола (в том числе плавающих и тёплых), фундаментов, отмосток и других бетонных конструкций в жилых и общественных зданиях",
+          "sources": [
+            "vertexCatalog"
+          ],
+          "sourceValue": "Устройство стяжек пола (в том числе плавающих и тёплых), фундаментов, отмосток и других бетонных конструкций в жилых и общественных зданиях",
+          "sourceUnit": null,
+          "context": "The official catalog states this purpose for its M-300 entries, including the separately listed coarse-grained and Economy variants."
+        },
+        "package_weight": {
+          "status": "READY",
+          "value": 40,
+          "sources": [
+            "ownerMat110",
+            "vertexCatalog"
+          ],
+          "sourceValue": "40",
+          "sourceUnit": "кг",
+          "context": "Owner-confirmed 40 kg package; official VERTEX M-300 listings are 40 kg."
+        },
+        "application_area": {
+          "status": "READY",
+          "value": "Внутренние и наружные работы",
+          "sources": [
+            "vertexCatalog"
+          ],
+          "sourceValue": "Внутренние и наружные работы",
+          "sourceUnit": null,
+          "context": "The official catalog says its listed M-300 products are intended for constructions both inside and outside buildings."
+        },
+        "application_method": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "vertexCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No exact-version application method is confirmed for this local MAT.",
+          "context": null
+        },
+        "substrates": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "vertexCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "The catalog lists application purposes but does not provide a distinct compatible-substrate list for the exact product.",
+          "context": null
+        },
+        "color": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "vertexCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No exact-version color is confirmed for this local MAT.",
+          "context": null
+        },
+        "layer_thickness": {
+          "status": "BLOCKED_BY_VARIANT",
+          "value": null,
+          "sources": [
+            "vertexCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "The official catalog lists multiple M-300 variants but does not publish a layer-thickness value for any of them; do not assign a value without exact-version documentation.",
+          "context": null
+        },
+        "consumption_10mm": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "vertexCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No value is proposed without exact-version mapping.",
+          "context": null
+        },
+        "consumption": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "vertexCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No value is proposed without exact-version mapping.",
+          "context": null
+        },
+        "water_requirement": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "vertexCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No value is proposed without exact-version mapping.",
+          "context": null
+        },
+        "pot_life": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "vertexCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No value is proposed without exact-version mapping.",
+          "context": null
+        },
+        "application_temperature": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "vertexCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No value is proposed without exact-version mapping.",
+          "context": null
+        },
+        "compressive_strength": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "vertexCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No value is proposed without exact-version mapping.",
+          "context": null
+        },
+        "adhesion": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "vertexCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No value is proposed without exact-version mapping.",
+          "context": null
+        },
+        "frost_resistance": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "vertexCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No value is proposed without exact-version mapping.",
+          "context": null
+        },
+        "shelf_life": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "vertexCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No value is proposed without exact-version mapping.",
+          "context": null
+        },
+        "standard": {
+          "status": "READY",
+          "value": "ГОСТ 31358-2007",
+          "sources": [
+            "vertexCatalog"
+          ],
+          "sourceValue": "ГОСТ 31358-2007",
+          "sourceUnit": null,
+          "context": "The official catalog lists this standard for the M-300 entries, including the separately listed coarse-grained and Economy variants."
+        },
+        "mortar_grade": {
+          "status": "READY",
+          "value": "М-300",
+          "sources": [
+            "ownerMat110",
+            "vertexCatalog"
+          ],
+          "sourceValue": "М-300",
+          "sourceUnit": null,
+          "context": "Owner-confirmed product identity; official M-300 listing."
+        },
+        "walkability": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "vertexCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No value is proposed without exact-version mapping.",
+          "context": null
+        },
+        "flexural_strength": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "vertexCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No value is proposed without exact-version mapping.",
+          "context": null
+        }
+      }
+    },
+    {
+      "externalId": "MAT-000111",
+      "title": "Пескобетон Евро М-300 ГОСТ 40кг",
+      "identityStatus": "OWNER_CONFIRMED",
+      "identity": "Owner confirms this exact MAT as EUROMIX M-300, 40 kg. The official EUROmix SM catalog has an unqualified M-300 product listing with ГОСТ 31357-2007 and 40 kg, matching the local title. Technical secondary listings conflict on several values; those remain blocked.",
+      "sourceKeys": [
+        "ownerMat111",
+        "euromixCatalog"
+      ],
+      "core": {
+        "brand": {
+          "status": "READY",
+          "value": "EUROMIX",
+          "sources": [
+            "ownerMat111",
+            "euromixCatalog"
+          ],
+          "sourceValue": "EUROMIX",
+          "sourceUnit": null,
+          "context": "Owner-confirmed brand; official catalog and company identity name EUROmix/ООО «ЕВРОМИКС СМ»."
+        },
+        "product_type": {
+          "status": "READY",
+          "value": "Пескобетон",
+          "sources": [
+            "ownerMat111",
+            "euromixCatalog"
+          ],
+          "sourceValue": "Пескобетон",
+          "sourceUnit": null,
+          "context": "Exact official product heading: М-300 / Пескобетон."
+        },
+        "base": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "euromixCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "The reviewed official M-300 page does not state the composition.",
+          "context": null
+        },
+        "purpose": {
+          "status": "READY",
+          "value": "Заливка фундаментов; устройство бетонных стяжек и несущих слоев полов; возведение и ремонт бетонных стен и оснований",
+          "sources": [
+            "euromixCatalog"
+          ],
+          "sourceValue": "Заливка фундаментов; устройство бетонных стяжек и несущих слоев полов; возведение и ремонт бетонных стен и оснований",
+          "sourceUnit": null,
+          "context": "Official product application text."
+        },
+        "package_weight": {
+          "status": "READY",
+          "value": 40,
+          "sources": [
+            "ownerMat111",
+            "euromixCatalog"
+          ],
+          "sourceValue": "40",
+          "sourceUnit": "кг",
+          "context": "Owner-confirmed 40 kg; official M-300 listing specifies 40 kg."
+        },
+        "application_area": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "euromixCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "The official page does not explicitly identify indoor/outdoor application for this product.",
+          "context": null
+        },
+        "application_method": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "euromixCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No manual/mechanical method is stated in the reviewed official product page.",
+          "context": null
+        },
+        "substrates": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "euromixCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "The page describes applications but does not define an exact substrate list.",
+          "context": null
+        },
+        "color": {
+          "status": "READY",
+          "value": "Серый",
+          "sources": [
+            "euromixCatalog"
+          ],
+          "sourceValue": "Серый",
+          "sourceUnit": null,
+          "context": "Official M-300 technical table."
+        },
+        "layer_thickness": {
+          "status": "READY",
+          "value": "10–50 мм",
+          "sources": [
+            "euromixCatalog"
+          ],
+          "sourceValue": "10–50 мм",
+          "sourceUnit": null,
+          "context": "Exact manufacturer M-300 catalog lists 10–50 mm. Retail pages report 10–100 mm and 30–200 mm but provide no revision/SKU evidence; the official current catalog is authoritative under source priority."
+        },
+        "consumption_10mm": {
+          "status": "SOURCE_CONFLICT",
+          "value": null,
+          "sources": [
+            "euromixRetailA",
+            "euromixRetailB"
+          ],
+          "sourceValue": "18; 22–25",
+          "sourceUnit": "кг/м² при 10 мм",
+          "reason": "Secondary exact-name listings report 18 and 22–25 kg/m² at 10 mm; official catalog does not publish a consumption value. No value selected.",
+          "context": "Secondary sources disagree; no manufacturer value was found."
+        },
+        "consumption": {
+          "status": "SOURCE_CONFLICT",
+          "value": null,
+          "sources": [
+            "euromixRetailA",
+            "euromixRetailB"
+          ],
+          "sourceValue": "18; 22–25",
+          "sourceUnit": "кг/м² при 10 мм",
+          "reason": "Secondary exact-name listings report different consumption ranges; official catalog does not publish consumption. No value selected.",
+          "context": "Secondary sources disagree; no manufacturer value was found."
+        },
+        "water_requirement": {
+          "status": "READY",
+          "value": "0,17–0,20 л/кг",
+          "sources": [
+            "euromixCatalog"
+          ],
+          "sourceValue": "0,17–0,20",
+          "sourceUnit": "л/кг",
+          "context": "Official M-300 technical table."
+        },
+        "pot_life": {
+          "status": "SOURCE_CONFLICT",
+          "value": null,
+          "sources": [
+            "euromixRetailA",
+            "euromixRetailB"
+          ],
+          "sourceValue": "120; 120–180",
+          "sourceUnit": "минут",
+          "reason": "Secondary exact-name listings report 120 and 120–180 minutes; the official catalog does not state pot life. No value selected.",
+          "context": "Secondary sources disagree; no manufacturer value was found."
+        },
+        "application_temperature": {
+          "status": "READY",
+          "value": "от +5 до +30 °C",
+          "sources": [
+            "euromixCatalog"
+          ],
+          "sourceValue": "от +5 до +30 °C",
+          "sourceUnit": null,
+          "context": "Official M-300 technical table."
+        },
+        "compressive_strength": {
+          "status": "READY",
+          "value": 30,
+          "sources": [
+            "euromixCatalog"
+          ],
+          "sourceValue": "30",
+          "sourceUnit": "МПа",
+          "context": "Official M-300 table states 30 MPa after 28 days."
+        },
+        "adhesion": {
+          "status": "READY",
+          "value": 0.5,
+          "sources": [
+            "euromixCatalog"
+          ],
+          "sourceValue": "0,5",
+          "sourceUnit": "МПа",
+          "context": "Exact manufacturer M-300 catalog lists 0.5 MPa; the secondary 0.3 MPa listing provides no SKU/revision discriminator. Manufacturer value takes precedence."
+        },
+        "frost_resistance": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "euromixCatalog",
+            "euromixRetailA"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "The reviewed official M-300 catalog does not publish a frost-resistance value; secondary candidate value was not promoted.",
+          "context": null
+        },
+        "shelf_life": {
+          "status": "READY",
+          "value": 6,
+          "sources": [
+            "euromixCatalog"
+          ],
+          "sourceValue": "6",
+          "sourceUnit": "месяцев",
+          "context": "Exact manufacturer M-300 catalog states six months in sealed factory packaging; the secondary 12-month listing provides no SKU/revision discriminator. Manufacturer value takes precedence."
+        },
+        "standard": {
+          "status": "READY",
+          "value": "ГОСТ 31357-2007",
+          "sources": [
+            "euromixCatalog"
+          ],
+          "sourceValue": "ГОСТ 31357-2007",
+          "sourceUnit": null,
+          "context": "Official product heading."
+        },
+        "mortar_grade": {
+          "status": "READY",
+          "value": "М-300",
+          "sources": [
+            "ownerMat111",
+            "euromixCatalog"
+          ],
+          "sourceValue": "М-300",
+          "sourceUnit": null,
+          "context": "Owner-confirmed product identity and exact official product heading."
+        },
+        "walkability": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "euromixCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No walkability time is stated in the reviewed official M-300 catalog.",
+          "context": null
+        },
+        "flexural_strength": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "euromixCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No flexural-strength value is stated in the reviewed official M-300 catalog.",
+          "context": null
+        }
+      }
+    }
+  ],
+  "otherProducts": [
+    {
+      "externalId": "MAT-000113",
+      "identityStatus": "IDENTITY_PARTIAL",
+      "candidate": "ExtraCEM 500 / 40 kg",
+      "coreCoverage": "BLOCKED_BY_IDENTITY",
+      "proposedAttributes": []
+    },
+    {
+      "externalId": "MAT-000114",
+      "identityStatus": "IDENTITY_BLOCKED",
+      "candidate": null,
+      "coreCoverage": "BLOCKED_BY_IDENTITY",
+      "proposedAttributes": []
+    },
+    {
+      "externalId": "MAT-000115",
+      "identityStatus": "IDENTITY_PARTIAL",
+      "candidate": "ЦЕМ I 42,5Н / 40 kg",
+      "coreCoverage": "BLOCKED_BY_IDENTITY",
+      "proposedAttributes": []
+    }
+  ],
+  "batch": {
+    "files": [
+      "backend/scripts/backfill-mix-sand-cement-repair-core-batch2.js",
+      "backend/scripts/data/mix-sand-cement-repair-core-batch2.js",
+      "backend/scripts/test-backfill-mix-sand-cement-repair-core-batch2.js"
+    ],
+    "exactAllowlist": [
+      "MAT-000110",
+      "MAT-000111"
+    ],
+    "confirmToken": "BACKFILL_MIX_SAND_CEMENT_REPAIR_CORE_BATCH2",
+    "writableSurface": {
+      "productFields": [
+        "brand"
+      ],
+      "attributeCodes": [
+        "brand",
+        "product_type",
+        "base",
+        "purpose",
+        "package_weight",
+        "application_area",
+        "application_method",
+        "substrates",
+        "color",
+        "layer_thickness",
+        "consumption_10mm",
+        "consumption",
+        "water_requirement",
+        "pot_life",
+        "application_temperature",
+        "compressive_strength",
+        "adhesion",
+        "frost_resistance",
+        "shelf_life",
+        "standard",
+        "mortar_grade",
+        "walkability",
+        "flexural_strength"
+      ],
+      "definitions": "none",
+      "templates": "none",
+      "images": "none"
+    },
+    "dryRun": {
+      "total": 2,
+      "logicalSlots": 46,
+      "ready": 20,
+      "willAdd": 20,
+      "existingOk": 0,
+      "sourceConflict": 3,
+      "needsMapping": 0,
+      "notAvailable": 22,
+      "blockedByVariant": 1,
+      "plannedBrandUpdates": 2,
+      "schemaBlocked": 0,
+      "valueConflict": 0,
+      "brandConflict": 0,
+      "titleGuardBlocked": 0,
+      "blockedProducts": 0,
+      "errors": 0,
+      "definitionsToCreate": 0,
+      "templateMembershipChanges": 0,
+      "readyProducts": 0,
+      "partialProducts": 2
+    },
+    "perProduct": {
+      "MAT-000110": {
+        "status": "PARTIAL",
+        "identityStatus": "OWNER_CONFIRMED",
+        "logicalSlots": 23,
+        "ready": 7,
+        "willAdd": 7,
+        "existingOk": 0,
+        "sourceConflict": 0,
+        "needsMapping": 0,
+        "notAvailable": 15,
+        "blockedByVariant": 1,
+        "plannedBrandUpdates": 1,
+        "blockers": 0,
+        "errors": 0
+      },
+      "MAT-000111": {
+        "status": "PARTIAL",
+        "identityStatus": "OWNER_CONFIRMED",
+        "logicalSlots": 23,
+        "ready": 13,
+        "willAdd": 13,
+        "existingOk": 0,
+        "sourceConflict": 3,
+        "needsMapping": 0,
+        "notAvailable": 7,
+        "blockedByVariant": 0,
+        "plannedBrandUpdates": 1,
+        "blockers": 0,
+        "errors": 0
+      }
+    },
+    "disposableRehearsal": {
+      "localDbSchemaV4": true,
+      "tempCopyMigratedToV11": true,
+      "tempDefinitionCompatibilityAdjusted": [
+        "consumption_10mm text кг/м²",
+        "pot_life text no unit"
+      ],
+      "originalLocalDbShaBefore": "77c7d13dc6898e20f8b08af955f44b21d523bdc53e649ba8d1dd5a20093add33",
+      "originalLocalDbShaAfter": "77c7d13dc6898e20f8b08af955f44b21d523bdc53e649ba8d1dd5a20093add33",
+      "unchanged": true,
+      "disposableDryRun": {
+        "total": 2,
+        "logicalSlots": 46,
+        "ready": 20,
+        "willAdd": 20,
+        "existingOk": 0,
+        "sourceConflict": 3,
+        "needsMapping": 0,
+        "notAvailable": 22,
+        "blockedByVariant": 1,
+        "plannedBrandUpdates": 2,
+        "schemaBlocked": 0,
+        "valueConflict": 0,
+        "brandConflict": 0,
+        "titleGuardBlocked": 0,
+        "blockedProducts": 0,
+        "errors": 0,
+        "definitionsToCreate": 0,
+        "templateMembershipChanges": 0
+      },
+      "disposableApply": {
+        "writes": 22,
+        "backupVerified": true,
+        "definitionsUnchanged": true,
+        "templatesUnchanged": true,
+        "imagesUnchanged": true,
+        "unrelatedProductsUnchanged": true
+      },
+      "secondDryRun": {
+        "total": 2,
+        "logicalSlots": 46,
+        "ready": 20,
+        "willAdd": 0,
+        "existingOk": 20,
+        "sourceConflict": 3,
+        "needsMapping": 0,
+        "notAvailable": 22,
+        "blockedByVariant": 1,
+        "plannedBrandUpdates": 0,
+        "blockers": 0,
+        "errors": 0
+      },
+      "idempotent": true
+    }
+  },
+  "production": {
+    "accessed": false,
+    "ssh": false,
+    "deploy": false,
+    "apply": false,
+    "mutated": false
+  }
+}
