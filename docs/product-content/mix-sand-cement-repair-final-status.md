@@ -12,7 +12,7 @@
 - Definitions текущего production состояния содержат ожидаемые canonical codes/types/units. Templates: total 96 (`main=24`, `regular=72`); у structures 11/12/13 memberships сейчас нет.
 - Для всех трёх target products `short_description`, `full_description`, `seo_title`, `seo_description` равны NULL. Все три `product_images` указывают на общий `/uploads/products/MAT-000001-20260714153714969-3fb7fe.png`; файл существует, PNG 1254×1254. Это shared placeholder, не подтверждённое фото продукта.
 
-**Ограничение исторических выводов:** текущий production snapshot подтверждает текущее содержимое, но сам по себе не доказывает, когда и каким процессом появились строки, какие записи были сделаны транзакцией apply, и что definitions/templates/images/unrelated products исторически не менялись. Для этих утверждений нужны сохранённые before/after snapshots или audit log; в репозитории они не найдены. Поэтому прежние утверждения `ATTRIBUTE_ROWS_INSERTED=51`, `PRODUCT_BRAND_UPDATES=3`, historical non-target unchanged и прежний runner idempotency output не считаются доказанными историческими фактами. Независимый SELECT-сравнитель подтверждает эквивалентное текущее состояние: 51 из 51 ожидаемых values уже присутствуют и совпадают.
+**Ограничение исторических выводов:** прежние production claims для Batch1 (MAT-000109/117/118), включая точную историческую дельту и предыдущий runner idempotency output, остаются непроверенными: эта проверка не получила сохранённый pre-apply snapshot для Batch1. Для Batch2 (MAT-000110/111) ниже отдельно записано доказательство, полученное из backup, созданного runner непосредственно перед транзакцией, и независимого сравнения backup с live DB.
 
 ## Итоговая таблица
 
@@ -21,8 +21,8 @@
 | MAT-000109 | Пескобетон | IDENTITY_CONFIRMED | 18/18 READY совпали; gaps: 2 SOURCE_CONFLICT, 1 NEEDS_MAPPING, 2 NOT_AVAILABLE | Текущие значения и brand `Русеан` совпали; исторический apply delta не установлен | Description/SEO отсутствуют; общий placeholder |
 | MAT-000117 | Смесь Ремонтная | IDENTITY_CONFIRMED | 16/16 READY совпали; gaps: 3 NEEDS_MAPPING, 4 NOT_AVAILABLE | Текущие значения и brand `Ceresit` совпали; исторический apply delta не установлен | Description/SEO отсутствуют; общий placeholder |
 | MAT-000118 | Смесь Ремонтная | IDENTITY_CONFIRMED | 17/17 READY совпали; gaps: 3 NEEDS_MAPPING, 3 NOT_AVAILABLE | Текущие значения и brand `GLIMS` совпали; исторический apply delta не установлен | Description/SEO отсутствуют; общий placeholder |
-| MAT-000110 | Пескобетон | OWNER_CONFIRMED | В этом batch не заполнялись; технические значения не выводятся из identity | В текущей live проверке не инспектировался; предыдущий отчёт заявляет UNTOUCHED | Требуются отдельные identity-grounded content/image stages |
-| MAT-000111 | Пескобетон | OWNER_CONFIRMED | В этом batch не заполнялись; технические значения не выводятся из identity | В текущей live проверке не инспектировался; предыдущий отчёт заявляет UNTOUCHED | Требуются отдельные identity-grounded content/image stages |
+| MAT-000110 | Пескобетон | OWNER_CONFIRMED | 7 READY значений совпали; `layer_thickness` остаётся BLOCKED_BY_VARIANT, 15 NOT_AVAILABLE | Production core применён и независимо сверён с pre-apply backup: brand `VERTEX`, 7/7 exact | Description/SEO отсутствуют; общий placeholder |
+| MAT-000111 | Пескобетон | OWNER_CONFIRMED | 13 READY значений совпали; 3 SOURCE_CONFLICT, 7 NOT_AVAILABLE | Production core применён и независимо сверён с pre-apply backup: brand `EUROMIX`, 13/13 exact | Description/SEO отсутствуют; общий placeholder |
 | MAT-000113 | Цемент | PARTIAL | Не заполнялись | Не инспектировался live в этой проверке; предыдущий отчёт заявляет UNTOUCHED | Identity evidence, descriptions, SEO и image review остаются |
 | MAT-000114 | Цемент | BLOCKED | Не заполнялись | Не инспектировался live в этой проверке; предыдущий отчёт заявляет UNTOUCHED | Identity evidence, descriptions, SEO и image review остаются |
 | MAT-000115 | Цемент | PARTIAL | Не заполнялись | Не инспектировался live в этой проверке; предыдущий отчёт заявляет UNTOUCHED | Identity evidence, descriptions, SEO и image review остаются |
@@ -47,3 +47,18 @@
 ## Scope и завершённость
 
 Scope этого отчёта — только MAT-000109, 110, 111, 113, 114, 115, 117 и 118. Три подтверждённые карточки имеют verified current core values, но подкатегории **не полностью закрыты по стандарту MatMix**: у трёх карточек отсутствуют descriptions и SEO, product images остаются shared placeholder; пять других карточек требуют дальнейшей обработки identity/content. Production writes/deploy в ходе этой read-only проверки не выполнялись.
+
+## Batch2 — verified production apply (MAT-000110 / MAT-000111)
+
+Проверено 2026-10-03 на active release `/opt/matmix/releases/57ddd73c8cf1`, marker commit `57ddd73c8cf1df92b474a5c057bedc34ac03eeae`.
+
+- Runner сообщил успешный `COMMIT`; ожидаемый delta — 20 attribute inserts и 2 brand updates: MAT-000110 `NULL → VERTEX`, MAT-000111 `NULL → EUROMIX`.
+- Runner создал перед транзакцией и проверил online backup: `/var/backups/matmix/matmix-before-mix-sand-cement-repair-core-2026-10-03T13-37-29-053Z-4a058a5b.db` (schema 11, integrity `ok`, FK violations 0).
+- Независимое read-only сравнение этого backup с live DB подтвердило ровно 20 новых READY tuples, точные значения/units для всех tuples, неизменность ранее существовавших attribute rows и отсутствие записей в unresolved slots.
+- MAT-000110: 7/7 READY exact; `layer_thickness` — `BLOCKED_BY_VARIANT`; 15 slots — `NOT_AVAILABLE`.
+- MAT-000111: 13/13 READY exact; `consumption_10mm`, `consumption`, `pot_life` — `SOURCE_CONFLICT`; 7 slots — `NOT_AVAILABLE`.
+- Post-apply dry-run: `willAdd=0`, `existingOk=20`, `plannedBrandUpdates=0`, `sourceConflict=3`, `needsMapping=0`, `notAvailable=22`, `blockedByVariant=1`, blockers/errors 0.
+- Backup-to-live protected-table comparison: only the two authorized product brand columns and 20 expected attribute rows changed. Definitions, template memberships, images and all other product fields—including titles, descriptions, SEO, price, weight and stock—were unchanged; unrelated products remained unchanged.
+- DB after apply: schema 11, integrity `ok`, FK violations 0. Service remained active on `/opt/matmix/releases/57ddd73c8cf1`; process cwd matched the active release.
+
+Эти сведения подтверждают Batch2 transaction delta; они не расширяют scope на MAT-000113/114/115 и не означают полного content/image closure подкатегорий.

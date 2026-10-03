@@ -80,7 +80,7 @@
       "unrelatedProductsUnchanged": "NOT_VERIFIABLE_RETROSPECTIVELY",
       "priorRunnerIdempotencyOutput": "NOT_VERIFIABLE_RETROSPECTIVELY",
       "activeReleaseUnchangedDuringApply": "NOT_VERIFIABLE_RETROSPECTIVELY",
-      "reason": "Current state matches the intended 51 READY tuples, but no raw apply output, before/after snapshots, or production audit log was present in the repository. Current state cannot prove historical delta or authorship."
+      "reason": "These retrospective limitations apply to the earlier Batch1 claims for MAT-000109/117/118. Batch2 MAT-000110/111 has separate pre-apply runner backup and independently verified backup-to-live evidence under productionBatch2Apply."
     },
     "currentStateIdempotencyEquivalent": {
       "expectedReady": 51,
@@ -177,9 +177,11 @@
       "identity": "OWNER_CONFIRMED",
       "confirmedIdentity": "VERTEX М-300, 40 кг",
       "technicalAttributeTransferAuthorized": false,
-      "characteristics": {"writtenByThisBatch": false},
-      "production": "NOT_INSPECTED_IN_THIS_VERIFICATION; previous report says UNTOUCHED",
-      "finalStatus": "OWNER_CONFIRMED_IDENTITY; CORE_NOT_RESEARCHED"
+      "characteristics": {"ready": 7, "liveMatching": 7, "blockedByVariant": ["layer_thickness"], "notAvailable": 15},
+      "production": {"status": "PRODUCTION_APPLIED_AND_VERIFIED", "brand": "VERTEX", "readyExact": "7/7", "unresolved": {"blockedByVariant": ["layer_thickness"], "notAvailable": 15}},
+      "currentProductionState": "LIVE_BATCH2_CORE_VALUES_AND_BRAND_VERIFIED",
+      "historicalApplyDelta": "VERIFIED_FROM_PRE_APPLY_RUNNER_BACKUP_AND_LIVE_DB",
+      "finalStatus": "OWNER_CONFIRMED_IDENTITY; PRODUCTION_CORE_VERIFIED; PARTIAL"
     },
     {
       "externalId": "MAT-000111",
@@ -187,9 +189,11 @@
       "identity": "OWNER_CONFIRMED",
       "confirmedIdentity": "EUROMIX / EUROmix М-300, 40 кг",
       "technicalAttributeTransferAuthorized": false,
-      "characteristics": {"writtenByThisBatch": false},
-      "production": "NOT_INSPECTED_IN_THIS_VERIFICATION; previous report says UNTOUCHED",
-      "finalStatus": "OWNER_CONFIRMED_IDENTITY; CORE_NOT_RESEARCHED"
+      "characteristics": {"ready": 13, "liveMatching": 13, "sourceConflict": ["consumption_10mm", "consumption", "pot_life"], "notAvailable": 7},
+      "production": {"status": "PRODUCTION_APPLIED_AND_VERIFIED", "brand": "EUROMIX", "readyExact": "13/13", "unresolved": {"sourceConflict": ["consumption_10mm", "consumption", "pot_life"], "notAvailable": 7}},
+      "currentProductionState": "LIVE_BATCH2_CORE_VALUES_AND_BRAND_VERIFIED",
+      "historicalApplyDelta": "VERIFIED_FROM_PRE_APPLY_RUNNER_BACKUP_AND_LIVE_DB",
+      "finalStatus": "OWNER_CONFIRMED_IDENTITY; PRODUCTION_CORE_VERIFIED; PARTIAL"
     },
     {
       "externalId": "MAT-000113",
@@ -218,5 +222,98 @@
       "finalStatus": "IDENTITY_PARTIAL",
       "reason": "Русеан and 40 кг do not link the local card to an exact cement type or class."
     }
-  ]
+  ],
+  "productionBatch2Apply": {
+    "verifiedAtUtc": "2026-10-03T13:37:29Z",
+    "host": "matmix-prod-01",
+    "activeRelease": "/opt/matmix/releases/57ddd73c8cf1",
+    "sourceCommit": "57ddd73c8cf1df92b474a5c057bedc34ac03eeae",
+    "exactTargets": [
+      "MAT-000110",
+      "MAT-000111"
+    ],
+    "result": "COMMIT_SUCCESS_AND_INDEPENDENT_BACKUP_TO_LIVE_DELTA_PASS",
+    "delta": {
+      "attributeRowsInserted": 20,
+      "productBrandUpdates": 2,
+      "brandChanges": {
+        "MAT-000110": {
+          "from": null,
+          "to": "VERTEX"
+        },
+        "MAT-000111": {
+          "from": null,
+          "to": "EUROMIX"
+        }
+      }
+    },
+    "backup": {
+      "path": "/var/backups/matmix/matmix-before-mix-sand-cement-repair-core-2026-10-03T13-37-29-053Z-4a058a5b.db",
+      "createdBeforeTransaction": true,
+      "verified": true,
+      "schemaVersion": 11,
+      "integrityCheck": "ok",
+      "foreignKeyViolations": 0
+    },
+    "products": [
+      {
+        "externalId": "MAT-000110",
+        "brand": "VERTEX",
+        "readyExpected": 7,
+        "readyExact": 7,
+        "layer_thickness": "BLOCKED_BY_VARIANT",
+        "notAvailable": 15,
+        "sourceConflict": 0,
+        "needsMapping": 0
+      },
+      {
+        "externalId": "MAT-000111",
+        "brand": "EUROMIX",
+        "readyExpected": 13,
+        "readyExact": 13,
+        "sourceConflict": [
+          "consumption_10mm",
+          "consumption",
+          "pot_life"
+        ],
+        "notAvailable": 7,
+        "needsMapping": 0
+      }
+    ],
+    "postApplyDryRun": {
+      "ready": 20,
+      "willAdd": 0,
+      "existingOk": 20,
+      "plannedBrandUpdates": 0,
+      "sourceConflict": 3,
+      "needsMapping": 0,
+      "notAvailable": 22,
+      "blockedByVariant": 1,
+      "blockedProducts": 0,
+      "errors": 0
+    },
+    "backupToLiveComparison": {
+      "exactReadyTuples": 20,
+      "unexpectedOrMissingTuples": 0,
+      "unresolvedSlotValues": 0,
+      "preExistingAttributeRowsUnchanged": true,
+      "productsChangedOnlyInExpectedBrandColumns": true,
+      "definitionsUnchanged": true,
+      "templatesUnchanged": true,
+      "imagesUnchanged": true,
+      "nonBrandProductFieldsUnchanged": true,
+      "unrelatedProductsUnchanged": true
+    },
+    "databaseAfter": {
+      "schemaVersion": 11,
+      "integrityCheck": "ok",
+      "foreignKeyViolations": 0
+    },
+    "runtimeAfter": {
+      "service": "active/running",
+      "processCwd": "/opt/matmix/releases/57ddd73c8cf1",
+      "activeRelease": "/opt/matmix/releases/57ddd73c8cf1"
+    },
+    "scopeLimit": "Applies only to the 2026-10-03 Batch2 transaction for MAT-000110 and MAT-000111; not evidence for earlier Batch1 transactions."
+  }
 }
