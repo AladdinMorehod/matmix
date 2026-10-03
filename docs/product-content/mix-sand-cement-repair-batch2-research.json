@@ -1,0 +1,167 @@
+{
+  "checkedAt": "2026-10-03",
+  "scope": [
+    "MAT-000110",
+    "MAT-000111",
+    "MAT-000113",
+    "MAT-000114",
+    "MAT-000115"
+  ],
+  "decision": {
+    "identityConfirmed": 0,
+    "readyForCore": [],
+    "partial": ["MAT-000111", "MAT-000113", "MAT-000115"],
+    "blocked": ["MAT-000110", "MAT-000114"],
+    "batchCreated": false,
+    "reason": "No external product candidate is unambiguously mapped to a local MAT by SKU, GTIN/EAN, package identification, or equivalent source mapping. Candidate facts were not assigned to local products."
+  },
+  "items": [
+    {
+      "externalId": "MAT-000110",
+      "currentTitle": "Пескобетон Tex Pro М-300 ГОСТ 40 кг",
+      "identityStatus": "BLOCKED",
+      "confirmedBrand": null,
+      "exactProduct": null,
+      "bestSource": null,
+      "sourceStatus": "NOT_FOUND",
+      "confirmedAttributes": [],
+      "candidateFacts": [],
+      "mainIssue": "No official exact product/manufacturer source found tying Tex Pro, M-300, ГОСТ, and 40 kg together; local record has no article, GTIN/EAN, supplier SKU, or source URL.",
+      "recommendation": "BLOCKED; obtain package photo, batch passport, supplier SKU/GTIN, or manufacturer mapping.",
+      "sources": []
+    },
+    {
+      "externalId": "MAT-000111",
+      "currentTitle": "Пескобетон Евро М-300 ГОСТ 40кг",
+      "identityStatus": "PARTIAL",
+      "confirmedBrand": null,
+      "exactProduct": null,
+      "bestSource": "https://eurors.ru/catalog-cat/m-100-m-150-m-300-suhaya-smes",
+      "sourceStatus": "EXACT_CANDIDATE_UNMAPPED",
+      "confirmedAttributes": [],
+      "candidateFacts": [
+        "Official Euro-RS category presents M-300 dry sand-concrete product in 40 kg packaging.",
+        "Euro-RS says ООО ГК ЕВРО-РС manufactures dry mixes."
+      ],
+      "mainIssue": "Short local name Евро does not establish Euro-RS identity and must not be conflated with Euromix or another Euro-branded cement/mix. No local SKU/GTIN/source mapping.",
+      "recommendation": "PARTIAL; obtain bag photo, GTIN/EAN, supplier SKU, or source mapping. Do not transfer candidate facts.",
+      "sources": [
+        {
+          "owner": "ООО ГК ЕВРО-РС",
+          "kind": "official manufacturer catalog",
+          "url": "https://eurors.ru/catalog-cat/m-100-m-150-m-300-suhaya-smes",
+          "evidence": "Exact candidate category entry: М-300 Сухая смесь пескобетон 40 кг."
+        },
+        {
+          "owner": "ООО ГК ЕВРО-РС",
+          "kind": "official company page",
+          "url": "https://eurors.ru/",
+          "evidence": "Company describes its production of dry construction mixes and includes пескобетон М-300."
+        }
+      ]
+    },
+    {
+      "externalId": "MAT-000113",
+      "currentTitle": "Цемент \"Цементум\" 40кг",
+      "identityStatus": "PARTIAL",
+      "confirmedBrand": null,
+      "exactProduct": null,
+      "bestSource": "https://cementum.ru/catalog/extracem-500-40/",
+      "sourceStatus": "EXACT_CANDIDATE_UNMAPPED",
+      "confirmedAttributes": [],
+      "candidateFacts": [
+        "Official manufacturer product: ExtraCEM 500 / ЭКСТРАЦЕМ 500, factory-packed at 40 kg.",
+        "General construction Portland cement with up to 20% limestone; ГОСТ 31108-2020.",
+        "Cement designation/class varies by factory: ЦЕМ II/А-И 42,5Н or ЦЕМ II/А-И 42,5Б."
+      ],
+      "mainIssue": "Local title has no exact ExtraCEM model, article, GTIN/EAN, or plant; Cementum has multiple cement products, and the candidate designation is factory-dependent.",
+      "recommendation": "PARTIAL; obtain package identification, GTIN, supplier SKU/source mapping, and plant-specific evidence before using technical values.",
+      "sources": [
+        {
+          "owner": "ЦЕМЕНТУМ",
+          "kind": "official product page",
+          "url": "https://cementum.ru/catalog/extracem-500-40/",
+          "evidence": "Names ExtraCEM 500 40 kg, cement type, standard, and factory-dependent designations."
+        },
+        {
+          "owner": "ЦЕМЕНТУМ",
+          "kind": "official TDS",
+          "url": "https://cementum.ru/upload/uf/fb3/6vjoxdd41fy2rdjqk9y2g05kpkzp5bu2/%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%BB%D0%B8%D1%81%D1%82%20%D0%A6%D0%B5%D0%BC%D0%B5%D0%BD%D1%82%20ExtraCEM500.pdf",
+          "evidence": "ExtraCEM 500 technical sheet; 40 kg packaging and plant/product variants."
+        },
+        {
+          "owner": "ЦЕМЕНТУМ",
+          "kind": "official cement catalog",
+          "url": "https://cementum.ru/catalog/obshchestroitelnye-tsementy/",
+          "evidence": "Catalog lists multiple cement product lines, supporting the need for exact model mapping."
+        }
+      ]
+    },
+    {
+      "externalId": "MAT-000114",
+      "currentTitle": "Цемент \"РосЦемент\" 50кг",
+      "identityStatus": "BLOCKED",
+      "confirmedBrand": null,
+      "exactProduct": null,
+      "bestSource": "https://roscement.ru/cement/",
+      "sourceStatus": "SUPPLIER_NOT_PRODUCT_IDENTITY",
+      "confirmedAttributes": [],
+      "candidateFacts": [],
+      "mainIssue": "Росцемент is a seller/dealer offering products from multiple factories and multiple classes/grades in 50 kg packages; local name and mass do not identify one product.",
+      "recommendation": "BLOCKED; obtain factory bag photo/quality passport or exact seller SKU and product grade/class.",
+      "sources": [
+        {
+          "owner": "Росцемент / ТСК РУСЦЕМ",
+          "kind": "official seller catalog",
+          "url": "https://roscement.ru/cement/",
+          "evidence": "Lists distinct cement items and brands/grades in 50 kg bags; packaging weight is not unique identity."
+        },
+        {
+          "owner": "Росцемент / ТСК РУСЦЕМ",
+          "kind": "official seller page",
+          "url": "https://roscement.ru/kak-zakazat/",
+          "evidence": "States that the seller is an official dealer of multiple Russian cement plants, including Себряковцемент, Евроцемент group, and Баутек."
+        }
+      ]
+    },
+    {
+      "externalId": "MAT-000115",
+      "currentTitle": "Цемент \"Русеан\" 40кг",
+      "identityStatus": "PARTIAL",
+      "confirmedBrand": null,
+      "exactProduct": null,
+      "bestSource": "https://rusean.ru/catalog/tsement/tsement_tsem_i_42_5n_v_meshkakh_po_40kg/",
+      "sourceStatus": "EXACT_CANDIDATE_UNMAPPED",
+      "confirmedAttributes": [],
+      "candidateFacts": [
+        "Official Rusean catalog lists ЦЕМ I 42,5Н 40 kg cement under ГОСТ 31108-2020.",
+        "Candidate page states gray color and lists ОАО Белорусский цементный завод and ОАО КРИЧЕВЦЕМЕНТНОШИФЕР as producer options."
+      ],
+      "mainIssue": "Local title omits cement designation/class and has no supplier SKU, article, GTIN/EAN, source URL, or plant evidence mapping it to the official candidate. Rusean page is a seller/catalog source; exact plant for a specific bag remains unknown.",
+      "recommendation": "PARTIAL; obtain package photo/marking, supplier SKU, and plant-specific mapping before transferring candidate facts.",
+      "sources": [
+        {
+          "owner": "Русеан",
+          "kind": "official catalog/product page",
+          "url": "https://rusean.ru/catalog/tsement/tsement_tsem_i_42_5n_v_meshkakh_po_40kg/",
+          "evidence": "Exact candidate page: ЦЕМ I 42,5Н 40 kg, ГОСТ 31108-2020, gray, with two possible producer plants."
+        },
+        {
+          "owner": "Русеан",
+          "kind": "official price list",
+          "url": "https://rusean.ru/pricelist/",
+          "evidence": "Lists Цемент ЦЕМ I 42,5Н in 40 kg bags."
+        }
+      ]
+    }
+  ],
+  "production": {
+    "accessed": false,
+    "mutated": false,
+    "ssh": false,
+    "deploy": false,
+    "apply": false,
+    "existingBatch1DataChanged": false,
+    "canonicalDefinitionsChanged": false
+  }
+}
