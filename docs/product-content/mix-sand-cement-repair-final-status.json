@@ -1,0 +1,130 @@
+{
+  "report": "mix-sand-cement-repair-final-status",
+  "checkedAt": "2026-10-03",
+  "scope": {
+    "category": "Смеси",
+    "subcategories": ["Пескобетон", "Цемент", "Смесь Ремонтная"],
+    "externalIds": [
+      "MAT-000109",
+      "MAT-000110",
+      "MAT-000111",
+      "MAT-000113",
+      "MAT-000114",
+      "MAT-000115",
+      "MAT-000117",
+      "MAT-000118"
+    ]
+  },
+  "productionVerification": {
+    "status": "PASS",
+    "attributeRowsInserted": 51,
+    "productBrandUpdates": 3,
+    "allowedApplyDelta": "PASS",
+    "definitionsUnchanged": true,
+    "templatesUnchanged": true,
+    "imagesUnchanged": true,
+    "unrelatedProductsUnchanged": true,
+    "postApplyIdempotency": "PASS",
+    "activeReleaseUnchanged": true,
+    "productApplyVerified": true,
+    "schemaVersion": 11,
+    "integrityCheck": "ok",
+    "foreignKeyViolations": 0
+  },
+  "identityEvidenceNeeded": [
+    "Фото упаковки с читаемой маркировкой",
+    "EAN/GTIN",
+    "manufacturer SKU",
+    "Исходный supplier URL",
+    "Накладная или прайс с точной моделью"
+  ],
+  "products": [
+    {
+      "externalId": "MAT-000109",
+      "subcategory": "Пескобетон",
+      "identity": "IDENTITY_CONFIRMED",
+      "characteristics": {
+        "readyOrExistingOk": 18,
+        "sourceConflict": ["consumption_10mm", "frost_resistance"],
+        "needsMapping": ["pot_life"],
+        "notAvailable": 2
+      },
+      "production": "APPLIED_AND_VERIFIED",
+      "finalStatus": "APPLIED_WITH_DOCUMENTED_GAPS",
+      "note": "Official source conflicts were preserved without selecting an unsupported value."
+    },
+    {
+      "externalId": "MAT-000117",
+      "subcategory": "Смесь Ремонтная",
+      "identity": "IDENTITY_CONFIRMED",
+      "characteristics": {
+        "readyOrExistingOk": 16,
+        "sourceConflict": [],
+        "needsMapping": 3,
+        "notAvailable": 4
+      },
+      "production": "APPLIED_AND_VERIFIED",
+      "finalStatus": "APPLIED_WITH_DOCUMENTED_GAPS",
+      "note": "Ambiguous characteristics were left without values."
+    },
+    {
+      "externalId": "MAT-000118",
+      "subcategory": "Смесь Ремонтная",
+      "identity": "IDENTITY_CONFIRMED",
+      "characteristics": {
+        "readyOrExistingOk": 17,
+        "sourceConflict": [],
+        "needsMapping": 3,
+        "notAvailable": 3
+      },
+      "production": "APPLIED_AND_VERIFIED",
+      "finalStatus": "APPLIED_WITH_DOCUMENTED_GAPS",
+      "note": "Exact identity is GLIMS PRO CRT-40; CRT-40 AF is a separate product."
+    },
+    {
+      "externalId": "MAT-000110",
+      "subcategory": "Пескобетон",
+      "identity": "BLOCKED",
+      "characteristics": {"written": false},
+      "production": "UNTOUCHED",
+      "finalStatus": "IDENTITY_BLOCKED",
+      "reason": "No proven manufacturer, SKU, GTIN, or source mapping for Tex Pro М-300 40 кг."
+    },
+    {
+      "externalId": "MAT-000111",
+      "subcategory": "Пескобетон",
+      "identity": "PARTIAL",
+      "characteristics": {"written": false},
+      "production": "UNTOUCHED",
+      "finalStatus": "IDENTITY_PARTIAL",
+      "reason": "The local name Евро does not prove Euro-RS, EUROMIX, or another exact product."
+    },
+    {
+      "externalId": "MAT-000113",
+      "subcategory": "Цемент",
+      "identity": "PARTIAL",
+      "characteristics": {"written": false},
+      "production": "UNTOUCHED",
+      "finalStatus": "IDENTITY_PARTIAL",
+      "reason": "Цементум and 40 кг do not identify the exact line, cement class, or plant."
+    },
+    {
+      "externalId": "MAT-000114",
+      "subcategory": "Цемент",
+      "identity": "BLOCKED",
+      "characteristics": {"written": false},
+      "production": "UNTOUCHED",
+      "finalStatus": "IDENTITY_BLOCKED",
+      "reason": "РосЦемент does not establish the specific plant, cement grade, or SKU."
+    },
+    {
+      "externalId": "MAT-000115",
+      "subcategory": "Цемент",
+      "identity": "PARTIAL",
+      "characteristics": {"written": false},
+      "production": "UNTOUCHED",
+      "finalStatus": "IDENTITY_PARTIAL",
+      "reason": "Русеан and 40 кг do not link the local card to an exact cement type or class."
+    }
+  ]
+}
