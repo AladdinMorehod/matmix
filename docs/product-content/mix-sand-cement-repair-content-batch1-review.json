@@ -1,0 +1,1102 @@
+{
+  "mode": "dry-run",
+  "rows": [
+    {
+      "externalId": "MAT-000109",
+      "productId": 100,
+      "title": "Пескобетон (ЦПС) М300 Русеан 40 кг",
+      "category": "Смеси",
+      "subcategory": "Пескобетон",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "identityBrand": "Русеан",
+      "currentBrand": null,
+      "titleCorrectionStatus": "NOT_IN_SCOPE",
+      "currentTitle": "Пескобетон (ЦПС) М300 Русеан 40 кг",
+      "proposedTitle": null,
+      "status": "READY",
+      "currentContent": {
+        "short_description": null,
+        "full_description": null,
+        "seo_title": null,
+        "seo_description": null
+      },
+      "proposedContent": {
+        "short_description": "Русеан М300, 40 кг — пескобетон для устройства полов, фундаментов, отмосток и монтажных работ.",
+        "full_description": "Пескобетон Русеан М300 на основе портландцемента и песка фракцией до 5 мм предназначен для устройства полов, ленточных фундаментов в малоэтажном строительстве, отмосток и отливок, а также монтажных работ. Подходит для внутренних и наружных работ; наносится вручную по бетонному основанию. Толщина слоя — 50–150 мм. Для затворения требуется 0,13–0,15 л воды на килограмм смеси. Возможность хождения — через 48 часов. Фасовка — 40 кг.",
+        "seo_title": "Пескобетон Русеан М300 40 кг — купить в Москве",
+        "seo_description": "Пескобетон Русеан М300, 40 кг, для полов, фундаментов и монтажных работ. Ручное нанесение по бетону. Закажите в MatMix с доставкой."
+      },
+      "conflictingFields": [],
+      "wouldAdd": 4,
+      "wouldFix": 0,
+      "existingOkFields": [],
+      "characterCounts": {
+        "short_description": 94,
+        "full_description": 432,
+        "seo_title": 46,
+        "seo_description": 131
+      },
+      "sourceKeys": [
+        "ruseanM300"
+      ],
+      "sourceMetadata": {
+        "ruseanM300": {
+          "owner": "Русеан",
+          "title": "Пескобетон М-300, 40 кг",
+          "url": "https://rusean.ru/catalog/peskobeton/peskobeton_m_300_40_kg_/",
+          "evidence": "Официальная страница exact product/40 kg. Описание и таблица расхода расходятся (18–19 против 19 кг/м² при 10 мм); описание и таблица морозостойкости расходятся (F50 против F35). Значения оставлены SOURCE_CONFLICT."
+        }
+      },
+      "verifiedFacts": [
+        {
+          "code": "brand",
+          "value": "Русеан",
+          "unit": null
+        },
+        {
+          "code": "product_type",
+          "value": "Пескобетон",
+          "unit": null
+        },
+        {
+          "code": "base",
+          "value": "Портландцемент и песок фракцией до 5 мм",
+          "unit": null
+        },
+        {
+          "code": "purpose",
+          "value": "Устройство полов; ленточные фундаменты в малоэтажном строительстве; отмостки и отливки; монтажные работы",
+          "unit": null
+        },
+        {
+          "code": "package_weight",
+          "value": 40,
+          "unit": "кг"
+        },
+        {
+          "code": "application_area",
+          "value": "Внутренние и наружные работы",
+          "unit": null
+        },
+        {
+          "code": "application_method",
+          "value": "Ручное нанесение",
+          "unit": null
+        },
+        {
+          "code": "substrates",
+          "value": "Бетонное основание",
+          "unit": null
+        },
+        {
+          "code": "color",
+          "value": "Серый",
+          "unit": null
+        },
+        {
+          "code": "layer_thickness",
+          "value": "50–150 мм",
+          "unit": null
+        },
+        {
+          "code": "water_requirement",
+          "value": "0,13–0,15 л/кг",
+          "unit": "л/кг"
+        },
+        {
+          "code": "application_temperature",
+          "value": "от +5 до +25 °C",
+          "unit": null
+        },
+        {
+          "code": "compressive_strength",
+          "value": 30,
+          "unit": "МПа"
+        },
+        {
+          "code": "adhesion",
+          "value": 0.4,
+          "unit": "МПа"
+        },
+        {
+          "code": "shelf_life",
+          "value": 6,
+          "unit": "месяцев"
+        },
+        {
+          "code": "standard",
+          "value": "ГОСТ 31358-2019",
+          "unit": null
+        },
+        {
+          "code": "mortar_grade",
+          "value": "М-300",
+          "unit": null
+        },
+        {
+          "code": "walkability",
+          "value": "48 часов",
+          "unit": "часов"
+        }
+      ],
+      "factsUsed": [
+        "brand",
+        "product_type",
+        "base",
+        "purpose",
+        "package_weight",
+        "application_area",
+        "application_method",
+        "substrates",
+        "layer_thickness",
+        "water_requirement",
+        "walkability"
+      ],
+      "factsOmitted": [
+        {
+          "code": "consumption_10mm",
+          "status": "SOURCE_CONFLICT",
+          "reason": "Official description states 18–19 kg/m² at 10 mm; the same page table states 19 kg/m². No value selected."
+        },
+        {
+          "code": "consumption",
+          "status": "NOT_AVAILABLE",
+          "reason": "The 10 mm consumption conflict is recorded under consumption_10mm; a second generic value is intentionally not duplicated."
+        },
+        {
+          "code": "pot_life",
+          "status": "NEEDS_MAPPING",
+          "reason": "The official prose gives 1.5–2 hours while the characteristics table gives 2 hours; no value is selected because the source statements conflict."
+        },
+        {
+          "code": "frost_resistance",
+          "status": "SOURCE_CONFLICT",
+          "reason": "Official description labels the product F50; the same page table says F35. No value selected."
+        },
+        {
+          "code": "flexural_strength",
+          "status": "NOT_AVAILABLE",
+          "reason": "No exact flexural-strength value is provided on the reviewed official product page."
+        }
+      ],
+      "titleCorrectionRecommendation": null,
+      "immutableSnapshot": {
+        "id": 100,
+        "external_id": "MAT-000109",
+        "title": "Пескобетон (ЦПС) М300 Русеан 40 кг",
+        "slug": "пескобетон-цпс-м300-русеан-40-кг",
+        "category": "Смеси",
+        "subcategory": "Пескобетон",
+        "price": 351.75,
+        "weight": 40,
+        "unit": "шт",
+        "image": "",
+        "description": "",
+        "is_active": 1,
+        "sort_order": 1,
+        "source": "excel",
+        "last_imported_at": "2026-07-15T13:44:51.601Z",
+        "created_at": "2026-07-08T17:22:48.872Z",
+        "updated_at": "2026-07-15T13:44:51.601Z",
+        "deleted_at": null,
+        "deleted_by_id": null,
+        "deleted_by_name": null,
+        "product_group": "Пескобетон",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "brand": null,
+        "stock_status": "unknown"
+      }
+    },
+    {
+      "externalId": "MAT-000110",
+      "productId": 101,
+      "title": "Пескобетон Tex Pro М-300 ГОСТ 40 кг",
+      "category": "Смеси",
+      "subcategory": "Пескобетон",
+      "identityStatus": "OWNER_CONFIRMED",
+      "identityBrand": "VERTEX",
+      "currentBrand": null,
+      "titleCorrectionStatus": "WOULD_CORRECT",
+      "currentTitle": "Пескобетон Tex Pro М-300 ГОСТ 40 кг",
+      "proposedTitle": "Пескобетон VERTEX М-300 ГОСТ 40 кг",
+      "status": "READY",
+      "currentContent": {
+        "short_description": null,
+        "full_description": null,
+        "seo_title": null,
+        "seo_description": null
+      },
+      "proposedContent": {
+        "short_description": "Пескобетон VERTEX М-300, 40 кг — для стяжек, фундаментов и бетонных конструкций.",
+        "full_description": "Пескобетон VERTEX М-300 в фасовке 40 кг применяют для устройства стяжек пола, фундаментов, отмосток и других бетонных конструкций. Производитель указывает возможность применения для внутренних и наружных работ. Марка — М-300; норматив — ГОСТ 31358-2007. Фасовка — 40 кг.",
+        "seo_title": "Пескобетон VERTEX М-300 40 кг — купить в Москве",
+        "seo_description": "Пескобетон VERTEX М-300, 40 кг, для стяжек, фундаментов, отмосток и бетонных конструкций. Закажите с доставкой в MatMix."
+      },
+      "conflictingFields": [],
+      "wouldAdd": 4,
+      "wouldFix": 0,
+      "existingOkFields": [],
+      "characterCounts": {
+        "short_description": 80,
+        "full_description": 270,
+        "seo_title": 47,
+        "seo_description": 120
+      },
+      "sourceKeys": [
+        "ownerMat110",
+        "vertexCatalog"
+      ],
+      "sourceMetadata": {
+        "ownerMat110": {
+          "owner": "MatMix project owner",
+          "title": "Owner-confirmed identity for MAT-000110",
+          "url": null,
+          "evidence": "Owner confirms this exact local MAT is Пескобетон VERTEX М-300, 40 кг. This confirms the stated identity only; it does not authorize transferring technical data from an unmapped VERTEX variant."
+        },
+        "vertexCatalog": {
+          "owner": "ООО «Вертекс Продакшн»",
+          "title": "Официальный каталог сухих смесей VERTEX.production",
+          "url": "https://vertexproduction.ru/",
+          "evidence": "Official manufacturer lists M-300, M-300 Крупнозернистый, and M-300 Эконом separately, each as пескобетон 40 kg, ГОСТ 31358-2007, with the same stated applications including indoor and outdoor use. Those shared identity-agnostic catalog facts support purpose, application area, and standard. No exact-version composition, substrate list, or layer thickness is published; variant-specific technical values are not inferred."
+        }
+      },
+      "verifiedFacts": [
+        {
+          "code": "brand",
+          "value": "VERTEX",
+          "unit": null
+        },
+        {
+          "code": "product_type",
+          "value": "Пескобетон",
+          "unit": null
+        },
+        {
+          "code": "purpose",
+          "value": "Устройство стяжек пола (в том числе плавающих и тёплых), фундаментов, отмосток и других бетонных конструкций в жилых и общественных зданиях",
+          "unit": null
+        },
+        {
+          "code": "package_weight",
+          "value": 40,
+          "unit": "кг"
+        },
+        {
+          "code": "application_area",
+          "value": "Внутренние и наружные работы",
+          "unit": null
+        },
+        {
+          "code": "standard",
+          "value": "ГОСТ 31358-2007",
+          "unit": null
+        },
+        {
+          "code": "mortar_grade",
+          "value": "М-300",
+          "unit": null
+        }
+      ],
+      "factsUsed": [
+        "brand",
+        "product_type",
+        "purpose",
+        "package_weight",
+        "application_area",
+        "standard",
+        "mortar_grade"
+      ],
+      "factsOmitted": [
+        {
+          "code": "base",
+          "status": "NOT_AVAILABLE",
+          "reason": "No exact-version composition is assigned without a SKU/package mapping."
+        },
+        {
+          "code": "application_method",
+          "status": "NOT_AVAILABLE",
+          "reason": "No exact-version application method is confirmed for this local MAT."
+        },
+        {
+          "code": "substrates",
+          "status": "NOT_AVAILABLE",
+          "reason": "The catalog lists application purposes but does not provide a distinct compatible-substrate list for the exact product."
+        },
+        {
+          "code": "color",
+          "status": "NOT_AVAILABLE",
+          "reason": "No exact-version color is confirmed for this local MAT."
+        },
+        {
+          "code": "layer_thickness",
+          "status": "BLOCKED_BY_VARIANT",
+          "reason": "The official catalog lists multiple M-300 variants but does not publish a layer-thickness value for any of them; do not assign a value without exact-version documentation."
+        },
+        {
+          "code": "consumption_10mm",
+          "status": "NOT_AVAILABLE",
+          "reason": "No value is proposed without exact-version mapping."
+        },
+        {
+          "code": "consumption",
+          "status": "NOT_AVAILABLE",
+          "reason": "No value is proposed without exact-version mapping."
+        },
+        {
+          "code": "water_requirement",
+          "status": "NOT_AVAILABLE",
+          "reason": "No value is proposed without exact-version mapping."
+        },
+        {
+          "code": "pot_life",
+          "status": "NOT_AVAILABLE",
+          "reason": "No value is proposed without exact-version mapping."
+        },
+        {
+          "code": "application_temperature",
+          "status": "NOT_AVAILABLE",
+          "reason": "No value is proposed without exact-version mapping."
+        },
+        {
+          "code": "compressive_strength",
+          "status": "NOT_AVAILABLE",
+          "reason": "No value is proposed without exact-version mapping."
+        },
+        {
+          "code": "adhesion",
+          "status": "NOT_AVAILABLE",
+          "reason": "No value is proposed without exact-version mapping."
+        },
+        {
+          "code": "frost_resistance",
+          "status": "NOT_AVAILABLE",
+          "reason": "No value is proposed without exact-version mapping."
+        },
+        {
+          "code": "shelf_life",
+          "status": "NOT_AVAILABLE",
+          "reason": "No value is proposed without exact-version mapping."
+        },
+        {
+          "code": "walkability",
+          "status": "NOT_AVAILABLE",
+          "reason": "No value is proposed without exact-version mapping."
+        },
+        {
+          "code": "flexural_strength",
+          "status": "NOT_AVAILABLE",
+          "reason": "No value is proposed without exact-version mapping."
+        }
+      ],
+      "titleCorrectionRecommendation": {
+        "expectedOldTitle": "Пескобетон Tex Pro М-300 ГОСТ 40 кг",
+        "proposedTitle": "Пескобетон VERTEX М-300 ГОСТ 40 кг",
+        "recommended": true
+      },
+      "immutableSnapshot": {
+        "id": 101,
+        "external_id": "MAT-000110",
+        "title": "Пескобетон Tex Pro М-300 ГОСТ 40 кг",
+        "slug": "пескобетон-tex-pro-м-300-гост-40-кг",
+        "category": "Смеси",
+        "subcategory": "Пескобетон",
+        "price": 225.75,
+        "weight": 40,
+        "unit": "шт",
+        "image": "",
+        "description": "",
+        "is_active": 1,
+        "sort_order": 2,
+        "source": "excel",
+        "last_imported_at": "2026-07-15T13:44:51.601Z",
+        "created_at": "2026-07-08T17:22:48.872Z",
+        "updated_at": "2026-07-15T13:44:51.601Z",
+        "deleted_at": null,
+        "deleted_by_id": null,
+        "deleted_by_name": null,
+        "product_group": "Пескобетон",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "brand": null,
+        "stock_status": "unknown"
+      }
+    },
+    {
+      "externalId": "MAT-000111",
+      "productId": 102,
+      "title": "Пескобетон Евро М-300 ГОСТ 40кг",
+      "category": "Смеси",
+      "subcategory": "Пескобетон",
+      "identityStatus": "OWNER_CONFIRMED",
+      "identityBrand": "EUROMIX",
+      "currentBrand": null,
+      "titleCorrectionStatus": "WOULD_CORRECT",
+      "currentTitle": "Пескобетон Евро М-300 ГОСТ 40кг",
+      "proposedTitle": "Пескобетон EUROMIX М-300 ГОСТ 40 кг",
+      "status": "READY",
+      "currentContent": {
+        "short_description": null,
+        "full_description": null,
+        "seo_title": null,
+        "seo_description": null
+      },
+      "proposedContent": {
+        "short_description": "Пескобетон EUROMIX М-300, 40 кг — для фундаментов, стяжек и бетонных стен.",
+        "full_description": "Пескобетон EUROMIX М-300 предназначен для заливки фундаментов, устройства бетонных стяжек и несущих слоёв полов, возведения и ремонта бетонных стен и оснований. Допускается слой 10–50 мм; для затворения требуется 0,17–0,20 л воды на килограмм смеси. Работы проводят при температуре от +5 до +30 °C. Цвет — серый. Марка раствора — М-300; норматив — ГОСТ 31357-2007. Фасовка — 40 кг.",
+        "seo_title": "Пескобетон EUROMIX М-300 40 кг — купить в Москве",
+        "seo_description": "Пескобетон EUROMIX М-300, 40 кг: слой 10–50 мм и затворение 0,17–0,20 л/кг. Закажите с доставкой по Москве в MatMix."
+      },
+      "conflictingFields": [],
+      "wouldAdd": 4,
+      "wouldFix": 0,
+      "existingOkFields": [],
+      "characterCounts": {
+        "short_description": 74,
+        "full_description": 381,
+        "seo_title": 48,
+        "seo_description": 116
+      },
+      "sourceKeys": [
+        "ownerMat111",
+        "euromixCatalog"
+      ],
+      "sourceMetadata": {
+        "ownerMat111": {
+          "owner": "MatMix project owner",
+          "title": "Owner-confirmed identity for MAT-000111",
+          "url": null,
+          "evidence": "Owner confirms this exact local MAT is Пескобетон EUROMIX/EUROmix М-300, 40 кг. This confirmation applies only to MAT-000111."
+        },
+        "euromixCatalog": {
+          "owner": "ООО «ЕВРОМИКС СМ»",
+          "title": "Официальный каталог EUROmix — пескобетон М-300",
+          "url": "https://www.xn----ctbiokkmpo.xn--p1ai/%D0%BA%D0%B0%D1%82%D0%B0%D0%BB%D0%BE%D0%B3",
+          "evidence": "Manufacturer site identifies ООО «ЕВРОМИКС СМ» in Коломна and lists EUROmix Пескобетон М-300, ГОСТ 31357-2007, 40 kg. Its exact M-300 listing and repeated Premium/M-300 catalog entries state the same 10–50 mm layer, 0.5 MPa adhesion, and six-month shelf life. The local title's M-300/ГОСТ/40 kg plus owner confirmation map to the manufacturer M-300 listing. Manufacturer values take precedence over secondary listings that provide no revision/SKU discriminator."
+        }
+      },
+      "verifiedFacts": [
+        {
+          "code": "brand",
+          "value": "EUROMIX",
+          "unit": null
+        },
+        {
+          "code": "product_type",
+          "value": "Пескобетон",
+          "unit": null
+        },
+        {
+          "code": "purpose",
+          "value": "Заливка фундаментов; устройство бетонных стяжек и несущих слоев полов; возведение и ремонт бетонных стен и оснований",
+          "unit": null
+        },
+        {
+          "code": "package_weight",
+          "value": 40,
+          "unit": "кг"
+        },
+        {
+          "code": "color",
+          "value": "Серый",
+          "unit": null
+        },
+        {
+          "code": "layer_thickness",
+          "value": "10–50 мм",
+          "unit": null
+        },
+        {
+          "code": "water_requirement",
+          "value": "0,17–0,20 л/кг",
+          "unit": "л/кг"
+        },
+        {
+          "code": "application_temperature",
+          "value": "от +5 до +30 °C",
+          "unit": null
+        },
+        {
+          "code": "compressive_strength",
+          "value": 30,
+          "unit": "МПа"
+        },
+        {
+          "code": "adhesion",
+          "value": 0.5,
+          "unit": "МПа"
+        },
+        {
+          "code": "shelf_life",
+          "value": 6,
+          "unit": "месяцев"
+        },
+        {
+          "code": "standard",
+          "value": "ГОСТ 31357-2007",
+          "unit": null
+        },
+        {
+          "code": "mortar_grade",
+          "value": "М-300",
+          "unit": null
+        }
+      ],
+      "factsUsed": [
+        "brand",
+        "product_type",
+        "purpose",
+        "package_weight",
+        "color",
+        "layer_thickness",
+        "water_requirement",
+        "application_temperature",
+        "standard",
+        "mortar_grade"
+      ],
+      "factsOmitted": [
+        {
+          "code": "base",
+          "status": "NOT_AVAILABLE",
+          "reason": "The reviewed official M-300 page does not state the composition."
+        },
+        {
+          "code": "application_area",
+          "status": "NOT_AVAILABLE",
+          "reason": "The official page does not explicitly identify indoor/outdoor application for this product."
+        },
+        {
+          "code": "application_method",
+          "status": "NOT_AVAILABLE",
+          "reason": "No manual/mechanical method is stated in the reviewed official product page."
+        },
+        {
+          "code": "substrates",
+          "status": "NOT_AVAILABLE",
+          "reason": "The page describes applications but does not define an exact substrate list."
+        },
+        {
+          "code": "consumption_10mm",
+          "status": "SOURCE_CONFLICT",
+          "reason": "Secondary exact-name listings report 18 and 22–25 kg/m² at 10 mm; official catalog does not publish a consumption value. No value selected."
+        },
+        {
+          "code": "consumption",
+          "status": "SOURCE_CONFLICT",
+          "reason": "Secondary exact-name listings report different consumption ranges; official catalog does not publish consumption. No value selected."
+        },
+        {
+          "code": "pot_life",
+          "status": "SOURCE_CONFLICT",
+          "reason": "Secondary exact-name listings report 120 and 120–180 minutes; the official catalog does not state pot life. No value selected."
+        },
+        {
+          "code": "frost_resistance",
+          "status": "NOT_AVAILABLE",
+          "reason": "The reviewed official M-300 catalog does not publish a frost-resistance value; secondary candidate value was not promoted."
+        },
+        {
+          "code": "walkability",
+          "status": "NOT_AVAILABLE",
+          "reason": "No walkability time is stated in the reviewed official M-300 catalog."
+        },
+        {
+          "code": "flexural_strength",
+          "status": "NOT_AVAILABLE",
+          "reason": "No flexural-strength value is stated in the reviewed official M-300 catalog."
+        }
+      ],
+      "titleCorrectionRecommendation": {
+        "expectedOldTitle": "Пескобетон Евро М-300 ГОСТ 40кг",
+        "proposedTitle": "Пескобетон EUROMIX М-300 ГОСТ 40 кг",
+        "recommended": true
+      },
+      "immutableSnapshot": {
+        "id": 102,
+        "external_id": "MAT-000111",
+        "title": "Пескобетон Евро М-300 ГОСТ 40кг",
+        "slug": "пескобетон-евро-м-300-гост-40кг",
+        "category": "Смеси",
+        "subcategory": "Пескобетон",
+        "price": 246.75,
+        "weight": 40,
+        "unit": "шт",
+        "image": "",
+        "description": "",
+        "is_active": 1,
+        "sort_order": 3,
+        "source": "excel",
+        "last_imported_at": "2026-07-15T13:44:51.601Z",
+        "created_at": "2026-07-08T17:22:48.872Z",
+        "updated_at": "2026-07-15T13:44:51.601Z",
+        "deleted_at": null,
+        "deleted_by_id": null,
+        "deleted_by_name": null,
+        "product_group": "Пескобетон",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "brand": null,
+        "stock_status": "unknown"
+      }
+    },
+    {
+      "externalId": "MAT-000117",
+      "productId": 106,
+      "title": "Цементная смесь ремонтная Ceresit CN 83 25 кг",
+      "category": "Смеси",
+      "subcategory": "Смесь Ремонтная",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "identityBrand": "Ceresit",
+      "currentBrand": null,
+      "titleCorrectionStatus": "NOT_IN_SCOPE",
+      "currentTitle": "Цементная смесь ремонтная Ceresit CN 83 25 кг",
+      "proposedTitle": null,
+      "status": "READY",
+      "currentContent": {
+        "short_description": null,
+        "full_description": null,
+        "seo_title": null,
+        "seo_description": null
+      },
+      "proposedContent": {
+        "short_description": "Ceresit CN 83, 25 кг — ремонтная смесь для бетонных и железобетонных конструкций.",
+        "full_description": "Ceresit CN 83 — цементная ремонтная смесь для бетонных и железобетонных конструкций. Подходит для заполнения выбоин, каверн и дефектов глубиной от 5 мм, а также для изготовления стяжек. Смесь наносят шпателем или кельмой; при устройстве стяжек используют виброрейку. Толщина слоя — 5–35 мм, расход — около 2,0 кг/м² на каждый миллиметр слоя. Для затворения 25 кг требуется 3,0–3,2 л воды. Работы проводят при температуре от +5 до +30 °C; возможность хождения — через 6 часов. Фасовка — 25 кг.",
+        "seo_title": "Ceresit CN 83 25 кг — купить ремонтную смесь в Москве",
+        "seo_description": "Ceresit CN 83, 25 кг, для ремонта бетона и железобетона и устройства стяжек. Слой 5–35 мм. Закажите с доставкой по Москве."
+      },
+      "conflictingFields": [],
+      "wouldAdd": 4,
+      "wouldFix": 0,
+      "existingOkFields": [],
+      "characterCounts": {
+        "short_description": 81,
+        "full_description": 492,
+        "seo_title": 53,
+        "seo_description": 122
+      },
+      "sourceKeys": [
+        "ceresitCn83Catalog",
+        "ceresitCn83RuTds"
+      ],
+      "sourceMetadata": {
+        "ceresitCn83Catalog": {
+          "owner": "Ceresit/Henkel RU",
+          "title": "Официальный российский каталог CN 83",
+          "url": "https://www.ceresit.ru/ru/products/flooring/levelling-compounds",
+          "evidence": "Каталог производителя называет CN 83 ремонтной смесью для бетона и указывает толщину 5–35 мм."
+        },
+        "ceresitCn83RuTds": {
+          "owner": "Henkel/Ceresit RU",
+          "title": "CN 83 — CERESIT_CN 83_11.2020, официальный RU TDS",
+          "url": "https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-CN83-",
+          "evidence": "Официальный индекс Henkel DAM возвращает полный текст RU TDS редакции 11.2020, включая 25 кг упаковку, состав, применение и таблицу характеристик. Прямая загрузка URL во время проверки вернула 404; values основаны только на индексированном русском документе, не на украинской версии."
+        }
+      },
+      "verifiedFacts": [
+        {
+          "code": "brand",
+          "value": "Ceresit",
+          "unit": null
+        },
+        {
+          "code": "product_type",
+          "value": "Ремонтная смесь для бетона",
+          "unit": null
+        },
+        {
+          "code": "base",
+          "value": "Цемент, минеральные заполнители, модифицирующие добавки",
+          "unit": null
+        },
+        {
+          "code": "purpose",
+          "value": "Срочный ремонт бетонных и железобетонных конструкций; заполнение выбоин, каверн, дефектов и неровностей глубиной от 5 мм; изготовление стяжек",
+          "unit": null
+        },
+        {
+          "code": "package_weight",
+          "value": 25,
+          "unit": "кг"
+        },
+        {
+          "code": "application_area",
+          "value": "Внутренние и наружные работы",
+          "unit": null
+        },
+        {
+          "code": "application_method",
+          "value": "Шпатель или кельма; для стяжек — виброрейка",
+          "unit": null
+        },
+        {
+          "code": "substrates",
+          "value": "Бетон и железобетон; горизонтальные и вертикальные основания",
+          "unit": null
+        },
+        {
+          "code": "layer_thickness",
+          "value": "5–35 мм",
+          "unit": null
+        },
+        {
+          "code": "consumption",
+          "value": "около 2,0 кг/м² на 1 мм толщины слоя",
+          "unit": "кг/м² на 1 мм"
+        },
+        {
+          "code": "water_requirement",
+          "value": "3,0–3,2 л на 25 кг сухой смеси",
+          "unit": "л на 25 кг"
+        },
+        {
+          "code": "application_temperature",
+          "value": "от +5 до +30 °C",
+          "unit": null
+        },
+        {
+          "code": "frost_resistance",
+          "value": "F300 (затвердевший раствор); Fкз100 (контактная зона)",
+          "unit": null
+        },
+        {
+          "code": "shelf_life",
+          "value": 12,
+          "unit": "месяцев"
+        },
+        {
+          "code": "walkability",
+          "value": "через 6 часов",
+          "unit": "часов"
+        },
+        {
+          "code": "flexural_strength",
+          "value": "не менее 2,5 МПа (1 сутки); не менее 5,0 МПа (28 суток)",
+          "unit": null
+        }
+      ],
+      "factsUsed": [
+        "brand",
+        "product_type",
+        "base",
+        "purpose",
+        "package_weight",
+        "application_area",
+        "application_method",
+        "substrates",
+        "layer_thickness",
+        "consumption",
+        "water_requirement",
+        "application_temperature",
+        "walkability"
+      ],
+      "factsOmitted": [
+        {
+          "code": "color",
+          "status": "NOT_AVAILABLE",
+          "reason": "The reviewed Russian catalogue/TDS does not state the product color."
+        },
+        {
+          "code": "consumption_10mm",
+          "status": "NOT_AVAILABLE",
+          "reason": "The RU TDS gives consumption per 1 mm; it is retained verbatim in the text consumption attribute instead of deriving a 10 mm figure."
+        },
+        {
+          "code": "pot_life",
+          "status": "NEEDS_MAPPING",
+          "reason": "The RU TDS states about 30 minutes; this batch retains the existing conservative source classification and does not propose a value."
+        },
+        {
+          "code": "compressive_strength",
+          "status": "NEEDS_MAPPING",
+          "reason": "RU TDS has separate minimum values for 1 day and 28 days (13 MPa and 36 MPa); the numeric definition cannot preserve both age qualifiers."
+        },
+        {
+          "code": "adhesion",
+          "status": "NEEDS_MAPPING",
+          "reason": "RU TDS gives a minimum 1.0 MPa at 28 days, with a footnote requiring a CC 81 adhesion layer; scalar definition would lose both qualifiers."
+        },
+        {
+          "code": "standard",
+          "status": "NOT_AVAILABLE",
+          "reason": "The reviewed Russian TDS extract does not provide a sufficiently clear standard mapping for a canonical value."
+        },
+        {
+          "code": "mortar_grade",
+          "status": "NOT_AVAILABLE",
+          "reason": "No separate mortar-grade value is used; classification codes are not mapped into mortar_grade."
+        }
+      ],
+      "titleCorrectionRecommendation": null,
+      "immutableSnapshot": {
+        "id": 106,
+        "external_id": "MAT-000117",
+        "title": "Цементная смесь ремонтная Ceresit CN 83 25 кг",
+        "slug": "цементная-смесь-ремонтная-ceresit-cn-83-25-кг",
+        "category": "Смеси",
+        "subcategory": "Смесь Ремонтная",
+        "price": null,
+        "weight": 25,
+        "unit": "шт",
+        "image": "",
+        "description": "",
+        "is_active": 1,
+        "sort_order": 1,
+        "source": "excel",
+        "last_imported_at": "2026-07-15T13:44:51.601Z",
+        "created_at": "2026-07-08T17:22:48.872Z",
+        "updated_at": "2026-07-15T13:44:51.601Z",
+        "deleted_at": null,
+        "deleted_by_id": null,
+        "deleted_by_name": null,
+        "product_group": "Смесь Ремонтная",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "brand": null,
+        "stock_status": "unknown"
+      }
+    },
+    {
+      "externalId": "MAT-000118",
+      "productId": 107,
+      "title": "Цементная смесь ремонтная тиксотропная GLIMS CRT-40 25 кг",
+      "category": "Смеси",
+      "subcategory": "Смесь Ремонтная",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "identityBrand": "GLIMS",
+      "currentBrand": null,
+      "titleCorrectionStatus": "NOT_IN_SCOPE",
+      "currentTitle": "Цементная смесь ремонтная тиксотропная GLIMS CRT-40 25 кг",
+      "proposedTitle": null,
+      "status": "READY",
+      "currentContent": {
+        "short_description": null,
+        "full_description": null,
+        "seo_title": null,
+        "seo_description": null
+      },
+      "proposedContent": {
+        "short_description": "GLIMS PRO CRT-40, 25 кг — тиксотропная ремонтная смесь класса R3.",
+        "full_description": "GLIMS PRO CRT-40 — тиксотропная ремонтная смесь класса R3 для конструкционного ремонта бетонных и железобетонных конструкций. Её наносят вручную шпателем на бетон, железобетон и другие минеральные основания; материал предназначен для внутренних и наружных работ. Толщина слоя — 10–40 мм, расход — 1,8 кг/м² на каждый миллиметр слоя. Для затворения 25 кг требуется 4,0–4,25 л воды. Работы проводят при температуре от +5 до +35 °C. Соответствие: ГОСТ Р 56378-2015, класс R3; ТУ 5745-010-40397319-2003 №0500/2. Фасовка — 25 кг.",
+        "seo_title": "GLIMS PRO CRT-40 25 кг — купить ремонтную смесь в Москве",
+        "seo_description": "GLIMS PRO CRT-40, 25 кг, тиксотропная ремонтная смесь класса R3 для бетонных конструкций. Слой 10–40 мм. Доставка по Москве."
+      },
+      "conflictingFields": [],
+      "wouldAdd": 4,
+      "wouldFix": 0,
+      "existingOkFields": [],
+      "characterCounts": {
+        "short_description": 65,
+        "full_description": 524,
+        "seo_title": 56,
+        "seo_description": 124
+      },
+      "sourceKeys": [
+        "glimsProCrt40",
+        "glimsProCrt40Tds"
+      ],
+      "sourceMetadata": {
+        "glimsProCrt40": {
+          "owner": "GLIMS",
+          "title": "GLIMS PRO CRT-40 — ремонтная смесь класса R3",
+          "url": "https://glims.ru/catalog/remontnye-smesi/remontnaya-tiksotropnaya-smes-klass-r3-glims-pro-crt-40/",
+          "evidence": "Официальная страница производителя: PRO CRT-40, 25 кг, штрихкод 4607009095967 и технические характеристики; exact standard CRT-40, не CRT-40 AF."
+        },
+        "glimsProCrt40Tds": {
+          "owner": "GLIMS",
+          "title": "GLIMS PRO CRT-40 — официальный технический PDF",
+          "url": "https://glims.ru/upload/iblock/269/6zxy9omk7p1uybqgmlb0upxynqo43qb7/GLIMS%C2%AE%20PRO%20CRT-40.pdf",
+          "evidence": "Официальный TDS exact GLIMS PRO CRT-40. Дополнительная идентификация из предыдущего source audit: артикул О00010269 и EAN 4607009095967; CRT-40 AF имеет другой артикул О00014105."
+        }
+      },
+      "verifiedFacts": [
+        {
+          "code": "brand",
+          "value": "GLIMS",
+          "unit": null
+        },
+        {
+          "code": "product_type",
+          "value": "Ремонтная тиксотропная смесь класса R3",
+          "unit": null
+        },
+        {
+          "code": "base",
+          "value": "Цементное вяжущее, фракционированный песок, минеральные наполнители и химические добавки; полимерная фибра",
+          "unit": null
+        },
+        {
+          "code": "purpose",
+          "value": "Конструкционный ремонт бетонных и железобетонных конструкций",
+          "unit": null
+        },
+        {
+          "code": "package_weight",
+          "value": 25,
+          "unit": "кг"
+        },
+        {
+          "code": "application_area",
+          "value": "Внутренние и наружные работы",
+          "unit": null
+        },
+        {
+          "code": "application_method",
+          "value": "Ручное нанесение шпателем",
+          "unit": null
+        },
+        {
+          "code": "substrates",
+          "value": "Бетон, железобетон и другие минеральные основания",
+          "unit": null
+        },
+        {
+          "code": "color",
+          "value": "Серый",
+          "unit": null
+        },
+        {
+          "code": "layer_thickness",
+          "value": "10–40 мм",
+          "unit": null
+        },
+        {
+          "code": "consumption",
+          "value": "1,8 кг/м² на каждый 1 мм слоя",
+          "unit": "кг/м² на 1 мм"
+        },
+        {
+          "code": "water_requirement",
+          "value": "0,16–0,17 л/кг (4,0–4,25 л на 25 кг)",
+          "unit": "л/кг; л на 25 кг"
+        },
+        {
+          "code": "application_temperature",
+          "value": "от +5 до +35 °C",
+          "unit": null
+        },
+        {
+          "code": "frost_resistance",
+          "value": "F2 300",
+          "unit": null
+        },
+        {
+          "code": "shelf_life",
+          "value": 12,
+          "unit": "месяцев"
+        },
+        {
+          "code": "standard",
+          "value": "ГОСТ Р 56378-2015, класс R3; ТУ 5745-010-40397319-2003 №0500/2",
+          "unit": null
+        },
+        {
+          "code": "flexural_strength",
+          "value": "не менее 8 МПа",
+          "unit": null
+        }
+      ],
+      "factsUsed": [
+        "brand",
+        "product_type",
+        "purpose",
+        "package_weight",
+        "application_area",
+        "application_method",
+        "substrates",
+        "layer_thickness",
+        "consumption",
+        "water_requirement",
+        "application_temperature",
+        "standard"
+      ],
+      "factsOmitted": [
+        {
+          "code": "consumption_10mm",
+          "status": "NOT_AVAILABLE",
+          "reason": "The official source states consumption per 1 mm; no derived 10 mm number is written."
+        },
+        {
+          "code": "pot_life",
+          "status": "NEEDS_MAPPING",
+          "reason": "The official source states at least 30 minutes; this batch retains the existing conservative source classification and does not propose a value."
+        },
+        {
+          "code": "compressive_strength",
+          "status": "NEEDS_MAPPING",
+          "reason": "Official page gives separate minimum values after 1 day and 28 days (15 MPa and 40 MPa); numeric definition cannot preserve age qualifiers."
+        },
+        {
+          "code": "adhesion",
+          "status": "NEEDS_MAPPING",
+          "reason": "Official source says adhesion is at least 1.5 MPa; numeric definition cannot preserve the threshold qualifier."
+        },
+        {
+          "code": "mortar_grade",
+          "status": "NOT_AVAILABLE",
+          "reason": "No mortar-grade value is stated; B20 substrate qualification is not a mortar grade and is not mapped here."
+        },
+        {
+          "code": "walkability",
+          "status": "NOT_AVAILABLE",
+          "reason": "No walkability time is provided by the reviewed official source."
+        }
+      ],
+      "titleCorrectionRecommendation": null,
+      "immutableSnapshot": {
+        "id": 107,
+        "external_id": "MAT-000118",
+        "title": "Цементная смесь ремонтная тиксотропная GLIMS CRT-40 25 кг",
+        "slug": "цементная-смесь-ремонтная-тиксотропная-glims-crt-40-25-кг",
+        "category": "Смеси",
+        "subcategory": "Смесь Ремонтная",
+        "price": null,
+        "weight": 25,
+        "unit": "шт",
+        "image": "",
+        "description": "",
+        "is_active": 1,
+        "sort_order": 2,
+        "source": "excel",
+        "last_imported_at": "2026-07-15T13:44:51.601Z",
+        "created_at": "2026-07-08T17:22:48.872Z",
+        "updated_at": "2026-07-15T13:44:51.601Z",
+        "deleted_at": null,
+        "deleted_by_id": null,
+        "deleted_by_name": null,
+        "product_group": "Смесь Ремонтная",
+        "image_url": "/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+        "brand": null,
+        "stock_status": "unknown"
+      }
+    }
+  ],
+  "summary": {
+    "total": 5,
+    "ready": 5,
+    "existingOk": 0,
+    "wouldAdd": 20,
+    "wouldFix": 0,
+    "plannedTitleCorrections": 2,
+    "existingTitleCorrections": 0,
+    "blocked": 0,
+    "errors": 0,
+    "duplicateSeoTitles": 0,
+    "duplicateSeoDescriptions": 0,
+    "forbiddenPublicMarkers": 0
+  },
+  "duplicateSeoTitles": 0,
+  "duplicateSeoDescriptions": 0,
+  "writableSurface": {
+    "productContentFields": [
+      "short_description",
+      "full_description",
+      "seo_title",
+      "seo_description"
+    ],
+    "titleCorrections": {
+      "externalIds": [
+        "MAT-000110",
+        "MAT-000111"
+      ],
+      "field": "title",
+      "oldValueGuard": "exact"
+    },
+    "otherTables": "none"
+  }
+}
