@@ -121,7 +121,7 @@ const PRODUCTS = Object.freeze([
   },
   {
     externalId: "MAT-000114",
-    expectedTitle: "Цемент \"Росцемент\" 50кг",
+    expectedTitle: "Цемент \"РосЦемент\" 50кг",
     expectedSubcategory: "Цемент",
     expectedStructureId: 12,
     expectedParentStructureId: 1,

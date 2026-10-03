@@ -328,7 +328,7 @@
     },
     {
       "externalId": "MAT-000114",
-      "expectedTitleGuard": "Цемент \"Росцемент\" 50кг",
+      "expectedTitleGuard": "Цемент \"РосЦемент\" 50кг",
       "previousIdentityStatus": "BLOCKED",
       "identityStatus": "IDENTITY_CONFIRMED",
       "exactProductIdentity": "РОСЦЕМЕНТ Portland cement, 50 kg. Product-level identity is confirmed by package label; manufacturer, cement class and standard are not established.",
@@ -983,5 +983,13 @@
       "url": "https://rusean.ru/pricelist/",
       "evidence": "Official company price list independently lists Цемент ЦЕМ I 42,5Н in 40 kg bags."
     }
+  },
+  "titleGuardCorrection": {
+    "externalId": "MAT-000114",
+    "previousExpectedTitle": "Цемент \"Росцемент\" 50кг",
+    "correctedExactProductionTitle": "Цемент \"РосЦемент\" 50кг",
+    "productionTitleChanged": false,
+    "previousCapitalizationRejected": true,
+    "regressionTest": "test-backfill-mix-cement-core-batch3.js"
   }
 }

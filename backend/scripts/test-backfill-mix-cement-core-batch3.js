@@ -35,7 +35,8 @@ async function createFixture(name, options = {}) {
       await run(db, "INSERT INTO product_attribute_definitions VALUES(?,?,?,?,?,1,?)", [index + 1, code, code, definition.dataType, definition.unit, index]);
     }
     for (const [index, config] of DATA.PRODUCTS.entries()) {
-      const title = config.externalId === options.titleMismatch ? `${config.expectedTitle} изменён` : config.expectedTitle;
+      const title = config.externalId === options.titleMismatch ? `${config.expectedTitle} изменён`
+        : config.externalId === options.titleOverride?.externalId ? options.titleOverride.title : config.expectedTitle;
       const category = config.externalId === options.categoryMismatch ? "Другая категория" : "Смеси";
       const subcategory = config.externalId === options.subcategoryMismatch ? "Пескобетон" : "Цемент";
       const brand = config.externalId === options.brandConflict ? "Другой бренд" : null;
@@ -81,6 +82,8 @@ async function main() {
   const dryDb = await RUNNER.openDatabase(dryFile, false);
   const before = await snapshot(dryDb); const beforeHash = sha(dryFile);
   const dry = await RUNNER.inspectBatch(dryDb, { only: ALL });
+  assert.equal(DATA.PRODUCTS.find(item => item.externalId === "MAT-000114").expectedTitle, 'Цемент "РосЦемент" 50кг');
+  assert.equal(row(dry, "MAT-000114").status, "PARTIAL", "the exact current MAT-000114 title must pass its title guard");
   assert.equal(dry.summary.total, 3);
   assert.equal(dry.summary.logicalSlots, 69);
   assert.equal(dry.summary.ready, 18);
@@ -109,6 +112,14 @@ async function main() {
   assert.equal(sha(dryFile), beforeHash, "dry-run must leave fixture DB bytes unchanged");
   await dryDb.close();
   pass("schema-v11 dry-run is immutable and exposes exact source gaps");
+
+  const oldCaseFile = await createFixture("old-title-case", { titleOverride: { externalId: "MAT-000114", title: 'Цемент "Росцемент" 50кг' } });
+  const oldCaseDb = await RUNNER.openDatabase(oldCaseFile, false);
+  const oldCase = await RUNNER.inspectBatch(oldCaseDb, { only: ALL });
+  assert.equal(row(oldCase, "MAT-000114").status, "TITLE_GUARD_BLOCKED", "the previous capitalization must not be accepted by the exact title guard");
+  assert.equal(oldCase.summary.titleGuardBlocked, 1);
+  await oldCaseDb.close();
+  pass("MAT-000114 exact production title passes while prior capitalization remains blocked");
 
   for (const [name, option] of [["title", { titleMismatch: ALL[1] }], ["category", { categoryMismatch: ALL[2] }], ["subcategory", { subcategoryMismatch: ALL[1] }], ["weight", { weightMismatch: ALL[2] }]]) {
     const file = await createFixture(name, option); const db = await RUNNER.openDatabase(file, false);

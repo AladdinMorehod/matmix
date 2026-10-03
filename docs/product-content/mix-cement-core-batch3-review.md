@@ -1,6 +1,6 @@
 # Смеси → Цемент — CORE batch 3 review
 
-Дата проверки: 2026-10-03. Scope: MAT-000113, MAT-000114, MAT-000115. Production, SSH, deploy и apply не использовались.
+Дата проверки: 2026-10-03. Scope: MAT-000113, MAT-000114, MAT-000115. Выполнен production read-only preflight; Batch3 apply не выполнялся.
 
 ## Identity reconciliation
 
@@ -9,6 +9,10 @@
 | MAT-000113 | PARTIAL | IDENTITY_CONFIRMED | ЦЕМЕНТУМ ЭКСТРАЦЕМ 500 / ExtraCEM 500, портландцемент, 40 кг | Завод ExtraCEM и соответствующая буква класса Н/Б не установлены. |
 | MAT-000114 | BLOCKED | IDENTITY_CONFIRMED | РОСЦЕМЕНТ, портландцемент, 50 кг — identity на уровне марки/типа/упаковки | Класс, стандарт и завод не установлены; фото не даёт читаемого подтверждения микротекста, а каталог продавца охватывает несколько производителей/классов. |
 | MAT-000115 | PARTIAL | IDENTITY_CONFIRMED | Русеан, портландцемент ЦЕМ I 42,5Н, 40 кг | Точный завод для этой упаковки не установлен. |
+
+### MAT-000114 exact title guard
+
+Production read-only preflight found the exact current title `Цемент "РосЦемент" 50кг`. Batch3 now guards this exact string. The previous capitalization `Цемент "Росцемент" 50кг` is intentionally rejected; the product title itself is not changed. A regression test covers both cases.
 
 Owner предоставил названия/описания пакетов в текущем задании. Ожидаемые бинарные файлы `MAT-000113.webp`, `МЕШОК MAT-000114.png`, `MAT-000115.jpg` не найдены в Downloads, Desktop, локальном репозитории или доступной папке вложений; поэтому независимая проверка пикселей и SHA изображений не выполнена. Для source-backed identity использованы сообщённые владельцем видимые надписи, с этой оговоркой.
 
@@ -30,6 +34,6 @@ Owner предоставил названия/описания пакетов в
 
 ## Local validation
 
-Изолированный schema-v11 fixture dry-run: `total=3`, `logicalSlots=69`, `ready=18`, `willAdd=18`, `existingOk=0`, `sourceConflict=0`, `needsMapping=4`, `notAvailable=47`, `plannedBrandUpdates=3`, blockers/errors=0, `definitionsToCreate=0`, `templateMembershipChanges=0`. Dry-run snapshot и SHA fixture DB unchanged. Disposable apply/rollback/idempotency прошли только в тестовой временной DB; production не использовался.
+Изолированный schema-v11 fixture dry-run: `total=3`, `logicalSlots=69`, `ready=18`, `willAdd=18`, `existingOk=0`, `sourceConflict=0`, `needsMapping=4`, `notAvailable=47`, `plannedBrandUpdates=3`, blockers/errors=0, `definitionsToCreate=0`, `templateMembershipChanges=0`. Dry-run snapshot и SHA fixture DB unchanged. Disposable apply/rollback/idempotency прошли только в тестовой временной DB. Production preflight был SELECT/PRAGMA-only; Batch3 runner отсутствовал в проверенном active release, поэтому production dry-run не выполнялся.
 
 Full per-slot source statuses are encoded in `backend/scripts/data/mix-cement-core-batch3.js` and emitted by the runner. Apply scope remains exactly these three MAT; no definitions/templates are created or modified.
