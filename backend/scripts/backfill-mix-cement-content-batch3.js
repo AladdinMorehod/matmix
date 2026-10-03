@@ -1,0 +1,281 @@
+"use strict";
+
+const crypto = require("crypto");
+const fs = require("fs");
+const path = require("path");
+const sqlite3 = require("sqlite3").verbose();
+const DATA = require("./data/mix-cement-content-batch3");
+
+const CONFIRM = "BACKFILL_MIX_CEMENT_CONTENT_BATCH3";
+const ALL_MATS = Object.freeze(DATA.BATCH_MATS);
+const CONTENT_FIELDS_EXACTLY = Object.freeze(["short_description", "full_description", "seo_title", "seo_description"]);
+const FIELD_PROPERTIES = Object.freeze({ short_description: "shortDescription", full_description: "fullDescription", seo_title: "seoTitle", seo_description: "seoDescription" });
+const PROTECTED_TABLES = Object.freeze(["products", "product_attribute_values", "product_attribute_definitions", "product_attribute_templates", "product_images"]);
+const PUBLIC_META_MARKERS = Object.freeze(["source_conflict", "needs_mapping", "not_available", "blocked_by_variant", "needs_source", "absent_by_design", "для этой карточки", "источник не подтверждает", "не подтверждено источником", "по данным источника"]);
+const nonempty = value => value !== null && value !== undefined && String(value).trim() !== "";
+
+function openDatabase(file, writable = false) {
+    if (!file || file === ":memory:") throw new Error("Explicit --db path to an existing database is required");
+    const resolved = path.resolve(file);
+    if (!fs.existsSync(resolved)) throw new Error(`Database does not exist: ${resolved}`);
+    return new Promise((resolve, reject) => {
+        const raw = new sqlite3.Database(resolved, writable ? sqlite3.OPEN_READWRITE : sqlite3.OPEN_READONLY, error => {
+            if (error) return reject(error);
+            const db = {
+                run(sql, params = []) { return new Promise((res, rej) => raw.run(sql, params, function done(err) { err ? rej(err) : res({ id: this.lastID, changes: this.changes }); })); },
+                get(sql, params = []) { return new Promise((res, rej) => raw.get(sql, params, (err, row) => err ? rej(err) : res(row))); },
+                all(sql, params = []) { return new Promise((res, rej) => raw.all(sql, params, (err, rows) => err ? rej(err) : res(rows))); },
+                backup(target) { return new Promise((res, rej) => { try { const b = raw.backup(target); const step = () => b.step(-1, (e, done) => { if (e) return rej(e); if (done) return res(); step(); }); step(); } catch (e) { rej(e); } }); },
+                close() { return new Promise((res, rej) => raw.close(err => err ? rej(err) : res())); }
+            };
+            db.run("PRAGMA foreign_keys=ON").then(() => writable ? db : db.run("PRAGMA query_only=ON").then(() => db)).then(resolve).catch(async err => { await db.close(); reject(err); });
+        });
+    });
+}
+
+function normalizeOnly(value) { return (Array.isArray(value) ? value : String(value ?? "").split(",")).map(item => String(item).trim()); }
+function assertExactBatch(value) {
+    const selected = normalizeOnly(value);
+    if (selected.length !== ALL_MATS.length || selected.some((item, index) => item !== ALL_MATS[index])) throw new Error(`Exact canonical --only scope required: ${ALL_MATS.join(",")}`);
+    return selected;
+}
+function parseArgs(args) {
+    const options = { apply: false };
+    const seen = new Set();
+    for (let i = 0; i < args.length; i += 1) {
+        const [flag, ...tail] = String(args[i]).split("=");
+        if (seen.has(flag)) throw new Error(`Duplicate option: ${flag}`);
+        seen.add(flag);
+        if (flag === "--apply" || flag === "--dry-run") {
+            if (tail.length) throw new Error(`Unexpected value: ${flag}`);
+            options.apply = flag === "--apply";
+            continue;
+        }
+        if (!["--db", "--only", "--confirm", "--backup-dir", "--review"].includes(flag)) throw new Error(`Unknown option: ${flag}`);
+        const value = tail.length ? tail.join("=") : args[++i];
+        if (!value || value.startsWith("--")) throw new Error(`Value required: ${flag}`);
+        options[flag.slice(2).replace(/-([a-z])/gu, (_, letter) => letter.toUpperCase())] = value;
+    }
+    if (seen.has("--apply") && seen.has("--dry-run")) throw new Error("Choose either --dry-run or --apply");
+    if (!options.db || options.db === ":memory:") throw new Error("Explicit --db path is required");
+    if (options.only === undefined) throw new Error("Explicit --only is required");
+    options.only = assertExactBatch(options.only);
+    if (seen.has("--confirm") && !options.apply) throw new Error("--confirm requires --apply");
+    if (options.apply && options.confirm !== CONFIRM) throw new Error(`Apply requires --confirm ${CONFIRM}`);
+    if (options.apply && !options.backupDir) throw new Error("Apply requires explicit --backup-dir");
+    return options;
+}
+
+function validateConfig(config) {
+    const problems = [];
+    if (!config || !ALL_MATS.includes(config.externalId)) problems.push("MAT outside exact batch");
+    if (!config.expectedTitle || !config.expectedBrand || !config.expectedCategory || !config.expectedSubcategory) problems.push("missing identity guard");
+    if (!Number.isFinite(config.expectedWeight) || config.expectedWeight <= 0 || config.expectedUnit !== "шт") problems.push("invalid operational weight/unit guard");
+    for (const key of config.sourceKeys || []) if (!DATA.SOURCES[key]) problems.push(`unknown source key: ${key}`);
+    for (const field of CONTENT_FIELDS_EXACTLY) {
+        const value = config[FIELD_PROPERTIES[field]];
+        if (!nonempty(value) || value !== String(value).trim() || /[\r\n]/u.test(value) || /<[^>]+>/u.test(value)) problems.push(`invalid ${field}`);
+        if (/\s{2,}/u.test(value || "")) problems.push(`repeated whitespace in ${field}`);
+        const lower = String(value || "").toLocaleLowerCase("ru-RU");
+        if (PUBLIC_META_MARKERS.some(marker => lower.includes(marker))) problems.push(`internal marker in ${field}`);
+    }
+    const limits = { short_description: 500, full_description: 5000, seo_title: 160, seo_description: 320 };
+    for (const [field, max] of Object.entries(limits)) if (Array.from(config[FIELD_PROPERTIES[field]] || "").length > max) problems.push(`${field} exceeds ${max} characters`);
+    const readyCodes = new Set((config.verifiedFacts || []).map(fact => fact.code));
+    if ((config.factsUsed || []).some(code => !readyCodes.has(code))) problems.push("copy references a fact without READY evidence");
+    return [...new Set(problems)];
+}
+
+function validateData(data = DATA) {
+    if (JSON.stringify(data.BATCH_MATS) !== JSON.stringify(ALL_MATS) || data.PRODUCTS.length !== 3 || JSON.stringify(data.PRODUCTS.map(p => p.externalId)) !== JSON.stringify(ALL_MATS)) throw new Error("Content data must contain exactly the ordered three-MAT batch");
+    const valuesByField = Object.fromEntries(CONTENT_FIELDS_EXACTLY.map(field => [field, data.PRODUCTS.map(p => p[FIELD_PROPERTIES[field]].toLocaleLowerCase("ru-RU"))]));
+    for (const config of data.PRODUCTS) {
+        const problems = validateConfig(config);
+        if (problems.length) throw new Error(`${config.externalId}: ${problems.join("; ")}`);
+    }
+    for (const [field, values] of Object.entries(valuesByField)) if (new Set(values).size !== values.length) throw new Error(`Duplicate ${field} in batch`);
+    return true;
+}
+
+function preparedFields(config) { return Object.fromEntries(CONTENT_FIELDS_EXACTLY.map(field => [field, config[FIELD_PROPERTIES[field]]])); }
+function currentFields(product) { return Object.fromEntries(CONTENT_FIELDS_EXACTLY.map(field => [field, product[field] ?? null])); }
+
+async function validateSchema(db) {
+    const version = Number((await db.get("PRAGMA user_version"))?.user_version || 0);
+    if (version !== 11) throw new Error(`Production-compatible schema v11 required; found v${version}`);
+    const columns = await db.all("PRAGMA table_info(products)");
+    const available = new Set(columns.map(column => column.name));
+    for (const field of ["id", "external_id", "title", "category", "subcategory", "brand", "weight", "unit", "is_active", "deleted_at", ...CONTENT_FIELDS_EXACTLY]) {
+        if (!available.has(field)) throw new Error(`Required products column missing: ${field}`);
+    }
+    for (const table of PROTECTED_TABLES) {
+        const found = await db.get("SELECT name FROM sqlite_master WHERE type='table' AND name=?", [table]);
+        if (!found) throw new Error(`Protected table missing: ${table}`);
+    }
+}
+
+async function inspectBatch(db, { only, data = DATA } = {}) {
+    validateData(data);
+    const selected = assertExactBatch(only);
+    await validateSchema(db);
+    const rows = [];
+    for (const externalId of selected) {
+        const config = data.PRODUCTS.find(item => item.externalId === externalId);
+        try {
+            const problems = validateConfig(config);
+            if (problems.length) throw new Error(problems.join("; "));
+            const product = await db.get("SELECT * FROM products WHERE external_id=?", [externalId]);
+            if (!product || product.external_id !== externalId) throw new Error("Product missing or external_id mismatch");
+            if (product.title !== config.expectedTitle) throw new Error(`Exact title guard failed: ${product.title}`);
+            if (product.category !== config.expectedCategory || product.subcategory !== config.expectedSubcategory) throw new Error(`Exact category/subcategory guard failed: ${product.category} / ${product.subcategory}`);
+            if (Number(product.weight) !== config.expectedWeight || product.unit !== config.expectedUnit) throw new Error(`Exact operational package guard failed: ${product.weight} ${product.unit}`);
+            if (Number(product.is_active) !== 1 || product.deleted_at !== null) throw new Error("Product must be active and not deleted");
+            if (product.brand !== config.expectedBrand) throw new Error(`Brand guard failed: expected ${config.expectedBrand}, found ${product.brand}`);
+            const proposedContent = preparedFields(config);
+            const currentContent = currentFields(product);
+            const conflictingFields = CONTENT_FIELDS_EXACTLY.filter(field => nonempty(currentContent[field]) && currentContent[field] !== proposedContent[field]);
+            const existingOkFields = CONTENT_FIELDS_EXACTLY.filter(field => currentContent[field] === proposedContent[field]);
+            const status = conflictingFields.length ? "EXISTING_CONTENT_BLOCKED" : existingOkFields.length === CONTENT_FIELDS_EXACTLY.length ? "EXISTING_OK" : "READY";
+            rows.push({
+                externalId, productId: product.id, title: product.title, category: product.category, subcategory: product.subcategory,
+                identityStatus: config.identityStatus, brand: config.expectedBrand, status,
+                currentContent, proposedContent, conflictingFields,
+                wouldAdd: status === "READY" ? CONTENT_FIELDS_EXACTLY.filter(field => !nonempty(currentContent[field])).length : 0,
+                existingOkFields,
+                characterCounts: Object.fromEntries(CONTENT_FIELDS_EXACTLY.map(field => [field, Array.from(proposedContent[field]).length])),
+                factsUsed: config.factsUsed, factsOmitted: config.factsOmitted, verifiedFacts: config.verifiedFacts,
+                sourceKeys: config.sourceKeys, sourceMetadata: Object.fromEntries(config.sourceKeys.map(key => [key, data.SOURCES[key]])),
+                immutableSnapshot: Object.fromEntries(Object.entries(product).filter(([field]) => !CONTENT_FIELDS_EXACTLY.includes(field)))
+            });
+        } catch (error) {
+            rows.push({ externalId, title: config?.expectedTitle || null, status: "BLOCKED", error: error.message, wouldAdd: 0 });
+        }
+    }
+    const duplicates = {};
+    for (const [field, name] of [["seo_title", "SeoTitles"], ["seo_description", "SeoDescriptions"]]) {
+        const values = rows.map(row => row.proposedContent?.[field]).filter(Boolean).map(value => value.toLocaleLowerCase("ru-RU"));
+        duplicates[`duplicate${name}`] = values.length - new Set(values).size;
+    }
+    const summary = {
+        total: rows.length,
+        ready: rows.filter(row => row.status === "READY").length,
+        existingOk: rows.filter(row => row.status === "EXISTING_OK").length,
+        wouldAdd: rows.reduce((sum, row) => sum + (row.wouldAdd || 0), 0),
+        blocked: rows.filter(row => row.status === "BLOCKED" || row.status === "EXISTING_CONTENT_BLOCKED").length,
+        errors: rows.filter(row => row.status === "ERROR").length,
+        ...duplicates,
+        titleWrites: 0,
+        slugWrites: 0,
+        imageWrites: 0,
+        coreWrites: 0,
+        forbiddenPublicMarkers: 0
+    };
+    return { mode: "dry-run", rows, summary, writableSurface: { productContentFields: CONTENT_FIELDS_EXACTLY, otherTables: "none", forbidden: ["title", "slug", "brand", "attributes", "images", "price", "stock", "category/subcategory", "definitions", "templates", "updated_at"] } };
+}
+
+async function snapshotTables(db) {
+    const snapshot = {};
+    for (const table of PROTECTED_TABLES) snapshot[table] = await db.all(`SELECT * FROM ${table} ORDER BY id`);
+    return snapshot;
+}
+
+function assertAllowedSnapshotDelta(before, after, targets) {
+    const allowed = new Map(targets.map(row => [Number(row.productId), row.proposedContent]));
+    const oldProducts = new Map(before.products.map(row => [Number(row.id), row]));
+    const newProducts = new Map(after.products.map(row => [Number(row.id), row]));
+    if (oldProducts.size !== newProducts.size) throw new Error("Products row count changed");
+    for (const [id, oldRow] of oldProducts) {
+        const newRow = newProducts.get(id);
+        if (!newRow) throw new Error(`Product row disappeared: ${oldRow.external_id}`);
+        const expected = { ...oldRow };
+        if (allowed.has(id)) Object.assign(expected, allowed.get(id));
+        if (JSON.stringify(expected) !== JSON.stringify(newRow)) throw new Error(`Unexpected product field change: ${oldRow.external_id}`);
+    }
+    for (const table of ["product_attribute_values", "product_attribute_definitions", "product_attribute_templates", "product_images"]) {
+        if (JSON.stringify(before[table]) !== JSON.stringify(after[table])) throw new Error(`Protected table changed: ${table}`);
+    }
+}
+
+async function backupDatabase(db, backupDir) {
+    const dir = path.resolve(backupDir);
+    await fs.promises.mkdir(dir, { recursive: true });
+    const name = `matmix-before-mix-cement-content-batch3-${new Date().toISOString().replace(/[:.]/g, "-")}-${crypto.randomBytes(4).toString("hex")}.db`;
+    const target = path.join(dir, name);
+    await db.backup(target);
+    const stat = await fs.promises.stat(target);
+    const verify = await openDatabase(target, false);
+    try {
+        const integrity = await verify.get("PRAGMA integrity_check");
+        const fk = await verify.all("PRAGMA foreign_key_check");
+        const version = await verify.get("PRAGMA user_version");
+        if (integrity?.integrity_check !== "ok" || fk.length) throw new Error("Backup integrity/FK verification failed");
+        return { path: target, size: stat.size, schemaVersion: version?.user_version ?? null, integrityCheck: integrity.integrity_check, foreignKeyViolations: fk.length, verified: true };
+    } finally { await verify.close(); }
+}
+
+async function applyBatch(db, dbPath, options, data = DATA) {
+    if (options.confirm !== CONFIRM) throw new Error(`Apply requires --confirm ${CONFIRM}`);
+    if (!options.backupDir) throw new Error("Apply requires explicit --backup-dir");
+    const selected = assertExactBatch(options.only);
+    const preflight = await inspectBatch(db, { only: selected, data });
+    if (preflight.summary.blocked || preflight.summary.errors || preflight.summary.duplicateSeoTitles || preflight.summary.duplicateSeoDescriptions) throw new Error("Content apply blocked by exact guard or conflict");
+    const targets = preflight.rows.filter(row => row.status === "READY");
+    if (!targets.length) return { ...preflight, mode: "apply", writes: 0, contentWrites: 0, backup: null };
+    const backup = await backupDatabase(db, options.backupDir);
+    const before = await snapshotTables(db);
+    await db.run("BEGIN IMMEDIATE");
+    let writes = 0;
+    try {
+        const locked = await inspectBatch(db, { only: selected, data });
+        if (locked.summary.blocked || locked.summary.errors || locked.summary.wouldAdd !== preflight.summary.wouldAdd || locked.rows.some((row, index) => row.status !== preflight.rows[index].status)) throw new Error("Content state changed after backup; apply aborted");
+        for (const row of locked.rows.filter(item => item.status === "READY")) {
+            const config = data.PRODUCTS.find(item => item.externalId === row.externalId);
+            for (const field of CONTENT_FIELDS_EXACTLY) {
+                if (nonempty(row.currentContent[field])) continue;
+                const result = await db.run(`UPDATE products SET ${field}=? WHERE id=? AND external_id=? AND title=? AND category=? AND subcategory=? AND weight=? AND unit=? AND brand=? AND is_active=1 AND deleted_at IS NULL AND (${field} IS NULL OR TRIM(${field})='')`, [row.proposedContent[field], row.productId, row.externalId, config.expectedTitle, config.expectedCategory, config.expectedSubcategory, config.expectedWeight, config.expectedUnit, config.expectedBrand]);
+                if (result.changes !== 1) throw new Error(`Write guard failed: ${row.externalId}.${field}`);
+                writes += 1;
+            }
+        }
+        const after = await snapshotTables(db);
+        assertAllowedSnapshotDelta(before, after, targets);
+        const postflight = await inspectBatch(db, { only: selected, data });
+        if (postflight.summary.ready || postflight.summary.blocked || postflight.summary.errors || postflight.summary.existingOk !== selected.length || postflight.summary.wouldAdd !== 0) throw new Error("Postcheck did not reach exact idempotent state");
+        await db.run("COMMIT");
+        return { ...postflight, mode: "apply", writes, contentWrites: writes, backup };
+    } catch (error) {
+        try { await db.run("ROLLBACK"); } catch {}
+        throw error;
+    }
+}
+
+function md(value) { return String(value ?? "—").replace(/\|/gu, "\\|").replace(/\r?\n/gu, "<br>"); }
+function renderReview(report) {
+    const lines = ["# Смеси → Цемент — descriptions and SEO Batch3", "", `Дата подготовки: ${DATA.PRODUCTS[0].checkedAt || "2026-10-03"}. Scope: ${ALL_MATS.join(", ")}. Production apply не выполнялся в этой подготовке.`, "", `Итог dry-run: ${JSON.stringify(report.summary)}`, "", "| MAT | Статус | Короткое / полное описание | SEO title / description | Факты |", "|---|---|---:|---:|---|"];
+    for (const row of report.rows) lines.push(`| ${row.externalId} | ${row.status} | ${row.characterCounts?.short_description || 0} / ${row.characterCounts?.full_description || 0} знаков | ${row.characterCounts?.seo_title || 0} / ${row.characterCounts?.seo_description || 0} знаков | ${md((row.factsUsed || []).join(", "))} |`);
+    for (const row of report.rows) {
+        lines.push("", `## ${row.externalId} — ${md(row.title)}`, "", `- Identity: ${row.identityStatus}; brand: ${row.brand}`, `- Короткое описание: ${md(row.proposedContent?.short_description)}`, `- Полное описание: ${md(row.proposedContent?.full_description)}`, `- SEO title (${row.characterCounts?.seo_title || 0} знаков): ${md(row.proposedContent?.seo_title)}`, `- SEO description (${row.characterCounts?.seo_description || 0} знаков): ${md(row.proposedContent?.seo_description)}`, `- Факты в copy: ${md((row.factsUsed || []).join(", "))}`, `- Намеренно исключены: ${md((row.factsOmitted || []).map(fact => `${fact.code} (${fact.status})`).join(", "))}`, `- Sources: ${md((row.sourceKeys || []).map(key => `${key}: ${row.sourceMetadata?.[key]?.url || "owner-provided evidence"}`).join("; "))}`);
+    }
+    lines.push("", "## Guarded scope", "", `- Только MAT: ${ALL_MATS.join(", ")}`, `- Изменяемые поля: ${CONTENT_FIELDS_EXACTLY.join(", ")}`, "- title, slug, brand, attributes, images, prices, stock, categories, definitions, templates и updated_at неизменяемы.", "- Apply по умолчанию выключен; он требует отдельный флаг, точный confirm token и backup directory.", "");
+    return `${lines.join("\n").trimEnd()}\n`;
+}
+
+async function main() {
+    const options = parseArgs(process.argv.slice(2));
+    const db = await openDatabase(options.db, options.apply);
+    try {
+        const report = options.apply ? await applyBatch(db, options.db, options) : await inspectBatch(db, options);
+        if (options.review) {
+            const base = path.resolve(options.review);
+            await fs.promises.mkdir(path.dirname(base), { recursive: true });
+            await fs.promises.writeFile(`${base}.json`, `${JSON.stringify(report, null, 2)}\n`, "utf8");
+            await fs.promises.writeFile(`${base}.md`, renderReview(report), "utf8");
+        }
+        for (const row of report.rows) console.log(JSON.stringify(row));
+        console.log(JSON.stringify({ mode: report.mode, summary: report.summary, writableSurface: report.writableSurface, writes: report.writes ?? null, backup: report.backup ?? null }, null, 2));
+        if (report.summary.blocked || report.summary.errors || report.summary.duplicateSeoTitles || report.summary.duplicateSeoDescriptions) process.exitCode = 1;
+    } finally { await db.close(); }
+}
+
+module.exports = { ALL_MATS, CONFIRM, CONTENT_FIELDS_EXACTLY, DATA, PROTECTED_TABLES, applyBatch, assertAllowedSnapshotDelta, assertExactBatch, backupDatabase, inspectBatch, normalizeOnly, openDatabase, parseArgs, renderReview, validateConfig, validateData };
+if (require.main === module) main().catch(error => { console.error(`MIX CONTENT BATCH3 ABORTED: ${error.message}`); process.exitCode = 1; });
