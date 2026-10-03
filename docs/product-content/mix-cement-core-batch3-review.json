@@ -1,0 +1,987 @@
+{
+  "checkedAt": "2026-10-03",
+  "category": "Смеси",
+  "subcategory": "Цемент",
+  "scope": [
+    "MAT-000113",
+    "MAT-000114",
+    "MAT-000115"
+  ],
+  "production": {
+    "accessed": false,
+    "mutated": false,
+    "ssh": false,
+    "deploy": false,
+    "apply": false
+  },
+  "ownerPhotoAvailability": {
+    "referencedFiles": [
+      "MAT-000113.webp",
+      "МЕШОК MAT-000114.png",
+      "MAT-000115.jpg"
+    ],
+    "locatedInDownloadsDesktopRepositoryOrAccessibleAttachments": false,
+    "identityStatementsProvidedByOwnerInTask": true,
+    "independentPixelAudit": false,
+    "sha256": null
+  },
+  "products": [
+    {
+      "externalId": "MAT-000113",
+      "expectedTitleGuard": "Цемент \"Цементум\" 40кг",
+      "previousIdentityStatus": "PARTIAL",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "exactProductIdentity": "ЦЕМЕНТУМ ExtraCEM 500, Portland cement, 40 kg. Plant-specific cement class variant remains unresolved.",
+      "expectedCategory": "Смеси",
+      "expectedSubcategory": "Цемент",
+      "identityEvidence": [
+        "ownerMat113",
+        "cementumExtraCem",
+        "cementumExtraCemTds"
+      ],
+      "coreSlots": {
+        "brand": {
+          "status": "READY",
+          "value": "ЦЕМЕНТУМ",
+          "sources": [
+            "ownerMat113",
+            "cementumExtraCem"
+          ],
+          "sourceValue": "ЦЕМЕНТУМ",
+          "sourceUnit": null,
+          "context": "Brand and exact ExtraCEM 500 product line are identified by owner package evidence and official product page."
+        },
+        "product_type": {
+          "status": "READY",
+          "value": "Портландцемент",
+          "sources": [
+            "ownerMat113",
+            "cementumExtraCem"
+          ],
+          "sourceValue": "Портландцемент",
+          "sourceUnit": null,
+          "context": "Owner package names Portland cement; official page classifies ExtraCEM 500 as general-purpose Portland cement."
+        },
+        "base": {
+          "status": "READY",
+          "value": "Портландцемент с известняком до 20%",
+          "sources": [
+            "cementumExtraCem",
+            "cementumExtraCemTds"
+          ],
+          "sourceValue": "Портландцемент с известняком до 20%",
+          "sourceUnit": null,
+          "context": "Official product page and TDS state the limestone addition up to 20%; this wording is shared across the listed plant variants."
+        },
+        "purpose": {
+          "status": "READY",
+          "value": "Полусухие и мокрые стяжки; дорожки, отмостки, площадки, фундаменты, несущие стены и перекрытия; кладочные растворы, брусчатка и камень",
+          "sources": [
+            "cementumExtraCem"
+          ],
+          "sourceValue": "Полусухие и мокрые стяжки; дорожки, отмостки, площадки, фундаменты, несущие стены и перекрытия; кладочные растворы, брусчатка и камень",
+          "sourceUnit": null,
+          "context": "Official ExtraCEM 500 product page lists these applications."
+        },
+        "package_weight": {
+          "status": "READY",
+          "value": 40,
+          "sources": [
+            "ownerMat113",
+            "cementumExtraCem",
+            "cementumExtraCemTds"
+          ],
+          "sourceValue": "40",
+          "sourceUnit": "кг",
+          "context": "Owner package evidence and exact official product/TDS identify a 40 kg bag."
+        },
+        "application_area": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat113",
+            "cementumExtraCem",
+            "cementumExtraCemTds"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "application_method": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat113",
+            "cementumExtraCem",
+            "cementumExtraCemTds"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "substrates": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat113",
+            "cementumExtraCem",
+            "cementumExtraCemTds"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "color": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat113",
+            "cementumExtraCem",
+            "cementumExtraCemTds"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "layer_thickness": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat113",
+            "cementumExtraCem",
+            "cementumExtraCemTds"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "consumption_10mm": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat113",
+            "cementumExtraCem",
+            "cementumExtraCemTds"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "consumption": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat113",
+            "cementumExtraCem",
+            "cementumExtraCemTds"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "water_requirement": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat113",
+            "cementumExtraCem",
+            "cementumExtraCemTds"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "pot_life": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat113",
+            "cementumExtraCem",
+            "cementumExtraCemTds"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "application_temperature": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat113",
+            "cementumExtraCem",
+            "cementumExtraCemTds"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "compressive_strength": {
+          "status": "NEEDS_MAPPING",
+          "value": null,
+          "sources": [
+            "cementumExtraCem",
+            "cementumExtraCemTds"
+          ],
+          "sourceValue": "2 days: ≥22.3 MPa (42.5Н variant) or ≥29.9 MPa (42.5Б variant); 28 days: ≥48.0 MPa",
+          "sourceUnit": "MPa by age/plant",
+          "reason": "Official TDS separates plant variants and reports different minimum compressive strengths at 2 and 28 days; the current scalar numeric definition cannot retain the age qualifier and plant mapping.",
+          "context": "MAT package evidence does not establish the production plant; do not select or collapse these values."
+        },
+        "adhesion": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat113",
+            "cementumExtraCem",
+            "cementumExtraCemTds"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "frost_resistance": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat113",
+            "cementumExtraCem",
+            "cementumExtraCemTds"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "shelf_life": {
+          "status": "NEEDS_MAPPING",
+          "value": null,
+          "sources": [
+            "cementumExtraCemTds"
+          ],
+          "sourceValue": "60",
+          "sourceUnit": "суток",
+          "reason": "Official TDS states 60 days from dispatch, while the existing canonical definition stores months. Do not convert days to months.",
+          "context": "A unit-compatible canonical definition is needed to preserve the exact duration."
+        },
+        "standard": {
+          "status": "READY",
+          "value": "ГОСТ 31108-2020",
+          "sources": [
+            "cementumExtraCem",
+            "cementumExtraCemTds"
+          ],
+          "sourceValue": "ГОСТ 31108-2020",
+          "sourceUnit": null,
+          "context": "Exact official product page and current official TDS both cite ГОСТ 31108-2020."
+        },
+        "mortar_grade": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat113",
+            "cementumExtraCem",
+            "cementumExtraCemTds"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "walkability": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat113",
+            "cementumExtraCem",
+            "cementumExtraCemTds"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "flexural_strength": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat113",
+            "cementumExtraCem",
+            "cementumExtraCemTds"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        }
+      }
+    },
+    {
+      "externalId": "MAT-000114",
+      "expectedTitleGuard": "Цемент \"Росцемент\" 50кг",
+      "previousIdentityStatus": "BLOCKED",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "exactProductIdentity": "РОСЦЕМЕНТ Portland cement, 50 kg. Product-level identity is confirmed by package label; manufacturer, cement class and standard are not established.",
+      "expectedCategory": "Смеси",
+      "expectedSubcategory": "Цемент",
+      "identityEvidence": [
+        "ownerMat114",
+        "roscementCatalog"
+      ],
+      "coreSlots": {
+        "brand": {
+          "status": "READY",
+          "value": "РОСЦЕМЕНТ",
+          "sources": [
+            "ownerMat114"
+          ],
+          "sourceValue": "РОСЦЕМЕНТ",
+          "sourceUnit": null,
+          "context": "Brand printed on the exact owner-supplied package evidence."
+        },
+        "product_type": {
+          "status": "READY",
+          "value": "Портландцемент",
+          "sources": [
+            "ownerMat114"
+          ],
+          "sourceValue": "Портландцемент",
+          "sourceUnit": null,
+          "context": "Product type printed on the exact owner-supplied package evidence."
+        },
+        "base": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat114",
+            "roscementCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "purpose": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat114",
+            "roscementCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "package_weight": {
+          "status": "READY",
+          "value": 50,
+          "sources": [
+            "ownerMat114"
+          ],
+          "sourceValue": "50",
+          "sourceUnit": "кг",
+          "context": "Exact bag mass printed on the owner-supplied package evidence."
+        },
+        "application_area": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat114",
+            "roscementCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "application_method": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat114",
+            "roscementCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "substrates": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat114",
+            "roscementCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "color": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat114",
+            "roscementCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "layer_thickness": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat114",
+            "roscementCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "consumption_10mm": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat114",
+            "roscementCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "consumption": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat114",
+            "roscementCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "water_requirement": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat114",
+            "roscementCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "pot_life": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat114",
+            "roscementCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "application_temperature": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat114",
+            "roscementCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "compressive_strength": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat114",
+            "roscementCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "adhesion": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat114",
+            "roscementCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "frost_resistance": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat114",
+            "roscementCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "shelf_life": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat114",
+            "roscementCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "standard": {
+          "status": "NEEDS_MAPPING",
+          "value": null,
+          "sources": [
+            "ownerMat114",
+            "roscementCatalog"
+          ],
+          "sourceValue": "class/standard unreadable",
+          "sourceUnit": null,
+          "reason": "Package microtext for class/standard is not readable from the owner report, and the seller's assortment spans multiple manufacturers and cement classes. No class or standard is inferred.",
+          "context": "Only the exact lot passport, readable package microtext, or supplier SKU mapping can resolve this slot."
+        },
+        "mortar_grade": {
+          "status": "NEEDS_MAPPING",
+          "value": null,
+          "sources": [
+            "ownerMat114",
+            "roscementCatalog"
+          ],
+          "sourceValue": "grade unreadable",
+          "sourceUnit": null,
+          "reason": "The exact cement class/grade is not readable or mapped. Roscement is a multi-manufacturer seller, so its other 50 kg products cannot be substituted.",
+          "context": "Requires readable exact-package class or lot passport."
+        },
+        "walkability": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat114",
+            "roscementCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "flexural_strength": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat114",
+            "roscementCatalog"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        }
+      }
+    },
+    {
+      "externalId": "MAT-000115",
+      "expectedTitleGuard": "Цемент \"Русеан\" 40кг",
+      "previousIdentityStatus": "PARTIAL",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "exactProductIdentity": "Русеан Portland cement ЦЕМ I 42,5Н, 40 kg. Exact class/package match official Русеан listing; the factory for this exact bag is not mapped.",
+      "expectedCategory": "Смеси",
+      "expectedSubcategory": "Цемент",
+      "identityEvidence": [
+        "ownerMat115",
+        "ruseanCemI425N",
+        "ruseanPriceList"
+      ],
+      "coreSlots": {
+        "brand": {
+          "status": "READY",
+          "value": "Русеан",
+          "sources": [
+            "ownerMat115",
+            "ruseanCemI425N"
+          ],
+          "sourceValue": "Русеан",
+          "sourceUnit": null,
+          "context": "Brand shown on owner package evidence and exact official Русеан product page."
+        },
+        "product_type": {
+          "status": "READY",
+          "value": "Портландцемент",
+          "sources": [
+            "ownerMat115",
+            "ruseanCemI425N"
+          ],
+          "sourceValue": "Портландцемент",
+          "sourceUnit": null,
+          "context": "Owner package and exact official product page identify Portland cement."
+        },
+        "base": {
+          "status": "READY",
+          "value": "Портландцемент без минеральных добавок (ЦЕМ I)",
+          "sources": [
+            "ruseanCemI425N"
+          ],
+          "sourceValue": "Портландцемент без минеральных добавок (ЦЕМ I)",
+          "sourceUnit": null,
+          "context": "Official Русеан product page explains ЦЕМ I as additive-free Portland cement."
+        },
+        "purpose": {
+          "status": "READY",
+          "value": "Железобетонные конструкции; гидротехнические сооружения в пресной воде; массивный монолитный бетон; аэродромное и дорожное строительство; зимнее бетонирование с обогревом",
+          "sources": [
+            "ruseanCemI425N"
+          ],
+          "sourceValue": "Железобетонные конструкции; гидротехнические сооружения в пресной воде; массивный монолитный бетон; аэродромное и дорожное строительство; зимнее бетонирование с обогревом",
+          "sourceUnit": null,
+          "context": "Official product page lists these uses for the exact ЦЕМ I 42,5Н 40 kg product."
+        },
+        "package_weight": {
+          "status": "READY",
+          "value": 40,
+          "sources": [
+            "ownerMat115",
+            "ruseanCemI425N",
+            "ruseanPriceList"
+          ],
+          "sourceValue": "40",
+          "sourceUnit": "кг",
+          "context": "Owner package evidence, exact product page and official price list all state 40 kg."
+        },
+        "application_area": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat115",
+            "ruseanCemI425N",
+            "ruseanPriceList"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "application_method": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat115",
+            "ruseanCemI425N",
+            "ruseanPriceList"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "substrates": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat115",
+            "ruseanCemI425N",
+            "ruseanPriceList"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "color": {
+          "status": "READY",
+          "value": "Серый",
+          "sources": [
+            "ruseanCemI425N"
+          ],
+          "sourceValue": "Серый",
+          "sourceUnit": null,
+          "context": "Exact official product-page specification."
+        },
+        "layer_thickness": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat115",
+            "ruseanCemI425N",
+            "ruseanPriceList"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "consumption_10mm": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat115",
+            "ruseanCemI425N",
+            "ruseanPriceList"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "consumption": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat115",
+            "ruseanCemI425N",
+            "ruseanPriceList"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "water_requirement": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat115",
+            "ruseanCemI425N",
+            "ruseanPriceList"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "pot_life": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat115",
+            "ruseanCemI425N",
+            "ruseanPriceList"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "application_temperature": {
+          "status": "READY",
+          "value": "от +10 до +25 °C",
+          "sources": [
+            "ruseanCemI425N"
+          ],
+          "sourceValue": "от +10 до +25 °C",
+          "sourceUnit": null,
+          "context": "Exact official product-page specification."
+        },
+        "compressive_strength": {
+          "status": "READY",
+          "value": 42.5,
+          "sources": [
+            "ownerMat115",
+            "ruseanCemI425N"
+          ],
+          "sourceValue": "42,5",
+          "sourceUnit": "МПа",
+          "context": "Exact class is on the owner package evidence; the official product page lists 42.5 MPa."
+        },
+        "adhesion": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat115",
+            "ruseanCemI425N",
+            "ruseanPriceList"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "frost_resistance": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat115",
+            "ruseanCemI425N",
+            "ruseanPriceList"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "shelf_life": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat115",
+            "ruseanCemI425N",
+            "ruseanPriceList"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "standard": {
+          "status": "READY",
+          "value": "ГОСТ 31108-2020",
+          "sources": [
+            "ruseanCemI425N"
+          ],
+          "sourceValue": "ГОСТ 31108-2020",
+          "sourceUnit": null,
+          "context": "Exact official product-page specification for ЦЕМ I 42,5Н."
+        },
+        "mortar_grade": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat115",
+            "ruseanCemI425N",
+            "ruseanPriceList"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "walkability": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat115",
+            "ruseanCemI425N",
+            "ruseanPriceList"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        },
+        "flexural_strength": {
+          "status": "NOT_AVAILABLE",
+          "value": null,
+          "sources": [
+            "ownerMat115",
+            "ruseanCemI425N",
+            "ruseanPriceList"
+          ],
+          "sourceValue": null,
+          "sourceUnit": null,
+          "reason": "No source-backed exact-SKU fact was found for this canonical slot.",
+          "context": null
+        }
+      }
+    }
+  ],
+  "dryRunSummary": {
+    "mode": "local schema-v11 synthetic fixture",
+    "total": 3,
+    "logicalSlots": 69,
+    "ready": 18,
+    "willAdd": 18,
+    "existingOk": 0,
+    "sourceConflict": 0,
+    "needsMapping": 4,
+    "notAvailable": 47,
+    "blockedByVariant": 0,
+    "plannedBrandUpdates": 3,
+    "schemaBlocked": 0,
+    "valueConflict": 0,
+    "brandConflict": 0,
+    "titleGuardBlocked": 0,
+    "blockedProducts": 0,
+    "errors": 0,
+    "definitionsToCreate": 0,
+    "templateMembershipChanges": 0
+  },
+  "localValidation": {
+    "exactScope": true,
+    "dryRunSnapshotUnchanged": true,
+    "fixtureDbHashUnchanged": true,
+    "disposableApplyPassed": true,
+    "rollbackPassed": true,
+    "idempotencyPassed": true
+  },
+  "sources": {
+    "ownerMat113": {
+      "owner": "MatMix project owner",
+      "title": "Owner-supplied package identity for MAT-000113 (MAT-000113.webp)",
+      "url": null,
+      "evidence": "Owner reports that the supplied package visibly reads ЦЕМЕНТУМ / ЭКСТРАЦЕМ 500 / ПОРТЛАНДЦЕМЕНТ / 40 кг. Binary image was not present in the local workspace during this run; this source records the owner's supplied visual identification, not an independent pixel audit."
+    },
+    "cementumExtraCem": {
+      "owner": "ЦЕМЕНТУМ",
+      "title": "Official ExtraCEM 500 product page",
+      "url": "https://cementum.ru/catalog/extracem-500-40/",
+      "evidence": "Exact product and 40 kg page. Identifies Portland cement with limestone up to 20%, ГОСТ 31108-2020, trade mark ExtraCEM 500, and product uses. It explicitly distinguishes plant variants: ЦЕМ II/А-И 42,5Н for some plants and 42,5Б for Voskresensk."
+    },
+    "cementumExtraCemTds": {
+      "owner": "ЦЕМЕНТУМ",
+      "title": "Official ExtraCEM 500 technical sheet, updated 2025-07-09",
+      "url": "https://cementum.ru/upload/uf/ee3/ma0wdnwsqaa3xxdw0cd6dzn5c5wmkxb5/%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%BB%D0%B8%D1%81%D1%82%20%D0%A6%D0%B5%D0%BC%D0%B5%D0%BD%D1%82%20ExtraCEM500.pdf",
+      "evidence": "Official TDS states 40 kg paper bags, GOST 31108-2020, limestone up to 20%, and separate plant variants with differing class letter and two-/28-day strength values. Because MAT's plant is not identified, age-specific strengths and shelf-life mapping are not forced into scalar slots."
+    },
+    "ownerMat114": {
+      "owner": "MatMix project owner",
+      "title": "Owner-supplied package identity for MAT-000114 (МЕШОК MAT-000114.png)",
+      "url": null,
+      "evidence": "Owner reports that the supplied package visibly reads РОСЦЕМЕНТ / ПОРТЛАНДЦЕМЕНТ / 50 кг. The package evidence resolves the product-level identity, but the cement class/standard microtext is not readable or otherwise mapped. Binary image was not present locally for an independent pixel audit."
+    },
+    "roscementCatalog": {
+      "owner": "Росцемент / ТСК РУСЦЕМ",
+      "title": "Official seller cement catalog",
+      "url": "https://roscement.ru/cement/",
+      "evidence": "Seller page describes a multi-manufacturer assortment and packaging options. It does not map MAT-000114's package to one plant or cement class; it is retained as context only and supplies no technical READY facts for this MAT."
+    },
+    "ownerMat115": {
+      "owner": "MatMix project owner",
+      "title": "Owner-supplied package identity for MAT-000115 (MAT-000115.jpg)",
+      "url": null,
+      "evidence": "Owner reports that the supplied package visibly reads РУСЕАН / ПОРТЛАНДЦЕМЕНТ / ЦЕМ I 42,5Н / 40 кг. Binary image was not present locally for an independent pixel audit."
+    },
+    "ruseanCemI425N": {
+      "owner": "Русеан",
+      "title": "Official Русеан product page: ЦЕМ I 42,5Н, 40 kg",
+      "url": "https://rusean.ru/catalog/tsement/tsement_tsem_i_42_5n_v_meshkakh_po_40kg/",
+      "evidence": "Exact product page states Portland cement ЦЕМ I 42,5Н in 40 kg bags, ГОСТ 31108-2020, gray color, +10…+25 °C work temperature, 42.5 MPa compressive-strength field, and identifies the class notation. It lists two possible producer companies; no plant is assigned to this MAT. This is the exact technical source found; no separate exact-product manufacturer TDS was located."
+    },
+    "ruseanPriceList": {
+      "owner": "Русеан",
+      "title": "Official Русеан price list",
+      "url": "https://rusean.ru/pricelist/",
+      "evidence": "Official company price list independently lists Цемент ЦЕМ I 42,5Н in 40 kg bags."
+    }
+  }
+}
