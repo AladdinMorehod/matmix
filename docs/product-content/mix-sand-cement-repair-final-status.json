@@ -16,27 +16,106 @@
     ]
   },
   "productionVerification": {
-    "status": "PASS",
-    "attributeRowsInserted": 51,
-    "productBrandUpdates": 3,
-    "allowedApplyDelta": "PASS",
-    "definitionsUnchanged": true,
-    "templatesUnchanged": true,
-    "imagesUnchanged": true,
-    "unrelatedProductsUnchanged": true,
-    "postApplyIdempotency": "PASS",
-    "activeReleaseUnchanged": true,
-    "productApplyVerified": true,
-    "schemaVersion": 11,
-    "integrityCheck": "ok",
-    "foreignKeyViolations": 0
+    "status": "LIVE_READ_ONLY_CURRENT_STATE_PASS",
+    "verifiedAtUtc": "2026-10-03T11:53:45Z",
+    "host": "matmix-prod-01",
+    "sshAlias": "matmix-prod",
+    "readOnlyMethod": "SQLite URI mode=ro; PRAGMA query_only=ON; queried as systemd service user",
+    "service": {
+      "name": "matmix.service",
+      "user": "matmix",
+      "group": "matmix",
+      "activeState": "active",
+      "subState": "running",
+      "mainPid": 22289,
+      "activeRelease": "/opt/matmix/releases/85ea2834",
+      "appSymlinkResolvesTo": "/opt/matmix/releases/85ea2834",
+      "processCwd": "/opt/matmix/releases/85ea2834"
+    },
+    "database": {
+      "path": "/var/lib/matmix/matmix.db",
+      "schemaVersion": 11,
+      "integrityCheck": "ok",
+      "foreignKeyViolations": 0
+    },
+    "currentCoreReconciliation": {
+      "targets": ["MAT-000109", "MAT-000117", "MAT-000118"],
+      "expectedReady": 51,
+      "matchingReady": 51,
+      "missing": 0,
+      "valueMismatch": 0,
+      "unitMismatch": 0,
+      "unexpectedDuplicates": 0,
+      "unexpectedAdditionalAttributeRows": 0,
+      "documentedGapSlotsWithCurrentRows": 0,
+      "brandsMatching": 3,
+      "titlesAndCategoryGuardsMatching": true,
+      "allTargetsActiveAndNotDeleted": true,
+      "result": "PASS"
+    },
+    "currentNonTargetSurfaces": {
+      "definitions": "Expected canonical codes/types/default units present in current DB",
+      "templates": {
+        "total": 96,
+        "main": 24,
+        "regular": 72,
+        "membershipsForStructures11_12_13": 0
+      },
+      "targetImages": "All three product_images rows point to the same shared placeholder",
+      "descriptionsAndSeo": "For all three inspected products, short_description, full_description, seo_title and seo_description are NULL"
+    },
+    "placeholderImage": {
+      "path": "/var/lib/matmix/uploads/products/MAT-000001-20260714153714969-3fb7fe.png",
+      "exists": true,
+      "format": "PNG",
+      "dimensions": "1254x1254",
+      "sha256": "65729e6fd1cc852743ff99cbeb62ade8154f6a55389149a6875da6b7b70896ad"
+    },
+    "historicalClaims": {
+      "attributeRowsInserted51": "NOT_VERIFIABLE_RETROSPECTIVELY",
+      "productBrandUpdates3": "NOT_VERIFIABLE_RETROSPECTIVELY",
+      "definitionsUnchanged": "NOT_VERIFIABLE_RETROSPECTIVELY",
+      "templatesUnchanged": "NOT_VERIFIABLE_RETROSPECTIVELY",
+      "imagesUnchanged": "NOT_VERIFIABLE_RETROSPECTIVELY",
+      "unrelatedProductsUnchanged": "NOT_VERIFIABLE_RETROSPECTIVELY",
+      "priorRunnerIdempotencyOutput": "NOT_VERIFIABLE_RETROSPECTIVELY",
+      "activeReleaseUnchangedDuringApply": "NOT_VERIFIABLE_RETROSPECTIVELY",
+      "reason": "Current state matches the intended 51 READY tuples, but no raw apply output, before/after snapshots, or production audit log was present in the repository. Current state cannot prove historical delta or authorship."
+    },
+    "currentStateIdempotencyEquivalent": {
+      "expectedReady": 51,
+      "matchingExisting": 51,
+      "missing": 0,
+      "mismatched": 0,
+      "wouldNeedInsertOrCorrection": 0,
+      "method": "Independent SELECT-only tuple/value/unit comparison; the production runner was not executed",
+      "result": "PASS"
+    },
+    "productionMutatedDuringVerification": false
   },
-  "identityEvidenceNeeded": [
-    "Фото упаковки с читаемой маркировкой",
-    "EAN/GTIN",
-    "manufacturer SKU",
-    "Исходный supplier URL",
-    "Накладная или прайс с точной моделью"
+  "identityEvidenceNeeded": {
+    "appliesTo": ["MAT-000113", "MAT-000114", "MAT-000115"],
+    "evidence": [
+      "Фото упаковки с читаемой маркировкой",
+      "EAN/GTIN",
+      "manufacturer SKU",
+      "Исходный supplier URL",
+      "Накладная или прайс с точной моделью"
+    ]
+  },
+  "ownerConfirmedIdentities": [
+    {
+      "externalId": "MAT-000110",
+      "identity": "VERTEX М-300, 40 кг",
+      "status": "OWNER_CONFIRMED",
+      "technicalAttributeTransferAuthorized": false
+    },
+    {
+      "externalId": "MAT-000111",
+      "identity": "EUROMIX / EUROmix М-300, 40 кг",
+      "status": "OWNER_CONFIRMED",
+      "technicalAttributeTransferAuthorized": false
+    }
   ],
   "products": [
     {
@@ -44,85 +123,98 @@
       "subcategory": "Пескобетон",
       "identity": "IDENTITY_CONFIRMED",
       "characteristics": {
-        "readyOrExistingOk": 18,
+        "ready": 18,
+        "liveMatching": 18,
         "sourceConflict": ["consumption_10mm", "frost_resistance"],
         "needsMapping": ["pot_life"],
-        "notAvailable": 2
+        "notAvailable": ["consumption", "flexural_strength"],
+        "currentGapRows": 0
       },
-      "production": "APPLIED_AND_VERIFIED",
-      "finalStatus": "APPLIED_WITH_DOCUMENTED_GAPS",
-      "note": "Official source conflicts were preserved without selecting an unsupported value."
+      "currentProductionState": "LIVE_CORE_VALUES_AND_BRAND_MATCH",
+      "historicalApplyDelta": "NOT_VERIFIABLE_RETROSPECTIVELY",
+      "descriptionSeoState": "MISSING_NULL_IN_LIVE_DB",
+      "imageState": "SHARED_PLACEHOLDER"
     },
     {
       "externalId": "MAT-000117",
       "subcategory": "Смесь Ремонтная",
       "identity": "IDENTITY_CONFIRMED",
       "characteristics": {
-        "readyOrExistingOk": 16,
+        "ready": 16,
+        "liveMatching": 16,
         "sourceConflict": [],
-        "needsMapping": 3,
-        "notAvailable": 4
+        "needsMapping": ["pot_life", "compressive_strength", "adhesion"],
+        "notAvailable": ["color", "consumption_10mm", "standard", "mortar_grade"],
+        "currentGapRows": 0
       },
-      "production": "APPLIED_AND_VERIFIED",
-      "finalStatus": "APPLIED_WITH_DOCUMENTED_GAPS",
-      "note": "Ambiguous characteristics were left without values."
+      "currentProductionState": "LIVE_CORE_VALUES_AND_BRAND_MATCH",
+      "historicalApplyDelta": "NOT_VERIFIABLE_RETROSPECTIVELY",
+      "descriptionSeoState": "MISSING_NULL_IN_LIVE_DB",
+      "imageState": "SHARED_PLACEHOLDER",
+      "identityNote": "Official Russian catalog and indexed Russian TDS were recorded; direct TDS DAM URL returned 404 during source research. No foreign-market TDS values were used."
     },
     {
       "externalId": "MAT-000118",
       "subcategory": "Смесь Ремонтная",
       "identity": "IDENTITY_CONFIRMED",
       "characteristics": {
-        "readyOrExistingOk": 17,
+        "ready": 17,
+        "liveMatching": 17,
         "sourceConflict": [],
-        "needsMapping": 3,
-        "notAvailable": 3
+        "needsMapping": ["pot_life", "compressive_strength", "adhesion"],
+        "notAvailable": ["consumption_10mm", "mortar_grade", "walkability"],
+        "currentGapRows": 0
       },
-      "production": "APPLIED_AND_VERIFIED",
-      "finalStatus": "APPLIED_WITH_DOCUMENTED_GAPS",
-      "note": "Exact identity is GLIMS PRO CRT-40; CRT-40 AF is a separate product."
+      "currentProductionState": "LIVE_CORE_VALUES_AND_BRAND_MATCH",
+      "historicalApplyDelta": "NOT_VERIFIABLE_RETROSPECTIVELY",
+      "descriptionSeoState": "MISSING_NULL_IN_LIVE_DB",
+      "imageState": "SHARED_PLACEHOLDER",
+      "identityNote": "GLIMS PRO CRT-40; article О00010269 and EAN 4607009095967. CRT-40 AF is a separate product."
     },
     {
       "externalId": "MAT-000110",
       "subcategory": "Пескобетон",
-      "identity": "BLOCKED",
-      "characteristics": {"written": false},
-      "production": "UNTOUCHED",
-      "finalStatus": "IDENTITY_BLOCKED",
-      "reason": "No proven manufacturer, SKU, GTIN, or source mapping for Tex Pro М-300 40 кг."
+      "identity": "OWNER_CONFIRMED",
+      "confirmedIdentity": "VERTEX М-300, 40 кг",
+      "technicalAttributeTransferAuthorized": false,
+      "characteristics": {"writtenByThisBatch": false},
+      "production": "NOT_INSPECTED_IN_THIS_VERIFICATION; previous report says UNTOUCHED",
+      "finalStatus": "OWNER_CONFIRMED_IDENTITY; CORE_NOT_RESEARCHED"
     },
     {
       "externalId": "MAT-000111",
       "subcategory": "Пескобетон",
-      "identity": "PARTIAL",
-      "characteristics": {"written": false},
-      "production": "UNTOUCHED",
-      "finalStatus": "IDENTITY_PARTIAL",
-      "reason": "The local name Евро does not prove Euro-RS, EUROMIX, or another exact product."
+      "identity": "OWNER_CONFIRMED",
+      "confirmedIdentity": "EUROMIX / EUROmix М-300, 40 кг",
+      "technicalAttributeTransferAuthorized": false,
+      "characteristics": {"writtenByThisBatch": false},
+      "production": "NOT_INSPECTED_IN_THIS_VERIFICATION; previous report says UNTOUCHED",
+      "finalStatus": "OWNER_CONFIRMED_IDENTITY; CORE_NOT_RESEARCHED"
     },
     {
       "externalId": "MAT-000113",
       "subcategory": "Цемент",
       "identity": "PARTIAL",
-      "characteristics": {"written": false},
-      "production": "UNTOUCHED",
+      "characteristics": {"writtenByThisBatch": false},
+      "production": "NOT_INSPECTED_IN_THIS_VERIFICATION; previous report says UNTOUCHED",
       "finalStatus": "IDENTITY_PARTIAL",
-      "reason": "Цементум and 40 кг do not identify the exact line, cement class, or plant."
+      "reason": "Цементум and 40 кг do not identify exact line, cement class or plant."
     },
     {
       "externalId": "MAT-000114",
       "subcategory": "Цемент",
       "identity": "BLOCKED",
-      "characteristics": {"written": false},
-      "production": "UNTOUCHED",
+      "characteristics": {"writtenByThisBatch": false},
+      "production": "NOT_INSPECTED_IN_THIS_VERIFICATION; previous report says UNTOUCHED",
       "finalStatus": "IDENTITY_BLOCKED",
-      "reason": "РосЦемент does not establish the specific plant, cement grade, or SKU."
+      "reason": "РосЦемент does not establish the specific plant, cement grade or SKU."
     },
     {
       "externalId": "MAT-000115",
       "subcategory": "Цемент",
       "identity": "PARTIAL",
-      "characteristics": {"written": false},
-      "production": "UNTOUCHED",
+      "characteristics": {"writtenByThisBatch": false},
+      "production": "NOT_INSPECTED_IN_THIS_VERIFICATION; previous report says UNTOUCHED",
       "finalStatus": "IDENTITY_PARTIAL",
       "reason": "Русеан and 40 кг do not link the local card to an exact cement type or class."
     }
