@@ -1,0 +1,3438 @@
+{
+  "schemaVersion": 1,
+  "researchDate": "2026-10-05",
+  "scope": {
+    "category": "Смеси",
+    "subcategory": "Клей для Плитки",
+    "structureId": 16,
+    "matIds": [
+      "MAT-000127",
+      "MAT-000128",
+      "MAT-000129",
+      "MAT-000130",
+      "MAT-000131",
+      "MAT-000132",
+      "MAT-000133",
+      "MAT-000134",
+      "MAT-000135",
+      "MAT-000136",
+      "MAT-000137",
+      "MAT-000138",
+      "MAT-000139",
+      "MAT-000140",
+      "MAT-000141",
+      "MAT-000142",
+      "MAT-000143",
+      "MAT-000144",
+      "MAT-000145"
+    ],
+    "productionStateAsPreviouslyReconciled": {
+      "products": 19,
+      "brandNull": 19,
+      "attributeRows": 0,
+      "descriptionsAndSeoEmpty": 19,
+      "sharedPlaceholderPrimaryImage": 19,
+      "note": "Historical production read-only reconciliation supplied for research context only. No production access or DB reads/writes occurred during this source-completion task."
+    },
+    "structureIdContext": "16 is the structure id observed in local schema-v4 research context only; it is not a production/schema-v11 id and must not be hardcoded for implementation."
+  },
+  "repositoryEvidence": {
+    "localDb": "backend/database/matmix.db",
+    "access": "SQLite URI mode=ro; PRAGMA query_only=ON",
+    "results": {
+      "scopeCount": 19,
+      "allCategory": "Смеси",
+      "allSubcategory": "Клей для Плитки",
+      "allBrandsNull": true,
+      "allAttributeCountsZero": true,
+      "allPrimaryImagesSharedPlaceholder": true,
+      "localStructureId": 16,
+      "templateMembershipsForStructure": 0
+    },
+    "existingDefinitionCodes": [
+      "brand",
+      "product_type",
+      "base",
+      "purpose",
+      "package_weight",
+      "application_area",
+      "application_method",
+      "substrates",
+      "color",
+      "layer_thickness",
+      "water_requirement",
+      "pot_life",
+      "adhesion",
+      "frost_resistance",
+      "standard",
+      "shelf_life",
+      "consumption"
+    ],
+    "mainAttributeOrder": [
+      "brand",
+      "product_type",
+      "shelf_life",
+      "package_weight"
+    ],
+    "definitionNote": "Definitions are read from the local schema-v4 development DB; production schema is not inferred from it. Codes/types/units are reported as local canonical definitions for design review."
+  },
+  "sources": {
+    "knaufFlizen": {
+      "url": "https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/knauf-flizen/",
+      "owner": "КНАУФ",
+      "domain": "knauf.ru",
+      "sourceType": "manufacturer product page and linked product information sheet",
+      "evidenceScope": "Exact Flizen product, 25 kg pack and listed technical characteristics."
+    },
+    "knaufFlizenPlus": {
+      "url": "https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/knauf-flizen-plyus/",
+      "owner": "КНАУФ",
+      "domain": "knauf.ru",
+      "sourceType": "manufacturer product page",
+      "evidenceScope": "Exact Flizen Plus identity and manufacturer catalogue characteristics; some detailed fields need an exact page/PDF review before use."
+    },
+    "knaufCatalog": {
+      "url": "https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/",
+      "owner": "КНАУФ",
+      "domain": "knauf.ru",
+      "sourceType": "manufacturer catalog",
+      "evidenceScope": "Confirms canonical product spelling and product family."
+    },
+    "vetonitEasyFix": {
+      "url": "https://hub.vetonit.ru/products/sku-1024907",
+      "owner": "ВЕТОНИТ",
+      "domain": "hub.vetonit.ru",
+      "sourceType": "manufacturer product card",
+      "evidenceScope": "Exact Easy Fix product identity and published specifications."
+    },
+    "ceresitCatalog": {
+      "url": "https://ceresit.ru/ru/products/tiling/tile-adhesives",
+      "owner": "Ceresit / Henkel",
+      "domain": "ceresit.ru",
+      "sourceType": "manufacturer product catalog",
+      "evidenceScope": "Current Russian range, product names and adhesive classes for CM11 PRO, CM14, CM16 and CM17; not a complete SKU datasheet."
+    },
+    "ceresitCm16": {
+      "url": "https://ceresit.ru/ru/products/tiling/tile-adhesives/cm-16",
+      "owner": "Ceresit / Henkel",
+      "domain": "ceresit.ru",
+      "sourceType": "manufacturer product page",
+      "evidenceScope": "Exact CM16 identity and detailed application, substrates, format, time, temperature, consumption and bond data."
+    },
+    "ceresitCm17OldTds": {
+      "url": "https://ceresit-spb.ru/sites/default/files/prodfiles/ru-ceresit-tds-cm17.pdf",
+      "owner": "Ceresit / Henkel (document); hosted by distributor",
+      "domain": "ceresit-spb.ru",
+      "sourceType": "exact-product technical-sheet mirror",
+      "evidenceScope": "Historic CM17 Super Flex formulation/class details. Host is not the manufacturer; version/date alignment needs confirmation."
+    },
+    "litokolK16": {
+      "url": "https://www.litokol.ru/catalog/litolight-k16/",
+      "owner": "LITOKOL",
+      "domain": "litokol.ru",
+      "sourceType": "manufacturer product page",
+      "evidenceScope": "Exact K16 15 kg product and listed values."
+    },
+    "litokolK80": {
+      "url": "https://www.litokol.ru/catalog/litoflex-k802/",
+      "owner": "LITOKOL",
+      "domain": "litokol.ru",
+      "sourceType": "manufacturer product page",
+      "evidenceScope": "Exact LITOKOL K80 page, 5 kg and 25 kg packs, C2 E; applications, substrates, application times, layer/consumption, heated floor and storage; do not transfer K80 ECO data."
+    },
+    "litokolK55": {
+      "url": "https://www.litokol.ru/catalog/litoplus-k55/",
+      "owner": "LITOKOL",
+      "domain": "litokol.ru",
+      "sourceType": "manufacturer product page",
+      "evidenceScope": "Exact LITOPLUS K55 page, white product in 5 kg and 25 kg variants; water-only and LATEXKOL mixing modes separated; scope, substrates, layer/consumption and working-time specs."
+    },
+    "litokolK47": {
+      "url": "https://www.litokol.ru/catalog/litokol-k47/",
+      "owner": "LITOKOL",
+      "domain": "litokol.ru",
+      "sourceType": "manufacturer product page",
+      "evidenceScope": "Exact LITOKOL K47 page, 25 kg; class C0, use, gray color, recommended/local layer, consumption, water, application/open/correction/working times and storage."
+    },
+    "litokolCatalog": {
+      "url": "https://www.litokol.ru/catalog/kleevye-sostavy/",
+      "owner": "LITOKOL",
+      "domain": "litokol.ru",
+      "sourceType": "manufacturer catalog",
+      "evidenceScope": "Current product family and current naming; does not prove identity of a specific older formulation by itself."
+    },
+    "unisDocs": {
+      "url": "https://unistrom.ru/docs/",
+      "owner": "ГК UNIS",
+      "domain": "unistrom.ru",
+      "sourceType": "manufacturer document catalog",
+      "evidenceScope": "Lists technical descriptions for named products including Plus, Granit, XXI, BelFix, 2000 and U-100 UniFlex."
+    },
+    "unisPlus": {
+      "url": "https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-plyus/",
+      "owner": "ГК UNIS",
+      "domain": "unistrom.ru",
+      "sourceType": "manufacturer product page",
+      "evidenceScope": "Exact Plus product and published application/technical data."
+    },
+    "unisGranit": {
+      "url": "https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-granit/",
+      "owner": "ГК UNIS",
+      "domain": "unistrom.ru",
+      "sourceType": "manufacturer product page",
+      "evidenceScope": "Exact Granit product and published application/technical data."
+    },
+    "unisXxi": {
+      "url": "https://unistrom.ru/catalog/klei/klei-dlya-plitki/kley-plitochnyy-dlya-vnutrennikh-rabot/unis-xxi/",
+      "owner": "ГК UNIS",
+      "domain": "unistrom.ru",
+      "sourceType": "manufacturer product page and linked technical sheet",
+      "evidenceScope": "Exact XXI product and product-specific specifications."
+    },
+    "unisBelFix": {
+      "url": "https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-belfiks/",
+      "owner": "ГК UNIS",
+      "domain": "unistrom.ru",
+      "sourceType": "manufacturer product page",
+      "evidenceScope": "Exact BelFix identity, color/use and published specifications."
+    },
+    "unis2000": {
+      "url": "https://unistrom.ru/catalog/klei/klei-dlya-plitki/kley-dlya-keramogranita/unis-2000/",
+      "owner": "ГК UNIS",
+      "domain": "unistrom.ru",
+      "sourceType": "manufacturer product page",
+      "evidenceScope": "Exact 2000 identity and published specifications including 25 kg pack variant."
+    },
+    "unisU100Tds": {
+      "url": "https://unistrom.ru/docs/",
+      "owner": "ГК UNIS",
+      "domain": "unistrom.ru",
+      "sourceType": "manufacturer document catalog with exact U-100 UniFlex technical-description entry",
+      "evidenceScope": "Supports the historic UniFlex product line; download and revision match are required before importing detailed facts."
+    },
+    "unisCatalog": {
+      "url": "https://unistrom.ru/catalog/klei/klei-dlya-plitki/",
+      "owner": "ГК UNIS",
+      "domain": "unistrom.ru",
+      "sourceType": "manufacturer catalog",
+      "evidenceScope": "Current portfolio context and product naming."
+    },
+    "volmaInterior": {
+      "url": "https://www.volma.ru/production/catalog/tile-adhesive/volma-interior-cement-tile-glue-for-facing-ceramic-tiles/",
+      "owner": "ВОЛМА",
+      "domain": "volma.ru",
+      "sourceType": "manufacturer product page",
+      "evidenceScope": "Exact Interior product, 25 kg pack and technical specifications."
+    },
+    "volmaCeramic": {
+      "url": "https://www.volma.ru/production/catalog/tile-adhesive/volma-ceramic-cement-tile-glue-for-facing-ceramic-tiles/",
+      "owner": "ВОЛМА",
+      "domain": "volma.ru",
+      "sourceType": "manufacturer product page",
+      "evidenceScope": "Exact Ceramic product and product information; current restyling/T14 relationship is corroborated separately."
+    },
+    "volmaRestyling": {
+      "url": "https://www.volma.ru/press-center/news/restyling-of-the-line-of-tile-adhesives-volma/",
+      "owner": "ВОЛМА",
+      "domain": "volma.ru",
+      "sourceType": "manufacturer news",
+      "evidenceScope": "Manufacturer says Interior now carries T10 and Ceramic now carries T14; older packaging may remain in circulation."
+    },
+    "unisPlusTds": {
+      "url": "https://unistrom.ru/upload/iblock/cf6/8fu2wqvm4syw5hce3ktszlmow85gps3b.pdf",
+      "owner": "ГК UNIS",
+      "domain": "unistrom.ru",
+      "sourceType": "manufacturer technical sheet PDF",
+      "evidenceScope": "Exact Plus and Granit product tables; Plus working time is stated as no less than 240 minutes."
+    },
+    "knaufFlizenPlusTds": {
+      "url": "https://www.knauf.ru/upload/iblock/a6c/ew3uldd0dsgn02i6jssgcep8eo62nv10/30_IL_KNAUF_Flizen_Plyus_25_03_2025_v01_Preview.pdf",
+      "owner": "КНАУФ",
+      "domain": "knauf.ru",
+      "sourceType": "manufacturer information sheet PDF, 04/2025",
+      "evidenceScope": "Exact КНАУФ-Флизен Плюс, 25 kg, 04/2025: cementitious base, 2–6 mm, tile-size/trowel consumption table, open time ≥30 min, adjustment about 10 min, pot life about 3 h, grouting/walkability ≥24 h, +5…+25 °C, heated-floor use with restart delay, 7 L/25 kg water, 12-month shelf life, and substrate/preparation instructions."
+    },
+    "ceresitCm11Tds": {
+      "url": "https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-cm11-pro",
+      "owner": "Ceresit / Henkel",
+      "domain": "dm.henkel-dam.com",
+      "sourceType": "manufacturer technical description (CM 11 PRO)",
+      "evidenceScope": "Exact Ceresit CM 11 PRO manufacturer technical description: composition, 25 kg pack, substrate/application data, mixing water, open and correction time, temperature, shelf life, standard and consumption table by tile size/trowel. Pot life is approximately 2 h and remains NEEDS_MAPPING."
+    },
+    "ceresitCm14Tds": {
+      "url": "https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-CM14",
+      "owner": "Ceresit / Henkel",
+      "domain": "dm.henkel-dam.com",
+      "sourceType": "manufacturer technical description (CM 14)",
+      "evidenceScope": "Current manufacturer Ceresit CM 14 technical description, distinct from the older 2018 CM 14 Extra/C1 T sheet: current sheet shows CM 14 C2 T, 5/25 kg packs, ceramic/porcelain/artificial and natural stone except marble up to 90×90 cm, walls/floors indoors/outdoors, listed substrates, 10 mm max, 20-minute open/correction, water/consumption/storage and +5…+30 °C. This resolves the prior stone-purpose title conflict; about-2-hour pot life remains NEEDS_MAPPING."
+    },
+    "ceresitCm16Tds": {
+      "url": "https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-cm16",
+      "owner": "Ceresit / Henkel",
+      "domain": "dm.henkel-dam.com",
+      "sourceType": "manufacturer technical description (CM 16)",
+      "evidenceScope": "CM 16 exact product line and 25 kg/5 kg packs; application, scope, base, technical values and stated constraints."
+    },
+    "ceresitCm17Tds": {
+      "url": "https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-CM17",
+      "owner": "Ceresit / Henkel",
+      "domain": "dm.henkel-dam.com",
+      "sourceType": "manufacturer technical description (CM 17)",
+      "evidenceScope": "Official CM 17 technical document and pack variants; useful for revision investigation, but does not prove that the specific stock title “Super Flex” maps to this document edition."
+    },
+    "unisU100TdsPdf": {
+      "url": "https://unistrom.ru/upload/iblock/516/ta04bu4al8c6js54qhnmpc1v4c2kyfzw.pdf",
+      "owner": "ГК UNIS",
+      "domain": "unistrom.ru",
+      "sourceType": "manufacturer technical description PDF, U-100 UniFlex",
+      "evidenceScope": "Exact historical manufacturer U-100 UNIFLEX technical description: C2 TE / ГОСТ Р 56387-2018, 5 and 25 kg options, cement/mineral/fractionated sand/modifier composition, intended tiles, application settings, substrates, layer/water/consumption/temperature, walkability and heated-floor restart. Current manufacturer page explicitly maps former U-100 UniFlex name and says formula unchanged; only this exact historic TDS supplies MAT-000143 facts."
+    },
+    "litokolK16News": {
+      "url": "https://www.litokol.ru/press-center/news/novinka-v-assortimente-tsementnykh-kleevykh-sostavov/",
+      "owner": "LITOKOL",
+      "domain": "litokol.ru",
+      "sourceType": "manufacturer product launch notice",
+      "evidenceScope": "Manufacturer uses commercial name LITOLIGHT K16, describes 15 kg pack, product class and application."
+    },
+    "litokolRegulatory": {
+      "url": "https://www.litokol.ru/documents/regulatory-framework/",
+      "owner": "LITOKOL",
+      "domain": "litokol.ru",
+      "sourceType": "manufacturer normative classification page",
+      "evidenceScope": "Regulatory nomenclature/classification entries; page lists LITOLIGHT K16 C2 TE S1, while current commercial product page headline uses LITOKOL K16."
+    },
+    "ceresitSto2022": {
+      "url": "https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-sto-walls-89589540-002-2022",
+      "owner": "ООО «Хенкель Рус» / Ceresit",
+      "domain": "dm.henkel-dam.com",
+      "sourceType": "manufacturer organization standard (СТО 89589540-002-2022)",
+      "evidenceScope": "Table 6.8.2 names Ceresit CM 16: class C2 TE, gray color, 120-minute pot-life table entry, +5…+30 °C, 30-minute open time, grout readiness at least 24 h on absorbent substrates, and package 5/25 kg. Used for MAT-000132 color only; pot life remains mapped because product material separately describes it as approximately 2 hours and the numeric field cannot preserve that qualifier."
+    },
+    "unisXxiTds": {
+      "url": "https://unistrom.ru/upload/iblock/4f2/rflcxgocubi1yyc96sp7jg2nl9dqhl6s.pdf",
+      "owner": "ГК UNIS",
+      "domain": "unistrom.ru",
+      "sourceType": "manufacturer technical description PDF (ЮНИС XXI)",
+      "evidenceScope": "Exact ЮНИС XXI TDS: composition, purpose, substrates, C0 TE / ГОСТ Р 56387-2018, +5…+30 °C, water and consumption, layer, open/correction times, conditional walkability, packaging and 12-month storage. The 12-month TDS value conflicts with the current official product page value of 24 months; shelf_life is SOURCE_CONFLICT."
+    },
+    "unisU100Current": {
+      "url": "https://unistrom.ru/catalog/klei/klei-dlya-plitki/kley-dlya-keramogranita/u-100-polymergel/",
+      "owner": "ГК UNIS",
+      "domain": "unistrom.ru",
+      "sourceType": "current manufacturer product page with explicit former-name/formula continuity statement",
+      "evidenceScope": "Official current U-100 page states this is the new version of UNIFLEX U-100, that it was formerly sold as U-100 PolymerGEL/U-100 Uniflex, and composition/formula is unchanged. It supplies current technical facts such as ≥4 h pot life, 30-minute tile-laying/open time and 30-minute adjustment. Used for continuity and these facts only; the exact historical UniFlex TDS remains the source for row-specific historic specification/pack details."
+    }
+  },
+  "canonicalTemplateProposal": {
+    "mainAttributes": [
+      "brand",
+      "product_type",
+      "shelf_life",
+      "package_weight"
+    ],
+    "mainOrderUnchanged": true,
+    "regularAttributes": [
+      "base",
+      "purpose",
+      "application_area",
+      "substrates",
+      "color",
+      "adhesive_class",
+      "layer_thickness",
+      "consumption",
+      "water_requirement",
+      "pot_life",
+      "application_temperature",
+      "open_time",
+      "adjustment_time",
+      "walkability",
+      "heated_floor_compatibility",
+      "standard"
+    ],
+    "fields": [
+      {
+        "code": "brand",
+        "existingOrNew": "existing",
+        "datatype": "text",
+        "unit": null,
+        "productsReady": 19,
+        "brandsReady": 6,
+        "needsSource": 0,
+        "notAvailable": 0,
+        "needsMapping": 0,
+        "sourceConflict": 0,
+        "semanticRisk": "Established global main attribute; brand remains source-backed per exact product.",
+        "decision": "INCLUDE"
+      },
+      {
+        "code": "product_type",
+        "existingOrNew": "existing",
+        "datatype": "text",
+        "unit": null,
+        "productsReady": 19,
+        "brandsReady": 6,
+        "needsSource": 0,
+        "notAvailable": 0,
+        "needsMapping": 0,
+        "sourceConflict": 0,
+        "semanticRisk": "Concise product-type distinction without marketing-only claims.",
+        "decision": "INCLUDE"
+      },
+      {
+        "code": "shelf_life",
+        "existingOrNew": "existing",
+        "datatype": "number",
+        "unit": "мес",
+        "productsReady": 10,
+        "brandsReady": 4,
+        "needsSource": 6,
+        "notAvailable": 0,
+        "needsMapping": 2,
+        "sourceConflict": 1,
+        "semanticRisk": "Existing canonical unit is months. Preserve exact month values; day-based values stay NEEDS_MAPPING.",
+        "decision": "INCLUDE"
+      },
+      {
+        "code": "package_weight",
+        "existingOrNew": "existing",
+        "datatype": "number",
+        "unit": "кг",
+        "productsReady": 18,
+        "brandsReady": 6,
+        "needsSource": 1,
+        "notAvailable": 0,
+        "needsMapping": 0,
+        "sourceConflict": 0,
+        "semanticRisk": "Manufacturer pack size is distinct from operational products.weight; source the exact package.",
+        "decision": "INCLUDE"
+      },
+      {
+        "code": "base",
+        "existingOrNew": "existing",
+        "datatype": "text",
+        "unit": null,
+        "productsReady": 14,
+        "brandsReady": 6,
+        "needsSource": 5,
+        "notAvailable": 0,
+        "needsMapping": 0,
+        "sourceConflict": 0,
+        "semanticRisk": "Cross-brand binder/base composition where explicitly stated.",
+        "decision": "INCLUDE"
+      },
+      {
+        "code": "purpose",
+        "existingOrNew": "existing",
+        "datatype": "text",
+        "unit": null,
+        "productsReady": 18,
+        "brandsReady": 6,
+        "needsSource": 1,
+        "notAvailable": 0,
+        "needsMapping": 0,
+        "sourceConflict": 0,
+        "semanticRisk": "What tile/material the product is intended to bond, distinct from location.",
+        "decision": "INCLUDE"
+      },
+      {
+        "code": "application_area",
+        "existingOrNew": "existing",
+        "datatype": "text",
+        "unit": null,
+        "productsReady": 16,
+        "brandsReady": 6,
+        "needsSource": 3,
+        "notAvailable": 0,
+        "needsMapping": 0,
+        "sourceConflict": 0,
+        "semanticRisk": "Interior/exterior, wall/floor and exposure context.",
+        "decision": "INCLUDE"
+      },
+      {
+        "code": "substrates",
+        "existingOrNew": "existing",
+        "datatype": "text",
+        "unit": null,
+        "productsReady": 10,
+        "brandsReady": 5,
+        "needsSource": 9,
+        "notAvailable": 0,
+        "needsMapping": 0,
+        "sourceConflict": 0,
+        "semanticRisk": "Exact substrate compatibility; keep preparation/condition qualifiers.",
+        "decision": "INCLUDE"
+      },
+      {
+        "code": "color",
+        "existingOrNew": "existing",
+        "datatype": "text",
+        "unit": null,
+        "productsReady": 9,
+        "brandsReady": 5,
+        "needsSource": 10,
+        "notAvailable": 0,
+        "needsMapping": 0,
+        "sourceConflict": 0,
+        "semanticRisk": "Adhesive color affects stone, glass and translucent finish choices.",
+        "decision": "INCLUDE"
+      },
+      {
+        "code": "adhesive_class",
+        "existingOrNew": "new",
+        "datatype": "text",
+        "unit": null,
+        "productsReady": 18,
+        "brandsReady": 6,
+        "needsSource": 0,
+        "notAvailable": 0,
+        "needsMapping": 0,
+        "sourceConflict": 1,
+        "semanticRisk": "Standardized C0/C1/C2 class plus T/E/F/S suffixes is cross-brand and directly comparable.",
+        "decision": "INCLUDE",
+        "businessReason": "Standardized C0/C1/C2 class plus T/E/F/S suffixes is cross-brand and directly comparable.",
+        "whyExistingDefinitionsCannotRepresentIt": "Local canonical definitions inspected in schema-v4 have no compatible code with this independent meaning; recheck schema-v11 before implementation."
+      },
+      {
+        "code": "layer_thickness",
+        "existingOrNew": "existing",
+        "datatype": "text",
+        "unit": null,
+        "productsReady": 18,
+        "brandsReady": 6,
+        "needsSource": 1,
+        "notAvailable": 0,
+        "needsMapping": 0,
+        "sourceConflict": 0,
+        "semanticRisk": "Preserves ranges and recommended/local maximum distinction.",
+        "decision": "INCLUDE"
+      },
+      {
+        "code": "consumption",
+        "existingOrNew": "existing",
+        "datatype": "text",
+        "unit": null,
+        "productsReady": 15,
+        "brandsReady": 5,
+        "needsSource": 4,
+        "notAvailable": 0,
+        "needsMapping": 0,
+        "sourceConflict": 0,
+        "semanticRisk": "Values can depend on tile size/trowel; textual table preserves those dimensions.",
+        "decision": "INCLUDE"
+      },
+      {
+        "code": "water_requirement",
+        "existingOrNew": "existing",
+        "datatype": "text",
+        "unit": null,
+        "productsReady": 14,
+        "brandsReady": 6,
+        "needsSource": 5,
+        "notAvailable": 0,
+        "needsMapping": 0,
+        "sourceConflict": 0,
+        "semanticRisk": "Pack-based and per-kg mixing ranges can be represented without conversion.",
+        "decision": "INCLUDE"
+      },
+      {
+        "code": "pot_life",
+        "existingOrNew": "existing",
+        "datatype": "text",
+        "unit": null,
+        "productsReady": 16,
+        "brandsReady": 6,
+        "needsSource": 3,
+        "notAvailable": 0,
+        "needsMapping": 0,
+        "sourceConflict": 0,
+        "semanticRisk": "Production schema v11 defines pot_life as text with no unit; source qualifiers and original time units are retained verbatim.",
+        "decision": "INCLUDE"
+      },
+      {
+        "code": "application_temperature",
+        "existingOrNew": "existing",
+        "datatype": "text",
+        "unit": null,
+        "productsReady": 16,
+        "brandsReady": 6,
+        "needsSource": 3,
+        "notAvailable": 0,
+        "needsMapping": 0,
+        "sourceConflict": 0,
+        "semanticRisk": "Application temperature range is a stable cross-brand constraint.",
+        "decision": "INCLUDE"
+      },
+      {
+        "code": "open_time",
+        "existingOrNew": "new",
+        "datatype": "text",
+        "unit": null,
+        "productsReady": 14,
+        "brandsReady": 6,
+        "needsSource": 5,
+        "notAvailable": 0,
+        "needsMapping": 0,
+        "sourceConflict": 0,
+        "semanticRisk": "Standard open-time value with inequality/condition qualifier is comparable across brands; text retains threshold.",
+        "decision": "INCLUDE",
+        "businessReason": "Standard open-time value with inequality/condition qualifier is comparable across brands; text retains threshold.",
+        "whyExistingDefinitionsCannotRepresentIt": "Local canonical definitions inspected in schema-v4 have no compatible code with this independent meaning; recheck schema-v11 before implementation."
+      },
+      {
+        "code": "adjustment_time",
+        "existingOrNew": "new",
+        "datatype": "text",
+        "unit": null,
+        "productsReady": 14,
+        "brandsReady": 5,
+        "needsSource": 5,
+        "notAvailable": 0,
+        "needsMapping": 0,
+        "sourceConflict": 0,
+        "semanticRisk": "Tile correction window is distinct from open time and can preserve inequalities/ranges.",
+        "decision": "INCLUDE",
+        "businessReason": "Tile correction window is distinct from open time and can preserve inequalities/ranges.",
+        "whyExistingDefinitionsCannotRepresentIt": "Local canonical definitions inspected in schema-v4 have no compatible code with this independent meaning; recheck schema-v11 before implementation."
+      },
+      {
+        "code": "walkability",
+        "existingOrNew": "existing",
+        "datatype": "text",
+        "unit": null,
+        "productsReady": 6,
+        "brandsReady": 2,
+        "needsSource": 13,
+        "notAvailable": 0,
+        "needsMapping": 0,
+        "sourceConflict": 0,
+        "semanticRisk": "Time until floor is walkable, distinct from grout readiness.",
+        "decision": "INCLUDE"
+      },
+      {
+        "code": "heated_floor_compatibility",
+        "existingOrNew": "new",
+        "datatype": "boolean",
+        "unit": null,
+        "productsReady": 12,
+        "brandsReady": 5,
+        "needsSource": 7,
+        "notAvailable": 0,
+        "needsMapping": 0,
+        "sourceConflict": 0,
+        "semanticRisk": "Boolean expresses only explicit manufacturer suitability/incompatibility; application delay details remain in source notes, never inferred as false.",
+        "decision": "INCLUDE",
+        "businessReason": "Cross-brand compatibility value; text preserves yes/no and any activation delay/constraints.",
+        "whyExistingDefinitionsCannotRepresentIt": "Local canonical definitions inspected in schema-v4 have no compatible code with this independent meaning; recheck schema-v11 before implementation."
+      },
+      {
+        "code": "standard",
+        "existingOrNew": "existing",
+        "datatype": "text",
+        "unit": null,
+        "productsReady": 11,
+        "brandsReady": 5,
+        "needsSource": 8,
+        "notAvailable": 0,
+        "needsMapping": 0,
+        "sourceConflict": 0,
+        "semanticRisk": "Named technical standard, distinct from the adhesive performance class.",
+        "decision": "INCLUDE"
+      },
+      {
+        "code": "grouting_time",
+        "existingOrNew": "new",
+        "datatype": "text",
+        "unit": null,
+        "semanticRisk": "Source evidence branches by wall/floor and absorption/setting conditions. One unconditioned field loses distinctions; exclude until the value model can retain conditions.",
+        "businessReason": "Evidence exists across products, but comparable values require condition-aware branches.",
+        "sourceEvidenceProducts": 7,
+        "brandsWithEvidence": 5,
+        "productsReady": 0,
+        "needsSource": 12,
+        "notAvailable": 0,
+        "needsMapping": 7,
+        "sourceConflict": 0,
+        "decision": "EXCLUDE",
+        "whyExistingDefinitionsCannotRepresentIt": "No current canonical field preserves separate wall/floor, tile-absorption and substrate/condition timing. A generic text value would hide these branches; retain evidence until a condition-aware model exists."
+      },
+      {
+        "code": "maximum_tile_size",
+        "existingOrNew": "new",
+        "datatype": "text",
+        "unit": null,
+        "semanticRisk": "Limits depend on tile material/side, wall/floor, substrate and application method; one general maximum is misleading.",
+        "businessReason": "Tile-format facts remain research-only because a single value would lose source qualifiers.",
+        "sourceEvidenceProducts": 9,
+        "brandsWithEvidence": 5,
+        "productsReady": 0,
+        "needsSource": 10,
+        "notAvailable": 0,
+        "needsMapping": 9,
+        "sourceConflict": 0,
+        "decision": "EXCLUDE",
+        "whyExistingDefinitionsCannotRepresentIt": "No compatible existing field represents the tile-format recommendations with tile type, side/area, wall/floor and application conditions. A scalar/text maximum would falsely generalize them."
+      },
+      {
+        "code": "adhesion",
+        "existingOrNew": "existing",
+        "datatype": "number",
+        "unit": "МПа",
+        "semanticRisk": "Existing scalar does not encode test exposure, conditioning, minimum threshold versus actual/maximum.",
+        "businessReason": "Do not flatten differently conditioned adhesion measurements or add a duplicate *_text field.",
+        "sourceEvidenceProducts": 12,
+        "brandsWithEvidence": 6,
+        "productsReady": 0,
+        "needsSource": 7,
+        "notAvailable": 0,
+        "needsMapping": 12,
+        "sourceConflict": 0,
+        "decision": "EXCLUDE",
+        "whyExistingDefinitionsCannotRepresentIt": "The existing numeric MPa field loses conditions/thresholds; do not create a duplicate text field."
+      }
+    ],
+    "reviewNotes": {
+      "excludedOrDeferredFacts": {
+        "grouting_time": [
+          {
+            "externalId": "MAT-000127",
+            "value": "через 24 ч",
+            "sourceId": "knaufFlizen"
+          },
+          {
+            "externalId": "MAT-000129",
+            "value": "24–48 ч",
+            "sourceId": "vetonitEasyFix"
+          },
+          {
+            "externalId": "MAT-000131",
+            "value": "через 16 ч; on low-absorption substrates it may take longer",
+            "sourceId": "ceresitCm14Tds"
+          },
+          {
+            "externalId": "MAT-000132",
+            "value": "24 ч; невпитывающие основания — 72 ч",
+            "sourceId": "ceresitCm16"
+          },
+          {
+            "externalId": "MAT-000136",
+            "value": "walls 6–8 h; floors 24 h",
+            "sourceId": "litokolK55"
+          },
+          {
+            "externalId": "MAT-000140",
+            "value": "не ранее 24 ч после укладки плитки",
+            "sourceId": "unisXxiTds",
+            "condition": "TDS additionally states 24 h walking only for floors at layer thickness up to 6 mm"
+          },
+          {
+            "externalId": "MAT-000143",
+            "value": "не ранее 24 ч; при низкой температуре сушка может занимать 72 ч",
+            "sourceId": "unisU100TdsPdf",
+            "condition": "walking time is separately 24 h on floors with 6×6 mm trowel"
+          }
+        ],
+        "maximum_tile_size": [
+          {
+            "externalId": "MAT-000127",
+            "value": "до 60×60 см; indoor, walls/floors",
+            "sourceId": "knaufFlizen"
+          },
+          {
+            "externalId": "MAT-000129",
+            "value": "до 60×60 см; масса облицовки до 45 кг/м²",
+            "sourceId": "vetonitEasyFix"
+          },
+          {
+            "externalId": "MAT-000132",
+            "value": "до 1,2×1,2 м; check separate wall/floor and indoor/outdoor conditions on source",
+            "sourceId": "ceresitCm16"
+          },
+          {
+            "externalId": "MAT-000136",
+            "value": "до 120×120 см; source separately conditions supported materials/uses",
+            "sourceId": "litokolK55"
+          },
+          {
+            "externalId": "MAT-000138",
+            "value": "до 90×90 см",
+            "sourceId": "unisPlus"
+          },
+          {
+            "externalId": "MAT-000139",
+            "value": "до 120×120 см",
+            "sourceId": "unisGranit"
+          },
+          {
+            "externalId": "MAT-000140",
+            "value": "до 45×45 см",
+            "sourceId": "unisXxiTds",
+            "condition": "Manufacturer limits purpose to normal-water-absorption ceramic tile and specified wall/floor application; retained research-only, not a general cross-product field"
+          },
+          {
+            "externalId": "MAT-000142",
+            "value": "до 60×60 см",
+            "sourceId": "unis2000"
+          },
+          {
+            "externalId": "MAT-000143",
+            "value": "грань до 1,5 м для указанных видов керамогранита; условия применения перечислены в TDS",
+            "sourceId": "unisU100TdsPdf"
+          }
+        ],
+        "adhesion": [
+          {
+            "externalId": "MAT-000127",
+            "value": 0.8,
+            "sourceId": "knaufFlizen",
+            "condition": "не менее; air-dry condition"
+          },
+          {
+            "externalId": "MAT-000129",
+            "value": 0.8,
+            "sourceId": "vetonitEasyFix",
+            "condition": "не менее; air-dry condition"
+          },
+          {
+            "externalId": "MAT-000132",
+            "value": 1,
+            "sourceId": "ceresitCm16",
+            "condition": "не менее under each listed test climate; air/wet/freeze/high temperature"
+          },
+          {
+            "externalId": "MAT-000134",
+            "value": 2.2,
+            "sourceId": "litokolK16",
+            "condition": "up to after air-dry conditioning; other conditions >=1.0 MPa"
+          },
+          {
+            "externalId": "MAT-000135",
+            "reason": "page reports differing bond values by conditioning; store only after defining comparable condition"
+          },
+          {
+            "externalId": "MAT-000136",
+            "reason": "different conditioned values; no single unqualified number"
+          },
+          {
+            "externalId": "MAT-000137",
+            "value": 1.29,
+            "sourceId": "litokolK47",
+            "condition": "до; not a minimum"
+          },
+          {
+            "externalId": "MAT-000138",
+            "value": 1.4,
+            "sourceId": "unisPlus",
+            "condition": "up to in air-dry condition"
+          },
+          {
+            "externalId": "MAT-000139",
+            "value": 1.6,
+            "sourceId": "unisGranit",
+            "condition": "up to in air-dry condition; other exposures >=1 MPa"
+          },
+          {
+            "externalId": "MAT-000143",
+            "value": 1,
+            "sourceId": "unisU100TdsPdf",
+            "condition": "ГОСТ minimum by multiple separate exposure conditions; actual air-dry up to 1.8 MPa"
+          },
+          {
+            "externalId": "MAT-000144",
+            "value": 0.5,
+            "sourceId": "volmaInterior",
+            "condition": "manufacturer-published bond strength"
+          },
+          {
+            "externalId": "MAT-000145",
+            "value": 0.6,
+            "sourceId": "volmaCeramic",
+            "condition": "published bond strength; exact test condition should be preserved"
+          }
+        ]
+      },
+      "adhesionDecision": "EXCLUDE for this category in the current scalar form; retain source conditions in research-only notes and do not add adhesion_text.",
+      "templateCompatibility": "Local repository evidence is limited to schema-v4. This artifact is a design proposal only: do not infer production template integrity or membership; verify schema-v11 compatibility before any future implementation."
+    },
+    "templateDecision": "16 regular fields retained for review (12 existing cross-brand fields plus 4 new-definition candidates); grouting_time, maximum_tile_size and adhesion are excluded from this template pending a condition-aware model."
+  },
+  "products": [
+    {
+      "externalId": "MAT-000127",
+      "currentTitle": "Клей для плитки Knauf Флизен, 25 кг",
+      "canonicalIdentity": "КНАУФ-Флизен, cementitious tile adhesive, 25 kg",
+      "expectedBrand": "КНАУФ",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sources": [
+        "knaufFlizen"
+      ],
+      "notAvailable": [],
+      "needsMapping": [
+        {
+          "code": "adhesion",
+          "reason": "source condition must be kept with the numeric value"
+        }
+      ],
+      "sourceConflicts": [],
+      "researchOnlyFacts": {
+        "grouting_time": {
+          "value": "через 24 ч",
+          "source": "knaufFlizen"
+        },
+        "maximum_tile_size": {
+          "value": "до 60×60 см; indoor, walls/floors",
+          "source": "knaufFlizen"
+        },
+        "adhesion": {
+          "value": 0.8,
+          "unit": "МПа",
+          "qualifier": "не менее; air-dry condition",
+          "source": "knaufFlizen"
+        }
+      },
+      "titleDecision": "NO_CHANGE",
+      "titleCandidate": null,
+      "titleReason": "Нет отдельного source-backed title change в рамках этого discovery; title не меняется.",
+      "operationalWeight": {
+        "value": 25,
+        "unit": "кг",
+        "evidence": "local product record/title; operational weight only, not proof of manufacturer package variant"
+      },
+      "manufacturerPackEvidence": {
+        "status": "CONFIRMED",
+        "value": 25,
+        "unit": "кг",
+        "sourceIds": [
+          "knaufFlizen"
+        ],
+        "note": "Exact manufacturer product page/TDS lists this package size, or exact product title variant is explicitly documented."
+      },
+      "verifiedFacts": {
+        "brand": {
+          "value": "КНАУФ",
+          "sourceId": "knaufFlizen"
+        },
+        "product_type": {
+          "value": "Плиточный клей",
+          "sourceId": "knaufFlizen"
+        },
+        "package_weight": {
+          "value": 25,
+          "unit": "кг",
+          "sourceId": "knaufFlizen"
+        },
+        "base": {
+          "value": "цементная клеевая смесь",
+          "sourceId": "knaufFlizen"
+        },
+        "purpose": {
+          "value": "керамическая плитка на стены и полы",
+          "sourceId": "knaufFlizen"
+        },
+        "application_area": {
+          "value": "внутренние помещения; без подогрева пола",
+          "sourceId": "knaufFlizen"
+        },
+        "adhesive_class": {
+          "value": "C0 T",
+          "sourceId": "knaufFlizen"
+        },
+        "layer_thickness": {
+          "value": "2–6 мм",
+          "sourceId": "knaufFlizen"
+        },
+        "application_temperature": {
+          "value": "+5…+25 °C",
+          "sourceId": "knaufFlizen"
+        },
+        "open_time": {
+          "value": "не менее 15 мин",
+          "sourceId": "knaufFlizen"
+        },
+        "adjustment_time": {
+          "value": "около 10 мин",
+          "sourceId": "knaufFlizen"
+        },
+        "heated_floor_compatibility": {
+          "value": false,
+          "sourceId": "knaufFlizen",
+          "sourceWording": "нет"
+        },
+        "standard": {
+          "value": "ГОСТ Р 56387-2018",
+          "sourceId": "knaufFlizen"
+        },
+        "shelf_life": {
+          "value": 12,
+          "unit": "мес",
+          "sourceId": "knaufFlizen"
+        },
+        "walkability": {
+          "value": "можно ходить через 24 ч",
+          "sourceId": "knaufFlizen"
+        },
+        "pot_life": {
+          "value": "около 3 ч",
+          "sourceId": "knaufFlizen",
+          "qualifierPreserved": true,
+          "evidenceNote": "Exact manufacturer wording retained in production text definition pot_life (schema v11: text, no unit)."
+        }
+      },
+      "needsSource": [
+        "substrates",
+        "color",
+        "consumption",
+        "water_requirement"
+      ]
+    },
+    {
+      "externalId": "MAT-000128",
+      "currentTitle": "Клей для плитки Knauf Флизен ПЛЮС, 25 кг",
+      "canonicalIdentity": "КНАУФ-Флизен Плюс, reinforced cementitious tile adhesive, 25 kg",
+      "expectedBrand": "КНАУФ",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sources": [
+        "knaufFlizenPlus",
+        "knaufFlizenPlusTds"
+      ],
+      "notAvailable": [],
+      "needsMapping": [],
+      "sourceConflicts": [],
+      "researchOnlyFacts": {},
+      "titleDecision": "NO_CHANGE",
+      "titleCandidate": null,
+      "titleReason": "Нет отдельного source-backed title change в рамках этого discovery; title не меняется.",
+      "operationalWeight": {
+        "value": 25,
+        "unit": "кг",
+        "evidence": "local product record/title; operational weight only, not proof of manufacturer package variant"
+      },
+      "manufacturerPackEvidence": {
+        "status": "CONFIRMED",
+        "value": 25,
+        "unit": "кг",
+        "sourceIds": [
+          "knaufFlizenPlus",
+          "knaufFlizenPlusTds"
+        ],
+        "note": "Exact manufacturer product page/TDS lists this package size, or exact product title variant is explicitly documented."
+      },
+      "verifiedFacts": {
+        "brand": {
+          "value": "КНАУФ",
+          "sourceId": "knaufFlizenPlus"
+        },
+        "product_type": {
+          "value": "Усиленный плиточный клей",
+          "sourceId": "knaufFlizenPlus"
+        },
+        "package_weight": {
+          "value": 25,
+          "unit": "кг",
+          "sourceId": "knaufFlizenPlus"
+        },
+        "adhesive_class": {
+          "value": "C1 TE",
+          "sourceId": "knaufFlizenPlus"
+        },
+        "application_area": {
+          "value": "внутренние и наружные работы; стены и полы",
+          "sourceId": "knaufFlizenPlus"
+        },
+        "purpose": {
+          "value": "керамическая/керамогранитная плитка и камень до 60×60 см",
+          "sourceId": "knaufFlizenPlus"
+        },
+        "heated_floor_compatibility": {
+          "value": true,
+          "sourceId": "knaufFlizenPlus",
+          "sourceWording": "да"
+        },
+        "shelf_life": {
+          "value": 12,
+          "unit": "мес",
+          "sourceId": "knaufFlizenPlus"
+        },
+        "base": {
+          "value": "цементная клеевая смесь",
+          "sourceId": "knaufFlizenPlusTds"
+        },
+        "substrates": {
+          "value": "цементные и гипсовые штукатурки и стяжки, ГКЛ и ГВЛ; сильно впитывающие газобетонные и газосиликатные основания — с рекомендованной КНАУФ грунтовкой; в зонах прямого контакта с водой неводостойкие ГКЛ/ГВЛ и ПГП требуют гидроизоляции",
+          "sourceId": "knaufFlizenPlusTds"
+        },
+        "layer_thickness": {
+          "value": "2–6 мм",
+          "sourceId": "knaufFlizenPlusTds"
+        },
+        "consumption": {
+          "value": "1,7 кг/м² для плитки до 10 см; 2,2 для 10–20 см; 2,9 для 20–30 см; 3,7 для 30–60 см; 4,7 для 60 см и более (без потерь)",
+          "sourceId": "knaufFlizenPlusTds"
+        },
+        "open_time": {
+          "value": "не менее 30 мин",
+          "sourceId": "knaufFlizenPlusTds"
+        },
+        "adjustment_time": {
+          "value": "около 10 мин",
+          "sourceId": "knaufFlizenPlusTds"
+        },
+        "walkability": {
+          "value": "не ранее 24 ч",
+          "sourceId": "knaufFlizenPlusTds"
+        },
+        "standard": {
+          "value": "C1 TE по ГОСТ Р 56387-2018",
+          "sourceId": "knaufFlizenPlusTds"
+        },
+        "water_requirement": {
+          "value": "7 л на 25 кг",
+          "sourceId": "knaufFlizenPlusTds"
+        },
+        "application_temperature": {
+          "value": "+5…+25 °C",
+          "sourceId": "knaufFlizenPlusTds"
+        },
+        "pot_life": {
+          "value": "около 3 ч",
+          "sourceId": "knaufFlizenPlusTds",
+          "qualifierPreserved": true,
+          "evidenceNote": "Exact manufacturer wording retained in production text definition pot_life (schema v11: text, no unit)."
+        }
+      },
+      "needsSource": [
+        "color"
+      ]
+    },
+    {
+      "externalId": "MAT-000129",
+      "currentTitle": "Клей для плитки Vetonit Изи Фикс серый С0 25 кг",
+      "canonicalIdentity": "Vetonit Easy Fix, gray, C0 T, 25 kg",
+      "expectedBrand": "Vetonit",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sources": [
+        "vetonitEasyFix"
+      ],
+      "notAvailable": [],
+      "needsMapping": [
+        {
+          "code": "shelf_life",
+          "reason": "source gives 365 days; existing definition unit is months, so do not convert"
+        },
+        {
+          "code": "adhesion",
+          "reason": "source strength applies to the specified air-dry condition and includes a minimum threshold; current numeric definition does not preserve the test condition"
+        }
+      ],
+      "sourceConflicts": [],
+      "researchOnlyFacts": {
+        "grouting_time": {
+          "value": "24–48 ч",
+          "source": "vetonitEasyFix"
+        },
+        "maximum_tile_size": {
+          "value": "до 60×60 см; масса облицовки до 45 кг/м²",
+          "source": "vetonitEasyFix"
+        },
+        "adhesion": {
+          "value": 0.8,
+          "unit": "МПа",
+          "qualifier": "не менее; air-dry condition",
+          "source": "vetonitEasyFix"
+        }
+      },
+      "titleDecision": "NO_CHANGE",
+      "titleCandidate": null,
+      "titleReason": "Нет отдельного source-backed title change в рамках этого discovery; title не меняется.",
+      "operationalWeight": {
+        "value": 25,
+        "unit": "кг",
+        "evidence": "local product record/title; operational weight only, not proof of manufacturer package variant"
+      },
+      "manufacturerPackEvidence": {
+        "status": "CONFIRMED",
+        "value": 25,
+        "unit": "кг",
+        "sourceIds": [
+          "vetonitEasyFix"
+        ],
+        "note": "Exact manufacturer product page/TDS lists this package size, or exact product title variant is explicitly documented."
+      },
+      "verifiedFacts": {
+        "brand": {
+          "value": "Vetonit",
+          "sourceId": "vetonitEasyFix"
+        },
+        "product_type": {
+          "value": "Клей для плитки",
+          "sourceId": "vetonitEasyFix"
+        },
+        "package_weight": {
+          "value": 25,
+          "unit": "кг",
+          "sourceId": "vetonitEasyFix"
+        },
+        "color": {
+          "value": "серый",
+          "sourceId": "vetonitEasyFix"
+        },
+        "adhesive_class": {
+          "value": "C0 T",
+          "sourceId": "vetonitEasyFix"
+        },
+        "purpose": {
+          "value": "керамическая плитка и камень, кроме мрамора; до 60×60 см; до 45 кг/м²",
+          "sourceId": "vetonitEasyFix"
+        },
+        "substrates": {
+          "value": "бетон, ячеистый бетон, ГВЛ, гипсокартон, кирпич, цементная стяжка и цементная штукатурка",
+          "sourceId": "vetonitEasyFix"
+        },
+        "layer_thickness": {
+          "value": "1–15 мм",
+          "sourceId": "vetonitEasyFix"
+        },
+        "consumption": {
+          "value": "1,29 кг/м² на 1 мм слоя",
+          "sourceId": "vetonitEasyFix"
+        },
+        "water_requirement": {
+          "value": "0,21–0,24 л/кг",
+          "sourceId": "vetonitEasyFix"
+        },
+        "pot_life": {
+          "value": "3 ч",
+          "sourceId": "vetonitEasyFix",
+          "sourceWording": "3 ч",
+          "evidenceNote": "Original exact 3 ч source value represented as text for production schema v11; magnitude and unit are unchanged."
+        },
+        "application_temperature": {
+          "value": "+5…+30 °C",
+          "sourceId": "vetonitEasyFix"
+        },
+        "open_time": {
+          "value": "15 мин",
+          "sourceId": "vetonitEasyFix"
+        },
+        "base": {
+          "value": "цементное связующее",
+          "sourceId": "vetonitEasyFix"
+        },
+        "application_area": {
+          "value": "внутри здания; любые уровни влажности; стены и полы",
+          "sourceId": "vetonitEasyFix"
+        }
+      },
+      "needsSource": [
+        "adjustment_time",
+        "walkability",
+        "heated_floor_compatibility",
+        "standard"
+      ]
+    },
+    {
+      "externalId": "MAT-000130",
+      "currentTitle": "Клей для плитки и керамогранита Ceresit CM 11 PRO, 25 кг",
+      "canonicalIdentity": "Ceresit CM 11 PRO New Formula, C1 T, 25 kg",
+      "expectedBrand": "Ceresit",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sources": [
+        "ceresitCatalog",
+        "ceresitCm11Tds"
+      ],
+      "notAvailable": [],
+      "needsMapping": [],
+      "sourceConflicts": [],
+      "researchOnlyFacts": {},
+      "titleDecision": "NO_CHANGE",
+      "titleCandidate": null,
+      "titleReason": "Нет отдельного source-backed title change в рамках этого discovery; title не меняется.",
+      "operationalWeight": {
+        "value": 25,
+        "unit": "кг",
+        "evidence": "local product record/title; operational weight only, not proof of manufacturer package variant"
+      },
+      "manufacturerPackEvidence": {
+        "status": "CONFIRMED",
+        "value": 25,
+        "unit": "кг",
+        "sourceIds": [
+          "ceresitCatalog",
+          "ceresitCm11Tds"
+        ],
+        "note": "Exact manufacturer product page/TDS lists this package size, or exact product title variant is explicitly documented."
+      },
+      "verifiedFacts": {
+        "brand": {
+          "value": "Ceresit",
+          "sourceId": "ceresitCatalog"
+        },
+        "product_type": {
+          "value": "Клей для керамической плитки и керамогранита для пола и стен",
+          "sourceId": "ceresitCatalog"
+        },
+        "adhesive_class": {
+          "value": "C1 T",
+          "sourceId": "ceresitCatalog"
+        },
+        "base": {
+          "value": "цемент, минеральные заполнители, модифицирующие добавки",
+          "sourceId": "ceresitCm11Tds"
+        },
+        "package_weight": {
+          "value": 25,
+          "sourceId": "ceresitCm11Tds",
+          "unit": "кг"
+        },
+        "purpose": {
+          "value": "керамическая плитка, керамогранит и камень (кроме мрамора), до 60×60 см, пол/стена",
+          "sourceId": "ceresitCm11Tds"
+        },
+        "application_area": {
+          "value": "внутри и снаружи зданий",
+          "sourceId": "ceresitCm11Tds"
+        },
+        "substrates": {
+          "value": "бетон, цементные стяжки, цементная и цементно-известковая штукатурка; покрытие CR 65",
+          "sourceId": "ceresitCm11Tds"
+        },
+        "layer_thickness": {
+          "value": "не более 10 мм",
+          "sourceId": "ceresitCm11Tds"
+        },
+        "water_requirement": {
+          "value": "около 5,75 л на 25 кг",
+          "sourceId": "ceresitCm11Tds"
+        },
+        "open_time": {
+          "value": "20 мин",
+          "sourceId": "ceresitCm11Tds"
+        },
+        "adjustment_time": {
+          "value": "20 мин",
+          "sourceId": "ceresitCm11Tds"
+        },
+        "application_temperature": {
+          "value": "+5…+30 °C",
+          "sourceId": "ceresitCm11Tds"
+        },
+        "shelf_life": {
+          "value": 12,
+          "sourceId": "ceresitCm11Tds",
+          "unit": "мес"
+        },
+        "standard": {
+          "value": "C1 T, ГОСТ Р 56387-2018",
+          "sourceId": "ceresitCm11Tds"
+        },
+        "consumption": {
+          "value": "Ориентировочно: плитка до 5 см — 1,7 кг/м² (зуб 3 мм); до 10 см — 2,0 (4 мм); до 15 см — 2,7 (6 мм); до 25 см — 3,6 (8 мм); до 30 см — 4,2 (10 мм); до 60 см — 5,5 (12 мм); либо около 1,2 кг/м² на 1 мм при 100% заполнении",
+          "sourceId": "ceresitCm11Tds"
+        },
+        "pot_life": {
+          "value": "около 2 ч",
+          "sourceId": "ceresitCm11Tds",
+          "qualifierPreserved": true,
+          "evidenceNote": "Exact manufacturer wording retained in production text definition pot_life (schema v11: text, no unit)."
+        }
+      },
+      "needsSource": [
+        "color",
+        "walkability",
+        "heated_floor_compatibility"
+      ]
+    },
+    {
+      "externalId": "MAT-000131",
+      "currentTitle": "Клей для плитки, керамогранита и камня Ceresit СМ 14 сер. 25 кг",
+      "canonicalIdentity": "Ceresit CM 14, C2 T, 25 кг; matching official current manufacturer TDS/package variant",
+      "expectedBrand": "Ceresit",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sources": [
+        "ceresitCatalog",
+        "ceresitCm14Tds"
+      ],
+      "notAvailable": [],
+      "needsMapping": [],
+      "sourceConflicts": [],
+      "researchOnlyFacts": {
+        "grouting_time": {
+          "value": "через 16 ч; on low-absorption substrates it may take longer",
+          "sourceId": "ceresitCm14Tds"
+        }
+      },
+      "titleDecision": "NO_CHANGE",
+      "titleCandidate": null,
+      "titleReason": "Текущий официальный CM 14 TDS подтверждает применение для природного камня кроме мрамора; title не меняется. Суффикс «сер.» оставлен как локальный title-текст, не использован как доказательство цвета.",
+      "operationalWeight": {
+        "value": 25,
+        "unit": "кг",
+        "evidence": "local product record/title; operational weight only, not proof of manufacturer package variant"
+      },
+      "manufacturerPackEvidence": {
+        "status": "CONFIRMED",
+        "value": 25,
+        "unit": "кг",
+        "sourceIds": [
+          "ceresitCatalog",
+          "ceresitCm14Tds"
+        ],
+        "note": "Exact manufacturer product page/TDS lists this package size, or exact product title variant is explicitly documented."
+      },
+      "verifiedFacts": {
+        "brand": {
+          "value": "Ceresit",
+          "sourceId": "ceresitCatalog"
+        },
+        "product_type": {
+          "value": "Клей повышенной надежности для керамогранита и керамической плитки",
+          "sourceId": "ceresitCm14Tds"
+        },
+        "adhesive_class": {
+          "value": "C2 T, ГОСТ Р 56387-2018",
+          "sourceId": "ceresitCm14Tds"
+        },
+        "base": {
+          "value": "цемент, минеральные заполнители, модифицирующие добавки и армирующие микроволокна",
+          "sourceId": "ceresitCm14Tds"
+        },
+        "package_weight": {
+          "value": 25,
+          "sourceId": "ceresitCm14Tds",
+          "unit": "кг"
+        },
+        "application_area": {
+          "value": "Стены и полы внутри и снаружи зданий, включая цоколи, входные группы, балконы и террасы",
+          "sourceId": "ceresitCm14Tds"
+        },
+        "water_requirement": {
+          "value": "около 5,5 л на 25 кг",
+          "sourceId": "ceresitCm14Tds"
+        },
+        "open_time": {
+          "value": "20 мин",
+          "sourceId": "ceresitCm14Tds"
+        },
+        "application_temperature": {
+          "value": "+5…+30 °C",
+          "sourceId": "ceresitCm14Tds"
+        },
+        "consumption": {
+          "value": "Ориентировочно: до 5 см — 1,7 кг/м² (зуб 3 мм); до 10 см — 2,0 (4 мм); до 15 см — 2,7 (6 мм); до 25 см — 3,6 (8 мм); до 30 см — 4,2 (10 мм); до 90 см — 6,0 (12 мм); либо около 1,3 кг/м² на 1 мм при 100% заполнении",
+          "sourceId": "ceresitCm14Tds"
+        },
+        "purpose": {
+          "value": "Керамическая плитка, керамогранит, искусственный камень на цементной основе и природный камень кроме мрамора; формат до 90×90 см",
+          "sourceId": "ceresitCm14Tds"
+        },
+        "substrates": {
+          "value": "Бетон, цементные штукатурки и стяжки; гидроизоляционные покрытия Ceresit CR 65, CR 166 и CL 51; внутри также ГКЛ и ГВЛ при подготовке по TDS",
+          "sourceId": "ceresitCm14Tds"
+        },
+        "layer_thickness": {
+          "value": "не более 10 мм",
+          "sourceId": "ceresitCm14Tds"
+        },
+        "adjustment_time": {
+          "value": "20 мин",
+          "sourceId": "ceresitCm14Tds"
+        },
+        "heated_floor_compatibility": {
+          "value": true,
+          "sourceId": "ceresitCm14Tds",
+          "sourceWording": "да; допускается применение на стяжках с подогревом"
+        },
+        "shelf_life": {
+          "value": 12,
+          "sourceId": "ceresitCm14Tds",
+          "unit": "мес",
+          "condition": "в сухих условиях, на поддонах, в оригинальной неповрежденной бумажной упаковке; 5 кг фольгированная упаковка имеет иной срок 18 мес"
+        },
+        "standard": {
+          "value": "C2 T, ГОСТ Р 56387-2018",
+          "sourceId": "ceresitCm14Tds"
+        },
+        "pot_life": {
+          "value": "около 2 ч",
+          "sourceId": "ceresitCm14Tds",
+          "qualifierPreserved": true,
+          "evidenceNote": "Exact manufacturer wording retained in production text definition pot_life (schema v11: text, no unit)."
+        }
+      },
+      "needsSource": [
+        "color",
+        "walkability"
+      ],
+      "titleReviewNotes": "Предыдущий конфликт о камне снят: current CM 14 TDS подтверждает этот материал. Старый отдельный CM 14 Extra/C1 T TDS не смешивается с текущим CM 14/C2 T."
+    },
+    {
+      "externalId": "MAT-000132",
+      "currentTitle": "Клей для плитки, керамогранита и камня Ceresit СМ 16 сер. 25 кг",
+      "canonicalIdentity": "Ceresit CM 16 Hit, C2 TE, 25 kg (local pack/title identity)",
+      "expectedBrand": "Ceresit",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sources": [
+        "ceresitCm16",
+        "ceresitCm16Tds",
+        "ceresitSto2022"
+      ],
+      "notAvailable": [],
+      "needsMapping": [
+        {
+          "code": "adhesion",
+          "reason": "source threshold/conditioning is not representable by the existing unqualified numeric MPa field"
+        }
+      ],
+      "sourceConflicts": [],
+      "researchOnlyFacts": {
+        "grouting_time": {
+          "value": "24 ч; невпитывающие основания — 72 ч",
+          "source": "ceresitCm16"
+        },
+        "maximum_tile_size": {
+          "value": "до 1,2×1,2 м; check separate wall/floor and indoor/outdoor conditions on source",
+          "source": "ceresitCm16"
+        },
+        "adhesion": {
+          "value": 1,
+          "unit": "МПа",
+          "qualifier": "не менее under each listed test climate; air/wet/freeze/high temperature",
+          "source": "ceresitCm16"
+        }
+      },
+      "titleDecision": "NO_CHANGE",
+      "titleCandidate": null,
+      "titleReason": "Нет отдельного source-backed title change в рамках этого discovery; title не меняется.",
+      "operationalWeight": {
+        "value": 25,
+        "unit": "кг",
+        "evidence": "local product record/title; operational weight only, not proof of manufacturer package variant"
+      },
+      "manufacturerPackEvidence": {
+        "status": "CONFIRMED",
+        "value": 25,
+        "unit": "кг",
+        "sourceIds": [
+          "ceresitCm16",
+          "ceresitCm16Tds"
+        ],
+        "note": "Exact manufacturer product page/TDS lists this package size, or exact product title variant is explicitly documented."
+      },
+      "verifiedFacts": {
+        "brand": {
+          "value": "Ceresit",
+          "sourceId": "ceresitCm16"
+        },
+        "product_type": {
+          "value": "Пластичный клей повышенной надежности",
+          "sourceId": "ceresitCm16"
+        },
+        "base": {
+          "value": "цемент, минеральные заполнители, модифицирующие добавки и армирующие микроволокна",
+          "sourceId": "ceresitCm16"
+        },
+        "purpose": {
+          "value": "керамика, керамогранит, клинкер и природный камень кроме мрамора",
+          "sourceId": "ceresitCm16"
+        },
+        "application_area": {
+          "value": "внутри и снаружи; стены и полы",
+          "sourceId": "ceresitCm16"
+        },
+        "substrates": {
+          "value": "бетон, цементная/цементно-известковая штукатурка, цементная стяжка, легкий/ячеистый бетон, specified Ceresit waterproofing; indoor additionally heated screeds, gypsum/anhydrite, old tile, DSP/OSB, drywall/GVL",
+          "sourceId": "ceresitCm16"
+        },
+        "adhesive_class": {
+          "value": "C2 TE",
+          "sourceId": "ceresitCm16"
+        },
+        "layer_thickness": {
+          "value": "до 10 мм maximum",
+          "sourceId": "ceresitCm16"
+        },
+        "consumption": {
+          "value": "примерно 2,0–4,2 кг/м² по размеру плитки и зубу шпателя",
+          "sourceId": "ceresitCm16"
+        },
+        "application_temperature": {
+          "value": "+5…+30 °C",
+          "sourceId": "ceresitCm16"
+        },
+        "open_time": {
+          "value": "30 мин",
+          "sourceId": "ceresitCm16"
+        },
+        "adjustment_time": {
+          "value": "25 мин",
+          "sourceId": "ceresitCm16"
+        },
+        "heated_floor_compatibility": {
+          "value": true,
+          "sourceId": "ceresitCm16",
+          "sourceWording": "да; для стяжек с подогревом"
+        },
+        "package_weight": {
+          "value": 25,
+          "sourceId": "ceresitCm16Tds",
+          "unit": "кг"
+        },
+        "shelf_life": {
+          "value": 12,
+          "sourceId": "ceresitCm16Tds",
+          "unit": "мес"
+        },
+        "standard": {
+          "value": "C2 TE по ГОСТ Р 56387-2018",
+          "sourceId": "ceresitCm16Tds"
+        },
+        "color": {
+          "value": "серый",
+          "sourceId": "ceresitSto2022"
+        },
+        "pot_life": {
+          "value": "около 2 ч",
+          "sourceId": "ceresitCm16",
+          "qualifierPreserved": true,
+          "evidenceNote": "Exact manufacturer wording retained in production text definition pot_life (schema v11: text, no unit)."
+        }
+      },
+      "needsSource": [
+        "water_requirement",
+        "walkability"
+      ]
+    },
+    {
+      "externalId": "MAT-000133",
+      "currentTitle": "Клей для плитки высокоэластичный Ceresit CM 17 Super Flex сер., 25 кг",
+      "canonicalIdentity": "Ceresit CM 17 Super Flex (historic Russian-market formulation), 25 kg",
+      "expectedBrand": "Ceresit",
+      "identityStatus": "PARTIAL",
+      "sources": [
+        "ceresitCatalog",
+        "ceresitCm17OldTds",
+        "ceresitCm17Tds"
+      ],
+      "notAvailable": [],
+      "needsMapping": [],
+      "sourceConflicts": [
+        {
+          "code": "adhesive_class",
+          "reason": "официальный/current и historic “Super Flex” материалы не доказывают, какая редакция соответствует stock MAT; class C2 TE S1 виден в текущем каталоге/официальном TDS, но к этой строке не переносится без revision mapping."
+        }
+      ],
+      "researchOnlyFacts": {},
+      "titleDecision": "DEFER_REVISION_MAPPING",
+      "titleCandidate": null,
+      "titleReason": "Историческая маркировка Super Flex и редакция производителя из TDS не привязаны объективно к stock этой карточки.",
+      "operationalWeight": {
+        "value": 25,
+        "unit": "кг",
+        "evidence": "local product record/title; operational weight only, not proof of manufacturer package variant"
+      },
+      "manufacturerPackEvidence": {
+        "status": "REVISION_UNRESOLVED",
+        "value": 25,
+        "unit": "кг",
+        "sourceIds": [
+          "ceresitCatalog",
+          "ceresitCm17OldTds",
+          "ceresitCm17Tds"
+        ],
+        "note": "Manufacturer evidence mentions the package size for the product family/document, but the exact stock package/revision for this row is not conclusively matched."
+      },
+      "verifiedFacts": {
+        "brand": {
+          "value": "Ceresit",
+          "sourceId": "ceresitCatalog"
+        },
+        "product_type": {
+          "value": "Эластичный плиточный клей",
+          "sourceId": "ceresitCatalog"
+        }
+      },
+      "needsSource": [
+        "shelf_life",
+        "package_weight",
+        "base",
+        "purpose",
+        "application_area",
+        "substrates",
+        "color",
+        "layer_thickness",
+        "consumption",
+        "water_requirement",
+        "pot_life",
+        "application_temperature",
+        "open_time",
+        "adjustment_time",
+        "walkability",
+        "heated_floor_compatibility",
+        "standard"
+      ]
+    },
+    {
+      "externalId": "MAT-000134",
+      "currentTitle": "Клей для плитки Litokol K16, эластичный с уменьшенным расходом, керамогранита и камня, класс С2 TЕ S1 15 кг",
+      "canonicalIdentity": "LITOLIGHT K16, fiber-reinforced lightweight flexible tile adhesive, C2 TE S1, 15 kg",
+      "expectedBrand": "LITOKOL",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sources": [
+        "litokolK16",
+        "litokolK16News",
+        "litokolRegulatory"
+      ],
+      "notAvailable": [],
+      "needsMapping": [
+        {
+          "code": "adhesion",
+          "reason": "page presents max/condition-dependent bond strengths, not one unqualified comparable threshold"
+        }
+      ],
+      "sourceConflicts": [
+        {
+          "code": "manufacturer_name",
+          "reason": "Official product-card headline uses LITOKOL K16; official launch/regulatory surfaces use LITOLIGHT K16. Do not auto-rename from one naming surface."
+        }
+      ],
+      "researchOnlyFacts": {
+        "adhesion": {
+          "value": 2.2,
+          "unit": "МПа",
+          "qualifier": "up to after air-dry conditioning; other conditions >=1.0 MPa",
+          "source": "litokolK16"
+        }
+      },
+      "titleDecision": "DEFER_SOURCE_CONFLICT",
+      "titleCandidate": "LITOLIGHT K16, 15 кг",
+      "titleReason": "Коммерческая карточка и официальные нормативные/launch naming surfaces расходятся; review-only, title не меняется.",
+      "operationalWeight": {
+        "value": 15,
+        "unit": "кг",
+        "evidence": "local product record/title; operational weight only, not proof of manufacturer package variant"
+      },
+      "manufacturerPackEvidence": {
+        "status": "CONFIRMED",
+        "value": 15,
+        "unit": "кг",
+        "sourceIds": [
+          "litokolK16",
+          "litokolK16News",
+          "litokolRegulatory"
+        ],
+        "note": "Exact manufacturer product page/TDS lists this package size, or exact product title variant is explicitly documented."
+      },
+      "verifiedFacts": {
+        "brand": {
+          "value": "LITOKOL",
+          "sourceId": "litokolK16"
+        },
+        "product_type": {
+          "value": "Легкий эластичный плиточный клей",
+          "sourceId": "litokolK16"
+        },
+        "package_weight": {
+          "value": 15,
+          "unit": "кг",
+          "sourceId": "litokolK16"
+        },
+        "base": {
+          "value": "цементный состав с армирующими волокнами",
+          "sourceId": "litokolK16"
+        },
+        "purpose": {
+          "value": "керамика, керамогранит и камень",
+          "sourceId": "litokolK16"
+        },
+        "color": {
+          "value": "серый",
+          "sourceId": "litokolK16"
+        },
+        "adhesive_class": {
+          "value": "C2 TE S1",
+          "sourceId": "litokolK16"
+        },
+        "layer_thickness": {
+          "value": "2–5 мм; локально до 10 мм",
+          "sourceId": "litokolK16"
+        },
+        "consumption": {
+          "value": "0,7 кг/м² на 1 мм",
+          "sourceId": "litokolK16"
+        },
+        "water_requirement": {
+          "value": "0,44–0,47 л/кг",
+          "sourceId": "litokolK16"
+        },
+        "application_temperature": {
+          "value": "+5…+30 °C",
+          "sourceId": "litokolK16"
+        },
+        "open_time": {
+          "value": "35 мин",
+          "sourceId": "litokolK16"
+        },
+        "pot_life": {
+          "value": "до 4 ч",
+          "sourceId": "litokolK16",
+          "qualifierPreserved": true,
+          "evidenceNote": "Exact manufacturer wording retained in production text definition pot_life (schema v11: text, no unit)."
+        }
+      },
+      "needsSource": [
+        "shelf_life",
+        "application_area",
+        "substrates",
+        "adjustment_time",
+        "walkability",
+        "heated_floor_compatibility",
+        "standard"
+      ]
+    },
+    {
+      "externalId": "MAT-000135",
+      "currentTitle": "Клей для плитки Litokol К80, 25 кг",
+      "canonicalIdentity": "LITOKOL K80, 25 kg (current manufacturer family page)",
+      "expectedBrand": "LITOKOL",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sources": [
+        "litokolK80"
+      ],
+      "notAvailable": [],
+      "needsMapping": [
+        {
+          "code": "adhesion",
+          "reason": "page reports differing bond values by conditioning; store only after defining comparable condition"
+        }
+      ],
+      "sourceConflicts": [],
+      "researchOnlyFacts": {},
+      "titleDecision": "NO_CHANGE",
+      "titleCandidate": null,
+      "titleReason": "Нет отдельного source-backed title change в рамках этого discovery; title не меняется.",
+      "operationalWeight": {
+        "value": 25,
+        "unit": "кг",
+        "evidence": "local product record/title; operational weight only, not proof of manufacturer package variant"
+      },
+      "manufacturerPackEvidence": {
+        "status": "CONFIRMED",
+        "value": 25,
+        "unit": "кг",
+        "sourceIds": [
+          "litokolK80"
+        ],
+        "note": "Exact manufacturer product page/TDS lists this package size, or exact product title variant is explicitly documented."
+      },
+      "verifiedFacts": {
+        "brand": {
+          "value": "LITOKOL",
+          "sourceId": "litokolK80"
+        },
+        "product_type": {
+          "value": "Клей плиточный",
+          "sourceId": "litokolK80"
+        },
+        "package_weight": {
+          "value": 25,
+          "unit": "кг",
+          "sourceId": "litokolK80"
+        },
+        "purpose": {
+          "value": "керамическая плитка, керамогранит и камень",
+          "sourceId": "litokolK80"
+        },
+        "color": {
+          "value": "серый",
+          "sourceId": "litokolK80"
+        },
+        "adhesive_class": {
+          "value": "C2 E",
+          "sourceId": "litokolK80"
+        },
+        "water_requirement": {
+          "value": "0,24–0,26 л/кг",
+          "sourceId": "litokolK80"
+        },
+        "application_temperature": {
+          "value": "+5…+30 °C",
+          "sourceId": "litokolK80"
+        },
+        "open_time": {
+          "value": "не менее 30 мин",
+          "sourceId": "litokolK80"
+        },
+        "adjustment_time": {
+          "value": "не более 70 мин",
+          "sourceId": "litokolK80"
+        },
+        "base": {
+          "value": "цементная смесь на портландцементе",
+          "sourceId": "litokolK80"
+        },
+        "application_area": {
+          "value": "внутри и снаружи; сухие/влажные и отапливаемые/неотапливаемые помещения; стены и полы",
+          "sourceId": "litokolK80"
+        },
+        "substrates": {
+          "value": "бетон, цементные стяжки/штукатурки, цементные и полимерные гидроизоляции; внутри также гипсовые штукатурки, ГКЛ, газобетон и существующая плитка",
+          "sourceId": "litokolK80"
+        },
+        "layer_thickness": {
+          "value": "рекомендуемый слой до 5 мм; локально до 15 мм",
+          "sourceId": "litokolK80"
+        },
+        "consumption": {
+          "value": "1,16 кг/м² на 1 мм",
+          "sourceId": "litokolK80"
+        },
+        "heated_floor_compatibility": {
+          "value": true,
+          "sourceId": "litokolK80",
+          "sourceWording": "да; производитель указывает применение в системе «тёплый пол»"
+        },
+        "shelf_life": {
+          "value": 12,
+          "sourceId": "litokolK80",
+          "unit": "мес"
+        },
+        "standard": {
+          "value": "C2 E по ГОСТ Р 56387-2018",
+          "sourceId": "litokolK80"
+        },
+        "pot_life": {
+          "value": "до 9 часов",
+          "sourceId": "litokolK80",
+          "qualifierPreserved": true,
+          "evidenceNote": "Exact manufacturer wording retained in production text definition pot_life (schema v11: text, no unit)."
+        }
+      },
+      "needsSource": [
+        "walkability"
+      ]
+    },
+    {
+      "externalId": "MAT-000136",
+      "currentTitle": "Клей для плитки Litokol К55, 25 кг",
+      "canonicalIdentity": "LITOPLUS K55, white fiber-reinforced adhesive, 25 kg",
+      "expectedBrand": "LITOKOL",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sources": [
+        "litokolK55"
+      ],
+      "notAvailable": [],
+      "needsMapping": [
+        {
+          "code": "adhesion",
+          "reason": "different conditioned values; no single unqualified number"
+        }
+      ],
+      "sourceConflicts": [],
+      "researchOnlyFacts": {
+        "grouting_time": {
+          "value": "walls 6–8 h; floors 24 h",
+          "sourceId": "litokolK55"
+        },
+        "maximum_tile_size": {
+          "value": "до 120×120 см; source separately conditions supported materials/uses",
+          "sourceId": "litokolK55"
+        }
+      },
+      "titleDecision": "NO_CHANGE",
+      "titleCandidate": null,
+      "titleReason": "Нет отдельного source-backed title change в рамках этого discovery; title не меняется.",
+      "operationalWeight": {
+        "value": 25,
+        "unit": "кг",
+        "evidence": "local product record/title; operational weight only, not proof of manufacturer package variant"
+      },
+      "manufacturerPackEvidence": {
+        "status": "CONFIRMED",
+        "value": 25,
+        "unit": "кг",
+        "sourceIds": [
+          "litokolK55"
+        ],
+        "note": "Exact manufacturer product page/TDS lists this package size, or exact product title variant is explicitly documented."
+      },
+      "verifiedFacts": {
+        "brand": {
+          "value": "LITOKOL",
+          "sourceId": "litokolK55"
+        },
+        "product_type": {
+          "value": "Клей для стеклянной мозаики и плитки",
+          "sourceId": "litokolK55"
+        },
+        "package_weight": {
+          "value": 25,
+          "unit": "кг",
+          "sourceId": "litokolK55"
+        },
+        "purpose": {
+          "value": "glass mosaic, marble, stone, ceramic and porcelain",
+          "sourceId": "litokolK55"
+        },
+        "color": {
+          "value": "белый",
+          "sourceId": "litokolK55"
+        },
+        "adhesive_class": {
+          "value": "C2 TE",
+          "sourceId": "litokolK55"
+        },
+        "water_requirement": {
+          "value": "0,26–0,28 л/кг for water-only mixing; additive mode is separate",
+          "sourceId": "litokolK55"
+        },
+        "application_temperature": {
+          "value": "+5…+30 °C",
+          "sourceId": "litokolK55"
+        },
+        "open_time": {
+          "value": "не менее 30 мин",
+          "sourceId": "litokolK55"
+        },
+        "adjustment_time": {
+          "value": "не более 40 мин",
+          "sourceId": "litokolK55"
+        },
+        "base": {
+          "value": "белый цементный клеевой состав с фиброармированием",
+          "sourceId": "litokolK55"
+        },
+        "application_area": {
+          "value": "внутри и снаружи; стены/полы; влажные помещения, балконы, террасы и другие зоны из перечня изготовителя",
+          "sourceId": "litokolK55"
+        },
+        "substrates": {
+          "value": "бетон, цементные стяжки/штукатурки, цементные/полимерные гидроизоляции; внутри — гипсовые основания, ГКЛ, газобетон и существующая плитка",
+          "sourceId": "litokolK55"
+        },
+        "layer_thickness": {
+          "value": "рекомендуемый слой 2–5 мм; локально до 15 мм",
+          "sourceId": "litokolK55"
+        },
+        "consumption": {
+          "value": "1,12 кг/м² на 1 мм",
+          "sourceId": "litokolK55"
+        },
+        "heated_floor_compatibility": {
+          "value": true,
+          "sourceId": "litokolK55",
+          "sourceWording": "да, для системы «тёплый пол»"
+        },
+        "shelf_life": {
+          "value": 12,
+          "sourceId": "litokolK55",
+          "unit": "мес"
+        },
+        "standard": {
+          "value": "C2 TE по ГОСТ Р 56387-2018",
+          "sourceId": "litokolK55"
+        },
+        "pot_life": {
+          "value": "до 6 часов",
+          "sourceId": "litokolK55",
+          "qualifierPreserved": true,
+          "evidenceNote": "Exact manufacturer wording retained in production text definition pot_life (schema v11: text, no unit)."
+        }
+      },
+      "needsSource": [
+        "walkability"
+      ]
+    },
+    {
+      "externalId": "MAT-000137",
+      "currentTitle": "Клей для плитки Litokol К47, 25 кг",
+      "canonicalIdentity": "LITOKOL K47, C0, 25 kg",
+      "expectedBrand": "LITOKOL",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sources": [
+        "litokolK47"
+      ],
+      "notAvailable": [],
+      "needsMapping": [
+        {
+          "code": "adhesion",
+          "reason": "'up to 1.29 MPa' is a maximum, unsuitable as a minimum strength field"
+        }
+      ],
+      "sourceConflicts": [],
+      "researchOnlyFacts": {
+        "adhesion": {
+          "value": 1.29,
+          "unit": "МПа",
+          "qualifier": "до; not a minimum",
+          "source": "litokolK47"
+        }
+      },
+      "titleDecision": "NO_CHANGE",
+      "titleCandidate": null,
+      "titleReason": "Нет отдельного source-backed title change в рамках этого discovery; title не меняется.",
+      "operationalWeight": {
+        "value": 25,
+        "unit": "кг",
+        "evidence": "local product record/title; operational weight only, not proof of manufacturer package variant"
+      },
+      "manufacturerPackEvidence": {
+        "status": "CONFIRMED",
+        "value": 25,
+        "unit": "кг",
+        "sourceIds": [
+          "litokolK47"
+        ],
+        "note": "Exact manufacturer product page/TDS lists this package size, or exact product title variant is explicitly documented."
+      },
+      "verifiedFacts": {
+        "brand": {
+          "value": "LITOKOL",
+          "sourceId": "litokolK47"
+        },
+        "product_type": {
+          "value": "Клей плиточный",
+          "sourceId": "litokolK47"
+        },
+        "package_weight": {
+          "value": 25,
+          "unit": "кг",
+          "sourceId": "litokolK47"
+        },
+        "adhesive_class": {
+          "value": "C0",
+          "sourceId": "litokolK47"
+        },
+        "consumption": {
+          "value": "1,14 кг/м² на 1 мм",
+          "sourceId": "litokolK47"
+        },
+        "water_requirement": {
+          "value": "5,0–5,5 л на 25 кг",
+          "sourceId": "litokolK47"
+        },
+        "application_temperature": {
+          "value": "+5…+30 °C",
+          "sourceId": "litokolK47"
+        },
+        "base": {
+          "value": "цементная клеевая смесь на портландцементе",
+          "sourceId": "litokolK47"
+        },
+        "purpose": {
+          "value": "керамическая плитка; изготовитель указывает формат до 60×60 см",
+          "sourceId": "litokolK47"
+        },
+        "application_area": {
+          "value": "внутренние работы, включая помещения повышенной влажности; стены и полы",
+          "sourceId": "litokolK47"
+        },
+        "color": {
+          "value": "серый",
+          "sourceId": "litokolK47"
+        },
+        "layer_thickness": {
+          "value": "рекомендуемый слой 2–5 мм; максимальная локальная толщина до 15 мм",
+          "sourceId": "litokolK47"
+        },
+        "open_time": {
+          "value": "20 мин",
+          "sourceId": "litokolK47"
+        },
+        "adjustment_time": {
+          "value": "до 20 мин",
+          "sourceId": "litokolK47"
+        },
+        "shelf_life": {
+          "value": 12,
+          "sourceId": "litokolK47",
+          "unit": "мес"
+        },
+        "pot_life": {
+          "value": "до 8 часов",
+          "sourceId": "litokolK47",
+          "qualifierPreserved": true,
+          "evidenceNote": "Exact manufacturer wording retained in production text definition pot_life (schema v11: text, no unit)."
+        }
+      },
+      "needsSource": [
+        "substrates",
+        "walkability",
+        "heated_floor_compatibility",
+        "standard"
+      ]
+    },
+    {
+      "externalId": "MAT-000138",
+      "currentTitle": "Клей для плитки Unis Плюс 25 кг",
+      "canonicalIdentity": "ЮНИС Плюс, C1 TE, 25 kg",
+      "expectedBrand": "ЮНИС",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sources": [
+        "unisPlus",
+        "unisDocs",
+        "unisPlusTds"
+      ],
+      "notAvailable": [],
+      "needsMapping": [
+        {
+          "code": "adhesion",
+          "reason": "source says up to; retain qualifier, do not treat as minimum"
+        }
+      ],
+      "sourceConflicts": [],
+      "researchOnlyFacts": {
+        "maximum_tile_size": {
+          "value": "до 90×90 см",
+          "source": "unisPlus"
+        },
+        "adhesion": {
+          "value": 1.4,
+          "unit": "МПа",
+          "qualifier": "up to in air-dry condition",
+          "source": "unisPlus"
+        }
+      },
+      "titleDecision": "NO_CHANGE",
+      "titleCandidate": null,
+      "titleReason": "Нет отдельного source-backed title change в рамках этого discovery; title не меняется.",
+      "operationalWeight": {
+        "value": 25,
+        "unit": "кг",
+        "evidence": "local product record/title; operational weight only, not proof of manufacturer package variant"
+      },
+      "manufacturerPackEvidence": {
+        "status": "CONFIRMED",
+        "value": 25,
+        "unit": "кг",
+        "sourceIds": [
+          "unisPlus",
+          "unisDocs",
+          "unisPlusTds"
+        ],
+        "note": "Exact manufacturer product page/TDS lists this package size, or exact product title variant is explicitly documented."
+      },
+      "verifiedFacts": {
+        "brand": {
+          "value": "ЮНИС",
+          "sourceId": "unisPlus"
+        },
+        "product_type": {
+          "value": "Усиленный армированный плиточный клей",
+          "sourceId": "unisPlus"
+        },
+        "package_weight": {
+          "value": 25,
+          "unit": "кг",
+          "sourceId": "unisPlus"
+        },
+        "purpose": {
+          "value": "ceramic, clinker, natural/artificial stone and porcelain to 90×90 cm",
+          "sourceId": "unisPlus"
+        },
+        "application_area": {
+          "value": "внутри и снаружи, включая влажные/сухие помещения; стены/полы",
+          "sourceId": "unisPlus"
+        },
+        "adhesive_class": {
+          "value": "C1 TE",
+          "sourceId": "unisPlus"
+        },
+        "layer_thickness": {
+          "value": "2–15 мм",
+          "sourceId": "unisPlus"
+        },
+        "consumption": {
+          "value": "1,3 кг/м² на 1 мм",
+          "sourceId": "unisPlus"
+        },
+        "water_requirement": {
+          "value": "5–7,5 л на 25 кг",
+          "sourceId": "unisPlus"
+        },
+        "application_temperature": {
+          "value": "+5…+30 °C",
+          "sourceId": "unisPlus"
+        },
+        "open_time": {
+          "value": "30 мин",
+          "sourceId": "unisPlus"
+        },
+        "adjustment_time": {
+          "value": "20 мин",
+          "sourceId": "unisPlus"
+        },
+        "heated_floor_compatibility": {
+          "value": true,
+          "sourceId": "unisPlus",
+          "sourceWording": "да"
+        },
+        "shelf_life": {
+          "value": 12,
+          "unit": "мес",
+          "sourceId": "unisPlus"
+        },
+        "walkability": {
+          "value": "не ранее 24 ч",
+          "sourceId": "unisPlus"
+        },
+        "pot_life": {
+          "value": "не менее 240 минут",
+          "sourceId": "unisPlusTds",
+          "qualifierPreserved": true,
+          "evidenceNote": "Exact manufacturer wording retained in production text definition pot_life (schema v11: text, no unit)."
+        }
+      },
+      "needsSource": [
+        "base",
+        "substrates",
+        "color",
+        "standard"
+      ]
+    },
+    {
+      "externalId": "MAT-000139",
+      "currentTitle": "Клей для плитки Unis Гранит 25кг",
+      "canonicalIdentity": "ЮНИС Гранит, C2 T, 25 kg",
+      "expectedBrand": "ЮНИС",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sources": [
+        "unisGranit",
+        "unisDocs"
+      ],
+      "notAvailable": [],
+      "needsMapping": [
+        {
+          "code": "adhesion",
+          "reason": "multiple exposure thresholds and maximum value need qualified representation"
+        }
+      ],
+      "sourceConflicts": [],
+      "researchOnlyFacts": {
+        "maximum_tile_size": {
+          "value": "до 120×120 см",
+          "source": "unisGranit"
+        },
+        "adhesion": {
+          "value": 1.6,
+          "unit": "МПа",
+          "qualifier": "up to in air-dry condition; other exposures >=1 MPa",
+          "source": "unisGranit"
+        }
+      },
+      "titleDecision": "NO_CHANGE",
+      "titleCandidate": null,
+      "titleReason": "Нет отдельного source-backed title change в рамках этого discovery; title не меняется.",
+      "operationalWeight": {
+        "value": 25,
+        "unit": "кг",
+        "evidence": "local product record/title; operational weight only, not proof of manufacturer package variant"
+      },
+      "manufacturerPackEvidence": {
+        "status": "CONFIRMED",
+        "value": 25,
+        "unit": "кг",
+        "sourceIds": [
+          "unisGranit",
+          "unisDocs"
+        ],
+        "note": "Exact manufacturer product page/TDS lists this package size, or exact product title variant is explicitly documented."
+      },
+      "verifiedFacts": {
+        "brand": {
+          "value": "ЮНИС",
+          "sourceId": "unisGranit"
+        },
+        "product_type": {
+          "value": "Усиленный клей для плитки и керамогранита большого формата",
+          "sourceId": "unisGranit"
+        },
+        "package_weight": {
+          "value": 25,
+          "unit": "кг",
+          "sourceId": "unisGranit"
+        },
+        "adhesive_class": {
+          "value": "C2 T",
+          "sourceId": "unisGranit"
+        },
+        "layer_thickness": {
+          "value": "2–15 мм",
+          "sourceId": "unisGranit"
+        },
+        "consumption": {
+          "value": "1,3 кг/м² на 1 мм",
+          "sourceId": "unisGranit"
+        },
+        "water_requirement": {
+          "value": "6–7,5 л на 25 кг",
+          "sourceId": "unisGranit"
+        },
+        "application_temperature": {
+          "value": "+5…+30 °C",
+          "sourceId": "unisGranit"
+        },
+        "heated_floor_compatibility": {
+          "value": true,
+          "sourceId": "unisGranit",
+          "sourceWording": "да"
+        },
+        "purpose": {
+          "value": "наружная/внутренняя облицовка оснований с повышенной эксплуатационной нагрузкой; large/heavy tile formats",
+          "sourceId": "unisGranit"
+        },
+        "application_area": {
+          "value": "внутренние и наружные работы",
+          "sourceId": "unisGranit"
+        },
+        "substrates": {
+          "value": "cement and polymer waterproofing are explicitly named; full substrate scope must be taken from exact TDS",
+          "sourceId": "unisGranit"
+        },
+        "adjustment_time": {
+          "value": "30 мин",
+          "sourceId": "unisGranit"
+        },
+        "walkability": {
+          "value": "не менее 24 ч",
+          "sourceId": "unisGranit"
+        },
+        "pot_life": {
+          "value": "не менее 4 часов",
+          "sourceId": "unisGranit",
+          "qualifierPreserved": true,
+          "evidenceNote": "Exact manufacturer wording retained in production text definition pot_life (schema v11: text, no unit)."
+        }
+      },
+      "needsSource": [
+        "shelf_life",
+        "base",
+        "color",
+        "open_time",
+        "standard"
+      ]
+    },
+    {
+      "externalId": "MAT-000140",
+      "currentTitle": "Клей для плитки Unis XXI 25 кг",
+      "canonicalIdentity": "ЮНИС XXI, C0 TE, 25 kg",
+      "expectedBrand": "ЮНИС",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sources": [
+        "unisXxi",
+        "unisDocs",
+        "unisXxiTds"
+      ],
+      "notAvailable": [],
+      "needsMapping": [],
+      "sourceConflicts": [
+        {
+          "code": "shelf_life",
+          "reason": "Официальная страница продукта указывает 24 мес., а текущий официальный TDS — 12 мес. Не выбирать один срок без подтверждения, какая документация относится к продаваемой упаковке.",
+          "sourceIds": [
+            "unisXxi",
+            "unisXxiTds"
+          ]
+        }
+      ],
+      "researchOnlyFacts": {
+        "maximum_tile_size": {
+          "value": "до 45×45 см",
+          "sourceId": "unisXxiTds",
+          "condition": "Manufacturer limits purpose to normal-water-absorption ceramic tile and specified wall/floor application; retained research-only, not a general cross-product field"
+        },
+        "grouting_time": {
+          "value": "не ранее 24 ч после укладки плитки",
+          "sourceId": "unisXxiTds",
+          "condition": "TDS additionally states 24 h walking only for floors at layer thickness up to 6 mm"
+        }
+      },
+      "titleDecision": "NO_CHANGE",
+      "titleCandidate": null,
+      "titleReason": "Нет отдельного source-backed title change в рамках этого discovery; title не меняется.",
+      "operationalWeight": {
+        "value": 25,
+        "unit": "кг",
+        "evidence": "local product record/title; operational weight only, not proof of manufacturer package variant"
+      },
+      "manufacturerPackEvidence": {
+        "status": "CONFIRMED",
+        "value": 25,
+        "unit": "кг",
+        "sourceIds": [
+          "unisXxi",
+          "unisDocs"
+        ],
+        "note": "Exact manufacturer product page/TDS lists this package size, or exact product title variant is explicitly documented."
+      },
+      "verifiedFacts": {
+        "brand": {
+          "value": "ЮНИС",
+          "sourceId": "unisXxi"
+        },
+        "product_type": {
+          "value": "Плиточный клей для внутренних работ",
+          "sourceId": "unisXxi"
+        },
+        "package_weight": {
+          "value": 25,
+          "unit": "кг",
+          "sourceId": "unisXxi"
+        },
+        "adhesive_class": {
+          "value": "C0 TE",
+          "sourceId": "unisXxi"
+        },
+        "layer_thickness": {
+          "value": "2–15 мм",
+          "sourceId": "unisXxi"
+        },
+        "water_requirement": {
+          "value": "5–7,5 л на 25 кг",
+          "sourceId": "unisXxi"
+        },
+        "application_temperature": {
+          "value": "+5…+30 °C",
+          "sourceId": "unisXxi"
+        },
+        "walkability": {
+          "value": "24 ч для пола при толщине слоя до 6 мм",
+          "sourceId": "unisXxiTds"
+        },
+        "base": {
+          "value": "цемент, минеральный наполнитель, модифицирующие добавки",
+          "sourceId": "unisXxiTds"
+        },
+        "purpose": {
+          "value": "Керамическая плитка с водопоглощением более 5%; также кладочный раствор для блоков из ячеистого бетона (пено- и газобетон, газосиликат)",
+          "sourceId": "unisXxiTds"
+        },
+        "application_area": {
+          "value": "Стены и полы внутри сухих и влажных помещений",
+          "sourceId": "unisXxiTds"
+        },
+        "substrates": {
+          "value": "Недеформирующиеся основания: бетон (включая ячеистый бетон, шлакобетон и газобетон), цементные основания и штукатурка, кирпич, гипсовые основания ГКЛ/ГВЛ/ПГП",
+          "sourceId": "unisXxiTds"
+        },
+        "consumption": {
+          "value": "1,25–1,35 кг/м² на слой 1 мм",
+          "sourceId": "unisXxiTds"
+        },
+        "open_time": {
+          "value": "30 мин",
+          "sourceId": "unisXxiTds"
+        },
+        "adjustment_time": {
+          "value": "10 мин",
+          "sourceId": "unisXxiTds"
+        },
+        "standard": {
+          "value": "C0 TE, ГОСТ Р 56387-2018",
+          "sourceId": "unisXxiTds"
+        },
+        "pot_life": {
+          "value": "не менее 3 часов",
+          "sourceId": "unisXxi",
+          "qualifierPreserved": true,
+          "evidenceNote": "Exact manufacturer wording retained in production text definition pot_life (schema v11: text, no unit)."
+        }
+      },
+      "needsSource": [
+        "color",
+        "heated_floor_compatibility"
+      ]
+    },
+    {
+      "externalId": "MAT-000141",
+      "currentTitle": "Клей для плитки и камня Unis Белфикс 25 кг",
+      "canonicalIdentity": "ЮНИС Белфикс, white C1 T, 25 kg",
+      "expectedBrand": "ЮНИС",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sources": [
+        "unisBelFix",
+        "unisDocs"
+      ],
+      "notAvailable": [],
+      "needsMapping": [],
+      "sourceConflicts": [],
+      "researchOnlyFacts": {},
+      "titleDecision": "NO_CHANGE",
+      "titleCandidate": null,
+      "titleReason": "Нет отдельного source-backed title change в рамках этого discovery; title не меняется.",
+      "operationalWeight": {
+        "value": 25,
+        "unit": "кг",
+        "evidence": "local product record/title; operational weight only, not proof of manufacturer package variant"
+      },
+      "manufacturerPackEvidence": {
+        "status": "CONFIRMED",
+        "value": 25,
+        "unit": "кг",
+        "sourceIds": [
+          "unisBelFix",
+          "unisDocs"
+        ],
+        "note": "Exact manufacturer product page/TDS lists this package size, or exact product title variant is explicitly documented."
+      },
+      "verifiedFacts": {
+        "brand": {
+          "value": "ЮНИС",
+          "sourceId": "unisBelFix"
+        },
+        "product_type": {
+          "value": "Белый клей для стеклянной и мозаичной плитки и мрамора",
+          "sourceId": "unisBelFix"
+        },
+        "package_weight": {
+          "value": 25,
+          "unit": "кг",
+          "sourceId": "unisBelFix"
+        },
+        "purpose": {
+          "value": "стеклянная/мозаичная плитка и мрамор",
+          "sourceId": "unisBelFix"
+        },
+        "color": {
+          "value": "белый",
+          "sourceId": "unisBelFix"
+        },
+        "adhesive_class": {
+          "value": "C1 T",
+          "sourceId": "unisBelFix"
+        },
+        "layer_thickness": {
+          "value": "2–10 мм",
+          "sourceId": "unisBelFix"
+        },
+        "consumption": {
+          "value": "1,3 кг/м² на 1 мм",
+          "sourceId": "unisBelFix"
+        },
+        "heated_floor_compatibility": {
+          "value": true,
+          "sourceId": "unisBelFix",
+          "sourceWording": "да, manufacturer page indicates heated floor use"
+        }
+      },
+      "needsSource": [
+        "shelf_life",
+        "base",
+        "application_area",
+        "substrates",
+        "water_requirement",
+        "pot_life",
+        "application_temperature",
+        "open_time",
+        "adjustment_time",
+        "walkability",
+        "standard"
+      ]
+    },
+    {
+      "externalId": "MAT-000142",
+      "currentTitle": "Клей для плитки, керамогранита и камня Unis 2000 25 кг",
+      "canonicalIdentity": "ЮНИС 2000, C1 T, 25 kg",
+      "expectedBrand": "ЮНИС",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sources": [
+        "unis2000",
+        "unisDocs"
+      ],
+      "notAvailable": [],
+      "needsMapping": [],
+      "sourceConflicts": [],
+      "researchOnlyFacts": {
+        "maximum_tile_size": {
+          "value": "до 60×60 см",
+          "source": "unis2000"
+        }
+      },
+      "titleDecision": "NO_CHANGE",
+      "titleCandidate": null,
+      "titleReason": "Нет отдельного source-backed title change в рамках этого discovery; title не меняется.",
+      "operationalWeight": {
+        "value": 25,
+        "unit": "кг",
+        "evidence": "local product record/title; operational weight only, not proof of manufacturer package variant"
+      },
+      "manufacturerPackEvidence": {
+        "status": "CONFIRMED",
+        "value": 25,
+        "unit": "кг",
+        "sourceIds": [
+          "unis2000",
+          "unisDocs"
+        ],
+        "note": "Exact manufacturer product page/TDS lists this package size, or exact product title variant is explicitly documented."
+      },
+      "verifiedFacts": {
+        "brand": {
+          "value": "ЮНИС",
+          "sourceId": "unis2000"
+        },
+        "product_type": {
+          "value": "Универсальный плиточный клей",
+          "sourceId": "unis2000"
+        },
+        "package_weight": {
+          "value": 25,
+          "unit": "кг",
+          "sourceId": "unis2000"
+        },
+        "purpose": {
+          "value": "керамическая/клинкерная плитка, природный/искусственный камень и керамогранит до 60×60 см",
+          "sourceId": "unis2000"
+        },
+        "application_area": {
+          "value": "внутри и снаружи; подходит для теплого пола",
+          "sourceId": "unis2000"
+        },
+        "adhesive_class": {
+          "value": "C1 T",
+          "sourceId": "unis2000"
+        },
+        "layer_thickness": {
+          "value": "2–15 мм",
+          "sourceId": "unis2000"
+        },
+        "consumption": {
+          "value": "1,3 кг/м² на 1 мм",
+          "sourceId": "unis2000"
+        },
+        "heated_floor_compatibility": {
+          "value": true,
+          "sourceId": "unis2000",
+          "sourceWording": "да"
+        },
+        "shelf_life": {
+          "value": 12,
+          "unit": "мес",
+          "sourceId": "unis2000"
+        }
+      },
+      "needsSource": [
+        "base",
+        "substrates",
+        "color",
+        "water_requirement",
+        "pot_life",
+        "application_temperature",
+        "open_time",
+        "adjustment_time",
+        "walkability",
+        "standard"
+      ]
+    },
+    {
+      "externalId": "MAT-000143",
+      "currentTitle": "Клей для плитки и керамогранита Unis Uniflex U-100 C2ТЕ 25 кг",
+      "canonicalIdentity": "ЮНИС U-100 UniFlex, 25 кг, historical name/pack; current manufacturer page explicitly maps former name and unchanged formula",
+      "expectedBrand": "ЮНИС",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sources": [
+        "unisU100Tds",
+        "unisDocs",
+        "unisU100TdsPdf",
+        "unisU100Current"
+      ],
+      "notAvailable": [],
+      "needsMapping": [
+        {
+          "code": "shelf_life",
+          "reason": "Точный старый TDS задает 12 месяцев в сухом неотапливаемом помещении и 18 месяцев в сухом отапливаемом. Числовое поле в месяцах не хранит условие хранения; не выбирать одно значение."
+        }
+      ],
+      "sourceConflicts": [],
+      "researchOnlyFacts": {
+        "grouting_time": {
+          "value": "не ранее 24 ч; при низкой температуре сушка может занимать 72 ч",
+          "sourceId": "unisU100TdsPdf",
+          "condition": "walking time is separately 24 h on floors with 6×6 mm trowel"
+        },
+        "maximum_tile_size": {
+          "value": "грань до 1,5 м для указанных видов керамогранита; условия применения перечислены в TDS",
+          "sourceId": "unisU100TdsPdf"
+        },
+        "adhesion": {
+          "value": 1,
+          "unit": "МПа",
+          "qualifier": "ГОСТ minimum by multiple separate exposure conditions; actual air-dry up to 1.8 MPa",
+          "sourceId": "unisU100TdsPdf"
+        }
+      },
+      "titleDecision": "NO_CHANGE",
+      "titleCandidate": null,
+      "titleReason": "Официальный текущий источник производителя прямо связывает прежнее название U-100 UniFlex с текущим U-100 и подтверждает неизменность формулы; исторический TDS совпадает с title/class/25 кг. Title не меняется.",
+      "operationalWeight": {
+        "value": 25,
+        "unit": "кг",
+        "evidence": "local product record/title; operational weight only, not proof of manufacturer package variant"
+      },
+      "manufacturerPackEvidence": {
+        "status": "CONFIRMED",
+        "value": 25,
+        "unit": "кг",
+        "sourceIds": [
+          "unisU100TdsPdf",
+          "unisU100Current"
+        ],
+        "note": "Exact historical U-100 UniFlex TDS lists 25 kg. Current official manufacturer page explicitly states the product was formerly sold as U-100 UniFlex and its composition/formula is unchanged."
+      },
+      "verifiedFacts": {
+        "brand": {
+          "value": "ЮНИС",
+          "sourceId": "unisU100Tds"
+        },
+        "product_type": {
+          "value": "Высокопластичный армированный клей для плитки",
+          "sourceId": "unisU100TdsPdf"
+        },
+        "package_weight": {
+          "value": 25,
+          "sourceId": "unisU100TdsPdf",
+          "unit": "кг"
+        },
+        "base": {
+          "value": "цемент, минеральный наполнитель, фракционированный песок, модифицирующие добавки",
+          "sourceId": "unisU100TdsPdf"
+        },
+        "purpose": {
+          "value": "Керамогранит, керамическая плитка, натуральный и искусственный камень, клинкерная плитка",
+          "sourceId": "unisU100TdsPdf"
+        },
+        "application_area": {
+          "value": "Внутренние и наружные работы: стены и полы, фасады, балконы, террасы, цоколи и бассейны; нагреваемые поверхности, включая теплые полы",
+          "sourceId": "unisU100TdsPdf"
+        },
+        "substrates": {
+          "value": "Жесткие основания: цементно-песчаные и гипсовые штукатурки и стяжки, сборный и монолитный бетон возрастом не менее 2 месяцев, ячеистый бетон, газосиликат, ПГП, ГКЛ/ГВЛ, OSB, ЦСП, старые прочные облицовки и окрашенные поверхности; подготовка мембраной требуется для деформирующихся оснований по текущей инструкции производителя",
+          "sourceId": "unisU100TdsPdf"
+        },
+        "adhesive_class": {
+          "value": "C2 TE, ГОСТ Р 56387-2018",
+          "sourceId": "unisU100TdsPdf"
+        },
+        "layer_thickness": {
+          "value": "2–15 мм",
+          "sourceId": "unisU100TdsPdf"
+        },
+        "consumption": {
+          "value": "1,1–1,25 кг/м² на слой 1 мм",
+          "sourceId": "unisU100TdsPdf"
+        },
+        "water_requirement": {
+          "value": "5–7,5 л на 25 кг",
+          "sourceId": "unisU100TdsPdf"
+        },
+        "application_temperature": {
+          "value": "−15…+30 °C; во время работы и твердения температура основания и окружающей среды не ниже −15 °C; при прогнозе ниже — работы выполнять в тепловом контуре",
+          "sourceId": "unisU100TdsPdf"
+        },
+        "walkability": {
+          "value": "24 ч для полов при использовании шпателя 6×6 мм",
+          "sourceId": "unisU100TdsPdf"
+        },
+        "heated_floor_compatibility": {
+          "value": true,
+          "sourceId": "unisU100TdsPdf",
+          "sourceWording": "да; эксплуатацию теплого пола начинать не ранее 28 суток после облицовки"
+        },
+        "standard": {
+          "value": "C2 TE, ГОСТ Р 56387-2018",
+          "sourceId": "unisU100TdsPdf"
+        },
+        "open_time": {
+          "value": "30 мин",
+          "sourceId": "unisU100Current"
+        },
+        "adjustment_time": {
+          "value": "30 мин",
+          "sourceId": "unisU100Current"
+        },
+        "pot_life": {
+          "value": "не менее 4 ч",
+          "sourceId": "unisU100Current",
+          "qualifierPreserved": true,
+          "evidenceNote": "Exact manufacturer wording retained in production text definition pot_life (schema v11: text, no unit)."
+        }
+      },
+      "needsSource": [
+        "color"
+      ],
+      "evidenceNotes": "Commercial identity and formula continuity are supported by the manufacturer. Technical values use the exact historical U-100 UniFlex TDS; no current-only details were transferred. Storage duration remains NEEDS_MAPPING because the TDS varies by heated versus unheated storage.",
+      "revisionContinuityEvidence": {
+        "sourceIds": [
+          "unisU100Current",
+          "unisU100TdsPdf",
+          "unisDocs"
+        ],
+        "summary": "Manufacturer documentation catalog lists a separate U-100 UniFlex TDS; the exact old TDS matches the MAT title/class/25 kg. The current official U-100 page explicitly says it is the new version of UNIFLEX U-100, was previously sold under U-100 PolymerGEL/U-100 Uniflex, and formula is unchanged. Facts above are sourced from the historic UniFlex TDS, not copied from current PolymerGEL specifications."
+      }
+    },
+    {
+      "externalId": "MAT-000144",
+      "currentTitle": "Клей для плитки Волма Интерьер серый 25 кг",
+      "canonicalIdentity": "ВОЛМА-Интерьер, C0, 25 kg; restyled line marked T10",
+      "expectedBrand": "ВОЛМА",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sources": [
+        "volmaInterior",
+        "volmaRestyling"
+      ],
+      "notAvailable": [],
+      "needsMapping": [
+        {
+          "code": "adhesion",
+          "reason": "source threshold/conditioning is not representable by the existing unqualified numeric MPa field"
+        }
+      ],
+      "sourceConflicts": [],
+      "researchOnlyFacts": {
+        "adhesion": {
+          "value": 0.5,
+          "unit": "МПа",
+          "qualifier": "manufacturer-published bond strength",
+          "source": "volmaInterior"
+        }
+      },
+      "titleDecision": "DEFER_OWNER_PACKAGE_CHECK",
+      "titleCandidate": "Клей плиточный ВОЛМА-Интерьер T10, 25 кг",
+      "titleReason": "Производитель сообщает о рестайлинге T10, но в обороте остаются старые упаковки; нужен осмотр точного stock package.",
+      "operationalWeight": {
+        "value": 25,
+        "unit": "кг",
+        "evidence": "local product record/title; operational weight only, not proof of manufacturer package variant"
+      },
+      "manufacturerPackEvidence": {
+        "status": "CONFIRMED",
+        "value": 25,
+        "unit": "кг",
+        "sourceIds": [
+          "volmaInterior",
+          "volmaRestyling"
+        ],
+        "note": "Exact manufacturer product page/TDS lists this package size, or exact product title variant is explicitly documented."
+      },
+      "verifiedFacts": {
+        "brand": {
+          "value": "ВОЛМА",
+          "sourceId": "volmaInterior"
+        },
+        "product_type": {
+          "value": "Экономичный клей для керамической и клинкерной плитки",
+          "sourceId": "volmaInterior"
+        },
+        "package_weight": {
+          "value": 25,
+          "unit": "кг",
+          "sourceId": "volmaInterior"
+        },
+        "base": {
+          "value": "портландцементная сухая смесь",
+          "sourceId": "volmaInterior"
+        },
+        "purpose": {
+          "value": "керамическая плитка внутри помещений",
+          "sourceId": "volmaInterior"
+        },
+        "adhesive_class": {
+          "value": "C0",
+          "sourceId": "volmaInterior"
+        },
+        "application_area": {
+          "value": "внутренние работы",
+          "sourceId": "volmaInterior"
+        },
+        "color": {
+          "value": "серый",
+          "sourceId": "volmaInterior"
+        },
+        "layer_thickness": {
+          "value": "2–5 мм",
+          "sourceId": "volmaInterior"
+        },
+        "water_requirement": {
+          "value": "0,18–0,22 л/кг (4,5–5,5 л на 25 кг)",
+          "sourceId": "volmaInterior"
+        },
+        "pot_life": {
+          "value": "3 ч",
+          "sourceId": "volmaInterior",
+          "sourceWording": "3 ч",
+          "evidenceNote": "Original exact 3 ч source value represented as text for production schema v11; magnitude and unit are unchanged."
+        },
+        "application_temperature": {
+          "value": "+5…+30 °C",
+          "sourceId": "volmaInterior"
+        },
+        "open_time": {
+          "value": "10 мин",
+          "sourceId": "volmaInterior"
+        },
+        "adjustment_time": {
+          "value": "10 мин",
+          "sourceId": "volmaInterior"
+        },
+        "standard": {
+          "value": "ГОСТ Р 56387-2018",
+          "sourceId": "volmaInterior"
+        }
+      },
+      "needsSource": [
+        "shelf_life",
+        "substrates",
+        "consumption",
+        "walkability",
+        "heated_floor_compatibility"
+      ]
+    },
+    {
+      "externalId": "MAT-000145",
+      "currentTitle": "Клей для плитки Волма Керамик Т14 25 кг",
+      "canonicalIdentity": "ВОЛМА-Керамик, 25 kg; restyled line marked T14",
+      "expectedBrand": "ВОЛМА",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sources": [
+        "volmaCeramic",
+        "volmaRestyling"
+      ],
+      "notAvailable": [],
+      "needsMapping": [
+        {
+          "code": "adhesion",
+          "reason": "source threshold/conditioning is not representable by the existing unqualified numeric MPa field"
+        }
+      ],
+      "sourceConflicts": [],
+      "researchOnlyFacts": {
+        "adhesion": {
+          "value": 0.6,
+          "unit": "МПа",
+          "qualifier": "published bond strength; exact test condition should be preserved",
+          "source": "volmaCeramic"
+        }
+      },
+      "titleDecision": "NO_CHANGE",
+      "titleCandidate": null,
+      "titleReason": "Нет отдельного source-backed title change в рамках этого discovery; title не меняется.",
+      "operationalWeight": {
+        "value": 25,
+        "unit": "кг",
+        "evidence": "local product record/title; operational weight only, not proof of manufacturer package variant"
+      },
+      "manufacturerPackEvidence": {
+        "status": "CONFIRMED",
+        "value": 25,
+        "unit": "кг",
+        "sourceIds": [
+          "volmaCeramic",
+          "volmaRestyling"
+        ],
+        "note": "Exact manufacturer product page/TDS lists this package size, or exact product title variant is explicitly documented."
+      },
+      "verifiedFacts": {
+        "brand": {
+          "value": "ВОЛМА",
+          "sourceId": "volmaCeramic"
+        },
+        "product_type": {
+          "value": "Цементный клей для керамической/клинкерной плитки",
+          "sourceId": "volmaCeramic"
+        },
+        "package_weight": {
+          "value": 25,
+          "unit": "кг",
+          "sourceId": "volmaCeramic"
+        },
+        "base": {
+          "value": "портландцементная сухая смесь",
+          "sourceId": "volmaCeramic"
+        },
+        "adhesive_class": {
+          "value": "C1",
+          "sourceId": "volmaCeramic"
+        },
+        "application_area": {
+          "value": "внутренние и наружные работы",
+          "sourceId": "volmaCeramic"
+        },
+        "purpose": {
+          "value": "керамическая и клинкерная плитка",
+          "sourceId": "volmaCeramic"
+        },
+        "color": {
+          "value": "серый",
+          "sourceId": "volmaCeramic"
+        },
+        "layer_thickness": {
+          "value": "2–5 мм",
+          "sourceId": "volmaCeramic"
+        },
+        "water_requirement": {
+          "value": "0,18–0,22 л/кг (4,5–5,5 л на 25 кг)",
+          "sourceId": "volmaCeramic"
+        },
+        "pot_life": {
+          "value": "3 ч",
+          "sourceId": "volmaCeramic",
+          "sourceWording": "3 ч",
+          "evidenceNote": "Original exact 3 ч source value represented as text for production schema v11; magnitude and unit are unchanged."
+        },
+        "application_temperature": {
+          "value": "+5…+30 °C",
+          "sourceId": "volmaCeramic"
+        },
+        "heated_floor_compatibility": {
+          "value": true,
+          "sourceId": "volmaCeramic",
+          "sourceWording": "manufacturer source indicates suitability for warm-floor applications"
+        },
+        "standard": {
+          "value": "ГОСТ Р 56387-2018",
+          "sourceId": "volmaCeramic"
+        },
+        "adjustment_time": {
+          "value": "10–15 мин",
+          "sourceId": "volmaCeramic"
+        }
+      },
+      "needsSource": [
+        "shelf_life",
+        "substrates",
+        "consumption",
+        "open_time",
+        "walkability"
+      ]
+    }
+  ],
+  "statistics": {
+    "identityStatusCounts": {
+      "IDENTITY_CONFIRMED": 18,
+      "PARTIAL": 1
+    },
+    "sourceCoverageMethod": "For each included main/regular code and each of 19 products, assign one status in precedence order: exact source conflict; explicit NEEDS_MAPPING; explicit NOT_AVAILABLE; source-backed verified fact (READY, with source ID); otherwise NEEDS_SOURCE. Production v11 pot_life is text, so source qualifiers are retained verbatim rather than downgraded to NEEDS_MAPPING.",
+    "templateFieldCoverage": [
+      {
+        "code": "brand",
+        "READY": 19,
+        "NEEDS_SOURCE": 0,
+        "NOT_AVAILABLE": 0,
+        "NEEDS_MAPPING": 0,
+        "SOURCE_CONFLICT": 0
+      },
+      {
+        "code": "product_type",
+        "READY": 19,
+        "NEEDS_SOURCE": 0,
+        "NOT_AVAILABLE": 0,
+        "NEEDS_MAPPING": 0,
+        "SOURCE_CONFLICT": 0
+      },
+      {
+        "code": "shelf_life",
+        "READY": 10,
+        "NEEDS_SOURCE": 6,
+        "NOT_AVAILABLE": 0,
+        "NEEDS_MAPPING": 2,
+        "SOURCE_CONFLICT": 1
+      },
+      {
+        "code": "package_weight",
+        "READY": 18,
+        "NEEDS_SOURCE": 1,
+        "NOT_AVAILABLE": 0,
+        "NEEDS_MAPPING": 0,
+        "SOURCE_CONFLICT": 0
+      },
+      {
+        "code": "base",
+        "READY": 14,
+        "NEEDS_SOURCE": 5,
+        "NOT_AVAILABLE": 0,
+        "NEEDS_MAPPING": 0,
+        "SOURCE_CONFLICT": 0
+      },
+      {
+        "code": "purpose",
+        "READY": 18,
+        "NEEDS_SOURCE": 1,
+        "NOT_AVAILABLE": 0,
+        "NEEDS_MAPPING": 0,
+        "SOURCE_CONFLICT": 0
+      },
+      {
+        "code": "application_area",
+        "READY": 16,
+        "NEEDS_SOURCE": 3,
+        "NOT_AVAILABLE": 0,
+        "NEEDS_MAPPING": 0,
+        "SOURCE_CONFLICT": 0
+      },
+      {
+        "code": "substrates",
+        "READY": 10,
+        "NEEDS_SOURCE": 9,
+        "NOT_AVAILABLE": 0,
+        "NEEDS_MAPPING": 0,
+        "SOURCE_CONFLICT": 0
+      },
+      {
+        "code": "color",
+        "READY": 9,
+        "NEEDS_SOURCE": 10,
+        "NOT_AVAILABLE": 0,
+        "NEEDS_MAPPING": 0,
+        "SOURCE_CONFLICT": 0
+      },
+      {
+        "code": "adhesive_class",
+        "READY": 18,
+        "NEEDS_SOURCE": 0,
+        "NOT_AVAILABLE": 0,
+        "NEEDS_MAPPING": 0,
+        "SOURCE_CONFLICT": 1
+      },
+      {
+        "code": "layer_thickness",
+        "READY": 18,
+        "NEEDS_SOURCE": 1,
+        "NOT_AVAILABLE": 0,
+        "NEEDS_MAPPING": 0,
+        "SOURCE_CONFLICT": 0
+      },
+      {
+        "code": "consumption",
+        "READY": 15,
+        "NEEDS_SOURCE": 4,
+        "NOT_AVAILABLE": 0,
+        "NEEDS_MAPPING": 0,
+        "SOURCE_CONFLICT": 0
+      },
+      {
+        "code": "water_requirement",
+        "READY": 14,
+        "NEEDS_SOURCE": 5,
+        "NOT_AVAILABLE": 0,
+        "NEEDS_MAPPING": 0,
+        "SOURCE_CONFLICT": 0
+      },
+      {
+        "code": "pot_life",
+        "READY": 16,
+        "NEEDS_SOURCE": 3,
+        "NOT_AVAILABLE": 0,
+        "NEEDS_MAPPING": 0,
+        "SOURCE_CONFLICT": 0
+      },
+      {
+        "code": "application_temperature",
+        "READY": 16,
+        "NEEDS_SOURCE": 3,
+        "NOT_AVAILABLE": 0,
+        "NEEDS_MAPPING": 0,
+        "SOURCE_CONFLICT": 0
+      },
+      {
+        "code": "open_time",
+        "READY": 14,
+        "NEEDS_SOURCE": 5,
+        "NOT_AVAILABLE": 0,
+        "NEEDS_MAPPING": 0,
+        "SOURCE_CONFLICT": 0
+      },
+      {
+        "code": "adjustment_time",
+        "READY": 14,
+        "NEEDS_SOURCE": 5,
+        "NOT_AVAILABLE": 0,
+        "NEEDS_MAPPING": 0,
+        "SOURCE_CONFLICT": 0
+      },
+      {
+        "code": "walkability",
+        "READY": 6,
+        "NEEDS_SOURCE": 13,
+        "NOT_AVAILABLE": 0,
+        "NEEDS_MAPPING": 0,
+        "SOURCE_CONFLICT": 0
+      },
+      {
+        "code": "heated_floor_compatibility",
+        "READY": 12,
+        "NEEDS_SOURCE": 7,
+        "NOT_AVAILABLE": 0,
+        "NEEDS_MAPPING": 0,
+        "SOURCE_CONFLICT": 0
+      },
+      {
+        "code": "standard",
+        "READY": 11,
+        "NEEDS_SOURCE": 8,
+        "NOT_AVAILABLE": 0,
+        "NEEDS_MAPPING": 0,
+        "SOURCE_CONFLICT": 0
+      }
+    ],
+    "other": {
+      "titleIssuesForReview": [
+        "MAT-000133",
+        "MAT-000134",
+        "MAT-000144"
+      ],
+      "sourceConflictItems": 3,
+      "needsOwnerConfirmationItems": 0,
+      "productionApplyPrepared": false,
+      "frostResistanceDisposition": "Existing definition is not proposed in this template: no exact-source cross-brand canonical coverage was established in this discovery pass.",
+      "evaluatedButNotIncluded": [
+        {
+          "code": "grouting_time",
+          "reason": "Source evidence branches by wall/floor and absorption/setting conditions. One unconditioned field loses distinctions; exclude until the value model can retain conditions."
+        },
+        {
+          "code": "maximum_tile_size",
+          "reason": "Limits depend on tile material/side, wall/floor, substrate and application method; one general maximum is misleading."
+        },
+        {
+          "code": "adhesion",
+          "reason": "Existing scalar does not encode test exposure, conditioning, minimum threshold versus actual/maximum."
+        },
+        {
+          "code": "frost_resistance",
+          "reason": "No cross-brand exact-source coverage established in this pass."
+        },
+        {
+          "code": "application_method",
+          "reason": "A common trowel method is not differentiating across this batch."
+        }
+      ],
+      "titleReviewCount": 3,
+      "templateDecision": "16 regular fields retained for review (12 existing cross-brand fields plus 4 new-definition candidates); grouting_time, maximum_tile_size and adhesion are excluded from this template pending a condition-aware model."
+    },
+    "evaluatedFieldCoverage": [
+      {
+        "code": "adhesion",
+        "READY": 0,
+        "NEEDS_SOURCE": 7,
+        "NOT_AVAILABLE": 0,
+        "NEEDS_MAPPING": 12,
+        "SOURCE_CONFLICT": 0
+      },
+      {
+        "code": "frost_resistance",
+        "READY": 0,
+        "NEEDS_SOURCE": 19,
+        "NOT_AVAILABLE": 0,
+        "NEEDS_MAPPING": 0,
+        "SOURCE_CONFLICT": 0
+      },
+      {
+        "code": "application_method",
+        "READY": 0,
+        "NEEDS_SOURCE": 19,
+        "NOT_AVAILABLE": 0,
+        "NEEDS_MAPPING": 0,
+        "SOURCE_CONFLICT": 0
+      }
+    ],
+    "sourceCoverageComparison": {
+      "comparisonBasis": "READY facts on the final 16 included regular fields, same 19 MAT scope; old values recalculated from first-pass artifact, then source-completed values after exact official-document review.",
+      "before": {
+        "readyTotal": 132,
+        "readyByField": {
+          "base": 6,
+          "purpose": 13,
+          "application_area": 9,
+          "substrates": 3,
+          "color": 7,
+          "adhesive_class": 18,
+          "layer_thickness": 12,
+          "consumption": 8,
+          "water_requirement": 10,
+          "pot_life": 3,
+          "application_temperature": 12,
+          "open_time": 8,
+          "adjustment_time": 8,
+          "walkability": 4,
+          "heated_floor_compatibility": 8,
+          "standard": 3
+        }
+      },
+      "after": {
+        "readyTotal": 221,
+        "readyByField": {
+          "base": 14,
+          "purpose": 18,
+          "application_area": 16,
+          "substrates": 10,
+          "color": 9,
+          "adhesive_class": 18,
+          "layer_thickness": 18,
+          "consumption": 15,
+          "water_requirement": 14,
+          "pot_life": 16,
+          "application_temperature": 16,
+          "open_time": 14,
+          "adjustment_time": 14,
+          "walkability": 6,
+          "heated_floor_compatibility": 12,
+          "standard": 11
+        }
+      },
+      "note": "Baseline before original source-completion is retained from the first-pass artifact. Final counts include source-backed exact qualifiers now representable by production schema-v11 text definitions; excluded grout time, maximum tile size and adhesion do not count as canonical READY."
+    },
+    "deferredFieldEvidence": [
+      {
+        "code": "grouting_time",
+        "sourceEvidenceProducts": 7,
+        "brandsWithEvidence": 5,
+        "decision": "EXCLUDE",
+        "semanticRisk": "Source evidence branches by wall/floor and absorption/setting conditions. One unconditioned field loses distinctions; exclude until the value model can retain conditions."
+      },
+      {
+        "code": "maximum_tile_size",
+        "sourceEvidenceProducts": 9,
+        "brandsWithEvidence": 5,
+        "decision": "EXCLUDE",
+        "semanticRisk": "Limits depend on tile material/side, wall/floor, substrate and application method; one general maximum is misleading."
+      },
+      {
+        "code": "adhesion",
+        "sourceEvidenceProducts": 10,
+        "brandsWithEvidence": 6,
+        "decision": "EXCLUDE",
+        "semanticRisk": "Existing scalar does not encode test exposure, conditioning, minimum threshold versus actual/maximum."
+      }
+    ]
+  },
+  "safety": {
+    "productionAccessed": false,
+    "productionMutated": false,
+    "runnerPrepared": false,
+    "applyPrepared": false,
+    "imagesTouched": false,
+    "titlesChanged": false,
+    "customerContentOrSeoChanged": false
+  },
+  "productionSchemaV11Evidence": {
+    "source": "Owner-provided result of prior production read-only audit; not independently accessed in this task.",
+    "schemaVersion": 11,
+    "structure": {
+      "id": 16,
+      "parentId": 1,
+      "type": "subcategory",
+      "name": "Клей для Плитки",
+      "normalizedName": "клей для плитки",
+      "externalCode": "SUB-000015",
+      "isActive": true,
+      "parentName": "Смеси",
+      "parentType": "category"
+    },
+    "currentMemberships": 0,
+    "requiredExistingDefinition": "pot_life: text, default_unit null; other required existing codes present and active",
+    "missingDefinitions": [
+      "adhesive_class",
+      "open_time",
+      "adjustment_time",
+      "heated_floor_compatibility"
+    ]
+  }
+}
