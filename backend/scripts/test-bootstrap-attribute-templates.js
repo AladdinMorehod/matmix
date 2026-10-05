@@ -72,16 +72,16 @@ async function productDropdownCodes(db, structureId, section) {
 }
 
 async function main() {
-    assert.strictEqual(EXPECTED_MEMBERSHIP_COUNT, 96);
-    assert.deepStrictEqual(CANONICAL.categories.map(item => item.structureId), [2, 4, 5, 7, 8, 10]);
-    assert.strictEqual(CANONICAL.categories.reduce((sum, item) => sum + item.codes.length, 0), 72);
-    assert.strictEqual(CANONICAL.categories.length * CANONICAL.mainAttributes.length, 24);
+    assert.strictEqual(EXPECTED_MEMBERSHIP_COUNT, 116);
+    assert.deepStrictEqual(CANONICAL.categories.map(item => item.structureId), [2, 4, 5, 7, 8, 10, 16]);
+    assert.strictEqual(CANONICAL.categories.reduce((sum, item) => sum + item.codes.length, 0), 88);
+    assert.strictEqual(CANONICAL.categories.length * CANONICAL.mainAttributes.length, 28);
     const canonicalTuples = CANONICAL.categories.flatMap(category => [
         ...CANONICAL.mainAttributes.map((code, sortOrder) => [category.structureId, "main", code, sortOrder]),
         ...category.codes.map((code, sortOrder) => [category.structureId, "regular", code, sortOrder])
     ]);
-    assert.strictEqual(new Set(canonicalTuples.map(([structureId, section, code]) => JSON.stringify([structureId, section, code]))).size, 96, "all canonical membership tuples must be unique");
-    assert.strictEqual(validateCanonical(CANONICAL), 96);
+    assert.strictEqual(new Set(canonicalTuples.map(([structureId, section, code]) => JSON.stringify([structureId, section, code]))).size, 116, "all canonical membership tuples must be unique");
+    assert.strictEqual(validateCanonical(CANONICAL), 116);
     const duplicateCodeCanonical = { ...CANONICAL, categories: CANONICAL.categories.map((category, index) => index === 0
         ? { ...category, codes: [...category.codes, category.codes[0]] } : category) };
     assert.throws(() => validateCanonical(duplicateCodeCanonical), /Invalid canonical code list/);
@@ -100,7 +100,7 @@ async function main() {
             [CANONICAL.categories[0].structureId, 1]);
         const dryRun = await runBatch(db);
         assert.strictEqual(dryRun.status, "CHANGES_REQUIRED");
-        assert.strictEqual(dryRun.plan.willAdd, 23);
+        assert.strictEqual(dryRun.plan.willAdd, 27);
         assert.strictEqual(dryRun.plan.willUpdate, 1);
         assert.deepStrictEqual(await hashProtectedTables(db), beforeProtected, "dry-run must preserve all protected data");
         assert.deepStrictEqual(await templateRows(db), beforeTemplates, "dry-run must not write template rows");
@@ -115,7 +115,7 @@ async function main() {
         assert.deepStrictEqual(applied.protectedHashesAfter, applied.protectedHashesBefore);
 
         const mainCounts = await db.all("SELECT section,COUNT(*) AS count FROM product_attribute_templates GROUP BY section ORDER BY section");
-        assert.deepStrictEqual(mainCounts, [{ section: "main", count: 24 }, { section: "regular", count: 72 }]);
+        assert.deepStrictEqual(mainCounts, [{ section: "main", count: 28 }, { section: "regular", count: 88 }]);
         assert.strictEqual((await templateRows(db)).length, EXPECTED_MEMBERSHIP_COUNT, "applied template fixture must contain the exact global canonical memberships");
         const brand = await db.get(`SELECT id,section,sort_order,is_required,unit_override FROM product_attribute_templates WHERE structure_id=? AND attribute_definition_id=?`,
             [CANONICAL.categories[0].structureId, 1]);
@@ -136,7 +136,7 @@ async function main() {
         assert.strictEqual(secondDryRun.plan.willUpdate, 0);
         assert.strictEqual(secondDryRun.status, "EXISTING_OK / NO_CHANGES");
         assert(!hasChanges(secondDryRun.plan));
-        assert.strictEqual((await templateRows(db)).length, 96);
+        assert.strictEqual((await templateRows(db)).length, 116);
         assert.deepStrictEqual(await hashProtectedTables(db), beforeProtected, "repeat dry-run must not change products or product_attribute_values");
         const secondApply = await runBatch(db, { apply: true, backup: async () => { throw new Error("backup should not run for a no-op"); } });
         assert.strictEqual(secondApply.status, "EXISTING_OK / NO_CHANGES");
@@ -176,9 +176,9 @@ async function main() {
     const wrongDb = await openDatabase(wrongPath, true);
     try { assert(blockingIssues(await buildPlan(wrongDb))); } finally { await wrongDb.close(); }
 
-    console.log(JSON.stringify({ success: true, expectedMemberships: EXPECTED_MEMBERSHIP_COUNT, structures: CANONICAL.categories.map(item => item.structureId), mainMemberships: 24, regularMemberships: 72,
+    console.log(JSON.stringify({ success: true, expectedMemberships: EXPECTED_MEMBERSHIP_COUNT, structures: CANONICAL.categories.map(item => item.structureId), mainMemberships: 28, regularMemberships: 88,
         dryRunImmutable: true, idempotent: true, membershipIdPreserved: true, requiredAndUnitOverridePreserved: true,
-        dropdownSectionsVerified: true, perCategoryCodeOrderReported: true, exactTemplateRows: 96, repeatDryRunAdds: 0,
+        dropdownSectionsVerified: true, perCategoryCodeOrderReported: true, exactTemplateRows: 116, repeatDryRunAdds: 0,
         unlistedMembershipPreservedAndFlagged: true, productsValuesDefinitionsImagesSeoUnchanged: true, backupVerified: true,
         missingDefinitionBlocked: true, wrongStructureBlocked: true }, null, 2));
 }

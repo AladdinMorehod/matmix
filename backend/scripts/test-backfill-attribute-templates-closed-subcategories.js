@@ -84,8 +84,11 @@ async function expectReject(operation, pattern) {
 async function main() {
     assert.strictEqual(EXPECTED_ROW_COUNT, 53);
     assert.deepStrictEqual(CLOSED_STRUCTURE_IDS, [2, 4, 5, 7, 8]);
-    assert.deepStrictEqual(CANONICAL.categories.map(item => item.structureId), [2, 4, 5, 7, 8, 10]);
+    assert.deepStrictEqual(CANONICAL.categories.map(item => item.structureId), [2, 4, 5, 7, 8, 10, 16]);
     assert.strictEqual(CANONICAL.categories.find(item => item.structureId === 10).codes.length, 19);
+    assert.deepStrictEqual(CANONICAL.categories.find(item => item.structureId === 16).codes,
+        ["base", "purpose", "application_area", "substrates", "color", "adhesive_class", "layer_thickness", "consumption", "water_requirement", "pot_life", "application_temperature", "open_time", "adjustment_time", "walkability", "heated_floor_compatibility", "standard"]);
+    assert(!CLOSED_STRUCTURE_IDS.includes(16), "tile adhesive registration must not expand the closed-template mutation scope");
     assert(CANONICAL.categories.every(category => category.codes.every(code => !MAIN_ATTRIBUTES.some(item => item.code === code))));
     assert.strictEqual(parseArgs(["--db", "fixture.db"]).apply, false, "dry-run is the default");
     assert.throws(() => parseArgs(["--db", "fixture.db", "--apply"]), /Apply requires --confirm/);
@@ -107,6 +110,7 @@ async function main() {
     await readOnly.close();
 
     const writable = await openDatabase(successfulFile, false);
+    const tileAdhesiveBefore = await writable.all("SELECT * FROM product_attribute_templates WHERE structure_id=16 ORDER BY id");
     const backup = await createOnlineBackup(writable, successfulFile, tempRoot);
     assert(fs.existsSync(backup.path));
     assert(backup.size > 1024);
@@ -115,7 +119,7 @@ async function main() {
     assert.strictEqual(applied.plan.expectedRowCount, EXPECTED_ROW_COUNT);
     assert.deepStrictEqual(applied.protectedHashesAfter, applied.protectedHashesBefore);
     const mainRows = await writable.all(`SELECT t.structure_id,d.code,t.section,t.sort_order FROM product_attribute_templates t JOIN product_attribute_definitions d ON d.id=t.attribute_definition_id WHERE d.code IN (${MAIN_ATTRIBUTES.map(() => "?").join(",")}) ORDER BY t.structure_id,t.sort_order`, MAIN_ATTRIBUTES.map(item => item.code));
-    assert.strictEqual(mainRows.length, 24, "four main memberships for each of six canonical structures must remain");
+    assert.strictEqual(mainRows.length, 28, "four main memberships for each of seven canonical structures must remain");
     assert.deepStrictEqual(await writable.all("SELECT * FROM product_attribute_templates WHERE section='main' ORDER BY id"), untouchedMainBefore, "main tuples and their metadata must remain byte-for-byte unchanged");
     for (const structureId of CLOSED_STRUCTURE_IDS) {
         assert.deepStrictEqual(mainRows.filter(row => row.structure_id === structureId).map(({ code, section, sort_order }) => ({ code, section, sort_order })),
@@ -132,6 +136,8 @@ async function main() {
     const hydroRows = await writable.all("SELECT * FROM product_attribute_templates WHERE structure_id=10 ORDER BY id");
     assert.strictEqual(hydroRows.length, 23, "Hydroisolation memberships must remain outside the closed backfill scope");
     assert.deepStrictEqual(hydroRows, hydroBefore, "Hydroisolation structure 10 template rows must remain unchanged");
+    assert.deepStrictEqual(await writable.all("SELECT * FROM product_attribute_templates WHERE structure_id=16 ORDER BY id"), tileAdhesiveBefore,
+        "tile-adhesive canonical registration must remain outside the closed-template mutation scope");
     const beforeIdempotent = await hashProtectedTables(writable);
     const secondDryRun = await runBatch(writable);
     assert.strictEqual(secondDryRun.status, "EXISTING_OK / NO_CHANGES");
@@ -175,7 +181,7 @@ async function main() {
     await wrongDb.close();
 
     console.log(JSON.stringify({ success: true, exactScope: true, closedStructureIds: CLOSED_STRUCTURE_IDS, expectedRowCount: EXPECTED_ROW_COUNT,
-        mainMembershipsPreserved: 20, allCanonicalMainMembershipsPresent: 24, hydroStructure10ExcludedFromMutation: true, schemaV4Compatibility: true,
+        mainMembershipsPreserved: 20, allCanonicalMainMembershipsPresent: 28, hydroStructure10ExcludedFromMutation: true, tileAdhesiveStructure16ExcludedFromMutation: true, schemaV4Compatibility: true,
         canonicalOrdering: true, existingRowIdsPreserved: true, explicitCoverageTemplateRemoval: true, dryRunImmutable: true, idempotent: true, rollback: true,
         missingDefinitionGuard: true, unknownDefinitionGuard: true, wrongStructureGuard: true,
         productsValuesImagesSeoHashesUnchanged: true, verifiedOnlineBackup: true }, null, 2));

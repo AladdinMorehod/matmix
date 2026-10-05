@@ -32,6 +32,11 @@ module.exports = Object.freeze({
             "base", "purpose", "application_area", "application_method", "substrates", "color", "layer_thickness",
             "consumption", "water_requirement", "mixing_ratio", "pot_life", "drying_time", "application_temperature",
             "compressive_strength", "adhesion", "frost_resistance", "waterproofness", "crack_bridging", "standard"
+        ]) }),
+        Object.freeze({ name: "Клей для Плитки", structureId: 16, codes: Object.freeze([
+            "base", "purpose", "application_area", "substrates", "color", "adhesive_class", "layer_thickness",
+            "consumption", "water_requirement", "pot_life", "application_temperature", "open_time", "adjustment_time",
+            "walkability", "heated_floor_compatibility", "standard"
         ]) })
     ])
 });
