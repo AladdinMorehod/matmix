@@ -382,14 +382,14 @@
         "code": "shelf_life",
         "existingOrNew": "existing",
         "datatype": "number",
-        "unit": "мес",
+        "unit": "месяцев",
         "productsReady": 10,
         "brandsReady": 4,
         "needsSource": 6,
         "notAvailable": 0,
         "needsMapping": 2,
         "sourceConflict": 1,
-        "semanticRisk": "Existing canonical unit is months. Preserve exact month values; day-based values stay NEEDS_MAPPING.",
+        "semanticRisk": "Production v11 canonical unit is months; sourceUnit is preserved separately. Day-based values stay NEEDS_MAPPING.",
         "decision": "INCLUDE"
       },
       {
@@ -963,8 +963,9 @@
         },
         "shelf_life": {
           "value": 12,
-          "unit": "мес",
-          "sourceId": "knaufFlizen"
+          "unit": "месяцев",
+          "sourceId": "knaufFlizen",
+          "sourceUnit": "мес"
         },
         "walkability": {
           "value": "можно ходить через 24 ч",
@@ -1049,8 +1050,9 @@
         },
         "shelf_life": {
           "value": 12,
-          "unit": "мес",
-          "sourceId": "knaufFlizenPlus"
+          "unit": "месяцев",
+          "sourceId": "knaufFlizenPlus",
+          "sourceUnit": "мес"
         },
         "base": {
           "value": "цементная клеевая смесь",
@@ -1318,7 +1320,8 @@
         "shelf_life": {
           "value": 12,
           "sourceId": "ceresitCm11Tds",
-          "unit": "мес"
+          "unit": "месяцев",
+          "sourceUnit": "мес"
         },
         "standard": {
           "value": "C1 T, ГОСТ Р 56387-2018",
@@ -1444,8 +1447,9 @@
         "shelf_life": {
           "value": 12,
           "sourceId": "ceresitCm14Tds",
-          "unit": "мес",
-          "condition": "в сухих условиях, на поддонах, в оригинальной неповрежденной бумажной упаковке; 5 кг фольгированная упаковка имеет иной срок 18 мес"
+          "unit": "месяцев",
+          "condition": "в сухих условиях, на поддонах, в оригинальной неповрежденной бумажной упаковке; 5 кг фольгированная упаковка имеет иной срок 18 мес",
+          "sourceUnit": "мес"
         },
         "standard": {
           "value": "C2 T, ГОСТ Р 56387-2018",
@@ -1579,7 +1583,8 @@
         "shelf_life": {
           "value": 12,
           "sourceId": "ceresitCm16Tds",
-          "unit": "мес"
+          "unit": "месяцев",
+          "sourceUnit": "мес"
         },
         "standard": {
           "value": "C2 TE по ГОСТ Р 56387-2018",
@@ -1893,7 +1898,8 @@
         "shelf_life": {
           "value": 12,
           "sourceId": "litokolK80",
-          "unit": "мес"
+          "unit": "месяцев",
+          "sourceUnit": "мес"
         },
         "standard": {
           "value": "C2 E по ГОСТ Р 56387-2018",
@@ -2024,7 +2030,8 @@
         "shelf_life": {
           "value": 12,
           "sourceId": "litokolK55",
-          "unit": "мес"
+          "unit": "месяцев",
+          "sourceUnit": "мес"
         },
         "standard": {
           "value": "C2 TE по ГОСТ Р 56387-2018",
@@ -2144,7 +2151,8 @@
         "shelf_life": {
           "value": 12,
           "sourceId": "litokolK47",
-          "unit": "мес"
+          "unit": "месяцев",
+          "sourceUnit": "мес"
         },
         "pot_life": {
           "value": "до 8 часов",
@@ -2267,8 +2275,9 @@
         },
         "shelf_life": {
           "value": 12,
-          "unit": "мес",
-          "sourceId": "unisPlus"
+          "unit": "месяцев",
+          "sourceId": "unisPlus",
+          "sourceUnit": "мес"
         },
         "walkability": {
           "value": "не ранее 24 ч",
@@ -2705,8 +2714,9 @@
         },
         "shelf_life": {
           "value": 12,
-          "unit": "мес",
-          "sourceId": "unis2000"
+          "unit": "месяцев",
+          "sourceId": "unis2000",
+          "sourceUnit": "мес"
         }
       },
       "needsSource": [
@@ -3427,12 +3437,29 @@
       "parentType": "category"
     },
     "currentMemberships": 0,
-    "requiredExistingDefinition": "pot_life: text, default_unit null; other required existing codes present and active",
+    "requiredExistingDefinition": "shelf_life: number, default_unit месяцев; package_weight: number, default_unit кг; pot_life: text, default_unit null; other required existing codes present and active",
     "missingDefinitions": [
       "adhesive_class",
       "open_time",
       "adjustment_time",
       "heated_floor_compatibility"
+    ],
+    "existingDefinitions": [
+      {
+        "code": "shelf_life",
+        "dataType": "number",
+        "defaultUnit": "месяцев"
+      },
+      {
+        "code": "package_weight",
+        "dataType": "number",
+        "defaultUnit": "кг"
+      },
+      {
+        "code": "pot_life",
+        "dataType": "text",
+        "defaultUnit": null
+      }
     ]
   }
 }

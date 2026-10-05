@@ -1,6 +1,3 @@
-"use strict";
-
-// Generated from docs/product-content/tile-adhesive-discovery-batch1-review.json.
 const DATA = {
   "CHECKED_AT": "2026-10-05",
   "CONFIRM_H1": "BOOTSTRAP_TILE_ADHESIVE_TEMPLATE_BATCH1",
@@ -327,12 +324,13 @@ const DATA = {
           "status": "READY",
           "value": 12,
           "dataType": "number",
-          "unit": "мес",
+          "unit": "месяцев",
           "sources": [
             "knaufFlizen"
           ],
           "sourceWording": null,
-          "evidenceNote": null
+          "evidenceNote": null,
+          "sourceUnit": "мес"
         },
         "package_weight": {
           "status": "READY",
@@ -563,12 +561,13 @@ const DATA = {
           "status": "READY",
           "value": 12,
           "dataType": "number",
-          "unit": "мес",
+          "unit": "месяцев",
           "sources": [
             "knaufFlizenPlus"
           ],
           "sourceWording": null,
-          "evidenceNote": null
+          "evidenceNote": null,
+          "sourceUnit": "мес"
         },
         "package_weight": {
           "status": "READY",
@@ -1040,12 +1039,13 @@ const DATA = {
           "status": "READY",
           "value": 12,
           "dataType": "number",
-          "unit": "мес",
+          "unit": "месяцев",
           "sources": [
             "ceresitCm11Tds"
           ],
           "sourceWording": null,
-          "evidenceNote": null
+          "evidenceNote": null,
+          "sourceUnit": "мес"
         },
         "package_weight": {
           "status": "READY",
@@ -1282,12 +1282,13 @@ const DATA = {
           "status": "READY",
           "value": 12,
           "dataType": "number",
-          "unit": "мес",
+          "unit": "месяцев",
           "sources": [
             "ceresitCm14Tds"
           ],
           "sourceWording": null,
-          "evidenceNote": null
+          "evidenceNote": null,
+          "sourceUnit": "мес"
         },
         "package_weight": {
           "status": "READY",
@@ -1527,12 +1528,13 @@ const DATA = {
           "status": "READY",
           "value": 12,
           "dataType": "number",
-          "unit": "мес",
+          "unit": "месяцев",
           "sources": [
             "ceresitCm16Tds"
           ],
           "sourceWording": null,
-          "evidenceNote": null
+          "evidenceNote": null,
+          "sourceUnit": "мес"
         },
         "package_weight": {
           "status": "READY",
@@ -2246,12 +2248,13 @@ const DATA = {
           "status": "READY",
           "value": 12,
           "dataType": "number",
-          "unit": "мес",
+          "unit": "месяцев",
           "sources": [
             "litokolK80"
           ],
           "sourceWording": null,
-          "evidenceNote": null
+          "evidenceNote": null,
+          "sourceUnit": "мес"
         },
         "package_weight": {
           "status": "READY",
@@ -2489,12 +2492,13 @@ const DATA = {
           "status": "READY",
           "value": 12,
           "dataType": "number",
-          "unit": "мес",
+          "unit": "месяцев",
           "sources": [
             "litokolK55"
           ],
           "sourceWording": null,
-          "evidenceNote": null
+          "evidenceNote": null,
+          "sourceUnit": "мес"
         },
         "package_weight": {
           "status": "READY",
@@ -2732,12 +2736,13 @@ const DATA = {
           "status": "READY",
           "value": 12,
           "dataType": "number",
-          "unit": "мес",
+          "unit": "месяцев",
           "sources": [
             "litokolK47"
           ],
           "sourceWording": null,
-          "evidenceNote": null
+          "evidenceNote": null,
+          "sourceUnit": "мес"
         },
         "package_weight": {
           "status": "READY",
@@ -2970,12 +2975,13 @@ const DATA = {
           "status": "READY",
           "value": 12,
           "dataType": "number",
-          "unit": "мес",
+          "unit": "месяцев",
           "sources": [
             "unisPlus"
           ],
           "sourceWording": null,
-          "evidenceNote": null
+          "evidenceNote": null,
+          "sourceUnit": "мес"
         },
         "package_weight": {
           "status": "READY",
@@ -3923,12 +3929,13 @@ const DATA = {
           "status": "READY",
           "value": 12,
           "dataType": "number",
-          "unit": "мес",
+          "unit": "месяцев",
           "sources": [
             "unis2000"
           ],
           "sourceWording": null,
-          "evidenceNote": null
+          "evidenceNote": null,
+          "sourceUnit": "мес"
         },
         "package_weight": {
           "status": "READY",
@@ -4895,7 +4902,7 @@ const DATA = {
     {
       "code": "shelf_life",
       "dataType": "number",
-      "unit": "мес"
+      "unit": "месяцев"
     },
     {
       "code": "package_weight",

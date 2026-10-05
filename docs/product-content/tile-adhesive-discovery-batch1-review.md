@@ -57,7 +57,7 @@ Main order: `brand → product_type → shelf_life → package_weight`. Regular 
 |---|---|---|---:|---:|---:|---:|---:|---|
 | `brand` | existing | text | 19 / 6 | 0 | 0 | 0 | 0 | INCLUDE — Established global main attribute; brand remains source-backed per exact product. |
 | `product_type` | existing | text | 19 / 6 | 0 | 0 | 0 | 0 | INCLUDE — Concise product-type distinction without marketing-only claims. |
-| `shelf_life` | existing | number / мес | 10 / 4 | 6 | 0 | 2 | 1 | INCLUDE — Existing canonical unit is months. Preserve exact month values; day-based values stay NEEDS_MAPPING. |
+| `shelf_life` | existing | number / месяцев | 10 / 4 | 6 | 0 | 2 | 1 | INCLUDE — Production v11 canonical unit is «месяцев»; sourceUnit «мес» is preserved separately. Day-based values stay NEEDS_MAPPING. |
 | `package_weight` | existing | number / кг | 18 / 6 | 1 | 0 | 0 | 0 | INCLUDE — Manufacturer pack size is distinct from operational products.weight; source the exact package. |
 | `base` | existing | text | 14 / 6 | 5 | 0 | 0 | 0 | INCLUDE — Cross-brand binder/base composition where explicitly stated. |
 | `purpose` | existing | text | 18 / 6 | 1 | 0 | 0 | 0 | INCLUDE — What tile/material the product is intended to bond, distinct from location. |
@@ -124,7 +124,7 @@ Do not create `grouting_time`, `maximum_tile_size`, or `adhesion_text`. Grouting
 | `adjustment_time` | около 10 мин | [knaufFlizen](https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/knauf-flizen/) |
 | `heated_floor_compatibility` | false (manufacturer wording “нет”) | [knaufFlizen](https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/knauf-flizen/) |
 | `standard` | ГОСТ Р 56387-2018 | [knaufFlizen](https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/knauf-flizen/) |
-| `shelf_life` | 12 мес | [knaufFlizen](https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/knauf-flizen/) |
+| `shelf_life` | 12 месяцев | [knaufFlizen](https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/knauf-flizen/) |
 | `walkability` | можно ходить через 24 ч | [knaufFlizen](https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/knauf-flizen/) |
 | `pot_life` | около 3 ч | [knaufFlizen](https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/knauf-flizen/) |
 
@@ -154,7 +154,7 @@ Do not create `grouting_time`, `maximum_tile_size`, or `adhesion_text`. Grouting
 | `application_area` | внутренние и наружные работы; стены и полы | [knaufFlizenPlus](https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/knauf-flizen-plyus/) |
 | `purpose` | керамическая/керамогранитная плитка и камень до 60×60 см | [knaufFlizenPlus](https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/knauf-flizen-plyus/) |
 | `heated_floor_compatibility` | true (manufacturer wording “да”) | [knaufFlizenPlus](https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/knauf-flizen-plyus/) |
-| `shelf_life` | 12 мес | [knaufFlizenPlus](https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/knauf-flizen-plyus/) |
+| `shelf_life` | 12 месяцев | [knaufFlizenPlus](https://www.knauf.ru/catalog/sukhie-stroitelnye-smesi-i-gotovye-sostavy/knauf-flizen-plyus/) |
 | `base` | цементная клеевая смесь | [knaufFlizenPlusTds](https://www.knauf.ru/upload/iblock/a6c/ew3uldd0dsgn02i6jssgcep8eo62nv10/30_IL_KNAUF_Flizen_Plyus_25_03_2025_v01_Preview.pdf) |
 | `substrates` | цементные и гипсовые штукатурки и стяжки, ГКЛ и ГВЛ; сильно впитывающие газобетонные и газосиликатные основания — с рекомендованной КНАУФ грунтовкой; в зонах прямого контакта с водой неводостойкие ГКЛ/ГВЛ и ПГП требуют гидроизоляции | [knaufFlizenPlusTds](https://www.knauf.ru/upload/iblock/a6c/ew3uldd0dsgn02i6jssgcep8eo62nv10/30_IL_KNAUF_Flizen_Plyus_25_03_2025_v01_Preview.pdf) |
 | `layer_thickness` | 2–6 мм | [knaufFlizenPlusTds](https://www.knauf.ru/upload/iblock/a6c/ew3uldd0dsgn02i6jssgcep8eo62nv10/30_IL_KNAUF_Flizen_Plyus_25_03_2025_v01_Preview.pdf) |
@@ -231,7 +231,7 @@ Do not create `grouting_time`, `maximum_tile_size`, or `adhesion_text`. Grouting
 | `open_time` | 20 мин | [ceresitCm11Tds](https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-cm11-pro) |
 | `adjustment_time` | 20 мин | [ceresitCm11Tds](https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-cm11-pro) |
 | `application_temperature` | +5…+30 °C | [ceresitCm11Tds](https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-cm11-pro) |
-| `shelf_life` | 12 мес | [ceresitCm11Tds](https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-cm11-pro) |
+| `shelf_life` | 12 месяцев | [ceresitCm11Tds](https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-cm11-pro) |
 | `standard` | C1 T, ГОСТ Р 56387-2018 | [ceresitCm11Tds](https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-cm11-pro) |
 | `consumption` | Ориентировочно: плитка до 5 см — 1,7 кг/м² (зуб 3 мм); до 10 см — 2,0 (4 мм); до 15 см — 2,7 (6 мм); до 25 см — 3,6 (8 мм); до 30 см — 4,2 (10 мм); до 60 см — 5,5 (12 мм); либо около 1,2 кг/м² на 1 мм при 100% заполнении | [ceresitCm11Tds](https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-cm11-pro) |
 | `pot_life` | около 2 ч | [ceresitCm11Tds](https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-cm11-pro) |
@@ -269,7 +269,7 @@ Do not create `grouting_time`, `maximum_tile_size`, or `adhesion_text`. Grouting
 | `layer_thickness` | не более 10 мм | [ceresitCm14Tds](https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-CM14) |
 | `adjustment_time` | 20 мин | [ceresitCm14Tds](https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-CM14) |
 | `heated_floor_compatibility` | true (manufacturer wording “да; допускается применение на стяжках с подогревом”) | [ceresitCm14Tds](https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-CM14) |
-| `shelf_life` | 12 мес | [ceresitCm14Tds](https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-CM14) |
+| `shelf_life` | 12 месяцев | [ceresitCm14Tds](https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-CM14) |
 | `standard` | C2 T, ГОСТ Р 56387-2018 | [ceresitCm14Tds](https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-CM14) |
 | `pot_life` | около 2 ч | [ceresitCm14Tds](https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-CM14) |
 
@@ -304,7 +304,7 @@ Do not create `grouting_time`, `maximum_tile_size`, or `adhesion_text`. Grouting
 | `adjustment_time` | 25 мин | [ceresitCm16](https://ceresit.ru/ru/products/tiling/tile-adhesives/cm-16) |
 | `heated_floor_compatibility` | true (manufacturer wording “да; для стяжек с подогревом”) | [ceresitCm16](https://ceresit.ru/ru/products/tiling/tile-adhesives/cm-16) |
 | `package_weight` | 25 кг | [ceresitCm16Tds](https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-cm16) |
-| `shelf_life` | 12 мес | [ceresitCm16Tds](https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-cm16) |
+| `shelf_life` | 12 месяцев | [ceresitCm16Tds](https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-cm16) |
 | `standard` | C2 TE по ГОСТ Р 56387-2018 | [ceresitCm16Tds](https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-cm16) |
 | `color` | серый | [ceresitSto2022](https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-sto-walls-89589540-002-2022) |
 | `pot_life` | около 2 ч | [ceresitCm16](https://ceresit.ru/ru/products/tiling/tile-adhesives/cm-16) |
@@ -411,7 +411,7 @@ Do not create `grouting_time`, `maximum_tile_size`, or `adhesion_text`. Grouting
 | `layer_thickness` | рекомендуемый слой до 5 мм; локально до 15 мм | [litokolK80](https://www.litokol.ru/catalog/litoflex-k802/) |
 | `consumption` | 1,16 кг/м² на 1 мм | [litokolK80](https://www.litokol.ru/catalog/litoflex-k802/) |
 | `heated_floor_compatibility` | true (manufacturer wording “да; производитель указывает применение в системе «тёплый пол»”) | [litokolK80](https://www.litokol.ru/catalog/litoflex-k802/) |
-| `shelf_life` | 12 мес | [litokolK80](https://www.litokol.ru/catalog/litoflex-k802/) |
+| `shelf_life` | 12 месяцев | [litokolK80](https://www.litokol.ru/catalog/litoflex-k802/) |
 | `standard` | C2 E по ГОСТ Р 56387-2018 | [litokolK80](https://www.litokol.ru/catalog/litoflex-k802/) |
 | `pot_life` | до 9 часов | [litokolK80](https://www.litokol.ru/catalog/litoflex-k802/) |
 
@@ -447,7 +447,7 @@ Do not create `grouting_time`, `maximum_tile_size`, or `adhesion_text`. Grouting
 | `layer_thickness` | рекомендуемый слой 2–5 мм; локально до 15 мм | [litokolK55](https://www.litokol.ru/catalog/litoplus-k55/) |
 | `consumption` | 1,12 кг/м² на 1 мм | [litokolK55](https://www.litokol.ru/catalog/litoplus-k55/) |
 | `heated_floor_compatibility` | true (manufacturer wording “да, для системы «тёплый пол»”) | [litokolK55](https://www.litokol.ru/catalog/litoplus-k55/) |
-| `shelf_life` | 12 мес | [litokolK55](https://www.litokol.ru/catalog/litoplus-k55/) |
+| `shelf_life` | 12 месяцев | [litokolK55](https://www.litokol.ru/catalog/litoplus-k55/) |
 | `standard` | C2 TE по ГОСТ Р 56387-2018 | [litokolK55](https://www.litokol.ru/catalog/litoplus-k55/) |
 | `pot_life` | до 6 часов | [litokolK55](https://www.litokol.ru/catalog/litoplus-k55/) |
 
@@ -481,7 +481,7 @@ Do not create `grouting_time`, `maximum_tile_size`, or `adhesion_text`. Grouting
 | `layer_thickness` | рекомендуемый слой 2–5 мм; максимальная локальная толщина до 15 мм | [litokolK47](https://www.litokol.ru/catalog/litokol-k47/) |
 | `open_time` | 20 мин | [litokolK47](https://www.litokol.ru/catalog/litokol-k47/) |
 | `adjustment_time` | до 20 мин | [litokolK47](https://www.litokol.ru/catalog/litokol-k47/) |
-| `shelf_life` | 12 мес | [litokolK47](https://www.litokol.ru/catalog/litokol-k47/) |
+| `shelf_life` | 12 месяцев | [litokolK47](https://www.litokol.ru/catalog/litokol-k47/) |
 | `pot_life` | до 8 часов | [litokolK47](https://www.litokol.ru/catalog/litokol-k47/) |
 
 **Unresolved regular fields:**
@@ -516,7 +516,7 @@ Do not create `grouting_time`, `maximum_tile_size`, or `adhesion_text`. Grouting
 | `open_time` | 30 мин | [unisPlus](https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-plyus/) |
 | `adjustment_time` | 20 мин | [unisPlus](https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-plyus/) |
 | `heated_floor_compatibility` | true (manufacturer wording “да”) | [unisPlus](https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-plyus/) |
-| `shelf_life` | 12 мес | [unisPlus](https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-plyus/) |
+| `shelf_life` | 12 месяцев | [unisPlus](https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-plyus/) |
 | `walkability` | не ранее 24 ч | [unisPlus](https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-plyus/) |
 | `pot_life` | не менее 240 минут | [unisPlusTds](https://unistrom.ru/upload/iblock/cf6/8fu2wqvm4syw5hce3ktszlmow85gps3b.pdf) |
 
@@ -653,7 +653,7 @@ Do not create `grouting_time`, `maximum_tile_size`, or `adhesion_text`. Grouting
 | `layer_thickness` | 2–15 мм | [unis2000](https://unistrom.ru/catalog/klei/klei-dlya-plitki/kley-dlya-keramogranita/unis-2000/) |
 | `consumption` | 1,3 кг/м² на 1 мм | [unis2000](https://unistrom.ru/catalog/klei/klei-dlya-plitki/kley-dlya-keramogranita/unis-2000/) |
 | `heated_floor_compatibility` | true (manufacturer wording “да”) | [unis2000](https://unistrom.ru/catalog/klei/klei-dlya-plitki/kley-dlya-keramogranita/unis-2000/) |
-| `shelf_life` | 12 мес | [unis2000](https://unistrom.ru/catalog/klei/klei-dlya-plitki/kley-dlya-keramogranita/unis-2000/) |
+| `shelf_life` | 12 месяцев | [unis2000](https://unistrom.ru/catalog/klei/klei-dlya-plitki/kley-dlya-keramogranita/unis-2000/) |
 
 **Unresolved regular fields:**
 - `base`: NEEDS_SOURCE
