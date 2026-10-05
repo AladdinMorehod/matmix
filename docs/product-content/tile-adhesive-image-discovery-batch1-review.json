@@ -95,7 +95,7 @@
     "imagesImported": false,
     "imageBindingsChanged": false,
     "databaseMutated": false,
-    "commitCreated": false,
-    "pushPerformed": false
+    "reviewCommitCreated": true,
+    "reviewPushPerformed": true
   }
 }

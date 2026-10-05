@@ -40,7 +40,7 @@ The task-provided production state was 19 shared placeholders and one image row 
 
 ## OWNER IMAGE SEARCH CHECKLIST
 
-| MAT | Exact visual evidence required |
+| MAT | Exact visual evidence required | Why unresolved |
 |---|---|---|
 | MAT-000133 | Keep `IDENTITY_BLOCKED_IMAGE`. Exact Russian CM 17 Super Flex 25 kg packaging revision, with evidence tying the package generation to this MAT. Do not automatically substitute CM 17 PRO. | Exact revision remains unresolved; a generic CM 17 match is insufficient. |
 | MAT-000134 | Actual 15 kg bag front with readable wording: K16 or LITOLIGHT K16. | Official naming is mixed: page/current heading says K16; product wording/history says LITOLIGHT K16. Front-of-bag wording is required. |
