@@ -11,6 +11,7 @@ const RUNNER = require("./backfill-tile-adhesive-content-batch1");
 const ROOT = fs.mkdtempSync(path.join(os.tmpdir(), "matmix-tile-adhesive-content-"));
 const EXPECTED = [
     "MAT-000127", "MAT-000128", "MAT-000129", "MAT-000130", "MAT-000131", "MAT-000132",
+    "MAT-000133",
     "MAT-000134", "MAT-000135", "MAT-000136", "MAT-000137", "MAT-000138", "MAT-000139",
     "MAT-000140", "MAT-000141", "MAT-000142", "MAT-000143", "MAT-000144", "MAT-000145"
 ];
@@ -118,13 +119,15 @@ async function inspect(file) {
 
 async function main() {
     try {
-    assert.deepStrictEqual(RUNNER.ALL_MATS, EXPECTED, "exact ordered 18-MAT allowlist");
-    assert(!RUNNER.ALL_MATS.includes("MAT-000133"), "MAT-000133 stays fully excluded");
+    assert.deepStrictEqual(RUNNER.ALL_MATS, EXPECTED, "exact ordered 19-MAT allowlist");
+    assert.strictEqual(RUNNER.ALL_MATS.filter(id => id === "MAT-000133").length, 1);
+    assert.strictEqual(RUNNER.ALL_MATS[RUNNER.ALL_MATS.indexOf("MAT-000133") - 1], "MAT-000132");
+    assert.strictEqual(RUNNER.ALL_MATS[RUNNER.ALL_MATS.indexOf("MAT-000133") + 1], "MAT-000134");
     assert.deepStrictEqual(RUNNER.CONTENT_FIELDS_EXACTLY, ALLOWED_FIELDS, "exact writable field set");
-    assert.strictEqual(RUNNER.DATA.PRODUCTS.length, 18);
+    assert.strictEqual(RUNNER.DATA.PRODUCTS.length, 19);
     assert.strictEqual(RUNNER.validateData(), true);
-    assert.strictEqual(new Set(RUNNER.DATA.PRODUCTS.map(item => item.seoTitle.toLocaleLowerCase("ru-RU"))).size, 18);
-    assert.strictEqual(new Set(RUNNER.DATA.PRODUCTS.map(item => item.seoDescription.toLocaleLowerCase("ru-RU"))).size, 18);
+    assert.strictEqual(new Set(RUNNER.DATA.PRODUCTS.map(item => item.seoTitle.toLocaleLowerCase("ru-RU"))).size, 19);
+    assert.strictEqual(new Set(RUNNER.DATA.PRODUCTS.map(item => item.seoDescription.toLocaleLowerCase("ru-RU"))).size, 19);
     assert(RUNNER.DATA.PRODUCTS.every(item => item.seoDescription.trim().length > 0 && [...item.seoDescription].length >= 135 && [...item.seoDescription].length <= 160),
         "all SEO descriptions must be non-empty and approximately 135–160 characters");
     const customerCopy = product => [product.shortDescription, product.fullDescription, product.seoTitle, product.seoDescription].join(" ");
@@ -133,6 +136,31 @@ async function main() {
         for (const factCode of product.factsUsed) assert.strictEqual(approvedCore.core[factCode].status, "READY", `${product.externalId}/${factCode} must be READY`);
         if (product.externalId === "MAT-000144") assert(!customerCopy(product).includes("T10"));
     }
+    for (const product of RUNNER.DATA.PRODUCTS) {
+        const approvedCore = RUNNER.DATA.CORE.PRODUCTS.find(item => item.externalId === product.externalId);
+        assert.strictEqual(product.identityStatus, "IDENTITY_CONFIRMED");
+        assert.deepStrictEqual(
+            [product.expectedTitle, product.expectedBrand, product.expectedCategory, product.expectedSubcategory, product.expectedWeight, product.expectedUnit],
+            [approvedCore.expectedTitle, approvedCore.expectedBrand, approvedCore.expectedCategory, approvedCore.expectedSubcategory, approvedCore.expectedWeight, approvedCore.expectedUnit]
+        );
+    }
+    const mat133 = RUNNER.DATA.PRODUCTS.find(item => item.externalId === "MAT-000133");
+    assert(mat133);
+    assert.strictEqual(mat133.identityStatus, "IDENTITY_CONFIRMED");
+    assert.deepStrictEqual(mat133.factsUsed, ["product_type", "package_weight", "purpose", "application_area", "adhesive_class", "layer_thickness", "consumption"]);
+    assert.deepStrictEqual(
+        [mat133.shortDescription, mat133.fullDescription, mat133.seoTitle, mat133.seoDescription],
+        [
+            "Ceresit CM 17 Super Flex, 25 кг — клей класса C2 TE S1 для плитки, керамогранита, клинкера и камня внутри и снаружи.",
+            "Ceresit CM 17 Super Flex — клей класса C2 TE S1 для керамической плитки, керамогранита, клинкера и камня, кроме мрамора, включая крупноформатные плиты. Для стен и полов внутри и снаружи зданий; подходит для балконов, террас, бассейнов и стяжек с подогревом. Слой — до 10 мм, расход — около 1,1 кг/м² на 1 мм.",
+            "Клей Ceresit CM 17 Super Flex 25 кг — купить в Москве",
+            "Ceresit CM 17 Super Flex 25 кг — клей C2 TE S1 для плитки, керамогранита, клинкера и камня. Слой до 10 мм, расход около 1,1 кг/м² на 1 мм. Доставка по Москве."
+        ]
+    );
+    assert.deepStrictEqual([mat133.shortDescription.length, mat133.fullDescription.length, mat133.seoTitle.length, mat133.seoDescription.length], [116, 308, 53, 158]);
+    assert(mat133.sourceKeys.includes("ceresitCm17Tds"));
+    assert(mat133.factsUsed.every(code => RUNNER.DATA.CORE.PRODUCTS.find(item => item.externalId === "MAT-000133").core[code].status === "READY"));
+    assert(!/(?:серый|сер\.|walkability|source_conflict|needs_source|placeholder|grouting_time|maximum_tile_size|adhesion)/iu.test(customerCopy(mat133)));
     const mat131 = RUNNER.DATA.PRODUCTS.find(item => item.externalId === "MAT-000131");
     assert(!/(?:серый|сер\.)/iu.test(customerCopy(mat131)), "MAT-000131 customer copy must not assert unsupported gray color");
     const mat145 = RUNNER.DATA.PRODUCTS.find(item => item.externalId === "MAT-000145");
@@ -160,10 +188,10 @@ async function main() {
     const dry = await RUNNER.inspectBatch(readOnly, { only: EXPECTED });
     const afterDry = await tableSnapshot(readOnly);
     assert.deepStrictEqual(dry.mode, "dry-run");
-    assert.strictEqual(dry.summary.total, 18);
-    assert.strictEqual(dry.summary.ready, 18);
-    assert.strictEqual(dry.summary.wouldAdd, 72);
-    assert.strictEqual(dry.rows.reduce((sum, row) => sum + row.wouldAdd, 0), 72, "exact proposed content writes remain 72");
+    assert.strictEqual(dry.summary.total, 19);
+    assert.strictEqual(dry.summary.ready, 19);
+    assert.strictEqual(dry.summary.wouldAdd, 76);
+    assert.strictEqual(dry.rows.reduce((sum, row) => sum + row.wouldAdd, 0), 76, "19 × 4 exact proposed content writes");
     assert.strictEqual(dry.summary.existingOk, 0);
     assert.strictEqual(dry.summary.blocked, 0);
     assert.strictEqual(dry.summary.errors, 0);
@@ -188,8 +216,8 @@ async function main() {
     const beforeApply = await tableSnapshot(writeDb);
     const backupDir = path.join(ROOT, "backups");
     const applied = await RUNNER.applyBatch(writeDb, cleanFile, { only: EXPECTED, confirm: RUNNER.CONFIRM, backupDir });
-    assert.strictEqual(applied.writes, 72);
-    assert.strictEqual(applied.contentWrites, 72);
+    assert.strictEqual(applied.writes, 76);
+    assert.strictEqual(applied.contentWrites, 76);
     assert.strictEqual(applied.backup.verified, true);
     assert(fs.existsSync(applied.backup.path) && applied.backup.path.startsWith(backupDir));
     const afterApply = await tableSnapshot(writeDb);
@@ -206,7 +234,7 @@ async function main() {
         assert.deepStrictEqual(afterApply[table], beforeApply[table], `${table} must remain unchanged`);
     const postApply = await RUNNER.inspectBatch(writeDb, { only: EXPECTED });
     assert.strictEqual(postApply.summary.wouldAdd, 0);
-    assert.strictEqual(postApply.summary.existingOk, 18);
+    assert.strictEqual(postApply.summary.existingOk, 19);
     assert.strictEqual(postApply.summary.blocked, 0);
     const rerun = await RUNNER.applyBatch(writeDb, cleanFile, { only: EXPECTED, confirm: RUNNER.CONFIRM, backupDir: path.join(ROOT, "no-op-backup") });
     assert.strictEqual(rerun.writes, 0, "idempotent apply writes nothing");
@@ -215,7 +243,7 @@ async function main() {
 
     const exactFile = await createFixture("exact-existing", { initialContent: true });
     const exact = await inspect(exactFile);
-    assert.strictEqual(exact.summary.existingOk, 18, "already exact candidate values classify as EXISTING_OK");
+    assert.strictEqual(exact.summary.existingOk, 19, "already exact candidate values classify as EXISTING_OK");
     assert.strictEqual(exact.summary.wouldAdd, 0);
 
     for (const field of ["title", "category", "subcategory", "weight", "unit", "brand", "content"]) {
@@ -223,7 +251,7 @@ async function main() {
         const guarded = await inspect(guardedFile);
         const row = guarded.rows.find(item => item.externalId === "MAT-000134");
         assert.strictEqual(row.status, field === "content" ? "EXISTING_CONTENT_BLOCKED" : "BLOCKED", `${field} guard must block target`);
-        assert.strictEqual(guarded.summary.wouldAdd, 68, `${field} mismatch must prevent writes for that target only in dry-run report`);
+        assert.strictEqual(guarded.summary.wouldAdd, 72, `${field} mismatch must prevent writes for that target only in dry-run report`);
     }
 
     for (const collision of ["title", "description"]) {
@@ -246,8 +274,8 @@ async function main() {
 
     console.log(JSON.stringify({
         success: true,
-        exactScope18: true,
-        mat133Excluded: true,
+        exactScope19: true,
+        mat133Included: true,
         exactWritableFields: ALLOWED_FIELDS,
         dryRun: { total: dry.summary.total, ready: dry.summary.ready, writes: dry.summary.wouldAdd, immutable: true },
         apply: { writes: applied.writes, backupVerified: applied.backup.verified, allOtherFieldsAndTablesUnchanged: true },

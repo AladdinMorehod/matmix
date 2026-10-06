@@ -1,7 +1,7 @@
 {
   "task": "Смеси → Клей для Плитки — customer-facing Content + SEO Batch1",
   "status": "PREPARED_FOR_TECH_LEAD_REVIEW",
-  "checkedAt": "2026-10-05",
+  "checkedAt": "2026-10-06",
   "sourceOfTruth": [
     "docs/product-content/tile-adhesive-discovery-batch1-review.json",
     "backend/scripts/data/tile-adhesive-core-batch1.js"
@@ -13,6 +13,7 @@
     "MAT-000130",
     "MAT-000131",
     "MAT-000132",
+    "MAT-000133",
     "MAT-000134",
     "MAT-000135",
     "MAT-000136",
@@ -26,24 +27,19 @@
     "MAT-000144",
     "MAT-000145"
   ],
-  "excludedProducts": [
-    {
-      "externalId": "MAT-000133",
-      "reason": "Partial identity; zero content work."
-    }
-  ],
+  "excludedProducts": [],
   "writableFields": [
     "short_description",
     "full_description",
     "seo_title",
     "seo_description"
   ],
-  "plannedWrites": 72,
+  "plannedWrites": 76,
   "plannedWritesByField": {
-    "short_description": 18,
-    "full_description": 18,
-    "seo_title": 18,
-    "seo_description": 18
+    "short_description": 19,
+    "full_description": 19,
+    "seo_title": 19,
+    "seo_description": 19
   },
   "syntheticDryRun": {
     "total": 18,
@@ -68,7 +64,8 @@
     "MAT-000143": "Only READY facts are used; shelf-life mapping remains unresolved and omitted.",
     "MAT-000144": "Do not assert T10 as the definite product or package identity.",
     "MAT_000131": "Do not assert gray color: core color remains NEEDS_SOURCE and is omitted from public copy.",
-    "MAT_000145": "Use confirmed Волма Керамик Т14 identity consistently; production title remains unchanged."
+    "MAT_000145": "Use confirmed Волма Керамик Т14 identity consistently; production title remains unchanged.",
+    "MAT_000133": "Include confirmed CM 17 Super Flex content using READY facts only; do not claim gray color and omit walkability, grouting_time, maximum_tile_size and adhesion."
   },
   "templateRegistration": {
     "structureId": 16,
@@ -1496,6 +1493,210 @@
         }
       ],
       "sourceRiskNotes": {}
+    },
+    {
+      "externalId": "MAT-000133",
+      "currentTitleGuard": "Клей для плитки высокоэластичный Ceresit CM 17 Super Flex сер., 25 кг",
+      "expectedCategory": "Смеси",
+      "expectedSubcategory": "Клей для Плитки",
+      "expectedBrand": "Ceresit",
+      "expectedOperationalWeight": 25,
+      "expectedUnit": "шт",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "sourceKeys": [
+        "ceresitCm17Tds"
+      ],
+      "sources": {
+        "ceresitCm17Tds": {
+          "url": "https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-CM17",
+          "owner": "Ceresit / Henkel",
+          "domain": "dm.henkel-dam.com",
+          "sourceType": "manufacturer technical description (CM 17)",
+          "evidenceScope": "Owner-confirmed exact Russian-market Ceresit CM 17 Super Flex 25 kg package revision. This official Russian CM 17 technical description is the sole source for MAT-000133 technical facts: cement composition, C2 TE S1 / ГОСТ Р 56387-2018, use and substrates, 10 mm maximum layer, consumption, water, pot life, +5…+30 °C, open/correction times, heated-floor use, and 12-month storage for the 25 kg paper sack."
+        }
+      },
+      "short_description": "Ceresit CM 17 Super Flex, 25 кг — клей класса C2 TE S1 для плитки, керамогранита, клинкера и камня внутри и снаружи.",
+      "full_description": "Ceresit CM 17 Super Flex — клей класса C2 TE S1 для керамической плитки, керамогранита, клинкера и камня, кроме мрамора, включая крупноформатные плиты. Для стен и полов внутри и снаружи зданий; подходит для балконов, террас, бассейнов и стяжек с подогревом. Слой — до 10 мм, расход — около 1,1 кг/м² на 1 мм.",
+      "seo_title": "Клей Ceresit CM 17 Super Flex 25 кг — купить в Москве",
+      "seo_description": "Ceresit CM 17 Super Flex 25 кг — клей C2 TE S1 для плитки, керамогранита, клинкера и камня. Слой до 10 мм, расход около 1,1 кг/м² на 1 мм. Доставка по Москве.",
+      "characterCounts": {
+        "short_description": 116,
+        "full_description": 308,
+        "seo_title": 53,
+        "seo_description": 158
+      },
+      "factsUsed": [
+        {
+          "code": "product_type",
+          "status": "READY",
+          "value": "Клей для плитки",
+          "dataType": "text",
+          "unit": null,
+          "sources": [
+            "ceresitCm17Tds"
+          ],
+          "sourceWording": null,
+          "evidenceNote": null,
+          "sourceDetails": [
+            {
+              "sourceId": "ceresitCm17Tds",
+              "url": "https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-CM17",
+              "owner": "Ceresit / Henkel",
+              "domain": "dm.henkel-dam.com",
+              "sourceType": "manufacturer technical description (CM 17)",
+              "evidenceScope": "Owner-confirmed exact Russian-market Ceresit CM 17 Super Flex 25 kg package revision. This official Russian CM 17 technical description is the sole source for MAT-000133 technical facts: cement composition, C2 TE S1 / ГОСТ Р 56387-2018, use and substrates, 10 mm maximum layer, consumption, water, pot life, +5…+30 °C, open/correction times, heated-floor use, and 12-month storage for the 25 kg paper sack."
+            }
+          ]
+        },
+        {
+          "code": "package_weight",
+          "status": "READY",
+          "value": 25,
+          "dataType": "number",
+          "unit": "кг",
+          "sources": [
+            "ceresitCm17Tds"
+          ],
+          "sourceWording": "многослойные бумажные мешки по 25 кг",
+          "evidenceNote": null,
+          "sourceDetails": [
+            {
+              "sourceId": "ceresitCm17Tds",
+              "url": "https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-CM17",
+              "owner": "Ceresit / Henkel",
+              "domain": "dm.henkel-dam.com",
+              "sourceType": "manufacturer technical description (CM 17)",
+              "evidenceScope": "Owner-confirmed exact Russian-market Ceresit CM 17 Super Flex 25 kg package revision. This official Russian CM 17 technical description is the sole source for MAT-000133 technical facts: cement composition, C2 TE S1 / ГОСТ Р 56387-2018, use and substrates, 10 mm maximum layer, consumption, water, pot life, +5…+30 °C, open/correction times, heated-floor use, and 12-month storage for the 25 kg paper sack."
+            }
+          ]
+        },
+        {
+          "code": "purpose",
+          "status": "READY",
+          "value": "Для керамической плитки, керамогранита, клинкерной и каменной плитки, кроме мрамора, включая крупноформатные плиты",
+          "dataType": "text",
+          "unit": null,
+          "sources": [
+            "ceresitCm17Tds"
+          ],
+          "sourceWording": null,
+          "evidenceNote": null,
+          "sourceDetails": [
+            {
+              "sourceId": "ceresitCm17Tds",
+              "url": "https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-CM17",
+              "owner": "Ceresit / Henkel",
+              "domain": "dm.henkel-dam.com",
+              "sourceType": "manufacturer technical description (CM 17)",
+              "evidenceScope": "Owner-confirmed exact Russian-market Ceresit CM 17 Super Flex 25 kg package revision. This official Russian CM 17 technical description is the sole source for MAT-000133 technical facts: cement composition, C2 TE S1 / ГОСТ Р 56387-2018, use and substrates, 10 mm maximum layer, consumption, water, pot life, +5…+30 °C, open/correction times, heated-floor use, and 12-month storage for the 25 kg paper sack."
+            }
+          ]
+        },
+        {
+          "code": "application_area",
+          "status": "READY",
+          "value": "Внутренние и наружные работы; стены и полы; балконы, террасы, бассейны, стяжки с подогревом, печи, камины, бани и хаммамы",
+          "dataType": "text",
+          "unit": null,
+          "sources": [
+            "ceresitCm17Tds"
+          ],
+          "sourceWording": null,
+          "evidenceNote": "Для печей, каминов, бань и хаммамов температура поверхности не должна превышать +80 °C.",
+          "sourceDetails": [
+            {
+              "sourceId": "ceresitCm17Tds",
+              "url": "https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-CM17",
+              "owner": "Ceresit / Henkel",
+              "domain": "dm.henkel-dam.com",
+              "sourceType": "manufacturer technical description (CM 17)",
+              "evidenceScope": "Owner-confirmed exact Russian-market Ceresit CM 17 Super Flex 25 kg package revision. This official Russian CM 17 technical description is the sole source for MAT-000133 technical facts: cement composition, C2 TE S1 / ГОСТ Р 56387-2018, use and substrates, 10 mm maximum layer, consumption, water, pot life, +5…+30 °C, open/correction times, heated-floor use, and 12-month storage for the 25 kg paper sack."
+            }
+          ]
+        },
+        {
+          "code": "adhesive_class",
+          "status": "READY",
+          "value": "C2 TE S1",
+          "dataType": "text",
+          "unit": null,
+          "sources": [
+            "ceresitCm17Tds"
+          ],
+          "sourceWording": "Смесь сухая строительная клеевая С2 ТЕ S1, ГОСТ Р 56387-2018",
+          "evidenceNote": "Ранее зарегистрированный конфликт относился к неподтверждённой привязке редакции TDS к stock MAT; владелец подтвердил точную упаковку, и этот официальный TDS принят как приоритетный источник.",
+          "sourceDetails": [
+            {
+              "sourceId": "ceresitCm17Tds",
+              "url": "https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-CM17",
+              "owner": "Ceresit / Henkel",
+              "domain": "dm.henkel-dam.com",
+              "sourceType": "manufacturer technical description (CM 17)",
+              "evidenceScope": "Owner-confirmed exact Russian-market Ceresit CM 17 Super Flex 25 kg package revision. This official Russian CM 17 technical description is the sole source for MAT-000133 technical facts: cement composition, C2 TE S1 / ГОСТ Р 56387-2018, use and substrates, 10 mm maximum layer, consumption, water, pot life, +5…+30 °C, open/correction times, heated-floor use, and 12-month storage for the 25 kg paper sack."
+            }
+          ]
+        },
+        {
+          "code": "layer_thickness",
+          "status": "READY",
+          "value": "До 10 мм",
+          "dataType": "text",
+          "unit": null,
+          "sources": [
+            "ceresitCm17Tds"
+          ],
+          "sourceWording": "максимальная толщина клеевого слоя не должна превышать 10 мм",
+          "evidenceNote": null,
+          "sourceDetails": [
+            {
+              "sourceId": "ceresitCm17Tds",
+              "url": "https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-CM17",
+              "owner": "Ceresit / Henkel",
+              "domain": "dm.henkel-dam.com",
+              "sourceType": "manufacturer technical description (CM 17)",
+              "evidenceScope": "Owner-confirmed exact Russian-market Ceresit CM 17 Super Flex 25 kg package revision. This official Russian CM 17 technical description is the sole source for MAT-000133 technical facts: cement composition, C2 TE S1 / ГОСТ Р 56387-2018, use and substrates, 10 mm maximum layer, consumption, water, pot life, +5…+30 °C, open/correction times, heated-floor use, and 12-month storage for the 25 kg paper sack."
+            }
+          ]
+        },
+        {
+          "code": "consumption",
+          "status": "READY",
+          "value": "Около 1,1 кг/м² на 1 мм слоя",
+          "dataType": "text",
+          "unit": null,
+          "sources": [
+            "ceresitCm17Tds"
+          ],
+          "sourceWording": "ок. 1,1 кг/м² на 1 мм толщины слоя (при 100%-ном заполнении пространства между плиткой и основанием)",
+          "evidenceNote": "Табличный расход отдельно зависит от размера плитки и зубца шпателя.",
+          "sourceDetails": [
+            {
+              "sourceId": "ceresitCm17Tds",
+              "url": "https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-CM17",
+              "owner": "Ceresit / Henkel",
+              "domain": "dm.henkel-dam.com",
+              "sourceType": "manufacturer technical description (CM 17)",
+              "evidenceScope": "Owner-confirmed exact Russian-market Ceresit CM 17 Super Flex 25 kg package revision. This official Russian CM 17 technical description is the sole source for MAT-000133 technical facts: cement composition, C2 TE S1 / ГОСТ Р 56387-2018, use and substrates, 10 mm maximum layer, consumption, water, pot life, +5…+30 °C, open/correction times, heated-floor use, and 12-month storage for the 25 kg paper sack."
+            }
+          ]
+        }
+      ],
+      "reviewedNonReadyFactsOmitted": [
+        {
+          "code": "color",
+          "status": "NOT_AVAILABLE",
+          "reason": "Не записывать: обозначение «сер.» есть в товарном названии, но цвет не подтверждён выбранным официальным техническим документом."
+        },
+        {
+          "code": "walkability",
+          "status": "NOT_AVAILABLE",
+          "reason": "Не записывать: срок до заполнения швов в TDS не равнозначен подтверждённому времени возможности хождения."
+        }
+      ],
+      "sourceRiskNotes": {
+        "color": "Не заявлять цвет: товарное сокращение «сер.» не подтверждено выбранным TDS как факт цвета.",
+        "timing": "Не добавлять walkability или время затирки; эти факты не входят в approved copy."
+      }
     },
     {
       "externalId": "MAT-000134",
@@ -4415,8 +4616,25 @@
   "safety": {
     "productionAccessed": false,
     "productionApplyPerformed": false,
-    "productionDeploymentPerformed": false,
-    "commitPerformed": false,
-    "pushPerformed": false
+    "productionDeploymentPerformed": false
+  },
+  "synthetic": {
+    "total": 19,
+    "ready": 19,
+    "blocked": 0,
+    "errors": 0,
+    "plannedFieldWrites": 76,
+    "mode": "synthetic fixture only"
+  },
+  "expectedProductionCandidateDelta": {
+    "MAT_000133": {
+      "candidateFields": 4,
+      "expectedStatus": "READY"
+    },
+    "other18": {
+      "count": 18,
+      "expectedStatus": "EXISTING_OK"
+    },
+    "qualification": "subject to real production read-only dry-run"
   }
 }

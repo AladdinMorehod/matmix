@@ -67,7 +67,7 @@ function parseArgs(args) {
     return options;
 }
 
-function validateConfig(config) {
+function validateConfig(config, core = DATA.CORE) {
     const problems = [];
     if (!config || !ALL_MATS.includes(config.externalId)) problems.push("MAT outside exact batch");
     if (!config.expectedTitle || !config.expectedBrand || !config.expectedCategory || !config.expectedSubcategory) problems.push("missing identity guard");
@@ -82,20 +82,27 @@ function validateConfig(config) {
     }
     const limits = { short_description: 500, full_description: 5000, seo_title: 160, seo_description: 320 };
     for (const [field, max] of Object.entries(limits)) if (Array.from(config[FIELD_PROPERTIES[field]] || "").length > max) problems.push(`${field} exceeds ${max} characters`);
-    const coreProduct = DATA.CORE.PRODUCTS.find(product => product.externalId === config.externalId);
+    const coreProduct = core.PRODUCTS.find(product => product.externalId === config.externalId);
     const readyCodes = new Set(Object.entries(coreProduct?.core || {}).filter(([, fact]) => fact.status === "READY").map(([code]) => code));
     if ((config.factsUsed || []).some(code => !readyCodes.has(code))) problems.push("copy references a fact without READY evidence");
-    if (config.identityStatus !== "IDENTITY_CONFIRMED") problems.push("identity is not confirmed for customer content");
-    if (config.expectedTitle !== coreProduct?.expectedTitle || config.expectedBrand !== coreProduct?.expectedBrand) problems.push("content identity guard differs from approved core dataset");
+    if (config.identityStatus !== "IDENTITY_CONFIRMED" || config.identityStatus !== coreProduct?.identityStatus) problems.push("identity is not confirmed or differs from approved core dataset");
+    if (config.expectedTitle !== coreProduct?.expectedTitle || config.expectedBrand !== coreProduct?.expectedBrand
+        || config.expectedCategory !== coreProduct?.expectedCategory || config.expectedSubcategory !== coreProduct?.expectedSubcategory
+        || Number(config.expectedWeight) !== Number(coreProduct?.expectedWeight) || config.expectedUnit !== coreProduct?.expectedUnit) {
+        problems.push("content identity/title/brand/category/subcategory/weight/unit guard differs from approved core dataset");
+    }
     return [...new Set(problems)];
 }
 
 function validateData(data = DATA) {
-    if (JSON.stringify(data.BATCH_MATS) !== JSON.stringify(ALL_MATS) || data.PRODUCTS.length !== ALL_MATS.length || JSON.stringify(data.PRODUCTS.map(p => p.externalId)) !== JSON.stringify(ALL_MATS)) throw new Error("Content data must contain exactly the ordered 18-MAT batch");
-    if (ALL_MATS.includes("MAT-000133") || DATA.CORE.PRODUCTS.find(product => product.externalId === "MAT-000133")?.identityStatus !== "PARTIAL") throw new Error("MAT-000133 must remain excluded from content scope");
+    const canonicalMats = data.CORE?.ALL_MATS;
+    if (!Array.isArray(canonicalMats) || JSON.stringify(data.BATCH_MATS) !== JSON.stringify(canonicalMats)
+        || data.PRODUCTS.length !== canonicalMats.length || JSON.stringify(data.PRODUCTS.map(p => p.externalId)) !== JSON.stringify(canonicalMats)) {
+        throw new Error("Content data must contain exactly the ordered canonical 19-MAT batch");
+    }
     const valuesByField = Object.fromEntries(CONTENT_FIELDS_EXACTLY.map(field => [field, data.PRODUCTS.map(p => p[FIELD_PROPERTIES[field]].toLocaleLowerCase("ru-RU"))]));
     for (const config of data.PRODUCTS) {
-        const problems = validateConfig(config);
+        const problems = validateConfig(config, data.CORE);
         if (problems.length) throw new Error(`${config.externalId}: ${problems.join("; ")}`);
     }
     for (const [field, values] of Object.entries(valuesByField)) if (new Set(values).size !== values.length) throw new Error(`Duplicate ${field} in batch`);
@@ -134,7 +141,7 @@ async function inspectBatch(db, { only, data = DATA } = {}) {
     for (const externalId of selected) {
         const config = data.PRODUCTS.find(item => item.externalId === externalId);
         try {
-            const problems = validateConfig(config);
+            const problems = validateConfig(config, data.CORE);
             if (problems.length) throw new Error(problems.join("; "));
             const product = await db.get("SELECT * FROM products WHERE external_id=?", [externalId]);
             if (!product || product.external_id !== externalId) throw new Error("Product missing or external_id mismatch");
@@ -268,12 +275,12 @@ async function applyBatch(db, dbPath, options, data = DATA) {
 
 function md(value) { return String(value ?? "—").replace(/\|/gu, "\\|").replace(/\r?\n/gu, "<br>"); }
 function renderReview(report) {
-    const lines = ["# Смеси → Клей для Плитки — Content + SEO Batch1", "", `Дата подготовки: ${DATA.CHECKED_AT}. Scope: ${ALL_MATS.join(", ")}. MAT-000133 исключен; production apply не выполнялся в этой подготовке.`, "", `Итог dry-run: ${JSON.stringify(report.summary)}`, "", "| MAT | Статус | Короткое / полное описание | SEO title / description | Факты |", "|---|---|---:|---:|---|"];
+    const lines = ["# Смеси → Клей для Плитки — Content + SEO Batch1", "", `Дата подготовки: ${DATA.CHECKED_AT}. Exact scope: ${ALL_MATS.join(", ")}. Production apply не выполнялся в этой подготовке.`, "", `Итог dry-run: ${JSON.stringify(report.summary)}`, "", "| MAT | Статус | Короткое / полное описание | SEO title / description | Факты |", "|---|---|---:|---:|---|"];
     for (const row of report.rows) lines.push(`| ${row.externalId} | ${row.status} | ${row.characterCounts?.short_description || 0} / ${row.characterCounts?.full_description || 0} знаков | ${row.characterCounts?.seo_title || 0} / ${row.characterCounts?.seo_description || 0} знаков | ${md((row.factsUsed || []).join(", "))} |`);
     for (const row of report.rows) {
         lines.push("", `## ${row.externalId} — ${md(row.title)}`, "", `- Identity: ${row.identityStatus}; brand: ${row.brand}`, `- Короткое описание: ${md(row.proposedContent?.short_description)}`, `- Полное описание: ${md(row.proposedContent?.full_description)}`, `- SEO title (${row.characterCounts?.seo_title || 0} знаков): ${md(row.proposedContent?.seo_title)}`, `- SEO description (${row.characterCounts?.seo_description || 0} знаков): ${md(row.proposedContent?.seo_description)}`, `- Факты в copy: ${md((row.factsUsed || []).join(", "))}`, `- Намеренно исключены: ${md((row.factsOmitted || []).map(fact => `${fact.code} (${fact.status})`).join(", "))}`, `- Sources: ${md((row.sourceKeys || []).map(key => `${key}: ${row.sourceMetadata?.[key]?.url || "owner-provided evidence"}`).join("; "))}`);
     }
-    lines.push("", "## Guarded scope", "", `- Только MAT: ${ALL_MATS.join(", ")}`, `- Изменяемые поля: ${CONTENT_FIELDS_EXACTLY.join(", ")}`, "- MAT-000133 исключен и не затрагивается.", "- title, slug, brand, attributes, images, prices, stock, categories, definitions, templates и updated_at неизменяемы.", "- Apply по умолчанию выключен; он требует отдельный флаг, точный confirm token и backup directory.", "");
+    lines.push("", "## Guarded scope", "", `- Только MAT: ${ALL_MATS.join(", ")}`, `- Изменяемые поля: ${CONTENT_FIELDS_EXACTLY.join(", ")}`, "- title, slug, brand, attributes, images, prices, stock, categories, definitions, templates и updated_at неизменяемы.", "- Apply по умолчанию выключен; он требует отдельный флаг, точный confirm token и backup directory.", "");
     return `${lines.join("\n").trimEnd()}\n`;
 }
 

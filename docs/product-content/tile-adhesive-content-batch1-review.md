@@ -2,13 +2,15 @@
 
 Подготовлено для Tech Lead review. Production не открывался, content apply и template write не выполнялись.
 
-- Дата проверки: 2026-10-05
+- Дата проверки: 2026-10-06
 - Exact scope: MAT-000127, MAT-000128, MAT-000129, MAT-000130, MAT-000131, MAT-000132, MAT-000134, MAT-000135, MAT-000136, MAT-000137, MAT-000138, MAT-000139, MAT-000140, MAT-000141, MAT-000142, MAT-000143, MAT-000144, MAT-000145
-- MAT-000133 исключен полностью.
+- MAT-000133 включен: IDENTITY_CONFIRMED, четыре согласованных Content + SEO поля.
 - Единственные writable поля: short_description, full_description, seo_title, seo_description.
-- План: 18 × 4 = 72 поля.
-- Synthetic fixture: total=18, ready=18, blocked=0, errors=0, plannedFieldWrites=72.
+- План на чистом synthetic fixture: 19 × 4 = 76 теоретических записей.
+- Synthetic fixture: total=19, ready=19, blocked=0, errors=0, plannedFieldWrites=76.
 - SEO descriptions: unique, 135–159 characters (maximum 160).
+
+Ожидаемое production-кандидатное изменение: MAT-000133 — 4 поля; остальные 18 карточек ожидаются как EXISTING_OK, subject to real production read-only dry-run. Production не проверялся.
 
 ## Canonical template registration
 
@@ -25,6 +27,7 @@ Structure 16 / SUB-000015: main = brand, product_type, shelf_life, package_weigh
 | MAT-000130 | Клей для плитки и керамогранита Ceresit CM 11 PRO, 25 кг | Клей Ceresit CM 11 PRO 25 кг — купить в Москве | 46 | 143 | — |
 | MAT-000131 | Клей для плитки, керамогранита и камня Ceresit СМ 14 сер. 25 кг | Клей Ceresit CM 14 25 кг — купить в Москве | 42 | 145 | — |
 | MAT-000132 | Клей для плитки, керамогранита и камня Ceresit СМ 16 сер. 25 кг | Клей Ceresit CM 16 серый 25 кг — купить в Москве | 48 | 159 | — |
+| MAT-000133 | Клей для плитки высокоэластичный Ceresit CM 17 Super Flex сер., 25 кг | Клей Ceresit CM 17 Super Flex 25 кг — купить в Москве | 53 | 158 | No color claim; use READY CM 17 facts only. |
 | MAT-000134 | Клей для плитки Litokol K16, эластичный с уменьшенным расходом, керамогранита и камня, класс С2 TЕ S1 15 кг | Клей Litokol K16 15 кг — купить в Москве | 40 | 144 | Preserve current commercial identity Litokol K16; do not expand to LITOLIGHT K16. |
 | MAT-000135 | Клей для плитки Litokol К80, 25 кг | Клей Litokol K80 25 кг — купить в Москве | 40 | 155 | — |
 | MAT-000136 | Клей для плитки Litokol К55, 25 кг | Белый клей Litokol K55 25 кг — купить в Москве | 46 | 145 | — |
@@ -109,6 +112,18 @@ Structure 16 / SUB-000015: main = brand, product_type, shelf_life, package_weigh
 - Sources: ceresitCm16 (https://ceresit.ru/ru/products/tiling/tile-adhesives/cm-16); ceresitCm16Tds (https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-cm16); ceresitSto2022 (https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-sto-walls-89589540-002-2022)
 - Source-risk notes: none
 - Non-READY reviewed facts omitted: water_requirement: NEEDS_SOURCE, walkability: NEEDS_SOURCE
+
+### MAT-000133 — Клей для плитки высокоэластичный Ceresit CM 17 Super Flex сер., 25 кг
+
+- Brand / weight guard: Ceresit / 25 шт
+- Identity: IDENTITY_CONFIRMED
+- Короткое описание: Ceresit CM 17 Super Flex, 25 кг — клей класса C2 TE S1 для плитки, керамогранита, клинкера и камня внутри и снаружи.
+- Полное описание: Ceresit CM 17 Super Flex — клей класса C2 TE S1 для керамической плитки, керамогранита, клинкера и камня, кроме мрамора, включая крупноформатные плиты. Для стен и полов внутри и снаружи зданий; подходит для балконов, террас, бассейнов и стяжек с подогревом. Слой — до 10 мм, расход — около 1,1 кг/м² на 1 мм.
+- SEO title (53 chars): Клей Ceresit CM 17 Super Flex 25 кг — купить в Москве
+- SEO description (158 chars): Ceresit CM 17 Super Flex 25 кг — клей C2 TE S1 для плитки, керамогранита, клинкера и камня. Слой до 10 мм, расход около 1,1 кг/м² на 1 мм. Доставка по Москве.
+- READY facts used: product_type, package_weight, purpose, application_area, adhesive_class, layer_thickness, consumption
+- Sources: ceresitCm17Tds (https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-CM17)
+- Source-risk notes: Do not claim gray color from «сер.» in catalog title; omit color, walkability, grouting_time, maximum_tile_size and adhesion.
 
 ### MAT-000134 — Клей для плитки Litokol K16, эластичный с уменьшенным расходом, керамогранита и камня, класс С2 TЕ S1 15 кг
 
@@ -259,7 +274,7 @@ Structure 16 / SUB-000015: main = brand, product_type, shelf_life, package_weigh
 - Runner defaults to read-only dry-run and requires exact ordered --only scope, --apply, dedicated confirmation token, --db and --backup-dir for apply.
 - Conflicting non-empty content, product identity/brand/package guards, duplicate SEO, and collisions with non-target products block the batch.
 - Snapshot permits only the four content columns on exact targets; definitions, templates, attributes, images and all other product fields are protected.
-- MAT-000131 color is omitted because core color remains NEEDS_SOURCE.
+- MAT-000131 color is omitted because core color remains NEEDS_SOURCE. MAT-000133 also has no color claim; «сер.» in its title is not evidence from the selected TDS.
 - MAT-000134 remains Litokol K16; MAT-000140 shelf life omitted; MAT-000143 uses READY facts only; MAT-000144 does not claim T10; MAT-000145 uses T14 consistently.
-- MAT-000133 is absent and has zero content work.
-- Production apply, deploy, commit and push were not performed.
+- MAT-000133 is included with four fields based only on READY core facts; expected production state for the other 18 is subject to a future real read-only dry-run.
+- Production apply and deploy were not performed; production state remains unverified pending a separate read-only dry-run.
