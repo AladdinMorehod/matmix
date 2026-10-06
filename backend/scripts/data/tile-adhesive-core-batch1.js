@@ -772,7 +772,7 @@ const DATA = {
     },
     {
       "externalId": "MAT-000129",
-      "expectedTitle": "Клей для плитки Vetonit Изи Фикс серый С0 25 кг",
+      "expectedTitle": "Клей для плитки Vetonit Изи Фикс серый C0 T 25 кг",
       "expectedCategory": "Смеси",
       "expectedSubcategory": "Клей для Плитки",
       "expectedWeight": 25,

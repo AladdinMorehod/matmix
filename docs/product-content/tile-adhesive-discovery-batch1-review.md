@@ -31,7 +31,7 @@
 |---|---|---|---:|---:|---|
 | MAT-000127 | Клей для плитки Knauf Флизен, 25 кг | IDENTITY_CONFIRMED | 12/16 | 4 | NO_CHANGE |
 | MAT-000128 | Клей для плитки Knauf Флизен ПЛЮС, 25 кг | IDENTITY_CONFIRMED | 15/16 | 1 | NO_CHANGE |
-| MAT-000129 | Клей для плитки Vetonit Изи Фикс серый С0 25 кг | IDENTITY_CONFIRMED | 13/16 | 3 | NO_CHANGE |
+| MAT-000129 | Клей для плитки Vetonit Изи Фикс серый C0 T 25 кг | IDENTITY_CONFIRMED | 13/16 | 3 | NO_CHANGE |
 | MAT-000130 | Клей для плитки и керамогранита Ceresit CM 11 PRO, 25 кг | IDENTITY_CONFIRMED | 13/16 | 3 | NO_CHANGE |
 | MAT-000131 | Клей для плитки, керамогранита и камня Ceresit СМ 14 сер. 25 кг | IDENTITY_CONFIRMED | 14/16 | 2 | NO_CHANGE |
 | MAT-000132 | Клей для плитки, керамогранита и камня Ceresit СМ 16 сер. 25 кг | IDENTITY_CONFIRMED | 14/16 | 2 | NO_CHANGE |
@@ -174,7 +174,7 @@ Do not create `grouting_time`, `maximum_tile_size`, or `adhesion_text`. Grouting
 
 ## MAT-000129 — IDENTITY_CONFIRMED
 
-- Title: Клей для плитки Vetonit Изи Фикс серый С0 25 кг
+- Title: Клей для плитки Vetonit Изи Фикс серый C0 T 25 кг
 - Identity: Vetonit Easy Fix, gray, C0 T, 25 kg
 - Expected brand: Vetonit
 - Operational weight: 25 кг; local product record/title; operational weight only, not proof of manufacturer package variant
