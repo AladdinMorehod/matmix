@@ -321,6 +321,13 @@
       "domain": "unistrom.ru",
       "sourceType": "current manufacturer product page with explicit former-name/formula continuity statement",
       "evidenceScope": "Official current U-100 page states this is the new version of UNIFLEX U-100, that it was formerly sold as U-100 PolymerGEL/U-100 Uniflex, and composition/formula is unchanged. It supplies current technical facts such as ≥4 h pot life, 30-minute tile-laying/open time and 30-minute adjustment. Used for continuity and these facts only; the exact historical UniFlex TDS remains the source for row-specific historic specification/pack details."
+    },
+    "unisGranitTds": {
+      "url": "https://unistrom.ru/upload/iblock/491/zcg6bmk3revykeic6lv2l3goctx1fb2q.pdf",
+      "owner": "ГК UNIS",
+      "domain": "unistrom.ru",
+      "sourceType": "manufacturer technical sheet PDF linked from the exact product page",
+      "evidenceScope": "Exact ЮНИС Гранит TDS: purpose, recommended substrates, cement/polymer waterproofing, old tile and heated surfaces."
     }
   },
   "canonicalTemplateProposal": {
@@ -2305,8 +2312,11 @@
           "sourceId": "unisPlus"
         },
         "purpose": {
-          "value": "ceramic, clinker, natural/artificial stone and porcelain to 90×90 cm",
-          "sourceId": "unisPlus"
+          "value": "Керамическая плитка, клинкер, натуральный/искусственный камень и керамогранит размером до 90×90 см",
+          "sourceId": "unisPlus",
+          "supportingSourceIds": [
+            "unisPlusTds"
+          ]
         },
         "application_area": {
           "value": "внутри и снаружи, включая влажные/сухие помещения; стены/полы",
@@ -2377,7 +2387,8 @@
       "identityStatus": "IDENTITY_CONFIRMED",
       "sources": [
         "unisGranit",
-        "unisDocs"
+        "unisDocs",
+        "unisGranitTds"
       ],
       "notAvailable": [],
       "needsMapping": [
@@ -2457,16 +2468,23 @@
           "sourceWording": "да"
         },
         "purpose": {
-          "value": "наружная/внутренняя облицовка оснований с повышенной эксплуатационной нагрузкой; large/heavy tile formats",
-          "sourceId": "unisGranit"
+          "value": "Наружная/внутренняя облицовка оснований с повышенной эксплуатационной нагрузкой; крупноформатная/тяжелая плитка",
+          "sourceId": "unisGranit",
+          "supportingSourceIds": [
+            "unisGranitTds"
+          ]
         },
         "application_area": {
           "value": "внутренние и наружные работы",
           "sourceId": "unisGranit"
         },
         "substrates": {
-          "value": "cement and polymer waterproofing are explicitly named; full substrate scope must be taken from exact TDS",
-          "sourceId": "unisGranit"
+          "value": "Бетонные (включая ячеистый бетон и шлакобетон), цементные и полимерные основания (в том числе цементная штукатурка), кирпичные, гипсовые (ГКЛ, ГВЛ, ПГП), старые плиточные покрытия и нагреваемые поверхности (в том числе система «Тёплый пол»).",
+          "sourceId": "unisGranitTds",
+          "supportingSourceIds": [
+            "unisGranit"
+          ],
+          "note": "Цементно-известковые штукатурки не включены: в точных источниках для ЮНИС Гранит такой формулировки нет."
         },
         "adjustment_time": {
           "value": "30 мин",

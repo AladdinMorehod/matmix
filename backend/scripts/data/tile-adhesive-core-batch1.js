@@ -132,6 +132,13 @@ const DATA = {
       "sourceType": "manufacturer product page",
       "evidenceScope": "Exact Granit product and published application/technical data."
     },
+    "unisGranitTds": {
+      "url": "https://unistrom.ru/upload/iblock/491/zcg6bmk3revykeic6lv2l3goctx1fb2q.pdf",
+      "owner": "ГК UNIS",
+      "domain": "unistrom.ru",
+      "sourceType": "manufacturer technical sheet PDF linked from the exact product page",
+      "evidenceScope": "Exact ЮНИС Гранит TDS: purpose, recommended substrates, cement/polymer waterproofing, old tile and heated surfaces."
+    },
     "unisXxi": {
       "url": "https://unistrom.ru/catalog/klei/klei-dlya-plitki/kley-plitochnyy-dlya-vnutrennikh-rabot/unis-xxi/",
       "owner": "ГК UNIS",
@@ -2979,14 +2986,15 @@ const DATA = {
         },
         "purpose": {
           "status": "READY",
-          "value": "ceramic, clinker, natural/artificial stone and porcelain to 90×90 cm",
+          "value": "Керамическая плитка, клинкер, натуральный/искусственный камень и керамогранит размером до 90×90 см",
           "dataType": "text",
           "unit": null,
           "sources": [
-            "unisPlus"
+            "unisPlus",
+            "unisPlusTds"
           ],
           "sourceWording": null,
-          "evidenceNote": null
+          "evidenceNote": "Russian value reconciled to the existing production row; manufacturer page and exact Plus TDS support the listed tile materials and 90×90 cm format."
         },
         "application_area": {
           "status": "READY",
@@ -3154,7 +3162,8 @@ const DATA = {
       "titleDecision": "NO_CHANGE",
       "sourceKeys": [
         "unisGranit",
-        "unisDocs"
+        "unisDocs",
+        "unisGranitTds"
       ],
       "manufacturerPackEvidence": {
         "status": "CONFIRMED",
@@ -3220,14 +3229,15 @@ const DATA = {
         },
         "purpose": {
           "status": "READY",
-          "value": "наружная/внутренняя облицовка оснований с повышенной эксплуатационной нагрузкой; large/heavy tile formats",
+          "value": "Наружная/внутренняя облицовка оснований с повышенной эксплуатационной нагрузкой; крупноформатная/тяжелая плитка",
           "dataType": "text",
           "unit": null,
           "sources": [
-            "unisGranit"
+            "unisGranit",
+            "unisGranitTds"
           ],
           "sourceWording": null,
-          "evidenceNote": null
+          "evidenceNote": "Russian value reconciled to the existing production row; manufacturer page/TDS describe interior/exterior facing under elevated loads and large/heavy slabs."
         },
         "application_area": {
           "status": "READY",
@@ -3242,14 +3252,15 @@ const DATA = {
         },
         "substrates": {
           "status": "READY",
-          "value": "cement and polymer waterproofing are explicitly named; full substrate scope must be taken from exact TDS",
+          "value": "Бетонные (включая ячеистый бетон и шлакобетон), цементные и полимерные основания (в том числе цементная штукатурка), кирпичные, гипсовые (ГКЛ, ГВЛ, ПГП), старые плиточные покрытия и нагреваемые поверхности (в том числе система «Тёплый пол»).",
           "dataType": "text",
           "unit": null,
           "sources": [
-            "unisGranit"
+            "unisGranit",
+            "unisGranitTds"
           ],
           "sourceWording": null,
-          "evidenceNote": null
+          "evidenceNote": "Exact Russian scope supported by the manufacturer Granit page and linked TDS; cement-lime plaster is intentionally excluded because the exact-product sources do not state it."
         },
         "color": {
           "status": "NEEDS_SOURCE",

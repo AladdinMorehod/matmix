@@ -507,7 +507,7 @@ Do not create `grouting_time`, `maximum_tile_size`, or `adhesion_text`. Grouting
 | `brand` | ЮНИС | [unisPlus](https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-plyus/) |
 | `product_type` | Усиленный армированный плиточный клей | [unisPlus](https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-plyus/) |
 | `package_weight` | 25 кг | [unisPlus](https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-plyus/) |
-| `purpose` | ceramic, clinker, natural/artificial stone and porcelain to 90×90 cm | [unisPlus](https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-plyus/) |
+| `purpose` | Керамическая плитка, клинкер, натуральный/искусственный камень и керамогранит размером до 90×90 см | [unisPlus](https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-plyus/), [unisPlusTds](https://unistrom.ru/upload/iblock/cf6/8fu2wqvm4syw5hce3ktszlmow85gps3b.pdf) |
 | `application_area` | внутри и снаружи, включая влажные/сухие помещения; стены/полы | [unisPlus](https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-plyus/) |
 | `adhesive_class` | C1 TE | [unisPlus](https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-plyus/) |
 | `layer_thickness` | 2–15 мм | [unisPlus](https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-plyus/) |
@@ -536,7 +536,7 @@ Do not create `grouting_time`, `maximum_tile_size`, or `adhesion_text`. Grouting
 - Operational weight: 25 кг; local product record/title; operational weight only, not proof of manufacturer package variant
 - Manufacturer package: CONFIRMED; 25 кг; sources [unisGranit](https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-granit/), [unisDocs](https://unistrom.ru/docs/)
 - Title decision: NO_CHANGE; Нет отдельного source-backed title change в рамках этого discovery; title не меняется.
-- Source keys: [unisGranit](https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-granit/), [unisDocs](https://unistrom.ru/docs/)
+- Source keys: [unisGranit](https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-granit/), [unisDocs](https://unistrom.ru/docs/), [unisGranitTds](https://unistrom.ru/upload/iblock/491/zcg6bmk3revykeic6lv2l3goctx1fb2q.pdf)
 
 | READY code | Value | Source |
 |---|---|---|
@@ -549,9 +549,9 @@ Do not create `grouting_time`, `maximum_tile_size`, or `adhesion_text`. Grouting
 | `water_requirement` | 6–7,5 л на 25 кг | [unisGranit](https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-granit/) |
 | `application_temperature` | +5…+30 °C | [unisGranit](https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-granit/) |
 | `heated_floor_compatibility` | true (manufacturer wording “да”) | [unisGranit](https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-granit/) |
-| `purpose` | наружная/внутренняя облицовка оснований с повышенной эксплуатационной нагрузкой; large/heavy tile formats | [unisGranit](https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-granit/) |
+| `purpose` | Наружная/внутренняя облицовка оснований с повышенной эксплуатационной нагрузкой; крупноформатная/тяжелая плитка | [unisGranit](https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-granit/), [unisGranitTds](https://unistrom.ru/upload/iblock/491/zcg6bmk3revykeic6lv2l3goctx1fb2q.pdf) |
 | `application_area` | внутренние и наружные работы | [unisGranit](https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-granit/) |
-| `substrates` | cement and polymer waterproofing are explicitly named; full substrate scope must be taken from exact TDS | [unisGranit](https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-granit/) |
+| `substrates` | Бетонные (включая ячеистый бетон и шлакобетон), цементные и полимерные основания (в том числе цементная штукатурка), кирпичные, гипсовые (ГКЛ, ГВЛ, ПГП), старые плиточные покрытия и нагреваемые поверхности (в том числе система «Тёплый пол»). | [unisGranit](https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-granit/), [unisGranitTds](https://unistrom.ru/upload/iblock/491/zcg6bmk3revykeic6lv2l3goctx1fb2q.pdf) |
 | `adjustment_time` | 30 мин | [unisGranit](https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-granit/) |
 | `walkability` | не менее 24 ч | [unisGranit](https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-granit/) |
 | `pot_life` | не менее 4 часов | [unisGranit](https://unistrom.ru/catalog/klei/klei-dlya-plitki/unis-granit/) |
@@ -561,6 +561,8 @@ Do not create `grouting_time`, `maximum_tile_size`, or `adhesion_text`. Grouting
 - `color`: NEEDS_SOURCE
 - `open_time`: NEEDS_SOURCE
 - `standard`: NEEDS_SOURCE
+
+**Production value correction:** the current `substrates` row contains the unsupported phrase «цементно-известковые штукатурки». The source-backed READY value above omits that phrase. A dedicated guarded correction script is required for the exact existing MAT-000139 row; the general H2 runner must keep its VALUE_CONFLICT no-overwrite behavior.
 
 
 ## MAT-000140 — IDENTITY_CONFIRMED
