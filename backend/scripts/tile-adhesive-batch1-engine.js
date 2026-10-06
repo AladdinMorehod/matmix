@@ -22,6 +22,12 @@ function assertExactOnly(value) {
   if (String(value ?? '') !== exact) throw new Error(`--only must be exactly ${exact}`);
   return [...DATA.ALL_MATS];
 }
+function assertDryRunOnly(value) {
+  const fullScope = DATA.ALL_MATS.join(',');
+  if ((Array.isArray(value) && value.length === DATA.ALL_MATS.length && value.every((id, index) => id === DATA.ALL_MATS[index])) || String(value ?? '') === fullScope) return [...DATA.ALL_MATS];
+  if ((Array.isArray(value) && value.length === 1 && value[0] === 'MAT-000133') || String(value ?? '') === 'MAT-000133') return ['MAT-000133'];
+  throw new Error(`--only dry-run scope must be exactly ${DATA.ALL_MATS.join(',')} or MAT-000133`);
+}
 function parseArgs(args, stage) {
   if (!['template', 'core'].includes(stage)) throw new Error(`Unknown stage ${stage}`);
   const out = { db: null, backupDir: null, confirm: null, only: null, apply: false };
@@ -43,7 +49,7 @@ function parseArgs(args, stage) {
   if (!out.db || out.db === ':memory:') throw new Error('Explicit existing --db path required');
   if (seen.has('--apply') && seen.has('--dry-run')) throw new Error('Choose either --dry-run or --apply');
   if (stage === 'template' && out.only !== null) throw new Error('--only is not accepted for H1');
-  if (stage === 'core') out.only = assertExactOnly(out.only);
+  if (stage === 'core') out.only = out.apply ? assertExactOnly(out.only) : assertDryRunOnly(out.only);
   const expectedConfirm = stage === 'template' ? TEMPLATE_CONFIRM : CORE_CONFIRM;
   if (out.apply && (!out.backupDir || out.confirm !== expectedConfirm)) throw new Error(`--apply requires --backup-dir and --confirm ${expectedConfirm}`);
   if (!out.apply && out.confirm) throw new Error('--confirm is accepted only with --apply');
@@ -111,12 +117,15 @@ function definitionCompatible(row, expected, exactLabel = false) {
     && Number(row.is_active) === 1
     && (expected.defaultSection === undefined || row.default_section === expected.defaultSection);
 }
+function assertIdentityStatusContract(products = DATA.PRODUCTS) {
+  if (products.some(product => product.identityStatus === 'PARTIAL' && product.externalId !== 'MAT-000133')) throw new Error('DATA_BLOCKED only MAT-000133 may remain PARTIAL');
+  if (products.some(product => !['IDENTITY_CONFIRMED', 'PARTIAL'].includes(product.identityStatus))) throw new Error('DATA_BLOCKED unsupported product identity status');
+}
 function validateData() {
   const expectedMats = Array.from({ length: 19 }, (_, index) => `MAT-${String(127 + index).padStart(6, '0')}`);
   if (stable(DATA.ALL_MATS) !== stable(expectedMats)) throw new Error('DATA_BLOCKED exact ordered 19-MAT scope mismatch');
   if (stable(DATA.PRODUCTS.map(product => product.externalId)) !== stable(expectedMats)) throw new Error('DATA_BLOCKED product rows do not match exact ordered scope');
-  if (DATA.PRODUCTS.filter(product => product.identityStatus === 'PARTIAL').map(product => product.externalId).join(',') !== 'MAT-000133') throw new Error('DATA_BLOCKED only MAT-000133 may remain PARTIAL');
-  if (DATA.PRODUCTS.some(product => !['IDENTITY_CONFIRMED', 'PARTIAL'].includes(product.identityStatus))) throw new Error('DATA_BLOCKED unsupported product identity status');
+  assertIdentityStatusContract();
   const expectedMain = ['brand', 'product_type', 'shelf_life', 'package_weight'];
   const expectedRegular = ['base', 'purpose', 'application_area', 'substrates', 'color', 'adhesive_class', 'layer_thickness', 'consumption', 'water_requirement', 'pot_life', 'application_temperature', 'open_time', 'adjustment_time', 'walkability', 'heated_floor_compatibility', 'standard'];
   if (stable(DATA.TEMPLATE.mainCodes) !== stable(expectedMain) || stable(DATA.TEMPLATE.regularCodes) !== stable(expectedRegular)) throw new Error('DATA_BLOCKED exact H1 template order mismatch');
@@ -158,7 +167,7 @@ function validateData() {
       if (DATA.TEMPLATE.regularCodes.includes(code) && fact.status === 'READY') regularReady += 1;
     }
   }
-  if (regularReady !== 221) throw new Error(`DATA_BLOCKED corrected regular READY count expected 221, got ${regularReady}`);
+  if (regularReady !== 235) throw new Error(`DATA_BLOCKED corrected regular READY count expected 235, got ${regularReady}`);
   return { products: DATA.PRODUCTS.length, logicalSlots: DATA.PRODUCTS.length * DATA.ALL_CODES.length, regularReady };
 }
 async function loadDefinitionState(db) {
@@ -288,11 +297,11 @@ function checkIdentity(product, config) {
 }
 function sourceCounts(product) { const counts = { READY:0, NEEDS_SOURCE:0, NEEDS_MAPPING:0, SOURCE_CONFLICT:0, NOT_AVAILABLE:0 }; for (const c of DATA.ALL_CODES) { const status = product.core[c]?.status; if (!STATUS_SET.has(status)) throw new Error(`DATA_STATUS_BLOCKED ${product.externalId}/${c}: ${status}`); counts[status] += 1; } return counts; }
 async function inspectCore(db, only = DATA.ALL_MATS) {
-  validateData(); assertExactOnly(only); await assertSchema(db); await structureGuard(db); const template = await inspectTemplate(db);
+  validateData(); only = assertDryRunOnly(only); await assertSchema(db); await structureGuard(db); const template = await inspectTemplate(db);
   if (template.status !== 'EXISTING_OK') throw new Error('H2 BLOCKED: exact final H1 template must be applied first');
   const definitionState = await loadDefinitionState(db); const products = await db.all('SELECT * FROM products ORDER BY id');
   const rows = [];
-  for (const config of DATA.PRODUCTS) {
+  for (const config of DATA.PRODUCTS.filter(product => only.includes(product.externalId))) {
     const matches = products.filter(p=>p.external_id===config.externalId);
     if (matches.length !== 1) throw new Error(`IDENTITY_BLOCKED ${config.externalId}: expected one product, found ${matches.length}`);
     const product = matches[0]; checkIdentity(product,config);
@@ -332,7 +341,7 @@ async function inspectCore(db, only = DATA.ALL_MATS) {
   }
   const confirmed=rows.filter(r=>r.identityStatus==='IDENTITY_CONFIRMED');
   const sum={total:rows.length,logicalSlots:rows.length*DATA.ALL_CODES.length,readyFacts:rows.reduce((n,r)=>n+r.readyFacts,0),readyRegularFacts:rows.reduce((n,r)=>n+r.readyRegularFacts,0),eligibleReadyFacts:confirmed.reduce((n,r)=>n+r.readyFacts,0),willAdd:confirmed.reduce((n,r)=>n+r.attributeWrites,0),existingOk:confirmed.reduce((n,r)=>n+r.existingOk,0),plannedBrandUpdates:confirmed.filter(r=>r.brandColumnAction==='WILL_UPDATE').length,needsSource:rows.reduce((n,r)=>n+r.unresolved.needsSource,0),needsMapping:rows.reduce((n,r)=>n+r.unresolved.needsMapping,0),sourceConflict:rows.reduce((n,r)=>n+r.unresolved.sourceConflict,0),notAvailable:rows.reduce((n,r)=>n+r.unresolved.notAvailable,0),schemaBlocked:rows.reduce((n,r)=>n+r.schemaBlocks,0),valueConflict:rows.reduce((n,r)=>n+r.valueConflicts,0),brandConflict:rows.filter(r=>r.brandColumnAction==='BRAND_CONFLICT').length,blockedProducts:rows.filter(r=>r.status==='BLOCKED').length,identityPartialProducts:rows.filter(r=>r.identityStatus==='PARTIAL').length,errors:0,definitionsToCreate:0,templateMembershipChanges:0};
-  return {stage:'H2',mode:'dry-run',scope:DATA.ALL_MATS,rows,summary:sum,writableSurface:{products:['brand'],product_attribute_values:DATA.ALL_CODES,forbidden:['title','slug','weight','unit','category','subcategory','price','stock','images','descriptions','SEO','definitions','templates']}};
+  return {stage:'H2',mode:'dry-run',scope:[...only],rows,summary:sum,writableSurface:{products:['brand'],product_attribute_values:DATA.ALL_CODES,forbidden:['title','slug','weight','unit','category','subcategory','price','stock','images','descriptions','SEO','definitions','templates']}};
 }
 async function snapshotProductsForId(db,id){const rows=await db.all('SELECT * FROM products WHERE external_id=? ORDER BY id',[id]);const attr=rows.length?await db.all('SELECT * FROM product_attribute_values WHERE product_id=? ORDER BY id',[rows[0].id]):[];const images=rows.length?await db.all('SELECT * FROM product_images WHERE product_id=? ORDER BY id',[rows[0].id]):[];return {products:rows,values:attr,images};}
 async function compareCoreSnapshots(before,after,plan) {
@@ -348,7 +357,7 @@ async function compareCoreSnapshots(before,after,plan) {
   for(const row of plan.rows.filter(x=>x.identityStatus==='IDENTITY_CONFIRMED'))for(const slot of row.slots)if(slot.action==='WILL_ADD')expectedAdds.push({externalId:row.externalId,productId:Number(beforeProducts.get(row.externalId).id),code:slot.code,definitionId:Number(slot.definitionId),tuple:slot.writeTuple,sortOrder:DATA.ALL_CODES.indexOf(slot.code)});
   if(additions.length!==expectedAdds.length)throw new Error(`H2 unexpected attribute insert count ${additions.length}/${expectedAdds.length}`);
   for(const exp of expectedAdds){const matches=additions.filter(v=>Number(v.product_id)===exp.productId&&Number(v.attribute_definition_id)===exp.definitionId&&tupleMatches(v,exp.tuple)&&Number(v.sort_order)===exp.sortOrder);if(matches.length!==1)throw new Error(`H2 inserted READY value mismatch ${exp.externalId}/${exp.code}`);}
-  const partial=DATA.PRODUCTS.find(p=>p.identityStatus==='PARTIAL');const pb=beforeProducts.get(partial.externalId),pa=afterProducts.get(partial.externalId);assertSame('MAT-000133 products row',pb,pa);const partialValuesBefore=before.product_attribute_values.filter(v=>Number(v.product_id)===Number(pb.id));const partialValuesAfter=after.product_attribute_values.filter(v=>Number(v.product_id)===Number(pb.id));assertSame('MAT-000133 product_attribute_values',partialValuesBefore,partialValuesAfter);const partialImagesBefore=before.product_images.filter(v=>Number(v.product_id)===Number(pb.id));const partialImagesAfter=after.product_images.filter(v=>Number(v.product_id)===Number(pb.id));assertSame('MAT-000133 product_images',partialImagesBefore,partialImagesAfter);
+  const partial=DATA.PRODUCTS.find(p=>p.identityStatus==='PARTIAL');if(partial){const pb=beforeProducts.get(partial.externalId),pa=afterProducts.get(partial.externalId);assertSame(`${partial.externalId} products row`,pb,pa);const partialValuesBefore=before.product_attribute_values.filter(v=>Number(v.product_id)===Number(pb.id));const partialValuesAfter=after.product_attribute_values.filter(v=>Number(v.product_id)===Number(pb.id));assertSame(`${partial.externalId} product_attribute_values`,partialValuesBefore,partialValuesAfter);const partialImagesBefore=before.product_images.filter(v=>Number(v.product_id)===Number(pb.id));const partialImagesAfter=after.product_images.filter(v=>Number(v.product_id)===Number(pb.id));assertSame(`${partial.externalId} product_images`,partialImagesBefore,partialImagesAfter);}
 }
 async function applyCore(db,dbPath,backupDir,only=DATA.ALL_MATS){
   assertExactOnly(only);const before=await snapshots(db);const pre=await inspectCore(db,only);if(pre.summary.blockedProducts||pre.summary.errors)throw new Error('H2 preflight blocked; no writes performed');if(pre.summary.willAdd===0&&pre.summary.plannedBrandUpdates===0)return {...pre,mode:'apply',writes:0,backup:null};
@@ -360,4 +369,4 @@ async function applyCore(db,dbPath,backupDir,only=DATA.ALL_MATS){
   }catch(error){await db.run('ROLLBACK').catch(()=>{});throw error;}
 }
 async function run(stage,args=process.argv.slice(2)) {const opts=parseArgs(args,stage);const db=await dbOpen(opts.db,opts.apply);try{const result=stage==='template'?(opts.apply?await applyTemplate(db,opts.db,opts.backupDir):await inspectTemplate(db)):(opts.apply?await applyCore(db,opts.db,opts.backupDir,opts.only):await inspectCore(db,opts.only));console.log(JSON.stringify(result,null,2));return result;}finally{await db.close();}}
-module.exports={DATA,assertExactOnly,parseArgs,validateData,dbOpen,assertSchema,integrity,structureGuard,loadDefinitionState,expectedMemberships,inspectTemplate,applyTemplate,inspectCore,applyCore,backupDatabase,snapshots,compareCoreSnapshots,run,valueTuple,STATUS_SET};
+module.exports={DATA,assertExactOnly,assertIdentityStatusContract,parseArgs,validateData,dbOpen,assertSchema,integrity,structureGuard,loadDefinitionState,expectedMemberships,inspectTemplate,applyTemplate,inspectCore,applyCore,backupDatabase,snapshots,compareCoreSnapshots,run,valueTuple,STATUS_SET};

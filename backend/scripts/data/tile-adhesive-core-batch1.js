@@ -228,7 +228,7 @@ const DATA = {
       "owner": "Ceresit / Henkel",
       "domain": "dm.henkel-dam.com",
       "sourceType": "manufacturer technical description (CM 17)",
-      "evidenceScope": "Official CM 17 technical document and pack variants; useful for revision investigation, but does not prove that the specific stock title “Super Flex” maps to this document edition."
+      "evidenceScope": "Owner-confirmed exact Russian-market Ceresit CM 17 Super Flex 25 kg package revision. This official Russian CM 17 technical description is the sole source for MAT-000133 technical facts: cement composition, C2 TE S1 / ГОСТ Р 56387-2018, use and substrates, 10 mm maximum layer, consumption, water, pot life, +5…+30 °C, open/correction times, heated-floor use, and 12-month storage for the 25 kg paper sack."
     },
     "unisU100TdsPdf": {
       "url": "https://unistrom.ru/upload/iblock/516/ta04bu4al8c6js54qhnmpc1v4c2kyfzw.pdf",
@@ -1731,24 +1731,20 @@ const DATA = {
       "expectedWeight": 25,
       "expectedUnit": "шт",
       "expectedBrand": "Ceresit",
-      "identityStatus": "PARTIAL",
-      "canonicalIdentity": "Ceresit CM 17 Super Flex (historic Russian-market formulation), 25 kg",
-      "titleDecision": "DEFER_REVISION_MAPPING",
+      "identityStatus": "IDENTITY_CONFIRMED",
+      "canonicalIdentity": "Ceresit CM 17 Super Flex, gray Russian-market package, 25 kg",
+      "titleDecision": "NO_CHANGE",
       "sourceKeys": [
-        "ceresitCatalog",
-        "ceresitCm17OldTds",
         "ceresitCm17Tds"
       ],
       "manufacturerPackEvidence": {
-        "status": "REVISION_UNRESOLVED",
+        "status": "CONFIRMED",
         "value": 25,
         "unit": "кг",
         "sourceIds": [
-          "ceresitCatalog",
-          "ceresitCm17OldTds",
           "ceresitCm17Tds"
         ],
-        "note": "Manufacturer evidence mentions the package size for the product family/document, but the exact stock package/revision for this row is not conclusively matched."
+        "note": "Владелец подтвердил точную российскую упаковку CM 17 Super Flex 25 кг; официальный TDS CM 17 указывает бумажный мешок 25 кг."
       },
       "core": {
         "brand": {
@@ -1757,201 +1753,178 @@ const DATA = {
           "dataType": "text",
           "unit": null,
           "sources": [
-            "ceresitCatalog"
+            "ceresitCm17Tds"
           ],
           "sourceWording": null,
           "evidenceNote": null
         },
         "product_type": {
           "status": "READY",
-          "value": "Эластичный плиточный клей",
+          "value": "Клей для плитки",
           "dataType": "text",
           "unit": null,
           "sources": [
-            "ceresitCatalog"
+            "ceresitCm17Tds"
           ],
           "sourceWording": null,
           "evidenceNote": null
         },
         "shelf_life": {
-          "status": "NEEDS_SOURCE",
-          "value": null,
-          "sources": [
-            "ceresitCatalog",
-            "ceresitCm17OldTds",
-            "ceresitCm17Tds"
-          ],
-          "reason": "No exact-SKU source-backed value is established."
+          "status": "READY",
+          "value": 12,
+          "dataType": "number",
+          "unit": "месяцев",
+          "sourceUnit": "месяцев",
+          "sources": ["ceresitCm17Tds"],
+          "sourceWording": "не более 12 месяцев со дня изготовления в оригинальной неповреждённой бумажной упаковке",
+          "evidenceNote": "Для подтверждённой фасовки 25 кг TDS указывает многослойный бумажный мешок."
         },
         "package_weight": {
-          "status": "NEEDS_SOURCE",
-          "value": null,
-          "sources": [
-            "ceresitCatalog",
-            "ceresitCm17OldTds",
-            "ceresitCm17Tds"
-          ],
-          "reason": "No exact-SKU source-backed value is established."
+          "status": "READY",
+          "value": 25,
+          "dataType": "number",
+          "unit": "кг",
+          "sources": ["ceresitCm17Tds"],
+          "sourceWording": "многослойные бумажные мешки по 25 кг",
+          "evidenceNote": null
         },
         "base": {
-          "status": "NEEDS_SOURCE",
-          "value": null,
-          "sources": [
-            "ceresitCatalog",
-            "ceresitCm17OldTds",
-            "ceresitCm17Tds"
-          ],
-          "reason": "No exact-SKU source-backed value is established."
+          "status": "READY",
+          "value": "Цементная",
+          "dataType": "text",
+          "unit": null,
+          "sources": ["ceresitCm17Tds"],
+          "sourceWording": "цемент, минеральные заполнители, модифицирующие добавки, армирующие микроволокна",
+          "evidenceNote": null
         },
         "purpose": {
-          "status": "NEEDS_SOURCE",
-          "value": null,
-          "sources": [
-            "ceresitCatalog",
-            "ceresitCm17OldTds",
-            "ceresitCm17Tds"
-          ],
-          "reason": "No exact-SKU source-backed value is established."
+          "status": "READY",
+          "value": "Для керамической плитки, керамогранита, клинкерной и каменной плитки, кроме мрамора, включая крупноформатные плиты",
+          "dataType": "text",
+          "unit": null,
+          "sources": ["ceresitCm17Tds"],
+          "sourceWording": null,
+          "evidenceNote": null
         },
         "application_area": {
-          "status": "NEEDS_SOURCE",
-          "value": null,
-          "sources": [
-            "ceresitCatalog",
-            "ceresitCm17OldTds",
-            "ceresitCm17Tds"
-          ],
-          "reason": "No exact-SKU source-backed value is established."
+          "status": "READY",
+          "value": "Внутренние и наружные работы; стены и полы; балконы, террасы, бассейны, стяжки с подогревом, печи, камины, бани и хаммамы",
+          "dataType": "text",
+          "unit": null,
+          "sources": ["ceresitCm17Tds"],
+          "sourceWording": null,
+          "evidenceNote": "Для печей, каминов, бань и хаммамов температура поверхности не должна превышать +80 °C."
         },
         "substrates": {
-          "status": "NEEDS_SOURCE",
-          "value": null,
-          "sources": [
-            "ceresitCatalog",
-            "ceresitCm17OldTds",
-            "ceresitCm17Tds"
-          ],
-          "reason": "No exact-SKU source-backed value is established."
+          "status": "READY",
+          "value": "Бетон; цементные и цементно-известковые штукатурки; цементные стяжки; гипсовые и ангидритные основания; гипсокартон; ГВЛ; ДСП; OSB; лёгкий и ячеистый бетон; гидроизоляционные покрытия; существующая плиточная облицовка; прочные малярные покрытия",
+          "dataType": "text",
+          "unit": null,
+          "sources": ["ceresitCm17Tds"],
+          "sourceWording": null,
+          "evidenceNote": "TDS перечисляет условия подготовки для отдельных типов оснований; значения влажности/возраста здесь не обобщаются."
         },
         "color": {
-          "status": "NEEDS_SOURCE",
+          "status": "NOT_AVAILABLE",
           "value": null,
-          "sources": [
-            "ceresitCatalog",
-            "ceresitCm17OldTds",
-            "ceresitCm17Tds"
-          ],
-          "reason": "No exact-SKU source-backed value is established."
+          "sources": ["ceresitCm17Tds"],
+          "reason": "Не записывать: обозначение «сер.» есть в товарном названии, но цвет не подтверждён выбранным официальным техническим документом."
         },
         "adhesive_class": {
-          "status": "SOURCE_CONFLICT",
-          "value": null,
-          "sources": [
-            "ceresitCatalog",
-            "ceresitCm17OldTds",
-            "ceresitCm17Tds"
-          ],
-          "reason": "официальный/current и historic “Super Flex” материалы не доказывают, какая редакция соответствует stock MAT; class C2 TE S1 виден в текущем каталоге/официальном TDS, но к этой строке не переносится без revision mapping."
+          "status": "READY",
+          "value": "C2 TE S1",
+          "dataType": "text",
+          "unit": null,
+          "sources": ["ceresitCm17Tds"],
+          "sourceWording": "Смесь сухая строительная клеевая С2 ТЕ S1, ГОСТ Р 56387-2018",
+          "evidenceNote": "Ранее зарегистрированный конфликт относился к неподтверждённой привязке редакции TDS к stock MAT; владелец подтвердил точную упаковку, и этот официальный TDS принят как приоритетный источник."
         },
         "layer_thickness": {
-          "status": "NEEDS_SOURCE",
-          "value": null,
-          "sources": [
-            "ceresitCatalog",
-            "ceresitCm17OldTds",
-            "ceresitCm17Tds"
-          ],
-          "reason": "No exact-SKU source-backed value is established."
+          "status": "READY",
+          "value": "До 10 мм",
+          "dataType": "text",
+          "unit": null,
+          "sources": ["ceresitCm17Tds"],
+          "sourceWording": "максимальная толщина клеевого слоя не должна превышать 10 мм",
+          "evidenceNote": null
         },
         "consumption": {
-          "status": "NEEDS_SOURCE",
-          "value": null,
-          "sources": [
-            "ceresitCatalog",
-            "ceresitCm17OldTds",
-            "ceresitCm17Tds"
-          ],
-          "reason": "No exact-SKU source-backed value is established."
+          "status": "READY",
+          "value": "Около 1,1 кг/м² на 1 мм слоя",
+          "dataType": "text",
+          "unit": null,
+          "sources": ["ceresitCm17Tds"],
+          "sourceWording": "ок. 1,1 кг/м² на 1 мм толщины слоя (при 100%-ном заполнении пространства между плиткой и основанием)",
+          "evidenceNote": "Табличный расход отдельно зависит от размера плитки и зубца шпателя."
         },
         "water_requirement": {
-          "status": "NEEDS_SOURCE",
-          "value": null,
-          "sources": [
-            "ceresitCatalog",
-            "ceresitCm17OldTds",
-            "ceresitCm17Tds"
-          ],
-          "reason": "No exact-SKU source-backed value is established."
+          "status": "READY",
+          "value": "Около 6,75 л на 25 кг",
+          "dataType": "text",
+          "unit": null,
+          "sources": ["ceresitCm17Tds"],
+          "sourceWording": "на 25 кг сухой смеси — около 6,75 л",
+          "evidenceNote": null
         },
         "pot_life": {
-          "status": "NEEDS_SOURCE",
-          "value": null,
-          "sources": [
-            "ceresitCatalog",
-            "ceresitCm17OldTds",
-            "ceresitCm17Tds"
-          ],
-          "reason": "No exact-SKU source-backed value is established."
+          "status": "READY",
+          "value": "Около 2 часов",
+          "dataType": "text",
+          "unit": null,
+          "sources": ["ceresitCm17Tds"],
+          "sourceWording": "около 2 часов",
+          "evidenceNote": "Формулировка и единица времени сохранены как в TDS; значение хранится в текстовом поле схемы v11."
         },
         "application_temperature": {
-          "status": "NEEDS_SOURCE",
-          "value": null,
-          "sources": [
-            "ceresitCatalog",
-            "ceresitCm17OldTds",
-            "ceresitCm17Tds"
-          ],
-          "reason": "No exact-SKU source-backed value is established."
+          "status": "READY",
+          "value": "От +5 до +30 °C",
+          "dataType": "text",
+          "unit": null,
+          "sources": ["ceresitCm17Tds"],
+          "sourceWording": "от +5 до +30°C",
+          "evidenceNote": null
         },
         "open_time": {
-          "status": "NEEDS_SOURCE",
-          "value": null,
-          "sources": [
-            "ceresitCatalog",
-            "ceresitCm17OldTds",
-            "ceresitCm17Tds"
-          ],
-          "reason": "No exact-SKU source-backed value is established."
+          "status": "READY",
+          "value": "30 минут",
+          "dataType": "text",
+          "unit": null,
+          "sources": ["ceresitCm17Tds"],
+          "sourceWording": "открытое время — 30 минут",
+          "evidenceNote": null
         },
         "adjustment_time": {
-          "status": "NEEDS_SOURCE",
-          "value": null,
-          "sources": [
-            "ceresitCatalog",
-            "ceresitCm17OldTds",
-            "ceresitCm17Tds"
-          ],
-          "reason": "No exact-SKU source-backed value is established."
+          "status": "READY",
+          "value": "30 минут",
+          "dataType": "text",
+          "unit": null,
+          "sources": ["ceresitCm17Tds"],
+          "sourceWording": "положение плиток можно корректировать в течение 30 минут после укладки",
+          "evidenceNote": null
         },
         "walkability": {
-          "status": "NEEDS_SOURCE",
+          "status": "NOT_AVAILABLE",
           "value": null,
-          "sources": [
-            "ceresitCatalog",
-            "ceresitCm17OldTds",
-            "ceresitCm17Tds"
-          ],
-          "reason": "No exact-SKU source-backed value is established."
+          "sources": ["ceresitCm17Tds"],
+          "reason": "Не записывать: срок до заполнения швов в TDS не равнозначен подтверждённому времени возможности хождения."
         },
         "heated_floor_compatibility": {
-          "status": "NEEDS_SOURCE",
-          "value": null,
-          "sources": [
-            "ceresitCatalog",
-            "ceresitCm17OldTds",
-            "ceresitCm17Tds"
-          ],
-          "reason": "No exact-SKU source-backed value is established."
+          "status": "READY",
+          "value": true,
+          "dataType": "boolean",
+          "unit": null,
+          "sources": ["ceresitCm17Tds"],
+          "sourceWording": "стяжки с подогревом",
+          "evidenceNote": "Запуск подогрева выполняется не ранее чем через 72 часа после завершения работ."
         },
         "standard": {
-          "status": "NEEDS_SOURCE",
-          "value": null,
-          "sources": [
-            "ceresitCatalog",
-            "ceresitCm17OldTds",
-            "ceresitCm17Tds"
-          ],
-          "reason": "No exact-SKU source-backed value is established."
+          "status": "READY",
+          "value": "ГОСТ Р 56387-2018",
+          "dataType": "text",
+          "unit": null,
+          "sources": ["ceresitCm17Tds"],
+          "sourceWording": "С2 ТЕ S1, ГОСТ Р 56387-2018",
+          "evidenceNote": null
         }
       }
     },

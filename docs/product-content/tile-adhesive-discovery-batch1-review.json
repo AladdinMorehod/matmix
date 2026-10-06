@@ -278,7 +278,7 @@
       "owner": "Ceresit / Henkel",
       "domain": "dm.henkel-dam.com",
       "sourceType": "manufacturer technical description (CM 17)",
-      "evidenceScope": "Official CM 17 technical document and pack variants; useful for revision investigation, but does not prove that the specific stock title “Super Flex” maps to this document edition."
+      "evidenceScope": "Owner-confirmed exact Russian-market Ceresit CM 17 Super Flex 25 kg package revision. Sole technical source for MAT-000133: cement composition, C2 TE S1 / ГОСТ Р 56387-2018, use and substrates, layer, consumption, water, pot life, temperatures/times, heated-floor use, and storage for the 25 kg paper sack."
     },
     "unisU100TdsPdf": {
       "url": "https://unistrom.ru/upload/iblock/516/ta04bu4al8c6js54qhnmpc1v4c2kyfzw.pdf",
@@ -1609,70 +1609,142 @@
     {
       "externalId": "MAT-000133",
       "currentTitle": "Клей для плитки высокоэластичный Ceresit CM 17 Super Flex сер., 25 кг",
-      "canonicalIdentity": "Ceresit CM 17 Super Flex (historic Russian-market formulation), 25 kg",
+      "canonicalIdentity": "Ceresit CM 17 Super Flex, exact owner-confirmed Russian-market package, 25 kg",
       "expectedBrand": "Ceresit",
-      "identityStatus": "PARTIAL",
+      "identityStatus": "IDENTITY_CONFIRMED",
       "sources": [
-        "ceresitCatalog",
-        "ceresitCm17OldTds",
         "ceresitCm17Tds"
       ],
-      "notAvailable": [],
-      "needsMapping": [],
-      "sourceConflicts": [
-        {
-          "code": "adhesive_class",
-          "reason": "официальный/current и historic “Super Flex” материалы не доказывают, какая редакция соответствует stock MAT; class C2 TE S1 виден в текущем каталоге/официальном TDS, но к этой строке не переносится без revision mapping."
-        }
+      "notAvailable": [
+        "color",
+        "walkability"
       ],
+      "needsMapping": [],
+      "sourceConflicts": [],
       "researchOnlyFacts": {},
-      "titleDecision": "DEFER_REVISION_MAPPING",
+      "titleDecision": "NO_CHANGE",
       "titleCandidate": null,
-      "titleReason": "Историческая маркировка Super Flex и редакция производителя из TDS не привязаны объективно к stock этой карточки.",
+      "titleReason": "Владелец подтвердил точную идентичность и редакцию упаковки; исходное название каталога сохраняется без изменений.",
       "operationalWeight": {
         "value": 25,
         "unit": "кг",
         "evidence": "local product record/title; operational weight only, not proof of manufacturer package variant"
       },
       "manufacturerPackEvidence": {
-        "status": "REVISION_UNRESOLVED",
+        "status": "CONFIRMED",
         "value": 25,
         "unit": "кг",
         "sourceIds": [
-          "ceresitCatalog",
-          "ceresitCm17OldTds",
           "ceresitCm17Tds"
         ],
-        "note": "Manufacturer evidence mentions the package size for the product family/document, but the exact stock package/revision for this row is not conclusively matched."
+        "note": "Владелец подтвердил точную российскую упаковку CM 17 Super Flex 25 кг; официальный TDS CM 17 указывает бумажный мешок 25 кг."
       },
       "verifiedFacts": {
         "brand": {
           "value": "Ceresit",
-          "sourceId": "ceresitCatalog"
+          "sourceId": "ceresitCm17Tds"
         },
         "product_type": {
-          "value": "Эластичный плиточный клей",
-          "sourceId": "ceresitCatalog"
+          "value": "Клей для плитки",
+          "sourceId": "ceresitCm17Tds"
+        },
+        "shelf_life": {
+          "value": 12,
+          "unit": "месяцев",
+          "sourceUnit": "месяцев",
+          "sourceWording": "не более 12 месяцев со дня изготовления в оригинальной неповреждённой бумажной упаковке",
+          "sourceId": "ceresitCm17Tds"
+        },
+        "package_weight": {
+          "value": 25,
+          "unit": "кг",
+          "sourceWording": "многослойные бумажные мешки по 25 кг",
+          "sourceId": "ceresitCm17Tds"
+        },
+        "base": {
+          "value": "Цементная",
+          "sourceWording": "цемент, минеральные заполнители, модифицирующие добавки, армирующие микроволокна",
+          "sourceId": "ceresitCm17Tds"
+        },
+        "purpose": {
+          "value": "Для керамической плитки, керамогранита, клинкерной и каменной плитки, кроме мрамора, включая крупноформатные плиты",
+          "sourceId": "ceresitCm17Tds"
+        },
+        "application_area": {
+          "value": "Внутренние и наружные работы; стены и полы; балконы, террасы, бассейны, стяжки с подогревом, печи, камины, бани и хаммамы",
+          "evidenceNote": "Для печей, каминов, бань и хаммамов температура поверхности не должна превышать +80 °C.",
+          "sourceId": "ceresitCm17Tds"
+        },
+        "substrates": {
+          "value": "Бетон; цементные и цементно-известковые штукатурки; цементные стяжки; гипсовые и ангидритные основания; гипсокартон; ГВЛ; ДСП; OSB; лёгкий и ячеистый бетон; гидроизоляционные покрытия; существующая плиточная облицовка; прочные малярные покрытия",
+          "evidenceNote": "Условия подготовки для отдельных типов оснований сохраняются в TDS и здесь не обобщаются.",
+          "sourceId": "ceresitCm17Tds"
+        },
+        "adhesive_class": {
+          "value": "C2 TE S1",
+          "sourceWording": "С2 ТЕ S1, ГОСТ Р 56387-2018",
+          "evidenceNote": "Ранее зафиксированный конфликт возник из-за неподтверждённой привязки редакции TDS к товарной упаковке; точная упаковка подтверждена владельцем, выбранный TDS принят как приоритетный источник.",
+          "sourceId": "ceresitCm17Tds"
+        },
+        "layer_thickness": {
+          "value": "До 10 мм",
+          "sourceWording": "максимальная толщина клеевого слоя не должна превышать 10 мм",
+          "sourceId": "ceresitCm17Tds"
+        },
+        "consumption": {
+          "value": "Около 1,1 кг/м² на 1 мм слоя",
+          "sourceWording": "ок. 1,1 кг/м² на 1 мм толщины слоя при 100%-ном заполнении пространства между плиткой и основанием",
+          "evidenceNote": "Табличный расход отдельно зависит от размера плитки и зубца шпателя.",
+          "sourceId": "ceresitCm17Tds"
+        },
+        "water_requirement": {
+          "value": "Около 6,75 л на 25 кг",
+          "sourceWording": "на 25 кг сухой смеси — около 6,75 л",
+          "sourceId": "ceresitCm17Tds"
+        },
+        "pot_life": {
+          "value": "Около 2 часов",
+          "sourceWording": "около 2 часов",
+          "qualifierPreserved": true,
+          "evidenceNote": "Значение и единица хранятся в текстовом поле определения pot_life схемы v11.",
+          "sourceId": "ceresitCm17Tds"
+        },
+        "application_temperature": {
+          "value": "От +5 до +30 °C",
+          "sourceWording": "от +5 до +30°C",
+          "sourceId": "ceresitCm17Tds"
+        },
+        "open_time": {
+          "value": "30 минут",
+          "sourceWording": "открытое время — 30 минут",
+          "sourceId": "ceresitCm17Tds"
+        },
+        "adjustment_time": {
+          "value": "30 минут",
+          "sourceWording": "положение плиток можно корректировать в течение 30 минут после укладки",
+          "sourceId": "ceresitCm17Tds"
+        },
+        "heated_floor_compatibility": {
+          "value": true,
+          "sourceWording": "стяжки с подогревом",
+          "evidenceNote": "Подогрев включают не ранее чем через 72 часа после завершения работ.",
+          "sourceId": "ceresitCm17Tds"
+        },
+        "standard": {
+          "value": "ГОСТ Р 56387-2018",
+          "sourceWording": "смесь сухая строительная клеевая С2 ТЕ S1, ГОСТ Р 56387-2018",
+          "sourceId": "ceresitCm17Tds"
         }
       },
-      "needsSource": [
-        "shelf_life",
-        "package_weight",
-        "base",
-        "purpose",
-        "application_area",
-        "substrates",
-        "color",
-        "layer_thickness",
-        "consumption",
-        "water_requirement",
-        "pot_life",
-        "application_temperature",
-        "open_time",
-        "adjustment_time",
-        "walkability",
-        "heated_floor_compatibility",
-        "standard"
+      "needsSource": [],
+      "resolvedSourceConflicts": [
+        {
+          "code": "adhesive_class",
+          "previousReason": "Исторические и текущие материалы не устанавливали, какая редакция Super Flex соответствует товарной упаковке.",
+          "resolution": "Владелец подтвердил точную российскую упаковку MAT-000133; для класса и технических характеристик используется указанный официальный русский TDS CM 17.",
+          "value": "C2 TE S1",
+          "sourceId": "ceresitCm17Tds"
+        }
       ]
     },
     {
@@ -3116,8 +3188,7 @@
   ],
   "statistics": {
     "identityStatusCounts": {
-      "IDENTITY_CONFIRMED": 18,
-      "PARTIAL": 1
+      "IDENTITY_CONFIRMED": 19
     },
     "sourceCoverageMethod": "For each included main/regular code and each of 19 products, assign one status in precedence order: exact source conflict; explicit NEEDS_MAPPING; explicit NOT_AVAILABLE; source-backed verified fact (READY, with source ID); otherwise NEEDS_SOURCE. Production v11 pot_life is text, so source qualifiers are retained verbatim rather than downgraded to NEEDS_MAPPING.",
     "templateFieldCoverage": [
@@ -3139,78 +3210,22 @@
       },
       {
         "code": "shelf_life",
-        "READY": 10,
-        "NEEDS_SOURCE": 6,
+        "READY": 11,
+        "NEEDS_SOURCE": 5,
         "NOT_AVAILABLE": 0,
         "NEEDS_MAPPING": 2,
         "SOURCE_CONFLICT": 1
       },
       {
         "code": "package_weight",
-        "READY": 18,
-        "NEEDS_SOURCE": 1,
+        "READY": 19,
+        "NEEDS_SOURCE": 0,
         "NOT_AVAILABLE": 0,
         "NEEDS_MAPPING": 0,
         "SOURCE_CONFLICT": 0
       },
       {
         "code": "base",
-        "READY": 14,
-        "NEEDS_SOURCE": 5,
-        "NOT_AVAILABLE": 0,
-        "NEEDS_MAPPING": 0,
-        "SOURCE_CONFLICT": 0
-      },
-      {
-        "code": "purpose",
-        "READY": 18,
-        "NEEDS_SOURCE": 1,
-        "NOT_AVAILABLE": 0,
-        "NEEDS_MAPPING": 0,
-        "SOURCE_CONFLICT": 0
-      },
-      {
-        "code": "application_area",
-        "READY": 16,
-        "NEEDS_SOURCE": 3,
-        "NOT_AVAILABLE": 0,
-        "NEEDS_MAPPING": 0,
-        "SOURCE_CONFLICT": 0
-      },
-      {
-        "code": "substrates",
-        "READY": 10,
-        "NEEDS_SOURCE": 9,
-        "NOT_AVAILABLE": 0,
-        "NEEDS_MAPPING": 0,
-        "SOURCE_CONFLICT": 0
-      },
-      {
-        "code": "color",
-        "READY": 9,
-        "NEEDS_SOURCE": 10,
-        "NOT_AVAILABLE": 0,
-        "NEEDS_MAPPING": 0,
-        "SOURCE_CONFLICT": 0
-      },
-      {
-        "code": "adhesive_class",
-        "READY": 18,
-        "NEEDS_SOURCE": 0,
-        "NOT_AVAILABLE": 0,
-        "NEEDS_MAPPING": 0,
-        "SOURCE_CONFLICT": 1
-      },
-      {
-        "code": "layer_thickness",
-        "READY": 18,
-        "NEEDS_SOURCE": 1,
-        "NOT_AVAILABLE": 0,
-        "NEEDS_MAPPING": 0,
-        "SOURCE_CONFLICT": 0
-      },
-      {
-        "code": "consumption",
         "READY": 15,
         "NEEDS_SOURCE": 4,
         "NOT_AVAILABLE": 0,
@@ -3218,41 +3233,97 @@
         "SOURCE_CONFLICT": 0
       },
       {
+        "code": "purpose",
+        "READY": 19,
+        "NEEDS_SOURCE": 0,
+        "NOT_AVAILABLE": 0,
+        "NEEDS_MAPPING": 0,
+        "SOURCE_CONFLICT": 0
+      },
+      {
+        "code": "application_area",
+        "READY": 17,
+        "NEEDS_SOURCE": 2,
+        "NOT_AVAILABLE": 0,
+        "NEEDS_MAPPING": 0,
+        "SOURCE_CONFLICT": 0
+      },
+      {
+        "code": "substrates",
+        "READY": 11,
+        "NEEDS_SOURCE": 8,
+        "NOT_AVAILABLE": 0,
+        "NEEDS_MAPPING": 0,
+        "SOURCE_CONFLICT": 0
+      },
+      {
+        "code": "color",
+        "READY": 9,
+        "NEEDS_SOURCE": 9,
+        "NOT_AVAILABLE": 1,
+        "NEEDS_MAPPING": 0,
+        "SOURCE_CONFLICT": 0
+      },
+      {
+        "code": "adhesive_class",
+        "READY": 19,
+        "NEEDS_SOURCE": 0,
+        "NOT_AVAILABLE": 0,
+        "NEEDS_MAPPING": 0,
+        "SOURCE_CONFLICT": 0
+      },
+      {
+        "code": "layer_thickness",
+        "READY": 19,
+        "NEEDS_SOURCE": 0,
+        "NOT_AVAILABLE": 0,
+        "NEEDS_MAPPING": 0,
+        "SOURCE_CONFLICT": 0
+      },
+      {
+        "code": "consumption",
+        "READY": 16,
+        "NEEDS_SOURCE": 3,
+        "NOT_AVAILABLE": 0,
+        "NEEDS_MAPPING": 0,
+        "SOURCE_CONFLICT": 0
+      },
+      {
         "code": "water_requirement",
-        "READY": 14,
-        "NEEDS_SOURCE": 5,
+        "READY": 15,
+        "NEEDS_SOURCE": 4,
         "NOT_AVAILABLE": 0,
         "NEEDS_MAPPING": 0,
         "SOURCE_CONFLICT": 0
       },
       {
         "code": "pot_life",
-        "READY": 16,
-        "NEEDS_SOURCE": 3,
+        "READY": 17,
+        "NEEDS_SOURCE": 2,
         "NOT_AVAILABLE": 0,
         "NEEDS_MAPPING": 0,
         "SOURCE_CONFLICT": 0
       },
       {
         "code": "application_temperature",
-        "READY": 16,
-        "NEEDS_SOURCE": 3,
+        "READY": 17,
+        "NEEDS_SOURCE": 2,
         "NOT_AVAILABLE": 0,
         "NEEDS_MAPPING": 0,
         "SOURCE_CONFLICT": 0
       },
       {
         "code": "open_time",
-        "READY": 14,
-        "NEEDS_SOURCE": 5,
+        "READY": 15,
+        "NEEDS_SOURCE": 4,
         "NOT_AVAILABLE": 0,
         "NEEDS_MAPPING": 0,
         "SOURCE_CONFLICT": 0
       },
       {
         "code": "adjustment_time",
-        "READY": 14,
-        "NEEDS_SOURCE": 5,
+        "READY": 15,
+        "NEEDS_SOURCE": 4,
         "NOT_AVAILABLE": 0,
         "NEEDS_MAPPING": 0,
         "SOURCE_CONFLICT": 0
@@ -3260,23 +3331,23 @@
       {
         "code": "walkability",
         "READY": 6,
-        "NEEDS_SOURCE": 13,
-        "NOT_AVAILABLE": 0,
+        "NEEDS_SOURCE": 12,
+        "NOT_AVAILABLE": 1,
         "NEEDS_MAPPING": 0,
         "SOURCE_CONFLICT": 0
       },
       {
         "code": "heated_floor_compatibility",
-        "READY": 12,
-        "NEEDS_SOURCE": 7,
+        "READY": 13,
+        "NEEDS_SOURCE": 6,
         "NOT_AVAILABLE": 0,
         "NEEDS_MAPPING": 0,
         "SOURCE_CONFLICT": 0
       },
       {
         "code": "standard",
-        "READY": 11,
-        "NEEDS_SOURCE": 8,
+        "READY": 12,
+        "NEEDS_SOURCE": 7,
         "NOT_AVAILABLE": 0,
         "NEEDS_MAPPING": 0,
         "SOURCE_CONFLICT": 0
@@ -3284,11 +3355,10 @@
     ],
     "other": {
       "titleIssuesForReview": [
-        "MAT-000133",
         "MAT-000134",
         "MAT-000144"
       ],
-      "sourceConflictItems": 3,
+      "sourceConflictItems": 2,
       "needsOwnerConfirmationItems": 0,
       "productionApplyPrepared": false,
       "frostResistanceDisposition": "Existing definition is not proposed in this template: no exact-source cross-brand canonical coverage was established in this discovery pass.",
@@ -3314,7 +3384,7 @@
           "reason": "A common trowel method is not differentiating across this batch."
         }
       ],
-      "titleReviewCount": 3,
+      "titleReviewCount": 2,
       "templateDecision": "16 regular fields retained for review (12 existing cross-brand fields plus 4 new-definition candidates); grouting_time, maximum_tile_size and adhesion are excluded from this template pending a condition-aware model."
     },
     "evaluatedFieldCoverage": [
@@ -3367,24 +3437,24 @@
         }
       },
       "after": {
-        "readyTotal": 221,
+        "readyTotal": 235,
         "readyByField": {
-          "base": 14,
-          "purpose": 18,
-          "application_area": 16,
-          "substrates": 10,
+          "base": 15,
+          "purpose": 19,
+          "application_area": 17,
+          "substrates": 11,
           "color": 9,
-          "adhesive_class": 18,
-          "layer_thickness": 18,
-          "consumption": 15,
-          "water_requirement": 14,
-          "pot_life": 16,
-          "application_temperature": 16,
-          "open_time": 14,
-          "adjustment_time": 14,
+          "adhesive_class": 19,
+          "layer_thickness": 19,
+          "consumption": 16,
+          "water_requirement": 15,
+          "pot_life": 17,
+          "application_temperature": 17,
+          "open_time": 15,
+          "adjustment_time": 15,
           "walkability": 6,
-          "heated_floor_compatibility": 12,
-          "standard": 11
+          "heated_floor_compatibility": 13,
+          "standard": 12
         }
       },
       "note": "Baseline before original source-completion is retained from the first-pass artifact. Final counts include source-backed exact qualifiers now representable by production schema-v11 text definitions; excluded grout time, maximum tile size and adhesion do not count as canonical READY."

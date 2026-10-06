@@ -4,26 +4,26 @@
 
 ## Source completion
 
-По 16 регулярным полям first-pass baseline: **132/304** READY; после refinement: **221/304** (**+89**). Production v11 подтверждает `pot_life` как `text`, `default_unit=NULL`; qualifiers и source units теперь сохраняются без нормализации.
+По 16 регулярным полям first-pass baseline: **132/304** READY; после refinement и подтверждения MAT-000133: **235/304** (**+103**). Production v11 подтверждает `pot_life` как `text`, `default_unit=NULL`; qualifiers и source units теперь сохраняются без нормализации.
 
 | Code | Before READY | Final READY | NEEDS_SOURCE | NOT_AVAILABLE | NEEDS_MAPPING | SOURCE_CONFLICT |
 |---|---:|---:|---:|---:|---:|---:|
-| `base` | 6 | 14 | 5 | 0 | 0 | 0 |
-| `purpose` | 13 | 18 | 1 | 0 | 0 | 0 |
-| `application_area` | 9 | 16 | 3 | 0 | 0 | 0 |
-| `substrates` | 3 | 10 | 9 | 0 | 0 | 0 |
-| `color` | 7 | 9 | 10 | 0 | 0 | 0 |
-| `adhesive_class` | 18 | 18 | 0 | 0 | 0 | 1 |
-| `layer_thickness` | 12 | 18 | 1 | 0 | 0 | 0 |
-| `consumption` | 8 | 15 | 4 | 0 | 0 | 0 |
-| `water_requirement` | 10 | 14 | 5 | 0 | 0 | 0 |
-| `pot_life` | 3 | 16 | 3 | 0 | 0 | 0 |
-| `application_temperature` | 12 | 16 | 3 | 0 | 0 | 0 |
-| `open_time` | 8 | 14 | 5 | 0 | 0 | 0 |
-| `adjustment_time` | 8 | 14 | 5 | 0 | 0 | 0 |
-| `walkability` | 4 | 6 | 13 | 0 | 0 | 0 |
-| `heated_floor_compatibility` | 8 | 12 | 7 | 0 | 0 | 0 |
-| `standard` | 3 | 11 | 8 | 0 | 0 | 0 |
+| `base` | 6 | 15 | 4 | 0 | 0 | 0 |
+| `purpose` | 13 | 19 | 0 | 0 | 0 | 0 |
+| `application_area` | 9 | 17 | 2 | 0 | 0 | 0 |
+| `substrates` | 3 | 11 | 8 | 0 | 0 | 0 |
+| `color` | 7 | 9 | 9 | 1 | 0 | 0 |
+| `adhesive_class` | 18 | 19 | 0 | 0 | 0 | 0 |
+| `layer_thickness` | 12 | 19 | 0 | 0 | 0 | 0 |
+| `consumption` | 8 | 16 | 3 | 0 | 0 | 0 |
+| `water_requirement` | 10 | 15 | 4 | 0 | 0 | 0 |
+| `pot_life` | 3 | 17 | 2 | 0 | 0 | 0 |
+| `application_temperature` | 12 | 17 | 2 | 0 | 0 | 0 |
+| `open_time` | 8 | 15 | 4 | 0 | 0 | 0 |
+| `adjustment_time` | 8 | 15 | 4 | 0 | 0 | 0 |
+| `walkability` | 4 | 6 | 12 | 1 | 0 | 0 |
+| `heated_floor_compatibility` | 8 | 13 | 6 | 0 | 0 | 0 |
+| `standard` | 3 | 12 | 7 | 0 | 0 | 0 |
 
 ## 19-product review
 
@@ -35,7 +35,7 @@
 | MAT-000130 | Клей для плитки и керамогранита Ceresit CM 11 PRO, 25 кг | IDENTITY_CONFIRMED | 13/16 | 3 | NO_CHANGE |
 | MAT-000131 | Клей для плитки, керамогранита и камня Ceresit СМ 14 сер. 25 кг | IDENTITY_CONFIRMED | 14/16 | 2 | NO_CHANGE |
 | MAT-000132 | Клей для плитки, керамогранита и камня Ceresit СМ 16 сер. 25 кг | IDENTITY_CONFIRMED | 14/16 | 2 | NO_CHANGE |
-| MAT-000133 | Клей для плитки высокоэластичный Ceresit CM 17 Super Flex сер., 25 кг | PARTIAL | 0/16 | 16 | DEFER_REVISION_MAPPING |
+| MAT-000133 | Клей для плитки высокоэластичный Ceresit CM 17 Super Flex сер., 25 кг | IDENTITY_CONFIRMED | 14/16 | 2 | NO_CHANGE |
 | MAT-000134 | Клей для плитки Litokol K16, эластичный с уменьшенным расходом, керамогранита и камня, класс С2 TЕ S1 15 кг | IDENTITY_CONFIRMED | 10/16 | 6 | DEFER_SOURCE_CONFLICT: LITOLIGHT K16, 15 кг |
 | MAT-000135 | Клей для плитки Litokol К80, 25 кг | IDENTITY_CONFIRMED | 15/16 | 1 | NO_CHANGE |
 | MAT-000136 | Клей для плитки Litokol К55, 25 кг | IDENTITY_CONFIRMED | 15/16 | 1 | NO_CHANGE |
@@ -57,24 +57,24 @@ Main order: `brand → product_type → shelf_life → package_weight`. Regular 
 |---|---|---|---:|---:|---:|---:|---:|---|
 | `brand` | existing | text | 19 / 6 | 0 | 0 | 0 | 0 | INCLUDE — Established global main attribute; brand remains source-backed per exact product. |
 | `product_type` | existing | text | 19 / 6 | 0 | 0 | 0 | 0 | INCLUDE — Concise product-type distinction without marketing-only claims. |
-| `shelf_life` | existing | number / месяцев | 10 / 4 | 6 | 0 | 2 | 1 | INCLUDE — Production v11 canonical unit is «месяцев»; sourceUnit «мес» is preserved separately. Day-based values stay NEEDS_MAPPING. |
-| `package_weight` | existing | number / кг | 18 / 6 | 1 | 0 | 0 | 0 | INCLUDE — Manufacturer pack size is distinct from operational products.weight; source the exact package. |
-| `base` | existing | text | 14 / 6 | 5 | 0 | 0 | 0 | INCLUDE — Cross-brand binder/base composition where explicitly stated. |
-| `purpose` | existing | text | 18 / 6 | 1 | 0 | 0 | 0 | INCLUDE — What tile/material the product is intended to bond, distinct from location. |
-| `application_area` | existing | text | 16 / 6 | 3 | 0 | 0 | 0 | INCLUDE — Interior/exterior, wall/floor and exposure context. |
-| `substrates` | existing | text | 10 / 5 | 9 | 0 | 0 | 0 | INCLUDE — Exact substrate compatibility; keep preparation/condition qualifiers. |
-| `color` | existing | text | 9 / 5 | 10 | 0 | 0 | 0 | INCLUDE — Adhesive color affects stone, glass and translucent finish choices. |
-| `adhesive_class` | new | text | 18 / 6 | 0 | 0 | 0 | 1 | INCLUDE — Standardized C0/C1/C2 class plus T/E/F/S suffixes is cross-brand and directly comparable. |
-| `layer_thickness` | existing | text | 18 / 6 | 1 | 0 | 0 | 0 | INCLUDE — Preserves ranges and recommended/local maximum distinction. |
-| `consumption` | existing | text | 15 / 5 | 4 | 0 | 0 | 0 | INCLUDE — Values can depend on tile size/trowel; textual table preserves those dimensions. |
-| `water_requirement` | existing | text | 14 / 6 | 5 | 0 | 0 | 0 | INCLUDE — Pack-based and per-kg mixing ranges can be represented without conversion. |
-| `pot_life` | existing | text | 16 / 6 | 3 | 0 | 0 | 0 | INCLUDE — Production schema v11 defines pot_life as text with no unit; source qualifiers and original time units are retained verbatim. |
-| `application_temperature` | existing | text | 16 / 6 | 3 | 0 | 0 | 0 | INCLUDE — Application temperature range is a stable cross-brand constraint. |
-| `open_time` | new | text | 14 / 6 | 5 | 0 | 0 | 0 | INCLUDE — Standard open-time value with inequality/condition qualifier is comparable across brands; text retains threshold. |
-| `adjustment_time` | new | text | 14 / 5 | 5 | 0 | 0 | 0 | INCLUDE — Tile correction window is distinct from open time and can preserve inequalities/ranges. |
-| `walkability` | existing | text | 6 / 2 | 13 | 0 | 0 | 0 | INCLUDE — Time until floor is walkable, distinct from grout readiness. |
-| `heated_floor_compatibility` | new | boolean | 12 / 5 | 7 | 0 | 0 | 0 | INCLUDE — Boolean expresses only explicit manufacturer suitability/incompatibility; application delay details remain in source notes, never inferred as false. |
-| `standard` | existing | text | 11 / 5 | 8 | 0 | 0 | 0 | INCLUDE — Named technical standard, distinct from the adhesive performance class. |
+| `shelf_life` | existing | number / месяцев | 11 / 4 | 5 | 0 | 2 | 1 | INCLUDE — Production v11 canonical unit is «месяцев»; source wording is preserved. Day-based values stay NEEDS_MAPPING. |
+| `package_weight` | existing | number / кг | 19 / 6 | 0 | 0 | 0 | 0 | INCLUDE — Manufacturer pack size is distinct from operational products.weight; source the exact package. |
+| `base` | existing | text | 15 / 6 | 4 | 0 | 0 | 0 | INCLUDE — Cross-brand binder/base composition where explicitly stated. |
+| `purpose` | existing | text | 19 / 6 | 0 | 0 | 0 | 0 | INCLUDE — What tile/material the product is intended to bond, distinct from location. |
+| `application_area` | existing | text | 17 / 6 | 2 | 0 | 0 | 0 | INCLUDE — Interior/exterior, wall/floor and exposure context. |
+| `substrates` | existing | text | 11 / 5 | 8 | 0 | 0 | 0 | INCLUDE — Exact substrate compatibility; keep preparation/condition qualifiers. |
+| `color` | existing | text | 9 / 5 | 9 | 1 | 0 | 0 | INCLUDE — Adhesive color affects stone, glass and translucent finish choices. |
+| `adhesive_class` | new | text | 19 / 6 | 0 | 0 | 0 | 0 | INCLUDE — Standardized C0/C1/C2 class plus T/E/F/S suffixes is cross-brand and directly comparable. |
+| `layer_thickness` | existing | text | 19 / 6 | 0 | 0 | 0 | 0 | INCLUDE — Preserves ranges and recommended/local maximum distinction. |
+| `consumption` | existing | text | 16 / 5 | 3 | 0 | 0 | 0 | INCLUDE — Values can depend on tile size/trowel; textual table preserves those dimensions. |
+| `water_requirement` | existing | text | 15 / 6 | 4 | 0 | 0 | 0 | INCLUDE — Pack-based and per-kg mixing ranges can be represented without conversion. |
+| `pot_life` | existing | text | 17 / 6 | 2 | 0 | 0 | 0 | INCLUDE — Production schema v11 defines pot_life as text with no unit; source qualifiers and original time units are retained verbatim. |
+| `application_temperature` | existing | text | 17 / 6 | 2 | 0 | 0 | 0 | INCLUDE — Application temperature range is a stable cross-brand constraint. |
+| `open_time` | new | text | 15 / 6 | 4 | 0 | 0 | 0 | INCLUDE — Standard open-time value with inequality/condition qualifier is comparable across brands; text retains threshold. |
+| `adjustment_time` | new | text | 15 / 5 | 4 | 0 | 0 | 0 | INCLUDE — Tile correction window is distinct from open time and can preserve inequalities/ranges. |
+| `walkability` | existing | text | 6 / 2 | 12 | 1 | 0 | 0 | INCLUDE — Time until floor is walkable, distinct from grout readiness. |
+| `heated_floor_compatibility` | new | boolean | 13 / 5 | 6 | 0 | 0 | 0 | INCLUDE — Boolean expresses only explicit manufacturer suitability/incompatibility; application delay details remain in source notes, never inferred as false. |
+| `standard` | existing | text | 12 / 5 | 7 | 0 | 0 | 0 | INCLUDE — Named technical standard, distinct from the adhesive performance class. |
 | `grouting_time` | new | text | 0 / 0 | 12 | 0 | 7 | 0 | EXCLUDE — Source evidence branches by wall/floor and absorption/setting conditions. One unconditioned field loses distinctions; exclude until the value model can retain conditions. |
 | `maximum_tile_size` | new | text | 0 / 0 | 10 | 0 | 9 | 0 | EXCLUDE — Limits depend on tile material/side, wall/floor, substrate and application method; one general maximum is misleading. |
 | `adhesion` | existing | number / МПа | 0 / 0 | 7 | 0 | 12 | 0 | EXCLUDE — Existing scalar does not encode test exposure, conditioning, minimum threshold versus actual/maximum. |
@@ -83,16 +83,17 @@ Main order: `brand → product_type → shelf_life → package_weight`. Regular 
 
 | Code | Label | Type | Unit | READY / brands | Rationale |
 |---|---|---|---|---:|---|
-| `adhesive_class` | Класс клея | text | — | 18 / 6 | Standardized C0/C1/C2 class plus T/E/F/S suffixes is cross-brand and directly comparable. |
-| `open_time` | Открытое время | text | — | 14 / 6 | Standard open-time value with inequality/condition qualifier is comparable across brands; text retains threshold. |
-| `adjustment_time` | Время корректировки | text | — | 14 / 5 | Tile correction window is distinct from open time and can preserve inequalities/ranges. |
-| `heated_floor_compatibility` | Подходит для теплого пола | boolean | — | 12 / 5 | Cross-brand compatibility value; text preserves yes/no and any activation delay/constraints. |
+| `adhesive_class` | Класс клея | text | — | 19 / 6 | Standardized C0/C1/C2 class plus T/E/F/S suffixes is cross-brand and directly comparable. |
+| `open_time` | Открытое время | text | — | 15 / 6 | Standard open-time value with inequality/condition qualifier is comparable across brands; text retains threshold. |
+| `adjustment_time` | Время корректировки | text | — | 15 / 5 | Tile correction window is distinct from open time and can preserve inequalities/ranges. |
+| `heated_floor_compatibility` | Подходит для теплого пола | boolean | — | 13 / 5 | Cross-brand compatibility value; text preserves yes/no and any activation delay/constraints. |
 
 Do not create `grouting_time`, `maximum_tile_size`, or `adhesion_text`. Grouting readiness and tile-size limits branch on application conditions; existing numeric adhesion loses test conditions/threshold semantics.
 
 ## Source/revision decisions
 
-- MAT-000133 remains PARTIAL; no CM17 revision mapping, and H2 must skip all its writes.
+- MAT-000133 is now IDENTITY_CONFIRMED from owner-confirmed exact Russian CM 17 Super Flex packaging. The official Russian CM 17 TDS is the sole technical source; `adhesive_class` is READY as C2 TE S1. The former revision-mapping conflict is resolved.
+- MAT-000133 has 18 READY facts (4 main, 14 regular); `color` and `walkability` remain NOT_AVAILABLE and are not written.
 - MAT-000134 naming remains conflicted (K16/LITOLIGHT K16); no rename.
 - MAT-000140 shelf life remains SOURCE_CONFLICT: official page 24 months vs official TDS 12 months.
 - MAT-000143 U-100: manufacturer page explicitly connects current product to former U-100 UniFlex with unchanged formula; historic TDS supports old pack/revision facts. Use only facts marked READY.
@@ -314,38 +315,38 @@ Do not create `grouting_time`, `maximum_tile_size`, or `adhesion_text`. Grouting
 - `walkability`: NEEDS_SOURCE
 
 
-## MAT-000133 — PARTIAL
+## MAT-000133 — IDENTITY_CONFIRMED
 
 - Title: Клей для плитки высокоэластичный Ceresit CM 17 Super Flex сер., 25 кг
-- Identity: Ceresit CM 17 Super Flex (historic Russian-market formulation), 25 kg
+- Identity: Ceresit CM 17 Super Flex, точная российская упаковка подтверждена владельцем, 25 кг
 - Expected brand: Ceresit
-- Operational weight: 25 кг; local product record/title; operational weight only, not proof of manufacturer package variant
-- Manufacturer package: REVISION_UNRESOLVED; 25 кг; sources [ceresitCatalog](https://ceresit.ru/ru/products/tiling/tile-adhesives), [ceresitCm17OldTds](https://ceresit-spb.ru/sites/default/files/prodfiles/ru-ceresit-tds-cm17.pdf), [ceresitCm17Tds](https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-CM17)
-- Title decision: DEFER_REVISION_MAPPING; Историческая маркировка Super Flex и редакция производителя из TDS не привязаны объективно к stock этой карточки.
-- Source keys: [ceresitCatalog](https://ceresit.ru/ru/products/tiling/tile-adhesives), [ceresitCm17OldTds](https://ceresit-spb.ru/sites/default/files/prodfiles/ru-ceresit-tds-cm17.pdf), [ceresitCm17Tds](https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-CM17)
+- Operational weight: 25 кг; исходная товарная запись сохранена без изменений
+- Manufacturer package: CONFIRMED; бумажный мешок 25 кг; владелец подтвердил точную редакцию упаковки, официальный TDS указывает фасовку 25 кг
+- Title decision: NO_CHANGE; наименование товара не меняется.
+- Technical source: [официальная русская техническая документация Ceresit CM 17](https://dm.henkel-dam.com/is/content/henkel/ru-ceresit-tds-CM17). Она является единственным источником технических характеристик в этой записи.
 
-| READY code | Value | Source |
-|---|---|---|
-| `brand` | Ceresit | [ceresitCatalog](https://ceresit.ru/ru/products/tiling/tile-adhesives) |
-| `product_type` | Эластичный плиточный клей | [ceresitCatalog](https://ceresit.ru/ru/products/tiling/tile-adhesives) |
+| Section | Характеристика | Значение | Источник |
+|---|---|---|---|
+| Основная | Бренд | Ceresit | официальный TDS CM 17 |
+| Основная | Тип продукта | Клей для плитки | официальный TDS CM 17 |
+| Основная | Срок хранения | 12 месяцев | официальный TDS CM 17; бумажный мешок |
+| Основная | Вес упаковки | 25 кг | официальный TDS CM 17 |
+| Дополнительная | Основа | Цементная | официальный TDS CM 17 |
+| Дополнительная | Назначение | Для керамической плитки, керамогранита, клинкерной и каменной плитки, кроме мрамора, включая крупноформатные плиты | официальный TDS CM 17 |
+| Дополнительная | Область применения | Внутренние и наружные работы; стены и полы; балконы, террасы, бассейны, стяжки с подогревом, печи, камины, бани и хаммамы | официальный TDS CM 17 |
+| Дополнительная | Основания | Бетон; цементные и цементно-известковые штукатурки; цементные стяжки; гипсовые и ангидритные основания; гипсокартон; ГВЛ; ДСП; OSB; лёгкий и ячеистый бетон; гидроизоляционные покрытия; существующая плиточная облицовка; прочные малярные покрытия | официальный TDS CM 17 |
+| Дополнительная | Класс клея | C2 TE S1 | официальный TDS CM 17 |
+| Дополнительная | Толщина слоя | До 10 мм | официальный TDS CM 17 |
+| Дополнительная | Расход | Около 1,1 кг/м² на 1 мм слоя | официальный TDS CM 17 |
+| Дополнительная | Расход воды | Около 6,75 л на 25 кг | официальный TDS CM 17 |
+| Дополнительная | Жизнеспособность раствора | Около 2 часов | официальный TDS CM 17 |
+| Дополнительная | Температура основания и воздуха | От +5 до +30 °C | официальный TDS CM 17 |
+| Дополнительная | Открытое время | 30 минут | официальный TDS CM 17 |
+| Дополнительная | Время корректировки | 30 минут | официальный TDS CM 17 |
+| Дополнительная | Подходит для тёплого пола | Да | официальный TDS CM 17 |
+| Дополнительная | Стандарт | ГОСТ Р 56387-2018 | официальный TDS CM 17 |
 
-**Unresolved regular fields:**
-- `base`: NEEDS_SOURCE
-- `purpose`: NEEDS_SOURCE
-- `application_area`: NEEDS_SOURCE
-- `substrates`: NEEDS_SOURCE
-- `color`: NEEDS_SOURCE
-- `adhesive_class`: SOURCE_CONFLICT: официальный/current и historic “Super Flex” материалы не доказывают, какая редакция соответствует stock MAT; class C2 TE S1 виден в текущем каталоге/официальном TDS, но к этой строке не переносится без revision mapping.
-- `layer_thickness`: NEEDS_SOURCE
-- `consumption`: NEEDS_SOURCE
-- `water_requirement`: NEEDS_SOURCE
-- `pot_life`: NEEDS_SOURCE
-- `application_temperature`: NEEDS_SOURCE
-- `open_time`: NEEDS_SOURCE
-- `adjustment_time`: NEEDS_SOURCE
-- `walkability`: NEEDS_SOURCE
-- `heated_floor_compatibility`: NEEDS_SOURCE
-- `standard`: NEEDS_SOURCE
+**Не записываются:** `color` — серый цвет не подтверждён выбранной технической документацией; `walkability` — срок до затирки не приравнивается ко времени возможности хождения. Также остаются исключёнными `grouting_time`, `maximum_tile_size` и `adhesion`.
 
 
 ## MAT-000134 — IDENTITY_CONFIRMED
@@ -816,6 +817,6 @@ Do not create `grouting_time`, `maximum_tile_size`, or `adhesion_text`. Grouting
 
 - Owner-provided production read-only audit reports schema v11, structure 16 (`SUB-000015`) under active category `Смеси`, zero existing memberships, and four missing definitions. This task did not access production.
 - H1 exact baseline plan: 4 definition inserts + 20 membership inserts; allowed definitions/types: adhesive_class text/null, open_time text/null, adjustment_time text/null, heated_floor_compatibility boolean/null. Existing `pot_life` is text/null.
-- H2 exact ordered MAT scope is MAT-000127…MAT-000145. Writes READY facts only; empty brand column only; MAT-000133 identity PARTIAL gets zero writes. Titles and other product fields are immutable.
+- H2 exact ordered MAT scope is MAT-000127…MAT-000145. Writes READY facts only; empty brand column only; MAT-000133 is now identity-confirmed and has 18 planned attribute inserts (4 main, 14 regular). Titles and other product fields are immutable.
 - Local schema-v4 is not used to infer production v11 template integrity. Shared canonical template registration remains deferred until H1 production verification.
 - No product title, image, description, SEO, production DB, shared template dataset or release was changed.
