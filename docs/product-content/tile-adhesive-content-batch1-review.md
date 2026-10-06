@@ -3,7 +3,7 @@
 Подготовлено для Tech Lead review. Production не открывался, content apply и template write не выполнялись.
 
 - Дата проверки: 2026-10-06
-- Exact scope: MAT-000127, MAT-000128, MAT-000129, MAT-000130, MAT-000131, MAT-000132, MAT-000134, MAT-000135, MAT-000136, MAT-000137, MAT-000138, MAT-000139, MAT-000140, MAT-000141, MAT-000142, MAT-000143, MAT-000144, MAT-000145
+- Exact scope: MAT-000127, MAT-000128, MAT-000129, MAT-000130, MAT-000131, MAT-000132, MAT-000133, MAT-000134, MAT-000135, MAT-000136, MAT-000137, MAT-000138, MAT-000139, MAT-000140, MAT-000141, MAT-000142, MAT-000143, MAT-000144, MAT-000145
 - MAT-000133 включен: IDENTITY_CONFIRMED, четыре согласованных Content + SEO поля.
 - Единственные writable поля: short_description, full_description, seo_title, seo_description.
 - План на чистом synthetic fixture: 19 × 4 = 76 теоретических записей.

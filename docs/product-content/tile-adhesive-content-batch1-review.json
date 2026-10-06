@@ -42,11 +42,11 @@
     "seo_description": 19
   },
   "syntheticDryRun": {
-    "total": 18,
-    "ready": 18,
+    "total": 19,
+    "ready": 19,
     "blocked": 0,
     "errors": 0,
-    "plannedFieldWrites": 72,
+    "plannedFieldWrites": 76,
     "mode": "synthetic fixture only"
   },
   "seoChecks": {
