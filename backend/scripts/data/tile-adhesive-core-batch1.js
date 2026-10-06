@@ -55,6 +55,13 @@ const DATA = {
       "sourceType": "manufacturer product card",
       "evidenceScope": "Exact Easy Fix product identity and published specifications."
     },
+    "vetonitEasyFixMain": {
+      "url": "https://www.vetonit.com/product/vetonit_izi_fiks_25kg/",
+      "owner": "Saint-Gobain / Vetonit",
+      "domain": "vetonit.com",
+      "sourceType": "official manufacturer product page",
+      "evidenceScope": "Exact Easy Fix 25 kg page states the ceramic-tile size/load limit, 12-month shelf life, and a correction window up to 15 minutes. The separate HUB card mentions stone too; this batch preserves the narrower approved ceramic-only purpose wording."
+    },
     "ceresitCatalog": {
       "url": "https://ceresit.ru/ru/products/tiling/tile-adhesives",
       "owner": "Ceresit / Henkel",
@@ -810,12 +817,16 @@ const DATA = {
           "evidenceNote": null
         },
         "shelf_life": {
-          "status": "NEEDS_MAPPING",
-          "value": null,
+          "status": "READY",
+          "value": 12,
+          "dataType": "number",
+          "unit": "месяцев",
           "sources": [
-            "vetonitEasyFix"
+            "vetonitEasyFixMain"
           ],
-          "reason": "source gives 365 days; existing definition unit is months, so do not convert"
+          "sourceUnit": "месяцев",
+          "sourceWording": "12 месяцев",
+          "evidenceNote": "Точная карточка Vetonit для Easy Fix 25 кг указывает срок годности 12 месяцев."
         },
         "package_weight": {
           "status": "READY",
@@ -841,11 +852,11 @@ const DATA = {
         },
         "purpose": {
           "status": "READY",
-          "value": "керамическая плитка и камень, кроме мрамора; до 60×60 см; до 45 кг/м²",
+          "value": "Керамическая плитка размером до 60×60 см и массой не более 45 кг/м²",
           "dataType": "text",
           "unit": null,
           "sources": [
-            "vetonitEasyFix"
+            "vetonitEasyFixMain"
           ],
           "sourceWording": null,
           "evidenceNote": null
@@ -961,12 +972,15 @@ const DATA = {
           "evidenceNote": null
         },
         "adjustment_time": {
-          "status": "NEEDS_SOURCE",
-          "value": null,
+          "status": "READY",
+          "value": "15 мин",
+          "dataType": "text",
+          "unit": null,
           "sources": [
-            "vetonitEasyFix"
+            "vetonitEasyFixMain"
           ],
-          "reason": "No exact-SKU source-backed value is established."
+          "sourceWording": "Корректировку положения плитки нужно проводить не позже чем через 15 минут после укладки.",
+          "evidenceNote": "Предельное время корректировки указано в инструкции производителя для Easy Fix 25 кг."
         },
         "walkability": {
           "status": "NEEDS_SOURCE",

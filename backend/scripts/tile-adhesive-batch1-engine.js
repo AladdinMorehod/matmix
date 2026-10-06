@@ -167,7 +167,7 @@ function validateData() {
       if (DATA.TEMPLATE.regularCodes.includes(code) && fact.status === 'READY') regularReady += 1;
     }
   }
-  if (regularReady !== 235) throw new Error(`DATA_BLOCKED corrected regular READY count expected 235, got ${regularReady}`);
+  if (regularReady !== 236) throw new Error(`DATA_BLOCKED corrected regular READY count expected 236, got ${regularReady}`);
   return { products: DATA.PRODUCTS.length, logicalSlots: DATA.PRODUCTS.length * DATA.ALL_CODES.length, regularReady };
 }
 async function loadDefinitionState(db) {

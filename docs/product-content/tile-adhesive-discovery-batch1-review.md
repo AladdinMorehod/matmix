@@ -4,7 +4,7 @@
 
 ## Source completion
 
-По 16 регулярным полям first-pass baseline: **132/304** READY; после refinement и подтверждения MAT-000133: **235/304** (**+103**). Production v11 подтверждает `pot_life` как `text`, `default_unit=NULL`; qualifiers и source units теперь сохраняются без нормализации.
+По 16 регулярным полям first-pass baseline: **132/304** READY; после refinement и подтверждения MAT-000133 и exact-SKU reconciliation MAT-000129: **236/304** (**+104**). Production v11 подтверждает `pot_life` как `text`, `default_unit=NULL`; qualifiers и source units теперь сохраняются без нормализации.
 
 | Code | Before READY | Final READY | NEEDS_SOURCE | NOT_AVAILABLE | NEEDS_MAPPING | SOURCE_CONFLICT |
 |---|---:|---:|---:|---:|---:|---:|
@@ -31,7 +31,7 @@
 |---|---|---|---:|---:|---|
 | MAT-000127 | Клей для плитки Knauf Флизен, 25 кг | IDENTITY_CONFIRMED | 12/16 | 4 | NO_CHANGE |
 | MAT-000128 | Клей для плитки Knauf Флизен ПЛЮС, 25 кг | IDENTITY_CONFIRMED | 15/16 | 1 | NO_CHANGE |
-| MAT-000129 | Клей для плитки Vetonit Изи Фикс серый С0 25 кг | IDENTITY_CONFIRMED | 12/16 | 4 | NO_CHANGE |
+| MAT-000129 | Клей для плитки Vetonit Изи Фикс серый С0 25 кг | IDENTITY_CONFIRMED | 13/16 | 3 | NO_CHANGE |
 | MAT-000130 | Клей для плитки и керамогранита Ceresit CM 11 PRO, 25 кг | IDENTITY_CONFIRMED | 13/16 | 3 | NO_CHANGE |
 | MAT-000131 | Клей для плитки, керамогранита и камня Ceresit СМ 14 сер. 25 кг | IDENTITY_CONFIRMED | 14/16 | 2 | NO_CHANGE |
 | MAT-000132 | Клей для плитки, керамогранита и камня Ceresit СМ 16 сер. 25 кг | IDENTITY_CONFIRMED | 14/16 | 2 | NO_CHANGE |
@@ -57,7 +57,7 @@ Main order: `brand → product_type → shelf_life → package_weight`. Regular 
 |---|---|---|---:|---:|---:|---:|---:|---|
 | `brand` | existing | text | 19 / 6 | 0 | 0 | 0 | 0 | INCLUDE — Established global main attribute; brand remains source-backed per exact product. |
 | `product_type` | existing | text | 19 / 6 | 0 | 0 | 0 | 0 | INCLUDE — Concise product-type distinction without marketing-only claims. |
-| `shelf_life` | existing | number / месяцев | 11 / 4 | 5 | 0 | 2 | 1 | INCLUDE — Production v11 canonical unit is «месяцев»; source wording is preserved. Day-based values stay NEEDS_MAPPING. |
+| `shelf_life` | existing | number / месяцев | 12 / 4 | 5 | 0 | 1 | 1 | INCLUDE — Production v11 canonical unit is «месяцев»; exact 12-month wording is taken from the main Vetonit product page; day-based source values elsewhere stay NEEDS_MAPPING. |
 | `package_weight` | existing | number / кг | 19 / 6 | 0 | 0 | 0 | 0 | INCLUDE — Manufacturer pack size is distinct from operational products.weight; source the exact package. |
 | `base` | existing | text | 15 / 6 | 4 | 0 | 0 | 0 | INCLUDE — Cross-brand binder/base composition where explicitly stated. |
 | `purpose` | existing | text | 19 / 6 | 0 | 0 | 0 | 0 | INCLUDE — What tile/material the product is intended to bond, distinct from location. |
@@ -71,7 +71,7 @@ Main order: `brand → product_type → shelf_life → package_weight`. Regular 
 | `pot_life` | existing | text | 17 / 6 | 2 | 0 | 0 | 0 | INCLUDE — Production schema v11 defines pot_life as text with no unit; source qualifiers and original time units are retained verbatim. |
 | `application_temperature` | existing | text | 17 / 6 | 2 | 0 | 0 | 0 | INCLUDE — Application temperature range is a stable cross-brand constraint. |
 | `open_time` | new | text | 15 / 6 | 4 | 0 | 0 | 0 | INCLUDE — Standard open-time value with inequality/condition qualifier is comparable across brands; text retains threshold. |
-| `adjustment_time` | new | text | 15 / 5 | 4 | 0 | 0 | 0 | INCLUDE — Tile correction window is distinct from open time and can preserve inequalities/ranges. |
+| `adjustment_time` | new | text | 16 / 5 | 3 | 0 | 0 | 0 | INCLUDE — Tile correction window is distinct from open time and can preserve inequalities/ranges; MAT-000129 exact page states adjustment no later than 15 min. |
 | `walkability` | existing | text | 6 / 2 | 12 | 1 | 0 | 0 | INCLUDE — Time until floor is walkable, distinct from grout readiness. |
 | `heated_floor_compatibility` | new | boolean | 13 / 5 | 6 | 0 | 0 | 0 | INCLUDE — Boolean expresses only explicit manufacturer suitability/incompatibility; application delay details remain in source notes, never inferred as false. |
 | `standard` | existing | text | 12 / 5 | 7 | 0 | 0 | 0 | INCLUDE — Named technical standard, distinct from the adhesive performance class. |
@@ -180,7 +180,7 @@ Do not create `grouting_time`, `maximum_tile_size`, or `adhesion_text`. Grouting
 - Operational weight: 25 кг; local product record/title; operational weight only, not proof of manufacturer package variant
 - Manufacturer package: CONFIRMED; 25 кг; sources [vetonitEasyFix](https://hub.vetonit.ru/products/sku-1024907)
 - Title decision: NO_CHANGE; Нет отдельного source-backed title change в рамках этого discovery; title не меняется.
-- Source keys: [vetonitEasyFix](https://hub.vetonit.ru/products/sku-1024907)
+- Source keys: [vetonitEasyFix](https://hub.vetonit.ru/products/sku-1024907); [vetonitEasyFixMain](https://www.vetonit.com/product/vetonit_izi_fiks_25kg/)
 
 | READY code | Value | Source |
 |---|---|---|
@@ -189,7 +189,7 @@ Do not create `grouting_time`, `maximum_tile_size`, or `adhesion_text`. Grouting
 | `package_weight` | 25 кг | [vetonitEasyFix](https://hub.vetonit.ru/products/sku-1024907) |
 | `color` | серый | [vetonitEasyFix](https://hub.vetonit.ru/products/sku-1024907) |
 | `adhesive_class` | C0 T | [vetonitEasyFix](https://hub.vetonit.ru/products/sku-1024907) |
-| `purpose` | керамическая плитка и камень, кроме мрамора; до 60×60 см; до 45 кг/м² | [vetonitEasyFix](https://hub.vetonit.ru/products/sku-1024907) |
+| `purpose` | Керамическая плитка размером до 60×60 см и массой не более 45 кг/м² | [vetonitEasyFixMain](https://www.vetonit.com/product/vetonit_izi_fiks_25kg/) |
 | `substrates` | бетон, ячеистый бетон, ГВЛ, гипсокартон, кирпич, цементная стяжка и цементная штукатурка | [vetonitEasyFix](https://hub.vetonit.ru/products/sku-1024907) |
 | `layer_thickness` | 1–15 мм | [vetonitEasyFix](https://hub.vetonit.ru/products/sku-1024907) |
 | `consumption` | 1,29 кг/м² на 1 мм слоя | [vetonitEasyFix](https://hub.vetonit.ru/products/sku-1024907) |
@@ -197,11 +197,12 @@ Do not create `grouting_time`, `maximum_tile_size`, or `adhesion_text`. Grouting
 | `pot_life` | 3 ч | [vetonitEasyFix](https://hub.vetonit.ru/products/sku-1024907) |
 | `application_temperature` | +5…+30 °C | [vetonitEasyFix](https://hub.vetonit.ru/products/sku-1024907) |
 | `open_time` | 15 мин | [vetonitEasyFix](https://hub.vetonit.ru/products/sku-1024907) |
+| `shelf_life` | 12 месяцев | [vetonitEasyFixMain](https://www.vetonit.com/product/vetonit_izi_fiks_25kg/) |
+| `adjustment_time` | 15 мин | [vetonitEasyFixMain](https://www.vetonit.com/product/vetonit_izi_fiks_25kg/) |
 | `base` | цементное связующее | [vetonitEasyFix](https://hub.vetonit.ru/products/sku-1024907) |
 | `application_area` | внутри здания; любые уровни влажности; стены и полы | [vetonitEasyFix](https://hub.vetonit.ru/products/sku-1024907) |
 
 **Unresolved regular fields:**
-- `adjustment_time`: NEEDS_SOURCE
 - `walkability`: NEEDS_SOURCE
 - `heated_floor_compatibility`: NEEDS_SOURCE
 - `standard`: NEEDS_SOURCE

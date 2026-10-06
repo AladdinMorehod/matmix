@@ -23,7 +23,7 @@ Structure 16 / SUB-000015: main = brand, product_type, shelf_life, package_weigh
 |---|---|---|---:|---:|---|
 | MAT-000127 | Клей для плитки Knauf Флизен, 25 кг | Клей КНАУФ-Флизен 25 кг — купить в Москве | 41 | 140 | — |
 | MAT-000128 | Клей для плитки Knauf Флизен ПЛЮС, 25 кг | Клей КНАУФ-Флизен Плюс 25 кг — купить в Москве | 46 | 141 | — |
-| MAT-000129 | Клей для плитки Vetonit Изи Фикс серый С0 25 кг | Клей Vetonit Изи Фикс серый 25 кг — купить в Москве | 51 | 152 | — |
+| MAT-000129 | Клей для плитки Vetonit Изи Фикс серый С0 25 кг | Клей Vetonit Изи Фикс серый 25 кг — купить в Москве | 51 | 138 | — |
 | MAT-000130 | Клей для плитки и керамогранита Ceresit CM 11 PRO, 25 кг | Клей Ceresit CM 11 PRO 25 кг — купить в Москве | 46 | 143 | — |
 | MAT-000131 | Клей для плитки, керамогранита и камня Ceresit СМ 14 сер. 25 кг | Клей Ceresit CM 14 25 кг — купить в Москве | 42 | 145 | — |
 | MAT-000132 | Клей для плитки, керамогранита и камня Ceresit СМ 16 сер. 25 кг | Клей Ceresit CM 16 серый 25 кг — купить в Москве | 48 | 159 | — |
@@ -68,14 +68,14 @@ Structure 16 / SUB-000015: main = brand, product_type, shelf_life, package_weigh
 ### MAT-000129 — Клей для плитки Vetonit Изи Фикс серый С0 25 кг
 
 - Brand / weight guard: Vetonit / 25 шт
-- Короткое описание: Vetonit Изи Фикс серый, 25 кг — клей для керамической плитки и камня внутри здания.
-- Полное описание: Vetonit Изи Фикс — серый плиточный клей для керамической плитки и камня, кроме мрамора, внутри здания. Подходит для стен и полов при любом уровне влажности; слой — 1–15 мм. Расход — 1,29 кг/м² на 1 мм, время жизни — 3 ч.
+- Короткое описание: Vetonit Изи Фикс серый, 25 кг — клей класса C0 T для керамической плитки до 60×60 см внутри помещений.
+- Полное описание: Vetonit Изи Фикс — серый клей класса C0 T для керамической плитки до 60×60 см и массой не более 45 кг/м². Для стен и полов внутри сухих и влажных помещений; слой — 1–15 мм. Расход — 1,29 кг/м² на 1 мм, время жизни раствора — 3 ч.
 - SEO title (51 chars): Клей Vetonit Изи Фикс серый 25 кг — купить в Москве
-- SEO description (152 chars): Vetonit Изи Фикс серый 25 кг — для плитки и камня, кроме мрамора. Расход 1,29 кг/м² на 1 мм; время жизни — 3 ч. Закажите в MatMix с доставкой по Москве.
+- SEO description (138 chars): Vetonit Изи Фикс серый 25 кг — клей C0 T для керамической плитки до 60×60 см. Слой 1–15 мм, расход 1,29 кг/м² на 1 мм. Доставка по Москве.
 - READY facts used: product_type, package_weight, purpose, application_area, color, adhesive_class, layer_thickness, consumption, pot_life
-- Sources: vetonitEasyFix (https://hub.vetonit.ru/products/sku-1024907)
-- Source-risk notes: none
-- Non-READY reviewed facts omitted: shelf_life: NEEDS_MAPPING, adjustment_time: NEEDS_SOURCE, walkability: NEEDS_SOURCE, heated_floor_compatibility: NEEDS_SOURCE, standard: NEEDS_SOURCE
+- Sources: vetonitEasyFix (https://hub.vetonit.ru/products/sku-1024907); vetonitEasyFixMain (https://www.vetonit.com/product/vetonit_izi_fiks_25kg/)
+- Source-risk notes: основная официальная страница задаёт более узкое назначение только для керамической плитки, тогда как HUB также упоминает камень; сохранена точная керамическая формулировка основной страницы. Срок 12 месяцев и корректировка до 15 минут прямо приведены на основной странице.
+- Non-READY reviewed facts omitted: walkability: NEEDS_SOURCE, heated_floor_compatibility: NEEDS_SOURCE, standard: NEEDS_SOURCE
 
 ### MAT-000130 — Клей для плитки и керамогранита Ceresit CM 11 PRO, 25 кг
 

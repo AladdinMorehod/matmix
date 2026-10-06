@@ -546,7 +546,8 @@
       "expectedUnit": "шт",
       "identityStatus": "IDENTITY_CONFIRMED",
       "sourceKeys": [
-        "vetonitEasyFix"
+        "vetonitEasyFix",
+        "vetonitEasyFixMain"
       ],
       "sources": {
         "vetonitEasyFix": {
@@ -555,17 +556,24 @@
           "domain": "hub.vetonit.ru",
           "sourceType": "manufacturer product card",
           "evidenceScope": "Exact Easy Fix product identity and published specifications."
+        },
+        "vetonitEasyFixMain": {
+          "url": "https://www.vetonit.com/product/vetonit_izi_fiks_25kg/",
+          "owner": "Saint-Gobain / Vetonit",
+          "domain": "vetonit.com",
+          "sourceType": "official manufacturer product page",
+          "evidenceScope": "Exact Easy Fix 25 kg page states the ceramic-tile size/load limit, 12-month shelf life, and a correction window up to 15 minutes. The separate HUB card mentions stone too; this batch preserves the narrower approved ceramic-only purpose wording."
         }
       },
-      "short_description": "Vetonit Изи Фикс серый, 25 кг — клей для керамической плитки и камня внутри здания.",
-      "full_description": "Vetonit Изи Фикс — серый плиточный клей для керамической плитки и камня, кроме мрамора, внутри здания. Подходит для стен и полов при любом уровне влажности; слой — 1–15 мм. Расход — 1,29 кг/м² на 1 мм, время жизни — 3 ч.",
+      "short_description": "Vetonit Изи Фикс серый, 25 кг — клей класса C0 T для керамической плитки до 60×60 см внутри помещений.",
+      "full_description": "Vetonit Изи Фикс — серый клей класса C0 T для керамической плитки до 60×60 см и массой не более 45 кг/м². Для стен и полов внутри сухих и влажных помещений; слой — 1–15 мм. Расход — 1,29 кг/м² на 1 мм, время жизни раствора — 3 ч.",
       "seo_title": "Клей Vetonit Изи Фикс серый 25 кг — купить в Москве",
-      "seo_description": "Vetonit Изи Фикс серый 25 кг — для плитки и камня, кроме мрамора. Расход 1,29 кг/м² на 1 мм; время жизни — 3 ч. Закажите в MatMix с доставкой по Москве.",
+      "seo_description": "Vetonit Изи Фикс серый 25 кг — клей C0 T для керамической плитки до 60×60 см. Слой 1–15 мм, расход 1,29 кг/м² на 1 мм. Доставка по Москве.",
       "characterCounts": {
-        "short_description": 83,
-        "full_description": 220,
+        "short_description": 102,
+        "full_description": 229,
         "seo_title": 51,
-        "seo_description": 152
+        "seo_description": 138
       },
       "factsUsed": [
         {
@@ -615,22 +623,22 @@
         {
           "code": "purpose",
           "status": "READY",
-          "value": "керамическая плитка и камень, кроме мрамора; до 60×60 см; до 45 кг/м²",
+          "value": "Керамическая плитка размером до 60×60 см и массой не более 45 кг/м²",
           "dataType": "text",
           "unit": null,
           "sources": [
-            "vetonitEasyFix"
+            "vetonitEasyFixMain"
           ],
           "sourceWording": null,
           "evidenceNote": null,
           "sourceDetails": [
             {
-              "sourceId": "vetonitEasyFix",
-              "url": "https://hub.vetonit.ru/products/sku-1024907",
-              "owner": "ВЕТОНИТ",
-              "domain": "hub.vetonit.ru",
-              "sourceType": "manufacturer product card",
-              "evidenceScope": "Exact Easy Fix product identity and published specifications."
+              "sourceId": "vetonitEasyFixMain",
+              "url": "https://www.vetonit.com/product/vetonit_izi_fiks_25kg/",
+              "owner": "Saint-Gobain / Vetonit",
+              "domain": "vetonit.com",
+              "sourceType": "official manufacturer product page",
+              "evidenceScope": "Exact Easy Fix 25 kg page states the ceramic-tile size/load limit, 12-month shelf life, and a correction window up to 15 minutes. The separate HUB card mentions stone too; this batch preserves the narrower approved ceramic-only purpose wording."
             }
           ]
         },
@@ -769,16 +777,6 @@
       ],
       "reviewedNonReadyFactsOmitted": [
         {
-          "code": "shelf_life",
-          "status": "NEEDS_MAPPING",
-          "reason": "source gives 365 days; existing definition unit is months, so do not convert"
-        },
-        {
-          "code": "adjustment_time",
-          "status": "NEEDS_SOURCE",
-          "reason": "No exact-SKU source-backed value is established."
-        },
-        {
           "code": "walkability",
           "status": "NEEDS_SOURCE",
           "reason": "No exact-SKU source-backed value is established."
@@ -794,7 +792,11 @@
           "reason": "No exact-SKU source-backed value is established."
         }
       ],
-      "sourceRiskNotes": {}
+      "sourceRiskNotes": {
+        "purposeWording": "Основная официальная страница ограничивает назначение керамической плиткой; HUB-карточка также упоминает камень. В copy и canonical purpose сохранена точная более узкая формулировка основной страницы.",
+        "shelfLife": "12 месяцев указаны непосредственно на основной официальной странице; значение HUB в днях не конвертируется.",
+        "adjustmentTime": "Корректировка положения плитки допускается не позже 15 минут после укладки по инструкции основной официальной страницы."
+      }
     },
     {
       "externalId": "MAT-000130",
